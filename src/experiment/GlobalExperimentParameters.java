@@ -51,7 +51,7 @@ public class GlobalExperimentParameters implements Parameters {
 	parameters.add("--wantmutationreport_mrp=false");
 	parameters.add("--wantmutationreport_txt=false");
 	parameters.add("--onlymutationsummary=false");
-	parameters.add("--project=/home/gkapfham/working/research/projects/dbatdg/");
+	parameters.add("--project="+System.getProperty("user.dir")+"/");
 	parameters.add("--host=localhost");
 	parameters.add("--port=5432");
 	parameters.add("--spy=false");

@@ -45,6 +45,14 @@
 		<delete dir="${dist.dir}"/>
 	</target>
 
+	<target name="clean.full" depends="clean">
+		<delete dir="Experiments"/>
+		<delete dir="MutantScripts"/>
+		<delete dir="Scripts"/>
+		<delete dir="MutationReports"/>
+		<delete dir="databases"/>
+	</target>
+
 	<!-- COMPILING TASK - "ant compile" -->  
 	<target name="compile">
 		<mkdir dir="${build.dir}"/>
@@ -59,9 +67,16 @@
 		<jar destfile="${dist.dir}/${dist.name}.jar" basedir="${build.dir}"/>
 	</target>
 
-	<!-- DATABASE TASK - "ant databases.setup" -->
-	<target name="databases.setup">
+	<!-- SETUP TASK - "ant setup" -->
+	<target name="setup">
 		<mkdir dir="${db.folder}" />
+	</target>
+
+	<!-- CLEAN SETUP TASK - "ant cleansetup" -->
+	<target name="cleansetup">
+		<antcall target="clean.full" />
+		<antcall target="compile" />
+		<antcall target="setup" />
 	</target>
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -112,7 +127,7 @@
 	<target name="dbmonster.process">
 		<java fork="true" classname="experiment.ProcessDBMonsterResults" maxmemory="1024m">
 			<arg value="--debug=false" /> 
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<arg value="--database=casestudy.ITrust" />
 			<classpath refid="run.classpath" />
 		</java>
@@ -131,7 +146,7 @@
 	<target name="dbmonster.manipulate">
 		<java fork="true" classname="dbmonster.PostgresDatabaseManipulator">
 			<arg value="--debug=true" /> 
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<arg value="--type=${db.postgres}" />
 			<arg value="--host=${db.postgres.host}" />
 			<arg value="--port=${db.postgres.port}" />
@@ -154,7 +169,7 @@
 	<target name="dbmonster.manipulateexperiment">
 		<java fork="true" classname="dbmonster.PostgresDatabaseManipulator">
 			<arg value="--debug=true" /> 
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<arg value="--type=${db.postgres}" />
 			<arg value="--host=${db.postgres.host}" />
 			<arg value="--port=${db.postgres.port}" />
@@ -183,7 +198,7 @@
 			<arg value="--onlymutationsummary=false" /> 
 			<arg value="--constraintcoverage=true" />
 			<arg value="--transformemptystrings=false" />
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<arg value="--type=org.schemaanalyst.database.postgres.Postgres" />
 			<arg value="--host=localhost" />
 			<arg value="--port=5432" />
@@ -210,7 +225,7 @@
 			<arg value="--onlymutationsummary=false" /> 
 			<arg value="--constraintcoverage=true" />
 			<arg value="--transformemptystrings=false" />
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<arg value="--type=${db.postgres}" />
 			<arg value="--host=${db.postgres.host}" />
 			<arg value="--port=${db.postgres.port}" />
@@ -230,7 +245,7 @@
 	<target name="experiment">
 		<junit fork="yes">
 			<test name="experiment.AllExperiments" />
-			<jvmarg value="-Dproject=../${user.dir}" />
+			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run.classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
@@ -238,25 +253,34 @@
 
 	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
 	<target name="globalexperimentparameters">
+		<mkdir dir="Experiments" />
 		<java fork="true" classname="experiment.GlobalExperimentParameters">
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
 
 	<!-- RUNNING TASK - "ant localexperimentparameters" -->
 	<target name="localexperimentparameters">
+		<mkdir dir="Experiments" />
 		<java fork="true" classname="experiment.LocalExperimentParameters">
-			<arg value="--project=../${user.dir}" />
+			<arg value="--project=${user.dir}" />
 			<classpath refid="run.classpath" />
 		</java>
+	</target>
+
+	<!-- RUNNING TASK - "ant experimentparameters" -->
+	<target name="experimentparameters">
+		<mkdir dir="Experiments" />
+		<antcall target="globalexperimentparameters"/>
+		<antcall target="localexperimentparameters"/>
 	</target>
 
 	<!-- RUNNING TASK - "ant etest" -->
 	<target name="etest" depends="compile">
 		<junit fork="yes">
 			<test name="experiment.test.AllTests" />
-			<jvmarg value="-Dproject=../${user.dir}" />
+			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run.classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
@@ -266,7 +290,7 @@
 	<target name="test" depends="compile">
 		<junit fork="yes">
 			<test name="org.schemaanalyst.test.AllTests" />
-			<jvmarg value="-Dproject=../${user.dir}" />
+			<jvmarg value="-Dproject=${user.dir}" />
 			<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
 			<classpath refid="run.classpath" />
 			<formatter type="brief" usefile="false" />
@@ -278,7 +302,7 @@
 		<jacoco:coverage destfile="${result.exec.file}">
 			<junit fork="yes" forkmode="once">
 				<test name="org.schemaanalyst.test.AllTests" />
-				<jvmarg value="-Dproject=../${user.dir}" />
+				<jvmarg value="-Dproject=${user.dir}" />
 				<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
 				<classpath refid="run.classpath" />
 				<formatter type="brief" usefile="false" />
@@ -312,29 +336,11 @@
 	<target name="integrationtest" depends="compile">
 		<junit fork="true">
 			<test name="org.schemaanalyst.test.AllIntegrationTests" />
-			<jvmarg value="-Dproject=../${user.dir}" />
+			<jvmarg value="-Dproject=${user.dir}" />
 			<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
 			<classpath refid="run.classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
-	</target>
-
-	<!-- RUNNING TASK - "ant derbyServerStart" -->
-	<target name="derbyServerStart" depends="databases.setup">
-		<java fork="true" jar="lib/derbyrun.jar" dir="${db.folder}">
-			<arg value="server" /> 
-			<arg value="start" /> 
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant derbyServerShutdown" -->
-	<target name="derbyServerShutdown">
-		<java fork="true" jar="lib/derbyrun.jar" dir="${db.folder}">
-			<arg value="server" /> 
-			<arg value="shutdown" /> 
-			<classpath refid="run.classpath" />
-		</java>
 	</target>
 
 </project>
