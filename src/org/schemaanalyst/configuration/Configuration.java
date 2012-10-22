@@ -1,5 +1,6 @@
 package org.schemaanalyst.configuration;
 
+import org.schemaanalyst.util.ReflectiveToString;
 import plume.Option;
 
 public class Configuration {
@@ -107,4 +108,9 @@ public class Configuration {
 
 	@Option("do you want transform empty strings to null values for DBMonster?")
 	public static boolean transformemptystrings = false;
+        
+        @Override
+        public String toString() {
+            return ReflectiveToString.toString(this);
+        }
 }
