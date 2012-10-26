@@ -240,7 +240,7 @@ public class ExperimentalResults {
 	    // create the scripts directory for storing the automatically
 	    // generated scripts for satisfying and violating the schema
 	    File experimentsDirectory = new File(ExperimentConfiguration.project +
-					     "Experiments/");
+					     "/" + "Experiments/");
 	    
 	    // if the Scripts/ directory does not exist, then create it
 	    if (!experimentsDirectory.exists()) {
@@ -272,7 +272,7 @@ public class ExperimentalResults {
 	    // create the scripts directory for storing the automatically
 	    // generated scripts for satisfying and violating the schema
 	    File experimentsDirectory = new File(ExperimentConfiguration.project +
-					     "Experiments/");
+					     "/" + "Experiments/");
 	    
 	    // if the Scripts/ directory does not exist, then create it
 	    if (!experimentsDirectory.exists()) {
