@@ -25,7 +25,7 @@ public class ReflectiveToString {
             try {
                 result.append(field.getName());
                 result.append(": ");
-                //requires access to private field:
+                field.setAccessible(true);
                 result.append(field.get(target));
             } catch (IllegalAccessException ex) {
                 System.out.println(ex);
