@@ -2,6 +2,7 @@
  */
 package experiment.results;
 
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +20,7 @@ import java.util.Map;
 public class CSVReportWriter extends ReportWriter {
 
     private final String separator;
+    @XStreamOmitField
     private PrintWriter writer = null;
     private Iterable<String> header;
     private WriteOption writeOption;

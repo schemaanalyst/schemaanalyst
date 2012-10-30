@@ -48,7 +48,8 @@ public class XMLSerialiser {
                 parent.mkdirs();
             }
             try (PrintWriter writer = new PrintWriter(output)) {
-                String xml = format(xstream.toXML(object));
+                xstream.processAnnotations(object.getClass());
+                String xml = format(xstream.toXML(object)); //
                 writer.println(xml);
                 writer.flush();
             }
@@ -67,6 +68,7 @@ public class XMLSerialiser {
      * @param path The file to deserialise
      * @return The object deserialised
      */
+    @SuppressWarnings("unchecked")
     public static <Clazz> Clazz load(String path) {
         try {
             File input = new File(path);
