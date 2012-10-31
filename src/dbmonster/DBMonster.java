@@ -26,7 +26,7 @@ import org.schemaanalyst.mutation.DBMonsterSQLExecutionReport;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLInsertRecord;
 import org.schemaanalyst.mutation.SQLSelectRecord;
-import org.schemaanalyst.mutation.ConstraintMutator;
+import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.mutation.SpyLogParser;
 import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.MutationTypeStatusSummary;

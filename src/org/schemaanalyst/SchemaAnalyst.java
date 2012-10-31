@@ -44,7 +44,7 @@ import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLInsertRecord;
-import org.schemaanalyst.mutation.ConstraintMutator;
+import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.mutation.MutationTypeStatusSummary;
 import org.schemaanalyst.mutation.MutationUtilities;
 

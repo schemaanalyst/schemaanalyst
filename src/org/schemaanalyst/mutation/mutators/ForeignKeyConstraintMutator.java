@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation;
+package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 

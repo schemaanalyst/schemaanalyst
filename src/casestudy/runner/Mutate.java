@@ -2,7 +2,7 @@ package casestudy.runner;
 
 import java.util.List;
 
-import org.schemaanalyst.mutation.ConstraintMutator;
+import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.schema.Schema;
 
 import casestudy.Flights;
