@@ -84,7 +84,7 @@ public class CSVReportWriter extends ReportWriter {
             checkWriteOption();
             try {
                 writer = new PrintWriter(new BufferedWriter(
-                        new FileWriter(path, true)), false);
+                        new FileWriter(path, true)), false); // Append enabled
             } catch (IOException ioEx) {
                 throw new RuntimeException("Failed to initialise the output"
                         + "writer", ioEx);
