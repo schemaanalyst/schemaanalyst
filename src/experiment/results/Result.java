@@ -2,7 +2,6 @@
  */
 package experiment.results;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -41,4 +40,11 @@ public class Result {
         return results;
     }
     
+    /**
+     * Replace the map of values stored in this Result.
+     * @param results The values to store
+     */
+    public void setValues(HashMap<String, String> results) {
+        this.results = results;
+    }
 }

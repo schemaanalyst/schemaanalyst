@@ -3,6 +3,7 @@
 package experiment.results;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -70,5 +71,30 @@ public class Report {
      */
     public Map<String,String> getValues() {
         return result.getValues();
+    }
+    
+    /**
+     * Produces a deep copy of a Report.
+     * @param original The Report to copy
+     * @return The deep copy
+     */
+    public static Report deepCopyOf(Report original) {
+        Report copy = new Report();
+        
+        // Copy the header
+        ArrayList<String> header = new ArrayList<>(original.header.size());
+        for (String column: original.header) {
+            header.add(column);
+        }
+        copy.header = header;
+        
+        // Copy the name
+        copy.name = original.name;
+        
+        // Copy the values
+        HashMap<String,String> map = new HashMap<>(original.result.getValues());
+        copy.result.setValues(map);
+        
+        return copy;
     }
 }

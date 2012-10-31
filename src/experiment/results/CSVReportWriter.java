@@ -20,7 +20,7 @@ import java.util.Map;
 public class CSVReportWriter extends ReportWriter {
 
     private final String separator;
-    @XStreamOmitField
+    @XStreamOmitField // Regrettably needed to prevent serialisation problems
     private PrintWriter writer = null;
     private Iterable<String> header;
     private WriteOption writeOption;
