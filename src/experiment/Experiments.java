@@ -16,6 +16,7 @@ import experiment.RunExperiment;
 import experiment.GlobalExperimentParameters;
 import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
+import experiment.mutation2013.GenerateData;
 
 import org.schemaanalyst.SchemaAnalyst;
 
@@ -83,7 +84,7 @@ public class Experiments {
 	parameters.addAll(globalParameters);
 
 	// run the specified experiment (called repeatedly based on the full list of parameters)
-	RunExperiment.runExperimentInSeparateJavaVirtualMachine(SchemaAnalyst.class, parameters);
+	RunExperiment.runExperimentInSeparateJavaVirtualMachine(GenerateData.class, parameters);
     }
 }
 

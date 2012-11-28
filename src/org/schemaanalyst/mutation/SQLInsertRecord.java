@@ -4,11 +4,14 @@ package org.schemaanalyst.mutation;
 public class SQLInsertRecord extends SQLExecutionRecord {
 
     /** Whether this SQL statement is trying to satisfy or negate constraints */
-    private boolean isSatisfying;
+    private boolean isSatisfying = false;
 
     public SQLInsertRecord() {
 	super();
-	isSatisfying = false;
+    }
+    
+    public SQLInsertRecord(String statement, Integer returnCode) {
+        super(statement, returnCode);
     }
 
     public void tryToSatisfy() {

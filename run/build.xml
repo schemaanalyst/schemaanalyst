@@ -58,6 +58,7 @@
 		<mkdir dir="${build.dir}"/>
 		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
 			<classpath refid="build.classpath"/>
+			<!-- <compilerarg value="-Xlint:unchecked"/> -->
 		</javac>
 	</target>
 
@@ -341,6 +342,18 @@
 			<classpath refid="run.classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
+	</target>
+
+	<target name="DeleteMe" depends="compile">
+		<java fork="true" classname="experiment.DeleteMe">
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
+	<target name="Mutation" depends="compile">
+		<java fork="true" classname="experiment.mutation2013.SchemaAnalyst2">
+			<classpath refid="run.classpath" />
+		</java>
 	</target>
 
 </project>

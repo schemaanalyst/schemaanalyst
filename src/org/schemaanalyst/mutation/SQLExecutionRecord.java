@@ -19,6 +19,11 @@ public class SQLExecutionRecord {
 	returnCode = DEFAULT_RETURN_CODE;
 	statement = DEFAULT_STATEMENT;
     }
+    
+    public SQLExecutionRecord(String statement, int returnCode) {
+        this.statement = statement;
+        this.returnCode = returnCode;
+    }
 
     public void setStatement(String statement) {
 	this.statement = statement;
