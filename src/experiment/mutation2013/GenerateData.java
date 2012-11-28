@@ -24,6 +24,8 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.mutation.SQLExecutionRecord;
+import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
 import org.schemaanalyst.schema.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
@@ -62,6 +64,9 @@ public class GenerateData {
         }
         SQLWriter sqlWriter = database.getSQLWriter();
 
+        // create the SQL execution report for the ORIGINAL create tables
+        SQLExecutionReport originalReport = new SQLExecutionReport();
+
         // initialize the connection to the real relational database
         DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
 
@@ -84,6 +89,13 @@ public class GenerateData {
         List<String> createTableStatements = sqlWriter.writeCreateTableStatements(schema);
         for (String statement : createTableStatements) {
             int returnCount = databaseInteraction.executeUpdate(statement);
+            // create a SQLExecutionRecord for this CREATE TABLE
+            SQLExecutionRecord currentCreateTable = new SQLExecutionRecord();
+            currentCreateTable.setStatement(statement);
+            currentCreateTable.setReturnCode(returnCount);
+
+            // add the CREATE TABLE SQLExecutionRecord to the ORIGINAL report
+            originalReport.addCreateTableStatement(currentCreateTable);
         }
 
         // generate test data
@@ -91,61 +103,30 @@ public class GenerateData {
         DataGenerator dataGenerator = constructDataGenerator(schema, valueFactory);
         CoverageReport report = dataGenerator.generate();
 
-        XMLSerialiser.save(report, "coverageReport.xml");
-        CoverageReport report2 = XMLSerialiser.load("coverageReport.xml");
-
-        ArrayList<SQLInsertRecord> records = new ArrayList<>();
         for (GoalReport goalReport : report.getSuccessfulGoalReports()) {
             Data data = goalReport.getData();
             List<String> statements = sqlWriter.writeInsertStatements(data);
             for (String stmt : statements) {
                 int result = databaseInteraction.executeUpdate(stmt);
                 SQLInsertRecord record = new SQLInsertRecord(stmt, result);
-                records.add(record);
+                SQLInsertRecord currentInsert = new SQLInsertRecord();
+                currentInsert.setStatement(stmt);
+                currentInsert.setReturnCode(result);
+
+                // add the INSERT SQLExecutionRecord to the ORIGINAL report
+                originalReport.addInsertStatement(currentInsert);
             }
         }
-        XMLSerialiser.save(records, "records.xml");
-        
-        // drop existing tables
-        //List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
-        for (String statement : dropTableStatements) {
-            databaseInteraction.executeUpdate(statement);
-        }
-
-        // create the schema inside of the real database
-        //List<String> createTableStatements = sqlWriter.writeCreateTableStatements(schema);
-        for (String statement : createTableStatements) {
-            int returnCount = databaseInteraction.executeUpdate(statement);
-        }
-        
-        ArrayList<SQLInsertRecord> records2 = new ArrayList<>();
-        for (GoalReport goalReport : report2.getSuccessfulGoalReports()) {
-            Data data = goalReport.getData();
-            List<String> statements = sqlWriter.writeInsertStatements(data);
-            for (String stmt : statements) {
-                int result = databaseInteraction.executeUpdate(stmt);
-                SQLInsertRecord record = new SQLInsertRecord(stmt, result);
-                records2.add(record);
-            }
-        }
-        XMLSerialiser.save(records2, "records2.xml");
-
-//        ArrayList<SQLInsertRecord> records = new ArrayList<>();
-//        for (GoalReport goalReport: report.getSuccessfulGoalReports()) {
-//            Data data = goalReport.getData();
-//            List<String> statements = sqlWriter.writeInsertStatements(data);
-//            for (String stmt : statements) {
-//                int result = databaseInteraction.executeUpdate(stmt);
-//                SQLInsertRecord record = new SQLInsertRecord(stmt, result);
-//                records.add(record);
-//            }
-//        }
-//        
-//        for (SQLInsertRecord record : records) {
-//            
-//        }
+        XMLSerialiser.save(originalReport, "results/data-generation/"+Configuration.database + ".xml");
     }
 
+    /**
+     * Creates an AVM data generator for the given Schema and ValueFactory
+     *
+     * @param schema The schema in use
+     * @param valueFactory The value factory to use
+     * @return The data generator
+     */
     private static DataGenerator constructDataGenerator(Schema schema, ValueFactory valueFactory) {
         Random random = new SimpleRandom(Configuration.randomseed);
         CellRandomizer cellRandomizer = constructCellRandomizationProfile(random);
@@ -165,6 +146,12 @@ public class GenerateData {
                 Configuration.negaterows);
     }
 
+    /**
+     * Creates a randomizer for the configured random profile
+     *
+     * @param random The random number generator
+     * @return The randomizer
+     */
     public static CellRandomizer constructCellRandomizationProfile(Random random) {
         switch (Configuration.randomprofile) {
             case "small":
