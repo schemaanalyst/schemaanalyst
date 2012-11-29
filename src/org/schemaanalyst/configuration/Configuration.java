@@ -109,6 +109,13 @@ public class Configuration {
 	@Option("do you want transform empty strings to null values for DBMonster?")
 	public static boolean transformemptystrings = false;
         
+        /** For Mutation2013 **/
+        @Option("data generation mode for Mutation2013?")
+        public static boolean mutation2013_datageneration = false;
+        
+        @Option("execution mode for Mutation2013?")
+        public static boolean mutation2013_execution = false;
+        
         @Override
         public String toString() {
             return ReflectiveToString.toString(this);

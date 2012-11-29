@@ -17,6 +17,7 @@ import experiment.GlobalExperimentParameters;
 import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
 import experiment.mutation2013.GenerateData;
+import experiment.mutation2013.MutationAnalysis;
 
 import org.schemaanalyst.SchemaAnalyst;
 
@@ -83,8 +84,29 @@ public class Experiments {
 	parameters.addAll(localParameters);
 	parameters.addAll(globalParameters);
 
+        // Parse additional runtime parameters
+        boolean mutation2013_datageneration = false;
+        boolean mutation2013_execution = false;
+        for (String global : globalParameters) {
+            if (global.startsWith("--mutation2013_datageneration=")) {
+                mutation2013_datageneration = Boolean.parseBoolean(global.replace("--mutation2013_datageneration=", ""));
+            } else if (global.startsWith("--mutation2013_execution=")) {
+                mutation2013_execution = Boolean.parseBoolean(global.replace("--mutation2013_execution=", ""));
+            }
+        }
+        
 	// run the specified experiment (called repeatedly based on the full list of parameters)
-	RunExperiment.runExperimentInSeparateJavaVirtualMachine(GenerateData.class, parameters);
+        Class targetClass;
+        if (mutation2013_datageneration) {
+            targetClass = GenerateData.class;
+        } else if (mutation2013_execution) {
+            targetClass = MutationAnalysis.class;
+        } else {
+            targetClass = SchemaAnalyst.class;
+        }
+        
+        RunExperiment.runExperimentInSeparateJavaVirtualMachine(targetClass, parameters);
+
     }
 }
 

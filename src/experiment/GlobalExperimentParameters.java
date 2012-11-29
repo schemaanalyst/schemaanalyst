@@ -55,6 +55,8 @@ public class GlobalExperimentParameters implements Parameters {
 	parameters.add("--host=localhost");
 	parameters.add("--port=5432");
 	parameters.add("--spy=false");
+        parameters.add("--mutations2013_datageneration=false");
+        parameters.add("--mutation2013_execution=false");
     }
 
     /** Return all of the global parameters */
