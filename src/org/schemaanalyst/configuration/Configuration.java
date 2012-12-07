@@ -125,6 +125,9 @@ public class Configuration {
         @Option("smart execution mode for Mutation2013?")
         public static boolean mutation2013_execution_smart = false;
         
+        @Option("parallel execution mode for Mutation2013?")
+        public static boolean mutation2013_execution_parallel = false;
+        
         @Override
         public String toString() {
             return ReflectiveToString.toString(this);

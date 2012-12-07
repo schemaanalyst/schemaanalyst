@@ -18,6 +18,7 @@ import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
 import experiment.mutation2013.GenerateData;
 import experiment.mutation2013.MutationAnalysis;
+import experiment.mutation2013.MutationAnalysisParallel;
 import experiment.mutation2013.MutationAnalysisSchemata;
 import experiment.mutation2013.MutationAnalysisSchemataParallel;
 import experiment.mutation2013.MutationAnalysisSmart;
@@ -93,6 +94,7 @@ public class Experiments {
         boolean mutation2013_execution_schemata = false;
         boolean mutation2013_execution_parallel_schemata = false;
         boolean mutation2013_execution_smart = false;
+        boolean mutation2013_execution_parallel = false;
         for (String global : globalParameters) {
             if (global.startsWith("--mutation2013_datageneration=")) {
                 mutation2013_datageneration = Boolean.parseBoolean(global.replace("--mutation2013_datageneration=", ""));
@@ -104,6 +106,8 @@ public class Experiments {
                 mutation2013_execution_parallel_schemata = Boolean.parseBoolean((global.replace("--mutation2013_execution_parallel_schemata=", "")));
             } else if (global.startsWith("--mutation2013_execution_smart=")) {
                 mutation2013_execution_smart = Boolean.parseBoolean((global.replace("--mutation2013_execution_smart=", "")));
+            } else if (global.startsWith("--mutation2013_execution_parallel=")) {
+                mutation2013_execution_parallel = Boolean.parseBoolean((global.replace("--mutation2013_execution_parallel=", "")));
             }
         }
         
@@ -119,6 +123,8 @@ public class Experiments {
             targetClass = MutationAnalysisSchemataParallel.class;
         } else if (mutation2013_execution_smart) {
             targetClass= MutationAnalysisSmart.class;
+        } else if (mutation2013_execution_parallel) {
+            targetClass = MutationAnalysisParallel.class;
         } else {
             targetClass = SchemaAnalyst.class;
         }

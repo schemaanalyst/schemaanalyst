@@ -19,8 +19,10 @@ import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutationReport;
 import org.schemaanalyst.mutation.MutationReportScore;
 import org.schemaanalyst.mutation.MutationUtilities;
+import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
+import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.schema.Schema;
 import org.schemaanalyst.schema.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
@@ -30,9 +32,13 @@ import plume.Options;
  *
  * @author chris
  */
-public class MutationAnalysisSchemataParallel {
+public class MutationAnalysisParallel {
 
     private static int STILL_BORN = -1;
+    private static SQLWriter sqlWriter;
+    private static SQLExecutionReport originalReport;
+    private static DatabaseInteractor databaseInteraction;
+    private static MutationReport mutationReport;
 
     public static void main(String[] args) {
         // parse options
@@ -57,14 +63,14 @@ public class MutationAnalysisSchemataParallel {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Could not construct database type \"" + Configuration.type + "\"");
         }
-        SQLWriter sqlWriter = database.getSQLWriter();
+        sqlWriter = database.getSQLWriter();
 
         // load the SQL execution report for the ORIGINAL create tables
         String reportPath = "results/data-generation/" + Configuration.database + ".xml";
-        SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
+        originalReport = XMLSerialiser.load(reportPath);
 
         // initialize the connection to the real relational database
-        DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
+        databaseInteraction = database.getDatabaseInteraction();
 
         // create the schema using reflection; this is based on the
         // name of the database provided in the configuration
@@ -80,51 +86,20 @@ public class MutationAnalysisSchemataParallel {
 
         boolean stillBorn = false;
 
-        MutationReport mutationReport = new MutationReport();
+        mutationReport = new MutationReport();
         mutationReport.setOriginalReport(originalReport);
 
         // create all of the MUTANT SCHEMAS that we store inside of the database 
         ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
         List<Schema> mutants = cm.produceMutants(schema);
 
-        if (mutants.size() <= 0) {
-            throw new RuntimeException("Schemata approach requires at least 1 mutant");
-        }
-
-        // schemata step- rename mutants
+        // parallel step- rename mutants
         renameMutants(mutants);
-
-        // remove existing mutant tables
-        StringBuilder dropBuilder = new StringBuilder();
-        for (Schema mutant : mutants) {
-            for (String statement : sqlWriter.writeDropTableStatements(mutant, true)) {
-                dropBuilder.append(statement);
-                dropBuilder.append("; ");
-                dropBuilder.append(System.lineSeparator());
-            }
-        }
-        String dropStatements = dropBuilder.toString();
-
-        // add new mutant tables
-        StringBuilder createBuilder = new StringBuilder();
-        for (Schema mutant : mutants) {
-            for (String statement : sqlWriter.writeCreateTableStatements(mutant)) {
-                createBuilder.append(statement);
-                createBuilder.append("; ");
-                createBuilder.append(System.lineSeparator());
-            }
-        }
-        String createStatements = createBuilder.toString();
-
-        // drop tables inside previous schema
-        //databaseInteraction.executeUpdate(dropStatements);
-        // create tables in new schema
-        databaseInteraction.executeUpdate(createStatements);
 
         ExecutorService executor = Executors.newFixedThreadPool(8);
         int i = 1;
         for (Schema mutant : mutants) {
-            MutationAnalysisRunnable runnable = new MutationAnalysisRunnable(mutationReport, originalReport, databaseInteraction, i);
+            MutationAnalysisRunnable runnable = new MutationAnalysisRunnable(mutant, i);
             executor.execute(runnable);
             i++;
         }
@@ -138,9 +113,6 @@ public class MutationAnalysisSchemataParallel {
         // calculate the mutation score and the main summary statistics
         mutationReport.calculateMutationScoresAndStatistics();
         MutationReportScore score = mutationReport.getScores().get("mutationScore");
-        
-        // drop tables inside previous schema
-        databaseInteraction.executeUpdate(dropStatements);
 
         // END TIME FOR mutation analysis
         long endTime = System.currentTimeMillis();
@@ -171,27 +143,46 @@ public class MutationAnalysisSchemataParallel {
             }
         }
     }
-    
+
     private static class MutationAnalysisRunnable implements Runnable {
-        MutationReport mutationReport;
+
+        Schema mutant;
         int mutantNumber;
-        SQLExecutionReport originalReport;
-        DatabaseInteractor databaseInteraction;
-        
-        public MutationAnalysisRunnable(MutationReport mutationReport, SQLExecutionReport originalReport, DatabaseInteractor databaseInteraction, int mutantNumber) {
-            this.mutationReport = mutationReport;
-            this.originalReport = originalReport;
+
+        public MutationAnalysisRunnable(Schema mutant, int mutantNumber) {
+            this.mutant = mutant;
             this.mutantNumber = mutantNumber;
-            this.databaseInteraction = databaseInteraction;
         }
-        
+
         @Override
         public void run() {
             System.out.println("Mutant " + mutantNumber);
+            
+            boolean stillBorn = false;
+
+            // drop tables inside the previous schema
+            List<String> dropTableStatementsMutants = sqlWriter.writeDropTableStatements(mutant, true);
 
             // create the MutantReport that will store the details about these inserts
             MutantReport currentMutantReport = new MutantReport();
 
+            // create the MUTANT schema inside of the real database
+            List<String> createTableStatementsMutants = sqlWriter.writeCreateTableStatements(mutant);
+            for (String statement : createTableStatementsMutants) {
+                int returnCount = databaseInteraction.executeUpdate(statement);
+
+                // add the MUTANT schema create table to the current mutant report
+                SQLExecutionRecord currentMutantCreateTable = new SQLExecutionRecord();
+                currentMutantCreateTable.setStatement(statement);
+                currentMutantCreateTable.setReturnCode(returnCount);
+                currentMutantReport.addCreateTableStatement(currentMutantCreateTable);
+
+                // we have found a still born mutant and 
+                if (returnCount == STILL_BORN) {
+                    stillBorn = true;
+                }
+            }
+            
             // rebuild schemata prefix
             String schemataInsert = "INSERT INTO mutant_" + mutantNumber + "_";
 
@@ -204,7 +195,7 @@ public class MutationAnalysisSchemataParallel {
 
                 // extract the statement from the SQLInsertRecord
                 String statement = originalInsertRecord.getStatement();
-
+                
                 // alter for mutant schemata
                 statement = statement.replaceAll("INSERT INTO ", schemataInsert);
 
@@ -237,17 +228,23 @@ public class MutationAnalysisSchemataParallel {
                 currentMutantReport.addMutantStatement(insertMutantRecord);
             }
 
-            // don't know if it is killed yet here
+            // store the mutant still born information for this MutantReport
+            if (stillBorn) {
+                currentMutantReport.bornStill();
+            }
+
             // System.out.println("Computing intersection!");
             currentMutantReport.computeIntersection();
 
+            // drop tables inside the previous schema
+            for (String statement : dropTableStatementsMutants) {
+                databaseInteraction.executeUpdate(statement);
+            }
+            
             // store the current insertMutantRecord inside of the mutationReport
             synchronized(mutationReport) {
                 mutationReport.addMutantReport(currentMutantReport);
             }
         }
-        
     }
 }
-
-
