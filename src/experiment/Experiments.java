@@ -18,6 +18,9 @@ import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
 import experiment.mutation2013.GenerateData;
 import experiment.mutation2013.MutationAnalysis;
+import experiment.mutation2013.MutationAnalysisSchemata;
+import experiment.mutation2013.MutationAnalysisSchemataParallel;
+import experiment.mutation2013.MutationAnalysisSmart;
 
 import org.schemaanalyst.SchemaAnalyst;
 
@@ -76,7 +79,7 @@ public class Experiments {
 	localParameters.add(naiverandommaxtriespertable);
 	localParameters.add(type);
 	localParameters.add(ExperimentUtilities.convertTrialToParameter(trial));
-	
+        
 	// global parameters that only change for a person running the experiments
 	List<String> globalParameters = ExperimentProvider.getGlobalExperimentParameters();
 	
@@ -87,11 +90,20 @@ public class Experiments {
         // Parse additional runtime parameters
         boolean mutation2013_datageneration = false;
         boolean mutation2013_execution = false;
+        boolean mutation2013_execution_schemata = false;
+        boolean mutation2013_execution_parallel_schemata = false;
+        boolean mutation2013_execution_smart = false;
         for (String global : globalParameters) {
             if (global.startsWith("--mutation2013_datageneration=")) {
                 mutation2013_datageneration = Boolean.parseBoolean(global.replace("--mutation2013_datageneration=", ""));
             } else if (global.startsWith("--mutation2013_execution=")) {
                 mutation2013_execution = Boolean.parseBoolean(global.replace("--mutation2013_execution=", ""));
+            } else if (global.startsWith("--mutation2013_execution_schemata=")) {
+                mutation2013_execution_schemata = Boolean.parseBoolean(global.replace("--mutation2013_execution_schemata=", ""));
+            } else if (global.startsWith("--mutation2013_execution_parallel_schemata=")) {
+                mutation2013_execution_parallel_schemata = Boolean.parseBoolean((global.replace("--mutation2013_execution_parallel_schemata=", "")));
+            } else if (global.startsWith("--mutation2013_execution_smart=")) {
+                mutation2013_execution_smart = Boolean.parseBoolean((global.replace("--mutation2013_execution_smart=", "")));
             }
         }
         
@@ -101,6 +113,12 @@ public class Experiments {
             targetClass = GenerateData.class;
         } else if (mutation2013_execution) {
             targetClass = MutationAnalysis.class;
+        } else if (mutation2013_execution_schemata) {
+            targetClass = MutationAnalysisSchemata.class;
+        } else if (mutation2013_execution_parallel_schemata) {
+            targetClass = MutationAnalysisSchemataParallel.class;
+        } else if (mutation2013_execution_smart) {
+            targetClass= MutationAnalysisSmart.class;
         } else {
             targetClass = SchemaAnalyst.class;
         }

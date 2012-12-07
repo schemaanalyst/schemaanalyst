@@ -18,6 +18,7 @@ public class CheckConstraintMutator extends Mutator {
 		Schema mutant = table.getSchema().duplicate();	
 		mutant.addComment("Mutant with check constraint \"" + checkConstraint + "\" removed from table \"" + table + "\"");
 		mutant.addComment("(Check, 1)");
+                mutant.addComment("table="+table);
 
 		Table mutantTable = mutant.getTable(table.getName());
 		mutantTable.removeCheckConstraint(checkConstraint);

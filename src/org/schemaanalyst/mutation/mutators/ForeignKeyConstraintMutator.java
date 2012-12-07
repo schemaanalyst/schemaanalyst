@@ -22,6 +22,7 @@ public class ForeignKeyConstraintMutator extends Mutator {
 		Schema mutant = table.getSchema().duplicate();
 		mutant.addComment("Mutant with foreign key column \"" + column + "\" removed from existing clause on table \"" + table + "\"");
 		mutant.addComment("(Foreign Key, 2)");
+                mutant.addComment("table="+table);
 		
 		Table mutantTable = mutant.getTable(table.getName());
 		

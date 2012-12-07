@@ -116,6 +116,15 @@ public class Configuration {
         @Option("execution mode for Mutation2013?")
         public static boolean mutation2013_execution = false;
         
+        @Option("schemata execution mode for Mutation2013?")
+        public static boolean mutation2013_execution_schemata = false;
+        
+        @Option("parallel schemata execution mode for Mutation2013?")
+        public static boolean mutation2013_execution_parallel_schemata = false;
+        
+        @Option("smart execution mode for Mutation2013?")
+        public static boolean mutation2013_execution_smart = false;
+        
         @Override
         public String toString() {
             return ReflectiveToString.toString(this);

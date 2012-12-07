@@ -27,6 +27,7 @@ public class NotNullConstraintMutator extends Mutator {
 		Schema mutant = table.getSchema().duplicate();	
 		mutant.addComment("Mutant with NOT NULL property reversed on column \"" + column + "\" in table \"" + table + "\"");
 		mutant.addComment("(Not Null, 5)");
+                mutant.addComment("table="+table);
 		
 		Table mutantTable = mutant.getTable(table.getName());
 		

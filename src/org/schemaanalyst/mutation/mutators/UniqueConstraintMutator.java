@@ -64,6 +64,7 @@ public class UniqueConstraintMutator extends Mutator {
 			Schema mutant = originalSchema.duplicate(); 
 			mutant.addComment("Unique constraint mutant with column \"" + column + "\" added to existing clause");
 			mutant.addComment("(Unique, 4)");
+                        mutant.addComment("table="+table);
 
 			Table mutantTable = mutant.getTable(table.getName());
 			for (UniqueConstraint mutantUnique : mutantTable.getUniqueConstraints()) {
@@ -85,6 +86,7 @@ public class UniqueConstraintMutator extends Mutator {
 			Schema mutant = originalSchema.duplicate(); 
 			mutant.addComment("Unique constraint mutant with column \"" + column + "\" removed from existing clause");
 			mutant.addComment("(Unique, 4)");
+                        mutant.addComment("table="+table);
 
 			Table mutantTable = mutant.getTable(table.getName());
 			for (UniqueConstraint mutantUniqueConstraint : mutantTable.getUniqueConstraints()) {
@@ -111,6 +113,7 @@ public class UniqueConstraintMutator extends Mutator {
 			Schema mutant = originalSchema.duplicate(); 
 			mutant.addComment("Unique constraint mutant with column \"" + column + "\" added");
 			mutant.addComment("(Unique, 4)");
+                        mutant.addComment("table="+table);
 
 			Table mutantTable = mutant.getTable(table.getName());			
 			mutantTable.addUniqueConstraint(mutantTable.getColumn(column.getName()));

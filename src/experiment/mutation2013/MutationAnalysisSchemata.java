@@ -17,8 +17,8 @@ import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
-import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.schema.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import plume.Options;
 
@@ -26,7 +26,8 @@ import plume.Options;
  *
  * @author chris
  */
-public class MutationAnalysis {
+public class MutationAnalysisSchemata {
+
     private static int STILL_BORN = -1;
 
     public static void main(String[] args) {
@@ -34,14 +35,14 @@ public class MutationAnalysis {
         Options options = new Options("MutationAnalysis [options]", new Configuration());
         options.parse_or_usage(args);
         ExperimentConfiguration.project = Configuration.project;
-        
+
         // Start results file
         ExperimentalResults experimentalResults = ExperimentalResults.retrieve();
         experimentalResults.reset();
         experimentalResults.addResult("datagenerator", Configuration.datagenerator);
-	experimentalResults.addResult("database", MutationUtilities.removePrefixFromCaseStudyName(Configuration.database));
-	experimentalResults.addResult("type", MutationUtilities.removePrefixFromCaseStudyName(Configuration.type));
-	experimentalResults.addResult("trial", Integer.toString(Configuration.trial));
+        experimentalResults.addResult("database", MutationUtilities.removePrefixFromCaseStudyName(Configuration.database));
+        experimentalResults.addResult("type", MutationUtilities.removePrefixFromCaseStudyName(Configuration.type));
+        experimentalResults.addResult("trial", Integer.toString(Configuration.trial));
 
         // create the database using reflection; this is based on the
         // type of the database provided in the configuration (i.e.,
@@ -72,45 +73,60 @@ public class MutationAnalysis {
 
         // start mutation timing
         long startTime = System.currentTimeMillis();
-        
+
         boolean stillBorn = false;
-        
+
         MutationReport mutationReport = new MutationReport();
         mutationReport.setOriginalReport(originalReport);
-        
+
         // create all of the MUTANT SCHEMAS that we store inside of the database 
         ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
         List<Schema> mutants = cm.produceMutants(schema);
+
+        if (mutants.size() <= 0) {
+            throw new RuntimeException("Schemata approach requires at least 1 mutant");
+        }
+
+        // schemata step- rename mutants
+        renameMutants(mutants);
+
+        // remove existing mutant tables
+        StringBuilder dropBuilder = new StringBuilder();
+        for (Schema mutant : mutants) {
+            for (String statement : sqlWriter.writeDropTableStatements(mutant, true)) {
+                dropBuilder.append(statement);
+                dropBuilder.append("; ");
+                dropBuilder.append(System.lineSeparator());
+            }
+        }
+        String dropStatements = dropBuilder.toString();
+
+        // add new mutant tables
+        StringBuilder createBuilder = new StringBuilder();
+        for (Schema mutant : mutants) {
+            for (String statement : sqlWriter.writeCreateTableStatements(mutant)) {
+                createBuilder.append(statement);
+                createBuilder.append("; ");
+                createBuilder.append(System.lineSeparator());
+            }
+        }
+        String createStatements = createBuilder.toString();
+
+        // drop tables inside previous schema
+        //databaseInteraction.executeUpdate(dropStatements);
+        // create tables in new schema
+        databaseInteraction.executeUpdate(createStatements);
+
         int i = 1;
         for (Schema mutant : mutants) {
-            
-            System.out.println("Mutant " + i);
 
-            // drop tables inside the previous schema
-            List<String> dropTableStatementsMutants = sqlWriter.writeDropTableStatements(mutant, true);
-//            for (String statement : dropTableStatementsMutants) {
-//                databaseInteraction.executeUpdate(statement);
-//            }
+            System.out.println("Mutant " + i);
 
             // create the MutantReport that will store the details about these inserts
             MutantReport currentMutantReport = new MutantReport();
 
-            // create the MUTANT schema inside of the real database
-            List<String> createTableStatementsMutants = sqlWriter.writeCreateTableStatements(mutant);
-            for (String statement : createTableStatementsMutants) {
-                int returnCount = databaseInteraction.executeUpdate(statement);
-
-                // add the MUTANT schema create table to the current mutant report
-                SQLExecutionRecord currentMutantCreateTable = new SQLExecutionRecord();
-                currentMutantCreateTable.setStatement(statement);
-                currentMutantCreateTable.setReturnCode(returnCount);
-                currentMutantReport.addCreateTableStatement(currentMutantCreateTable);
-
-                // we have found a still born mutant and 
-                if (returnCount == STILL_BORN) {
-                    stillBorn = true;
-                }
-            }
+            // rebuild schemata prefix
+            String schemataInsert = "INSERT INTO mutant_" + i + "_";
 
             // run all of the ORIGINAL INSERTS on the mutant schema
             SQLExecutionReport retrievedOriginalReport = originalReport;
@@ -122,12 +138,15 @@ public class MutationAnalysis {
                 // extract the statement from the SQLInsertRecord
                 String statement = originalInsertRecord.getStatement();
 
+                // alter for mutant schemata
+                statement = statement.replaceAll("INSERT INTO ", schemataInsert);
+
                 // add the current statement into the insertMutantRecord
                 insertMutantRecord.setStatement(statement);
 
                 // extract the number of modified record counts, used in mutation analysis
                 Integer returnCounts = databaseInteraction.executeUpdate(statement);
-                
+
                 // add the return code to the insertMutantRecord
                 insertMutantRecord.setReturnCode(returnCounts);
 
@@ -146,11 +165,11 @@ public class MutationAnalysis {
                 } else {
                     insertMutantRecord.killedMutant();
                 }
-                
+
                 // add this insertMutantRecord to the mutant report
                 currentMutantReport.addMutantStatement(insertMutantRecord);
             }
-            
+
             // indicate we have moved on to the next MUTANT
             i++;
 
@@ -166,31 +185,42 @@ public class MutationAnalysis {
 
             // store the current insertMutantRecord inside of the mutationReport
             mutationReport.addMutantReport(currentMutantReport);
-            
-            // drop tables inside the previous schema
-            for (String statement : dropTableStatementsMutants) {
-                databaseInteraction.executeUpdate(statement);
-            }
         }
 
         // calculate the mutation score and the main summary statistics
         mutationReport.calculateMutationScoresAndStatistics();
         MutationReportScore score = mutationReport.getScores().get("mutationScore");
+        
+        // drop tables inside previous schema
+        databaseInteraction.executeUpdate(dropStatements);
 
         // END TIME FOR mutation analysis
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        
+
         experimentalResults.addResult("mutationtime", new Long(totalTime).toString());
         experimentalResults.addResult("mutationscore_numerator", Integer.toString(score.getNumerator()));
         experimentalResults.addResult("mutationscore_denominator", Integer.toString(score.getDenominator()));
-        
+
         if (!experimentalResults.wroteHeader()) {
             experimentalResults.writeHeader();
             experimentalResults.didWriteCountHeader();
         }
-        
+
         experimentalResults.writeResults();
         experimentalResults.save();
+    }
+
+    /**
+     * Prepends each mutant with the relevant mutation number
+     *
+     * @param mutants
+     */
+    private static void renameMutants(List<Schema> mutants) {
+        for (int i = 0; i < mutants.size(); i++) {
+            for (Table table : mutants.get(i).getTables()) {
+                table.setName("mutant_" + (i + 1) + "_" + table.getName());
+            }
+        }
     }
 }

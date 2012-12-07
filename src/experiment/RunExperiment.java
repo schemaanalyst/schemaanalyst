@@ -59,7 +59,6 @@ public class RunExperiment {
 	    for(String currentArgument : arguments) {
 		Argument taskArgs = javaTask.createArg();
 		taskArgs.setLine(currentArgument);
-		//taskArgs.setLine("fail");
 	    }
 	    
 	    // configure the java task 

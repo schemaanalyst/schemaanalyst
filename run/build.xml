@@ -350,10 +350,4 @@
 		</java>
 	</target>
 
-	<target name="Mutation" depends="compile">
-		<java fork="true" classname="experiment.mutation2013.SchemaAnalyst2">
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
 </project>

@@ -54,6 +54,7 @@ public class PrimaryKeyConstraintMutator extends Mutator {
 		description += " on table \"" + table + "\"";
 		mutant.addComment(description);
 		mutant.addComment("(Primary Key, 3)");
+                mutant.addComment("table="+table);
 				
 		Table mutantTable = mutant.getTable(table.getName());		
 		PrimaryKeyConstraint mutantPrimaryKeyConstraint = mutantTable.getPrimaryKeyConstraint();

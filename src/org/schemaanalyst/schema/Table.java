@@ -49,6 +49,10 @@ public class Table implements Serializable {
 		primaryKeyConstraint = null;
 	}
 	
+        public void setName(String name) {
+            this.name = name;
+        }
+        
 	/**
 	 * Retrieves the name of the table.
 	 * @return The name of the table.
