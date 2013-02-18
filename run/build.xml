@@ -345,7 +345,7 @@
 	</target>
 
 	<target name="DeleteMe" depends="compile">
-		<java fork="true" classname="experiment.DeleteMe">
+		<java fork="true" classname="org.schemaanalyst.mutation.mutators.checkmutators.CheckConstraintReferencedColumnMutator">
 			<classpath refid="run.classpath" />
 		</java>
 	</target>

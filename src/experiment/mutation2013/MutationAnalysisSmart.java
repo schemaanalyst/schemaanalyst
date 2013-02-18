@@ -31,6 +31,10 @@ public class MutationAnalysisSmart {
     private static MutantTableMap mutantTables = new MutantTableMap();
 
     public static void main(String[] args) {
+        
+        int inserts = 0;
+        int totalInserts = 0;
+        
         // parse options
         Options options = new Options("MutationAnalysis [options]", new Configuration());
         options.parse_or_usage(args);
@@ -109,15 +113,19 @@ public class MutationAnalysisSmart {
         List<SQLInsertRecord> originalInsertStatements = retrievedOriginalReport.getInsertStatements();
         for (SQLInsertRecord originalInsertRecord : originalInsertStatements) {
             
+            totalInserts++;
+            
             String insert = originalInsertRecord.getStatement();
             String affectedTable = getAffectedTable(insert);
             int returnCode = originalInsertRecord.getReturnCode();
             databaseInteraction.executeUpdate(insert);
+            inserts++;
             
             // for each applicable mutant
             for (String mutantTable: mutantTables.getMutants(affectedTable)) {
                 String mutantInsert = rewriteInsert(insert, affectedTable, mutantTable);
                 int mutantReturnCode = databaseInteraction.executeUpdate(mutantInsert);
+                inserts++;
                 if (returnCode != mutantReturnCode) {
                     killed.add(getMutantNumber(mutantTable));
                 }
@@ -148,6 +156,9 @@ public class MutationAnalysisSmart {
         
         experimentalResults.writeResults();
         experimentalResults.save();
+        
+        System.out.println("INSERTS: "+inserts);
+        System.out.println("TOTAL INSERTS: "+totalInserts);
     }
 
     /**

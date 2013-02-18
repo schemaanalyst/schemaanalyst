@@ -29,7 +29,7 @@ import plume.Options;
 public class MutationAnalysis {
     private static int STILL_BORN = -1;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
         // parse options
         Options options = new Options("MutationAnalysis [options]", new Configuration());
         options.parse_or_usage(args);

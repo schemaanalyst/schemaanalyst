@@ -128,6 +128,10 @@ public class Configuration {
         @Option("parallel execution mode for Mutation2013?")
         public static boolean mutation2013_execution_parallel = false;
         
+        /** Post-Mutation2013 Experiment **/
+        @Option("thread pool size")
+        public static int threadpoolsize = 8;
+        
         @Override
         public String toString() {
             return ReflectiveToString.toString(this);

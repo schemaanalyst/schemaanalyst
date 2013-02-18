@@ -53,6 +53,7 @@ public class MutationAnalysisParallel {
         experimentalResults.addResult("database", MutationUtilities.removePrefixFromCaseStudyName(Configuration.database));
         experimentalResults.addResult("type", MutationUtilities.removePrefixFromCaseStudyName(Configuration.type));
         experimentalResults.addResult("trial", Integer.toString(Configuration.trial));
+        experimentalResults.addResult("threads", Integer.toString(Configuration.threadpoolsize));
 
         // create the database using reflection; this is based on the
         // type of the database provided in the configuration (i.e.,
@@ -96,7 +97,7 @@ public class MutationAnalysisParallel {
         // parallel step- rename mutants
         renameMutants(mutants);
 
-        ExecutorService executor = Executors.newFixedThreadPool(8);
+        ExecutorService executor = Executors.newFixedThreadPool(Configuration.threadpoolsize);
         int i = 1;
         for (Schema mutant : mutants) {
             MutationAnalysisRunnable runnable = new MutationAnalysisRunnable(mutant, i);

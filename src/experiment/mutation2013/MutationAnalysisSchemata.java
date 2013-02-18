@@ -116,11 +116,13 @@ public class MutationAnalysisSchemata {
         //databaseInteraction.executeUpdate(dropStatements);
         // create tables in new schema
         databaseInteraction.executeUpdate(createStatements);
+        
+        int inserts = 0;
 
         int i = 1;
         for (Schema mutant : mutants) {
 
-            System.out.println("Mutant " + i);
+//            System.out.println("Mutant " + i);
 
             // create the MutantReport that will store the details about these inserts
             MutantReport currentMutantReport = new MutantReport();
@@ -132,6 +134,9 @@ public class MutationAnalysisSchemata {
             SQLExecutionReport retrievedOriginalReport = originalReport;
             List<SQLInsertRecord> originalInsertStatements = retrievedOriginalReport.getInsertStatements();
             for (SQLInsertRecord originalInsertRecord : originalInsertStatements) {
+                
+                inserts++;
+                
                 // create a MutantRecord
                 MutantRecord insertMutantRecord = new MutantRecord();
 
@@ -209,6 +214,8 @@ public class MutationAnalysisSchemata {
 
         experimentalResults.writeResults();
         experimentalResults.save();
+        
+        System.out.println("INSERTS: "+inserts);
     }
 
     /**
