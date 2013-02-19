@@ -48,9 +48,9 @@ public class LocalExperimentParameters implements Parameters {
     /** The order specified here matches the order in Experiments.experiments */
     private ArrayList<String> datagenerators;
     private ArrayList<String> databases;    
-    private ArrayList<String> satisfyrowss;
-    private ArrayList<String> negaterowss;
-    private ArrayList<String> maxevaluationss;
+    private ArrayList<String> satisfyrows;
+    private ArrayList<String> negaterows;
+    private ArrayList<String> maxevaluations;
     private ArrayList<String> types;
     private ArrayList<String> scriptfiles;
     private ArrayList<String> naiverandomrowspertables;
@@ -63,9 +63,9 @@ public class LocalExperimentParameters implements Parameters {
     public LocalExperimentParameters() {
 	datagenerators = new ArrayList<String>();
 	databases = new ArrayList<String>();
-	satisfyrowss = new ArrayList<String>();
-	negaterowss = new ArrayList<String>();
-	maxevaluationss = new ArrayList<String>();
+	satisfyrows = new ArrayList<String>();
+	negaterows = new ArrayList<String>();
+	maxevaluations = new ArrayList<String>();
 	types = new ArrayList<String>();
 	naiverandomrowspertables = new ArrayList<String>();
 	naiverandommaxtriespertables = new ArrayList<String>();
@@ -148,13 +148,13 @@ public class LocalExperimentParameters implements Parameters {
 	databases.add("--database=casestudy.World");
 
 	// add the satisfyrowss
-	satisfyrowss.add("--satisfyrows=2");
+	satisfyrows.add("--satisfyrows=2");
 
 	// add the negaterowss
-	negaterowss.add("--negaterows=1");
+	negaterows.add("--negaterows=1");
 
 	// add the maximum number of evaluations
-	maxevaluationss.add("--maxevaluations=100000");
+	maxevaluations.add("--maxevaluations=100000");
 
 	// add the types of the database
 	types.add("--type=org.schemaanalyst.database.postgres.Postgres");
@@ -192,19 +192,19 @@ public class LocalExperimentParameters implements Parameters {
 	return scriptfiles;
     }
     
-    /** Return the satisfyrowss */
-    public List<String> getSatisfyrowss() {
-	return satisfyrowss;
+    /** Return the satisfyrows */
+    public List<String> getSatisfyrows() {
+	return satisfyrows;
     }
 
-    /** Return the negaterowss */
-    public List<String> getNegaterowss() {
-	return negaterowss;
+    /** Return the negaterows */
+    public List<String> getNegaterows() {
+	return negaterows;
     }    
 
     /** Return the maximum number of evaluations */
-    public List<String> getMaxevaluationss() {
-	return maxevaluationss;
+    public List<String> getMaxevaluations() {
+	return maxevaluations;
     }
 
     /** Return the naive random rows per tables */
