@@ -30,9 +30,9 @@ public class ExperimentProvider {
 	LocalExperimentParameters localExperimentParameters = LocalExperimentParameters.retrieve();
 	List<String> datagenerators = localExperimentParameters.getDatagenerators();
 	List<String> databases = localExperimentParameters.getDatabases();
-	List<String> satisfyrowss = localExperimentParameters.getSatisfyrowss();
-	List<String> negaterowss = localExperimentParameters.getNegaterowss();
-	List<String> maxevaluationss = localExperimentParameters.getMaxevaluationss();
+	List<String> satisfyrowss = localExperimentParameters.getSatisfyrows();
+	List<String> negaterowss = localExperimentParameters.getNegaterows();
+	List<String> maxevaluationss = localExperimentParameters.getMaxevaluations();
 	List<String> types = localExperimentParameters.getTypes();
 	List<String> naiverandomrowspertables = localExperimentParameters.getNaiverandomrowspertables();
 	List<String> naiverandommaxtriespertables = localExperimentParameters.getNaiverandommaxtriespertables();
