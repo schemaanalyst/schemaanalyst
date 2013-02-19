@@ -149,11 +149,9 @@ public class LocalExperimentParameters implements Parameters {
 
 	// add the satisfyrowss
 	satisfyrowss.add("--satisfyrows=2");
-	satisfyrowss.add("--satisfyrows=10");
 
 	// add the negaterowss
 	negaterowss.add("--negaterows=1");
-	negaterowss.add("--negaterows=10");
 
 	// add the maximum number of evaluations
 	maxevaluationss.add("--maxevaluations=100000");
@@ -165,14 +163,12 @@ public class LocalExperimentParameters implements Parameters {
 
 	// add the naiverandom rows per table
 	naiverandomrowspertables.add("--naiverandom_rowspertable=10");
-	naiverandomrowspertables.add("--naiverandom_rowspertable=50");
 	
 	// add the naiverandom maxtries per table
 	naiverandommaxtriespertables.add("--naiverandom_maxtriespertable=1000");
-	naiverandommaxtriespertables.add("--naiverandom_maxtriespertable=5000");
 
 	// add the number of trials for running the experiment
-	trials = 30;
+	trials = 10;
 
     }
 
