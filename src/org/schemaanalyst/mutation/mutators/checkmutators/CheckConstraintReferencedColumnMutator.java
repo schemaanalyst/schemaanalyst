@@ -27,11 +27,21 @@ import org.schemaanalyst.schema.Table;
  * @author chris
  */
 public class CheckConstraintReferencedColumnMutator extends Mutator {
+    
+    private TypeCompatibility typeCompatibility;
+    
+    public CheckConstraintReferencedColumnMutator() {
+        this(TypeCompatibility.RELAXED);
+    }
+    
+    public CheckConstraintReferencedColumnMutator(TypeCompatibility typeCompatibility) {
+        this.typeCompatibility = typeCompatibility;
+    }
 
     @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         for (CheckConstraint checkConstraint : table.getCheckConstraints()) {
-            Visitor v = new Visitor(table, checkConstraint);
+            Visitor v = new Visitor(typeCompatibility, table, checkConstraint);
             mutants.addAll(v.createMutants());
         }
     }
@@ -41,6 +51,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
      */
     private class Visitor implements CheckPredicateVisitor {
 
+        TypeCompatibility typeCompatibility;
         Table table;
         List<Schema> mutants;
         CheckConstraint constraint;
@@ -51,7 +62,8 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param table The table to mutate
          * @param constraint The constraint to mutate
          */
-        public Visitor(Table table, CheckConstraint constraint) {
+        public Visitor(TypeCompatibility typeCompatibility, Table table, CheckConstraint constraint) {
+            this.typeCompatibility = typeCompatibility;
             this.table = table;
             this.constraint = constraint;
         }
@@ -75,7 +87,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
         @Override
         public void visit(BetweenCheckPredicate predicate) {
             // BetweenCheckPredicate(<Column>, Operand, Operand)
-            new ColumnReplacer(TypeCompatibility.RELAXED) {
+            new ColumnReplacer(typeCompatibility) {
                 @Override
                 protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                     BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
@@ -90,7 +102,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             }.createMutants(predicate.getColumn());
             // BetweenCheckPredicate(Column, <Operand>, Operand)
             if (predicate.getLower() instanceof Column) {
-                new ColumnReplacer(TypeCompatibility.RELAXED) {
+                new ColumnReplacer(typeCompatibility) {
                     @Override
                     protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                         BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
@@ -106,7 +118,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             }
             // BetweenCheckPredicate(Column, Operand, <Operand>)
             if (predicate.getUpper() instanceof Column) {
-                new ColumnReplacer(TypeCompatibility.RELAXED) {
+                new ColumnReplacer(typeCompatibility) {
                     @Override
                     protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                         BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
@@ -130,7 +142,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
         @Override
         public void visit(InCheckPredicate predicate) {
             // InCheckPredicate(<Column>,values)
-            new ColumnReplacer(TypeCompatibility.RELAXED) {
+            new ColumnReplacer(typeCompatibility) {
                 @Override
                 protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                     InCheckPredicate predicate = (InCheckPredicate) checkPredicate;
@@ -154,7 +166,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             // RelationalCheckPredicate(<Column>,Operator,Operand)
             Operand lhs = predicate.getLHS();
             if (lhs instanceof Column) {
-                new ColumnReplacer(TypeCompatibility.RELAXED) {
+                new ColumnReplacer(typeCompatibility) {
                     @Override
                     protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                         RelationalCheckPredicate predicate = (RelationalCheckPredicate) checkPredicate;
@@ -171,7 +183,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             // RelationalCheckPredicate(Operand,Operator,<Column>)
             Operand rhs = predicate.getRHS();
             if (rhs instanceof Column) {
-                new ColumnReplacer(TypeCompatibility.RELAXED) {
+                new ColumnReplacer(typeCompatibility) {
                     @Override
                     protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
                         RelationalCheckPredicate predicate = (RelationalCheckPredicate) checkPredicate;
@@ -244,7 +256,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     /**
      * Represents how strictly column types must match for replacement.
      */
-    protected enum TypeCompatibility {
+    public enum TypeCompatibility {
 
         /**
          * Columns must be of the same type, or compatible subtype.
