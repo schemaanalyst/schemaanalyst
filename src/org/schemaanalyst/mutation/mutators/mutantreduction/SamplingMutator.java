@@ -13,6 +13,9 @@ import org.schemaanalyst.schema.Table;
  * A wrapper for one or more mutators, which randomly selects mutants from the 
  * pool of mutants created by those mutators, up to a provided limit.
  * 
+ * It is important to consider that the selection is applied on a
+ * per-table-mutated basis. That is, the sample is taken for each table mutated.
+ * 
  * @author chris
  */
 public class SamplingMutator extends Mutator {
