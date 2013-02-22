@@ -30,31 +30,6 @@ public class NSelectiveMutator extends Mutator {
     private int n;
     private Mutator[] mutators;
 
-    public static void main(String[] args) {
-        PretendMutator mut1 = new PretendMutator(10);
-        PretendMutator mut2 = new PretendMutator(100);
-        PretendMutator mut3 = new PretendMutator(1000);
-        NSelectiveMutator mut = new NSelectiveMutator(1, mut1, mut2, mut3);
-        List<Schema> mutants = mut.produceMutants(new Cloc());
-        System.out.println(mutants.size());
-    }
-
-    static class PretendMutator extends Mutator {
-
-        int repeats;
-
-        public PretendMutator(int i) {
-            this.repeats = i;
-        }
-
-        @Override
-        public void produceMutants(Table table, List<Schema> mutants) {
-            for (int i = 0; i < repeats; i++) {
-                mutants.add(table.getSchema().duplicate());
-            }
-        }
-    }
-
     public NSelectiveMutator(int n, Mutator... mutators) {
         if (mutators.length == 0) {
             throw new IllegalArgumentException("Provided input 'mutators' must"
