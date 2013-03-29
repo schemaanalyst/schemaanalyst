@@ -30,10 +30,19 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     
     private TypeCompatibility typeCompatibility;
     
+    /**
+     * Default constructor. Uses 'relaxed' type compatibility, where columns
+     * must be of a similar type.
+     */
     public CheckConstraintReferencedColumnMutator() {
         this(TypeCompatibility.RELAXED);
     }
     
+    /**
+     * Constructor. Uses the given type compatibility to determine which columns
+     * to use for mutation.
+     * @param typeCompatibility 
+     */
     public CheckConstraintReferencedColumnMutator(TypeCompatibility typeCompatibility) {
         this.typeCompatibility = typeCompatibility;
     }
@@ -259,12 +268,12 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     public enum TypeCompatibility {
 
         /**
-         * Columns must be of the same type, or compatible subtype.
+         * Columns must be of the same type.
          */
         STRICT {
             @Override
             public boolean check(Column column, Column replacement) {
-                return column.getType().getClass().isAssignableFrom(replacement.getType().getClass());
+                return column.getType().getClass().equals(replacement.getType().getClass());
             }
         },
         /**
