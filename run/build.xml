@@ -252,6 +252,25 @@
 		</junit>
 	</target>
 
+	<!-- RUNNING TASK - "ant experimentToProperties" -->
+	<target name="experimentToProperties">
+		<delete dir="ExperimentsTasks"/>
+		<mkdir dir="ExperimentTasks" />
+		<junit fork="yes">
+			<test name="experiment.ExperimentsToProperties" />
+			<jvmarg value="-Dproject=${user.dir}" />
+			<classpath refid="run.classpath" />
+			<formatter type="brief" usefile="false" />
+		</junit>
+	</target>
+
+	<target name="experimentFromProperties">
+		<java fork="true" classname="experiment.ExperimentFromProperties">
+			<arg value="${uniqueid}" />
+			<classpath refid="run.classpath" />
+		</java>
+	</target>
+
 	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
 	<target name="globalexperimentparameters">
 		<mkdir dir="Experiments" />
@@ -345,7 +364,7 @@
 	</target>
 
 	<target name="DeleteMe" depends="compile">
-		<java fork="true" classname="org.schemaanalyst.mutation.mutators.checkmutators.CheckConstraintReferencedColumnMutator">
+		<java fork="true" classname="experiment.DeleteMe">
 			<classpath refid="run.classpath" />
 		</java>
 	</target>
