@@ -13,7 +13,7 @@ import org.javarunner.PropertiesRunner;
 public class ExperimentFromProperties {
     
     public static void main(String[] args) {
-        if (args == null || args[0] == null) {
+        if (args == null || args.length == 0 || args[0] == null) {
             throw new RuntimeException("ExperimentFromProperties requires a "
                     + "uniqueid value to be provided (-Duniqueid=#)");
         }

@@ -4,6 +4,9 @@ import org.schemaanalyst.util.ReflectiveToString;
 import plume.Option;
 
 public class Configuration {
+    
+        @Option("the unique id for this experiment")
+        public static int uniqueid = -1;
 
 	@Option("the current trial of an experiment campaign")
 	public static int trial = -1;
