@@ -1,2 +1,4 @@
 *.class
 dist/*.*
+.project
+.classpath
