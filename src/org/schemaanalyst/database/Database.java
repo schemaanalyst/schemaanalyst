@@ -30,4 +30,6 @@ public abstract class Database {
 	}
 	
     public abstract DatabaseInteractor getDatabaseInteraction();
+    
+	public abstract void accept(DatabaseVisitor visitor);    
 }

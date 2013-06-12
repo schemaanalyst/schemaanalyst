@@ -1,10 +1,8 @@
 package org.schemaanalyst.schema;
 
 import java.io.Serializable;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Deque;
 import java.util.List;
 
 import org.schemaanalyst.util.Duplicable;

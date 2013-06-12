@@ -1,18 +1,16 @@
-package org.schemaanalyst.database.hsqldb;
+package org.schemaanalyst.database.mysql;
 
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseVisitor;
 import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
 
-public class Hsqldb extends Database {
-	
-	private HsqldbDatabaseInteractor databaseInteraction = new HsqldbDatabaseInteractor();
-
+public class MySQL extends Database {
+    
 	public DatabaseInteractor getDatabaseInteraction() {
-		return databaseInteraction;
+		return null; // not implemented yet
 	}
-	
+    
 	public void accept(DatabaseVisitor visitor) {
 		visitor.visit(this);
-	}	
+	}
 }
