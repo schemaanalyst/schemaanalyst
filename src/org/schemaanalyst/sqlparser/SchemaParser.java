@@ -1,14 +1,16 @@
 package org.schemaanalyst.sqlparser;
 
-import gudusoft.gsqlparser.TCustomSqlStatement;
 import gudusoft.gsqlparser.TGSqlParser;
 import gudusoft.gsqlparser.TStatementList;
 
 import java.io.File;
 
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.mysql.MySQL;
+import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.sqlwriter.SQLWriter;
+
+import casestudy.BankAccount;
 
 public class SchemaParser {
 	
@@ -40,11 +42,10 @@ public class SchemaParser {
 		
 		
         SchemaParseTreeVisitor visitor = new SchemaParseTreeVisitor(schema);
-        TStatementList sqlStatements = sqlParser.sqlstatements;
+        TStatementList list = sqlParser.sqlstatements;
         
-        while (sqlStatements.hasNext()) {
-        	TCustomSqlStatement sqlStatement = sqlStatements.next();
-        	sqlStatement.accept(visitor);
+        for (int i=0; i < list.size(); i++) {
+        	list.get(i).accept(visitor);
         }	
 		
 		return schema;
@@ -52,11 +53,16 @@ public class SchemaParser {
 	
 	
 	public static void main(String[] args) throws SQLParseException {		
-		File file = new File("~/Projects/schemaanalyst/casestudies/schemas/BankAccount.sql");
+		File file = new File("/Users/phil/Projects/schemaanalyst/casestudies/schemas/BankAccount.sql");
 		String name = "BankAccount";
-		Database db = new MySQL();
+		Database db = new Postgres();
+		BankAccount originalSchema = new BankAccount();
 		
 		SchemaParser schemaParser = new SchemaParser();
-		schemaParser.parse(file, name, db);		
+		Schema parsedSchema = schemaParser.parse(file, name, db);
+		SQLWriter sqlWriter = db.getSQLWriter();
+		
+		System.out.println(sqlWriter.writeCreateTableStatements(originalSchema));
+		System.out.println(sqlWriter.writeCreateTableStatements(parsedSchema));
 	}
 }
