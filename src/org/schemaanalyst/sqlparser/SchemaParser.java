@@ -18,15 +18,17 @@ import org.schemaanalyst.schema.columntype.ColumnType;
 
 public class SchemaParser {
 	
+	public static final boolean DEBUG = true;
+	
 	private TGSqlParser sqlParser; 
 	
-	public Schema parse(File file, String name, Database database) throws SQLParseException {
+	public Schema parse(File file, String name, Database database) {
 		instantiateParser(database);
 		sqlParser.setSqlfilename(file.getPath());
 		return performParse(name);		
 	}
 	
-	public Schema parse(String sql, String name, Database database) throws SQLParseException {		
+	public Schema parse(String sql, String name, Database database) {		
 		instantiateParser(database);
 		sqlParser.sqltext = sql;
 		return performParse(name);
@@ -36,7 +38,7 @@ public class SchemaParser {
 		sqlParser = new TGSqlParser(VendorResolver.resolve(database));
 	}
 		
-	private Schema performParse(String name) throws SQLParseException {	
+	private Schema performParse(String name) {	
 		Schema schema = new Schema(name);
 		
 		int result = sqlParser.parse();
@@ -61,24 +63,28 @@ public class SchemaParser {
 		Column currentColumn;	
 		
 		DataTypeResolver dataTypeResolver;
-		ConstraintResolver constraintResolver;
+		ConstraintInstaller constraintInstaller;
 		
 		SchemaParseTreeVisitor(Schema schema) {
 			this.schema = schema;		
 		
 			dataTypeResolver = new DataTypeResolver();
-			constraintResolver = new ConstraintResolver(schema);
+			constraintInstaller = new ConstraintInstaller(schema);
 		}
 		
 		// creates a Table object for a table statement
 	    public void preVisit(TCreateTableSqlStatement node) {
 	    	currentTable = schema.createTable(node.getTableName().toString());
+	    	
+	    	if (DEBUG) {
+	    		System.out.println(currentTable);
+	    	}
 	    }
 
 		// creates a Column object for a table statement    
 	    public void postVisit(TColumnDefinition node) {
 	    	String name = node.getColumnName().toString();    	
-	    	ColumnType type = dataTypeResolver.resolve(node.getDatatype().getDataType());
+	    	ColumnType type = dataTypeResolver.resolve(node.getDatatype());
 	    	
 	    	currentColumn = currentTable.addColumn(name, type);
 	    	
@@ -89,11 +95,15 @@ public class SchemaParser {
 		    		list.getElement(i).accept(this);
 		    	}
 	    	}
+	    	
+	    	if (DEBUG) {
+	    		System.out.println("\t"+name+"\t"+type);
+	    	}	    	
 	    }
 
 	    // parses constraints and adds them to the table
 	    public void postVisit(TConstraint node) {
-	    	constraintResolver.resolve(currentTable, currentColumn, node);
+	    	constraintInstaller.install(currentTable, currentColumn, node);
 	    }	
-	}
+	}	
 }

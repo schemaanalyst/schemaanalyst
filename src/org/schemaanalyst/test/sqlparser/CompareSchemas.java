@@ -49,5 +49,10 @@ public class CompareSchemas {
 	public void testBankAccount() throws SQLParseException {
 		assertOriginalEqualsParsed("BankAccount", new Postgres());
 	}
+	
+	@Test
+	public void testBookTown() throws SQLParseException {
+		assertOriginalEqualsParsed("BookTown", new Postgres());
+	}	
 
 }
