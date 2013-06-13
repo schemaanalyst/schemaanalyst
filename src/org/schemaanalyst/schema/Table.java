@@ -37,13 +37,13 @@ public class Table implements Serializable {
 		this.schema = schema;
 		this.name = name;
 
-		columns 	= new ArrayList<Column>();
+		columns = new ArrayList<Column>();
 		
 		// constraints
-		checkConstraints 		= new ArrayList<CheckConstraint>();
+		checkConstraints = new ArrayList<CheckConstraint>();
 		foreignKeyConstraints = new ArrayList<ForeignKeyConstraint>();
-		notNullConstraints 	= new ArrayList<NotNullConstraint>();
-		uniqueConstraints 	= new ArrayList<UniqueConstraint>();
+		notNullConstraints = new ArrayList<NotNullConstraint>();
+		uniqueConstraints = new ArrayList<UniqueConstraint>();
 		
 		// the primary key is null until one is created through setPrimaryKey
 		primaryKeyConstraint = null;

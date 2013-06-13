@@ -13,7 +13,7 @@ import org.schemaanalyst.schema.columntype.NumericColumnType;
 import org.schemaanalyst.schema.columntype.TimestampColumnType;
 import org.schemaanalyst.schema.columntype.VarCharColumnType;
 
-class DataTypeResolver {
+class DataTypeMapper {
 
 	// REFER TO the JavaDocs for TTypeName
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html
@@ -81,7 +81,7 @@ class DataTypeResolver {
 		
 			
 		// UNKNOWN!
-		throw new DataTypeResolutionException(dataType);
+		throw new DataTypeMappingException(dataType);
 	}	
 	
 	Integer getLength(TTypeName dataType) {

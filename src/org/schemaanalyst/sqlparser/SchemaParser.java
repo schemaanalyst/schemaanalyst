@@ -35,7 +35,7 @@ public class SchemaParser {
 	}
 	
 	private void instantiateParser(Database database) {
-		sqlParser = new TGSqlParser(VendorResolver.resolve(database));
+		sqlParser = new TGSqlParser(VendorMapper.resolve(database));
 	}
 		
 	private Schema performParse(String name) {	
@@ -62,17 +62,18 @@ public class SchemaParser {
 		Table currentTable;
 		Column currentColumn;	
 		
-		DataTypeResolver dataTypeResolver;
-		ConstraintInstaller constraintInstaller;
+		DataTypeMapper dataTypeMapper;
+		ConstraintMapper constraintMapper;
 		
 		SchemaParseTreeVisitor(Schema schema) {
 			this.schema = schema;		
 		
-			dataTypeResolver = new DataTypeResolver();
-			constraintInstaller = new ConstraintInstaller(schema);
+			dataTypeMapper = new DataTypeMapper();
+			constraintMapper = new ConstraintMapper(schema);
 		}
 		
-		// creates a Table object for a table statement
+		
+		// **** TABLES ****
 	    public void preVisit(TCreateTableSqlStatement node) {
 	    	currentTable = schema.createTable(node.getTableName().toString());
 	    	
@@ -80,14 +81,25 @@ public class SchemaParser {
 	    		System.out.println(currentTable);
 	    	}
 	    }
+	    
+	    public void postVisit(TCreateTableSqlStatement node) {
+	    	currentTable = null;
+	    }	    
 
-		// creates a Column object for a table statement    
-	    public void postVisit(TColumnDefinition node) {
+	    
+		// **** COLUMNS ****    
+	    public void preVisit(TColumnDefinition node) {
 	    	String name = node.getColumnName().toString();    	
-	    	ColumnType type = dataTypeResolver.resolve(node.getDatatype());
-	    	
+	    	ColumnType type = dataTypeMapper.resolve(node.getDatatype());	    	
 	    	currentColumn = currentTable.addColumn(name, type);
 	    	
+	    	if (DEBUG) {
+	    		System.out.println("\t"+name+"\t"+type);
+	    	}	    	
+	    }	
+	    
+	    public void postVisit(TColumnDefinition node) {
+	    
 	    	// parse in any column constraints defined here
 	    	TConstraintList	list = node.getConstraints();
 	    	if (list != null) {
@@ -96,14 +108,13 @@ public class SchemaParser {
 		    	}
 	    	}
 	    	
-	    	if (DEBUG) {
-	    		System.out.println("\t"+name+"\t"+type);
-	    	}	    	
+	    	currentColumn = null;
 	    }
-
-	    // parses constraints and adds them to the table
+	  	
+	    
+		// **** CONSTRAINTS ****
 	    public void postVisit(TConstraint node) {
-	    	constraintInstaller.install(currentTable, currentColumn, node);
+	    	constraintMapper.install(currentTable, currentColumn, node);
 	    }	
 	}	
 }

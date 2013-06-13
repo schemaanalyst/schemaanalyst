@@ -11,11 +11,11 @@ import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.database.sqlite.SQLite;
 
-class VendorResolver {
+class VendorMapper {
 	
 	static EDbVendor resolve(Database database) {
 		
-		class VendorResolverVisitor implements DatabaseVisitor {
+		class VendorResolver implements DatabaseVisitor {
 	
 			EDbVendor vendor;
 						
@@ -44,7 +44,7 @@ class VendorResolver {
 			}			
 		}
 		
-		VendorResolverVisitor vrv = new VendorResolverVisitor();
+		VendorResolver vrv = new VendorResolver();
 		database.accept(vrv);
 		return vrv.vendor;
 	}

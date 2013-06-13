@@ -5,6 +5,7 @@ import java.util.List;
 
 import gudusoft.gsqlparser.EConstraintType;
 import gudusoft.gsqlparser.nodes.TConstraint;
+import gudusoft.gsqlparser.nodes.TExpression;
 import gudusoft.gsqlparser.nodes.TObjectName;
 import gudusoft.gsqlparser.nodes.TObjectNameList;
 
@@ -12,7 +13,7 @@ import org.schemaanalyst.schema.Column;
 import org.schemaanalyst.schema.Schema;
 import org.schemaanalyst.schema.Table;
 
-class ConstraintInstaller {
+class ConstraintMapper {
 
 	Schema schema;
 	Table currentTable;
@@ -20,7 +21,7 @@ class ConstraintInstaller {
 	TConstraint node;
 	String constraintName;
 	
-	ConstraintInstaller(Schema schema) {
+	ConstraintMapper(Schema schema) {
 		this.schema = schema;
 	}
 	
@@ -54,7 +55,11 @@ class ConstraintInstaller {
     	
     	TObjectNameList nodeColumns = node.getColumnList();
     	if (nodeColumns == null) {
-    		columns.add(currentColumn);
+    		if (currentColumn != null) {
+    			columns.add(currentColumn);
+    		} else {
+    			throw new ConstraintMappingException("No columns on which to define constraint!");
+    		}
     	} else {
     		for (int i=0; i < nodeColumns.size(); i++) {
     			String columnName = nodeColumns.getObjectName(i).toString();
@@ -67,14 +72,15 @@ class ConstraintInstaller {
 	}
 	
 	void installCheckConstraint() {
-		
+		TExpression expression = node.getCheckCondition();
+		System.out.println("HERE: "+expression);
 	}
 	
 	void installNotNullConstraint() {
 		List<Column> columns = getConstraintColumns();
 		
 		if (columns.size() > 1) {
-			throw new ConstraintInstallationException("Cannot make more than one column NOT NULL at a time");
+			throw new ConstraintMappingException("Cannot make more than one column NOT NULL at a time");
 		}
 		
 		Column column = columns.get(0);
