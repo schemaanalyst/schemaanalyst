@@ -1,6 +1,5 @@
 package org.schemaanalyst.datageneration.search;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;

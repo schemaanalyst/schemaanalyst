@@ -1,8 +1,8 @@
 package org.schemaanalyst.database.mysql;
 
 import org.schemaanalyst.database.Database;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.database.DatabaseVisitor;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
 
 public class MySQL extends Database {
     

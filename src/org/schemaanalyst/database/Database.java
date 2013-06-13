@@ -1,7 +1,6 @@
 package org.schemaanalyst.database;
 
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.sqlwriter.CellSQLWriter;
 

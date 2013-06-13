@@ -2,15 +2,19 @@ package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.TGSqlParser;
 import gudusoft.gsqlparser.TStatementList;
+import gudusoft.gsqlparser.nodes.TColumnDefinition;
+import gudusoft.gsqlparser.nodes.TConstraint;
+import gudusoft.gsqlparser.nodes.TConstraintList;
+import gudusoft.gsqlparser.nodes.TParseTreeVisitor;
+import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 
 import java.io.File;
 
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.postgres.Postgres;
+import org.schemaanalyst.schema.Column;
 import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.sqlwriter.SQLWriter;
-
-import casestudy.BankAccount;
+import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.schema.columntype.ColumnType;
 
 public class SchemaParser {
 	
@@ -40,7 +44,6 @@ public class SchemaParser {
 			throw new SQLParseException(sqlParser.getErrormessage());
 		}
 		
-		
         SchemaParseTreeVisitor visitor = new SchemaParseTreeVisitor(schema);
         TStatementList list = sqlParser.sqlstatements;
         
@@ -51,18 +54,46 @@ public class SchemaParser {
 		return schema;
 	}
 	
-	
-	public static void main(String[] args) throws SQLParseException {		
-		File file = new File("/Users/phil/Projects/schemaanalyst/casestudies/schemas/BankAccount.sql");
-		String name = "BankAccount";
-		Database db = new Postgres();
-		BankAccount originalSchema = new BankAccount();
+	class SchemaParseTreeVisitor extends TParseTreeVisitor {
+
+		Schema schema;
+		Table currentTable;
+		Column currentColumn;	
 		
-		SchemaParser schemaParser = new SchemaParser();
-		Schema parsedSchema = schemaParser.parse(file, name, db);
-		SQLWriter sqlWriter = db.getSQLWriter();
+		DataTypeResolver dataTypeResolver;
+		ConstraintResolver constraintResolver;
 		
-		System.out.println(sqlWriter.writeCreateTableStatements(originalSchema));
-		System.out.println(sqlWriter.writeCreateTableStatements(parsedSchema));
+		SchemaParseTreeVisitor(Schema schema) {
+			this.schema = schema;		
+		
+			dataTypeResolver = new DataTypeResolver();
+			constraintResolver = new ConstraintResolver(schema);
+		}
+		
+		// creates a Table object for a table statement
+	    public void preVisit(TCreateTableSqlStatement node) {
+	    	currentTable = schema.createTable(node.getTableName().toString());
+	    }
+
+		// creates a Column object for a table statement    
+	    public void postVisit(TColumnDefinition node) {
+	    	String name = node.getColumnName().toString();    	
+	    	ColumnType type = dataTypeResolver.resolve(node.getDatatype().getDataType());
+	    	
+	    	currentColumn = currentTable.addColumn(name, type);
+	    	
+	    	// parse in any column constraints defined here
+	    	TConstraintList	list = node.getConstraints();
+	    	if (list != null) {
+		    	for (int i=0 ; i < list.size(); i++) {
+		    		list.getElement(i).accept(this);
+		    	}
+	    	}
+	    }
+
+	    // parses constraints and adds them to the table
+	    public void postVisit(TConstraint node) {
+	    	constraintResolver.resolve(currentTable, currentColumn, node);
+	    }	
 	}
 }

@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 
 public class HsqldbDatabaseInteractor extends DatabaseInteractor {
 

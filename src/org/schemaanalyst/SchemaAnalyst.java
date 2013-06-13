@@ -11,7 +11,7 @@ import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;

@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.mutation.MutationReport;
 import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.SQLExecutionReport;

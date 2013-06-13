@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import org.sqlite.SQLiteConfig;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.script.ScriptCreator;
 
 import java.io.File;

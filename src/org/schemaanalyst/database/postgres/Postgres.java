@@ -1,8 +1,8 @@
 package org.schemaanalyst.database.postgres;
 
 import org.schemaanalyst.database.Database;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.database.DatabaseVisitor;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
 
 public class Postgres extends Database {
     private PostgresDatabaseInteractor databaseInteraction = new PostgresDatabaseInteractor();

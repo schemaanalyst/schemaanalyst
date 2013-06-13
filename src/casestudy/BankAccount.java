@@ -67,7 +67,9 @@ public class BankAccount extends Schema {
         accountUserName.setNotNull();
                 
 		Column balance = account.addColumn("balance", new IntColumnType());
-		balance.setDefault(0);
+		
+		// PSM: commented this out as we're not using
+		//balance.setDefault(0);
 		
 		Column accountCardNumber = account.addColumn("card_number", new IntColumnType());
 		accountCardNumber.setNotNull();

@@ -8,7 +8,7 @@ import experiment.results.XMLSerialiser;
 import java.util.List;
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutationReport;

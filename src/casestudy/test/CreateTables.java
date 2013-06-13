@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import plume.*;
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
+import org.schemaanalyst.database.DatabaseInteractor;
 
 public class CreateTables {
 

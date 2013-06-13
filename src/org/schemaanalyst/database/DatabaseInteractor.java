@@ -1,4 +1,4 @@
-package org.schemaanalyst.databaseinteraction;
+package org.schemaanalyst.database;
 
 public abstract class DatabaseInteractor {
 

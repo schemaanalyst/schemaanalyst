@@ -4,68 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import gudusoft.gsqlparser.EConstraintType;
-import gudusoft.gsqlparser.EDataType;
-import gudusoft.gsqlparser.nodes.TColumnDefinition;
 import gudusoft.gsqlparser.nodes.TConstraint;
-import gudusoft.gsqlparser.nodes.TConstraintList;
 import gudusoft.gsqlparser.nodes.TObjectNameList;
-import gudusoft.gsqlparser.nodes.TParseTreeVisitor;
-import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 
 import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.schema.Constraint;
 import org.schemaanalyst.schema.Schema;
 import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.ColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
 
-class SchemaParseTreeVisitor extends TParseTreeVisitor {
+class ConstraintResolver {
 
-	final static boolean DEBUG = true;
-	
 	Schema schema;
-	Table currentTable;
-	Column currentColumn;
 	
-	SchemaParseTreeVisitor(Schema schema) {
+	ConstraintResolver(Schema schema) {
 		this.schema = schema;
 	}
 	
-    public void preVisit(TCreateTableSqlStatement node) {
-    	currentTable = schema.createTable(node.getTableName().toString());
-    	
-    	if (DEBUG) System.out.println("table: " + node.getTableName().toString());
-    }
-
-    public void postVisit(TColumnDefinition node) {
-    	String name = node.getColumnName().toString();
-    	
-    	// need to return to this ...
-    	ColumnType type = null;
-    	EDataType dataType = node.getDatatype().getDataType();
-    	if (dataType == EDataType.int_t) {
-    		type = new IntColumnType();
-    	} else if (dataType == EDataType.varchar_t) {
-    		type = new VarCharColumnType(50);
-    	}
-    	
-    	currentColumn = currentTable.addColumn(name, type);
-    	
-    	if (DEBUG) {
-    		System.out.println("column: " + name);
-    		System.out.println("\t" + dataType);
-    	}
-    	    	
-    	TConstraintList	list = node.getConstraints();
-    	if (list != null) {
-	    	for (int i=0 ; i < list.size(); i++) {
-	    		list.getElement(i).accept(this);
-	    	}
-    	}
-    }
-
-    public void postVisit(TConstraint node) {
-    	List<Column> columnList = new ArrayList<>();
+	Constraint resolve(Table currentTable, Column currentColumn, TConstraint node) {
+		
+List<Column> columnList = new ArrayList<>();
     	
     	TObjectNameList nodeColumns = node.getColumnList();
     	if (nodeColumns == null) {
@@ -90,7 +47,7 @@ class SchemaParseTreeVisitor extends TParseTreeVisitor {
     		currentTable.setPrimaryKeyConstraint(columns);
     	} else if (constraintType == EConstraintType.foreign_key) {
     		
-    		if (DEBUG) {
+    		
     			String referencedTableName = node.getReferencedObject().toString();
     			Table referenceTable = schema.getTable(referencedTableName);
     			
@@ -109,13 +66,17 @@ class SchemaParseTreeVisitor extends TParseTreeVisitor {
     			System.out.println(node.getReferencedColumnList()); 
     			System.out.println("Column list:");
     			System.out.println(columns);
-    		}
+    		
     	}
     	
     	
     	
     	// debug
         System.out.println("constraint");
-    }	
+        
+        return null;
+		
+	}
+	
 	
 }

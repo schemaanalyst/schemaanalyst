@@ -1,8 +1,8 @@
 package org.schemaanalyst.database.sqlite;
 
 import org.schemaanalyst.database.Database;
+import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.database.DatabaseVisitor;
-import org.schemaanalyst.databaseinteraction.DatabaseInteractor;
 
 public class SQLite extends Database {
 
