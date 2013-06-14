@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class StudentResidence extends Schema {
 
@@ -27,14 +27,14 @@ public class StudentResidence extends Schema {
 		
 		Table residenceTable = createTable("Residence");
 		
-		Column nameColumn     = residenceTable.addColumn("name", new VarCharColumnType(50));
+		Column nameColumn     = residenceTable.addColumn("name", new VarCharDataType(50));
 		nameColumn.setPrimaryKey();
                 nameColumn.setNotNull();
-		Column capacityColumn = residenceTable.addColumn("capacity", new IntColumnType());
+		Column capacityColumn = residenceTable.addColumn("capacity", new IntDataType());
                 capacityColumn.setNotNull();
 		
-		residenceTable.addCheckConstraint(new RelationalCheckPredicate(capacityColumn, ">", 1));
-		residenceTable.addCheckConstraint(new RelationalCheckPredicate(capacityColumn, "<=", 10));
+		residenceTable.addCheckConstraint(new RelationalExpression(capacityColumn, ">", 1));
+		residenceTable.addCheckConstraint(new RelationalExpression(capacityColumn, "<=", 10));
 		
 		/*
                     CREATE TABLE Student 
@@ -50,16 +50,16 @@ public class StudentResidence extends Schema {
 		
 		Table studentTable = createTable("Student");
 		
-		Column idColumn = studentTable.addColumn("id", new IntColumnType());		
+		Column idColumn = studentTable.addColumn("id", new IntDataType());		
 		idColumn.setPrimaryKey();
 		
-		studentTable.addColumn("firstName", new VarCharColumnType(50));
+		studentTable.addColumn("firstName", new VarCharDataType(50));
 		
-		studentTable.addColumn("lastName",  new VarCharColumnType(50));
+		studentTable.addColumn("lastName",  new VarCharDataType(50));
 		
-		Column residenceColumn = studentTable.addColumn("residence", new VarCharColumnType(50));
+		Column residenceColumn = studentTable.addColumn("residence", new VarCharDataType(50));
 		residenceColumn.setForeignKey(residenceTable, nameColumn);
 		
-		studentTable.addCheckConstraint(new RelationalCheckPredicate(idColumn, ">=", 0));		
+		studentTable.addCheckConstraint(new RelationalExpression(idColumn, ">=", 0));		
 	}
 }

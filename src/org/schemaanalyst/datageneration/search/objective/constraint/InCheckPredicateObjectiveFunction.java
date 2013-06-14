@@ -14,18 +14,18 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.InExpression;
 
 public class InCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-	protected InCheckPredicate in;
+	protected InExpression in;
 	protected Table table;
 	protected Data state;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public InCheckPredicateObjectiveFunction(InCheckPredicate in, 
+	public InCheckPredicateObjectiveFunction(InExpression in, 
 										     Table table, 
 										     Data state, 
 										     String description, 

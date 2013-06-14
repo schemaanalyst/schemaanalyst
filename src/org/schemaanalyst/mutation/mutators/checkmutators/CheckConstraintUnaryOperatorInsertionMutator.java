@@ -7,15 +7,15 @@ import java.util.List;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.CheckPredicateVisitor;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.ExpressionVisitor;
+import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.expression.Operand;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 /**
  * Mutates literal values in all types of check constraint. Replaces 'x' with
@@ -36,7 +36,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
     /**
      * A visitor implementation for mutating check predicates
      */
-    private class Visitor implements CheckPredicateVisitor {
+    private class Visitor implements ExpressionVisitor {
 
         Table table;
         List<Schema> mutants;
@@ -60,7 +60,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         public List<Schema> createMutants() {
             mutants = new ArrayList<>();
-            constraint.getPredicate().accept(this);
+            constraint.getExpression().accept(this);
             return mutants;
         }
 
@@ -70,7 +70,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(BetweenCheckPredicate predicate) {
+        public void visit(BetweenExpression predicate) {
             Operand lower = predicate.getLower();
             if (lower instanceof NumericValue) {
                 int value = ((NumericValue) lower).get().intValue();
@@ -94,7 +94,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(InCheckPredicate predicate) {
+        public void visit(InExpression predicate) {
             // Do nothing
         }
 
@@ -104,7 +104,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(RelationalCheckPredicate predicate) {
+        public void visit(RelationalExpression predicate) {
             Operand lhs = predicate.getLHS();
             Operand rhs = predicate.getRHS();
             RelationalOperator op = predicate.getOperator();
@@ -131,7 +131,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         private void createBetweenMutant(int number, Column column, Operand operand) {
             Table mutantTable = getDuplicateTable();
-            mutantTable.addCheckConstraint(new BetweenCheckPredicate(
+            mutantTable.addCheckConstraint(new BetweenExpression(
                     mutantTable.getColumn(column.getName()),
                     new NumericValue(number),
                     operand));
@@ -147,7 +147,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         private void createBetweenMutant(Operand operand, Column column, int number) {
             Table mutantTable = getDuplicateTable();
-            mutantTable.addCheckConstraint(new BetweenCheckPredicate(
+            mutantTable.addCheckConstraint(new BetweenExpression(
                     mutantTable.getColumn(column.getName()),
                     operand,
                     new NumericValue(number)));
@@ -163,7 +163,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         private void createRelationalMutant(int number, RelationalOperator op, Operand rhs) {
             Table mutantTable = getDuplicateTable();
-            mutantTable.addCheckConstraint(new RelationalCheckPredicate(
+            mutantTable.addCheckConstraint(new RelationalExpression(
                     new NumericValue(number), op, rhs));
             mutants.add(mutantTable.getSchema());
         }
@@ -177,7 +177,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         private void createRelationalMutant(Operand lhs, RelationalOperator op, int number) {
             Table mutantTable = getDuplicateTable();
-            mutantTable.addCheckConstraint(new RelationalCheckPredicate(
+            mutantTable.addCheckConstraint(new RelationalExpression(
                     lhs, op, new NumericValue(number)));
             mutants.add(mutantTable.getSchema());
         }

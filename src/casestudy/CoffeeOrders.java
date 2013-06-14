@@ -1,11 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class CoffeeOrders extends Schema {
 
@@ -25,12 +24,12 @@ public class CoffeeOrders extends Schema {
 		
 		Table coffeesTable = createTable("coffees");
 		
-		Column idColumn = coffeesTable.addColumn("id", new IntegerColumnType());
+		Column idColumn = coffeesTable.addColumn("id", new IntDataType());
 		idColumn.setPrimaryKey();
 		
-		coffeesTable.addColumn("coffee_name", new VarCharColumnType(50));
+		coffeesTable.addColumn("coffee_name", new VarCharDataType(50));
 
-		Column priceColumn = coffeesTable.addColumn("price", new IntColumnType());
+		Column priceColumn = coffeesTable.addColumn("price", new IntDataType());
 		priceColumn.setNotNull();
 
 		/*
@@ -44,16 +43,16 @@ public class CoffeeOrders extends Schema {
 
 		Table salesPeopleTable = createTable("salespeople");
 		
-		Column idSalesPeopleColumn = salesPeopleTable.addColumn("id", new IntegerColumnType());
+		Column idSalesPeopleColumn = salesPeopleTable.addColumn("id", new IntDataType());
 		idSalesPeopleColumn.setPrimaryKey();
 		
-		Column firstNameColumn = salesPeopleTable.addColumn("first_name", new VarCharColumnType(50));
+		Column firstNameColumn = salesPeopleTable.addColumn("first_name", new VarCharDataType(50));
 		firstNameColumn.setNotNull();
 		
-		Column lastNameColumn = salesPeopleTable.addColumn("last_name", new VarCharColumnType(50));
+		Column lastNameColumn = salesPeopleTable.addColumn("last_name", new VarCharDataType(50));
 		lastNameColumn.setNotNull();
 		
-		Column commissionRateColumn = salesPeopleTable.addColumn("commission_rate", new IntColumnType());
+		Column commissionRateColumn = salesPeopleTable.addColumn("commission_rate", new IntDataType());
 		commissionRateColumn.setNotNull();
 
 		/*
@@ -69,22 +68,22 @@ public class CoffeeOrders extends Schema {
 
 		Table customersTable = createTable("customers");
 		
-		Column idCustomersColumn = customersTable.addColumn("id", new IntegerColumnType());
+		Column idCustomersColumn = customersTable.addColumn("id", new IntDataType());
 		idCustomersColumn.setPrimaryKey();
 		
-		Column companyNameColumn = customersTable.addColumn("company_name", new VarCharColumnType(50));
+		Column companyNameColumn = customersTable.addColumn("company_name", new VarCharDataType(50));
 		companyNameColumn.setNotNull();
 		
-		Column streetAddressColumn = customersTable.addColumn("street_address", new VarCharColumnType(50));
+		Column streetAddressColumn = customersTable.addColumn("street_address", new VarCharDataType(50));
 		streetAddressColumn.setNotNull();
 		
-		Column cityColumn = customersTable.addColumn("city", new VarCharColumnType(50));
+		Column cityColumn = customersTable.addColumn("city", new VarCharDataType(50));
 		cityColumn.setNotNull();
 		
-		Column stateColumn = customersTable.addColumn("state", new VarCharColumnType(50));
+		Column stateColumn = customersTable.addColumn("state", new VarCharDataType(50));
 		stateColumn.setNotNull();
 		
-		Column zipColumn = customersTable.addColumn("zip", new VarCharColumnType(50));
+		Column zipColumn = customersTable.addColumn("zip", new VarCharDataType(50));
 		zipColumn.setNotNull();
 		
 
@@ -100,13 +99,13 @@ public class CoffeeOrders extends Schema {
 
 		Table ordersTable = createTable("orders");
 		
-		Column idOrdersColumn = ordersTable.addColumn("id", new IntegerColumnType());
+		Column idOrdersColumn = ordersTable.addColumn("id", new IntDataType());
 		idOrdersColumn.setPrimaryKey();
 		
-		Column customerIdColumn = ordersTable.addColumn("customer_id", new IntegerColumnType());
+		Column customerIdColumn = ordersTable.addColumn("customer_id", new IntDataType());
 		customerIdColumn.setForeignKey(customersTable, idCustomersColumn);
 		
-		Column salesPersonIdColumn = ordersTable.addColumn("salesperson_id", new IntegerColumnType());
+		Column salesPersonIdColumn = ordersTable.addColumn("salesperson_id", new IntDataType());
 		salesPersonIdColumn.setForeignKey(salesPeopleTable, idSalesPeopleColumn);
 
 		/*
@@ -122,15 +121,15 @@ public class CoffeeOrders extends Schema {
 
 		Table orderItemsTable = createTable("order_items");
 		
-		Column idOrderItemsColumn = orderItemsTable.addColumn("id", new IntegerColumnType());
+		Column idOrderItemsColumn = orderItemsTable.addColumn("id", new IntDataType());
 		idOrderItemsColumn.setPrimaryKey();
 		
-		Column orderIdColumn = orderItemsTable.addColumn("order_id", new IntegerColumnType());
+		Column orderIdColumn = orderItemsTable.addColumn("order_id", new IntDataType());
 		orderIdColumn.setForeignKey(ordersTable, idOrdersColumn);
 		
-		Column productIdColumn = orderItemsTable.addColumn("product_id", new IntegerColumnType());
+		Column productIdColumn = orderItemsTable.addColumn("product_id", new IntDataType());
 		productIdColumn.setForeignKey(coffeesTable, idColumn);
 		
-		orderItemsTable.addColumn("product_quantity", new IntegerColumnType());
+		orderItemsTable.addColumn("product_quantity", new IntDataType());
 	}
 }

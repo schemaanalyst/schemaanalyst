@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 
 public class NotNullAnalyst extends ConstraintAnalyst {
 

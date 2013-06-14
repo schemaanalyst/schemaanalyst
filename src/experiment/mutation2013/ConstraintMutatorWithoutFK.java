@@ -3,8 +3,8 @@ package experiment.mutation2013;
 import org.schemaanalyst.mutation.mutators.*;
 import java.util.List;
 
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class ConstraintMutatorWithoutFK extends Mutator {
 

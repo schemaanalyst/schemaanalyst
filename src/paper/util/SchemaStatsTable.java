@@ -3,7 +3,7 @@ package paper.util;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 
 public class SchemaStatsTable {
 

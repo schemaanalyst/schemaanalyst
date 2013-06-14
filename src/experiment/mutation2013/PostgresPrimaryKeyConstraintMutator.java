@@ -4,12 +4,12 @@ package experiment.mutation2013;
 
 import java.util.List;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 /**
  *

@@ -1,14 +1,13 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.DateColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.TimeColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.DateDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.TimeDataType;
+import org.schemaanalyst.representation.expression.InExpression;
 
 public class Flights extends Schema {
 
@@ -34,21 +33,21 @@ public class Flights extends Schema {
 		
 		Table flights = createTable("Flights");
 		
-		Column flightsFlightId = flights.addColumn("FLIGHT_ID", new CharColumnType(6));
+		Column flightsFlightId = flights.addColumn("FLIGHT_ID", new CharDataType(6));
 		flightsFlightId.setNotNull();
 		
-		Column flightsSegmentNumber = flights.addColumn("SEGMENT_NUMBER", new IntegerColumnType());
+		Column flightsSegmentNumber = flights.addColumn("SEGMENT_NUMBER", new IntDataType());
 		flightsSegmentNumber.setNotNull();
 		
-		flights.addColumn("ORIGINAL_AIRPORT", new CharColumnType(3));		
-		flights.addColumn("DEPART_TIME", new TimeColumnType());
-		flights.addColumn("DEST_AIRPORT", new CharColumnType(3));		
-		flights.addColumn("ARRIVE_TIME", new TimeColumnType());
+		flights.addColumn("ORIGINAL_AIRPORT", new CharDataType(3));		
+		flights.addColumn("DEPART_TIME", new TimeDataType());
+		flights.addColumn("DEST_AIRPORT", new CharDataType(3));		
+		flights.addColumn("ARRIVE_TIME", new TimeDataType());
 		
-		Column meal = flights.addColumn("MEAL", new CharColumnType(1));
+		Column meal = flights.addColumn("MEAL", new CharDataType(1));
                 meal.setNotNull();
 		
-		flights.addCheckConstraint("MEAL_CONSTRAINT", new InCheckPredicate(meal, "B", "L", "D", "S"));
+		flights.addCheckConstraint("MEAL_CONSTRAINT", new InExpression(meal, "B", "L", "D", "S"));
 		flights.setPrimaryKeyConstraint(flightsFlightId, flightsSegmentNumber);
 		
 		/*
@@ -68,18 +67,18 @@ public class Flights extends Schema {
 		 */
 		
 		Table flightAvailable = createTable("FlightAvailable");
-		Column flightAvailableFlightId = flightAvailable.addColumn("FLIGHT_ID", new CharColumnType(6));
+		Column flightAvailableFlightId = flightAvailable.addColumn("FLIGHT_ID", new CharDataType(6));
 		flightAvailableFlightId.setNotNull();
 		
-		Column flightAvailableSegmentNumber = flightAvailable.addColumn("SEGMENT_NUMBER", new IntColumnType());
+		Column flightAvailableSegmentNumber = flightAvailable.addColumn("SEGMENT_NUMBER", new IntDataType());
 		flightAvailableSegmentNumber.setNotNull();		
 		
-		Column flightDate = flightAvailable.addColumn("FLIGHT_DATE", new DateColumnType());
+		Column flightDate = flightAvailable.addColumn("FLIGHT_DATE", new DateDataType());
 		flightDate.setNotNull();
 		
-		flightAvailable.addColumn("ECONOMY_SEATS_TAKEN", new IntColumnType());
-		flightAvailable.addColumn("BUSINESS_SEATS_TAKEN", new IntColumnType());
-		flightAvailable.addColumn("FIRSTCLASS_SEATS_TAKEN", new IntColumnType());
+		flightAvailable.addColumn("ECONOMY_SEATS_TAKEN", new IntDataType());
+		flightAvailable.addColumn("BUSINESS_SEATS_TAKEN", new IntDataType());
+		flightAvailable.addColumn("FIRSTCLASS_SEATS_TAKEN", new IntDataType());
 		
 		flightAvailable.setPrimaryKeyConstraint("FLTAVAIL_PK", flightAvailableFlightId, flightAvailableSegmentNumber);
 		

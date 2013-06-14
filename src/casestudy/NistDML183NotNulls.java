@@ -1,9 +1,9 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.CharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.CharDataType;
 
 public class NistDML183NotNulls extends Schema {
 
@@ -28,9 +28,9 @@ public class NistDML183NotNulls extends Schema {
 
 		Table tTable = createTable("T");
 
-		Column a = tTable.addColumn("A" , new CharColumnType(1));
-		Column b = tTable.addColumn("B" , new CharColumnType(1));
-		Column c = tTable.addColumn("C" , new CharColumnType(1));
+		Column a = tTable.addColumn("A" , new CharDataType(1));
+		Column b = tTable.addColumn("B" , new CharDataType(1));
+		Column c = tTable.addColumn("C" , new CharDataType(1));
 
 		a.setNotNull();
 		b.setNotNull();
@@ -53,9 +53,9 @@ public class NistDML183NotNulls extends Schema {
 
 		Table sTable = createTable("S");
 		
-		Column x = sTable.addColumn("X" , new CharColumnType(1));
-		Column y = sTable.addColumn("Y" , new CharColumnType(1));
-		Column z = sTable.addColumn("Z" , new CharColumnType(1));
+		Column x = sTable.addColumn("X" , new CharDataType(1));
+		Column y = sTable.addColumn("Y" , new CharDataType(1));
+		Column z = sTable.addColumn("Z" , new CharDataType(1));
 
 		x.setNotNull();
 		y.setNotNull();

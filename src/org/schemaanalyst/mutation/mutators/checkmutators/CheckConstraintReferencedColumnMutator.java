@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Set;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.CheckPredicate;
-import org.schemaanalyst.schema.CheckPredicateVisitor;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.Expression;
+import org.schemaanalyst.representation.expression.ExpressionVisitor;
+import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.expression.Operand;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 /**
  * Mutates all types of check constraint by replacing columns
@@ -58,7 +58,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     /**
      * A visitor implementation for mutating check predicates
      */
-    private class Visitor implements CheckPredicateVisitor {
+    private class Visitor implements ExpressionVisitor {
 
         TypeCompatibility typeCompatibility;
         Table table;
@@ -84,7 +84,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          */
         public List<Schema> createMutants() {
             mutants = new ArrayList<>();
-            constraint.getPredicate().accept(this);
+            constraint.getExpression().accept(this);
             return mutants;
         }
 
@@ -94,13 +94,13 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(BetweenCheckPredicate predicate) {
+        public void visit(BetweenExpression predicate) {
             // BetweenCheckPredicate(<Column>, Operand, Operand)
             new ColumnReplacer(typeCompatibility) {
                 @Override
-                protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                    BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
-                    mutantTable.addCheckConstraint(new BetweenCheckPredicate(
+                protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                    BetweenExpression predicate = (BetweenExpression) checkPredicate;
+                    mutantTable.addCheckConstraint(new BetweenExpression(
                             replacement,
                             predicate.getLower(),
                             predicate.getUpper()));
@@ -113,9 +113,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (predicate.getLower() instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                        BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
-                        mutantTable.addCheckConstraint(new BetweenCheckPredicate(
+                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                        BetweenExpression predicate = (BetweenExpression) checkPredicate;
+                        mutantTable.addCheckConstraint(new BetweenExpression(
                                 predicate.getColumn(),
                                 replacement,
                                 predicate.getUpper()));
@@ -129,9 +129,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (predicate.getUpper() instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                        BetweenCheckPredicate predicate = (BetweenCheckPredicate) checkPredicate;
-                        mutantTable.addCheckConstraint(new BetweenCheckPredicate(
+                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                        BetweenExpression predicate = (BetweenExpression) checkPredicate;
+                        mutantTable.addCheckConstraint(new BetweenExpression(
                                 predicate.getColumn(),
                                 predicate.getLower(),
                                 replacement));
@@ -149,13 +149,13 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(InCheckPredicate predicate) {
+        public void visit(InExpression predicate) {
             // InCheckPredicate(<Column>,values)
             new ColumnReplacer(typeCompatibility) {
                 @Override
-                protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                    InCheckPredicate predicate = (InCheckPredicate) checkPredicate;
-                    mutantTable.addCheckConstraint(new InCheckPredicate(
+                protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                    InExpression predicate = (InExpression) checkPredicate;
+                    mutantTable.addCheckConstraint(new InExpression(
                             replacement,
                             predicate.getValues().toArray(new Value[0])));
                     mutant.addComment("Mutant with InCheckPredicate constraint \"" + predicate + "\"");
@@ -171,15 +171,15 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(RelationalCheckPredicate predicate) {
+        public void visit(RelationalExpression predicate) {
             // RelationalCheckPredicate(<Column>,Operator,Operand)
             Operand lhs = predicate.getLHS();
             if (lhs instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                        RelationalCheckPredicate predicate = (RelationalCheckPredicate) checkPredicate;
-                        mutantTable.addCheckConstraint(new RelationalCheckPredicate(
+                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                        RelationalExpression predicate = (RelationalExpression) checkPredicate;
+                        mutantTable.addCheckConstraint(new RelationalExpression(
                                 replacement,
                                 predicate.getOperator(),
                                 predicate.getRHS()));
@@ -194,9 +194,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (rhs instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate) {
-                        RelationalCheckPredicate predicate = (RelationalCheckPredicate) checkPredicate;
-                        mutantTable.addCheckConstraint(new RelationalCheckPredicate(
+                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
+                        RelationalExpression predicate = (RelationalExpression) checkPredicate;
+                        mutantTable.addCheckConstraint(new RelationalExpression(
                                 predicate.getLHS(),
                                 predicate.getOperator(),
                                 replacement));
@@ -237,7 +237,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
              * @param checkPredicate The check predicate
              * @return The mutant schema
              */
-            protected abstract Schema createMutant(Column column, Column replacement, CheckPredicate checkPredicate);
+            protected abstract Schema createMutant(Column column, Column replacement, Expression checkPredicate);
 
             /**
              * Searches for suitable replacement columns, and invokes
@@ -251,7 +251,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
                         mutant = table.getSchema().duplicate();
                         mutantTable = mutant.getTable(table.getName());
                         mutantTable.removeCheckConstraint(constraint);
-                        mutants.add(createMutant(column, replacement, constraint.getPredicate()));
+                        mutants.add(createMutant(column, replacement, constraint.getExpression()));
                     }
                 }
             }
@@ -305,22 +305,21 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         public abstract boolean check(Column column, Column replacement);
         private static final Set<Class> NUMERIC_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.schema.columntype.BigIntColumnType.class,
-                    org.schemaanalyst.schema.columntype.DecimalColumnType.class,
-                    org.schemaanalyst.schema.columntype.DoubleColumnType.class,
-                    org.schemaanalyst.schema.columntype.FloatColumnType.class,
-                    org.schemaanalyst.schema.columntype.IntColumnType.class,
-                    org.schemaanalyst.schema.columntype.IntegerColumnType.class,
-                    org.schemaanalyst.schema.columntype.MediumIntColumnType.class,
-                    org.schemaanalyst.schema.columntype.NumericColumnType.class,
-                    org.schemaanalyst.schema.columntype.RealColumnType.class,
-                    org.schemaanalyst.schema.columntype.SmallIntColumnType.class,
-                    org.schemaanalyst.schema.columntype.TinyIntColumnType.class
+                    org.schemaanalyst.representation.datatype.BigIntDataType.class,
+                    org.schemaanalyst.representation.datatype.DecimalDataType.class,
+                    org.schemaanalyst.representation.datatype.DoubleDataType.class,
+                    org.schemaanalyst.representation.datatype.FloatDataType.class,
+                    org.schemaanalyst.representation.datatype.IntDataType.class,
+                    org.schemaanalyst.representation.datatype.MediumIntDataType.class,
+                    org.schemaanalyst.representation.datatype.NumericDataType.class,
+                    org.schemaanalyst.representation.datatype.RealDataType.class,
+                    org.schemaanalyst.representation.datatype.SmallIntDataType.class,
+                    org.schemaanalyst.representation.datatype.TinyIntDataType.class
                 })));
         private static final Set<Class> STRING_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.schema.columntype.CharColumnType.class,
-                    org.schemaanalyst.schema.columntype.VarCharColumnType.class,
-                    org.schemaanalyst.schema.columntype.TextColumnType.class
+                    org.schemaanalyst.representation.datatype.CharDataType.class,
+                    org.schemaanalyst.representation.datatype.VarCharDataType.class,
+                    org.schemaanalyst.representation.datatype.TextDataType.class
                 })));
     };
 }

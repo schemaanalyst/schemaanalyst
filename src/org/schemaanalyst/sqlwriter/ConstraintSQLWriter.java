@@ -1,19 +1,20 @@
 package org.schemaanalyst.sqlwriter;
 
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.ConstraintVisitor;
-import org.schemaanalyst.schema.NotNullConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.UniqueConstraint;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.ConstraintVisitor;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.NotNullConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.UniqueConstraint;
+
 import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 
 public class ConstraintSQLWriter {
 	
-	protected CheckPredicateSQLWriter predicateSQLWriter;
+	protected ExpressionSQLWriter predicateSQLWriter;
 	
-	public void setPredicateSQLWriter(CheckPredicateSQLWriter predicateSQLWriter) {
+	public void setPredicateSQLWriter(ExpressionSQLWriter predicateSQLWriter) {
 		this.predicateSQLWriter = predicateSQLWriter;
 	}
 	
@@ -59,7 +60,7 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writeCheck(CheckConstraint check) {
-		return "CHECK(" + predicateSQLWriter.writePredicate(check.getPredicate()) + ")";
+		return "CHECK(" + predicateSQLWriter.writePredicate(check.getExpression()) + ")";
 	}
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {

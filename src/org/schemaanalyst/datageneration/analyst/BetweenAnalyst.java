@@ -7,14 +7,14 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.EvaluableRelationalPredicate;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.Operand;
 
 public class BetweenAnalyst extends ConstraintAnalyst {
 
-	protected BetweenCheckPredicate between; 
+	protected BetweenExpression between; 
 	protected Table table;
 	protected boolean satisfyOnNull;	
 	
@@ -23,7 +23,7 @@ public class BetweenAnalyst extends ConstraintAnalyst {
 		
 	protected Data data;
 		
-	public BetweenAnalyst(BetweenCheckPredicate between, 
+	public BetweenAnalyst(BetweenExpression between, 
 						  Table table,
 						  boolean satisfyOnNull) {
 		this.between = between;
@@ -83,7 +83,7 @@ public class BetweenAnalyst extends ConstraintAnalyst {
 		return table;
 	}
 	
-	public BetweenCheckPredicate getBetween() {
+	public BetweenExpression getBetween() {
 		return between;
 	}
 	

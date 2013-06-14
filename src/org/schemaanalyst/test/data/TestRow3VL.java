@@ -14,10 +14,10 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
 
 public class TestRow3VL {
 
@@ -28,8 +28,8 @@ public class TestRow3VL {
 	public void setup() {
 		Schema s = new Schema("test_schema");
 		Table t = s.createTable("test_table");
-		col1 = t.addColumn("test_column1", new IntColumnType());
-		col2 = t.addColumn("test_column2", new IntColumnType());
+		col1 = t.addColumn("test_column1", new IntDataType());
+		col2 = t.addColumn("test_column2", new IntDataType());
 	}	
 	
 	protected void setupIntRows(Integer val1r1, Integer val2r1, Integer val1r2, Integer val2r2) {

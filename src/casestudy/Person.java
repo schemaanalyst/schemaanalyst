@@ -1,12 +1,12 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.DateColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.DateDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.representation.expression.InExpression;
 
 public class Person extends Schema {
 	
@@ -29,11 +29,11 @@ public class Person extends Schema {
 		
 		Table person = createTable("person");
 		
-		Column id = person.addColumn("id", new IntColumnType());
-		Column lastName = person.addColumn("lastName", new VarCharColumnType(45));
-		Column firstName = person.addColumn("firstName", new VarCharColumnType(45));
-		Column gender = person.addColumn("gender", new VarCharColumnType(6));
-		Column dateOfBirth = person.addColumn("date_of_birth", new DateColumnType());
+		Column id = person.addColumn("id", new IntDataType());
+		Column lastName = person.addColumn("lastName", new VarCharDataType(45));
+		Column firstName = person.addColumn("firstName", new VarCharDataType(45));
+		Column gender = person.addColumn("gender", new VarCharDataType(6));
+		Column dateOfBirth = person.addColumn("date_of_birth", new DateDataType());
 		
 		id.setNotNull();
 		lastName.setNotNull();
@@ -42,6 +42,6 @@ public class Person extends Schema {
 		dateOfBirth.setNotNull();
 		
 		person.setPrimaryKeyConstraint(id);
-		person.addCheckConstraint(new InCheckPredicate(gender, "Male", "Female", "Uknown"));
+		person.addCheckConstraint(new InExpression(gender, "Male", "Female", "Uknown"));
 	}
 }

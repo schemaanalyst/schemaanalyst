@@ -6,12 +6,12 @@ import java.util.List;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.InExpression;
 
 public class InAnalyst extends ConstraintAnalyst {
 
-	protected InCheckPredicate in;
+	protected InExpression in;
 	protected Table table;
 	protected boolean allowNull;
 		
@@ -19,7 +19,7 @@ public class InAnalyst extends ConstraintAnalyst {
 	protected List<Cell> notInCells;
 	protected List<Value> inValues;
 	
-	public InAnalyst(InCheckPredicate in, 
+	public InAnalyst(InExpression in, 
 				     Table table, 
 					 boolean allowNull) {
 		this.in = in;

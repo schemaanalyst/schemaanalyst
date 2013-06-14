@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.postgres.Postgres;
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlparser.SQLParseException;
 import org.schemaanalyst.sqlparser.SchemaParser;
 import org.schemaanalyst.sqlwriter.SQLWriter;

@@ -1,15 +1,14 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.BooleanColumnType;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.RealColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.BooleanDataType;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.RealDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.representation.expression.InExpression;
 
 public class World extends Schema {
 
@@ -33,20 +32,20 @@ public class World extends Schema {
 
 		Table cityTable = createTable( "city");
 		
-		Column id = cityTable.addColumn("id", new IntColumnType());
+		Column id = cityTable.addColumn("id", new IntDataType());
 		id.setPrimaryKey();
 		id.setNotNull();
 
-		Column name = cityTable.addColumn("name", new VarCharColumnType(100));
+		Column name = cityTable.addColumn("name", new VarCharDataType(100));
 		name.setNotNull();
 
-		Column countrycode = cityTable.addColumn("countrycode", new CharColumnType(3));
+		Column countrycode = cityTable.addColumn("countrycode", new CharDataType(3));
 		countrycode.setNotNull();
 
-		Column district = cityTable.addColumn("district", new VarCharColumnType(100));
+		Column district = cityTable.addColumn("district", new VarCharDataType(100));
 		district.setNotNull();
 		
-		Column population = cityTable.addColumn("population", new IntegerColumnType());
+		Column population = cityTable.addColumn("population", new IntDataType());
 		population.setNotNull();
 
 		/*
@@ -73,44 +72,44 @@ public class World extends Schema {
 
 		Table countryTable = createTable( "country");
 		
-		Column code = countryTable.addColumn("code", new VarCharColumnType(3));
+		Column code = countryTable.addColumn("code", new VarCharDataType(3));
 		code.setPrimaryKey();
 		code.setNotNull();
 
-		Column nameCountry = countryTable.addColumn("name", new VarCharColumnType(100));
+		Column nameCountry = countryTable.addColumn("name", new VarCharDataType(100));
 		nameCountry.setNotNull();
 
-		Column continent = countryTable.addColumn("continent", new VarCharColumnType(100));
+		Column continent = countryTable.addColumn("continent", new VarCharDataType(100));
 		continent.setNotNull();
 		
-		Column region = countryTable.addColumn("region", new VarCharColumnType(100));
+		Column region = countryTable.addColumn("region", new VarCharDataType(100));
 		region.setNotNull();
 
-		Column surfacearea = countryTable.addColumn("surfacearea", new IntColumnType());
+		Column surfacearea = countryTable.addColumn("surfacearea", new IntDataType());
 		surfacearea.setNotNull();
 
-		Column indepyear = countryTable.addColumn("indepyear", new IntColumnType());
+		Column indepyear = countryTable.addColumn("indepyear", new IntDataType());
 		
-		Column populationCountry = countryTable.addColumn("population", new IntegerColumnType());
+		Column populationCountry = countryTable.addColumn("population", new IntDataType());
 		populationCountry.setNotNull();
 
-		Column lifeexpectancy = countryTable.addColumn("lifeexpectancy", new IntColumnType());
-		Column gnp = countryTable.addColumn("gnp", new IntColumnType());
-		Column gnpold = countryTable.addColumn("gnpold", new IntColumnType());
+		Column lifeexpectancy = countryTable.addColumn("lifeexpectancy", new IntDataType());
+		Column gnp = countryTable.addColumn("gnp", new IntDataType());
+		Column gnpold = countryTable.addColumn("gnpold", new IntDataType());
 		
-		Column localname = countryTable.addColumn("localname", new VarCharColumnType(100));
+		Column localname = countryTable.addColumn("localname", new VarCharDataType(100));
 		localname.setNotNull();
 
-		Column governmentform = countryTable.addColumn("governmentform", new VarCharColumnType(100));
+		Column governmentform = countryTable.addColumn("governmentform", new VarCharDataType(100));
 		governmentform.setNotNull();
 		
-		Column capital = countryTable.addColumn("capital", new IntegerColumnType());
+		Column capital = countryTable.addColumn("capital", new IntDataType());
 		capital.setNotNull();
 
-		Column codeTwo = countryTable.addColumn("code2", new VarCharColumnType(2));
+		Column codeTwo = countryTable.addColumn("code2", new VarCharDataType(2));
 		codeTwo.setNotNull();
 		
-		countryTable.addCheckConstraint(new InCheckPredicate(continent, "Asia", "Europe", "North America", "Africa", "Oceania", "Antarctica", "South America"));
+		countryTable.addCheckConstraint(new InExpression(continent, "Asia", "Europe", "North America", "Africa", "Oceania", "Antarctica", "South America"));
 		
 		/*
 		  
@@ -125,16 +124,16 @@ public class World extends Schema {
 
 		Table countryLanguageTable = createTable( "countrylanguage");
 		
-		Column countrycodeNext = countryLanguageTable.addColumn("countrycode", new CharColumnType(3));
+		Column countrycodeNext = countryLanguageTable.addColumn("countrycode", new CharDataType(3));
 		countrycodeNext.setNotNull();
 		
-		Column language = countryLanguageTable.addColumn("language", new VarCharColumnType(100));
+		Column language = countryLanguageTable.addColumn("language", new VarCharDataType(100));
 		language.setNotNull();
 		
-		Column isofficial = countryLanguageTable.addColumn("isofficial", new BooleanColumnType());
+		Column isofficial = countryLanguageTable.addColumn("isofficial", new BooleanDataType());
 		isofficial.setNotNull();
 
-		Column percentage = countryLanguageTable.addColumn("percentage", new RealColumnType());
+		Column percentage = countryLanguageTable.addColumn("percentage", new RealDataType());
 		percentage.setNotNull();
 
 		/*

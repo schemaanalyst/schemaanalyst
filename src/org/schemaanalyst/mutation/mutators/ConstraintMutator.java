@@ -2,8 +2,8 @@ package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class ConstraintMutator extends Mutator {
 

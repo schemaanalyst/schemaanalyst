@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class Employee extends Schema {
 
@@ -35,18 +35,18 @@ public class Employee extends Schema {
 		
 		Table employeeTable = createTable( "employee");
 		
-		Column id = employeeTable.addColumn("id" , new IntColumnType());
+		Column id = employeeTable.addColumn("id" , new IntDataType());
                 employeeTable.setPrimaryKeyConstraint(id);
-		Column first = employeeTable.addColumn("first" , new VarCharColumnType(15));
-		Column last = employeeTable.addColumn("last" , new VarCharColumnType(20));
-		Column age = employeeTable.addColumn("age" , new IntColumnType());
-		Column address = employeeTable.addColumn("employee" , new VarCharColumnType(30));
-		Column city = employeeTable.addColumn("city" , new VarCharColumnType(20));
-		Column state = employeeTable.addColumn("state" , new VarCharColumnType(20));
+		Column first = employeeTable.addColumn("first" , new VarCharDataType(15));
+		Column last = employeeTable.addColumn("last" , new VarCharDataType(20));
+		Column age = employeeTable.addColumn("age" , new IntDataType());
+		Column address = employeeTable.addColumn("employee" , new VarCharDataType(30));
+		Column city = employeeTable.addColumn("city" , new VarCharDataType(20));
+		Column state = employeeTable.addColumn("state" , new VarCharDataType(20));
 
-		employeeTable.addCheckConstraint(new RelationalCheckPredicate(id, ">=", 0));
-		employeeTable.addCheckConstraint(new RelationalCheckPredicate(age, ">", 0));
-		employeeTable.addCheckConstraint(new RelationalCheckPredicate(age, "<=", 150)); 
+		employeeTable.addCheckConstraint(new RelationalExpression(id, ">=", 0));
+		employeeTable.addCheckConstraint(new RelationalExpression(age, ">", 0));
+		employeeTable.addCheckConstraint(new RelationalExpression(age, "<=", 150)); 
 
 	}
 }

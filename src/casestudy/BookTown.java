@@ -1,7 +1,8 @@
 package casestudy;
 
-import org.schemaanalyst.schema.*;
-import org.schemaanalyst.schema.columntype.*;
+import org.schemaanalyst.representation.*;
+import org.schemaanalyst.representation.datatype.*;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class BookTown extends Schema {
     
@@ -23,16 +24,16 @@ public class BookTown extends Schema {
         
         Table books = createTable("books");
         
-        Column books_id = books.addColumn("id", new IntColumnType());
+        Column books_id = books.addColumn("id", new IntDataType());
         books_id.setNotNull();
         books_id.setPrimaryKey();
         
-        Column books_title = books.addColumn("title", new VarCharColumnType(100));
+        Column books_title = books.addColumn("title", new VarCharDataType(100));
         books_title.setNotNull();
         
-        Column books_author_id = books.addColumn("author_id", new IntColumnType());
+        Column books_author_id = books.addColumn("author_id", new IntDataType());
         
-        Column books_subject_id = books.addColumn("subject_id", new IntColumnType());
+        Column books_subject_id = books.addColumn("subject_id", new IntDataType());
         
         /*
             CREATE TABLE "publishers" (
@@ -45,13 +46,13 @@ public class BookTown extends Schema {
         
         Table publishers = createTable("publishers");
         
-        Column publishers_id = publishers.addColumn("id", new IntColumnType());
+        Column publishers_id = publishers.addColumn("id", new IntDataType());
         publishers_id.setNotNull();
         publishers_id.setPrimaryKey();
         
-        Column publishers_name = publishers.addColumn("name", new VarCharColumnType(100));
+        Column publishers_name = publishers.addColumn("name", new VarCharDataType(100));
         
-        Column publishers_address = publishers.addColumn("address", new VarCharColumnType(100));
+        Column publishers_address = publishers.addColumn("address", new VarCharDataType(100));
         
         /*
             CREATE TABLE "authors" (
@@ -64,13 +65,13 @@ public class BookTown extends Schema {
         
         Table authors = createTable("authors");
         
-        Column authors_id = authors.addColumn("id", new IntColumnType());
+        Column authors_id = authors.addColumn("id", new IntDataType());
         authors_id.setNotNull();
         authors_id.setPrimaryKey();
         
-        Column authors_last_name = authors.addColumn("last_name", new VarCharColumnType(100));
+        Column authors_last_name = authors.addColumn("last_name", new VarCharDataType(100));
         
-        Column authors_first_name = authors.addColumn("first_name", new VarCharColumnType(100));
+        Column authors_first_name = authors.addColumn("first_name", new VarCharDataType(100));
         
         /*
             CREATE TABLE "states" (
@@ -83,13 +84,13 @@ public class BookTown extends Schema {
         
         Table states = createTable("states");
         
-        Column states_id = states.addColumn("id", new IntColumnType());
+        Column states_id = states.addColumn("id", new IntDataType());
         states_id.setNotNull();
         states_id.setPrimaryKey();
         
-        Column states_name = states.addColumn("name", new VarCharColumnType(100));
+        Column states_name = states.addColumn("name", new VarCharDataType(100));
         
-        Column states_abbreviation = states.addColumn("abbreviation", new CharColumnType(2));
+        Column states_abbreviation = states.addColumn("abbreviation", new CharDataType(2));
         
         /*
             CREATE TABLE "my_list" (
@@ -99,7 +100,7 @@ public class BookTown extends Schema {
         
         Table my_list = createTable("my_list");
         
-        Column my_list_todos = my_list.addColumn("todos", new VarCharColumnType(100));
+        Column my_list_todos = my_list.addColumn("todos", new VarCharDataType(100));
         
         /*
             CREATE TABLE "stock" (
@@ -113,15 +114,15 @@ public class BookTown extends Schema {
         
         Table stock = createTable("stock");
         
-        Column stock_isbn = stock.addColumn("isbn", new VarCharColumnType(100));
+        Column stock_isbn = stock.addColumn("isbn", new VarCharDataType(100));
         stock_isbn.setNotNull();
         stock_isbn.setPrimaryKey();
         
-        Column stock_cost = stock.addColumn("cost", new NumericColumnType(5,2));
+        Column stock_cost = stock.addColumn("cost", new NumericDataType(5,2));
         
-        Column stock_retail = stock.addColumn("retail", new NumericColumnType(5,2));
+        Column stock_retail = stock.addColumn("retail", new NumericDataType(5,2));
         
-        Column stock_stock = stock.addColumn("stock", new IntColumnType());
+        Column stock_stock = stock.addColumn("stock", new IntDataType());
         
         /*
             CREATE TABLE "numeric_values" (
@@ -131,7 +132,7 @@ public class BookTown extends Schema {
         
         Table numeric_values = createTable("numeric_values");
         
-        Column numeric_values_num = numeric_values.addColumn("num", new NumericColumnType(30,6));
+        Column numeric_values_num = numeric_values.addColumn("num", new NumericDataType(30,6));
         
         /*
             CREATE TABLE "daily_inventory" (
@@ -142,9 +143,9 @@ public class BookTown extends Schema {
         
         Table daily_inventory = createTable("daily_inventory");
         
-        Column daily_inventory_isbn = daily_inventory.addColumn("isbn", new VarCharColumnType(100));
+        Column daily_inventory_isbn = daily_inventory.addColumn("isbn", new VarCharDataType(100));
         
-        Column daily_inventory_is_stocked = daily_inventory.addColumn("is_stocked", new org.schemaanalyst.schema.columntype.BooleanColumnType());
+        Column daily_inventory_is_stocked = daily_inventory.addColumn("is_stocked", new org.schemaanalyst.representation.datatype.BooleanDataType());
         
         /*
             CREATE TABLE "money_example" (
@@ -155,9 +156,9 @@ public class BookTown extends Schema {
         
         Table money_example = createTable("money_example");
         
-        Column money_example_money_cash = money_example.addColumn("money_cash", new NumericColumnType(6,2));
+        Column money_example_money_cash = money_example.addColumn("money_cash", new NumericDataType(6,2));
         
-        Column money_example_numeric_cash = money_example.addColumn("numeric_cash", new NumericColumnType(6,2));
+        Column money_example_numeric_cash = money_example.addColumn("numeric_cash", new NumericDataType(6,2));
         
         /*
             CREATE TABLE "shipments" (
@@ -170,14 +171,14 @@ public class BookTown extends Schema {
         
         Table shipments = createTable("shipments");
         
-        Column shipments_id = shipments.addColumn("id", new IntColumnType());
+        Column shipments_id = shipments.addColumn("id", new IntDataType());
         shipments_id.setNotNull();
         
-        Column shipments_customer_id = shipments.addColumn("customer_id", new IntColumnType());
+        Column shipments_customer_id = shipments.addColumn("customer_id", new IntDataType());
         
-        Column shipments_isbn = shipments.addColumn("isbn", new VarCharColumnType(100));
+        Column shipments_isbn = shipments.addColumn("isbn", new VarCharDataType(100));
         
-        Column shipments_ship_date = shipments.addColumn("ship_date", new TimestampColumnType());
+        Column shipments_ship_date = shipments.addColumn("ship_date", new TimestampDataType());
         
         /*
             CREATE TABLE "customers" (
@@ -190,13 +191,13 @@ public class BookTown extends Schema {
         
         Table customers = createTable("customers");
         
-        Column customers_id = customers.addColumn("id", new IntColumnType());
+        Column customers_id = customers.addColumn("id", new IntDataType());
         customers_id.setNotNull();
         customers_id.setPrimaryKey();
         
-        Column customers_last_name = customers.addColumn("last_name", new VarCharColumnType(100));
+        Column customers_last_name = customers.addColumn("last_name", new VarCharDataType(100));
         
-        Column customers_first_name = customers.addColumn("first_name", new VarCharColumnType(100));
+        Column customers_first_name = customers.addColumn("first_name", new VarCharDataType(100));
         
         /*
             CREATE TABLE "book_queue" (
@@ -209,14 +210,14 @@ public class BookTown extends Schema {
         
         Table book_queue = createTable("book_queue");
         
-        Column book_queue_title = book_queue.addColumn("title", new VarCharColumnType(100));
+        Column book_queue_title = book_queue.addColumn("title", new VarCharDataType(100));
         book_queue_title.setNotNull();
         
-        Column book_queue_author_id = book_queue.addColumn("author_id", new IntColumnType());
+        Column book_queue_author_id = book_queue.addColumn("author_id", new IntDataType());
         
-        Column book_queue_subject_id = book_queue.addColumn("subject_id", new IntColumnType());
+        Column book_queue_subject_id = book_queue.addColumn("subject_id", new IntDataType());
         
-        Column book_queue_approved = book_queue.addColumn("approved", new BooleanColumnType());
+        Column book_queue_approved = book_queue.addColumn("approved", new BooleanDataType());
         
         /*
             CREATE TABLE "stock_backup" (
@@ -229,13 +230,13 @@ public class BookTown extends Schema {
         
         Table stock_backup = createTable("stock_backup");
         
-        Column stock_backup_isbn = stock_backup.addColumn("isbn", new VarCharColumnType(100));
+        Column stock_backup_isbn = stock_backup.addColumn("isbn", new VarCharDataType(100));
         
-        Column stock_backup_cost = stock_backup.addColumn("cost", new NumericColumnType(5,2));
+        Column stock_backup_cost = stock_backup.addColumn("cost", new NumericDataType(5,2));
         
-        Column stock_backup_retail = stock_backup.addColumn("retail", new NumericColumnType(5,2));
+        Column stock_backup_retail = stock_backup.addColumn("retail", new NumericDataType(5,2));
         
-        Column stock_backup_stock = stock_backup.addColumn("stock", new IntColumnType());
+        Column stock_backup_stock = stock_backup.addColumn("stock", new IntDataType());
         
         /*
             CREATE TABLE "favorite_books" (
@@ -246,9 +247,9 @@ public class BookTown extends Schema {
         
         Table favorite_books = createTable("favorite_books");
         
-        Column favorite_books_employee_id = favorite_books.addColumn("employee_id", new IntColumnType());
+        Column favorite_books_employee_id = favorite_books.addColumn("employee_id", new IntDataType());
         
-        Column favorite_books_books = favorite_books.addColumn("books", new VarCharColumnType(100));
+        Column favorite_books_books = favorite_books.addColumn("books", new VarCharDataType(100));
         
         /*
             CREATE TABLE "employees" (
@@ -261,15 +262,15 @@ public class BookTown extends Schema {
         
         Table employees = createTable("employees");
         
-        Column employees_id = employees.addColumn("id", new IntColumnType());
+        Column employees_id = employees.addColumn("id", new IntDataType());
         employees_id.setPrimaryKey();
         employees_id.setNotNull();
-        employees.addCheckConstraint(new RelationalCheckPredicate(employees_id, ">", 100));
+        employees.addCheckConstraint(new RelationalExpression(employees_id, ">", 100));
         
-        Column employees_last_name = employees.addColumn("last_name", new VarCharColumnType(100));
+        Column employees_last_name = employees.addColumn("last_name", new VarCharDataType(100));
         employees_last_name.setNotNull();
         
-        Column employees_first_name = employees.addColumn("first_name", new VarCharColumnType(100));
+        Column employees_first_name = employees.addColumn("first_name", new VarCharDataType(100));
         
         /*
             CREATE TABLE "editions" (
@@ -285,21 +286,21 @@ public class BookTown extends Schema {
         
         Table editions = createTable("editions");
         
-        Column editions_isbn = editions.addColumn("isbn", new VarCharColumnType(100));
+        Column editions_isbn = editions.addColumn("isbn", new VarCharDataType(100));
         editions_isbn.setNotNull();
         editions_isbn.setPrimaryKey();
         
-        Column editions_book_id = editions.addColumn("book_id", new IntColumnType());
+        Column editions_book_id = editions.addColumn("book_id", new IntDataType());
         editions_book_id.setNotNull();
         
-        Column editions_edition = editions.addColumn("edition", new IntColumnType());
+        Column editions_edition = editions.addColumn("edition", new IntDataType());
         editions_edition.setNotNull();
         
-        Column editions_publisher_id = editions.addColumn("publisher_id", new IntColumnType());
+        Column editions_publisher_id = editions.addColumn("publisher_id", new IntDataType());
         
-        Column editions_publication = editions.addColumn("publication", new DateColumnType());
+        Column editions_publication = editions.addColumn("publication", new DateDataType());
         
-        Column editions_type = editions.addColumn("type", new CharColumnType(1));
+        Column editions_type = editions.addColumn("type", new CharDataType(1));
         
         /*
             CREATE TABLE "distinguished_authors" (
@@ -310,15 +311,15 @@ public class BookTown extends Schema {
         
         Table distinguished_authors = createTable("distinguished_authors");
         
-        Column distinguished_authors_id = distinguished_authors.addColumn("id", new IntColumnType());
+        Column distinguished_authors_id = distinguished_authors.addColumn("id", new IntDataType());
         distinguished_authors_id.setNotNull();
         distinguished_authors_id.setPrimaryKey();
 
-        Column distinguished_authors_last_name = distinguished_authors.addColumn("last_name", new VarCharColumnType(100));
+        Column distinguished_authors_last_name = distinguished_authors.addColumn("last_name", new VarCharDataType(100));
 
-        Column distinguished_authors_first_name = distinguished_authors.addColumn("first_name", new VarCharColumnType(100));
+        Column distinguished_authors_first_name = distinguished_authors.addColumn("first_name", new VarCharDataType(100));
         
-        Column distinguished_authors_award = distinguished_authors.addColumn("award", new VarCharColumnType(100));
+        Column distinguished_authors_award = distinguished_authors.addColumn("award", new VarCharDataType(100));
         
         /*
             CREATE TABLE "favorite_authors" (
@@ -329,9 +330,9 @@ public class BookTown extends Schema {
         
         Table favorite_authors = createTable("favorite_authors");
         
-        Column favorite_authors_employee_id = favorite_authors.addColumn("employee_id", new IntColumnType());
+        Column favorite_authors_employee_id = favorite_authors.addColumn("employee_id", new IntDataType());
         
-        Column favorite_authors_authors_and_titles = favorite_authors.addColumn("authors_and_titles", new VarCharColumnType(100));
+        Column favorite_authors_authors_and_titles = favorite_authors.addColumn("authors_and_titles", new VarCharDataType(100));
         
         /*
             CREATE TABLE "varchar(100)_sorting" (
@@ -341,7 +342,7 @@ public class BookTown extends Schema {
         
         Table varchar_sorting = createTable("varchar100_sorting");
         
-        Column letter = varchar_sorting.addColumn("letter", new CharColumnType(1));
+        Column letter = varchar_sorting.addColumn("letter", new CharDataType(1));
         
         /*
             CREATE TABLE "subjects" (
@@ -354,13 +355,13 @@ public class BookTown extends Schema {
         
         Table subjects = createTable("subjects");
         
-        Column subjects_id = subjects.addColumn("id", new IntColumnType());
+        Column subjects_id = subjects.addColumn("id", new IntDataType());
         subjects_id.setNotNull();
         subjects_id.setPrimaryKey();
         
-        Column subjects_subject = subjects.addColumn("subject", new VarCharColumnType(100));
+        Column subjects_subject = subjects.addColumn("subject", new VarCharDataType(100));
         
-        Column subjects_location = subjects.addColumn("location", new VarCharColumnType(100));
+        Column subjects_location = subjects.addColumn("location", new VarCharDataType(100));
         
         /*
             CREATE TABLE "alternate_stock" (
@@ -373,13 +374,13 @@ public class BookTown extends Schema {
         
         Table alternate_stock = createTable("alternate_stock");
         
-        Column alternate_stock_isbn = alternate_stock.addColumn("isbn", new VarCharColumnType(100));
+        Column alternate_stock_isbn = alternate_stock.addColumn("isbn", new VarCharDataType(100));
         
-        Column alternate_stock_cost = alternate_stock.addColumn("cost", new NumericColumnType(5,2));
+        Column alternate_stock_cost = alternate_stock.addColumn("cost", new NumericDataType(5,2));
         
-        Column alternate_stock_retail = alternate_stock.addColumn("retail", new NumericColumnType(5,2));
+        Column alternate_stock_retail = alternate_stock.addColumn("retail", new NumericDataType(5,2));
         
-        Column alternate_stock_stock = alternate_stock.addColumn("stock", new IntColumnType());
+        Column alternate_stock_stock = alternate_stock.addColumn("stock", new IntDataType());
         
         /*
             CREATE TABLE "book_backup" (
@@ -392,13 +393,13 @@ public class BookTown extends Schema {
         
         Table book_backup = createTable("book_backup");
         
-        Column book_backup_id = book_backup.addColumn("id", new IntColumnType());
+        Column book_backup_id = book_backup.addColumn("id", new IntDataType());
         
-        Column book_backup_title = book_backup.addColumn("title", new VarCharColumnType(100));
+        Column book_backup_title = book_backup.addColumn("title", new VarCharDataType(100));
         
-        Column book_backup_author_id = book_backup.addColumn("author_id", new IntColumnType());
+        Column book_backup_author_id = book_backup.addColumn("author_id", new IntDataType());
         
-        Column book_backup_subject_id = book_backup.addColumn("subject_id", new IntColumnType());
+        Column book_backup_subject_id = book_backup.addColumn("subject_id", new IntDataType());
         
         /*
             CREATE TABLE "schedules" (
@@ -410,10 +411,10 @@ public class BookTown extends Schema {
         
         Table schedules = createTable("schedules");
         
-        Column schedules_employee_id = schedules.addColumn("employee_id", new IntColumnType());
+        Column schedules_employee_id = schedules.addColumn("employee_id", new IntDataType());
         schedules_employee_id.setNotNull();
         schedules_employee_id.setPrimaryKey();
         
-        Column schedules_schedule = schedules.addColumn("schedule", new VarCharColumnType(100));
+        Column schedules_schedule = schedules.addColumn("schedule", new VarCharDataType(100));
     }
 }

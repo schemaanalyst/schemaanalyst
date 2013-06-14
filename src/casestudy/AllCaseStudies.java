@@ -1,6 +1,6 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 
 public class AllCaseStudies {
 	

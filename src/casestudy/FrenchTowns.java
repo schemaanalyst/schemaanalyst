@@ -1,10 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class FrenchTowns extends Schema {
 
@@ -27,10 +27,10 @@ public class FrenchTowns extends Schema {
 
 		Table regionsTable = createTable( "Regions");
 
-		Column idRegions = regionsTable.addColumn("id" , new IntegerColumnType());
-		Column code = regionsTable.addColumn("code" , new VarCharColumnType(4));
-		Column capital = regionsTable.addColumn("capital" , new VarCharColumnType(10));
-		Column name = regionsTable.addColumn("name" , new VarCharColumnType(100));
+		Column idRegions = regionsTable.addColumn("id" , new IntDataType());
+		Column code = regionsTable.addColumn("code" , new VarCharDataType(4));
+		Column capital = regionsTable.addColumn("capital" , new VarCharDataType(10));
+		Column name = regionsTable.addColumn("name" , new VarCharDataType(100));
 
 		idRegions.setUnique();
 		idRegions.setNotNull();
@@ -57,11 +57,11 @@ public class FrenchTowns extends Schema {
 		
 		Table departmentsTable = createTable( "Departments");
 		
-		Column idDepartments = departmentsTable.addColumn("id" , new IntegerColumnType());
-		Column codeDepartments = departmentsTable.addColumn("code" , new VarCharColumnType(4));
-		Column capitalDepartments = departmentsTable.addColumn("capital" , new VarCharColumnType(4));
-		Column region = departmentsTable.addColumn("region" , new VarCharColumnType(4));
-		Column nameColumn = departmentsTable.addColumn("name" , new VarCharColumnType(100));
+		Column idDepartments = departmentsTable.addColumn("id" , new IntDataType());
+		Column codeDepartments = departmentsTable.addColumn("code" , new VarCharDataType(4));
+		Column capitalDepartments = departmentsTable.addColumn("capital" , new VarCharDataType(4));
+		Column region = departmentsTable.addColumn("region" , new VarCharDataType(4));
+		Column nameColumn = departmentsTable.addColumn("name" , new VarCharDataType(100));
 
 		idDepartments.setUnique();
 		idDepartments.setNotNull();
@@ -93,11 +93,11 @@ public class FrenchTowns extends Schema {
 
 		Table townsTable = createTable( "Towns");
 
-		Column idTowns = townsTable.addColumn("id" , new IntegerColumnType());
-		Column codeTowns = townsTable.addColumn("code", new VarCharColumnType(10));
-		Column articleTowns = townsTable.addColumn("article" , new VarCharColumnType(100));
-		Column nameTowns = townsTable.addColumn("name" , new VarCharColumnType(100));
-		Column departmentTowns = townsTable.addColumn("department" , new VarCharColumnType(4));
+		Column idTowns = townsTable.addColumn("id" , new IntDataType());
+		Column codeTowns = townsTable.addColumn("code", new VarCharDataType(10));
+		Column articleTowns = townsTable.addColumn("article" , new VarCharDataType(100));
+		Column nameTowns = townsTable.addColumn("name" , new VarCharDataType(100));
+		Column departmentTowns = townsTable.addColumn("department" , new VarCharDataType(4));
 
 		townsTable.addForeignKeyConstraint(departmentsTable, departmentTowns, codeDepartments);
 

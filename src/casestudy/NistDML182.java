@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class NistDML182 extends Schema {
 
@@ -37,21 +37,21 @@ public class NistDML182 extends Schema {
 		*/
 		
 		Table idCodes = createTable("ID_CODES");
-		Column idCodesCode1  = idCodes.addColumn("CODE1", new IntColumnType());
-		Column idCodesCode2  = idCodes.addColumn("CODE2", new IntColumnType());
-		Column idCodesCode3  = idCodes.addColumn("CODE3", new IntColumnType());
-		Column idCodesCode4  = idCodes.addColumn("CODE4", new IntColumnType());
-		Column idCodesCode5  = idCodes.addColumn("CODE5", new IntColumnType());
-		Column idCodesCode6  = idCodes.addColumn("CODE6", new IntColumnType());
-		Column idCodesCode7  = idCodes.addColumn("CODE7", new IntColumnType());
-		Column idCodesCode8  = idCodes.addColumn("CODE8", new IntColumnType());
-		Column idCodesCode9  = idCodes.addColumn("CODE9", new IntColumnType());
-		Column idCodesCode10 = idCodes.addColumn("CODE10", new IntColumnType());
-		Column idCodesCode11 = idCodes.addColumn("CODE11", new IntColumnType());
-		Column idCodesCode12 = idCodes.addColumn("CODE12", new IntColumnType());
-		Column idCodesCode13 = idCodes.addColumn("CODE13", new IntColumnType());
-		Column idCodesCode14 = idCodes.addColumn("CODE14", new IntColumnType());
-		Column idCodesCode15 = idCodes.addColumn("CODE15", new IntColumnType());
+		Column idCodesCode1  = idCodes.addColumn("CODE1", new IntDataType());
+		Column idCodesCode2  = idCodes.addColumn("CODE2", new IntDataType());
+		Column idCodesCode3  = idCodes.addColumn("CODE3", new IntDataType());
+		Column idCodesCode4  = idCodes.addColumn("CODE4", new IntDataType());
+		Column idCodesCode5  = idCodes.addColumn("CODE5", new IntDataType());
+		Column idCodesCode6  = idCodes.addColumn("CODE6", new IntDataType());
+		Column idCodesCode7  = idCodes.addColumn("CODE7", new IntDataType());
+		Column idCodesCode8  = idCodes.addColumn("CODE8", new IntDataType());
+		Column idCodesCode9  = idCodes.addColumn("CODE9", new IntDataType());
+		Column idCodesCode10 = idCodes.addColumn("CODE10", new IntDataType());
+		Column idCodesCode11 = idCodes.addColumn("CODE11", new IntDataType());
+		Column idCodesCode12 = idCodes.addColumn("CODE12", new IntDataType());
+		Column idCodesCode13 = idCodes.addColumn("CODE13", new IntDataType());
+		Column idCodesCode14 = idCodes.addColumn("CODE14", new IntDataType());
+		Column idCodesCode15 = idCodes.addColumn("CODE15", new IntDataType());
 		
 		idCodes.setPrimaryKeyConstraint(idCodesCode1, idCodesCode2, idCodesCode3, idCodesCode4, idCodesCode5, idCodesCode6, idCodesCode7, 
 							  idCodesCode8, idCodesCode9, idCodesCode10, idCodesCode11, idCodesCode12, idCodesCode13, idCodesCode14, 
@@ -83,24 +83,24 @@ public class NistDML182 extends Schema {
 		*/
 		
 		Table orders = createTable("ORDERS");
-		Column ordersCode1  = orders.addColumn("CODE1", new IntColumnType());
-		Column ordersCode2  = orders.addColumn("CODE2", new IntColumnType());
-		Column ordersCode3  = orders.addColumn("CODE3", new IntColumnType());
-		Column ordersCode4  = orders.addColumn("CODE4", new IntColumnType());
-		Column ordersCode5  = orders.addColumn("CODE5", new IntColumnType());
-		Column ordersCode6  = orders.addColumn("CODE6", new IntColumnType());
-		Column ordersCode7  = orders.addColumn("CODE7", new IntColumnType());
-		Column ordersCode8  = orders.addColumn("CODE8", new IntColumnType());
-		Column ordersCode9  = orders.addColumn("CODE9", new IntColumnType());
-		Column ordersCode10 = orders.addColumn("CODE10", new IntColumnType());
-		Column ordersCode11 = orders.addColumn("CODE11", new IntColumnType());
-		Column ordersCode12 = orders.addColumn("CODE12", new IntColumnType());
-		Column ordersCode13 = orders.addColumn("CODE13", new IntColumnType());
-		Column ordersCode14 = orders.addColumn("CODE14", new IntColumnType());
-		Column ordersCode15 = orders.addColumn("CODE15", new IntColumnType());
+		Column ordersCode1  = orders.addColumn("CODE1", new IntDataType());
+		Column ordersCode2  = orders.addColumn("CODE2", new IntDataType());
+		Column ordersCode3  = orders.addColumn("CODE3", new IntDataType());
+		Column ordersCode4  = orders.addColumn("CODE4", new IntDataType());
+		Column ordersCode5  = orders.addColumn("CODE5", new IntDataType());
+		Column ordersCode6  = orders.addColumn("CODE6", new IntDataType());
+		Column ordersCode7  = orders.addColumn("CODE7", new IntDataType());
+		Column ordersCode8  = orders.addColumn("CODE8", new IntDataType());
+		Column ordersCode9  = orders.addColumn("CODE9", new IntDataType());
+		Column ordersCode10 = orders.addColumn("CODE10", new IntDataType());
+		Column ordersCode11 = orders.addColumn("CODE11", new IntDataType());
+		Column ordersCode12 = orders.addColumn("CODE12", new IntDataType());
+		Column ordersCode13 = orders.addColumn("CODE13", new IntDataType());
+		Column ordersCode14 = orders.addColumn("CODE14", new IntDataType());
+		Column ordersCode15 = orders.addColumn("CODE15", new IntDataType());
 		
-		orders.addColumn("title", new VarCharColumnType(80));
-		orders.addColumn("cost", new NumericColumnType(5,2));
+		orders.addColumn("title", new VarCharDataType(80));
+		orders.addColumn("cost", new NumericDataType(5,2));
 			
 		orders.addForeignKeyConstraint(idCodes,
 							 ordersCode1, ordersCode2, ordersCode3, 

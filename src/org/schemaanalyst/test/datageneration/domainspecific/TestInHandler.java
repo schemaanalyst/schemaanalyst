@@ -17,11 +17,11 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.InAnalyst;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizationProfiles;
 import org.schemaanalyst.datageneration.domainspecific.InHandler;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.expression.InExpression;
 import org.schemaanalyst.util.random.SimpleRandom;
 
 public class TestInHandler {
@@ -37,7 +37,7 @@ public class TestInHandler {
 		
 		Schema schema = new Schema("test_schema");
 		table = schema.createTable("test_table");
-		column = table.addColumn("test_column", new IntColumnType());
+		column = table.addColumn("test_column", new IntDataType());
 		ValueFactory vf = new ValueFactory();
 		
 		List<Cell> row1Cells = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TestInHandler {
 		row2Cell.setValue(new NumericValue(20));
 		row3Cell.setValue(new NumericValue(30));
 		
-		InCheckPredicate in = new InCheckPredicate(column, 30, 40, 50);
+		InExpression in = new InExpression(column, 30, 40, 50);
 		
 		InAnalyst ia = new InAnalyst(in, table, true);
 		
@@ -93,7 +93,7 @@ public class TestInHandler {
 		row2Cell.setValue(new NumericValue(20));
 		row3Cell.setValue(new NumericValue(30));
 		
-		InCheckPredicate in = new InCheckPredicate(column, 30, 20, 10);
+		InExpression in = new InExpression(column, 30, 20, 10);
 		
 		InAnalyst ia = new InAnalyst(in, table, true);
 		

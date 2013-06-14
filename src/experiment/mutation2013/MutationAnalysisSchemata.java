@@ -17,8 +17,8 @@ import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import plume.Options;
 

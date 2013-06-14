@@ -11,7 +11,8 @@ import casestudy.UnixUsage;
 import casestudy.runner.Mutate;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
 import java.util.List;
-import org.schemaanalyst.schema.Schema;
+
+import org.schemaanalyst.representation.Schema;
 
 /**
  *

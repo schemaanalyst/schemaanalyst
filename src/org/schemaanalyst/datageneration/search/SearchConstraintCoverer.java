@@ -7,9 +7,9 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class SearchConstraintCoverer extends DataGenerator {
 	

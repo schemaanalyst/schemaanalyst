@@ -30,7 +30,7 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlwriter.SQLWriter;

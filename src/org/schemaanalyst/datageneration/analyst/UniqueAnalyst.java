@@ -6,7 +6,7 @@ import java.util.ListIterator;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 
 public class UniqueAnalyst extends ConstraintAnalyst {
 

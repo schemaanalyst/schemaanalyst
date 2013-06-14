@@ -9,8 +9,8 @@ import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.mutation.mutators.NotNullConstraintMutator;
 import org.schemaanalyst.mutation.mutators.PrimaryKeyConstraintMutator;
 import org.schemaanalyst.mutation.mutators.UniqueConstraintMutator;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 /**
  *

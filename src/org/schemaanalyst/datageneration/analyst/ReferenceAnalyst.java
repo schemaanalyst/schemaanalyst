@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 
 public class ReferenceAnalyst extends ConstraintAnalyst {
 

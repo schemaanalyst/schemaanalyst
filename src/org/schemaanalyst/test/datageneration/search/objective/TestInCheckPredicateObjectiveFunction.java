@@ -12,7 +12,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.constraint.InCheckPredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.schema.InCheckPredicate;
+import org.schemaanalyst.representation.expression.InExpression;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
@@ -26,7 +26,7 @@ public class TestInCheckPredicateObjectiveFunction {
 	
 	boolean satisfy;
 	InCheckPredicateObjectiveFunction objFun;
-	InCheckPredicate inPredicate;
+	InExpression inPredicate;
 	
 	public TestInCheckPredicateObjectiveFunction() {
 		// set up database		
@@ -36,7 +36,7 @@ public class TestInCheckPredicateObjectiveFunction {
 	
 	void setup(boolean satisfy, int... values) {
 		this.satisfy = satisfy;
-		this.inPredicate = new InCheckPredicate(database.column, values);
+		this.inPredicate = new InExpression(database.column, values);
 		this.objFun = new InCheckPredicateObjectiveFunction(inPredicate, database.table, null, "", satisfy, false);
 	}
 	

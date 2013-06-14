@@ -1,12 +1,12 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class Products extends Schema {
 
@@ -31,21 +31,21 @@ public class Products extends Schema {
 
 		Table productsTable = createTable( "products");
 
-		Column productNo = productsTable .addColumn("product_no" , new IntegerColumnType());
+		Column productNo = productsTable .addColumn("product_no" , new IntDataType());
 		productNo.setNotNull();
 		productsTable.setPrimaryKeyConstraint(productNo);
 		
-		Column name = productsTable .addColumn("name" , new VarCharColumnType(100));
+		Column name = productsTable .addColumn("name" , new VarCharDataType(100));
 		name.setNotNull();
 		
-		Column price = productsTable .addColumn("price" , new NumericColumnType(100));
+		Column price = productsTable .addColumn("price" , new NumericDataType(100));
 		price.setNotNull();
-		productsTable.addCheckConstraint(new RelationalCheckPredicate(price, ">", 0));
+		productsTable.addCheckConstraint(new RelationalExpression(price, ">", 0));
 
-		Column discounted_price = productsTable .addColumn("discounted_price" , new NumericColumnType(100));
+		Column discounted_price = productsTable .addColumn("discounted_price" , new NumericDataType(100));
 		discounted_price.setNotNull();
-		productsTable.addCheckConstraint(new RelationalCheckPredicate(discounted_price, ">", 0));
-		productsTable.addCheckConstraint(new RelationalCheckPredicate(price , ">" , discounted_price));
+		productsTable.addCheckConstraint(new RelationalExpression(discounted_price, ">", 0));
+		productsTable.addCheckConstraint(new RelationalExpression(price , ">" , discounted_price));
 
 		/*
 
@@ -58,11 +58,11 @@ public class Products extends Schema {
 
 		Table ordersTable = createTable( "orders");
 		
-		Column orderId = ordersTable .addColumn("order_id" , new IntegerColumnType());
+		Column orderId = ordersTable .addColumn("order_id" , new IntDataType());
 		ordersTable.setPrimaryKeyConstraint(orderId);
 
 		@SuppressWarnings("unused")
-		Column shippingAddress = ordersTable .addColumn("shipping_addres" , new VarCharColumnType(100));
+		Column shippingAddress = ordersTable .addColumn("shipping_addres" , new VarCharDataType(100));
 				
 		/*
 
@@ -78,17 +78,17 @@ public class Products extends Schema {
 
 		Table orderItemsTable = createTable( "order_items");
 
-		Column productNumber = orderItemsTable .addColumn("product_no" , new IntegerColumnType());
+		Column productNumber = orderItemsTable .addColumn("product_no" , new IntDataType());
 		productNumber.setForeignKey(productsTable, productNo);
 
-		Column orderIdAgain = orderItemsTable .addColumn("order_id" , new IntegerColumnType());
+		Column orderIdAgain = orderItemsTable .addColumn("order_id" , new IntDataType());
 		orderIdAgain.setForeignKey(ordersTable, orderId);
 
-		Column quantity = orderItemsTable .addColumn("quantity" , new IntegerColumnType());
+		Column quantity = orderItemsTable .addColumn("quantity" , new IntDataType());
 		quantity.setNotNull();
 		
 		orderItemsTable.setPrimaryKeyConstraint(productNumber, orderIdAgain);
-		orderItemsTable.addCheckConstraint(new RelationalCheckPredicate(quantity, ">", 0));
+		orderItemsTable.addCheckConstraint(new RelationalExpression(quantity, ">", 0));
 				
 	}
 }

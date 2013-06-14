@@ -11,10 +11,10 @@ import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 import java.io.File;
 
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.ColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.DataType;
 
 public class SchemaParser {
 	
@@ -35,7 +35,7 @@ public class SchemaParser {
 	}
 	
 	private void instantiateParser(Database database) {
-		sqlParser = new TGSqlParser(VendorMapper.resolve(database));
+		sqlParser = new TGSqlParser(VendorResolver.resolve(database));
 	}
 		
 	private Schema performParse(String name) {	
@@ -63,13 +63,13 @@ public class SchemaParser {
 		Column currentColumn;	
 		
 		DataTypeMapper dataTypeMapper;
-		ConstraintMapper constraintMapper;
+		ConstraintInstaller constraintMapper;
 		
 		SchemaParseTreeVisitor(Schema schema) {
 			this.schema = schema;		
 		
 			dataTypeMapper = new DataTypeMapper();
-			constraintMapper = new ConstraintMapper(schema);
+			constraintMapper = new ConstraintInstaller(schema);
 		}
 		
 		
@@ -90,7 +90,7 @@ public class SchemaParser {
 		// **** COLUMNS ****    
 	    public void preVisit(TColumnDefinition node) {
 	    	String name = node.getColumnName().toString();    	
-	    	ColumnType type = dataTypeMapper.resolve(node.getDatatype());	    	
+	    	DataType type = dataTypeMapper.getDataType(node.getDatatype());	    	
 	    	currentColumn = currentTable.addColumn(name, type);
 	    	
 	    	if (DEBUG) {

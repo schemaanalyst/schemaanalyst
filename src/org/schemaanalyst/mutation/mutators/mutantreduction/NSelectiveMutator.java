@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 /**
  * Similar to Offut1993 style of selective mutation, when the n most productive

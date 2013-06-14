@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Table;
 import org.schemaanalyst.util.Duplicable;
 
 /**

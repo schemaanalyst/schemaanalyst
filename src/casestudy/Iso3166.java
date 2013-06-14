@@ -1,10 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class Iso3166 extends Schema {
 
@@ -25,13 +25,13 @@ public class Iso3166 extends Schema {
 
 		Table countryTable = createTable( "country");
 
-		Column name = countryTable .addColumn("name" , new VarCharColumnType(100));
+		Column name = countryTable .addColumn("name" , new VarCharDataType(100));
 		name.setNotNull();
 		
-		Column twoLetter = countryTable .addColumn("two_letter" , new VarCharColumnType(100));
+		Column twoLetter = countryTable .addColumn("two_letter" , new VarCharDataType(100));
 		twoLetter.setPrimaryKey();
 		
-		Column countryId = countryTable .addColumn("country_id" , new IntegerColumnType());
+		Column countryId = countryTable .addColumn("country_id" , new IntDataType());
 		countryId.setNotNull();
 	}
 }

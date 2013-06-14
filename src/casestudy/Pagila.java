@@ -1,7 +1,9 @@
 package casestudy;
 
-import org.schemaanalyst.schema.*;
-import org.schemaanalyst.schema.columntype.*;
+import org.schemaanalyst.representation.*;
+import org.schemaanalyst.representation.datatype.*;
+import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 /**
  *
@@ -26,17 +28,17 @@ public class Pagila extends Schema {
         
         Table actor = createTable("actor");
         
-        Column actor_actor_id = actor.addColumn("actor_id", new IntColumnType());
+        Column actor_actor_id = actor.addColumn("actor_id", new IntDataType());
         actor_actor_id.setNotNull();
         actor_actor_id.setPrimaryKey();
         
-        Column actor_first_name = actor.addColumn("first_name", new VarCharColumnType(45));
+        Column actor_first_name = actor.addColumn("first_name", new VarCharDataType(45));
         actor_first_name.setNotNull();
         
-        Column actor_last_name = actor.addColumn("last_name", new VarCharColumnType(45));
+        Column actor_last_name = actor.addColumn("last_name", new VarCharDataType(45));
         actor_last_name.setNotNull();
         
-        Column actor_last_update = actor.addColumn("last_update", new TimestampColumnType());
+        Column actor_last_update = actor.addColumn("last_update", new TimestampDataType());
         actor_last_update.setNotNull();
         
         /*
@@ -49,14 +51,14 @@ public class Pagila extends Schema {
         
         Table category = createTable("category");
         
-        Column category_category_id = category.addColumn("category_id", new IntColumnType());
+        Column category_category_id = category.addColumn("category_id", new IntDataType());
         category_category_id.setNotNull();
         category_category_id.setPrimaryKey();
         
-        Column category_name = category.addColumn("name", new VarCharColumnType(25));
+        Column category_name = category.addColumn("name", new VarCharDataType(25));
         category_name.setNotNull();
         
-        Column category_last_update = category.addColumn("last_update", new TimestampColumnType());
+        Column category_last_update = category.addColumn("last_update", new TimestampDataType());
         category_last_update.setNotNull();
         
         /*
@@ -80,47 +82,47 @@ public class Pagila extends Schema {
         
         Table film = createTable("film");
         
-        Column film_film_id = film.addColumn("film_id", new IntColumnType());
+        Column film_film_id = film.addColumn("film_id", new IntDataType());
         film_film_id.setNotNull();
         film_film_id.setPrimaryKey();
         
-        Column film_title = film.addColumn("title", new VarCharColumnType(255));
+        Column film_title = film.addColumn("title", new VarCharDataType(255));
         film_title.setNotNull();
         
-        Column film_description = film.addColumn("description", new TextColumnType());
+        Column film_description = film.addColumn("description", new TextDataType());
         
-        Column film_release_year = film.addColumn("release_year", new IntColumnType());
-        film.addCheckConstraint(new RelationalCheckPredicate(film_release_year, ">=", 1901));
-        film.addCheckConstraint(new RelationalCheckPredicate(film_release_year, "<=", 2155));
+        Column film_release_year = film.addColumn("release_year", new IntDataType());
+        film.addCheckConstraint(new RelationalExpression(film_release_year, ">=", 1901));
+        film.addCheckConstraint(new RelationalExpression(film_release_year, "<=", 2155));
         
-        Column film_language_id = film.addColumn("language_id", new SmallIntColumnType());
+        Column film_language_id = film.addColumn("language_id", new SmallIntDataType());
         film_language_id.setNotNull();
         
-        Column film_original_language_id = film.addColumn("original_language_id", new SmallIntColumnType());
+        Column film_original_language_id = film.addColumn("original_language_id", new SmallIntDataType());
         
-        Column film_rental_duration = film.addColumn("rental_duration", new SmallIntColumnType());
+        Column film_rental_duration = film.addColumn("rental_duration", new SmallIntDataType());
         film_rental_duration.setNotNull();
         
-        Column film_rental_rate = film.addColumn("rental_rate", new NumericColumnType(4,2));
+        Column film_rental_rate = film.addColumn("rental_rate", new NumericDataType(4,2));
         film_rental_rate.setNotNull();
         
-        Column film_length = film.addColumn("length", new SmallIntColumnType());
+        Column film_length = film.addColumn("length", new SmallIntDataType());
         
-        Column film_replacement_cost = film.addColumn("replacement_cost", new NumericColumnType(5,2));
+        Column film_replacement_cost = film.addColumn("replacement_cost", new NumericDataType(5,2));
         film_replacement_cost.setNotNull();
         
         //TODO: check for better type match for SQL 'ENUM'
-        Column film_rating = film.addColumn("rating", new CharColumnType(5));
-        film.addCheckConstraint(new InCheckPredicate(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
+        Column film_rating = film.addColumn("rating", new CharDataType(5));
+        film.addCheckConstraint(new InExpression(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
         
-        Column film_last_update = film.addColumn("last_update", new TimestampColumnType());
+        Column film_last_update = film.addColumn("last_update", new TimestampDataType());
         film_last_update.setNotNull();
         
         //TODO: check for better type match for SQL 'text[]'
-        Column film_special_features = film.addColumn("special_features", new TextColumnType());
+        Column film_special_features = film.addColumn("special_features", new TextDataType());
         
         //TODO: check for better type match for SQL 'tsvector'
-        Column fulltext = film.addColumn("fulltext", new TextColumnType());
+        Column fulltext = film.addColumn("fulltext", new TextDataType());
         
         /*
             CREATE TABLE film_actor (
@@ -132,13 +134,13 @@ public class Pagila extends Schema {
         
         Table film_actor = createTable("film_actor");
         
-        Column film_actor_actor_id = film_actor.addColumn("actor_id", new SmallIntColumnType());
+        Column film_actor_actor_id = film_actor.addColumn("actor_id", new SmallIntDataType());
         film_actor_actor_id.setNotNull();
         
-        Column film_actor_film_id = film_actor.addColumn("film_id", new SmallIntColumnType());
+        Column film_actor_film_id = film_actor.addColumn("film_id", new SmallIntDataType());
         film_actor_film_id.setNotNull();
         
-        Column film_actor_last_update = film_actor.addColumn("last_update", new TimestampColumnType());
+        Column film_actor_last_update = film_actor.addColumn("last_update", new TimestampDataType());
         film_actor_last_update.setNotNull();
         
         film_actor.setPrimaryKeyConstraint(film_actor_actor_id, film_actor_film_id);
@@ -153,13 +155,13 @@ public class Pagila extends Schema {
         
         Table film_category = createTable("film_category");
         
-        Column film_category_film_id = film_category.addColumn("film_id", new SmallIntColumnType());
+        Column film_category_film_id = film_category.addColumn("film_id", new SmallIntDataType());
         film_category_film_id.setNotNull();
         
-        Column film_category_category_id = film_category.addColumn("category_id", new SmallIntColumnType());
+        Column film_category_category_id = film_category.addColumn("category_id", new SmallIntDataType());
         film_category_category_id.setNotNull();
         
-        Column film_category_last_update = film_category.addColumn("last_update", new TimestampColumnType());
+        Column film_category_last_update = film_category.addColumn("last_update", new TimestampDataType());
         film_category_last_update.setNotNull();
         
         film_category.setPrimaryKeyConstraint(film_category_film_id, film_category_category_id);
@@ -179,27 +181,27 @@ public class Pagila extends Schema {
         
         Table address = createTable("address");
         
-        Column address_address_id = address.addColumn("address_id", new IntColumnType());
+        Column address_address_id = address.addColumn("address_id", new IntDataType());
         address_address_id.setNotNull();
         address_address_id.setPrimaryKey();
         
-        Column address_address = address.addColumn("address", new VarCharColumnType(50));
+        Column address_address = address.addColumn("address", new VarCharDataType(50));
         address_address.setNotNull();
         
-        Column address_address2 = address.addColumn("address2", new VarCharColumnType(50));
+        Column address_address2 = address.addColumn("address2", new VarCharDataType(50));
         
-        Column address_district = address.addColumn("district", new VarCharColumnType(20));
+        Column address_district = address.addColumn("district", new VarCharDataType(20));
         address_district.setNotNull();
         
-        Column address_city_id = address.addColumn("city_id", new SmallIntColumnType());
+        Column address_city_id = address.addColumn("city_id", new SmallIntDataType());
         address_city_id.setNotNull();
         
-        Column address_postal_code = address.addColumn("postal_code", new VarCharColumnType(10));
+        Column address_postal_code = address.addColumn("postal_code", new VarCharDataType(10));
         
-        Column address_phone = address.addColumn("phone", new VarCharColumnType(20));
+        Column address_phone = address.addColumn("phone", new VarCharDataType(20));
         address_phone.setNotNull();
         
-        Column address_last_update = address.addColumn("last_update", new TimestampColumnType());
+        Column address_last_update = address.addColumn("last_update", new TimestampDataType());
         address_last_update.setNotNull();
         
         /*
@@ -213,17 +215,17 @@ public class Pagila extends Schema {
         
         Table city = createTable("city");
         
-        Column city_city_id = city.addColumn("city_id", new IntColumnType());
+        Column city_city_id = city.addColumn("city_id", new IntDataType());
         city_city_id.setNotNull();
         city_city_id.setPrimaryKey();
         
-        Column city_city = city.addColumn("city", new VarCharColumnType(50));
+        Column city_city = city.addColumn("city", new VarCharDataType(50));
         city_city.setNotNull();
         
-        Column city_country_id = city.addColumn("country_id", new SmallIntColumnType());
+        Column city_country_id = city.addColumn("country_id", new SmallIntDataType());
         city_country_id.setNotNull();
         
-        Column city_last_update = city.addColumn("last_update", new TimestampColumnType());
+        Column city_last_update = city.addColumn("last_update", new TimestampDataType());
         city_last_update.setNotNull();
         
         /*
@@ -236,14 +238,14 @@ public class Pagila extends Schema {
         
         Table country = createTable("country");
         
-        Column country_country_id = country.addColumn("country_id", new IntColumnType());
+        Column country_country_id = country.addColumn("country_id", new IntDataType());
         country_country_id.setNotNull();
         country_country_id.setPrimaryKey();
         
-        Column country_country = country.addColumn("country", new VarCharColumnType(50));
+        Column country_country = country.addColumn("country", new VarCharDataType(50));
         country_country.setNotNull();
         
-        Column country_last_update = country.addColumn("last_update", new TimestampColumnType());
+        Column country_last_update = country.addColumn("last_update", new TimestampDataType());
         country_last_update.setNotNull();
         
         /*
@@ -263,34 +265,34 @@ public class Pagila extends Schema {
         
         Table customer = createTable("customer");
         
-        Column customer_customer_id = customer.addColumn("customer_id", new IntColumnType());
+        Column customer_customer_id = customer.addColumn("customer_id", new IntDataType());
         customer_customer_id.setNotNull();
         customer_customer_id.setPrimaryKey();
         
-        Column customer_store_id = customer.addColumn("store_id", new SmallIntColumnType());
+        Column customer_store_id = customer.addColumn("store_id", new SmallIntDataType());
         customer_store_id.setNotNull();
         
-        Column customer_first_name = customer.addColumn("first_name", new VarCharColumnType(45));
+        Column customer_first_name = customer.addColumn("first_name", new VarCharDataType(45));
         customer_first_name.setNotNull();
         
-        Column customer_last_name = customer.addColumn("last_name", new VarCharColumnType(45));
+        Column customer_last_name = customer.addColumn("last_name", new VarCharDataType(45));
         customer_last_name.setNotNull();
         
-        Column customer_email = customer.addColumn("email", new VarCharColumnType(50));
+        Column customer_email = customer.addColumn("email", new VarCharDataType(50));
         
-        Column customer_address_id = customer.addColumn("address_id", new SmallIntColumnType());
+        Column customer_address_id = customer.addColumn("address_id", new SmallIntDataType());
         customer_address_id.setNotNull();
         
-        Column customer_activebool = customer.addColumn("activebool", new org.schemaanalyst.schema.columntype.BooleanColumnType());
+        Column customer_activebool = customer.addColumn("activebool", new org.schemaanalyst.representation.datatype.BooleanDataType());
         customer_activebool.setNotNull();
         
-        Column customer_create_date = customer.addColumn("create_date", new DateColumnType());
+        Column customer_create_date = customer.addColumn("create_date", new DateDataType());
         customer_create_date.setNotNull();
         
-        Column customer_last_update = customer.addColumn("last_update", new TimestampColumnType());
+        Column customer_last_update = customer.addColumn("last_update", new TimestampDataType());
         customer_last_update.setNotNull();
         
-        Column customer_active = customer.addColumn("active", new IntColumnType());
+        Column customer_active = customer.addColumn("active", new IntDataType());
         
         /*
             CREATE TABLE inventory (
@@ -303,17 +305,17 @@ public class Pagila extends Schema {
         
         Table inventory = createTable("inventory");
         
-        Column inventory_inventory_id = inventory.addColumn("inventory_id", new IntColumnType());
+        Column inventory_inventory_id = inventory.addColumn("inventory_id", new IntDataType());
         inventory_inventory_id.setNotNull();
         inventory_inventory_id.setPrimaryKey();
         
-        Column inventory_film_id = inventory.addColumn("film_id", new SmallIntColumnType());
+        Column inventory_film_id = inventory.addColumn("film_id", new SmallIntDataType());
         inventory_film_id.setNotNull();
         
-        Column inventory_store_id = inventory.addColumn("store_id", new SmallIntColumnType());
+        Column inventory_store_id = inventory.addColumn("store_id", new SmallIntDataType());
         inventory_store_id.setNotNull();
         
-        Column inventory_last_update = inventory.addColumn("last_update", new TimestampColumnType());
+        Column inventory_last_update = inventory.addColumn("last_update", new TimestampDataType());
         inventory_last_update.setNotNull();
         
         /*
@@ -326,14 +328,14 @@ public class Pagila extends Schema {
         
         Table language = createTable("language");
         
-        Column language_language_id = language.addColumn("language_id", new IntColumnType());
+        Column language_language_id = language.addColumn("language_id", new IntDataType());
         language_language_id.setNotNull();
         language_language_id.setPrimaryKey();
         
-        Column language_name = language.addColumn("name", new CharColumnType(20));
+        Column language_name = language.addColumn("name", new CharDataType(20));
         language_name.setNotNull();
         
-        Column language_last_update = language.addColumn("last_update", new TimestampColumnType());
+        Column language_last_update = language.addColumn("last_update", new TimestampDataType());
         language_last_update.setNotNull();
         
         /*
@@ -449,26 +451,26 @@ public class Pagila extends Schema {
         
         Table rental = createTable("rental");
         
-        Column rental_rental_id = rental.addColumn("rental_id", new IntColumnType());
+        Column rental_rental_id = rental.addColumn("rental_id", new IntDataType());
         rental_rental_id.setNotNull();
         rental_rental_id.setPrimaryKey();
         
-        Column rental_rental_date = rental.addColumn("rental_date", new TimestampColumnType());
+        Column rental_rental_date = rental.addColumn("rental_date", new TimestampDataType());
         rental_rental_date.setNotNull();
         
-        Column rental_inventory_id = rental.addColumn("inventory_id", new IntColumnType());
+        Column rental_inventory_id = rental.addColumn("inventory_id", new IntDataType());
         rental_inventory_id.setNotNull();
         
-        Column rental_customer_id = rental.addColumn("customer_id", new SmallIntColumnType());
+        Column rental_customer_id = rental.addColumn("customer_id", new SmallIntDataType());
         rental_customer_id.setNotNull();
         
-        Column rental_return_date = rental.addColumn("return_date", new TimestampColumnType());
+        Column rental_return_date = rental.addColumn("return_date", new TimestampDataType());
         rental_return_date.setNotNull();
         
-        Column rental_staff_id = rental.addColumn("staff_id", new SmallIntColumnType());
+        Column rental_staff_id = rental.addColumn("staff_id", new SmallIntDataType());
         rental_staff_id.setNotNull();
         
-        Column rental_last_update = rental.addColumn("last_update", new TimestampColumnType());
+        Column rental_last_update = rental.addColumn("last_update", new TimestampDataType());
         rental_last_update.setNotNull();
         
         /*
@@ -489,33 +491,33 @@ public class Pagila extends Schema {
         
         Table staff = createTable("staff");
         
-        Column staff_staff_id = staff.addColumn("staff_id", new IntColumnType());
+        Column staff_staff_id = staff.addColumn("staff_id", new IntDataType());
         staff_staff_id.setNotNull();
         staff_staff_id.setPrimaryKey();
         
-        Column staff_first_name = staff.addColumn("first_name", new VarCharColumnType(45));
+        Column staff_first_name = staff.addColumn("first_name", new VarCharDataType(45));
         staff_first_name.setNotNull();
         
-        Column staff_last_name = staff.addColumn("last_name", new VarCharColumnType(45));
+        Column staff_last_name = staff.addColumn("last_name", new VarCharDataType(45));
         staff_last_name.setNotNull();
         
-        Column staff_address_id = staff.addColumn("address_id", new SmallIntColumnType());
+        Column staff_address_id = staff.addColumn("address_id", new SmallIntDataType());
         staff_address_id.setNotNull();
         
-        Column staff_email = staff.addColumn("email", new VarCharColumnType(50));
+        Column staff_email = staff.addColumn("email", new VarCharDataType(50));
         
-        Column staff_store_id = staff.addColumn("store_id", new SmallIntColumnType());
+        Column staff_store_id = staff.addColumn("store_id", new SmallIntDataType());
         staff_store_id.setNotNull();
         
-        Column staff_active = staff.addColumn("active", new org.schemaanalyst.schema.columntype.BooleanColumnType());
+        Column staff_active = staff.addColumn("active", new org.schemaanalyst.representation.datatype.BooleanDataType());
         staff_active.setNotNull();
         
-        Column staff_username = staff.addColumn("username", new VarCharColumnType(16));
+        Column staff_username = staff.addColumn("username", new VarCharDataType(16));
         staff_username.setNotNull();
         
-        Column staff_password = staff.addColumn("password", new VarCharColumnType(40));
+        Column staff_password = staff.addColumn("password", new VarCharDataType(40));
         
-        Column staff_last_update = staff.addColumn("last_update", new TimestampColumnType());
+        Column staff_last_update = staff.addColumn("last_update", new TimestampDataType());
         staff_last_update.setNotNull();
         
         //TODO: check for suitable type for SQL 'bytea'
@@ -532,17 +534,17 @@ public class Pagila extends Schema {
         
         Table store = createTable("store");
         
-        Column store_store_id = store.addColumn("store_id", new IntColumnType());
+        Column store_store_id = store.addColumn("store_id", new IntDataType());
         store_store_id.setNotNull();
         store_store_id.setPrimaryKey();
         
-        Column store_manager_staff_id = store.addColumn("manager_staff_id", new SmallIntColumnType());
+        Column store_manager_staff_id = store.addColumn("manager_staff_id", new SmallIntDataType());
         store_manager_staff_id.setNotNull();
         
-        Column store_address_id = store.addColumn("address_id", new SmallIntColumnType());
+        Column store_address_id = store.addColumn("address_id", new SmallIntDataType());
         store_address_id.setNotNull();
         
-        Column store_last_update = store.addColumn("last_update", new TimestampColumnType());
+        Column store_last_update = store.addColumn("last_update", new TimestampDataType());
         store_last_update.setNotNull();
         
         /*
@@ -751,23 +753,23 @@ public class Pagila extends Schema {
     }
     
     private void setupPayment(Table table) {
-        Column payment_payment_id = table.addColumn("payment_id", new IntColumnType());
+        Column payment_payment_id = table.addColumn("payment_id", new IntDataType());
         payment_payment_id.setNotNull();
         payment_payment_id.setPrimaryKey();
         
-        Column payment_customer_id = table.addColumn("customer_id", new SmallIntColumnType());
+        Column payment_customer_id = table.addColumn("customer_id", new SmallIntDataType());
         payment_customer_id.setNotNull();
         
-        Column payment_staff_id = table.addColumn("staff_id", new SmallIntColumnType());
+        Column payment_staff_id = table.addColumn("staff_id", new SmallIntDataType());
         payment_staff_id.setNotNull();
         
-        Column payment_rental_id = table.addColumn("rental_id", new IntColumnType());
+        Column payment_rental_id = table.addColumn("rental_id", new IntDataType());
         payment_rental_id.setNotNull();
         
-        Column payment_amount = table.addColumn("amount", new NumericColumnType(5,2));
+        Column payment_amount = table.addColumn("amount", new NumericDataType(5,2));
         payment_amount.setNotNull();
         
-        Column payment_payment_date = table.addColumn("payment_date", new TimestampColumnType());
+        Column payment_payment_date = table.addColumn("payment_date", new TimestampDataType());
         payment_payment_date.setNotNull();
     }
 

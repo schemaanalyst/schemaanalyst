@@ -17,10 +17,10 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizationProfiles;
 import org.schemaanalyst.datageneration.domainspecific.ReferenceHandler;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.util.random.SimpleRandom;
 
 public class TestReferenceHandler {
@@ -41,15 +41,15 @@ public class TestReferenceHandler {
 		
 		Schema schema = new Schema("test_schema");
 		Table table = schema.createTable("test_table");
-		column1 = table.addColumn("test_column1", new IntColumnType());
-		column2 = table.addColumn("test_column2", new IntColumnType());
+		column1 = table.addColumn("test_column1", new IntDataType());
+		column2 = table.addColumn("test_column2", new IntDataType());
 		columns = new ArrayList<>();
 		columns.add(column1);
 		columns.add(column2);
 		
 		Table refTable = schema.createTable("ref_table");
-		refColumn1 = refTable.addColumn("ref_column1", new IntColumnType());
-		refColumn2 = refTable.addColumn("ref_column2", new IntColumnType());
+		refColumn1 = refTable.addColumn("ref_column1", new IntDataType());
+		refColumn2 = refTable.addColumn("ref_column2", new IntDataType());
 		refColumns = new ArrayList<>();
 		refColumns.add(refColumn1);
 		refColumns.add(refColumn2);		

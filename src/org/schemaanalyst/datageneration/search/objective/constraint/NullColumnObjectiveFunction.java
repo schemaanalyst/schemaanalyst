@@ -7,7 +7,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 
 public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
 	

@@ -1,14 +1,11 @@
 package casestudy;
 
-import casestudy.runner.InstantiateSchema;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.DateColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.DateDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class DellStore extends Schema {
 
@@ -31,8 +28,8 @@ public class DellStore extends Schema {
 		
 		Table categoriesTable = createTable("categories");
 		
-		Column categoryColumn = categoriesTable.addColumn("category", new IntColumnType());
-		Column categoryNameColumn = categoriesTable.addColumn("categoryname", new VarCharColumnType(50));
+		Column categoryColumn = categoriesTable.addColumn("category", new IntDataType());
+		Column categoryNameColumn = categoriesTable.addColumn("categoryname", new VarCharDataType(50));
 		    
 		categoryColumn.setNotNull();
 		categoryNameColumn.setNotNull();
@@ -49,9 +46,9 @@ public class DellStore extends Schema {
 
 		Table custHistTable = createTable("cust_hist");
 		
-		Column customerIdColumn = custHistTable.addColumn("customerid", new IntegerColumnType());
-		Column orderIdColumn = custHistTable.addColumn("orderid", new IntegerColumnType());
-		Column prodIdColumn = custHistTable.addColumn("prodid", new IntegerColumnType());
+		Column customerIdColumn = custHistTable.addColumn("customerid", new IntDataType());
+		Column orderIdColumn = custHistTable.addColumn("orderid", new IntDataType());
+		Column prodIdColumn = custHistTable.addColumn("prodid", new IntDataType());
 
 		customerIdColumn.setNotNull();
 		orderIdColumn.setNotNull();
@@ -87,27 +84,27 @@ public class DellStore extends Schema {
 		
 		Table customersTable = createTable("customers");
 
-		Column customerIdCustHistColumn = customersTable.addColumn("customerid" , new IntegerColumnType());
-		Column firstNameColumn = customersTable.addColumn("firstname", new VarCharColumnType(50));
-		Column lastNameColumn = customersTable.addColumn("lastname", new VarCharColumnType(50));
-		Column addressOneColumn = customersTable.addColumn("address1", new VarCharColumnType(50));
-		Column addressTwoColumn = customersTable.addColumn("address2", new VarCharColumnType(50));
-		Column cityColumn = customersTable.addColumn("city", new VarCharColumnType(50));
-		Column stateColumn = customersTable.addColumn("state", new VarCharColumnType(50));
-		Column zipColumn = customersTable.addColumn("zip" , new IntegerColumnType());
-		Column countryColumn = customersTable.addColumn("country", new VarCharColumnType(50));
-		Column regionColumn = customersTable.addColumn("region", new IntegerColumnType());
-		Column emailColumn = customersTable.addColumn("email", new VarCharColumnType(50));
-		Column phoneColumn = customersTable.addColumn("phone", new VarCharColumnType(50));
-		Column creditCardTypeColumn = customersTable.addColumn("creditcardtype", new VarCharColumnType(50));
-		Column creditCardColumn = customersTable.addColumn("creditcard", new VarCharColumnType(50));
+		Column customerIdCustHistColumn = customersTable.addColumn("customerid" , new IntDataType());
+		Column firstNameColumn = customersTable.addColumn("firstname", new VarCharDataType(50));
+		Column lastNameColumn = customersTable.addColumn("lastname", new VarCharDataType(50));
+		Column addressOneColumn = customersTable.addColumn("address1", new VarCharDataType(50));
+		Column addressTwoColumn = customersTable.addColumn("address2", new VarCharDataType(50));
+		Column cityColumn = customersTable.addColumn("city", new VarCharDataType(50));
+		Column stateColumn = customersTable.addColumn("state", new VarCharDataType(50));
+		Column zipColumn = customersTable.addColumn("zip" , new IntDataType());
+		Column countryColumn = customersTable.addColumn("country", new VarCharDataType(50));
+		Column regionColumn = customersTable.addColumn("region", new IntDataType());
+		Column emailColumn = customersTable.addColumn("email", new VarCharDataType(50));
+		Column phoneColumn = customersTable.addColumn("phone", new VarCharDataType(50));
+		Column creditCardTypeColumn = customersTable.addColumn("creditcardtype", new VarCharDataType(50));
+		Column creditCardColumn = customersTable.addColumn("creditcard", new VarCharDataType(50));
 		Column creditCardExpirationColumn = customersTable.addColumn("creditcardexpiration", 
-							       new VarCharColumnType(50));
-		Column usernameColumn = customersTable.addColumn("username", new VarCharColumnType(50));
-		Column passwordColumn = customersTable.addColumn("password", new VarCharColumnType(50));
-		Column ageColumn = customersTable.addColumn("age", new IntegerColumnType());
-		Column incomeColumn = customersTable.addColumn("income", new IntegerColumnType());
-		Column genderColumn = customersTable.addColumn("gender", new VarCharColumnType(1));
+							       new VarCharDataType(50));
+		Column usernameColumn = customersTable.addColumn("username", new VarCharDataType(50));
+		Column passwordColumn = customersTable.addColumn("password", new VarCharDataType(50));
+		Column ageColumn = customersTable.addColumn("age", new IntDataType());
+		Column incomeColumn = customersTable.addColumn("income", new IntDataType());
+		Column genderColumn = customersTable.addColumn("gender", new VarCharDataType(1));
 
 		customerIdColumn.setNotNull();
 		firstNameColumn.setNotNull();
@@ -135,9 +132,9 @@ public class DellStore extends Schema {
 
 		Table inventoryTable = createTable("inventory");
 		
-		Column prodIdInventoryColumn = inventoryTable.addColumn("prod_id" , new IntegerColumnType());
-		Column quanInStockColumn = inventoryTable.addColumn("quan_in_stock" , new IntegerColumnType());
-		Column salesColumn = inventoryTable.addColumn("sales", new IntegerColumnType());
+		Column prodIdInventoryColumn = inventoryTable.addColumn("prod_id" , new IntDataType());
+		Column quanInStockColumn = inventoryTable.addColumn("quan_in_stock" , new IntDataType());
+		Column salesColumn = inventoryTable.addColumn("sales", new IntDataType());
 		
 		prodIdInventoryColumn.setNotNull();
 		quanInStockColumn.setNotNull();
@@ -157,11 +154,11 @@ public class DellStore extends Schema {
 
 		Table orderLinesTable = createTable("orderlines");
 		
-		Column orderLineIdColumn = orderLinesTable.addColumn("orderlineid" , new IntegerColumnType());
-		Column orderIdOrderLinesColumn = orderLinesTable.addColumn("orderid" , new IntegerColumnType());
-		Column prodIdOrderLinesColumn = orderLinesTable.addColumn("prod_id" , new IntegerColumnType());
-		Column quantityColumn = orderLinesTable.addColumn("quantity" , new IntegerColumnType());
-		Column dateColumn = orderLinesTable.addColumn("orderdate" , new DateColumnType());
+		Column orderLineIdColumn = orderLinesTable.addColumn("orderlineid" , new IntDataType());
+		Column orderIdOrderLinesColumn = orderLinesTable.addColumn("orderid" , new IntDataType());
+		Column prodIdOrderLinesColumn = orderLinesTable.addColumn("prod_id" , new IntDataType());
+		Column quantityColumn = orderLinesTable.addColumn("quantity" , new IntDataType());
+		Column dateColumn = orderLinesTable.addColumn("orderdate" , new DateDataType());
 
                 orderLineIdColumn.setNotNull();
                 orderIdOrderLinesColumn.setNotNull();
@@ -184,12 +181,12 @@ public class DellStore extends Schema {
 
 		Table ordersTable = createTable("orders");
 
-		Column orderIdOrdersColumn = ordersTable.addColumn("orderid" , new IntegerColumnType());
-		Column orderDateColumn = ordersTable.addColumn("orderdate" , new DateColumnType());
-		Column customerIdOrdersColumn = ordersTable.addColumn("customerid" , new IntegerColumnType());
-		Column netAmountColumn = ordersTable.addColumn("netamount" , new IntegerColumnType());
-		Column taxColumn = ordersTable.addColumn("tax" , new IntegerColumnType());
-		Column totalAmountColumn = ordersTable.addColumn("totalamount" , new IntegerColumnType());
+		Column orderIdOrdersColumn = ordersTable.addColumn("orderid" , new IntDataType());
+		Column orderDateColumn = ordersTable.addColumn("orderdate" , new DateDataType());
+		Column customerIdOrdersColumn = ordersTable.addColumn("customerid" , new IntDataType());
+		Column netAmountColumn = ordersTable.addColumn("netamount" , new IntDataType());
+		Column taxColumn = ordersTable.addColumn("tax" , new IntDataType());
+		Column totalAmountColumn = ordersTable.addColumn("totalamount" , new IntDataType());
 		
 		orderIdOrdersColumn.setNotNull();
 		orderDateColumn.setNotNull();
@@ -213,13 +210,13 @@ public class DellStore extends Schema {
 
 		Table productsTable = createTable("products");
 		
-		Column prodIdProductsColumn = productsTable.addColumn("prod_id" , new IntegerColumnType());
-		Column categoryProductsColumn = productsTable.addColumn("category" , new IntegerColumnType());
-		Column titleColumn = productsTable.addColumn("title" , new VarCharColumnType(50));
-		Column actorColumn = productsTable.addColumn("actor", new VarCharColumnType(50));
-		Column priceColumn = productsTable.addColumn("price", new IntegerColumnType());
-		Column specialColumn = productsTable.addColumn("special" , new IntegerColumnType());
-		Column commonProdIdColumn = productsTable.addColumn("commmon_prod_id" , new IntegerColumnType());
+		Column prodIdProductsColumn = productsTable.addColumn("prod_id" , new IntDataType());
+		Column categoryProductsColumn = productsTable.addColumn("category" , new IntDataType());
+		Column titleColumn = productsTable.addColumn("title" , new VarCharDataType(50));
+		Column actorColumn = productsTable.addColumn("actor", new VarCharDataType(50));
+		Column priceColumn = productsTable.addColumn("price", new IntDataType());
+		Column specialColumn = productsTable.addColumn("special" , new IntDataType());
+		Column commonProdIdColumn = productsTable.addColumn("commmon_prod_id" , new IntDataType());
 		
 		prodIdProductsColumn.setNotNull();
 		categoryProductsColumn.setNotNull();
@@ -243,12 +240,12 @@ public class DellStore extends Schema {
 
 		Table reorderTable = createTable( "reorder");
 		
-		Column prodIdReorderColumn = reorderTable.addColumn("prod_id" , new IntegerColumnType());
-		Column dateLowColumn = reorderTable.addColumn("date_low" , new DateColumnType());
-		Column quanLowColumn = reorderTable.addColumn("quan_low" , new IntegerColumnType());
-		Column dateReorderedColumn = reorderTable.addColumn("date_reordered" , new DateColumnType());
-		Column quanReorderedColumn = reorderTable.addColumn("quan_reordered" , new IntegerColumnType());
-		Column dateExpectedColumn = reorderTable.addColumn("date_expected" , new DateColumnType());
+		Column prodIdReorderColumn = reorderTable.addColumn("prod_id" , new IntDataType());
+		Column dateLowColumn = reorderTable.addColumn("date_low" , new DateDataType());
+		Column quanLowColumn = reorderTable.addColumn("quan_low" , new IntDataType());
+		Column dateReorderedColumn = reorderTable.addColumn("date_reordered" , new DateDataType());
+		Column quanReorderedColumn = reorderTable.addColumn("quan_reordered" , new IntDataType());
+		Column dateExpectedColumn = reorderTable.addColumn("date_expected" , new DateDataType());
 
 	}
 }

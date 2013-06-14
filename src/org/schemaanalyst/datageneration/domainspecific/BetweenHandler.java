@@ -5,10 +5,10 @@ import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.Operand;
 import org.schemaanalyst.util.random.Random;
 
 public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
@@ -17,7 +17,7 @@ public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
 	protected CellRandomizer cellRandomizer;
 	protected Random random;	
 	
-	protected BetweenCheckPredicate between;
+	protected BetweenExpression between;
 	protected Table table;
 	protected Column column;
 	protected Operand lower, upper;

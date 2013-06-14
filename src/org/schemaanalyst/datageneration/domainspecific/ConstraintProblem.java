@@ -5,11 +5,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.NotNullConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.NotNullConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class ConstraintProblem {
 

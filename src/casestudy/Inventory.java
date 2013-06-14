@@ -1,12 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.attribute.IdentityAttribute;
-import org.schemaanalyst.schema.columntype.DecimalColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.DecimalDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class Inventory extends Schema {
 
@@ -27,14 +26,13 @@ public class Inventory extends Schema {
 		
 		Table inventory = createTable("Inventory");
 		
-		Column id = inventory.addColumn("id", new IntColumnType());
+		Column id = inventory.addColumn("id", new IntDataType());
 		id.setPrimaryKey();
-		//id.addAttribute(new IdentityAttribute());
 		
-		Column product = inventory.addColumn("product", new VarCharColumnType(50));
+		Column product = inventory.addColumn("product", new VarCharDataType(50));
 		product.setUnique();
 		
-		inventory.addColumn("quantity", new IntColumnType());
-		inventory.addColumn("price", new DecimalColumnType(18, 2));	
+		inventory.addColumn("quantity", new IntDataType());
+		inventory.addColumn("price", new DecimalDataType(18, 2));	
 	}
 }

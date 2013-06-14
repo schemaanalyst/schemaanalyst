@@ -7,7 +7,7 @@ import java.util.List;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class Runner {

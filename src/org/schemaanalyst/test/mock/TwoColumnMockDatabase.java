@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.mock;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.columntype.IntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.datatype.IntDataType;
 
 public class TwoColumnMockDatabase extends MockDatabase {
 
@@ -12,8 +12,8 @@ public class TwoColumnMockDatabase extends MockDatabase {
 		Schema schema = new Schema("TwoColumnSchema");
 		
 		table = schema.createTable("table");
-		column1 = table.addColumn("column1", new IntColumnType());
-		column2 = table.addColumn("column2", new IntColumnType());
+		column1 = table.addColumn("column1", new IntDataType());
+		column2 = table.addColumn("column2", new IntDataType());
 	}
 }
 

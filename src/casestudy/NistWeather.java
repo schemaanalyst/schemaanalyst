@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.expression.BetweenExpression;
 
 public class NistWeather extends Schema {
 	
@@ -27,19 +27,19 @@ public class NistWeather extends Schema {
 		
 		Table station = createTable("Station");
 		
-		Column stationId = station.addColumn("ID", new IntegerColumnType());
+		Column stationId = station.addColumn("ID", new IntDataType());
 		stationId.setPrimaryKey();
 		
-		station.addColumn("CITY", new CharColumnType(20));
-		station.addColumn("STATE", new CharColumnType(2));
+		station.addColumn("CITY", new CharDataType(20));
+		station.addColumn("STATE", new CharDataType(2));
                 
-		Column lat_n = station.addColumn("LAT_N", new IntegerColumnType());
+		Column lat_n = station.addColumn("LAT_N", new IntDataType());
                 lat_n.setNotNull();
-                station.addCheckConstraint(new BetweenCheckPredicate(lat_n, 0, 90));
+                station.addCheckConstraint(new BetweenExpression(lat_n, 0, 90));
                 
-		Column long_w = station.addColumn("LONG_W", new IntegerColumnType());
+		Column long_w = station.addColumn("LONG_W", new IntDataType());
                 long_w.setNotNull();
-                station.addCheckConstraint(new BetweenCheckPredicate(long_w, -180, 180));
+                station.addCheckConstraint(new BetweenExpression(long_w, -180, 180));
 		
 		/*
                         CREATE TABLE Stats
@@ -54,14 +54,14 @@ public class NistWeather extends Schema {
 		
 		Table stats = createTable("Stats");
 		
-		Column statsId = stats.addColumn("ID", new IntegerColumnType());
-		Column month = stats.addColumn("MONTH", new IntegerColumnType());
-		Column tempF = stats.addColumn("TEMP_F", new IntegerColumnType());
-		Column rainI = stats.addColumn("RAIN_I", new IntegerColumnType());
+		Column statsId = stats.addColumn("ID", new IntDataType());
+		Column month = stats.addColumn("MONTH", new IntDataType());
+		Column tempF = stats.addColumn("TEMP_F", new IntDataType());
+		Column rainI = stats.addColumn("RAIN_I", new IntDataType());
 		
 		stats.setPrimaryKeyConstraint(statsId, month);
-		stats.addCheckConstraint(new BetweenCheckPredicate(month, 1, 12));
-		stats.addCheckConstraint(new BetweenCheckPredicate(tempF, -80, 150));
-		stats.addCheckConstraint(new BetweenCheckPredicate(rainI, 0, 100));
+		stats.addCheckConstraint(new BetweenExpression(month, 1, 12));
+		stats.addCheckConstraint(new BetweenExpression(tempF, -80, 150));
+		stats.addCheckConstraint(new BetweenExpression(rainI, 0, 100));
 	}
 }

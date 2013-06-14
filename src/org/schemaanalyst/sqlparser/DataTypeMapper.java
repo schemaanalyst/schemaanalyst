@@ -4,27 +4,27 @@ import gudusoft.gsqlparser.EDataType;
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TTypeName;
 
-import org.schemaanalyst.schema.columntype.BooleanColumnType;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.ColumnType;
-import org.schemaanalyst.schema.columntype.DateColumnType;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
-import org.schemaanalyst.schema.columntype.TimestampColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.datatype.BooleanDataType;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.DataType;
+import org.schemaanalyst.representation.datatype.DateDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.datatype.TimestampDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 class DataTypeMapper {
 
 	// REFER TO the JavaDocs for TTypeName
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html
 	
-	ColumnType resolve(TTypeName dataType) {
+	DataType getDataType(TTypeName dataType) {
 		
 		EDataType enumType = dataType.getDataType();	
 					
 		// *** BOOLEAN *** 
 		if (enumType == EDataType.bool_t) {
-			return new BooleanColumnType();
+			return new BooleanDataType();
 		}
 		
 		
@@ -33,19 +33,19 @@ class DataTypeMapper {
 		if (enumType == EDataType.nchar_t) {		
 			TConstant lengthConstant = dataType.getLength();    		
 			int length = Integer.valueOf(lengthConstant.toString());
-			return new CharColumnType(length);    		
+			return new CharDataType(length);    		
 		}
 
 		// varchar
 		if (enumType == EDataType.varchar_t) {	
 			int length = getLength(dataType);
-			return new VarCharColumnType(length);		
+			return new VarCharDataType(length);		
 		}
 		
 		// *** NUMERIC *** 	
 		// int
 		if (enumType == EDataType.int_t) {
-    		return new IntColumnType();
+    		return new IntDataType();
 		}
 		
     	// numeric
@@ -53,20 +53,20 @@ class DataTypeMapper {
 			int precision = getPrecision(dataType);
 			int scale = getScale(dataType);
 			
-			return new NumericColumnType(precision, scale);
+			return new NumericDataType(precision, scale);
 		}
 			
 
 		// *** TEMPORAL *** 
 		// date
 		if (enumType == EDataType.date_t) {
-			return new DateColumnType();
+			return new DateDataType();
 		}
 		
 		// timestamp with time zone
 		if (enumType == EDataType.timestamp_with_time_zone_t) {			
 			// TODO -- return something more specific here?
-			return new TimestampColumnType();
+			return new TimestampDataType();
 		}
 		
 		// *** GENERIC *** 		
@@ -74,8 +74,8 @@ class DataTypeMapper {
 			
 			// this is a bug in GSP for Postgres
 			// (logged with GSP bug database -- issue 0000032).			
-			if (dataType.toString().equals("date")) {
-				return new DateColumnType();
+			if (dataType.toString().equals("date")) {				
+				return new DateDataType();
 			}
 		}
 		

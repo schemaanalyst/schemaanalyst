@@ -2,10 +2,10 @@ package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class NotNullConstraintMutator extends Mutator {
 	

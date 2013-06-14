@@ -12,7 +12,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.RowObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;

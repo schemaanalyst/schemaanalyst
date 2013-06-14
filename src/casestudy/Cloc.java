@@ -1,10 +1,9 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class Cloc extends Schema {
 
@@ -24,9 +23,9 @@ public class Cloc extends Schema {
 		
 		Table metadataTable = createTable("metadata");
 		
-		metadataTable.addColumn("timestamp", new VarCharColumnType(50));
-		metadataTable.addColumn("Project", new VarCharColumnType(50));
-		metadataTable.addColumn("elapsed_s", new IntColumnType());		
+		metadataTable.addColumn("timestamp", new VarCharDataType(50));
+		metadataTable.addColumn("Project", new VarCharDataType(50));
+		metadataTable.addColumn("elapsed_s", new IntDataType());		
 		
 		/*
 
@@ -45,13 +44,13 @@ public class Cloc extends Schema {
 
 		Table tTable = createTable("t");
 		
-		tTable.addColumn("Project", new VarCharColumnType(50));
-		tTable.addColumn("Language", new VarCharColumnType(50));
-		tTable.addColumn("File", new VarCharColumnType(50));
+		tTable.addColumn("Project", new VarCharDataType(50));
+		tTable.addColumn("Language", new VarCharDataType(50));
+		tTable.addColumn("File", new VarCharDataType(50));
 		
-		tTable.addColumn("nBlank", new IntegerColumnType());		
-		tTable.addColumn("nComment", new IntegerColumnType());		
-		tTable.addColumn("nCode", new IntegerColumnType());		
-		tTable.addColumn("nScale", new IntColumnType());		
+		tTable.addColumn("nBlank", new IntDataType());		
+		tTable.addColumn("nComment", new IntDataType());		
+		tTable.addColumn("nCode", new IntDataType());		
+		tTable.addColumn("nScale", new IntDataType());		
 	}
 }

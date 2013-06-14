@@ -7,10 +7,6 @@ import org.schemaanalyst.database.DatabaseVisitor;
 public class Postgres extends Database {
     private PostgresDatabaseInteractor databaseInteraction = new PostgresDatabaseInteractor();
 
-    public Postgres() {
-    	sqlWriter = new PostgresSQLWriter();
-    }
-
     public DatabaseInteractor getDatabaseInteraction() {
     	return databaseInteraction;
     }

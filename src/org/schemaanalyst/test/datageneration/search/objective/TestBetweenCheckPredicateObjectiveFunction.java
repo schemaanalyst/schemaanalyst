@@ -10,7 +10,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.BetweenCheckPredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
+import org.schemaanalyst.representation.expression.BetweenExpression;
 
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
@@ -33,7 +33,7 @@ public class TestBetweenCheckPredicateObjectiveFunction {
 	}		
 	
     BetweenCheckPredicateObjectiveFunction setupBetween(boolean satisfy, int lower, int upper) {
-    	BetweenCheckPredicate betweenPredicate = new BetweenCheckPredicate(database.column, lower, upper);
+    	BetweenExpression betweenPredicate = new BetweenExpression(database.column, lower, upper);
     	BetweenCheckPredicateObjectiveFunction objFun = 
     			new BetweenCheckPredicateObjectiveFunction(betweenPredicate, database.table, null, "", satisfy, false);
     	return objFun;

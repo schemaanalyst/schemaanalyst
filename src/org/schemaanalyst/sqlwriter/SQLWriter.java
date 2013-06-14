@@ -6,22 +6,20 @@ import java.util.List;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.UniqueConstraint;
-import org.schemaanalyst.schema.attribute.Attribute;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.UniqueConstraint;
 
 public class SQLWriter {
 
-	protected AttributeSQLWriter attributeSQLWriter;
-	protected ColumnTypeSQLWriter columnTypeSQLWriter;
+	protected DataTypeSQLWriter dataTypeSQLWriter;
 	protected ConstraintSQLWriter constraintSQLWriter;
 	protected OperandSQLWriter operandSQLWriter;
-	protected CheckPredicateSQLWriter predicateSQLWriter;
+	protected ExpressionSQLWriter predicateSQLWriter;
 	protected CellSQLWriter cellSQLWriter;
 	protected ValueSQLWriter valueSQLWriter;
 	
@@ -31,17 +29,15 @@ public class SQLWriter {
 	}
 	
 	protected void instanitateSubWriters() {
-		attributeSQLWriter = new AttributeSQLWriter();
-		columnTypeSQLWriter = new ColumnTypeSQLWriter();
+		dataTypeSQLWriter = new DataTypeSQLWriter();
 		constraintSQLWriter = new ConstraintSQLWriter();
 		operandSQLWriter = new OperandSQLWriter();
-		predicateSQLWriter = new CheckPredicateSQLWriter();
+		predicateSQLWriter = new ExpressionSQLWriter();
 		cellSQLWriter = new CellSQLWriter();
 		valueSQLWriter = new ValueSQLWriter();
 	}
 	
 	protected void setupSubWriters() {
-		attributeSQLWriter.setOperandSQLWriter(operandSQLWriter);
 		cellSQLWriter.setValueSQLWriter(valueSQLWriter);
 		constraintSQLWriter.setPredicateSQLWriter(predicateSQLWriter);
 		operandSQLWriter.setValueSQLWriter(valueSQLWriter);
@@ -89,19 +85,7 @@ public class SQLWriter {
 			
 			// write column type			
 			sql.append("\t"); 
-			if( columnTypeSQLWriter == null ) { System.out.println("ctsw is null!"); }
-			sql.append(columnTypeSQLWriter.writeColumnType(column));
-			
-			// write column attributes
-			List<Attribute> columnAttributes = column.getAttributes();
-			if (columnAttributes.size() > 0) {
-				sql.append("\t");
-				
-				for (Attribute columnAttribute : columnAttributes) {
-					sql.append(" "); 
-					sql.append(attributeSQLWriter.writeAttribute(columnAttribute)); 
-				}
-			}
+			sql.append(dataTypeSQLWriter.writeDataType(column));
 			
 			// write NOT NULLs
 			if (column.isNotNull()) {

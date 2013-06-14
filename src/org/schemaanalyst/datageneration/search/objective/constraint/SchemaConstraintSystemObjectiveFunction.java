@@ -7,10 +7,10 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.NotNullConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.NotNullConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Schema;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 	

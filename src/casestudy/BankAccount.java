@@ -1,10 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class BankAccount extends Schema {
 	
@@ -25,19 +25,19 @@ public class BankAccount extends Schema {
 		
 		Table userInfo = createTable("UserInfo");
 		
-		Column userInfoCardNumber = userInfo.addColumn("card_number", new IntColumnType());
+		Column userInfoCardNumber = userInfo.addColumn("card_number", new IntDataType());
 		// GMK NOTE: Postgres, Hsqldb, and Derby do not 
 		// handle easily out of the box 
 		//userInfoCardNumber.addAttribute(new Identity());
 		userInfoCardNumber.setPrimaryKey();
 		
-		Column pinNumber = userInfo.addColumn("pin_number", new IntColumnType());
+		Column pinNumber = userInfo.addColumn("pin_number", new IntDataType());
 		pinNumber.setNotNull();
 		
-		Column userName = userInfo.addColumn("user_name", new VarCharColumnType(50));
+		Column userName = userInfo.addColumn("user_name", new VarCharDataType(50));
 		userName.setNotNull();
 		
-		userInfo.addColumn("acct_lock", new IntColumnType());
+		userInfo.addColumn("acct_lock", new IntDataType());
 		
 		/*
 			CREATE TABLE Account 
@@ -53,25 +53,22 @@ public class BankAccount extends Schema {
 		
 		Table account = createTable("Account");
 		
-		Column id = account.addColumn("id", new IntColumnType());
+		Column id = account.addColumn("id", new IntDataType());
 		
 		// GMK NOTE: Postgres, Hsqldb, and Derby do not 
 		// handle easily out of the box 
 		//id.addAttribute(new Identity());
 		id.setPrimaryKey();
 		
-		Column accountName = account.addColumn("account_name", new VarCharColumnType(50));
+		Column accountName = account.addColumn("account_name", new VarCharDataType(50));
 		accountName.setNotNull();
 		
-        Column accountUserName = account.addColumn("user_name", new VarCharColumnType(50));
+        Column accountUserName = account.addColumn("user_name", new VarCharDataType(50));
         accountUserName.setNotNull();
                 
-		Column balance = account.addColumn("balance", new IntColumnType());
+		account.addColumn("balance", new IntDataType());
 		
-		// PSM: commented this out as we're not using
-		//balance.setDefault(0);
-		
-		Column accountCardNumber = account.addColumn("card_number", new IntColumnType());
+		Column accountCardNumber = account.addColumn("card_number", new IntDataType());
 		accountCardNumber.setNotNull();
 		accountCardNumber.setForeignKey(userInfo, userInfoCardNumber);
 	}

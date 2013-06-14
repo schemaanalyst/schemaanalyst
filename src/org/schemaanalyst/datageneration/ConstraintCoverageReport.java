@@ -2,7 +2,7 @@ package org.schemaanalyst.datageneration;
 
 import java.util.List;
 
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class ConstraintCoverageReport extends CoverageReport {

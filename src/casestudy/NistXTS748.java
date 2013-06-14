@@ -1,10 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class NistXTS748 extends Schema {
 
@@ -29,14 +29,14 @@ public class NistXTS748 extends Schema {
 
 		Table test12549 = createTable( "TEST12549");
 		
-		Column tnum1 = test12549 .addColumn("TNUM1" , new NumericColumnType(5));
-		Column tnum2 = test12549 .addColumn("TNUM2" , new NumericColumnType(5));
-		Column tnum3 = test12549 .addColumn("TNUM3" , new NumericColumnType(5));
+		Column tnum1 = test12549 .addColumn("TNUM1" , new NumericDataType(5));
+		Column tnum2 = test12549 .addColumn("TNUM2" , new NumericDataType(5));
+		Column tnum3 = test12549 .addColumn("TNUM3" , new NumericDataType(5));
 
 		tnum1.setNotNull();
 		tnum2.setUnique();
 		
-		test12549.addCheckConstraint(new RelationalCheckPredicate(tnum3, ">", 0));
+		test12549.addCheckConstraint(new RelationalExpression(tnum3, ">", 0));
 		
 	}
 }

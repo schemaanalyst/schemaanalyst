@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.SmallIntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.SmallIntDataType;
 
 public class RiskIt extends Schema {
 
@@ -29,10 +29,10 @@ public class RiskIt extends Schema {
 
 		Table ziptable = createTable( "ziptable");
 		
-		Column ZIP = ziptable.addColumn("ZIP", new CharColumnType(5));
-		Column CITY = ziptable.addColumn("CITY", new CharColumnType(20));
-		Column STATENAME = ziptable.addColumn("STATENAME", new CharColumnType(20));
-		Column COUNTY = ziptable.addColumn("COUNTY", new CharColumnType(20));
+		Column ZIP = ziptable.addColumn("ZIP", new CharDataType(5));
+		Column CITY = ziptable.addColumn("CITY", new CharDataType(20));
+		Column STATENAME = ziptable.addColumn("STATENAME", new CharDataType(20));
+		Column COUNTY = ziptable.addColumn("COUNTY", new CharDataType(20));
 
 		/*
 		  
@@ -59,22 +59,22 @@ public class RiskIt extends Schema {
 
 		Table userrecordTable = createTable("userrecord");
 
-		Column NAMEUser = userrecordTable.addColumn("NAME", new CharColumnType(50));
-		Column ZIPUser = userrecordTable.addColumn("ZIP", new CharColumnType(5));
-		Column SSN = userrecordTable.addColumn("SSN", new IntegerColumnType());
+		Column NAMEUser = userrecordTable.addColumn("NAME", new CharDataType(50));
+		Column ZIPUser = userrecordTable.addColumn("ZIP", new CharDataType(5));
+		Column SSN = userrecordTable.addColumn("SSN", new IntDataType());
 		SSN.setNotNull();
 		SSN.setPrimaryKey();
 
-		Column SEXUser = userrecordTable.addColumn("SEX", new CharColumnType(50));
-		Column MARITAL = userrecordTable.addColumn("MARITAL", new CharColumnType(50));
-		Column RACE = userrecordTable.addColumn("RACE", new CharColumnType(50));
-		Column TAXSTAT = userrecordTable.addColumn("TAXSTAT", new CharColumnType(50));
-		Column DETAIL = userrecordTable.addColumn("DETAIL", new CharColumnType(100));
-		Column HOUSEHOLDDETAIL = userrecordTable.addColumn("HOUSEHOLDDETAIL", new CharColumnType(100));
-		Column FATHERORIGIN = userrecordTable.addColumn("FATHERORIGIN", new CharColumnType(50));
-		Column MOTHERORIGIN = userrecordTable.addColumn("MOTHERORIGIN", new CharColumnType(50));
-		Column BIRTHCOUNTRY = userrecordTable.addColumn("BIRTHCOUNTRY", new CharColumnType(50));
-		Column CITIZENSHIP = userrecordTable.addColumn("CITIZENSHIP", new CharColumnType(50));
+		Column SEXUser = userrecordTable.addColumn("SEX", new CharDataType(50));
+		Column MARITAL = userrecordTable.addColumn("MARITAL", new CharDataType(50));
+		Column RACE = userrecordTable.addColumn("RACE", new CharDataType(50));
+		Column TAXSTAT = userrecordTable.addColumn("TAXSTAT", new CharDataType(50));
+		Column DETAIL = userrecordTable.addColumn("DETAIL", new CharDataType(100));
+		Column HOUSEHOLDDETAIL = userrecordTable.addColumn("HOUSEHOLDDETAIL", new CharDataType(100));
+		Column FATHERORIGIN = userrecordTable.addColumn("FATHERORIGIN", new CharDataType(50));
+		Column MOTHERORIGIN = userrecordTable.addColumn("MOTHERORIGIN", new CharDataType(50));
+		Column BIRTHCOUNTRY = userrecordTable.addColumn("BIRTHCOUNTRY", new CharDataType(50));
+		Column CITIZENSHIP = userrecordTable.addColumn("CITIZENSHIP", new CharDataType(50));
 		
 		/*
 		  
@@ -90,11 +90,11 @@ public class RiskIt extends Schema {
 
 		Table youthTable = createTable( "youth");
 
-		Column SSNYouth = youthTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNYouth = youthTable.addColumn("SSN", new IntDataType());
 		SSNYouth.setNotNull();
 		SSNYouth.setPrimaryKey();
 		
-		Column PARENTS = youthTable.addColumn("PARENTS", new CharColumnType(50));
+		Column PARENTS = youthTable.addColumn("PARENTS", new CharDataType(50));
 
 		youthTable.addForeignKeyConstraint(userrecordTable, SSNYouth, SSN);
 
@@ -112,12 +112,12 @@ public class RiskIt extends Schema {
 
 		Table industryTable = createTable( "industry");
 		
-		Column INDUSTRYCODE = industryTable.addColumn("INDUSTRYCODE", new IntegerColumnType());
+		Column INDUSTRYCODE = industryTable.addColumn("INDUSTRYCODE", new IntDataType());
 		INDUSTRYCODE.setNotNull();
 		INDUSTRYCODE.setPrimaryKey();
 
-		Column INDUSTRY = industryTable.addColumn("INDUSTRY", new CharColumnType(50));
-		Column STABILITYIndustry = industryTable.addColumn("STABILITY", new IntegerColumnType());
+		Column INDUSTRY = industryTable.addColumn("INDUSTRY", new CharDataType(50));
+		Column STABILITYIndustry = industryTable.addColumn("STABILITY", new IntDataType());
 		
 		/*
 
@@ -133,12 +133,12 @@ public class RiskIt extends Schema {
 
 		Table occupationTable = createTable( "occupation");
 		
-		Column OCCUPATIONCODE = occupationTable.addColumn("OCCUPATIONCODE", new IntegerColumnType());
+		Column OCCUPATIONCODE = occupationTable.addColumn("OCCUPATIONCODE", new IntDataType());
 		OCCUPATIONCODE.setNotNull();
 		OCCUPATIONCODE.setPrimaryKey();
 
-		Column OCCUPATION = occupationTable.addColumn("OCCUPATION", new CharColumnType(50));
-		Column STABILITYOccupation = occupationTable.addColumn("STABILITY", new IntegerColumnType());
+		Column OCCUPATION = occupationTable.addColumn("OCCUPATION", new CharDataType(50));
+		Column STABILITYOccupation = occupationTable.addColumn("STABILITY", new IntDataType());
 
 		/*
 
@@ -156,13 +156,13 @@ public class RiskIt extends Schema {
 
 		Table wageTable = createTable( "wage");
 
-		Column INDUSTRYCODEWage = wageTable.addColumn("INDUSTRYCODE", new IntegerColumnType());
+		Column INDUSTRYCODEWage = wageTable.addColumn("INDUSTRYCODE", new IntDataType());
 		INDUSTRYCODEWage.setNotNull();
 
-		Column OCCUPATIONCODEWage = wageTable.addColumn("OCCUPATIONCODE", new IntegerColumnType());
+		Column OCCUPATIONCODEWage = wageTable.addColumn("OCCUPATIONCODE", new IntDataType());
 		OCCUPATIONCODEWage.setNotNull();
 		
-		Column MEANWEEKWAGE = wageTable.addColumn("MEANWEEKWAGE", new IntegerColumnType());
+		Column MEANWEEKWAGE = wageTable.addColumn("MEANWEEKWAGE", new IntDataType());
 		
 		wageTable.setPrimaryKeyConstraint(INDUSTRYCODEWage, OCCUPATIONCODEWage);
 
@@ -181,10 +181,10 @@ public class RiskIt extends Schema {
 
 		Table stateabbvTable = createTable( "stateabbv");
 		
-		Column ABBV = stateabbvTable.addColumn("ABBV", new CharColumnType(2));
+		Column ABBV = stateabbvTable.addColumn("ABBV", new CharDataType(2));
 		ABBV.setNotNull();
 
-		Column NAMEAbbv = stateabbvTable.addColumn("NAME", new CharColumnType(50));
+		Column NAMEAbbv = stateabbvTable.addColumn("NAME", new CharDataType(50));
 		NAMEAbbv.setNotNull();
 
 		/*
@@ -204,14 +204,14 @@ public class RiskIt extends Schema {
 
 		Table migrationTable = createTable( "migration");
 
-		Column SSNMig = migrationTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNMig = migrationTable.addColumn("SSN", new IntDataType());
 		SSNMig.setNotNull();
 		SSNMig.setPrimaryKey();
 
-		Column MIGRATIONCODE = migrationTable.addColumn("MIGRATIONCODE", new CharColumnType(50));
-		Column MIGRATIONDISTANCE = migrationTable.addColumn("MIGRATIONDISTANCE", new CharColumnType(50));
-		Column MIGRATIONMOVE = migrationTable.addColumn("MIGRATIONMOVE", new CharColumnType(50));
-		Column MIGRATIONFROMSUNBELT = migrationTable.addColumn("MIGRATIONFROMSUNBELT", new CharColumnType(50));
+		Column MIGRATIONCODE = migrationTable.addColumn("MIGRATIONCODE", new CharDataType(50));
+		Column MIGRATIONDISTANCE = migrationTable.addColumn("MIGRATIONDISTANCE", new CharDataType(50));
+		Column MIGRATIONMOVE = migrationTable.addColumn("MIGRATIONMOVE", new CharDataType(50));
+		Column MIGRATIONFROMSUNBELT = migrationTable.addColumn("MIGRATIONFROMSUNBELT", new CharDataType(50));
 
 		migrationTable.addForeignKeyConstraint(userrecordTable, SSNMig, SSN);
 
@@ -230,12 +230,12 @@ public class RiskIt extends Schema {
 
 		Table educationTable = createTable( "education");
 		
-		Column SSNEduc = educationTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNEduc = educationTable.addColumn("SSN", new IntDataType());
 		SSNEduc.setNotNull();
 		SSNEduc.setPrimaryKey();
 
-		Column EDUCATION = educationTable.addColumn("EDUCATION", new CharColumnType(50));
-		Column EDUENROLL = educationTable.addColumn("EDUENROLL", new CharColumnType(50));
+		Column EDUCATION = educationTable.addColumn("EDUCATION", new CharDataType(50));
+		Column EDUENROLL = educationTable.addColumn("EDUENROLL", new CharDataType(50));
 
 		educationTable.addForeignKeyConstraint(userrecordTable, SSNEduc, SSN);
 
@@ -254,12 +254,12 @@ public class RiskIt extends Schema {
 
 		Table employmentstatTable = createTable( "employmentstat");
 		
-		Column SSNEmpStat = employmentstatTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNEmpStat = employmentstatTable.addColumn("SSN", new IntDataType());
 		SSNEmpStat.setNotNull();
 		SSNEmpStat.setPrimaryKey();
 
-		Column UNEMPLOYMENTREASON = employmentstatTable.addColumn("UNEMPLOYMENTREASON", new CharColumnType(50));
-                Column EMPLOYMENTSTAT = employmentstatTable.addColumn("EMPLOYMENTSTAT", new CharColumnType(50));
+		Column UNEMPLOYMENTREASON = employmentstatTable.addColumn("UNEMPLOYMENTREASON", new CharDataType(50));
+                Column EMPLOYMENTSTAT = employmentstatTable.addColumn("EMPLOYMENTSTAT", new CharDataType(50));
 		
 		employmentstatTable.addForeignKeyConstraint(userrecordTable, SSNEmpStat, SSN);
 
@@ -276,10 +276,10 @@ public class RiskIt extends Schema {
 
 		Table geoTable = createTable( "geo");
 
-		Column REGION = geoTable.addColumn("REGION", new CharColumnType(50));
+		Column REGION = geoTable.addColumn("REGION", new CharDataType(50));
 		REGION.setNotNull();
 
-		Column RESSTATE = geoTable.addColumn("RESSTATE", new CharColumnType(50));
+		Column RESSTATE = geoTable.addColumn("RESSTATE", new CharDataType(50));
 		RESSTATE.setPrimaryKey();
 		RESSTATE.setNotNull();
 
@@ -299,13 +299,13 @@ public class RiskIt extends Schema {
 
 		Table investmentTable = createTable( "investment");
 		
-		Column SSNInvest = investmentTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNInvest = investmentTable.addColumn("SSN", new IntDataType());
 		SSNInvest.setNotNull();
 		SSNInvest.setPrimaryKey();
 
-		Column CAPITALGAINS = investmentTable.addColumn("CAPITALGAINS", new IntegerColumnType());
-		Column CAPITALLOSSES = investmentTable.addColumn("CAPITALLOSSES", new IntegerColumnType());
-		Column STOCKDIVIDENDS = investmentTable.addColumn("STOCKDIVIDENDS", new IntegerColumnType());
+		Column CAPITALGAINS = investmentTable.addColumn("CAPITALGAINS", new IntDataType());
+		Column CAPITALLOSSES = investmentTable.addColumn("CAPITALLOSSES", new IntDataType());
+		Column STOCKDIVIDENDS = investmentTable.addColumn("STOCKDIVIDENDS", new IntDataType());
 
 		investmentTable.addForeignKeyConstraint(userrecordTable, SSNInvest, SSN);
 
@@ -332,18 +332,18 @@ public class RiskIt extends Schema {
 
 		Table jobTable = createTable( "job");
 
-		Column SSNJob = jobTable.addColumn("SSN", new IntegerColumnType());
+		Column SSNJob = jobTable.addColumn("SSN", new IntDataType());
 		SSNJob.setNotNull();
 		SSNJob.setPrimaryKey();
 
-		Column WORKCLASS = jobTable.addColumn("WORKCLASS", new CharColumnType(50));
-		Column INDUSTRYCODEJob = jobTable.addColumn("INDUSTRYCODE", new IntegerColumnType());
-		Column OCCUPATIONCODEJob = jobTable.addColumn("OCCUPATIONCODE", new IntegerColumnType());
-		Column UNIONMEMBER = jobTable.addColumn("UNIONMEMBER", new CharColumnType(50));
-		Column EMPLOYERSIZE = jobTable.addColumn("EMPLOYERSIZE", new IntegerColumnType());
-		Column WEEKWAGE = jobTable.addColumn("WEEKWAGE", new IntegerColumnType());
-		Column SELFEMPLOYED = jobTable.addColumn("SELFEMPLOYED", new SmallIntColumnType());
-		Column WORKWEEKS = jobTable.addColumn("WORKWEEKS", new IntegerColumnType());
+		Column WORKCLASS = jobTable.addColumn("WORKCLASS", new CharDataType(50));
+		Column INDUSTRYCODEJob = jobTable.addColumn("INDUSTRYCODE", new IntDataType());
+		Column OCCUPATIONCODEJob = jobTable.addColumn("OCCUPATIONCODE", new IntDataType());
+		Column UNIONMEMBER = jobTable.addColumn("UNIONMEMBER", new CharDataType(50));
+		Column EMPLOYERSIZE = jobTable.addColumn("EMPLOYERSIZE", new IntDataType());
+		Column WEEKWAGE = jobTable.addColumn("WEEKWAGE", new IntDataType());
+		Column SELFEMPLOYED = jobTable.addColumn("SELFEMPLOYED", new SmallIntDataType());
+		Column WORKWEEKS = jobTable.addColumn("WORKWEEKS", new IntDataType());
 
 		jobTable.addForeignKeyConstraint(occupationTable, OCCUPATIONCODEJob, OCCUPATIONCODE);
 		jobTable.addForeignKeyConstraint(userrecordTable, SSNJob, SSN);

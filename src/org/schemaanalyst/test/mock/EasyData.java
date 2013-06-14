@@ -14,8 +14,8 @@ import org.schemaanalyst.data.TimeValue;
 import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.ValueVisitor;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 public class EasyData extends Data {
 

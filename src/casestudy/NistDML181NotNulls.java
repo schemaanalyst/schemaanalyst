@@ -1,11 +1,11 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class NistDML181NotNulls extends Schema {
 
@@ -29,9 +29,9 @@ public class NistDML181NotNulls extends Schema {
 
 		Table longNamedPeopleTable = createTable( "LONG_NAMED_PEOPLE");
 
-		Column firstName = longNamedPeopleTable.addColumn("FIRSTNAME" , new VarCharColumnType(373));
-		Column lastName = longNamedPeopleTable.addColumn("LASTNAME" , new VarCharColumnType(373));
-		Column age = longNamedPeopleTable.addColumn("AGE" , new IntColumnType());
+		Column firstName = longNamedPeopleTable.addColumn("FIRSTNAME" , new VarCharDataType(373));
+		Column lastName = longNamedPeopleTable.addColumn("LASTNAME" , new VarCharDataType(373));
+		Column age = longNamedPeopleTable.addColumn("AGE" , new IntDataType());
 
 		firstName.setNotNull();
 		lastName.setNotNull();
@@ -54,10 +54,10 @@ public class NistDML181NotNulls extends Schema {
 
 		Table ordersTable = createTable( "ORDERS");
 		
-		Column firstNameOrders = ordersTable.addColumn("FIRSTNAME" , new VarCharColumnType(373));
-		Column lastNameOrders = ordersTable.addColumn("LASTNAME" , new VarCharColumnType(373));
-		Column title = ordersTable.addColumn("TITLE" , new VarCharColumnType(80));
-		Column cost = ordersTable.addColumn("COST" , new NumericColumnType(5,2));
+		Column firstNameOrders = ordersTable.addColumn("FIRSTNAME" , new VarCharDataType(373));
+		Column lastNameOrders = ordersTable.addColumn("LASTNAME" , new VarCharDataType(373));
+		Column title = ordersTable.addColumn("TITLE" , new VarCharDataType(80));
+		Column cost = ordersTable.addColumn("COST" , new NumericDataType(5,2));
 
 		firstNameOrders.setNotNull();
 		lastNameOrders.setNotNull();

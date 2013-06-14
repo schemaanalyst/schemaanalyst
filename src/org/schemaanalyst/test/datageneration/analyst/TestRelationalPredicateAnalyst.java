@@ -16,11 +16,11 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.logic.RelationalPredicate;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.expression.Operand;
 
 public class TestRelationalPredicateAnalyst {
 
@@ -35,7 +35,7 @@ public class TestRelationalPredicateAnalyst {
 		
 		Schema schema = new Schema("test_schema");
 		table = schema.createTable("test_table");
-		column = table.addColumn("test_column", new IntColumnType());
+		column = table.addColumn("test_column", new IntDataType());
 		ValueFactory vf = new ValueFactory();
 		
 		List<Cell> row1Cells = new ArrayList<>();

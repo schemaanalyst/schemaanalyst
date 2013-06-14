@@ -2,18 +2,18 @@ package org.schemaanalyst.datageneration.search.objective.constraint;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.ConstraintVisitor;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.NotNullConstraint;
-import org.schemaanalyst.schema.CheckPredicateVisitor;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.UniqueConstraint;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.ConstraintVisitor;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.NotNullConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.UniqueConstraint;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.ExpressionVisitor;
+import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class ConstraintObjectiveFunctionFactory {
 	
@@ -68,7 +68,7 @@ public class ConstraintObjectiveFunctionFactory {
 	
 	protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 		
-		class PredicateDispatcher implements CheckPredicateVisitor {
+		class PredicateDispatcher implements ExpressionVisitor {
 
 			ObjectiveFunction<Data> objFun;
 			Table table;
@@ -81,21 +81,21 @@ public class ConstraintObjectiveFunctionFactory {
 				table = checkConstraint.getTable();
 				this.description = description;
 				this.allowNull = allowNull;
-				checkConstraint.getPredicate().accept(this);
+				checkConstraint.getExpression().accept(this);
 				return objFun;
 			}
 			
-			public void visit(BetweenCheckPredicate predicate) {
+			public void visit(BetweenExpression predicate) {
 				objFun = new BetweenCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}
 			
-			public void visit(InCheckPredicate predicate) {
+			public void visit(InExpression predicate) {
 				objFun = new InCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}
 
-			public void visit(RelationalCheckPredicate predicate) {
+			public void visit(RelationalExpression predicate) {
 				objFun = new RelationalCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}

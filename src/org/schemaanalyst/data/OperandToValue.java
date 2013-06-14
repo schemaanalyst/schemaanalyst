@@ -1,8 +1,8 @@
 package org.schemaanalyst.data;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Operand;
-import org.schemaanalyst.schema.OperandVisitor;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.expression.Operand;
+import org.schemaanalyst.representation.expression.OperandVisitor;
 
 public class OperandToValue {
 

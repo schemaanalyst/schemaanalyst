@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.List;
 
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.sqlwriter.SQLWriter;

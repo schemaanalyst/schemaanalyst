@@ -4,10 +4,11 @@ package org.schemaanalyst.mutation.mutators;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
+
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
 
 /**
  * Produces mutants containing new foreign key constraints for each column where

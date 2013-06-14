@@ -11,18 +11,18 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Table;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class RelationalCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 	
-	protected RelationalCheckPredicate relation;
+	protected RelationalExpression relation;
 	protected Table table;
 	protected Data state;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public RelationalCheckPredicateObjectiveFunction(RelationalCheckPredicate relation, 
+	public RelationalCheckPredicateObjectiveFunction(RelationalExpression relation, 
 													 Table table, 
 													 Data state, 
 													 String description, 

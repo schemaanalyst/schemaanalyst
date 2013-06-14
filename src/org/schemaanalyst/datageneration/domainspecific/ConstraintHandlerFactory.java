@@ -8,18 +8,18 @@ import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
-import org.schemaanalyst.schema.BetweenCheckPredicate;
-import org.schemaanalyst.schema.CheckConstraint;
-import org.schemaanalyst.schema.CheckPredicateVisitor;
-import org.schemaanalyst.schema.Constraint;
-import org.schemaanalyst.schema.ConstraintVisitor;
-import org.schemaanalyst.schema.ForeignKeyConstraint;
-import org.schemaanalyst.schema.InCheckPredicate;
-import org.schemaanalyst.schema.NotNullConstraint;
-import org.schemaanalyst.schema.PrimaryKeyConstraint;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.UniqueConstraint;
+import org.schemaanalyst.representation.CheckConstraint;
+import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.representation.ConstraintVisitor;
+import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.NotNullConstraint;
+import org.schemaanalyst.representation.PrimaryKeyConstraint;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.UniqueConstraint;
+import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.expression.ExpressionVisitor;
+import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 import org.schemaanalyst.util.random.Random;
 
 public class ConstraintHandlerFactory {
@@ -76,26 +76,26 @@ public class ConstraintHandlerFactory {
 	
 	protected ConstraintHandler<?> create(CheckConstraint checkConstraint) {
 		
-		class PredicateDispatcher implements CheckPredicateVisitor {
+		class PredicateDispatcher implements ExpressionVisitor {
 
 			Table table;
 			ConstraintHandler<?> constraintHandler;
 			
 			ConstraintHandler<?> dispatch(CheckConstraint checkConstraint) {
 				table = checkConstraint.getTable();
-				checkConstraint.getPredicate().accept(this);
+				checkConstraint.getExpression().accept(this);
 				return constraintHandler;
 			}
 			
-			public void visit(BetweenCheckPredicate predicate) {
+			public void visit(BetweenExpression predicate) {
 				constraintHandler = create(predicate, table);
 			}
 			
-			public void visit(InCheckPredicate predicate) {
+			public void visit(InExpression predicate) {
 				constraintHandler = create(predicate, table);
 			}
 
-			public void visit(RelationalCheckPredicate predicate) {
+			public void visit(RelationalExpression predicate) {
 				constraintHandler = create(predicate, table);
 			}
 		}		
@@ -103,7 +103,7 @@ public class ConstraintHandlerFactory {
 		return new PredicateDispatcher().dispatch(checkConstraint);		
 	}
 	
-	protected ConstraintHandler<?> create(BetweenCheckPredicate betweenCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(BetweenExpression betweenCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new BetweenHandler(new BetweenAnalyst(betweenCheckPredicate, table, allowNull),
@@ -113,7 +113,7 @@ public class ConstraintHandlerFactory {
 								  random);
 	}
 	
-	protected ConstraintHandler<?> create(InCheckPredicate inCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(InExpression inCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new InHandler(new InAnalyst(inCheckPredicate, table, allowNull),
@@ -123,7 +123,7 @@ public class ConstraintHandlerFactory {
 				  		 	 random);
 	}
 	
-	protected ConstraintHandler<?> create(RelationalCheckPredicate relationalCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(RelationalExpression relationalCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new RelationalPredicateHandler(new RelationalPredicateAnalyst(relationalCheckPredicate, 

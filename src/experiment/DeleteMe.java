@@ -11,7 +11,8 @@ import casestudy.NistDML183;
 import casestudy.RiskIt;
 import casestudy.UnixUsage;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
-import org.schemaanalyst.schema.Schema;
+
+import org.schemaanalyst.representation.Schema;
 
 /**
  *

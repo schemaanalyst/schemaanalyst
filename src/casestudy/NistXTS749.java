@@ -1,13 +1,13 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.RelationalCheckPredicate;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.CharColumnType;
-import org.schemaanalyst.schema.columntype.DecimalColumnType;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.NumericColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.CharDataType;
+import org.schemaanalyst.representation.datatype.DecimalDataType;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class NistXTS749 extends Schema {
 
@@ -31,10 +31,10 @@ public class NistXTS749 extends Schema {
 
 		Table staffTable = createTable( "STAFF");
 
-		Column salary = staffTable.addColumn("SALARY" , new IntegerColumnType());
-		Column empname = staffTable.addColumn("EMPNAME" , new CharColumnType(20));
-		Column grade = staffTable.addColumn("GRADE" , new DecimalColumnType(300));
-		Column empnum = staffTable.addColumn("EMPNUM" , new CharColumnType(3));
+		Column salary = staffTable.addColumn("SALARY" , new IntDataType());
+		Column empname = staffTable.addColumn("EMPNAME" , new CharDataType(20));
+		Column grade = staffTable.addColumn("GRADE" , new DecimalDataType(300));
+		Column empnum = staffTable.addColumn("EMPNUM" , new CharDataType(3));
 
 		empnum.setPrimaryKey();
 		empnum.setNotNull();
@@ -56,17 +56,17 @@ public class NistXTS749 extends Schema {
 
 		Table test12649Table = createTable( "TEST12649");
 
-		Column tnum1 = test12649Table .addColumn("TNUM1" , new NumericColumnType(5));
-		Column tnum2 = test12649Table .addColumn("TNUM2" , new NumericColumnType(5));
+		Column tnum1 = test12649Table .addColumn("TNUM1" , new NumericDataType(5));
+		Column tnum2 = test12649Table .addColumn("TNUM2" , new NumericDataType(5));
 		
 		tnum1.setNotNull();
 		tnum2.setNotNull();
 
-		Column tchar = test12649Table .addColumn("TCHAR" , new CharColumnType(3));
+		Column tchar = test12649Table .addColumn("TCHAR" , new CharDataType(3));
 		
 		test12649Table.setPrimaryKeyConstraint(tnum1, tnum2);
 		
-		test12649Table.addCheckConstraint(new RelationalCheckPredicate(tnum2, ">", 0));
+		test12649Table.addCheckConstraint(new RelationalExpression(tnum2, ">", 0));
 		
 		test12649Table.addForeignKeyConstraint(staffTable, tchar, empnum);		
 	}

@@ -1,12 +1,12 @@
 package casestudy;
 
-import org.schemaanalyst.schema.Column;
-import org.schemaanalyst.schema.Schema;
-import org.schemaanalyst.schema.Table;
-import org.schemaanalyst.schema.columntype.IntegerColumnType;
-import org.schemaanalyst.schema.columntype.SmallIntColumnType;
-import org.schemaanalyst.schema.columntype.TimestampColumnType;
-import org.schemaanalyst.schema.columntype.VarCharColumnType;
+import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.representation.datatype.SmallIntDataType;
+import org.schemaanalyst.representation.datatype.TimestampDataType;
+import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 public class JWhoisServer extends Schema {
 
@@ -42,44 +42,44 @@ public class JWhoisServer extends Schema {
 
 		Table domainTable = createTable( "domain");
 		
-		Column domainKey = domainTable.addColumn("domain_key" , new IntegerColumnType());
+		Column domainKey = domainTable.addColumn("domain_key" , new IntDataType());
 		domainKey.setNotNull();
 		domainKey.setPrimaryKey();
 
-		Column domain = domainTable.addColumn("domain" , new VarCharColumnType(255));
+		Column domain = domainTable.addColumn("domain" , new VarCharDataType(255));
 		domain.setNotNull();
 		
-		Column registered_date = domainTable.addColumn("registered_date" , new TimestampColumnType());
+		Column registered_date = domainTable.addColumn("registered_date" , new TimestampDataType());
 		registered_date.setNotNull();
 
-		Column registerexpire_date = domainTable.addColumn("registerexpire_data" , new TimestampColumnType());
+		Column registerexpire_date = domainTable.addColumn("registerexpire_data" , new TimestampDataType());
 		registerexpire_date.setNotNull();
 
 		// GMK: Timestampstamp does not have a parameter; postgres downgrades the 19 to a 6!
 
-		Column changed = domainTable.addColumn("changed", new TimestampColumnType());
+		Column changed = domainTable.addColumn("changed", new TimestampDataType());
 		changed.setNotNull();
 
-		Column remarks = domainTable.addColumn("remarks" , new VarCharColumnType(255));
-		Column holder = domainTable.addColumn("holder" , new IntegerColumnType());
+		Column remarks = domainTable.addColumn("remarks" , new VarCharDataType(255));
+		Column holder = domainTable.addColumn("holder" , new IntDataType());
 		holder.setNotNull();
 		
-		Column admin_c = domainTable.addColumn("admin_c" , new IntegerColumnType());
+		Column admin_c = domainTable.addColumn("admin_c" , new IntDataType());
 		admin_c.setNotNull();
 
-		Column tech_c = domainTable.addColumn("tech_c" , new IntegerColumnType());
+		Column tech_c = domainTable.addColumn("tech_c" , new IntDataType());
 		tech_c.setNotNull();
 
-		Column zone_c = domainTable.addColumn("zone_c" , new IntegerColumnType());
+		Column zone_c = domainTable.addColumn("zone_c" , new IntDataType());
 		zone_c.setNotNull();
 		
-		Column mntnr_fkey = domainTable.addColumn("mntnr_fkey" , new IntegerColumnType());
+		Column mntnr_fkey = domainTable.addColumn("mntnr_fkey" , new IntDataType());
 		mntnr_fkey.setNotNull();
 
-		Column publicviewabledata = domainTable.addColumn("publicviewabledata" , new SmallIntColumnType());
+		Column publicviewabledata = domainTable.addColumn("publicviewabledata" , new SmallIntDataType());
 		publicviewabledata.setNotNull();
 
-		Column disabled = domainTable.addColumn("disabled" , new SmallIntColumnType());
+		Column disabled = domainTable.addColumn("disabled" , new SmallIntDataType());
 		disabled.setNotNull();
 
 		/*
@@ -106,46 +106,46 @@ public class JWhoisServer extends Schema {
 
 		Table mntnrTable = createTable( "mntnr");
 
-		Column mntnr_key = mntnrTable.addColumn("mntnr_key" , new IntegerColumnType());
+		Column mntnr_key = mntnrTable.addColumn("mntnr_key" , new IntDataType());
 		mntnr_key.setNotNull();
 		mntnr_key.setPrimaryKey();
 
-		Column login = mntnrTable.addColumn("login" , new VarCharColumnType(255));
+		Column login = mntnrTable.addColumn("login" , new VarCharDataType(255));
 		login.setNotNull();
 
-		Column password = mntnrTable.addColumn("password" , new VarCharColumnType(255));
+		Column password = mntnrTable.addColumn("password" , new VarCharDataType(255));
 		password.setNotNull();
 
-		Column name = mntnrTable.addColumn("name" , new VarCharColumnType(255));
+		Column name = mntnrTable.addColumn("name" , new VarCharDataType(255));
 		name.setNotNull();
 
-		Column address = mntnrTable.addColumn("address" , new VarCharColumnType(255));
+		Column address = mntnrTable.addColumn("address" , new VarCharDataType(255));
 		address.setNotNull();
 
-		Column pcode = mntnrTable.addColumn("pcode", new VarCharColumnType(255));
+		Column pcode = mntnrTable.addColumn("pcode", new VarCharDataType(255));
 		pcode.setNotNull();
 
-		Column city = mntnrTable.addColumn("city" , new VarCharColumnType(255));
+		Column city = mntnrTable.addColumn("city" , new VarCharDataType(255));
 		city.setNotNull();
 
-		Column country_fkey = mntnrTable.addColumn("country_fkey" , new IntegerColumnType());
+		Column country_fkey = mntnrTable.addColumn("country_fkey" , new IntDataType());
 		country_fkey.setNotNull();
 
-		Column phone = mntnrTable.addColumn("phone", new VarCharColumnType(100));
+		Column phone = mntnrTable.addColumn("phone", new VarCharDataType(100));
 		phone.setNotNull();
 
-		Column fax = mntnrTable.addColumn("fax" , new VarCharColumnType(100));
+		Column fax = mntnrTable.addColumn("fax" , new VarCharDataType(100));
 
-		Column email = mntnrTable.addColumn("email", new VarCharColumnType(255));
+		Column email = mntnrTable.addColumn("email", new VarCharDataType(255));
 		email.setNotNull();
 
-		Column remarksAgain = mntnrTable.addColumn("remarks", new VarCharColumnType(255));
+		Column remarksAgain = mntnrTable.addColumn("remarks", new VarCharDataType(255));
 		
 		// note, same issue with the timestamp(19) jazz
-		Column changedAgain = mntnrTable.addColumn("changed" , new TimestampColumnType());
+		Column changedAgain = mntnrTable.addColumn("changed" , new TimestampDataType());
 		changedAgain.setNotNull();
 
-		Column disabledAgain = mntnrTable.addColumn("disabled" , new SmallIntColumnType());
+		Column disabledAgain = mntnrTable.addColumn("disabled" , new SmallIntDataType());
 		disabledAgain.setNotNull();
 
 		/*
@@ -172,46 +172,46 @@ public class JWhoisServer extends Schema {
 
 		Table personTable = createTable( "person");
 		
-		Column person_key = personTable.addColumn("person_key", new IntegerColumnType());
+		Column person_key = personTable.addColumn("person_key", new IntDataType());
 		person_key.setNotNull();
 		person_key.setPrimaryKey();
 
-		Column type_fkey = personTable.addColumn("type_fkey" , new IntegerColumnType());
+		Column type_fkey = personTable.addColumn("type_fkey" , new IntDataType());
 		type_fkey.setNotNull();
 
-		Column namePerson = personTable.addColumn("name" , new VarCharColumnType(255));
+		Column namePerson = personTable.addColumn("name" , new VarCharDataType(255));
 		namePerson.setNotNull();
 
-		Column addressPerson = personTable.addColumn("address" , new VarCharColumnType(255));
+		Column addressPerson = personTable.addColumn("address" , new VarCharDataType(255));
 		addressPerson.setNotNull();
 
-		Column pcodePerson = personTable.addColumn("pcode" , new VarCharColumnType(20));
+		Column pcodePerson = personTable.addColumn("pcode" , new VarCharDataType(20));
 		pcodePerson.setNotNull();
 
-		Column cityPerson = personTable.addColumn("city" , new VarCharColumnType(255));
+		Column cityPerson = personTable.addColumn("city" , new VarCharDataType(255));
 		cityPerson.setNotNull();
 
-		Column country_fkeyPerson = personTable.addColumn("country_fkey" , new IntegerColumnType());
+		Column country_fkeyPerson = personTable.addColumn("country_fkey" , new IntDataType());
 		country_fkeyPerson.setNotNull();
 		
-		Column phonePerson = personTable.addColumn("phone", new VarCharColumnType(100));
+		Column phonePerson = personTable.addColumn("phone", new VarCharDataType(100));
 		phonePerson.setNotNull();
 
-		Column faxPerson = personTable.addColumn("fax" , new VarCharColumnType(100));
+		Column faxPerson = personTable.addColumn("fax" , new VarCharDataType(100));
 		
-		Column emailPerson = personTable.addColumn("email", new VarCharColumnType(255));
+		Column emailPerson = personTable.addColumn("email", new VarCharDataType(255));
 		emailPerson.setNotNull();
 
-		Column remarksPerson = personTable.addColumn("remarks", new VarCharColumnType(255));
+		Column remarksPerson = personTable.addColumn("remarks", new VarCharDataType(255));
 		
 		// note, same issue with the timestamp(19) jazz
-		Column changedPerson = personTable.addColumn("changed" , new TimestampColumnType());
+		Column changedPerson = personTable.addColumn("changed" , new TimestampDataType());
 		changedPerson.setNotNull();
 
-		Column mntnr_fkeyPerson = personTable.addColumn("mntnr_fkey" , new IntegerColumnType());
+		Column mntnr_fkeyPerson = personTable.addColumn("mntnr_fkey" , new IntDataType());
 		mntnr_fkeyPerson.setNotNull();
 
-		Column disabledPerson = personTable.addColumn("disabled" , new SmallIntColumnType());
+		Column disabledPerson = personTable.addColumn("disabled" , new SmallIntDataType());
 		disabledPerson.setNotNull();		
 
 		/*
@@ -226,11 +226,11 @@ public class JWhoisServer extends Schema {
 
 		Table typeTable = createTable( "type");
 
-		Column type_key = typeTable.addColumn("type_key" , new IntegerColumnType());
+		Column type_key = typeTable.addColumn("type_key" , new IntDataType());
 		type_key.setNotNull();
 		type_key.setPrimaryKey();
 
-		Column type = typeTable.addColumn("type" , new VarCharColumnType(100));
+		Column type = typeTable.addColumn("type" , new VarCharDataType(100));
 		type.setNotNull();
 
 		/*
@@ -246,14 +246,14 @@ public class JWhoisServer extends Schema {
 
 		Table nameServerTable = createTable( "nameserver");
 
-		Column nameserver_key = nameServerTable.addColumn("nameserver_key" , new IntegerColumnType());
+		Column nameserver_key = nameServerTable.addColumn("nameserver_key" , new IntDataType());
 		nameserver_key.setNotNull();
 		nameserver_key.setPrimaryKey();
 
-		Column nameserver = nameServerTable.addColumn("nameserver" , new VarCharColumnType(255));
+		Column nameserver = nameServerTable.addColumn("nameserver" , new VarCharDataType(255));
 		nameserver.setNotNull();
 
-		Column domain_fkey = nameServerTable.addColumn("domain_fkey" , new IntegerColumnType());
+		Column domain_fkey = nameServerTable.addColumn("domain_fkey" , new IntDataType());
 		domain_fkey.setNotNull();
 		
 		/*
@@ -269,14 +269,14 @@ public class JWhoisServer extends Schema {
 
 		Table countryTable = createTable( "country");
 		
-		Column country_fkeyCountry = countryTable.addColumn("country_fkey" , new IntegerColumnType());
+		Column country_fkeyCountry = countryTable.addColumn("country_fkey" , new IntDataType());
 		country_fkeyCountry.setNotNull();
 		country_fkeyCountry.setPrimaryKey();
 
-		Column shortCountry = countryTable.addColumn("short" , new VarCharColumnType(2));
+		Column shortCountry = countryTable.addColumn("short" , new VarCharDataType(2));
 		shortCountry.setNotNull();
 
-		Column countryCountry = countryTable.addColumn("country", new VarCharColumnType(255));
+		Column countryCountry = countryTable.addColumn("country", new VarCharDataType(255));
 		countryCountry.setNotNull();
 
 	}

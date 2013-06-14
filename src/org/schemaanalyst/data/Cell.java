@@ -1,6 +1,6 @@
 package org.schemaanalyst.data;
 
-import org.schemaanalyst.schema.Column;
+import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.util.Duplicable;
 
 public class Cell implements Duplicable<Cell> {

@@ -14,7 +14,7 @@ import org.schemaanalyst.SchemaAnalyst;
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseInteractor;
-import org.schemaanalyst.schema.Schema;
+import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlwriter.SQLWriter;
