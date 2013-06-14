@@ -17,5 +17,4 @@ public class ParenthesisExpression implements Expression {
 	public void accept(ExpressionVisitor visitor) {
 		//visitor.visit(this);
 	}
-	
 }
