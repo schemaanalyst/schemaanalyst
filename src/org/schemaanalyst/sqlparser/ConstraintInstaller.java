@@ -76,8 +76,11 @@ class ConstraintInstaller {
 	}
 	
 	void installCheckConstraint() {
-		Expression expression = expressionMapper.getExpression(node.getCheckCondition());		
-		currentTable.addCheckConstraint(constraintName, expression);
+		Expression expression = expressionMapper.getExpression(node.getCheckCondition());
+		
+		if (expression != null) {  // TODO: remove once we can parse more stuff...
+			currentTable.addCheckConstraint(constraintName, expression);
+		}
 	}
 	
 	void installNotNullConstraint() {

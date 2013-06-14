@@ -14,6 +14,8 @@ public class ExpressionMapper {
 	}	
 	
 	Expression getExpression(TExpression node) {
+		System.out.println("EXPRESSION: "+node);
+		System.out.println("TYPE: "+node.getExpressionType());
 		return null;
 	}
 }
