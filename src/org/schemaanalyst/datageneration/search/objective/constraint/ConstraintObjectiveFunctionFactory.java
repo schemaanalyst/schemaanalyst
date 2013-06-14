@@ -81,7 +81,7 @@ public class ConstraintObjectiveFunctionFactory {
 				table = checkConstraint.getTable();
 				this.description = description;
 				this.allowNull = allowNull;
-				checkConstraint.getExpression().accept(this);
+				checkConstraint.getCheckCondition().accept(this);
 				return objFun;
 			}
 			

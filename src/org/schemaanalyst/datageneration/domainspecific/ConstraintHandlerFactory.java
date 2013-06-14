@@ -83,7 +83,7 @@ public class ConstraintHandlerFactory {
 			
 			ConstraintHandler<?> dispatch(CheckConstraint checkConstraint) {
 				table = checkConstraint.getTable();
-				checkConstraint.getExpression().accept(this);
+				checkConstraint.getCheckCondition().accept(this);
 				return constraintHandler;
 			}
 			

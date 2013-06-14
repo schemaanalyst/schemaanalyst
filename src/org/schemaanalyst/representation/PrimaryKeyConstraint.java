@@ -26,7 +26,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 	 */
 	public void addColumn(Column column) {
 		if (!table.hasColumn(column)) {
-			throw new SchemaException("Column \""+column+"\" does not exist in table \""+table+"\"");
+			throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 		}		
 		columns.add(column);
 	}	
@@ -60,7 +60,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 			Column targetTableColumn = targetTable.getColumn(column.getName()); 
 			
 			if (targetTableColumn == null) {
-				throw new SchemaException("Cannot copy PrimaryKey to table \"" + targetTable + 
+				throw new SchemaConstructionException("Cannot copy PrimaryKey to table \"" + targetTable + 
 						  				  "\" as it does not have the column \"" + column + "\"");				
 			}
 			

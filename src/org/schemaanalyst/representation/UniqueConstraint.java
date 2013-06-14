@@ -20,7 +20,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
 	 */
 	public void addColumn(Column column) {
 		if (!table.hasColumn(column)) {
-			throw new SchemaException("Column \""+column+"\" does not exist in table \""+table+"\"");
+			throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 		}		
 		columns.add(column);
 	}	
@@ -54,7 +54,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
 			Column tableColumn = targetTable.getColumn(column.getName()); 
 			
 			if (tableColumn == null) {
-				throw new SchemaException("Cannot copy ForeignKey to table " + targetTable + 
+				throw new SchemaConstructionException("Cannot copy ForeignKey to table " + targetTable + 
 						  				  " as it does not hve the column " + column);				
 			}			
 			copy.columns.add(tableColumn);

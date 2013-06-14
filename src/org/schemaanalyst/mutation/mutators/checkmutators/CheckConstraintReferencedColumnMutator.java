@@ -84,7 +84,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          */
         public List<Schema> createMutants() {
             mutants = new ArrayList<>();
-            constraint.getExpression().accept(this);
+            constraint.getCheckCondition().accept(this);
             return mutants;
         }
 
@@ -251,7 +251,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
                         mutant = table.getSchema().duplicate();
                         mutantTable = mutant.getTable(table.getName());
                         mutantTable.removeCheckConstraint(constraint);
-                        mutants.add(createMutant(column, replacement, constraint.getExpression()));
+                        mutants.add(createMutant(column, replacement, constraint.getCheckCondition()));
                     }
                 }
             }

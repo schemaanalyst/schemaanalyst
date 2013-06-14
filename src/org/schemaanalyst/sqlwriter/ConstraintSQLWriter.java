@@ -60,7 +60,7 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writeCheck(CheckConstraint check) {
-		return "CHECK(" + predicateSQLWriter.writePredicate(check.getExpression()) + ")";
+		return "CHECK(" + predicateSQLWriter.writePredicate(check.getCheckCondition()) + ")";
 	}
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {

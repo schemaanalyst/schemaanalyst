@@ -36,19 +36,19 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 			
 			if (i < midPoint) {				
 				if (!table.hasColumn(column)) {
-					throw new SchemaException("Column \"" + column + "\" does not exist in table \"" + table + "\"");					
+					throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");					
 				}
 				this.columns.add(column);
 			} else {
 				if (!referenceTable.hasColumn(column)) {
-					throw new SchemaException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
+					throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
 				}
 				this.referenceColumns.add(column);
 			}			
 		}
 		
 		if (this.columns.size() != this.referenceColumns.size()) {
-			throw new SchemaException("Mismatched number of foreign key columns and reference columns");
+			throw new SchemaConstructionException("Mismatched number of foreign key columns and reference columns");
 		}
 	}
 	
@@ -59,10 +59,10 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 	 */
 	public void addColumnPair(Column column, Column referenceColumn) {
 		if (!table.hasColumn(column)) {
-			throw new SchemaException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
+			throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
 		}
 		if (!referenceTable.hasColumn(column)) {
-			throw new SchemaException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
+			throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
 		}
 		columns.add(column);
 		referenceColumns.add(referenceColumn);
@@ -121,7 +121,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 		// map the reference table to that of the schema of the new table		
 		Table targetReferenceTable = targetTable.getSchema().getTable(this.referenceTable.getName());
 		if (targetReferenceTable == null) {
-			throw new SchemaException("Cannot copy ForeignKey to table \"" + targetTable + "\" " + 
+			throw new SchemaConstructionException("Cannot copy ForeignKey to table \"" + targetTable + "\" " + 
 					  				  "as its schema does not have the reference table \"" + referenceTable + "\"");
 
 		}		
@@ -134,7 +134,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 			Column targetTableColumn = targetTable.getColumn(column.getName());
 			
 			if (targetTableColumn == null) {
-				throw new SchemaException("Cannot copy ForeignKey to table \"" + targetTable + "\" " +
+				throw new SchemaConstructionException("Cannot copy ForeignKey to table \"" + targetTable + "\" " +
 										  "as it does not have the column \"" + column + "\"");
 			}
 			
@@ -147,7 +147,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 			Column targetReferenceTableColumn = copy.referenceTable.getColumn(column.getName()); 
 			
 			if (targetReferenceTableColumn == null) {
-				throw new SchemaException("Cannot copy ForeignKey to table \"" + targetTable + "\" " + 
+				throw new SchemaConstructionException("Cannot copy ForeignKey to table \"" + targetTable + "\" " + 
 										  "as its reference table \"" + copy.referenceTable + "\" " +
 										  "does not hve the column \"" + targetReferenceTableColumn + "\"");
 			}

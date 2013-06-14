@@ -70,7 +70,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
 	public Table createTable(String name) {
 		Table table = new Table(this, name);
 		if (tables.contains(table)) {
-			throw new SchemaException("Table "+table+" already exists in this schema");
+			throw new SchemaConstructionException("Table "+table+" already exists in this schema");
 		}
 		tables.add(table);
 		orderTables();

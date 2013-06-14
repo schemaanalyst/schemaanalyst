@@ -6,7 +6,7 @@ package org.schemaanalyst.representation;
  * @author Phil McMinn
  * 
  */
-public class SchemaException extends RuntimeException {
+public class SchemaConstructionException extends RuntimeException {
 	
 	private static final long serialVersionUID = -1938527440146240474L;
 
@@ -14,7 +14,7 @@ public class SchemaException extends RuntimeException {
 	 * Constructs the exception.
 	 * @param message A message explaining the problem.
 	 */
-	public SchemaException(String message) {
+	public SchemaConstructionException(String message) {
 		super(message);
 	}
 }

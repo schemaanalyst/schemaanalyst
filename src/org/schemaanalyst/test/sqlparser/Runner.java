@@ -1,4 +1,4 @@
-package org.schemaanalyst.sqlparser;
+package org.schemaanalyst.test.sqlparser;
 
 
 import java.io.File;
@@ -8,6 +8,7 @@ import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlparser.SchemaParser;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class Runner {

@@ -23,8 +23,8 @@ public class CheckConstraintInMutator extends Mutator {
     @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         for (CheckConstraint checkConstraint : table.getCheckConstraints()) {
-            if (checkConstraint.getExpression() instanceof InExpression) {
-                for (Value value : ((InExpression) checkConstraint.getExpression()).getValues()) {
+            if (checkConstraint.getCheckCondition() instanceof InExpression) {
+                for (Value value : ((InExpression) checkConstraint.getCheckCondition()).getValues()) {
                     makeMutant(value, table, checkConstraint, mutants);
                 }
             }
@@ -43,7 +43,7 @@ public class CheckConstraintInMutator extends Mutator {
         // Make the duplicate
         Schema mutantSchema = table.getSchema().duplicate();
         Table mutantTable = mutantSchema.getTable(table.getName());
-        InExpression predicate = (InExpression) constraint.getExpression();
+        InExpression predicate = (InExpression) constraint.getCheckCondition();
         Column mutantColumn = mutantTable.getColumn(predicate.getColumn().getName());
 
         // Remove the original constraint

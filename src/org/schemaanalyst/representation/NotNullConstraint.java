@@ -20,7 +20,7 @@ public class NotNullConstraint extends Constraint {
 	protected NotNullConstraint(Table table, String name, Column column) {
 		super(table, name);
 		if (!table.hasColumn(column)) {
-			throw new SchemaException("Column \""+column+"\" does not exist in table \""+table+"\"");
+			throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 		}
 		this.column = column;
 	}	
@@ -51,7 +51,7 @@ public class NotNullConstraint extends Constraint {
 		Column targetTableColumn = targetTable.getColumn(column.getName());
 		
 		if (targetTableColumn == null) {
-			throw new SchemaException("Cannot copy NotNull to table " + targetTable + 
+			throw new SchemaConstructionException("Cannot copy NotNull to table " + targetTable + 
 					  				  " as it does not hve the column " + column);
 		}
 		

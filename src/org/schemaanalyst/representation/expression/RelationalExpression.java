@@ -5,7 +5,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 
 public class RelationalExpression extends RelationalPredicate<Operand>
-									  implements Expression {
+								  implements Expression {
 
 	private static final long serialVersionUID = -7353662857915662883L;
 	
@@ -13,9 +13,9 @@ public class RelationalExpression extends RelationalPredicate<Operand>
 		super(lhs, operator, rhs);
 	}
         
-        public RelationalExpression(Operand lhs, RelationalOperator operator, int rhs) {
-                super(lhs, operator, new NumericValue(rhs));
-        }
+    public RelationalExpression(Operand lhs, RelationalOperator operator, int rhs) {
+        super(lhs, operator, new NumericValue(rhs));
+    }
 	
 	public RelationalExpression(Operand lhs, String operator, Operand rhs) {
 		super(lhs, operator, rhs);

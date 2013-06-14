@@ -29,7 +29,7 @@ public abstract class MultiColumnConstraint extends Constraint {
 		
 		for (Column column : columns) {
 			if (!table.hasColumn(column)) {
-				throw new SchemaException("Column \""+column+"\" does not exist in table \""+table+"\"");
+				throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 			}
 			this.columns.add(column);
 		}

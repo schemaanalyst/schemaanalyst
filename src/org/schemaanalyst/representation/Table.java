@@ -79,7 +79,7 @@ public class Table implements Serializable {
 	public Column addColumn(String name, DataType type) {
 		Column column = new Column(this, name, type);
 		if (columns.contains(column)) {
-			throw new SchemaException("Table \""+this.name+"\" already has a column named \""+name+"\"");
+			throw new SchemaConstructionException("Table \""+this.name+"\" already has a column named \""+name+"\"");
 		}
 		columns.add(column);
 		return column;
@@ -119,20 +119,20 @@ public class Table implements Serializable {
 	/**
 	 * Adds a check constraint to the table.
 	 * @param name A name for the check constraint (optional -- a version of this method exists without the requirement to specify a name).
-	 * @param predicate The predicate for the check constraint.
+	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(String name, Expression predicate) {
-		return addCheckConstraint(new CheckConstraint(this, name, predicate));
+	public CheckConstraint addCheckConstraint(String name, Expression checkCondition) {
+		return addCheckConstraint(new CheckConstraint(this, name, checkCondition));
 	}	
 	
 	/**
 	 * Adds a check constraint to the table.
-	 * @param predicate The predicate for the check constraint.
+	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(Expression predicate) {
-		return addCheckConstraint(null, predicate);
+	public CheckConstraint addCheckConstraint(Expression checkCondition) {
+		return addCheckConstraint(null, checkCondition);
 	}
 	
 	/**

@@ -36,7 +36,7 @@ public class TableDependencyOrderer {
 				//System.out.println("-- considering: "+referencedTable);
 				
 				if (runningList.contains(referencedTable)) {
-					throw new SchemaException(
+					throw new SchemaConstructionException(
 							"Cannot compute ordered table list due to a circular dependency between table " + 
 							"\"" + currentTable + "\" and \"" + referencedTable + "\"");				
 				}

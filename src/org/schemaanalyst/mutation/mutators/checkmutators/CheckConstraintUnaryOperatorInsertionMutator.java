@@ -60,7 +60,7 @@ public class CheckConstraintUnaryOperatorInsertionMutator extends Mutator {
          */
         public List<Schema> createMutants() {
             mutants = new ArrayList<>();
-            constraint.getExpression().accept(this);
+            constraint.getCheckCondition().accept(this);
             return mutants;
         }
 

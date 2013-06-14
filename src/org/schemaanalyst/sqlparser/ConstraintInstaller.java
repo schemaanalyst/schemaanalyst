@@ -5,13 +5,13 @@ import java.util.List;
 
 import gudusoft.gsqlparser.EConstraintType;
 import gudusoft.gsqlparser.nodes.TConstraint;
-import gudusoft.gsqlparser.nodes.TExpression;
 import gudusoft.gsqlparser.nodes.TObjectName;
 import gudusoft.gsqlparser.nodes.TObjectNameList;
 
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.expression.Expression;
 
 class ConstraintInstaller {
 
@@ -21,8 +21,12 @@ class ConstraintInstaller {
 	TConstraint node;
 	String constraintName;
 	
+	ExpressionMapper expressionMapper;
+	
 	ConstraintInstaller(Schema schema) {
 		this.schema = schema;
+		
+		expressionMapper = new ExpressionMapper(schema);
 	}
 	
 	void install(Table currentTable, Column currentColumn, TConstraint node) {
@@ -72,8 +76,8 @@ class ConstraintInstaller {
 	}
 	
 	void installCheckConstraint() {
-		TExpression expression = node.getCheckCondition();
-		System.out.println("HERE: "+expression);
+		Expression expression = expressionMapper.getExpression(node.getCheckCondition());		
+		currentTable.addCheckConstraint(constraintName, expression);
 	}
 	
 	void installNotNullConstraint() {
