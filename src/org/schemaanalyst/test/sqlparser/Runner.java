@@ -44,7 +44,7 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("NistDML181", new Postgres());
+		run("NistWeather", new Postgres());
 	}
 	
 }

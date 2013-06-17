@@ -7,6 +7,8 @@ public interface ExpressionVisitor {
 
 	public void visit(AndExpression expression);
 
+	public void visit(BetweenExpression expression);	
+	
 	public void visit(Column expression);	
 
 	public void visit(InExpression expression);	

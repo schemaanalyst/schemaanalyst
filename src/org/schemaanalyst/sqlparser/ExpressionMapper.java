@@ -13,6 +13,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Table;
 import org.schemaanalyst.representation.expression.AndExpression;
+import org.schemaanalyst.representation.expression.BetweenExpression;
 import org.schemaanalyst.representation.expression.Expression;
 import org.schemaanalyst.representation.expression.InExpression;
 import org.schemaanalyst.representation.expression.ListExpression;
@@ -47,6 +48,13 @@ public class ExpressionMapper {
 				throw new SQLParseException("Unknown column \"" + column + "\"");
 			}
 			return column;
+		}
+		
+		// *** UNARY ***
+		if (expressionType == EExpressionType.unary_minus_t && node.getRightOperand().getExpressionType() == EExpressionType.simple_constant_t) {
+			// assume negative number
+			String value = node.toString();
+			return new NumericValue(value);
 		}
 		
 		if (expressionType == EExpressionType.simple_constant_t) {
@@ -101,14 +109,23 @@ public class ExpressionMapper {
 		if (expressionType == EExpressionType.in_t) {
 			boolean notIn = node.getNotToken() != null;
 			return new InExpression(getExpression(node.getLeftOperand()), 
-									notIn, 
-									getExpression(node.getRightOperand()));
+									getExpression(node.getRightOperand()), 
+									notIn);
 		}
 		
 		// *** NULL *** 				
 		if (expressionType == EExpressionType.null_t) {
 			boolean notNull = node.getOperatorToken().toString().equals("NOTNULL") || node.getNotToken() != null;	
 			return new NullExpression(getExpression(node.getLeftOperand()), notNull);			
+		}
+		
+		// *** BETWEEN ***
+		if (expressionType == EExpressionType.between_t) {
+			boolean notBetween = node.getNotToken() != null;
+			return new BetweenExpression(getExpression(node.getBetweenOperand()), 
+										 getExpression(node.getLeftOperand()),
+										 getExpression(node.getRightOperand()),
+										 notBetween);						
 		}
 		
 		throw new ExpressionMappingException(node);

@@ -3,6 +3,7 @@ package org.schemaanalyst.sqlwriter;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.expression.AndExpression;
+import org.schemaanalyst.representation.expression.BetweenExpression;
 import org.schemaanalyst.representation.expression.ComposedExpression;
 import org.schemaanalyst.representation.expression.Expression;
 import org.schemaanalyst.representation.expression.ExpressionVisitor;
@@ -39,6 +40,10 @@ public class ExpressionSQLWriter {
 				
 			}
 
+			public void visit(BetweenExpression expression) {
+				sql = writeBetweenExpression(expression);
+			}
+			
 			public void visit(Column expression) {
 				sql = writeColumn(expression);				
 			}
@@ -77,6 +82,20 @@ public class ExpressionSQLWriter {
 	
 	public String writeAndExpression(AndExpression expression) {
 		return writeComposedExpression(expression, "AND");
+	}
+	
+	
+	public String writeBetweenExpression(BetweenExpression expression) {
+		String sql = writeExpression(expression.getSubject());
+		if (expression.isNotBetween()) {
+			sql += " NOT"; 
+		}
+		sql += " BETWEEN ";
+		sql += writeExpression(expression.getLHS());
+		sql += " AND ";
+		sql += writeExpression(expression.getRHS());		
+		return sql;		
+		
 	}
 	
 	public String writeColumn(Column column) {
