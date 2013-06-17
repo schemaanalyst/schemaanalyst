@@ -25,7 +25,6 @@ public abstract class MultiColumnConstraint extends Constraint {
 	protected MultiColumnConstraint(Table table, String name, Column... columns) {
 		super(table, name);
 		this.columns = new ArrayList<Column>();
-
 		
 		for (Column column : columns) {
 			if (!table.hasColumn(column)) {

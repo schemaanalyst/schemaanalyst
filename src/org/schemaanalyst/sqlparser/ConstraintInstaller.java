@@ -11,50 +11,50 @@ import gudusoft.gsqlparser.nodes.TObjectNameList;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.CheckCondition;
+import org.schemaanalyst.representation.expression.Expression;
 
 class ConstraintInstaller {
 
 	Schema schema;
 	Table currentTable;
 	Column currentColumn;
-	TConstraint node;
-	String constraintName;
 	
-	ExpressionMapper expressionMapper;
-	
-	ConstraintInstaller(Schema schema) {
-		this.schema = schema;
-		
-		expressionMapper = new ExpressionMapper(schema);
+	public static void install(Schema schema, Table currentTable, Column currentColumn, TConstraint node) {
+		new ConstraintInstaller(schema, currentTable, currentColumn).performInstallation(node);
 	}
 	
-	void install(Table currentTable, Column currentColumn, TConstraint node) {
+	ConstraintInstaller(Schema schema, Table currentTable, Column currentColumn) {
+		this.schema = schema;
 		this.currentTable = currentTable;
-		this.currentColumn = currentColumn;
-		this.node = node;
+		this.currentColumn = currentColumn;		
+	}
+	
+	void performInstallation(TConstraint node) {
+    	EConstraintType constraintType = node.getConstraint_type(); 
+
+    	if (constraintType == EConstraintType.check) {
+    		installCheckConstraint(node);
+    	} else if (constraintType == EConstraintType.foreign_key) {
+    		installForeignKeyConstraint(node);
+    	} else if (constraintType == EConstraintType.notnull) {
+    		installNotNullConstraint(node);    	
+    	} else if (constraintType == EConstraintType.primary_key) {
+    		installPrimaryKeyConstraint(node);
+    	} else if (constraintType == EConstraintType.unique) {
+    		installUniqueConstraint(node);
+    	} 
+	}
 		
+	String getConstraintName(TConstraint node) {
+		String constraintName = null;
 		TObjectName constraintNameObject = node.getConstraintName();
 		if (constraintNameObject != null) {
 			constraintName = constraintNameObject.toString();
 		}
-		
-    	EConstraintType constraintType = node.getConstraint_type(); 
-
-    	if (constraintType == EConstraintType.check) {
-    		installCheckConstraint();
-    	} else if (constraintType == EConstraintType.foreign_key) {
-    		installForeignKeyConstraint();
-    	} else if (constraintType == EConstraintType.notnull) {
-    		installNotNullConstraint();    	
-    	} else if (constraintType == EConstraintType.primary_key) {
-    		installPrimaryKeyConstraint();
-    	} else if (constraintType == EConstraintType.unique) {
-    		installUniqueConstraint();
-    	} 
+		return constraintName;
 	}
-		
-	List<Column> getConstraintColumns() {
+	
+	List<Column> getConstraintColumns(TConstraint node) {
 		List<Column> columns = new ArrayList<>();
     	
     	TObjectNameList nodeColumns = node.getColumnList();
@@ -66,7 +66,7 @@ class ConstraintInstaller {
     		}
     	} else {
     		for (int i=0; i < nodeColumns.size(); i++) {
-    			String columnName = nodeColumns.getObjectName(i).toString();
+    			String columnName = NameSanitizer.sanitize(nodeColumns.getObjectName(i));
     			Column column = currentTable.getColumn(columnName);
     			columns.add(column);
     		}
@@ -75,37 +75,32 @@ class ConstraintInstaller {
 		return columns;
 	}
 	
-	void installCheckConstraint() {
-		/*
-		CheckCondition expression = expressionMapper.getExpression(node.getCheckCondition());
-		
-		if (expression != null) {  // TODO: remove once we can parse more stuff...
-			currentTable.addCheckConstraint(constraintName, expression);
-		}
-		*/
+	void installCheckConstraint(TConstraint node) {
+		Expression expression = ExpressionMapper.map(currentTable, node.getCheckCondition());
+		currentTable.addCheckConstraint(getConstraintName(node), expression);
 	}
 	
-	void installNotNullConstraint() {
-		List<Column> columns = getConstraintColumns();
+	void installNotNullConstraint(TConstraint node) {
+		List<Column> columns = getConstraintColumns(node);
 		
 		if (columns.size() > 1) {
 			throw new ConstraintInstallationException("Cannot make more than one column NOT NULL at a time");
 		}
 		
 		Column column = columns.get(0);
-		currentTable.addNotNullConstraint(constraintName, column);
+		currentTable.addNotNullConstraint(getConstraintName(node), column);
 	}
 	
-	void installPrimaryKeyConstraint() {
-		Column[] columns = getConstraintColumns().toArray(new Column[0]);
-		currentTable.setPrimaryKeyConstraint(constraintName, columns);
+	void installPrimaryKeyConstraint(TConstraint node) {
+		Column[] columns = getConstraintColumns(node).toArray(new Column[0]);
+		currentTable.setPrimaryKeyConstraint(getConstraintName(node), columns);
 	}
 	
-	void installForeignKeyConstraint() {
+	void installForeignKeyConstraint(TConstraint node) {
 		String referenceTableName = node.getReferencedObject().toString();
 		Table referenceTable = schema.getTable(referenceTableName);
 		
-		List<Column> columns = getConstraintColumns();
+		List<Column> columns = getConstraintColumns(node);
 		
 		TObjectNameList referenceColumnList = node.getReferencedColumnList();
 		for (int i=0; i < referenceColumnList.size(); i++) {
@@ -114,11 +109,11 @@ class ConstraintInstaller {
 			columns.add(column);
 		}
 		
-		currentTable.addForeignKeyConstraint(constraintName, referenceTable, columns.toArray(new Column[0]));
+		currentTable.addForeignKeyConstraint(getConstraintName(node), referenceTable, columns.toArray(new Column[0]));
 	}
 	
-	void installUniqueConstraint() {
-		Column[] columns = getConstraintColumns().toArray(new Column[0]);
-		currentTable.addUniqueConstraint(constraintName, columns);		
+	void installUniqueConstraint(TConstraint node) {
+		Column[] columns = getConstraintColumns(node).toArray(new Column[0]);
+		currentTable.addUniqueConstraint(getConstraintName(node), columns);		
 	}
 }

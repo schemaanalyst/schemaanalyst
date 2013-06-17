@@ -27,7 +27,7 @@ public enum RelationalOperator {
 		}
 	}
 	
-	public static RelationalOperator operator(String string) {
+	public static RelationalOperator getRelationalOperator(String string) {
 		if (string.equals("=")) {
 			return EQUALS;
 		} else if (string.equals("!=")) {

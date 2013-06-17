@@ -1,5 +1,7 @@
 package org.schemaanalyst.representation.expression;
 
-public class Expression {
+public interface Expression {
 
+	public void accept(ExpressionVisitor visitor);
+	
 }

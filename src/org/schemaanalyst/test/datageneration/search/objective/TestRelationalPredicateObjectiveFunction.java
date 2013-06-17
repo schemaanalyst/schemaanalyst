@@ -33,7 +33,7 @@ public class TestRelationalPredicateObjectiveFunction {
 	
 	void setupRelational(boolean satisfy, String operator, int value) {
 		this.satisfy = satisfy;
-		this.op = RelationalOperator.operator(operator);
+		this.op = RelationalOperator.getRelationalOperator(operator);
 		this.value = value;
 		
 		RelationalCheckCondition relationalPredicate = new RelationalCheckCondition(database.column, operator, value); 

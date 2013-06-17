@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.schemaanalyst.representation.checkcondition.CheckCondition;
 import org.schemaanalyst.representation.datatype.DataType;
+import org.schemaanalyst.representation.expression.Expression;
 
 
 /**
@@ -115,6 +116,25 @@ public class Table implements Serializable {
 	public List<Column> getColumns() {
 		return Collections.unmodifiableList(columns);
 	}
+	
+	/**
+	 * Adds a check constraint to the table.
+	 * @param name A name for the check constraint (optional -- a version of this method exists without the requirement to specify a name).
+	 * @param checkCondition The check constraint's condition.
+	 * @return A reference to the Check object created as a result of the add
+	 */
+	public CheckConstraint addCheckConstraint(String name, Expression expression) {
+		return addCheckConstraint(new CheckConstraint(this, name, expression));
+	}	
+	
+	/**
+	 * Adds a check constraint to the table.
+	 * @param checkCondition The check constraint's condition.
+	 * @return A reference to the Check object created as a result of the add
+	 */
+	public CheckConstraint addCheckConstraint(Expression expression) {
+		return addCheckConstraint(null, expression);
+	}	
 
 	/**
 	 * Adds a check constraint to the table.

@@ -1,6 +1,7 @@
 package org.schemaanalyst.representation;
 
 import org.schemaanalyst.representation.checkcondition.CheckCondition;
+import org.schemaanalyst.representation.expression.Expression;
 
 
 /**
@@ -13,7 +14,8 @@ public class CheckConstraint extends Constraint {
 	private static final long serialVersionUID = 1112035994865637833L;
 
 	protected CheckCondition checkCondition;
-
+	protected Expression expression;
+	
 	/**
 	 * Constructor.
 	 * @param table The table on which the check constraint should hold.
@@ -26,12 +28,31 @@ public class CheckConstraint extends Constraint {
 	}
 	
 	/**
-	 * Returns the expression associated with this check constraint.
-	 * @return The expression associated with this check constraint.
+	 * Constructor.
+	 * @param table The table on which the check constraint should hold.
+	 * @param name An identifying name for the constraint (can be null).
+	 * @param checkCondition The condition associated with the check constraint.
+	 */
+	protected CheckConstraint(Table table, String name, Expression expression) {
+		super(table, name);
+		this.expression = expression;
+	}	
+	
+	/**
+	 * Returns the condition associated with this check constraint.
+	 * @return The condition associated with this check constraint.
 	 */
 	public CheckCondition getCheckCondition() {
 		return checkCondition;
 	}
+	
+	/**
+	 * Returns the expression denoting this check constraint.
+	 * @return The expression denoting this check constraint.
+	 */
+	public Expression getExpression() {
+		return expression;
+	}	
 	
 	/**
 	 * Allows instances of IntegrityConstraintVisitor to visit this constraint.

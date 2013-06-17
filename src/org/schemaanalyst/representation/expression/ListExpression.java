@@ -1,12 +1,12 @@
 package org.schemaanalyst.representation.expression;
 
-public class OrExpression extends ComposedExpression {
+public class ListExpression extends ComposedExpression {
 
-	public OrExpression(Expression... subexpressions) {
+	public ListExpression(Expression... subexpressions) {
 		super(subexpressions);
 	}
 	
 	public void accept(ExpressionVisitor visitor) {
 		visitor.visit(this);
-	}	
+	}
 }

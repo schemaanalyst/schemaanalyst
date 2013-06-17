@@ -1,11 +1,9 @@
 package org.schemaanalyst.test.sqlparser;
 
-
 import java.io.File;
 import java.util.List;
 
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlparser.SchemaParser;
@@ -46,7 +44,7 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("BookTown", new Postgres());
+		run("NistDML181", new Postgres());
 	}
 	
 }

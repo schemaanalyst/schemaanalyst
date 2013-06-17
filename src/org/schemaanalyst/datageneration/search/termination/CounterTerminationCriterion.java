@@ -15,7 +15,7 @@ public class CounterTerminationCriterion implements TerminationCriterion {
 	}
 	
 	public CounterTerminationCriterion(Counter counter, String op, int max) {
-		this(counter, RelationalOperator.operator(op), max);
+		this(counter, RelationalOperator.getRelationalOperator(op), max);
 	}
 	
 	public CounterTerminationCriterion(Counter counter, RelationalOperator op, int max) {

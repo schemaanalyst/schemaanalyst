@@ -18,8 +18,6 @@ import org.schemaanalyst.representation.datatype.DataType;
 
 public class SchemaParser {
 	
-	public static final boolean DEBUG = true;
-	
 	private TGSqlParser sqlParser; 
 	
 	public Schema parse(File file, String name, Database database) {
@@ -62,24 +60,16 @@ public class SchemaParser {
 		Table currentTable;
 		Column currentColumn;	
 		
-		DataTypeMapper dataTypeMapper;
 		ConstraintInstaller constraintMapper;
 		
 		SchemaParseTreeVisitor(Schema schema) {
 			this.schema = schema;		
-		
-			dataTypeMapper = new DataTypeMapper();
-			constraintMapper = new ConstraintInstaller(schema);
 		}
-		
-		
+				
 		// **** TABLES ****
 	    public void preVisit(TCreateTableSqlStatement node) {
-	    	currentTable = schema.createTable(node.getTableName().toString());
-	    	
-	    	if (DEBUG) {
-	    		System.out.println(currentTable);
-	    	}
+	    	String tableName = NameSanitizer.sanitize(node.getTableName());	  
+	    	currentTable = schema.createTable(tableName);
 	    }
 	    
 	    public void postVisit(TCreateTableSqlStatement node) {
@@ -89,32 +79,25 @@ public class SchemaParser {
 	    
 		// **** COLUMNS ****    
 	    public void preVisit(TColumnDefinition node) {
-	    	String name = node.getColumnName().toString();    	
-	    	DataType type = dataTypeMapper.getDataType(node.getDatatype());	    	
-	    	currentColumn = currentTable.addColumn(name, type);
-	    	
-	    	if (DEBUG) {
-	    		System.out.println("\t"+name+"\t"+type);
-	    	}	    	
+	    	String columnName = NameSanitizer.sanitize(node.getColumnName());	 	    	
+	    	DataType type = DataTypeMapper.map(node.getDatatype());	    	
+	    	currentColumn = currentTable.addColumn(columnName, type);   	
 	    }	
 	    
-	    public void postVisit(TColumnDefinition node) {
-	    
+	    public void postVisit(TColumnDefinition node) {	    
 	    	// parse in any column constraints defined here
 	    	TConstraintList	list = node.getConstraints();
 	    	if (list != null) {
 		    	for (int i=0 ; i < list.size(); i++) {
 		    		list.getElement(i).accept(this);
 		    	}
-	    	}
-	    	
+	    	}	    	
 	    	currentColumn = null;
-	    }
-	  	
+	    }	  	
 	    
 		// **** CONSTRAINTS ****
 	    public void postVisit(TConstraint node) {
-	    	constraintMapper.install(currentTable, currentColumn, node);
-	    }	
+	    	ConstraintInstaller.install(schema, currentTable, currentColumn, node);
+	    }	    
 	}	
 }

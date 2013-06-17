@@ -7,15 +7,21 @@ import org.schemaanalyst.representation.ForeignKeyConstraint;
 import org.schemaanalyst.representation.NotNullConstraint;
 import org.schemaanalyst.representation.PrimaryKeyConstraint;
 import org.schemaanalyst.representation.UniqueConstraint;
+import org.schemaanalyst.representation.expression.Expression;
 
 import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 
 public class ConstraintSQLWriter {
 	
-	protected CheckConditionSQLWriter predicateSQLWriter;
+	protected ExpressionSQLWriter expressionSQLWriter;	
+	protected CheckConditionSQLWriter checkConditionSQLWriter;
 	
-	public void setPredicateSQLWriter(CheckConditionSQLWriter predicateSQLWriter) {
-		this.predicateSQLWriter = predicateSQLWriter;
+	public void setExpressionSQLWriter(ExpressionSQLWriter expressionSQLWriter) {
+		this.expressionSQLWriter = expressionSQLWriter;
+	}
+	
+	public void setCheckConditionSQLWriter(CheckConditionSQLWriter predicateSQLWriter) {
+		this.checkConditionSQLWriter = predicateSQLWriter;
 	}
 	
 	public String writeConstraint(Constraint constraint) {
@@ -60,7 +66,12 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writeCheck(CheckConstraint check) {
-		return "CHECK(" + predicateSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
+		Expression expression = check.getExpression();
+		if (expression != null) {
+			return "CHECK(" + expressionSQLWriter.writeExpression(check.getExpression()) + ")";
+		} else {
+			return "CHECK(" + checkConditionSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
+		}
 	}
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {

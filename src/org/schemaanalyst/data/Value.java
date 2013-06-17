@@ -4,9 +4,11 @@ import java.io.Serializable;
 
 import org.schemaanalyst.representation.checkcondition.Operand;
 import org.schemaanalyst.representation.checkcondition.OperandVisitor;
+import org.schemaanalyst.representation.expression.Expression;
+import org.schemaanalyst.representation.expression.ExpressionVisitor;
 import org.schemaanalyst.util.Duplicable;
 
-public abstract class Value implements Operand, Serializable, Duplicable<Value>, Comparable<Value> {
+public abstract class Value implements Operand, Expression, Serializable, Duplicable<Value>, Comparable<Value> {
 	
 	private static final long serialVersionUID = -5756271284942346822L;
 	
@@ -20,6 +22,10 @@ public abstract class Value implements Operand, Serializable, Duplicable<Value>,
 		visitor.visit(this);
 	}
 
+	public void accept(ExpressionVisitor visitor) {
+		visitor.visit(this);
+	}	
+	
 	public abstract void accept(ValueVisitor visitor);
 	
 	public abstract Value duplicate();

@@ -12,7 +12,7 @@ public class RelationalPredicate<T> {
 	}
 	
 	public RelationalPredicate(T lhs, String operator, T rhs) {
-		this(lhs, RelationalOperator.operator(operator), rhs);
+		this(lhs, RelationalOperator.getRelationalOperator(operator), rhs);
 	}	
 	
 	public T getLHS() {
