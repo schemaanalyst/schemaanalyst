@@ -3,12 +3,12 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 import org.schemaanalyst.representation.datatype.BooleanDataType;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.RealDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.InExpression;
 
 public class World extends Schema {
 
@@ -109,7 +109,7 @@ public class World extends Schema {
 		Column codeTwo = countryTable.addColumn("code2", new VarCharDataType(2));
 		codeTwo.setNotNull();
 		
-		countryTable.addCheckConstraint(new InExpression(continent, "Asia", "Europe", "North America", "Africa", "Oceania", "Antarctica", "South America"));
+		countryTable.addCheckConstraint(new InCheckCondition(continent, "Asia", "Europe", "North America", "Africa", "Oceania", "Antarctica", "South America"));
 		
 		/*
 		  

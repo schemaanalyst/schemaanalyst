@@ -3,8 +3,8 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.NumericDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class NistXTS748 extends Schema {
 
@@ -36,7 +36,7 @@ public class NistXTS748 extends Schema {
 		tnum1.setNotNull();
 		tnum2.setUnique();
 		
-		test12549.addCheckConstraint(new RelationalExpression(tnum3, ">", 0));
+		test12549.addCheckConstraint(new RelationalCheckCondition(tnum3, ">", 0));
 		
 	}
 }

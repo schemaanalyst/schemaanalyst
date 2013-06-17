@@ -19,7 +19,7 @@ public class SQLWriter {
 	protected DataTypeSQLWriter dataTypeSQLWriter;
 	protected ConstraintSQLWriter constraintSQLWriter;
 	protected OperandSQLWriter operandSQLWriter;
-	protected ExpressionSQLWriter predicateSQLWriter;
+	protected CheckConditionSQLWriter predicateSQLWriter;
 	protected CellSQLWriter cellSQLWriter;
 	protected ValueSQLWriter valueSQLWriter;
 	
@@ -32,7 +32,7 @@ public class SQLWriter {
 		dataTypeSQLWriter = new DataTypeSQLWriter();
 		constraintSQLWriter = new ConstraintSQLWriter();
 		operandSQLWriter = new OperandSQLWriter();
-		predicateSQLWriter = new ExpressionSQLWriter();
+		predicateSQLWriter = new CheckConditionSQLWriter();
 		cellSQLWriter = new CellSQLWriter();
 		valueSQLWriter = new ValueSQLWriter();
 	}

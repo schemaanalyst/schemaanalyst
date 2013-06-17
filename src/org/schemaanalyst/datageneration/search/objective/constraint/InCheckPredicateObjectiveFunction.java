@@ -15,17 +15,17 @@ import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObje
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 
 public class InCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-	protected InExpression in;
+	protected InCheckCondition in;
 	protected Table table;
 	protected Data state;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public InCheckPredicateObjectiveFunction(InExpression in, 
+	public InCheckPredicateObjectiveFunction(InCheckCondition in, 
 										     Table table, 
 										     Data state, 
 										     String description, 

@@ -10,7 +10,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.constraint.RelationalCheckPredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
@@ -36,7 +36,7 @@ public class TestRelationalPredicateObjectiveFunction {
 		this.op = RelationalOperator.operator(operator);
 		this.value = value;
 		
-		RelationalExpression relationalPredicate = new RelationalExpression(database.column, operator, value); 
+		RelationalCheckCondition relationalPredicate = new RelationalCheckCondition(database.column, operator, value); 
 		objFun = new RelationalCheckPredicateObjectiveFunction(relationalPredicate, database.table, null, "", satisfy, false);
 	}
 	

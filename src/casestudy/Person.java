@@ -3,10 +3,10 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 import org.schemaanalyst.representation.datatype.DateDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.InExpression;
 
 public class Person extends Schema {
 	
@@ -42,6 +42,6 @@ public class Person extends Schema {
 		dateOfBirth.setNotNull();
 		
 		person.setPrimaryKeyConstraint(id);
-		person.addCheckConstraint(new InExpression(gender, "Male", "Female", "Uknown"));
+		person.addCheckConstraint(new InCheckCondition(gender, "Male", "Female", "Uknown"));
 	}
 }

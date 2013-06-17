@@ -4,10 +4,10 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.DateDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class Examination extends Schema {
 
@@ -48,8 +48,8 @@ public class Examination extends Schema {
                 
                 Column examTimeEnter = exam.addColumn("timeEnter", new DateDataType());
                 
-                exam.addCheckConstraint(new RelationalExpression(examScore, RelationalOperator.GREATER_OR_EQUALS, 0));
-                exam.addCheckConstraint(new RelationalExpression(examScore, RelationalOperator.LESS_OR_EQUALS, 100));
+                exam.addCheckConstraint(new RelationalCheckCondition(examScore, RelationalOperator.GREATER_OR_EQUALS, 0));
+                exam.addCheckConstraint(new RelationalCheckCondition(examScore, RelationalOperator.LESS_OR_EQUALS, 100));
                 
 		/*
 
@@ -114,10 +114,10 @@ public class Examination extends Schema {
                 
                 examLog.addForeignKeyConstraint(exam, examLogEKey, examEKey);
                 
-                examLog.addCheckConstraint(new RelationalExpression(examLogScoreNEW, RelationalOperator.GREATER_OR_EQUALS, 0));            
-                examLog.addCheckConstraint(new RelationalExpression(examLogScoreNEW, RelationalOperator.LESS_OR_EQUALS, 100));
-                examLog.addCheckConstraint(new RelationalExpression(examLogScoreOLD, RelationalOperator.GREATER_OR_EQUALS, 0));            
-                examLog.addCheckConstraint(new RelationalExpression(examLogScoreOLD, RelationalOperator.LESS_OR_EQUALS, 100));
+                examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreNEW, RelationalOperator.GREATER_OR_EQUALS, 0));            
+                examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreNEW, RelationalOperator.LESS_OR_EQUALS, 100));
+                examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreOLD, RelationalOperator.GREATER_OR_EQUALS, 0));            
+                examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreOLD, RelationalOperator.LESS_OR_EQUALS, 100));
                
 	}
 }

@@ -1,9 +1,9 @@
-package org.schemaanalyst.representation.expression;
+package org.schemaanalyst.representation.checkcondition;
 
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.representation.Column;
 
-public class BetweenExpression implements Expression {
+public class BetweenCheckCondition implements CheckCondition {
 	
 	private static final long serialVersionUID = -1051694082593826861L;
 	
@@ -11,13 +11,13 @@ public class BetweenExpression implements Expression {
 	private Operand lower;
 	private Operand upper;
 	
-	public BetweenExpression(Column column, Operand lower, Operand upper) {
+	public BetweenCheckCondition(Column column, Operand lower, Operand upper) {
 		this.column = column;
 		this.lower = lower;
 		this.upper = upper;
 	}
 
-	public BetweenExpression(Column column, int lower, int upper) {
+	public BetweenCheckCondition(Column column, int lower, int upper) {
 		this.column = column;
 		this.lower = new NumericValue(lower);
 		this.upper = new NumericValue(upper);
@@ -35,7 +35,7 @@ public class BetweenExpression implements Expression {
 		return upper;
 	}
 
-	public void accept(ExpressionVisitor visitor) {
+	public void accept(CheckConditionVisitor visitor) {
 		visitor.visit(this);
 	}
 	
@@ -52,7 +52,7 @@ public class BetweenExpression implements Expression {
 			return false;
 		}
 		
-		BetweenExpression other = (BetweenExpression) obj;
+		BetweenCheckCondition other = (BetweenCheckCondition) obj;
 		if (column == null) {
 			if (other.column != null) {
 				return false;

@@ -19,8 +19,8 @@ import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.Operand;
 import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.expression.Operand;
 
 public class TestRelationalPredicateAnalyst {
 

@@ -14,12 +14,12 @@ import org.schemaanalyst.representation.CheckConstraint;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.BetweenExpression;
-import org.schemaanalyst.representation.expression.Expression;
-import org.schemaanalyst.representation.expression.ExpressionVisitor;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.Operand;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.representation.checkcondition.CheckCondition;
+import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 
 /**
  * Mutates all types of check constraint by replacing columns
@@ -58,7 +58,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     /**
      * A visitor implementation for mutating check predicates
      */
-    private class Visitor implements ExpressionVisitor {
+    private class Visitor implements CheckConditionVisitor {
 
         TypeCompatibility typeCompatibility;
         Table table;
@@ -94,13 +94,13 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(BetweenExpression predicate) {
+        public void visit(BetweenCheckCondition predicate) {
             // BetweenCheckPredicate(<Column>, Operand, Operand)
             new ColumnReplacer(typeCompatibility) {
                 @Override
-                protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                    BetweenExpression predicate = (BetweenExpression) checkPredicate;
-                    mutantTable.addCheckConstraint(new BetweenExpression(
+                protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                    BetweenCheckCondition predicate = (BetweenCheckCondition) checkPredicate;
+                    mutantTable.addCheckConstraint(new BetweenCheckCondition(
                             replacement,
                             predicate.getLower(),
                             predicate.getUpper()));
@@ -113,9 +113,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (predicate.getLower() instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                        BetweenExpression predicate = (BetweenExpression) checkPredicate;
-                        mutantTable.addCheckConstraint(new BetweenExpression(
+                    protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                        BetweenCheckCondition predicate = (BetweenCheckCondition) checkPredicate;
+                        mutantTable.addCheckConstraint(new BetweenCheckCondition(
                                 predicate.getColumn(),
                                 replacement,
                                 predicate.getUpper()));
@@ -129,9 +129,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (predicate.getUpper() instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                        BetweenExpression predicate = (BetweenExpression) checkPredicate;
-                        mutantTable.addCheckConstraint(new BetweenExpression(
+                    protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                        BetweenCheckCondition predicate = (BetweenCheckCondition) checkPredicate;
+                        mutantTable.addCheckConstraint(new BetweenCheckCondition(
                                 predicate.getColumn(),
                                 predicate.getLower(),
                                 replacement));
@@ -149,13 +149,13 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(InExpression predicate) {
+        public void visit(InCheckCondition predicate) {
             // InCheckPredicate(<Column>,values)
             new ColumnReplacer(typeCompatibility) {
                 @Override
-                protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                    InExpression predicate = (InExpression) checkPredicate;
-                    mutantTable.addCheckConstraint(new InExpression(
+                protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                    InCheckCondition predicate = (InCheckCondition) checkPredicate;
+                    mutantTable.addCheckConstraint(new InCheckCondition(
                             replacement,
                             predicate.getValues().toArray(new Value[0])));
                     mutant.addComment("Mutant with InCheckPredicate constraint \"" + predicate + "\"");
@@ -171,15 +171,15 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
          * @param predicate The predicate of the constraint
          */
         @Override
-        public void visit(RelationalExpression predicate) {
+        public void visit(RelationalCheckCondition predicate) {
             // RelationalCheckPredicate(<Column>,Operator,Operand)
             Operand lhs = predicate.getLHS();
             if (lhs instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                        RelationalExpression predicate = (RelationalExpression) checkPredicate;
-                        mutantTable.addCheckConstraint(new RelationalExpression(
+                    protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                        RelationalCheckCondition predicate = (RelationalCheckCondition) checkPredicate;
+                        mutantTable.addCheckConstraint(new RelationalCheckCondition(
                                 replacement,
                                 predicate.getOperator(),
                                 predicate.getRHS()));
@@ -194,9 +194,9 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
             if (rhs instanceof Column) {
                 new ColumnReplacer(typeCompatibility) {
                     @Override
-                    protected Schema createMutant(Column column, Column replacement, Expression checkPredicate) {
-                        RelationalExpression predicate = (RelationalExpression) checkPredicate;
-                        mutantTable.addCheckConstraint(new RelationalExpression(
+                    protected Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate) {
+                        RelationalCheckCondition predicate = (RelationalCheckCondition) checkPredicate;
+                        mutantTable.addCheckConstraint(new RelationalCheckCondition(
                                 predicate.getLHS(),
                                 predicate.getOperator(),
                                 replacement));
@@ -237,7 +237,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
              * @param checkPredicate The check predicate
              * @return The mutant schema
              */
-            protected abstract Schema createMutant(Column column, Column replacement, Expression checkPredicate);
+            protected abstract Schema createMutant(Column column, Column replacement, CheckCondition checkPredicate);
 
             /**
              * Searches for suitable replacement columns, and invokes

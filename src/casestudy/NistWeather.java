@@ -3,9 +3,9 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.expression.BetweenExpression;
 
 public class NistWeather extends Schema {
 	
@@ -35,11 +35,11 @@ public class NistWeather extends Schema {
                 
 		Column lat_n = station.addColumn("LAT_N", new IntDataType());
                 lat_n.setNotNull();
-                station.addCheckConstraint(new BetweenExpression(lat_n, 0, 90));
+                station.addCheckConstraint(new BetweenCheckCondition(lat_n, 0, 90));
                 
 		Column long_w = station.addColumn("LONG_W", new IntDataType());
                 long_w.setNotNull();
-                station.addCheckConstraint(new BetweenExpression(long_w, -180, 180));
+                station.addCheckConstraint(new BetweenCheckCondition(long_w, -180, 180));
 		
 		/*
                         CREATE TABLE Stats
@@ -60,8 +60,8 @@ public class NistWeather extends Schema {
 		Column rainI = stats.addColumn("RAIN_I", new IntDataType());
 		
 		stats.setPrimaryKeyConstraint(statsId, month);
-		stats.addCheckConstraint(new BetweenExpression(month, 1, 12));
-		stats.addCheckConstraint(new BetweenExpression(tempF, -80, 150));
-		stats.addCheckConstraint(new BetweenExpression(rainI, 0, 100));
+		stats.addCheckConstraint(new BetweenCheckCondition(month, 1, 12));
+		stats.addCheckConstraint(new BetweenCheckCondition(tempF, -80, 150));
+		stats.addCheckConstraint(new BetweenCheckCondition(rainI, 0, 100));
 	}
 }

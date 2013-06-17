@@ -10,7 +10,7 @@ import org.schemaanalyst.representation.CheckConstraint;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 
 /**
  * Creates mutants of 'In ...' type check constraints by removing each value in
@@ -23,8 +23,8 @@ public class CheckConstraintInMutator extends Mutator {
     @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         for (CheckConstraint checkConstraint : table.getCheckConstraints()) {
-            if (checkConstraint.getCheckCondition() instanceof InExpression) {
-                for (Value value : ((InExpression) checkConstraint.getCheckCondition()).getValues()) {
+            if (checkConstraint.getCheckCondition() instanceof InCheckCondition) {
+                for (Value value : ((InCheckCondition) checkConstraint.getCheckCondition()).getValues()) {
                     makeMutant(value, table, checkConstraint, mutants);
                 }
             }
@@ -43,7 +43,7 @@ public class CheckConstraintInMutator extends Mutator {
         // Make the duplicate
         Schema mutantSchema = table.getSchema().duplicate();
         Table mutantTable = mutantSchema.getTable(table.getName());
-        InExpression predicate = (InExpression) constraint.getCheckCondition();
+        InCheckCondition predicate = (InCheckCondition) constraint.getCheckCondition();
         Column mutantColumn = mutantTable.getColumn(predicate.getColumn().getName());
 
         // Remove the original constraint
@@ -52,7 +52,7 @@ public class CheckConstraintInMutator extends Mutator {
         // Add the new constraint
         List<Value> mutantValues = new ArrayList<>(predicate.getValues());
         mutantValues.remove(value);
-        mutantTable.addCheckConstraint(new InExpression(mutantColumn, mutantValues.toArray(new Value[mutantValues.size()])));
+        mutantTable.addCheckConstraint(new InCheckCondition(mutantColumn, mutantValues.toArray(new Value[mutantValues.size()])));
 
         // Add to mutants
         mutants.add(mutantSchema);

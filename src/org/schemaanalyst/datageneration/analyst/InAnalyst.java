@@ -7,11 +7,11 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.InExpression;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 
 public class InAnalyst extends ConstraintAnalyst {
 
-	protected InExpression in;
+	protected InCheckCondition in;
 	protected Table table;
 	protected boolean allowNull;
 		
@@ -19,7 +19,7 @@ public class InAnalyst extends ConstraintAnalyst {
 	protected List<Cell> notInCells;
 	protected List<Value> inValues;
 	
-	public InAnalyst(InExpression in, 
+	public InAnalyst(InCheckCondition in, 
 				     Table table, 
 					 boolean allowNull) {
 		this.in = in;

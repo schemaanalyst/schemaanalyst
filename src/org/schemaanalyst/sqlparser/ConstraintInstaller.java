@@ -11,7 +11,7 @@ import gudusoft.gsqlparser.nodes.TObjectNameList;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.Expression;
+import org.schemaanalyst.representation.checkcondition.CheckCondition;
 
 class ConstraintInstaller {
 
@@ -76,11 +76,13 @@ class ConstraintInstaller {
 	}
 	
 	void installCheckConstraint() {
-		Expression expression = expressionMapper.getExpression(node.getCheckCondition());
+		/*
+		CheckCondition expression = expressionMapper.getExpression(node.getCheckCondition());
 		
 		if (expression != null) {  // TODO: remove once we can parse more stuff...
 			currentTable.addCheckConstraint(constraintName, expression);
 		}
+		*/
 	}
 	
 	void installNotNullConstraint() {

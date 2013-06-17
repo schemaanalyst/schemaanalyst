@@ -12,17 +12,17 @@ import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObje
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 
 public class RelationalCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 	
-	protected RelationalExpression relation;
+	protected RelationalCheckCondition relation;
 	protected Table table;
 	protected Data state;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public RelationalCheckPredicateObjectiveFunction(RelationalExpression relation, 
+	public RelationalCheckPredicateObjectiveFunction(RelationalCheckCondition relation, 
 													 Table table, 
 													 Data state, 
 													 String description, 

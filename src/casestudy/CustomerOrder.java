@@ -3,6 +3,7 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.DateDataType;
 import org.schemaanalyst.representation.datatype.DecimalDataType;
@@ -10,7 +11,6 @@ import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.SmallIntDataType;
 import org.schemaanalyst.representation.datatype.TimestampDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.InExpression;
 
 public class CustomerOrder extends Schema {
 
@@ -124,7 +124,7 @@ public class CustomerOrder extends Schema {
 
 		dbUserTable.setPrimaryKeyConstraint(idDbUserColumn);
                 dbUserTable.addForeignKeyConstraint(dbRoleTable, roleIdColumn, nameRowColumn);
-                dbUserTable.addCheckConstraint(new InExpression(activeColumn, 0, 1));
+                dbUserTable.addCheckConstraint(new InCheckCondition(activeColumn, 0, 1));
                 
                 idDbUserColumn.setNotNull();
 		nameDbUserColumn.setNotNull();

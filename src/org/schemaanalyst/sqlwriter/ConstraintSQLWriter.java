@@ -12,9 +12,9 @@ import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 
 public class ConstraintSQLWriter {
 	
-	protected ExpressionSQLWriter predicateSQLWriter;
+	protected CheckConditionSQLWriter predicateSQLWriter;
 	
-	public void setPredicateSQLWriter(ExpressionSQLWriter predicateSQLWriter) {
+	public void setPredicateSQLWriter(CheckConditionSQLWriter predicateSQLWriter) {
 		this.predicateSQLWriter = predicateSQLWriter;
 	}
 	
@@ -60,7 +60,7 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writeCheck(CheckConstraint check) {
-		return "CHECK(" + predicateSQLWriter.writePredicate(check.getCheckCondition()) + ")";
+		return "CHECK(" + predicateSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
 	}
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {

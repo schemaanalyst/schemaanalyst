@@ -3,9 +3,9 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class StudentResidence extends Schema {
 
@@ -33,8 +33,8 @@ public class StudentResidence extends Schema {
 		Column capacityColumn = residenceTable.addColumn("capacity", new IntDataType());
                 capacityColumn.setNotNull();
 		
-		residenceTable.addCheckConstraint(new RelationalExpression(capacityColumn, ">", 1));
-		residenceTable.addCheckConstraint(new RelationalExpression(capacityColumn, "<=", 10));
+		residenceTable.addCheckConstraint(new RelationalCheckCondition(capacityColumn, ">", 1));
+		residenceTable.addCheckConstraint(new RelationalCheckCondition(capacityColumn, "<=", 10));
 		
 		/*
                     CREATE TABLE Student 
@@ -60,6 +60,6 @@ public class StudentResidence extends Schema {
 		Column residenceColumn = studentTable.addColumn("residence", new VarCharDataType(50));
 		residenceColumn.setForeignKey(residenceTable, nameColumn);
 		
-		studentTable.addCheckConstraint(new RelationalExpression(idColumn, ">=", 0));		
+		studentTable.addCheckConstraint(new RelationalCheckCondition(idColumn, ">=", 0));		
 	}
 }

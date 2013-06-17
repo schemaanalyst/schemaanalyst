@@ -1,4 +1,4 @@
-package org.schemaanalyst.representation.expression;
+package org.schemaanalyst.representation.checkcondition;
 
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.representation.Column;

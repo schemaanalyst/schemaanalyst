@@ -3,6 +3,7 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 import org.schemaanalyst.representation.datatype.BooleanDataType;
 import org.schemaanalyst.representation.datatype.DateDataType;
 import org.schemaanalyst.representation.datatype.DecimalDataType;
@@ -10,7 +11,6 @@ import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.NumericDataType;
 import org.schemaanalyst.representation.datatype.TimestampDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.InExpression;
 
 public class ITrust extends Schema {
 
@@ -46,7 +46,7 @@ public class ITrust extends Schema {
 		Column userSAnswer = users.addColumn("sAnswer", new VarCharDataType(30));
 		
 		users.setPrimaryKeyConstraint(usersMid);
-		users.addCheckConstraint(new InExpression(usersRole, "patient", "admin", "hcp", "uap", "er", "tester", "pha", "lt"));
+		users.addCheckConstraint(new InCheckCondition(usersRole, "patient", "admin", "hcp", "uap", "er", "tester", "pha", "lt"));
 		
 	
 		/* 
@@ -145,8 +145,8 @@ public class ITrust extends Schema {
 		Column personnelMessageFilter = personnel.addColumn("MessageFilter", new VarCharDataType(60));
 		
 		personnel.setPrimaryKeyConstraint(personnelMid);
-		personnel.addCheckConstraint(new InExpression(personnelRole, "admin", "hcp", "uap", "er", "tester", "pha", "lt"));
-		personnel.addCheckConstraint(new InExpression(personnelState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
+		personnel.addCheckConstraint(new InCheckCondition(personnelRole, "admin", "hcp", "uap", "er", "tester", "pha", "lt"));
+		personnel.addCheckConstraint(new InCheckCondition(personnelState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
                 
                 /*
                         CREATE TABLE Patients(
@@ -294,8 +294,8 @@ public class ITrust extends Schema {
 		Column patientsAlternateName = patients.addColumn("AlternateName", new VarCharDataType(32));
                 
                 patients.setPrimaryKeyConstraint(patientsMid);
-                patients.addCheckConstraint(new InExpression(patientsState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
-                patients.addCheckConstraint(new InExpression(patientsICState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
+                patients.addCheckConstraint(new InCheckCondition(patientsState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
+                patients.addCheckConstraint(new InCheckCondition(patientsICState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
 
                 /*
                     CREATE TABLE HistoryPatients(
@@ -455,8 +455,8 @@ public class ITrust extends Schema {
                 Column historyPatientsAlternateName = historyPatients.addColumn("AlternateName", new VarCharDataType(32));
 
                 historyPatients.setPrimaryKeyConstraint(historyPatientsId);
-                historyPatients.addCheckConstraint(new InExpression(historyPatientsState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
-                historyPatients.addCheckConstraint(new InExpression(historyPatientsICState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
+                historyPatients.addCheckConstraint(new InCheckCondition(historyPatientsState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
+                historyPatients.addCheckConstraint(new InCheckCondition(historyPatientsICState, "", "AK", "AL", "AR", "AZ", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "IA", "ID", "IL", "IN", "KS", "KY", "LA", "MA", "MD", "ME", "MI", "MN", "MO", "MS", "MT", "NC", "ND", "NE", "NH", "NJ", "NM", "NV", "NY", "OH", "OK", "OR", "PA", "RI", "SC", "SD", "TN", "TX", "UT", "VA", "VT", "WA", "WI", "WV", "WY"));
 
                 /*     
                     CREATE TABLE LoginFailures(
@@ -525,7 +525,7 @@ public class ITrust extends Schema {
                 icdCodesChronic.setNotNull();
                 
                 icdCodes.setPrimaryKeyConstraint(icdCodesCode);
-                icdCodes.addCheckConstraint(new InExpression(icdCodesChronic, "no", "yes"));
+                icdCodes.addCheckConstraint(new InCheckCondition(icdCodesChronic, "no", "yes"));
                 
                 /*     
                     CREATE TABLE CPTCodes(

@@ -1,5 +1,5 @@
 package org.schemaanalyst.representation.expression;
 
-public class Expression {
+public class OrExpression {
 
 }

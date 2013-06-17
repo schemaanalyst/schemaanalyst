@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.schemaanalyst.representation.checkcondition.CheckCondition;
 import org.schemaanalyst.representation.datatype.DataType;
-import org.schemaanalyst.representation.expression.Expression;
 
 
 /**
@@ -122,7 +122,7 @@ public class Table implements Serializable {
 	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(String name, Expression checkCondition) {
+	public CheckConstraint addCheckConstraint(String name, CheckCondition checkCondition) {
 		return addCheckConstraint(new CheckConstraint(this, name, checkCondition));
 	}	
 	
@@ -131,7 +131,7 @@ public class Table implements Serializable {
 	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(Expression checkCondition) {
+	public CheckConstraint addCheckConstraint(CheckCondition checkCondition) {
 		return addCheckConstraint(null, checkCondition);
 	}
 	

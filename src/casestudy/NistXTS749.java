@@ -3,11 +3,11 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.DecimalDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.NumericDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class NistXTS749 extends Schema {
 
@@ -66,7 +66,7 @@ public class NistXTS749 extends Schema {
 		
 		test12649Table.setPrimaryKeyConstraint(tnum1, tnum2);
 		
-		test12649Table.addCheckConstraint(new RelationalExpression(tnum2, ">", 0));
+		test12649Table.addCheckConstraint(new RelationalCheckCondition(tnum2, ">", 0));
 		
 		test12649Table.addForeignKeyConstraint(staffTable, tchar, empnum);		
 	}

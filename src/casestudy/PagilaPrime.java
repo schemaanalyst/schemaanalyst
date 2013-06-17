@@ -5,9 +5,9 @@ package casestudy;
 
 import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.representation.*;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.*;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 /**
  *
@@ -96,8 +96,8 @@ public class PagilaPrime extends Schema {
         Column film_description = film.addColumn("description", new TextDataType());
         
         Column film_release_year = film.addColumn("release_year", new IntDataType());
-        film.addCheckConstraint(new RelationalExpression(film_release_year, ">=", 1901));
-        film.addCheckConstraint(new RelationalExpression(film_release_year, "<=", 2155));
+        film.addCheckConstraint(new RelationalCheckCondition(film_release_year, ">=", 1901));
+        film.addCheckConstraint(new RelationalCheckCondition(film_release_year, "<=", 2155));
         
         Column film_language_id = film.addColumn("language_id", new SmallIntDataType());
         film_language_id.setNotNull();
@@ -117,7 +117,7 @@ public class PagilaPrime extends Schema {
         
         //TODO: check for better type match for SQL 'ENUM'
         Column film_rating = film.addColumn("rating", new CharDataType(5));
-        film.addCheckConstraint(new InExpression(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
+        film.addCheckConstraint(new InCheckCondition(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
         
         Column film_last_update = film.addColumn("last_update", new TimestampDataType());
         film_last_update.setNotNull();
@@ -368,8 +368,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_01);
         
         Column payment_p2007_01_payment_date = payment_p2007_01.getColumn("payment_date");
-        payment_p2007_01.addCheckConstraint(new RelationalExpression(payment_p2007_01_payment_date, ">=", new TimestampValue(2007, 01, 01, 0, 0, 0)));
-        payment_p2007_01.addCheckConstraint(new RelationalExpression(payment_p2007_01_payment_date, "<", new TimestampValue(2007, 02, 01, 0, 0, 0)));
+        payment_p2007_01.addCheckConstraint(new RelationalCheckCondition(payment_p2007_01_payment_date, ">=", new TimestampValue(2007, 01, 01, 0, 0, 0)));
+        payment_p2007_01.addCheckConstraint(new RelationalCheckCondition(payment_p2007_01_payment_date, "<", new TimestampValue(2007, 02, 01, 0, 0, 0)));
 
         
         /*
@@ -383,8 +383,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_02);
         
         Column payment_p2007_02_payment_date = payment_p2007_02.getColumn("payment_date");
-        payment_p2007_02.addCheckConstraint(new RelationalExpression(payment_p2007_02_payment_date, ">=", new TimestampValue(2007, 02, 01, 0, 0, 0)));
-        payment_p2007_02.addCheckConstraint(new RelationalExpression(payment_p2007_02_payment_date, "<", new TimestampValue(2007, 03, 01, 0, 0, 0)));
+        payment_p2007_02.addCheckConstraint(new RelationalCheckCondition(payment_p2007_02_payment_date, ">=", new TimestampValue(2007, 02, 01, 0, 0, 0)));
+        payment_p2007_02.addCheckConstraint(new RelationalCheckCondition(payment_p2007_02_payment_date, "<", new TimestampValue(2007, 03, 01, 0, 0, 0)));
         
         /*
             CREATE TABLE payment_p2007_03 (CONSTRAINT payment_p2007_03_payment_date_check CHECK (((payment_date >= '2007-03-01 00:00:00'::timestamp without time zone) AND (payment_date < '2007-04-01 00:00:00'::timestamp without time zone)))
@@ -397,8 +397,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_03);
         
         Column payment_p2007_03_payment_date = payment_p2007_03.getColumn("payment_date");
-        payment_p2007_03.addCheckConstraint(new RelationalExpression(payment_p2007_03_payment_date, ">=", new TimestampValue(2007, 03, 01, 0, 0, 0)));
-        payment_p2007_03.addCheckConstraint(new RelationalExpression(payment_p2007_03_payment_date, "<", new TimestampValue(2007, 04, 01, 0, 0, 0)));
+        payment_p2007_03.addCheckConstraint(new RelationalCheckCondition(payment_p2007_03_payment_date, ">=", new TimestampValue(2007, 03, 01, 0, 0, 0)));
+        payment_p2007_03.addCheckConstraint(new RelationalCheckCondition(payment_p2007_03_payment_date, "<", new TimestampValue(2007, 04, 01, 0, 0, 0)));
         
         /*
             CREATE TABLE payment_p2007_04 (CONSTRAINT payment_p2007_04_payment_date_check CHECK (((payment_date >= '2007-04-01 00:00:00'::timestamp without time zone) AND (payment_date < '2007-05-01 00:00:00'::timestamp without time zone)))
@@ -411,8 +411,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_04);
         
         Column payment_p2007_04_payment_date = payment_p2007_04.getColumn("payment_date");
-        payment_p2007_04.addCheckConstraint(new RelationalExpression(payment_p2007_04_payment_date, ">=", new TimestampValue(2007, 04, 01, 0, 0, 0)));
-        payment_p2007_04.addCheckConstraint(new RelationalExpression(payment_p2007_04_payment_date, "<", new TimestampValue(2007, 05, 01, 0, 0, 0)));
+        payment_p2007_04.addCheckConstraint(new RelationalCheckCondition(payment_p2007_04_payment_date, ">=", new TimestampValue(2007, 04, 01, 0, 0, 0)));
+        payment_p2007_04.addCheckConstraint(new RelationalCheckCondition(payment_p2007_04_payment_date, "<", new TimestampValue(2007, 05, 01, 0, 0, 0)));
         
         /*
             CREATE TABLE payment_p2007_05 (CONSTRAINT payment_p2007_05_payment_date_check CHECK (((payment_date >= '2007-05-01 00:00:00'::timestamp without time zone) AND (payment_date < '2007-06-01 00:00:00'::timestamp without time zone)))
@@ -425,8 +425,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_05);
         
         Column payment_p2007_05_payment_date = payment_p2007_05.getColumn("payment_date");
-        payment_p2007_05.addCheckConstraint(new RelationalExpression(payment_p2007_05_payment_date, ">=", new TimestampValue(2007, 05, 01, 0, 0, 0)));
-        payment_p2007_05.addCheckConstraint(new RelationalExpression(payment_p2007_05_payment_date, "<", new TimestampValue(2007, 06, 01, 0, 0, 0)));
+        payment_p2007_05.addCheckConstraint(new RelationalCheckCondition(payment_p2007_05_payment_date, ">=", new TimestampValue(2007, 05, 01, 0, 0, 0)));
+        payment_p2007_05.addCheckConstraint(new RelationalCheckCondition(payment_p2007_05_payment_date, "<", new TimestampValue(2007, 06, 01, 0, 0, 0)));
         
         /*
             CREATE TABLE payment_p2007_06 (CONSTRAINT payment_p2007_06_payment_date_check CHECK (((payment_date >= '2007-06-01 00:00:00'::timestamp without time zone) AND (payment_date < '2007-07-01 00:00:00'::timestamp without time zone)))
@@ -439,8 +439,8 @@ public class PagilaPrime extends Schema {
         setupPayment(payment_p2007_06);
         
         Column payment_p2007_06_payment_date = payment_p2007_06.getColumn("payment_date");
-        payment_p2007_06.addCheckConstraint(new RelationalExpression(payment_p2007_06_payment_date, ">=", new TimestampValue(2007, 06, 01, 0, 0, 0)));
-        payment_p2007_06.addCheckConstraint(new RelationalExpression(payment_p2007_06_payment_date, "<", new TimestampValue(2007, 07, 01, 0, 0, 0)));
+        payment_p2007_06.addCheckConstraint(new RelationalCheckCondition(payment_p2007_06_payment_date, ">=", new TimestampValue(2007, 06, 01, 0, 0, 0)));
+        payment_p2007_06.addCheckConstraint(new RelationalCheckCondition(payment_p2007_06_payment_date, "<", new TimestampValue(2007, 07, 01, 0, 0, 0)));
         
         /*
             CREATE TABLE rental (

@@ -12,7 +12,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.Operand;
+import org.schemaanalyst.representation.checkcondition.Operand;
 import org.schemaanalyst.util.random.Random;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;

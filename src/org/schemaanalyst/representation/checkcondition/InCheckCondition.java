@@ -1,4 +1,4 @@
-package org.schemaanalyst.representation.expression;
+package org.schemaanalyst.representation.checkcondition;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,19 +11,19 @@ import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.representation.Column;
 
-public class InExpression implements Expression {
+public class InCheckCondition implements CheckCondition {
 
 	private static final long serialVersionUID = 7854975706131599964L;
 
 	private Column column;
 	private List<Value> values;
 	
-	public InExpression(Column column, Value... values) {
+	public InCheckCondition(Column column, Value... values) {
 		this.column = column;
 		this.values = Arrays.asList(values);
 	}
 
-	public InExpression(Column column, int... values) {
+	public InCheckCondition(Column column, int... values) {
 		this.column = column;
 		this.values = new ArrayList<Value>();
 		for (int value : values) {
@@ -31,7 +31,7 @@ public class InExpression implements Expression {
 		}
 	}	
 	
-	public InExpression(Column column, String... values) {
+	public InCheckCondition(Column column, String... values) {
 		this.column = column;
 		this.values = new ArrayList<Value>();
 		for (String value : values) {
@@ -47,7 +47,7 @@ public class InExpression implements Expression {
 		return Collections.unmodifiableList(values);
 	}
 	
-	public void accept(ExpressionVisitor visitor) {
+	public void accept(CheckConditionVisitor visitor) {
 		visitor.visit(this);
 	}
 	
@@ -64,7 +64,7 @@ public class InExpression implements Expression {
 			return false;
 		}
 		
-		InExpression other = (InExpression) obj;
+		InCheckCondition other = (InCheckCondition) obj;
 		if (column == null) { 
 			if (other.column != null) {
 				return false;

@@ -3,10 +3,10 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.NumericDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class Products extends Schema {
 
@@ -40,12 +40,12 @@ public class Products extends Schema {
 		
 		Column price = productsTable .addColumn("price" , new NumericDataType(100));
 		price.setNotNull();
-		productsTable.addCheckConstraint(new RelationalExpression(price, ">", 0));
+		productsTable.addCheckConstraint(new RelationalCheckCondition(price, ">", 0));
 
 		Column discounted_price = productsTable .addColumn("discounted_price" , new NumericDataType(100));
 		discounted_price.setNotNull();
-		productsTable.addCheckConstraint(new RelationalExpression(discounted_price, ">", 0));
-		productsTable.addCheckConstraint(new RelationalExpression(price , ">" , discounted_price));
+		productsTable.addCheckConstraint(new RelationalCheckCondition(discounted_price, ">", 0));
+		productsTable.addCheckConstraint(new RelationalCheckCondition(price , ">" , discounted_price));
 
 		/*
 
@@ -88,7 +88,7 @@ public class Products extends Schema {
 		quantity.setNotNull();
 		
 		orderItemsTable.setPrimaryKeyConstraint(productNumber, orderIdAgain);
-		orderItemsTable.addCheckConstraint(new RelationalExpression(quantity, ">", 0));
+		orderItemsTable.addCheckConstraint(new RelationalCheckCondition(quantity, ">", 0));
 				
 	}
 }

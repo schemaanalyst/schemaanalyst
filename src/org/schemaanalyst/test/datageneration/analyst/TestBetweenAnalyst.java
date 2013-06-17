@@ -18,8 +18,8 @@ import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.expression.BetweenExpression;
 
 public class TestBetweenAnalyst {
 
@@ -59,7 +59,7 @@ public class TestBetweenAnalyst {
 		row2Cell.setValue(new NumericValue(20));
 		row3Cell.setValue(new NumericValue(30));
 		
-		BetweenExpression bcp = new BetweenExpression(column, 15, 25);
+		BetweenCheckCondition bcp = new BetweenCheckCondition(column, 15, 25);
 		
 		BetweenAnalyst ba = new BetweenAnalyst(bcp, table, true);
 		
@@ -81,7 +81,7 @@ public class TestBetweenAnalyst {
 		row2Cell.setValue(new NumericValue(20));
 		row3Cell.setValue(new NumericValue(30));
 		
-		BetweenExpression bcp = new BetweenExpression(column, 5, 35);
+		BetweenCheckCondition bcp = new BetweenCheckCondition(column, 5, 35);
 		
 		BetweenAnalyst ba = new BetweenAnalyst(bcp, table, true);
 		

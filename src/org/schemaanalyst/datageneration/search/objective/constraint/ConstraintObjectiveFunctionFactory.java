@@ -10,10 +10,10 @@ import org.schemaanalyst.representation.NotNullConstraint;
 import org.schemaanalyst.representation.PrimaryKeyConstraint;
 import org.schemaanalyst.representation.Table;
 import org.schemaanalyst.representation.UniqueConstraint;
-import org.schemaanalyst.representation.expression.BetweenExpression;
-import org.schemaanalyst.representation.expression.ExpressionVisitor;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 
 public class ConstraintObjectiveFunctionFactory {
 	
@@ -68,7 +68,7 @@ public class ConstraintObjectiveFunctionFactory {
 	
 	protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 		
-		class PredicateDispatcher implements ExpressionVisitor {
+		class PredicateDispatcher implements CheckConditionVisitor {
 
 			ObjectiveFunction<Data> objFun;
 			Table table;
@@ -85,17 +85,17 @@ public class ConstraintObjectiveFunctionFactory {
 				return objFun;
 			}
 			
-			public void visit(BetweenExpression predicate) {
+			public void visit(BetweenCheckCondition predicate) {
 				objFun = new BetweenCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}
 			
-			public void visit(InExpression predicate) {
+			public void visit(InCheckCondition predicate) {
 				objFun = new InCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}
 
-			public void visit(RelationalExpression predicate) {
+			public void visit(RelationalCheckCondition predicate) {
 				objFun = new RelationalCheckPredicateObjectiveFunction(
 								predicate, table, state, description, goalIsToSatisfy, allowNull);
 			}

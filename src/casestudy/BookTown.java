@@ -1,8 +1,8 @@
 package casestudy;
 
 import org.schemaanalyst.representation.*;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.*;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class BookTown extends Schema {
     
@@ -265,7 +265,7 @@ public class BookTown extends Schema {
         Column employees_id = employees.addColumn("id", new IntDataType());
         employees_id.setPrimaryKey();
         employees_id.setNotNull();
-        employees.addCheckConstraint(new RelationalExpression(employees_id, ">", 100));
+        employees.addCheckConstraint(new RelationalCheckCondition(employees_id, ">", 100));
         
         Column employees_last_name = employees.addColumn("last_name", new VarCharDataType(100));
         employees_last_name.setNotNull();

@@ -1,9 +1,9 @@
 package casestudy;
 
 import org.schemaanalyst.representation.*;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.*;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 /**
  *
@@ -92,8 +92,8 @@ public class Pagila extends Schema {
         Column film_description = film.addColumn("description", new TextDataType());
         
         Column film_release_year = film.addColumn("release_year", new IntDataType());
-        film.addCheckConstraint(new RelationalExpression(film_release_year, ">=", 1901));
-        film.addCheckConstraint(new RelationalExpression(film_release_year, "<=", 2155));
+        film.addCheckConstraint(new RelationalCheckCondition(film_release_year, ">=", 1901));
+        film.addCheckConstraint(new RelationalCheckCondition(film_release_year, "<=", 2155));
         
         Column film_language_id = film.addColumn("language_id", new SmallIntDataType());
         film_language_id.setNotNull();
@@ -113,7 +113,7 @@ public class Pagila extends Schema {
         
         //TODO: check for better type match for SQL 'ENUM'
         Column film_rating = film.addColumn("rating", new CharDataType(5));
-        film.addCheckConstraint(new InExpression(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
+        film.addCheckConstraint(new InCheckCondition(film_rating, "G", "PG", "PG-13", "R", "NC-17"));
         
         Column film_last_update = film.addColumn("last_update", new TimestampDataType());
         film_last_update.setNotNull();

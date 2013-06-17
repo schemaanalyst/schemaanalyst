@@ -1,4 +1,4 @@
-package org.schemaanalyst.representation.expression;
+package org.schemaanalyst.representation.checkcondition;
 
 import java.io.Serializable;
 

@@ -4,8 +4,6 @@ import gudusoft.gsqlparser.EExpressionType;
 import gudusoft.gsqlparser.nodes.TExpression;
 
 import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.expression.Expression;
-import org.schemaanalyst.representation.expression.ParenthesisExpression;
 
 public class ExpressionMapper {
 
@@ -15,7 +13,7 @@ public class ExpressionMapper {
 		this.schema = schema;
 	}	
 	
-	Expression getExpression(TExpression node) {
+	void getExpression(TExpression node) {
 		System.out.println("EXPRESSION: "+node);
 		System.out.println("TYPE: "+node.getExpressionType());
 		
@@ -23,7 +21,7 @@ public class ExpressionMapper {
 		
 		if (expressionType == EExpressionType.parenthesis_t) {
 			TExpression subNode = node.getLeftOperand();
-			return new ParenthesisExpression(getExpression(subNode));
+			
 		}
 		
 		if (expressionType == EExpressionType.simple_comparison_t) {
@@ -36,6 +34,6 @@ public class ExpressionMapper {
 			System.out.println("RHS: "+rhsNode+" "+rhsNode.getExpressionType());
 		}
 		
-		return null;
+		
 	}
 }

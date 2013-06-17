@@ -3,9 +3,9 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
-import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class Employee extends Schema {
 
@@ -44,9 +44,9 @@ public class Employee extends Schema {
 		Column city = employeeTable.addColumn("city" , new VarCharDataType(20));
 		Column state = employeeTable.addColumn("state" , new VarCharDataType(20));
 
-		employeeTable.addCheckConstraint(new RelationalExpression(id, ">=", 0));
-		employeeTable.addCheckConstraint(new RelationalExpression(age, ">", 0));
-		employeeTable.addCheckConstraint(new RelationalExpression(age, "<=", 150)); 
+		employeeTable.addCheckConstraint(new RelationalCheckCondition(id, ">=", 0));
+		employeeTable.addCheckConstraint(new RelationalCheckCondition(age, ">", 0));
+		employeeTable.addCheckConstraint(new RelationalCheckCondition(age, "<=", 150)); 
 
 	}
 }

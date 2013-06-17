@@ -16,10 +16,10 @@ import org.schemaanalyst.representation.NotNullConstraint;
 import org.schemaanalyst.representation.PrimaryKeyConstraint;
 import org.schemaanalyst.representation.Table;
 import org.schemaanalyst.representation.UniqueConstraint;
-import org.schemaanalyst.representation.expression.BetweenExpression;
-import org.schemaanalyst.representation.expression.ExpressionVisitor;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.util.random.Random;
 
 public class ConstraintHandlerFactory {
@@ -76,7 +76,7 @@ public class ConstraintHandlerFactory {
 	
 	protected ConstraintHandler<?> create(CheckConstraint checkConstraint) {
 		
-		class PredicateDispatcher implements ExpressionVisitor {
+		class PredicateDispatcher implements CheckConditionVisitor {
 
 			Table table;
 			ConstraintHandler<?> constraintHandler;
@@ -87,15 +87,15 @@ public class ConstraintHandlerFactory {
 				return constraintHandler;
 			}
 			
-			public void visit(BetweenExpression predicate) {
+			public void visit(BetweenCheckCondition predicate) {
 				constraintHandler = create(predicate, table);
 			}
 			
-			public void visit(InExpression predicate) {
+			public void visit(InCheckCondition predicate) {
 				constraintHandler = create(predicate, table);
 			}
 
-			public void visit(RelationalExpression predicate) {
+			public void visit(RelationalCheckCondition predicate) {
 				constraintHandler = create(predicate, table);
 			}
 		}		
@@ -103,7 +103,7 @@ public class ConstraintHandlerFactory {
 		return new PredicateDispatcher().dispatch(checkConstraint);		
 	}
 	
-	protected ConstraintHandler<?> create(BetweenExpression betweenCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(BetweenCheckCondition betweenCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new BetweenHandler(new BetweenAnalyst(betweenCheckPredicate, table, allowNull),
@@ -113,7 +113,7 @@ public class ConstraintHandlerFactory {
 								  random);
 	}
 	
-	protected ConstraintHandler<?> create(InExpression inCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(InCheckCondition inCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new InHandler(new InAnalyst(inCheckPredicate, table, allowNull),
@@ -123,7 +123,7 @@ public class ConstraintHandlerFactory {
 				  		 	 random);
 	}
 	
-	protected ConstraintHandler<?> create(RelationalExpression relationalCheckPredicate, Table table) {
+	protected ConstraintHandler<?> create(RelationalCheckCondition relationalCheckPredicate, Table table) {
 		boolean allowNull = goalIsToSatisfy;
 		
 		return new RelationalPredicateHandler(new RelationalPredicateAnalyst(relationalCheckPredicate, 

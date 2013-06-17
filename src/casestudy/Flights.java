@@ -3,11 +3,11 @@ package casestudy;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.representation.checkcondition.InCheckCondition;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.DateDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.TimeDataType;
-import org.schemaanalyst.representation.expression.InExpression;
 
 public class Flights extends Schema {
 
@@ -47,7 +47,7 @@ public class Flights extends Schema {
 		Column meal = flights.addColumn("MEAL", new CharDataType(1));
                 meal.setNotNull();
 		
-		flights.addCheckConstraint("MEAL_CONSTRAINT", new InExpression(meal, "B", "L", "D", "S"));
+		flights.addCheckConstraint("MEAL_CONSTRAINT", new InCheckCondition(meal, "B", "L", "D", "S"));
 		flights.setPrimaryKeyConstraint(flightsFlightId, flightsSegmentNumber);
 		
 		/*

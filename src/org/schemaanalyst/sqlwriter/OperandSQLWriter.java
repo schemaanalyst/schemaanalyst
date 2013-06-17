@@ -2,8 +2,8 @@ package org.schemaanalyst.sqlwriter;
 
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.expression.Operand;
-import org.schemaanalyst.representation.expression.OperandVisitor;
+import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.representation.checkcondition.OperandVisitor;
 
 public class OperandSQLWriter {
 

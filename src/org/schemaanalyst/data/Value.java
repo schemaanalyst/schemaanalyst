@@ -2,8 +2,8 @@ package org.schemaanalyst.data;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.representation.expression.Operand;
-import org.schemaanalyst.representation.expression.OperandVisitor;
+import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.representation.checkcondition.OperandVisitor;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Value implements Operand, Serializable, Duplicable<Value>, Comparable<Value> {

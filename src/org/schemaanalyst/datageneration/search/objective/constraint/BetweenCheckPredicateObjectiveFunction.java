@@ -16,17 +16,17 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.BetweenExpression;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
 
 public class BetweenCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 	
-	protected BetweenExpression between;
+	protected BetweenCheckCondition between;
 	protected Table table;
 	protected Data state;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 	
-	public BetweenCheckPredicateObjectiveFunction(BetweenExpression between, 
+	public BetweenCheckPredicateObjectiveFunction(BetweenCheckCondition between, 
 											 	  Table table, 
 											      Data state, 
 											      String description, 

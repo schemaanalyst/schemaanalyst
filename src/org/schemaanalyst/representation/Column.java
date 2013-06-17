@@ -2,9 +2,9 @@ package org.schemaanalyst.representation;
 
 import java.io.Serializable;
 
+import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.representation.checkcondition.OperandVisitor;
 import org.schemaanalyst.representation.datatype.DataType;
-import org.schemaanalyst.representation.expression.Operand;
-import org.schemaanalyst.representation.expression.OperandVisitor;
 
 /**
  * Represents a table column in a database schema.  Table columns are constructed by calling 

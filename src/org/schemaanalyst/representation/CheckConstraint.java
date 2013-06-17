@@ -1,6 +1,6 @@
 package org.schemaanalyst.representation;
 
-import org.schemaanalyst.representation.expression.Expression;
+import org.schemaanalyst.representation.checkcondition.CheckCondition;
 
 
 /**
@@ -12,7 +12,7 @@ public class CheckConstraint extends Constraint {
 
 	private static final long serialVersionUID = 1112035994865637833L;
 
-	protected Expression checkCondition;
+	protected CheckCondition checkCondition;
 
 	/**
 	 * Constructor.
@@ -20,7 +20,7 @@ public class CheckConstraint extends Constraint {
 	 * @param name An identifying name for the constraint (can be null).
 	 * @param checkCondition The condition associated with the check constraint.
 	 */
-	protected CheckConstraint(Table table, String name, Expression checkCondition) {
+	protected CheckConstraint(Table table, String name, CheckCondition checkCondition) {
 		super(table, name);
 		this.checkCondition = checkCondition;
 	}
@@ -29,7 +29,7 @@ public class CheckConstraint extends Constraint {
 	 * Returns the expression associated with this check constraint.
 	 * @return The expression associated with this check constraint.
 	 */
-	public Expression getCheckCondition() {
+	public CheckCondition getCheckCondition() {
 		return checkCondition;
 	}
 	
@@ -50,7 +50,7 @@ public class CheckConstraint extends Constraint {
 	 * @return The copied Check object.
 	 */
 	public CheckConstraint copyTo(Table targetTable) {
-		// TODO -- remap expression to the new table ...		
+		// TODO -- remap checkCondition to the new table ...		
 		CheckConstraint copy = new CheckConstraint(targetTable, this.name, this.checkCondition);
 		targetTable.addCheckConstraint(copy);
 		return copy;

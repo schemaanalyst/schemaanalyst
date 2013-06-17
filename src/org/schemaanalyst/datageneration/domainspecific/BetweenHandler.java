@@ -7,8 +7,8 @@ import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.expression.BetweenExpression;
-import org.schemaanalyst.representation.expression.Operand;
+import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.representation.checkcondition.Operand;
 import org.schemaanalyst.util.random.Random;
 
 public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
@@ -17,7 +17,7 @@ public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
 	protected CellRandomizer cellRandomizer;
 	protected Random random;	
 	
-	protected BetweenExpression between;
+	protected BetweenCheckCondition between;
 	protected Table table;
 	protected Column column;
 	protected Operand lower, upper;
