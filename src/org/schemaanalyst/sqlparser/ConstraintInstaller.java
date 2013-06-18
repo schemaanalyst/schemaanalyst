@@ -66,7 +66,7 @@ class ConstraintInstaller {
     		}
     	} else {
     		for (int i=0; i < nodeColumns.size(); i++) {
-    			String columnName = StringHandler.sanitize(nodeColumns.getObjectName(i));
+    			String columnName = QuoteStripper.stripQuotes(nodeColumns.getObjectName(i));
     			Column column = currentTable.getColumn(columnName);
     			columns.add(column);
     		}

@@ -43,7 +43,7 @@ public class ExpressionMapper {
 
 		// *** OBJECT NAME/CONSTANT/SOURCE TOKEN/FUNCTION CALL ***
 		if (expressionType == EExpressionType.simple_object_name_t) {			
-			String columnName = StringHandler.sanitize(node.getObjectOperand());
+			String columnName = QuoteStripper.stripQuotes(node.getObjectOperand());
 			Column column = currentTable.getColumn(columnName);
 			if (column == null) {
 				throw new SQLParseException("Unknown column \"" + column + "\"");
@@ -62,8 +62,8 @@ public class ExpressionMapper {
 			TConstant constant = node.getConstantOperand();
 			String valueString = constant.toString();
 		
-			if (StringHandler.isSQLString(valueString)) {
-				return new StringValue(StringHandler.sanitize(valueString));
+			if (QuoteStripper.isQuoted(valueString)) {
+				return new StringValue(QuoteStripper.stripQuotes(valueString));
 			} else {
 				return new NumericValue(valueString);
 			}
