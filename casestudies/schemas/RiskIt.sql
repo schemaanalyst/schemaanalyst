@@ -1,3 +1,24 @@
+DROP TABLE userrecord CASCADE;
+
+CREATE TABLE userrecord
+( 
+  NAME char(50), 
+  ZIP char(5), 
+  SSN int NOT NULL, 
+  AGE int, 
+  SEX char(50), 
+  MARITAL char(50), 
+  RACE char(50), 
+  TAXSTAT char(50), 
+  DETAIL char(100), 
+  HOUSEHOLDDETAIL char(100), 
+  FATHERORIGIN char(50), 
+  MOTHERORIGIN char(50), 
+  BIRTHCOUNTRY char(50), 
+  CITIZENSHIP char(50), 
+  PRIMARY KEY (SSN) 
+);
+
 DROP TABLE education CASCADE;
 
 CREATE TABLE education 
@@ -51,6 +72,16 @@ CREATE TABLE investment
   FOREIGN KEY (SSN) REFERENCES userrecord (SSN)
 );
 
+DROP TABLE occupation CASCADE;
+
+CREATE TABLE occupation 
+( 
+  OCCUPATIONCODE int NOT NULL, 
+  OCCUPATION char(50), 
+  STABILITY int, 
+  PRIMARY KEY (OCCUPATIONCODE) 
+);
+
 DROP TABLE job CASCADE;
 
 CREATE TABLE job 
@@ -83,15 +114,7 @@ CREATE TABLE migration
   FOREIGN KEY (SSN) REFERENCES userrecord (SSN) 
 );
 
-DROP TABLE occupation CASCADE;
 
-CREATE TABLE occupation 
-( 
-  OCCUPATIONCODE int NOT NULL, 
-  OCCUPATION char(50), 
-  STABILITY int, 
-  PRIMARY KEY (OCCUPATIONCODE) 
-);
 
 DROP TABLE stateabbv CASCADE;
 
@@ -101,26 +124,7 @@ CREATE TABLE stateabbv
   NAME char(50) NOT NULL
 );
 
-DROP TABLE userrecord CASCADE;
 
-CREATE TABLE userrecord
-( 
-  NAME char(50), 
-  ZIP char(5), 
-  SSN int NOT NULL, 
-  AGE int, 
-  SEX char(50), 
-  MARITAL char(50), 
-  RACE char(50), 
-  TAXSTAT char(50), 
-  DETAIL char(100), 
-  HOUSEHOLDDETAIL char(100), 
-  FATHERORIGIN char(50), 
-  MOTHERORIGIN char(50), 
-  BIRTHCOUNTRY char(50), 
-  CITIZENSHIP char(50), 
-  PRIMARY KEY (SSN) 
-);
 
 DROP TABLE wage CASCADE;
 

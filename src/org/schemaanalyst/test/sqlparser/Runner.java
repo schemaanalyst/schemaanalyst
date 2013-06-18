@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.schemaanalyst.database.Database;
+import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlparser.SchemaParser;
@@ -16,7 +17,7 @@ public class Runner {
 	}
 	
 	static void run(String caseStudy, Database database) throws Exception {
-		Schema originalSchema = (Schema) Class.forName("casestudy." + caseStudy).newInstance();
+		//Schema originalSchema = (Schema) Class.forName("casestudy." + caseStudy).newInstance();
 		
 		File file = new File(getCaseStudiesPath() + caseStudy + ".sql");		
 		SchemaParser schemaParser = new SchemaParser();
@@ -30,6 +31,7 @@ public class Runner {
 			parsedSQL += statement + "\n";
 		}
 		
+		/*
 		List<String> originalSQLStatements = sqlWriter.writeCreateTableStatements(originalSchema);
 		String originalSQL = "";
 		for (String statement : originalSQLStatements) {
@@ -38,13 +40,14 @@ public class Runner {
 		
 		System.out.println("-- ************ Original ************");
 		System.out.println(originalSQL);
+		*/
 		
 		System.out.println("-- ************ Parsed ************");
 		System.out.println(parsedSQL);
+		
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("NistWeather", new Postgres());
+		run("_debug", new MySQL());
 	}
-	
 }

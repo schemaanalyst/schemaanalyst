@@ -8,10 +8,14 @@ import org.schemaanalyst.representation.datatype.BooleanDataType;
 import org.schemaanalyst.representation.datatype.CharDataType;
 import org.schemaanalyst.representation.datatype.DataType;
 import org.schemaanalyst.representation.datatype.DateDataType;
+import org.schemaanalyst.representation.datatype.DateTimeDataType;
 import org.schemaanalyst.representation.datatype.DecimalDataType;
 import org.schemaanalyst.representation.datatype.IntDataType;
 import org.schemaanalyst.representation.datatype.NumericDataType;
+import org.schemaanalyst.representation.datatype.RealDataType;
 import org.schemaanalyst.representation.datatype.SmallIntDataType;
+import org.schemaanalyst.representation.datatype.TextDataType;
+import org.schemaanalyst.representation.datatype.TimeDataType;
 import org.schemaanalyst.representation.datatype.TimestampDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
 
@@ -41,9 +45,16 @@ class DataTypeMapper {
 			// NOTE: with GSP and Postgres schemas, "character" is parsed as NCHAR, which I think is a bug -- logged (no. 38). 
 			// May need to address if not fixed.
 			
-			TConstant lengthConstant = dataType.getLength();    		
-			int length = Integer.valueOf(lengthConstant.toString());
-			return new CharDataType(length);    		
+			TConstant lengthConstant = dataType.getLength();    	
+			if (lengthConstant == null) {
+				// TODO: CHAR(1) is not the same as CHAR 
+				// see http://www.postgresql.org/docs/8.2/static/datatype-character.html
+				// possibly need a new data type -- explore this ... 
+				return new CharDataType(1);	 			
+			} else {
+				int length = Integer.valueOf(lengthConstant.toString());
+				return new CharDataType(length);
+			}			    		
 		}
 		
 		// varchar
@@ -55,6 +66,13 @@ class DataTypeMapper {
 			int length = getLength(dataType);
 			return new VarCharDataType(length);		
 		}
+		
+		// text 
+		// TODO: longtext?  new column or datatype?
+		if (enumType == EDataType.text_t || enumType == EDataType.longtext_t) {	
+			return new TextDataType();		
+		}
+		
 		
 		// *** NUMERIC *** 	
 		// decimal
@@ -70,6 +88,11 @@ class DataTypeMapper {
     		return new IntDataType();
 		}
 		
+		// int
+		if (enumType == EDataType.smallint_t) {
+    		return new SmallIntDataType();
+		}			
+		
     	// numeric
 		if (enumType == EDataType.numeric_t) {		
 			int precision = getPrecision(dataType);
@@ -78,17 +101,23 @@ class DataTypeMapper {
 			return new NumericDataType(precision, scale);
 		}
 		
-		// int
-		if (enumType == EDataType.smallint_t) {
-    		return new SmallIntDataType();
-		}		
+    	// real		
+		// TODO - GSP bug, thinks tinyint is a real on MySQL -- logged as bug 42
+		if (enumType == EDataType.real_t) {		
+			return new RealDataType();
+		}
+	
 		
-
 		// *** TEMPORAL *** 
 		// date
 		if (enumType == EDataType.date_t) {
 			return new DateDataType();
 		}
+
+		// datetime
+		if (enumType == EDataType.datetime_t) {
+			return new DateTimeDataType();
+		}		
 		
 		// timestamp
 		if (enumType == EDataType.timestamp_t) {			
@@ -101,6 +130,22 @@ class DataTypeMapper {
 			return new TimestampDataType();
 		}		
 			
+		
+		// *** GENERIC ***
+		if (enumType == EDataType.generic_t) {
+			String typeString = dataType.toString();
+			
+			// Postgres "serial" -- handle as int -- logged as bug 39			
+			if (typeString.toLowerCase().equals("serial")) {
+				return new IntDataType();
+			}
+		
+			// Postgres -- bug in GSP for time -- logged as bug 39
+			if (typeString.toLowerCase().equals("time")) {
+				return new TimeDataType();
+			}			
+		}		
+		
 		// UNKNOWN!
 		throw new DataTypeMappingException(dataType);
 	}	

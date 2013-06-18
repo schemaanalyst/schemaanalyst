@@ -9,6 +9,7 @@ import gudusoft.gsqlparser.nodes.TExpression;
 import gudusoft.gsqlparser.nodes.TExpressionList;
 
 import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.Table;
@@ -42,7 +43,7 @@ public class ExpressionMapper {
 
 		// *** OBJECT NAME/CONSTANT/SOURCE TOKEN/FUNCTION CALL ***
 		if (expressionType == EExpressionType.simple_object_name_t) {			
-			String columnName = NameSanitizer.sanitize(node.getObjectOperand());
+			String columnName = StringHandler.sanitize(node.getObjectOperand());
 			Column column = currentTable.getColumn(columnName);
 			if (column == null) {
 				throw new SQLParseException("Unknown column \"" + column + "\"");
@@ -59,10 +60,13 @@ public class ExpressionMapper {
 		
 		if (expressionType == EExpressionType.simple_constant_t) {
 			TConstant constant = node.getConstantOperand();
-			String value = constant.toString();
-			
-			// for now, assume it's an integer -- TODO: implement more checks
-			return new NumericValue(value);
+			String valueString = constant.toString();
+		
+			if (StringHandler.isSQLString(valueString)) {
+				return new StringValue(StringHandler.sanitize(valueString));
+			} else {
+				return new NumericValue(valueString);
+			}
 		}
 		
 		// *** LOGICAL ***		

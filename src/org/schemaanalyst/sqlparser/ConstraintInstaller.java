@@ -66,7 +66,7 @@ class ConstraintInstaller {
     		}
     	} else {
     		for (int i=0; i < nodeColumns.size(); i++) {
-    			String columnName = NameSanitizer.sanitize(nodeColumns.getObjectName(i));
+    			String columnName = StringHandler.sanitize(nodeColumns.getObjectName(i));
     			Column column = currentTable.getColumn(columnName);
     			columns.add(column);
     		}
@@ -99,14 +99,28 @@ class ConstraintInstaller {
 	void installForeignKeyConstraint(TConstraint node) {
 		String referenceTableName = node.getReferencedObject().toString();
 		Table referenceTable = schema.getTable(referenceTableName);
+
+		if (referenceTable == null) {
+			throw new ConstraintInstallationException(
+					"Unknown table \"" + referenceTableName + "\" referenced by foreign key for table \"" + currentTable + "\"");
+		}
 		
 		List<Column> columns = getConstraintColumns(node);
 		
-		TObjectNameList referenceColumnList = node.getReferencedColumnList();
-		for (int i=0; i < referenceColumnList.size(); i++) {
-			String columnName = referenceColumnList.getObjectName(i).toString();
-			Column column = referenceTable.getColumn(columnName);
-			columns.add(column);
+		List<String> referenceColumnNames = new ArrayList<>();
+		TObjectNameList referenceColumnList = node.getReferencedColumnList();		
+		if (referenceColumnList == null) {
+			for (Column column : columns) {
+				referenceColumnNames.add(column.getName());
+			}			
+		} else {
+			for (int i=0; i < referenceColumnList.size(); i++) {
+				referenceColumnNames.add(referenceColumnList.getObjectName(i).toString());
+			}
+		}
+		
+		for (String columnName : referenceColumnNames) {
+			columns.add(referenceTable.getColumn(columnName));
 		}
 		
 		currentTable.addForeignKeyConstraint(getConstraintName(node), referenceTable, columns.toArray(new Column[0]));

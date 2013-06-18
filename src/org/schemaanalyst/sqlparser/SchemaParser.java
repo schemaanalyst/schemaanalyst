@@ -68,7 +68,7 @@ public class SchemaParser {
 				
 		// **** TABLES ****
 	    public void preVisit(TCreateTableSqlStatement node) {
-	    	String tableName = NameSanitizer.sanitize(node.getTableName());	  
+	    	String tableName = StringHandler.sanitize(node.getTableName());	  
 	    	currentTable = schema.createTable(tableName);
 	    }
 	    
@@ -79,7 +79,7 @@ public class SchemaParser {
 	    
 		// **** COLUMNS ****    
 	    public void preVisit(TColumnDefinition node) {
-	    	String columnName = NameSanitizer.sanitize(node.getColumnName());	 	    	
+	    	String columnName = StringHandler.sanitize(node.getColumnName());	 	    	
 	    	DataType type = DataTypeMapper.map(node.getDatatype());	    	
 	    	currentColumn = currentTable.addColumn(columnName, type);   	
 	    }	
