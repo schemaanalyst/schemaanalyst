@@ -19,10 +19,6 @@ class ConstraintInstaller {
 	Table currentTable;
 	Column currentColumn;
 	
-	public static void install(Schema schema, Table currentTable, Column currentColumn, TConstraint node) {
-		new ConstraintInstaller(schema, currentTable, currentColumn).performInstallation(node);
-	}
-	
 	ConstraintInstaller(Schema schema, Table currentTable, Column currentColumn) {
 		this.schema = schema;
 		this.currentTable = currentTable;
@@ -130,4 +126,8 @@ class ConstraintInstaller {
 		Column[] columns = getConstraintColumns(node).toArray(new Column[0]);
 		currentTable.addUniqueConstraint(getConstraintName(node), columns);		
 	}
+	
+	static void install(Schema schema, Table currentTable, Column currentColumn, TConstraint node) {
+		new ConstraintInstaller(schema, currentTable, currentColumn).performInstallation(node);
+	}	
 }

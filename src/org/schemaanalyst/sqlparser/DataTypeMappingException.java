@@ -6,7 +6,7 @@ import gudusoft.gsqlparser.nodes.TTypeName;
 public class DataTypeMappingException extends RuntimeException {
 	
 	public DataTypeMappingException(TTypeName dataType) {
-		super("Cannot resolve data type: " + dataType + " [GSP EDataType: "+dataType.getDataType() + "]");
+		super("Data type: " + dataType + " is not supported [GSP EDataType: "+dataType.getDataType() + "]");
 	}
 
 }

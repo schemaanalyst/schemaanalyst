@@ -6,6 +6,6 @@ import gudusoft.gsqlparser.nodes.TExpression;
 public class ExpressionMappingException extends RuntimeException {
 		
 	public ExpressionMappingException(TExpression node) {
-		super("Cannot resolve expression: \"" + node + "\" [GSP EExpressionType: " + node.getExpressionType() + "]");
+		super("Expression: \"" + node + "\" is not supported [GSP EExpressionType: " + node.getExpressionType() + "]");
 	}
 }

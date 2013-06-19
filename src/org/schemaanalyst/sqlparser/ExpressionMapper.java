@@ -25,19 +25,15 @@ import org.schemaanalyst.representation.expression.RelationalExpression;
 
 public class ExpressionMapper {
 
-	// REFER TO the JavaDocs for TExpression
-	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TExpression.html
-	
-	Table currentTable;
-	
-	static Expression map(Table currentTable, TExpression node) {
-		return (new ExpressionMapper(currentTable)).getExpression(node);
-	}	
+	Table currentTable;	
 	
 	ExpressionMapper(Table currentTable) {
 		this.currentTable = currentTable;
 	}
-	
+
+	// REFER TO the JavaDocs for TExpression
+	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TExpression.html
+		
 	Expression getExpression(TExpression node) {
 		EExpressionType expressionType = node.getExpressionType();
 
@@ -51,13 +47,6 @@ public class ExpressionMapper {
 			return column;
 		}
 		
-		// *** UNARY ***
-		if (expressionType == EExpressionType.unary_minus_t && node.getRightOperand().getExpressionType() == EExpressionType.simple_constant_t) {
-			// assume negative number
-			String value = node.toString();
-			return new NumericValue(value);
-		}
-		
 		if (expressionType == EExpressionType.simple_constant_t) {
 			TConstant constant = node.getConstantOperand();
 			String valueString = constant.toString();
@@ -66,6 +55,16 @@ public class ExpressionMapper {
 				return new StringValue(QuoteStripper.stripQuotes(valueString));
 			} else {
 				return new NumericValue(valueString);
+			}
+		}		
+		
+		// *** UNARY ***
+		if (expressionType == EExpressionType.unary_minus_t) {
+			
+			if (node.getRightOperand().getExpressionType() == EExpressionType.simple_constant_t) {
+				// negative number
+				String value = node.toString();
+				return new NumericValue(value);
 			}
 		}
 		
@@ -134,4 +133,8 @@ public class ExpressionMapper {
 		
 		throw new ExpressionMappingException(node);
 	}
+	
+	static Expression map(Table currentTable, TExpression node) {
+		return (new ExpressionMapper(currentTable)).getExpression(node);
+	}		
 }
