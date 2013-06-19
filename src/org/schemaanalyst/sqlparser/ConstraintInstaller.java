@@ -30,15 +30,31 @@ class ConstraintInstaller {
 
     	if (constraintType == EConstraintType.check) {
     		installCheckConstraint(node);
-    	} else if (constraintType == EConstraintType.foreign_key) {
-    		installForeignKeyConstraint(node);
-    	} else if (constraintType == EConstraintType.notnull) {
-    		installNotNullConstraint(node);    	
-    	} else if (constraintType == EConstraintType.primary_key) {
-    		installPrimaryKeyConstraint(node);
-    	} else if (constraintType == EConstraintType.unique) {
-    		installUniqueConstraint(node);
+    		return;
     	} 
+    	
+    	if (constraintType == EConstraintType.foreign_key || 
+    			constraintType == EConstraintType.reference) {
+    		installForeignKeyConstraint(node);
+    		return;
+    	} 
+    	
+    	if (constraintType == EConstraintType.notnull) {
+    		installNotNullConstraint(node);
+    		return;
+    	}
+    	
+    	if (constraintType == EConstraintType.primary_key) {
+    		installPrimaryKeyConstraint(node);
+    		return;
+    	}
+    	
+    	if (constraintType == EConstraintType.unique) {
+    		installUniqueConstraint(node);
+    		return;
+    	} 
+    	
+    	throw new ConstraintInstallationException(node);
 	}
 		
 	String getConstraintName(TConstraint node) {

@@ -16,13 +16,18 @@ public class Runner {
 		return "/Users/phil/Projects/schemaanalyst/casestudies/schemas/";
 	}
 	
-	static void run(String caseStudy, Database database) throws Exception {
+	static void run(String caseStudy, Database database) throws Exception {		
+		SQLWriter sqlWriter = database.getSQLWriter();		
+		//parseAndPrintOriginalSchema(caseStudy, sqlWriter);
+		parseAndPrintTextSchema(caseStudy, database, sqlWriter);
 		
+	}
+
+	private static void parseAndPrintTextSchema(String caseStudy, Database database, SQLWriter sqlWriter) {
 		File file = new File(getCaseStudiesPath() + caseStudy + ".sql");		
 		SchemaParser schemaParser = new SchemaParser();
 		Schema parsedSchema = schemaParser.parse(file, caseStudy, database);
-		SQLWriter sqlWriter = database.getSQLWriter();
-		 
+		
 		List<String> parsedSQLStatements = sqlWriter.writeCreateTableStatements(parsedSchema);
 		
 		String parsedSQL = "";
@@ -30,6 +35,13 @@ public class Runner {
 			parsedSQL += statement + "\n";
 		}
 		
+		System.out.println("-- ************ Parsed ************");
+		System.out.println(parsedSQL);
+	}
+
+	private static void parseAndPrintOriginalSchema(String caseStudy, SQLWriter sqlWriter) throws InstantiationException,
+																								  IllegalAccessException, 
+																								  ClassNotFoundException {
 		Schema originalSchema = (Schema) Class.forName("casestudy." + caseStudy).newInstance();
 		List<String> originalSQLStatements = sqlWriter.writeCreateTableStatements(originalSchema);
 		String originalSQL = "";
@@ -39,14 +51,9 @@ public class Runner {
 		
 		System.out.println("-- ************ Original ************");
 		System.out.println(originalSQL);
-		
-		
-		System.out.println("-- ************ Parsed ************");
-		System.out.println(parsedSQL);
-		
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("StudentResidence", new Postgres());
+		run("FrenchTowns", new Postgres());
 	}
 }
