@@ -17,6 +17,7 @@ import org.schemaanalyst.representation.datatype.SmallIntDataType;
 import org.schemaanalyst.representation.datatype.TextDataType;
 import org.schemaanalyst.representation.datatype.TimeDataType;
 import org.schemaanalyst.representation.datatype.TimestampDataType;
+import org.schemaanalyst.representation.datatype.TinyIntDataType;
 import org.schemaanalyst.representation.datatype.VarCharDataType;
 
 class DataTypeMapper {
@@ -27,7 +28,8 @@ class DataTypeMapper {
 	DataType getDataType(TTypeName dataType) {
 		
 		EDataType enumType = dataType.getDataType();	
-					
+		String typeString = dataType.toString();
+		
 		// *** BOOLEAN *** 
 		if (enumType == EDataType.bool_t) {
 			return new BooleanDataType();
@@ -41,12 +43,7 @@ class DataTypeMapper {
 			// according to the Postgres docs -- Postgres has no notion of nchar	
 			
 			TConstant lengthConstant = dataType.getLength();    	
-			if (lengthConstant == null) {
-				// [TODO] CHAR(1) is not the same as CHAR 
-				// see http://www.postgresql.org/docs/8.2/static/datatype-character.html
-				// possibly need a new data type -- explore this ... 
-				return new CharDataType(1);	 			
-			} else {
+			if (lengthConstant != null) {
 				int length = Integer.valueOf(lengthConstant.toString());
 				return new CharDataType(length);
 			}			    		
@@ -96,8 +93,13 @@ class DataTypeMapper {
 		}
 		
     	// real		
-		// [GSP BUG 42, DBMS MySQL] Mytinyint is a real on MySQL -- logged as bug 42
-		if (enumType == EDataType.real_t) {		
+		if (enumType == EDataType.real_t) {
+			
+			// [GSP BUG 42, DBMS MySQL] tinyint is a real on MySQL
+			if (typeString.toLowerCase().equals("tinyint")) {
+				return new TinyIntDataType();
+			}
+			
 			return new RealDataType();
 		}
 			
@@ -115,17 +117,11 @@ class DataTypeMapper {
 		// timestamp
 		if (enumType == EDataType.timestamp_t) {			
 			return new TimestampDataType();
-		}			
-		
-		// timestamp with time zone
-		if (enumType == EDataType.timestamp_with_time_zone_t) {			
-			// [TODO] New type required here to handle time zones
-			return new TimestampDataType();
-		}					
+		}								
 		
 		// *** GENERIC ***
 		if (enumType == EDataType.generic_t) {
-			String typeString = dataType.toString();
+
 			
 			// [GSP BUG 39, DBMS Postgres] "serial" parsed as generic 
 			// [TODO] new type potentially, handling as int			
@@ -136,7 +132,12 @@ class DataTypeMapper {
 			// [GSP BUG 39, DBMS Postgres] "time" parsed as generic
 			if (typeString.toLowerCase().equals("time")) {
 				return new TimeDataType();
-			}			
+			}		
+			
+			// [GSP BUG 44, DBMS Postgres] "text" parsed as generic
+			if (typeString.toLowerCase().equals("text")) {
+				return new TextDataType();
+			}								
 		}		
 		
 		// Data type not supported

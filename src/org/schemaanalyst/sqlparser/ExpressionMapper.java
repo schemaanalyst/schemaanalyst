@@ -111,6 +111,7 @@ public class ExpressionMapper {
 		// *** IN ***
 		if (expressionType == EExpressionType.in_t) {
 			boolean notIn = node.getNotToken() != null;
+			
 			return new InExpression(getExpression(node.getLeftOperand()), 
 									getExpression(node.getRightOperand()), 
 									notIn);
