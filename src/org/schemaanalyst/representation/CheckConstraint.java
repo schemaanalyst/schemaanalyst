@@ -90,12 +90,21 @@ public class CheckConstraint extends Constraint {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		CheckConstraint other = (CheckConstraint) obj;
+		
 		if (checkCondition == null) {
 			if (other.checkCondition != null)
 				return false;
 		} else if (!checkCondition.equals(other.checkCondition))
 			return false;
+		
+		if (expression == null) {
+			if (other.expression != null)
+				return false;
+		} else if (!expression.equals(other.expression))
+			return false;		
+		
 		return true;
 	}
 	

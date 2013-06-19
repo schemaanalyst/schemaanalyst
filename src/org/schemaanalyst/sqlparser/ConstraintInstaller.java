@@ -71,9 +71,10 @@ class ConstraintInstaller {
 		return columns;
 	}
 	
-	void installCheckConstraint(TConstraint node) {
-		Expression expression = ExpressionMapper.map(currentTable, node.getCheckCondition());
+	void installCheckConstraint(TConstraint node) {    			
+		Expression expression = ExpressionMapper.map(currentTable, node.getCheckCondition());		
 		currentTable.addCheckConstraint(getConstraintName(node), expression);
+		System.out.println(currentTable.getCheckConstraints().size());
 	}
 	
 	void installNotNullConstraint(TConstraint node) {

@@ -17,7 +17,6 @@ public class Runner {
 	}
 	
 	static void run(String caseStudy, Database database) throws Exception {
-		//Schema originalSchema = (Schema) Class.forName("casestudy." + caseStudy).newInstance();
 		
 		File file = new File(getCaseStudiesPath() + caseStudy + ".sql");		
 		SchemaParser schemaParser = new SchemaParser();
@@ -31,7 +30,7 @@ public class Runner {
 			parsedSQL += statement + "\n";
 		}
 		
-		/*
+		Schema originalSchema = (Schema) Class.forName("casestudy." + caseStudy).newInstance();
 		List<String> originalSQLStatements = sqlWriter.writeCreateTableStatements(originalSchema);
 		String originalSQL = "";
 		for (String statement : originalSQLStatements) {
@@ -40,7 +39,7 @@ public class Runner {
 		
 		System.out.println("-- ************ Original ************");
 		System.out.println(originalSQL);
-		*/
+		
 		
 		System.out.println("-- ************ Parsed ************");
 		System.out.println(parsedSQL);
@@ -48,6 +47,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("Spree", new MySQL());
+		run("StudentResidence", new Postgres());
 	}
 }
