@@ -122,22 +122,26 @@ class DataTypeMapper {
 		// *** GENERIC ***
 		if (enumType == EDataType.generic_t) {
 
+			// [GSP BUG 43, DBMS MySQL] "boolean" parsed as generic
+			if (typeString.toLowerCase().equals("boolean")) {
+				return new BooleanDataType();
+			}			
+					
+			// [GSP BUG 44, DBMS Postgres] "text" parsed as generic
+			if (typeString.toLowerCase().equals("text")) {
+				return new TextDataType();
+			}
+			
+			// [GSP BUG 39, DBMS Postgres] "time" parsed as generic
+			if (typeString.toLowerCase().equals("time")) {
+				return new TimeDataType();
+			}		
 			
 			// [GSP BUG 39, DBMS Postgres] "serial" parsed as generic 
 			// [TODO] new type potentially, handling as int			
 			if (typeString.toLowerCase().equals("serial")) {
 				return new IntDataType();
 			}
-		
-			// [GSP BUG 39, DBMS Postgres] "time" parsed as generic
-			if (typeString.toLowerCase().equals("time")) {
-				return new TimeDataType();
-			}		
-			
-			// [GSP BUG 44, DBMS Postgres] "text" parsed as generic
-			if (typeString.toLowerCase().equals("text")) {
-				return new TextDataType();
-			}								
 		}		
 		
 		// Data type not supported

@@ -48,6 +48,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("Bank", new Postgres());
+		run("Spree", new MySQL());
 	}
 }

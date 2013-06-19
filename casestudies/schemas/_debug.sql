@@ -1,0 +1,5 @@
+CREATE TABLE animals (
+     id INT NOT NULL AUTO_INCREMENT,
+     name CHAR(30) NOT NULL,
+     PRIMARY KEY (id)
+) ENGINE=MyISAM;
