@@ -2,8 +2,8 @@ package org.schemaanalyst.representation.datatype;
 
 public interface PrecisionedAndScaled {
 
-	public int getPrecision();
+	public Integer getPrecision();
 	
-	public int getScale();
+	public Integer getScale();	
 	
 }

@@ -188,7 +188,19 @@ public class DataTypeSQLWriter  {
 	}
 	
 	private String writePrecisionAndScale(PrecisionedAndScaled type) {
-		return "(" + type.getPrecision() + "," + type.getScale() + ")";
+		Integer precision = type.getPrecision();
+		Integer scale = type.getScale();
+		
+		String sql = "";
+		if (precision != null) {
+			sql += "(" + precision;
+			if (scale != null) {
+				sql += ", " + scale;
+			}
+			sql += ")";
+		}
+		
+		return sql;
 	}
 	
 	private String writeSigned(Signed type) {

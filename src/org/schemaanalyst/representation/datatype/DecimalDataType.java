@@ -1,16 +1,31 @@
 package org.schemaanalyst.representation.datatype;
 
-public class DecimalDataType extends NumericDataType {
+public class DecimalDataType extends DataType implements PrecisionedAndScaled {
 
-	private static final long serialVersionUID = -4297561355456316241L;
-		
-	public DecimalDataType(int precision) {
-		super(precision);
+	private static final long serialVersionUID = 3323085304471030116L;
+
+	private Integer precision, scale;
+	
+	public DecimalDataType() {
+		this(null, null);
+	}	
+	
+	public DecimalDataType(Integer precision) {
+		this(precision, 0);
 	}
 	
-	public DecimalDataType(int precision, int scale) {
-		super(precision, scale);
+	public DecimalDataType(Integer precision, Integer scale) {
+		this.precision = precision;
+		this.scale = scale;
+	}	
+	
+	public Integer getPrecision() {
+		return precision;
 	}
+
+	public Integer getScale() {
+		return scale;
+	}		
 	
 	public void accept(DataTypeVisitor typeVisitor) {
 		typeVisitor.visit(this);

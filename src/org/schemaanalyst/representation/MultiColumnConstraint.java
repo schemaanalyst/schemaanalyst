@@ -58,4 +58,12 @@ public abstract class MultiColumnConstraint extends Constraint {
 	public int getNumColumns() {
 		return columns.size();
 	}
+	
+	/**
+	 * Returns true if more than one column involved in this constraint.
+	 * @return True if more than one column involved in this constraint, else false.
+	 */
+	public boolean isMultiColumn() {
+		return columns.size() > 1;
+	}
 }

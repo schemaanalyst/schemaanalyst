@@ -56,11 +56,7 @@ public class ConstraintSQLWriter {
 			}			
 		}
 		
-		String sql = "";
-		String name = constraint.getName();
-		if (name != null) {
-			sql = "CONSTRAINT " + name + " ";
-		}		
+		String sql = writeConstraintName(constraint);		
 		sql += (new ConstraintSQLWriterVisitor()).writeConstraint(constraint);
 		return sql;
 	}
@@ -68,16 +64,20 @@ public class ConstraintSQLWriter {
 	public String writeCheck(CheckConstraint check) {
 		Expression expression = check.getExpression();
 		if (expression != null) {
-			return "CHECK(" + expressionSQLWriter.writeExpression(check.getExpression()) + ")";
+			return "CHECK (" + expressionSQLWriter.writeExpression(check.getExpression()) + ")";
 		} else {
-			return "CHECK(" + checkConditionSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
+			return "CHECK (" + checkConditionSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
 		}
 	}
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {
-		return "FOREIGN KEY(" + writeColumnList(foreignKey.getColumns()) + ")" +
-			   " REFERENCES " + foreignKey.getReferenceTable().getName() + 
-		       "(" + SQLWriter.writeColumnList(foreignKey.getReferenceColumns()) + ")";				
+		String sql = "";
+		if (foreignKey.isMultiColumn()) {
+			sql += "FOREIGN KEY (" + writeColumnList(foreignKey.getColumns()) + ")";
+		}
+		sql += " REFERENCES " + foreignKey.getReferenceTable().getName() + 
+		       " (" + SQLWriter.writeColumnList(foreignKey.getReferenceColumns()) + ")";
+		return sql;
 	}
 	
 	public String writeNotNull(NotNullConstraint notNull) {
@@ -85,10 +85,26 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writePrimaryKey(PrimaryKeyConstraint primaryKey) {
-		return "PRIMARY KEY(" + writeColumnList(primaryKey.getColumns()) + ")";
-	}
+		String sql = "PRIMARY KEY";
+		if (primaryKey.isMultiColumn()) {
+			sql += " (" + writeColumnList(primaryKey.getColumns()) + ")";
+		}
+		return sql;					
+	}	
 	
 	public String writeUnique(UniqueConstraint unique) {
-		return "UNIQUE(" + writeColumnList(unique.getColumns()) + ")";
+		String sql = "UNIQUE";
+		if (unique.isMultiColumn()) {
+			sql += " (" + writeColumnList(unique.getColumns()) + ")";
+		}
+		return sql;
+	}
+	
+	public String writeConstraintName(Constraint constraint) {
+		if (constraint.hasName()) {
+			return "CONSTRAINT " + constraint.getName() + " ";			
+		} else {
+			return "";
+		}
 	}
 }

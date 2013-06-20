@@ -4,23 +4,26 @@ public class NumericDataType extends DataType implements PrecisionedAndScaled {
 
 	private static final long serialVersionUID = 3323085304471030116L;
 
-	private int precision;
-	private int scale;
+	private Integer precision, scale;
 	
-	public NumericDataType(int precision) {
+	public NumericDataType() {
+		this(null, null);
+	}	
+	
+	public NumericDataType(Integer precision) {
 		this(precision, 0);
 	}
 	
-	public NumericDataType(int precision, int scale) {
+	public NumericDataType(Integer precision, Integer scale) {
 		this.precision = precision;
 		this.scale = scale;
 	}	
 	
-	public int getPrecision() {
+	public Integer getPrecision() {
 		return precision;
 	}
 
-	public int getScale() {
+	public Integer getScale() {
 		return scale;
 	}		
 	

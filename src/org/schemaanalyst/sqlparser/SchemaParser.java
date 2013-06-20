@@ -97,7 +97,6 @@ public class SchemaParser {
 	    
 		// **** CONSTRAINTS ****
 	    public void postVisit(TConstraint node) {
-	    	System.out.println(node);
 	    	ConstraintInstaller.install(schema, currentTable, currentColumn, node);
 	    }	    
 	}	

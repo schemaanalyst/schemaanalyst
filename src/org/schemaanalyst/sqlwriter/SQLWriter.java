@@ -9,6 +9,7 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.representation.CheckConstraint;
 import org.schemaanalyst.representation.Column;
 import org.schemaanalyst.representation.ForeignKeyConstraint;
+import org.schemaanalyst.representation.NotNullConstraint;
 import org.schemaanalyst.representation.PrimaryKeyConstraint;
 import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.representation.Table;
@@ -94,29 +95,56 @@ public class SQLWriter {
 			sql.append("\t"); 
 			sql.append(dataTypeSQLWriter.writeDataType(column));
 			
-			// write NOT NULLs
-			if (column.isNotNull()) {
-				sql.append("\tNOT NULL");
+			// write column constraints
+			PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
+			if (primaryKey != null && !primaryKey.isMultiColumn() && primaryKey.involvesColumn(column)) {
+				sql.append("\t"); 
+				sql.append(constraintSQLWriter.writeConstraint(primaryKey));
+			}
+			
+			for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
+				if (!foreignKey.isMultiColumn() && foreignKey.involvesColumn(column)) {
+					sql.append("\t"); 
+					sql.append(constraintSQLWriter.writeConstraint(foreignKey));
+				}	
+			}			
+			
+			for (UniqueConstraint unique : table.getUniqueConstraints()) {
+				if (!unique.isMultiColumn() && unique.involvesColumn(column)) {
+					sql.append("\t"); 
+					sql.append(constraintSQLWriter.writeConstraint(unique));
+				}	
+			}				
+							
+			for (NotNullConstraint notNull : table.getNotNullConstraints()) {
+				if (notNull.getColumn().equals(column)) {
+					sql.append("\t"); 
+					sql.append(constraintSQLWriter.writeConstraint(notNull));
+				}	
 			}			
 		}
 		
 		// write primary key
 		PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
-		if (primaryKey != null) {
+		if (primaryKey != null && primaryKey.isMultiColumn()) {
 			sql.append(",\n\t"); 
 			sql.append(constraintSQLWriter.writeConstraint(primaryKey));
 		}
 		
 		// write foreign keys
 		for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
-			sql.append(",\n\t"); 
-			sql.append(constraintSQLWriter.writeConstraint(foreignKey));	
+			if (foreignKey.isMultiColumn()) {
+				sql.append(",\n\t"); 
+				sql.append(constraintSQLWriter.writeConstraint(foreignKey));
+			}
 		}
 		
 		// write uniques
 		for (UniqueConstraint unique : table.getUniqueConstraints()) {
-			sql.append(",\n\t"); 
-			sql.append(constraintSQLWriter.writeConstraint(unique));	
+			if (unique.isMultiColumn()) {
+				sql.append(",\n\t"); 
+				sql.append(constraintSQLWriter.writeConstraint(unique));
+			}
 		}		
 
 		// write checks

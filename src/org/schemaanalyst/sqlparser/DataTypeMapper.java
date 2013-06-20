@@ -68,10 +68,7 @@ class DataTypeMapper {
 		// *** NUMERIC *** 	
 		// decimal
 		if (enumType == EDataType.dec_t) {
-			int precision = getPrecision(dataType);
-			int scale = getScale(dataType);
-			
-			return new DecimalDataType(precision, scale);			
+			return new DecimalDataType(getPrecision(dataType), getScale(dataType));			
 		}
 		
 		// int
@@ -86,10 +83,7 @@ class DataTypeMapper {
 		
     	// numeric
 		if (enumType == EDataType.numeric_t) {		
-			int precision = getPrecision(dataType);
-			int scale = getScale(dataType);
-			
-			return new NumericDataType(precision, scale);
+			return new NumericDataType(getPrecision(dataType), getScale(dataType));
 		}
 		
     	// real		

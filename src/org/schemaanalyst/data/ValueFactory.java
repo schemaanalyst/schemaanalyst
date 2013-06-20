@@ -169,7 +169,7 @@ public class ValueFactory  {
 	public Value createNumericDataTypeValue(NumericDataType type) {
 		return new NumericValue();
 		// TODO: set ranges
-	}
+	}	
 	
 	public Value createRealDataTypeValue(RealDataType type) {
 		return new NumericValue();

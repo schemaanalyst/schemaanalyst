@@ -11,8 +11,8 @@ public interface DataTypeVisitor {
 	public void visit(DateDataType type);
 	
 	public void visit(DateTimeDataType type);
-	
-	public void visit(DecimalDataType type);
+
+	public void visit(DecimalDataType type);	
 	
 	public void visit(DoubleDataType type);
 	
@@ -22,7 +22,7 @@ public interface DataTypeVisitor {
 	
 	public void visit(MediumIntDataType type);	
 	
-	public void visit(NumericDataType type);
+	public void visit(NumericDataType type);	
 	
 	public void visit(RealDataType type);	
 	

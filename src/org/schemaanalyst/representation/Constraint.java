@@ -34,6 +34,14 @@ public abstract class Constraint implements Serializable {
 	}
 	
 	/**
+	 * Returns true if the constraint has a name
+	 * @return True if the constraint has a name else false;
+	 */
+	public boolean hasName() {
+		return name != null;
+	}	
+	
+	/**
 	 * Gets the table of the integrity constraint.
 	 * @return The table of the constraint.
 	 */
