@@ -4,7 +4,7 @@ import org.schemaanalyst.SchemaAnalyst;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 public class GenerateData {
 

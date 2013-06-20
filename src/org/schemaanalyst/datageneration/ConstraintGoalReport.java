@@ -1,6 +1,6 @@
 package org.schemaanalyst.datageneration;
 
-import org.schemaanalyst.representation.Constraint;
+import org.schemaanalyst.sqlrepresentation.Constraint;
 
 public class ConstraintGoalReport extends GoalReport {
 

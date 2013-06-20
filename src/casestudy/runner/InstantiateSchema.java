@@ -6,7 +6,7 @@ import casestudy.AllCaseStudies;
 
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.postgres.Postgres;
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class InstantiateSchema {

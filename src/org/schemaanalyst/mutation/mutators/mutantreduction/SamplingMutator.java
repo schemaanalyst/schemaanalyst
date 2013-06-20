@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 /**
  * A wrapper for one or more mutators, which randomly selects mutants from the 

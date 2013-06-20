@@ -1,12 +1,12 @@
 package org.schemaanalyst.datageneration.analyst;
 
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Constraint;
-import org.schemaanalyst.representation.ConstraintVisitor;
-import org.schemaanalyst.representation.ForeignKeyConstraint;
-import org.schemaanalyst.representation.NotNullConstraint;
-import org.schemaanalyst.representation.PrimaryKeyConstraint;
-import org.schemaanalyst.representation.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 
 public class ConstraintAnalystFactory {
 

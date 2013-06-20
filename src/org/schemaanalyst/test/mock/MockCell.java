@@ -2,7 +2,7 @@ package org.schemaanalyst.test.mock;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.representation.Column;
+import org.schemaanalyst.sqlrepresentation.Column;
 
 public 	class MockCell extends Cell {
 	

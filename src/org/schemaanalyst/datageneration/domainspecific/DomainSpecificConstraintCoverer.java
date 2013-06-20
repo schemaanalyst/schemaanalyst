@@ -9,9 +9,9 @@ import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
-import org.schemaanalyst.representation.Constraint;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.random.Random;
 
 

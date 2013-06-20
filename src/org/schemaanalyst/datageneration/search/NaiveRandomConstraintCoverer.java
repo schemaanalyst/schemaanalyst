@@ -9,8 +9,8 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
 import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class NaiveRandomConstraintCoverer extends DataGenerator {
 

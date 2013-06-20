@@ -1,9 +1,9 @@
 package casestudy;
 
-import org.schemaanalyst.representation.*;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
-import org.schemaanalyst.representation.datatype.*;
+import org.schemaanalyst.sqlrepresentation.*;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.datatype.*;
 
 /**
  *
@@ -283,7 +283,7 @@ public class Pagila extends Schema {
         Column customer_address_id = customer.addColumn("address_id", new SmallIntDataType());
         customer_address_id.setNotNull();
         
-        Column customer_activebool = customer.addColumn("activebool", new org.schemaanalyst.representation.datatype.BooleanDataType());
+        Column customer_activebool = customer.addColumn("activebool", new org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType());
         customer_activebool.setNotNull();
         
         Column customer_create_date = customer.addColumn("create_date", new DateDataType());
@@ -509,7 +509,7 @@ public class Pagila extends Schema {
         Column staff_store_id = staff.addColumn("store_id", new SmallIntDataType());
         staff_store_id.setNotNull();
         
-        Column staff_active = staff.addColumn("active", new org.schemaanalyst.representation.datatype.BooleanDataType());
+        Column staff_active = staff.addColumn("active", new org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType());
         staff_active.setNotNull();
         
         Column staff_username = staff.addColumn("username", new VarCharDataType(16));

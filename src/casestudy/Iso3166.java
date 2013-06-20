@@ -1,10 +1,10 @@
 package casestudy;
 
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 public class Iso3166 extends Schema {
 

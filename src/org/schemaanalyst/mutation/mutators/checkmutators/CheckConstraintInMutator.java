@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 
 /**
  * Creates mutants of 'In ...' type check constraints by removing each value in

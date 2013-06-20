@@ -12,10 +12,10 @@ import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 import java.io.File;
 
 import org.schemaanalyst.database.Database;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.datatype.DataType;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 
 public class SchemaParser {
 	
@@ -110,9 +110,9 @@ public class SchemaParser {
 	    				"Unknown table \"" + tableName + "\" for \"" + node + "\"");
 	    	}
 	    
-	    	// [GSP BUG x, DBMS Postgres]  The method call below is supposed to return 
+	    	// [GSP BUG 46, DBMS Postgres]  The method call below is supposed to return 
 	    	// something, but returns null, meaning I cannot continue to parse.
-	    	// node.getTableElementList()); 
+	    	// System.out.println(node.getTableElementList()); 
 	    	
 	    	throw new UnsupportedFeatureException("GSP has a bug meaning ALTER statements cannot be parsed");
 	    }

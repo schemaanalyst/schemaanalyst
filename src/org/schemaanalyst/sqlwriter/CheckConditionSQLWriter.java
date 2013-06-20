@@ -1,11 +1,11 @@
 package org.schemaanalyst.sqlwriter;
 
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 public class CheckConditionSQLWriter {
 	

@@ -12,7 +12,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.constraint.InCheckPredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;

@@ -11,7 +11,7 @@ import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.database.hsqldb.Hsqldb;
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**

@@ -1,25 +1,25 @@
 package org.schemaanalyst.sqlwriter;
 
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.representation.datatype.BigIntDataType;
-import org.schemaanalyst.representation.datatype.BooleanDataType;
-import org.schemaanalyst.representation.datatype.CharDataType;
-import org.schemaanalyst.representation.datatype.DataTypeVisitor;
-import org.schemaanalyst.representation.datatype.DateDataType;
-import org.schemaanalyst.representation.datatype.DateTimeDataType;
-import org.schemaanalyst.representation.datatype.DecimalDataType;
-import org.schemaanalyst.representation.datatype.DoubleDataType;
-import org.schemaanalyst.representation.datatype.FloatDataType;
-import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.datatype.MediumIntDataType;
-import org.schemaanalyst.representation.datatype.NumericDataType;
-import org.schemaanalyst.representation.datatype.RealDataType;
-import org.schemaanalyst.representation.datatype.SmallIntDataType;
-import org.schemaanalyst.representation.datatype.TextDataType;
-import org.schemaanalyst.representation.datatype.TimeDataType;
-import org.schemaanalyst.representation.datatype.TimestampDataType;
-import org.schemaanalyst.representation.datatype.TinyIntDataType;
-import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.BigIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DataTypeVisitor;
+import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DateTimeDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.FloatDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.MediumIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TimestampDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 public class CellSQLWriter { 
 	

@@ -4,21 +4,21 @@ import gudusoft.gsqlparser.EDataType;
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TTypeName;
 
-import org.schemaanalyst.representation.datatype.BooleanDataType;
-import org.schemaanalyst.representation.datatype.CharDataType;
-import org.schemaanalyst.representation.datatype.DataType;
-import org.schemaanalyst.representation.datatype.DateDataType;
-import org.schemaanalyst.representation.datatype.DateTimeDataType;
-import org.schemaanalyst.representation.datatype.DecimalDataType;
-import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.datatype.NumericDataType;
-import org.schemaanalyst.representation.datatype.RealDataType;
-import org.schemaanalyst.representation.datatype.SmallIntDataType;
-import org.schemaanalyst.representation.datatype.TextDataType;
-import org.schemaanalyst.representation.datatype.TimeDataType;
-import org.schemaanalyst.representation.datatype.TimestampDataType;
-import org.schemaanalyst.representation.datatype.TinyIntDataType;
-import org.schemaanalyst.representation.datatype.VarCharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DateTimeDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TimestampDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 class DataTypeMapper {
 	

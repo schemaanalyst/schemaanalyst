@@ -9,8 +9,8 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.EvaluableRelationalPredicate;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 
 public class RelationalPredicateAnalyst extends ConstraintAnalyst {
 

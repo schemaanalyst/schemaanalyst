@@ -6,8 +6,8 @@ import java.util.List;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
-import org.schemaanalyst.representation.Schema;
 import org.schemaanalyst.sqlparser.SchemaParser;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class Runner {
@@ -54,6 +54,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("World-SchemaAnalyst", new Postgres());
+		run("_debug", new MySQL());
 	}
 }

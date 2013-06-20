@@ -7,10 +7,10 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.EvaluableRelationalPredicate;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.Operand;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 
 public class BetweenAnalyst extends ConstraintAnalyst {
 

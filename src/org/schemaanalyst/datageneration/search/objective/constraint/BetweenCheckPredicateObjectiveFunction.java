@@ -15,8 +15,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
 
 public class BetweenCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 	

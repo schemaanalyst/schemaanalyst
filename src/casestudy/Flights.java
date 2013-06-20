@@ -1,13 +1,13 @@
 package casestudy;
 
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.datatype.CharDataType;
-import org.schemaanalyst.representation.datatype.DateDataType;
-import org.schemaanalyst.representation.datatype.IntDataType;
-import org.schemaanalyst.representation.datatype.TimeDataType;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
 
 public class Flights extends Schema {
 

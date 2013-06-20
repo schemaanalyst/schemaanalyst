@@ -10,16 +10,16 @@ import java.util.List;
 import java.util.Set;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.Operand;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 /**
  * Mutates all types of check constraint by replacing columns
@@ -305,21 +305,21 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         public abstract boolean check(Column column, Column replacement);
         private static final Set<Class> NUMERIC_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.representation.datatype.BigIntDataType.class,
-                    org.schemaanalyst.representation.datatype.DecimalDataType.class,
-                    org.schemaanalyst.representation.datatype.DoubleDataType.class,
-                    org.schemaanalyst.representation.datatype.FloatDataType.class,
-                    org.schemaanalyst.representation.datatype.IntDataType.class,
-                    org.schemaanalyst.representation.datatype.MediumIntDataType.class,
-                    org.schemaanalyst.representation.datatype.NumericDataType.class,
-                    org.schemaanalyst.representation.datatype.RealDataType.class,
-                    org.schemaanalyst.representation.datatype.SmallIntDataType.class,
-                    org.schemaanalyst.representation.datatype.TinyIntDataType.class
+                    org.schemaanalyst.sqlrepresentation.datatype.BigIntDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.FloatDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.IntDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.MediumIntDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.NumericDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.RealDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType.class
                 })));
         private static final Set<Class> STRING_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.representation.datatype.CharDataType.class,
-                    org.schemaanalyst.representation.datatype.VarCharDataType.class,
-                    org.schemaanalyst.representation.datatype.TextDataType.class
+                    org.schemaanalyst.sqlrepresentation.datatype.CharDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType.class,
+                    org.schemaanalyst.sqlrepresentation.datatype.TextDataType.class
                 })));
     };
 }

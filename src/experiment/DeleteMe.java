@@ -12,7 +12,7 @@ import casestudy.RiskIt;
 import casestudy.UnixUsage;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
 
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
  *

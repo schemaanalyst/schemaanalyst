@@ -12,7 +12,7 @@ import casestudy.runner.Mutate;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
 import java.util.List;
 
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
  *

@@ -2,10 +2,10 @@ package org.schemaanalyst.data;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.representation.checkcondition.Operand;
-import org.schemaanalyst.representation.checkcondition.OperandVisitor;
-import org.schemaanalyst.representation.expression.Expression;
-import org.schemaanalyst.representation.expression.ExpressionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Value implements Operand, Expression, Serializable, Duplicable<Value>, Comparable<Value> {

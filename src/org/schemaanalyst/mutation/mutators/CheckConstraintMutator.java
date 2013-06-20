@@ -2,9 +2,9 @@ package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class CheckConstraintMutator extends Mutator {
 			

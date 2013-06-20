@@ -2,18 +2,18 @@ package org.schemaanalyst.datageneration.search.objective.constraint;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Constraint;
-import org.schemaanalyst.representation.ConstraintVisitor;
-import org.schemaanalyst.representation.ForeignKeyConstraint;
-import org.schemaanalyst.representation.NotNullConstraint;
-import org.schemaanalyst.representation.PrimaryKeyConstraint;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.UniqueConstraint;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 public class ConstraintObjectiveFunctionFactory {
 	

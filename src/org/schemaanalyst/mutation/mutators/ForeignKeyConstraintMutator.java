@@ -2,10 +2,10 @@ package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.ForeignKeyConstraint;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ForeignKeyConstraintMutator extends Mutator {
 	

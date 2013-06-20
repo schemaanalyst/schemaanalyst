@@ -7,15 +7,15 @@ import java.util.List;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.Operand;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 /**
  * Mutates literal values in all types of check constraint. Replaces 'x' with

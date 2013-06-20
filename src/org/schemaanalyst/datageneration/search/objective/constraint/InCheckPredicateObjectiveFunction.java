@@ -14,8 +14,8 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.predicate.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 
 public class InCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 

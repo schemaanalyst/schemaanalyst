@@ -6,14 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.mutators.Mutator;
-import org.schemaanalyst.representation.CheckConstraint;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.representation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.representation.checkcondition.InCheckCondition;
-import org.schemaanalyst.representation.checkcondition.RelationalCheckCondition;
-import org.schemaanalyst.representation.datatype.IntDataType;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /**
  * Mutates the relational operators in relational check constraints. Makes use 

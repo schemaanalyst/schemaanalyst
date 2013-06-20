@@ -10,7 +10,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.BetweenCheckPredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
-import org.schemaanalyst.representation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
 
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 

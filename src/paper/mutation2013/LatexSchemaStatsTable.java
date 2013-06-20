@@ -2,7 +2,7 @@ package paper.mutation2013;
 
 import paper.icst2013.*;
 
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 import casestudy.BankAccount;
 import casestudy.BookTown;

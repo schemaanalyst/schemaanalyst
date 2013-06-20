@@ -22,9 +22,9 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
 import org.schemaanalyst.datageneration.search.ConstraintEvaluator;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.Schema;
-import org.schemaanalyst.representation.Table;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 import casestudy.BankAccount;
 import casestudy.BookTown;

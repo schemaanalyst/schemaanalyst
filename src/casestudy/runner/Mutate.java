@@ -3,7 +3,7 @@ package casestudy.runner;
 import java.util.List;
 
 import org.schemaanalyst.mutation.mutators.ConstraintMutator;
-import org.schemaanalyst.representation.Schema;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 import casestudy.Flights;
 

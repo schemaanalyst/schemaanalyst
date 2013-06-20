@@ -1,18 +1,18 @@
 package org.schemaanalyst.sqlwriter;
 
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.representation.Column;
-import org.schemaanalyst.representation.expression.AndExpression;
-import org.schemaanalyst.representation.expression.BetweenExpression;
-import org.schemaanalyst.representation.expression.ComposedExpression;
-import org.schemaanalyst.representation.expression.Expression;
-import org.schemaanalyst.representation.expression.ExpressionVisitor;
-import org.schemaanalyst.representation.expression.InExpression;
-import org.schemaanalyst.representation.expression.ListExpression;
-import org.schemaanalyst.representation.expression.NullExpression;
-import org.schemaanalyst.representation.expression.OrExpression;
-import org.schemaanalyst.representation.expression.ParenthesisedExpression;
-import org.schemaanalyst.representation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
+import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ComposedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
+import org.schemaanalyst.sqlrepresentation.expression.InExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
+import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class ExpressionSQLWriter {
 
