@@ -42,7 +42,7 @@ public class ExpressionMapper {
 			String columnName = QuoteStripper.stripQuotes(node.getObjectOperand());
 			Column column = currentTable.getColumn(columnName);
 			if (column == null) {
-				throw new SQLParseException("Unknown column \"" + column + "\"");
+				throw new SQLParseException("Unknown column \"" + column + "\" for \"" + node + "\"");
 			}
 			return column;
 		}
@@ -132,7 +132,7 @@ public class ExpressionMapper {
 										 notBetween);						
 		}
 		
-		throw new ExpressionMappingException(node);
+		throw new UnsupportedFeatureException(node);
 	}
 	
 	static Expression map(Table currentTable, TExpression node) {

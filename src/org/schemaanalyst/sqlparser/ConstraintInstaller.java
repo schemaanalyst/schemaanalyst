@@ -54,7 +54,7 @@ class ConstraintInstaller {
     		return;
     	} 
     	
-    	throw new ConstraintInstallationException(node);
+    	throw new UnsupportedFeatureException(node);
 	}
 		
 	String getConstraintName(TConstraint node) {
@@ -74,7 +74,8 @@ class ConstraintInstaller {
     		if (currentColumn != null) {
     			columns.add(currentColumn);
     		} else {
-    			throw new ConstraintInstallationException("No columns on which to define constraint!");
+    			throw new SQLParseException(
+    					"No columns defined for constraint for \"" + node + "\"");
     		}
     	} else {
     		for (int i=0; i < nodeColumns.size(); i++) {
@@ -96,7 +97,8 @@ class ConstraintInstaller {
 		List<Column> columns = getConstraintColumns(node);
 		
 		if (columns.size() > 1) {
-			throw new ConstraintInstallationException("Cannot make more than one column NOT NULL at a time");
+			throw new SQLParseException(
+					"Cannot make more than one column NOT NULL for \"" + node + "\"");
 		}
 		
 		Column column = columns.get(0);
@@ -113,8 +115,10 @@ class ConstraintInstaller {
 		Table referenceTable = schema.getTable(referenceTableName);
 
 		if (referenceTable == null) {
-			throw new ConstraintInstallationException(
-					"Unknown table \"" + referenceTableName + "\" referenced by foreign key for table \"" + currentTable + "\"");
+			throw new SQLParseException(
+					"Unknown table \"" + referenceTableName + 
+					"\" referenced by foreign key for table \"" + currentTable + 
+					"\" for \"" + node + "\"");
 		}
 		
 		List<Column> columns = getConstraintColumns(node);

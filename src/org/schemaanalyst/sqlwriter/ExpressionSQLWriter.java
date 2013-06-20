@@ -145,7 +145,7 @@ public class ExpressionSQLWriter {
 	}	
 	
 	public String writeParenthesisedExpression(ParenthesisedExpression expression) {
-		return " ("+ writeExpression(expression.getSubexpression()) + ") ";
+		return "("+ writeExpression(expression.getSubexpression()) + ")";
 	}	
 	
 	public String writeRelationalExpression(RelationalExpression expression) {

@@ -6,6 +6,7 @@ import gudusoft.gsqlparser.nodes.TColumnDefinition;
 import gudusoft.gsqlparser.nodes.TConstraint;
 import gudusoft.gsqlparser.nodes.TConstraintList;
 import gudusoft.gsqlparser.nodes.TParseTreeVisitor;
+import gudusoft.gsqlparser.stmt.TAlterTableStatement;
 import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 
 import java.io.File;
@@ -98,6 +99,22 @@ public class SchemaParser {
 		// **** CONSTRAINTS ****
 	    public void postVisit(TConstraint node) {
 	    	ConstraintInstaller.install(schema, currentTable, currentColumn, node);
-	    }	    
+	    }
+	    
+	    // **** ALTER STATEMENTS ****
+	    public void preVisit(TAlterTableStatement node) {
+	    	String tableName = QuoteStripper.stripQuotes(node.getTableName());
+	    	Table table = schema.getTable(tableName);
+	    	if (table == null) {
+	    		throw new SQLParseException(
+	    				"Unknown table \"" + tableName + "\" for \"" + node + "\"");
+	    	}
+	    
+	    	// [GSP BUG x, DBMS Postgres]  The method call below is supposed to return 
+	    	// something, but returns null, meaning I cannot continue to parse.
+	    	// node.getTableElementList()); 
+	    	
+	    	throw new UnsupportedFeatureException("GSP has a bug meaning ALTER statements cannot be parsed");
+	    }
 	}	
 }

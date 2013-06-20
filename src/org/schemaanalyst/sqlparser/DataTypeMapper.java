@@ -139,7 +139,7 @@ class DataTypeMapper {
 		}		
 		
 		// Data type not supported
-		throw new DataTypeMappingException(dataType);
+		throw new UnsupportedFeatureException(dataType);
 	}	
 	
 	Integer getArgument(TConstant argument) {

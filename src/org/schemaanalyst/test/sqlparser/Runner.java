@@ -18,7 +18,7 @@ public class Runner {
 	
 	static void run(String caseStudy, Database database) throws Exception {		
 		SQLWriter sqlWriter = database.getSQLWriter();		
-		parseAndPrintOriginalSchema(caseStudy, sqlWriter);
+		//parseAndPrintOriginalSchema(caseStudy, sqlWriter);
 		parseAndPrintTextSchema(caseStudy, database, sqlWriter);
 		
 	}
@@ -54,6 +54,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("NistXTS749", new Postgres());
+		run("World-SchemaAnalyst", new Postgres());
 	}
 }

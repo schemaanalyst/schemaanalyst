@@ -1,5 +1,7 @@
-CREATE TABLE animals (
-     id INT NOT NULL AUTO_INCREMENT,
-     name CHAR(30) NOT NULL,
-     PRIMARY KEY (id)
-) ENGINE=MyISAM;
+CREATE TABLE test (
+     id INT
+)
+
+
+ALTER TABLE test
+    ADD CONSTRAINT pkey PRIMARY KEY (test, "id");
