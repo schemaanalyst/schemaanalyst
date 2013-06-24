@@ -1,40 +1,31 @@
 <project xmlns:jacoco="antlib:org.jacoco.ant">
 	
 	<!-- SETUP VARIABLES AND PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-	<property name="" value="" />
 
 	<property name="lib.dir" value="lib" />
-	<property name="src.dir" location="../src/" />
-	<property name="build.dir" location="../build/" />
-	<property name="dist.dir" location="../dist/" />
+	<property name="src.dir" location="src" />
+	<property name="build.dir" location="build" />
+	<property name="dist.dir" location="dist" />
 	<property name="dist.name" value="SchemaAnalyst" />
 	<property name="config.dir" value="config" />
+	<property name="run.dir" value="run" />
+	<property name="databases.dir" value="databases" />
 
-	<!-- Load the database configurations -->
+	<!-- Load the database configurations. -->
 	<loadproperties>
-		<file file="config/databases.properties" />
+		<file file="${config.dir}/databases.properties" />
 	</loadproperties>
 
-	<!-- The classpath for building the system. -->
+	<!-- The common classpath for building the system. -->
 	<path id="build.classpath">
 		<fileset dir="${lib.dir}" includes="*.jar" />
 	</path>
 
-	<!-- The classpath for running the system, with spy. -->
+	<!-- The classpath for running the system. -->
 	<path id="run.classpath">
 		<pathelement path="${build.dir}"/>
 		<fileset dir="${lib.dir}" includes="*.jar"/>
-		<pathelement location="${config.dir}/spy/SchemaAnalyst"/>
 	</path>
-
-	<property name="result.dir" location="./build" />
-	<property name="result.classes.dir" location="${result.dir}/" />
-	<property name="result.report.dir" location="${result.dir}/site/jacoco" />
-	<property name="result.exec.file" location="${result.dir}/jacoco.exec" />
-
-	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
-		<classpath path="${lib.dir}/jacocoant.jar"/>
-	</taskdef>
 	
 
 	<!-- BASIC TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
@@ -43,14 +34,8 @@
 	<target name="clean">
 		<delete dir="${build.dir}"/>
 		<delete dir="${dist.dir}"/>
-	</target>
-
-	<target name="clean.full" depends="clean">
-		<delete dir="Experiments"/>
-		<delete dir="MutantScripts"/>
-		<delete dir="Scripts"/>
-		<delete dir="MutationReports"/>
-		<delete dir="databases"/>
+		<delete dir="${run.dir}"/>
+		<delete dir="${databases.dir}"/>
 	</target>
 
 	<!-- COMPILING TASK - "ant compile" -->  
@@ -70,24 +55,10 @@
 
 	<!-- SETUP TASK - "ant setup" -->
 	<target name="setup">
-		<mkdir dir="${db.folder}" />
-	</target>
-
-	<!-- CLEAN SETUP TASK - "ant cleansetup" -->
-	<target name="cleansetup">
-		<antcall target="clean.full" />
-		<antcall target="compile" />
-		<antcall target="setup" />
+		<mkdir dir="${databases.dir}"/>
 	</target>
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
-
-	<!-- RUNNING TASK - "ant run" -->
-	<!-- A convenient alias for the schemaanalyst task -->
-	<target name="run">
-		<antcall target="schemaanalyst">
-		</antcall>
-	</target>
 
 	<!-- RUNNING TASK - "ant schemaanalyst" -->
 	<!-- Derby Server Port: 1527 -->
@@ -124,124 +95,6 @@
 		</java>
 	</target>
 
-	<!-- RUNNING TASK - "ant dbmonster.process" -->
-	<target name="dbmonster.process">
-		<java fork="true" classname="experiment.ProcessDBMonsterResults" maxmemory="1024m">
-			<arg value="--debug=false" /> 
-			<arg value="--project=${user.dir}" />
-			<arg value="--database=casestudy.ITrust" />
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant processdbmonster" -->
-	<!-- Convenience wrapper for old name of dbmonster.process -->
-	<target name="processdbmonster">
-		<antcall target="run">
-		</antcall>
-	</target>
-
-	<!-- RUNNING TASK - "ant dbmonster.manipulate" -->
-	<!-- Derby Server Port: 1527 -->
-	<!-- Postgres Server Port: 5432 -->
-	<target name="dbmonster.manipulate">
-		<java fork="true" classname="dbmonster.PostgresDatabaseManipulator">
-			<arg value="--debug=true" /> 
-			<arg value="--project=${user.dir}" />
-			<arg value="--type=${db.postgres}" />
-			<arg value="--host=${db.postgres.host}" />
-			<arg value="--port=${db.postgres.port}" />
-			<arg value="--database=casestudy.DellStore" />
-			<arg value="--action=addtables" />
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant manipulatedatabase" -->
-	<!-- Convenience wrapper for old name of dbmonster.manipulate -->
-	<target name="manipulatedatabase">
-		<antcall target="dbmonster.manipulate">
-		</antcall>
-	</target>
-
-	<!-- RUNNING TASK - "ant dbmonster.manipulateexperiment" -->
-	<!-- Derby Server Port: 1527 -->
-	<!-- Postgres Server Port: 5432 -->
-	<target name="dbmonster.manipulateexperiment">
-		<java fork="true" classname="dbmonster.PostgresDatabaseManipulator">
-			<arg value="--debug=true" /> 
-			<arg value="--project=${user.dir}" />
-			<arg value="--type=${db.postgres}" />
-			<arg value="--host=${db.postgres.host}" />
-			<arg value="--port=${db.postgres.port}" />
-			<arg value="--database=${casestudy}" />
-			<arg value="--action=${action}" />
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant manipulatedatabaseexperiment" -->
-	<!-- Convenience wrapper for old name of dbmonster.manipulateexperiment -->
-	<target name="manipulatedatabaseexperiment">
-		<antcall target="dbmonster.manipulateexperiment">
-		</antcall>
-	</target>
-
-	<!-- RUNNING TASK - "ant dbmonster" -->
-	<!-- Derby Server Port: 1527 -->
-	<!-- Postgres Server Port: 5432 -->
-	<target name="dbmonster">
-		<java fork="true" classname="dbmonster.DBMonster" maxmemory="1024m">
-			<arg value="--debug=false" /> 
-			<arg value="--script=true" /> 
-			<arg value="--wantmutationreport_mrp=false" /> 
-			<arg value="--wantmutationreport_txt=true" /> 
-			<arg value="--onlymutationsummary=false" /> 
-			<arg value="--constraintcoverage=true" />
-			<arg value="--transformemptystrings=false" />
-			<arg value="--project=${user.dir}" />
-			<arg value="--type=org.schemaanalyst.database.postgres.Postgres" />
-			<arg value="--host=localhost" />
-			<arg value="--port=5432" />
-			<arg value="--spy=false" />
-			<arg value="--database=casestudy.CoffeeOrders" />
-			<arg value="--scriptfile=dbmonster.casestudy.CoffeeOrders.sql" />
-			<arg value="--mutantscriptfile=dbmonster.casestudy.CoffeeOrders.mutant.sql" />
-			<arg value="--mutationreport_mrp=dbmonster.casestudy.CoffeeOrders.mrp" />
-			<arg value="--mutationreport_txt=dbmonster.casestudy.CoffeeOrders.txt" />
-			<arg value="--spylog=SpyLogs/casestudy.CoffeeOrders-1.log" />
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant dbmonsterexperiment" -->
-	<!-- Derby Server Port: 1527 -->
-	<!-- Postgres Server Port: 5432 -->
-	<target name="dbmonsterexperiment">
-		<java fork="true" classname="dbmonster.DBMonster" maxmemory="1024m">
-			<arg value="--debug=false" /> 
-			<arg value="--script=true" /> 
-			<arg value="--wantmutationreport_mrp=false" /> 
-			<arg value="--wantmutationreport_txt=true" /> 
-			<arg value="--onlymutationsummary=false" /> 
-			<arg value="--constraintcoverage=true" />
-			<arg value="--transformemptystrings=false" />
-			<arg value="--project=${user.dir}" />
-			<arg value="--type=${db.postgres}" />
-			<arg value="--host=${db.postgres.host}" />
-			<arg value="--port=${db.postgres.port}" />
-			<arg value="--spy=false" />
-			<arg value="--database=${casestudy}" />
-			<arg value="--scriptfile=dbmonster.casestudy.BankAccount.sql" />
-			<arg value="--mutantscriptfile=dbmonster.casestudy.BankAccount.mutant.sql" />
-			<arg value="--mutationreport_mrp=dbmonster.casestudy.BankAccount.mrp" />
-			<arg value="--mutationreport_txt=dbmonster.casestudy.BankAccount.txt" />
-			<arg value="--spylog=SpyLogs/${spylog}" />
-			<arg value="--trial=${trial}" />
-			<classpath refid="run.classpath" />
-		</java>
-	</target>
-
 	<!-- RUNNING TASK - "ant experiment" -->
 	<target name="experiment">
 		<junit fork="yes">
@@ -264,6 +117,7 @@
 		</junit>
 	</target>
 
+	<!-- RUNNING TASK - "ant experimentFromProperties" -->
 	<target name="experimentFromProperties">
 		<java fork="true" classname="experiment.ExperimentFromProperties">
 			<arg value="${uniqueid}" />
@@ -273,7 +127,7 @@
 
 	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
 	<target name="globalexperimentparameters">
-		<mkdir dir="Experiments" />
+		<mkdir dir="${run.dir}" />
 		<java fork="true" classname="experiment.GlobalExperimentParameters">
 			<arg value="--project=${user.dir}" />
 			<classpath refid="run.classpath" />
@@ -282,7 +136,7 @@
 
 	<!-- RUNNING TASK - "ant localexperimentparameters" -->
 	<target name="localexperimentparameters">
-		<mkdir dir="Experiments" />
+		<mkdir dir="${run.dir}" />
 		<java fork="true" classname="experiment.LocalExperimentParameters">
 			<arg value="--project=${user.dir}" />
 			<classpath refid="run.classpath" />
@@ -291,82 +145,8 @@
 
 	<!-- RUNNING TASK - "ant experimentparameters" -->
 	<target name="experimentparameters">
-		<mkdir dir="Experiments" />
 		<antcall target="globalexperimentparameters"/>
 		<antcall target="localexperimentparameters"/>
-	</target>
-
-	<!-- RUNNING TASK - "ant etest" -->
-	<target name="etest" depends="compile">
-		<junit fork="yes">
-			<test name="experiment.test.AllTests" />
-			<jvmarg value="-Dproject=${user.dir}" />
-			<classpath refid="run.classpath" />
-			<formatter type="brief" usefile="false" />
-		</junit>
-	</target>
-
-	<!-- RUNNING TASK - "ant test" -->
-	<target name="test" depends="compile">
-		<junit fork="yes">
-			<test name="org.schemaanalyst.test.AllTests" />
-			<jvmarg value="-Dproject=${user.dir}" />
-			<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
-			<classpath refid="run.classpath" />
-			<formatter type="brief" usefile="false" />
-		</junit>
-	</target>
-
-	<!-- RUNNING TASK - "ant coveragetest" -->
-	<target name="coveragetest" depends="compile">
-		<jacoco:coverage destfile="${result.exec.file}">
-			<junit fork="yes" forkmode="once">
-				<test name="org.schemaanalyst.test.AllTests" />
-				<jvmarg value="-Dproject=${user.dir}" />
-				<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
-				<classpath refid="run.classpath" />
-				<formatter type="brief" usefile="false" />
-			</junit>
-		</jacoco:coverage>
-	</target>
-
-	<!-- RUNNING TASK - "ant coverage" -->
-	<target name="coverage" depends="coveragetest">
-		<jacoco:report>
-			<executiondata>
-				<file file="${result.exec.file}" />
-			</executiondata>
-
-			<structure name="SchemaAnalyst Coverage Report">
-				<classfiles>
-					<fileset dir="${result.classes.dir}" />
-				</classfiles>
-				<sourcefiles encoding="UTF-8">
-					<fileset dir="${src.dir}" />
-				</sourcefiles>
-			</structure>
-			
-			<html destdir="${result.report.dir}/AllTests/" />
-			<csv destfile="${result.report.dir}/AllTests/report.csv" />
-			<xml destfile="${result.report.dir}/AllTests/report.xml" />
-		</jacoco:report>
-	</target>
-
-	<!-- RUNNING TASK - "ant integrationtest" -->
-	<target name="integrationtest" depends="compile">
-		<junit fork="true">
-			<test name="org.schemaanalyst.test.AllIntegrationTests" />
-			<jvmarg value="-Dproject=${user.dir}" />
-			<jvmarg value="-Dmutationreport_mrp=casestudy.BankAccount.mrp" />
-			<classpath refid="run.classpath" />
-			<formatter type="brief" usefile="false" />
-		</junit>
-	</target>
-
-	<target name="DeleteMe" depends="compile">
-		<java fork="true" classname="experiment.DeleteMe">
-			<classpath refid="run.classpath" />
-		</java>
 	</target>
 
 </project>
