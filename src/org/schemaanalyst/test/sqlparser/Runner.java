@@ -54,6 +54,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("_debug", new MySQL());
+		run("BookTown-SchemaAnalyst", new Postgres());
 	}
 }
