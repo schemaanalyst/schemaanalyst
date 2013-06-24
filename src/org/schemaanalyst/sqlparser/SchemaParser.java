@@ -248,7 +248,7 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 		
 		String constraintName = stripQuotes(constraintNameObject);
-		Column[] columns = getColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
+		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);
 		currentTable.setPrimaryKeyConstraint(constraintName, columns);
 	}
 	
@@ -257,7 +257,7 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 		
 		String constraintName = stripQuotes(constraintNameObject);
-		Column[] columns = getColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
+		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);
 		currentTable.addUniqueConstraint(constraintName, columns);		
 	}	
 	

@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -15,15 +16,42 @@ public abstract class MultiColumnConstraint extends Constraint {
 	private static final long serialVersionUID = 173815859465417000L;
 	
 	protected List<Column> columns;
-
+	
+	/**
+	 * Constructor.
+	 * @param table The table on which the integrity constraint holds.
+	 * @param name A name for the constraint (optional - can be null).
+	 * @param firstColumn The first (or only column) involved in the constraint.
+	 * @param remainingColumns Any remaining columns involved in the integrity constraint.
+	 */
+	protected MultiColumnConstraint(Table table, String name, Column firstColumn, Column... remainingColumns) {	
+		super(table, name);
+		List<Column> allColumns = new ArrayList<Column>();
+		allColumns.add(firstColumn);
+		allColumns.addAll(Arrays.asList(remainingColumns));
+		setColumns(allColumns);
+	}
+	
 	/**
 	 * Constructor.
 	 * @param table The table on which the integrity constraint holds.
 	 * @param name A name for the constraint (optional - can be null).
 	 * @param columns The columns involved in the integrity constraint.
 	 */
-	protected MultiColumnConstraint(Table table, String name, Column... columns) {
+	protected MultiColumnConstraint(Table table, String name, List<Column> columns) {
 		super(table, name);
+		setColumns(columns);		
+	}		
+
+	/**
+	 * Sets the columns involved in the integrity constraint.
+	 * @param columns The columns involved in the integrity constraint.
+	 */
+	protected void setColumns(List<Column> columns) {
+		if (columns.size() < 1) {
+			throw new SchemaConstructionException("Constraints must be defined over one or more columns for table \""+table+"\"");
+		}
+		
 		this.columns = new ArrayList<Column>();
 		
 		for (Column column : columns) {
@@ -31,9 +59,9 @@ public abstract class MultiColumnConstraint extends Constraint {
 				throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 			}
 			this.columns.add(column);
-		}
-	}	
-
+		}		
+	}
+	
 	/**
 	 * Gets the columns involved in the integrity constraint.
 	 * @return A list of the columns involved in the integrity constraint.

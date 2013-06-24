@@ -1,5 +1,8 @@
 package org.schemaanalyst.sqlrepresentation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents the primary key of a table.
  * @author Phil McMinn
@@ -14,9 +17,20 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 	 * Constructor.
 	 * @param table The table of this primary key.
 	 * @param name A name for the primary key constraint (optional - can be null).
+	 * @param firstColumn The first (or only column) involved in the primary key.
+	 * @param remainingColumns Any remaining columns involved in the primary key.
+	 */
+	protected PrimaryKeyConstraint(Table table, String name, Column firstColumn, Column... remainingColumns) {
+		super(table, name, firstColumn, remainingColumns);
+	}	
+	
+	/**
+	 * Constructor.
+	 * @param table The table of this primary key.
+	 * @param name A name for the primary key constraint (optional - can be null).
 	 * @param columns The columns involved in the primary key.
 	 */
-	protected PrimaryKeyConstraint(Table table, String name, Column... columns) {
+	protected PrimaryKeyConstraint(Table table, String name, List<Column> columns) {
 		super(table, name, columns);
 	}	
 		
@@ -53,7 +67,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 	 * @return The copy of the PrimaryKey instance created as a result of calling the method.
 	 */
 	public PrimaryKeyConstraint copyTo(Table targetTable) {
-		PrimaryKeyConstraint copy = new PrimaryKeyConstraint(targetTable, this.name);
+		List<Column> copyColumns = new ArrayList<Column>();
 		
 		// copy columns, but mapped to those of the new table
 		for (Column column : this.columns) {
@@ -64,9 +78,10 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 						  				  "\" as it does not have the column \"" + column + "\"");				
 			}
 			
-			copy.columns.add(targetTableColumn);
+			copyColumns.add(targetTableColumn);
 		}
 		
+		PrimaryKeyConstraint copy = new PrimaryKeyConstraint(targetTable, this.name, copyColumns);
 		targetTable.setPrimaryKeyConstraint(copy);
 		return copy;
 	}

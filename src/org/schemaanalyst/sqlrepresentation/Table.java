@@ -184,6 +184,32 @@ public class Table implements Serializable {
 		return Collections.unmodifiableList(checkConstraints);
 	}	
 
+	
+	/**
+	 * Adds a foreign key to the table.
+	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
+	 * columns corresponding to the paired reference table columns.
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */
+	public ForeignKeyConstraint addForeignKeyConstraint(String name, Table referenceTable, List<Column> columns) {
+		return null;
+	}	
+		
+	/**
+	 * Adds a foreign key to the table.
+	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
+	 * columns corresponding to the paired reference table columns.
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */
+	public ForeignKeyConstraint addForeignKeyConstraint(Table referenceTable, List<Column> columns) {
+		return null;
+	}	
+		
+	
 	/**
 	 * Adds a foreign key to the table.
 	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
@@ -304,22 +330,42 @@ public class Table implements Serializable {
 	public List<NotNullConstraint> getNotNullConstraints() {
 		return Collections.unmodifiableList(notNullConstraints);
 	}	
-		
+
 	/**
 	 * Sets the primary key for the table.
 	 * @param name The name of the primary key constraint (optional -- a version of this method exists without the requirement to specify a name).
 	 * @param columns The primary key columns.
 	 */	
-	public void setPrimaryKeyConstraint(String name, Column... columns) {		
+	public void setPrimaryKeyConstraint(String name, List<Column> columns) {		
 		setPrimaryKeyConstraint(new PrimaryKeyConstraint(this, name, columns));
+	}
+	
+	/**
+	 * Sets the primary key for the table.
+	 * @param name The name of the primary key constraint (optional -- a version of this method exists without the requirement to specify a name).
+	 * @param columns The primary key columns.
+	 */	
+	public void setPrimaryKeyConstraint(List<Column> columns) {		
+		this.setPrimaryKeyConstraint(null, columns);
+	}		
+	
+	/**
+	 * Sets the primary key for the table.
+	 * @param name The name of the primary key constraint (optional -- a version of this method exists without the requirement to specify a name).
+	 * @param firstColumn The first (or only column) involved in the primary key.
+	 * @param remainingColumns Any remaining columns involved in the primary key.
+	 */	
+	public void setPrimaryKeyConstraint(String name, Column firstColumn, Column... remainingColumns) {
+		this.setPrimaryKeyConstraint(new PrimaryKeyConstraint(this, name, firstColumn, remainingColumns));
 	}	
 	
 	/**
 	 * Sets the primary key for the table.
-	 * @param columns The primary key columns.
+	 * @param firstColumn The first (or only column) involved in the primary key.
+	 * @param remainingColumns Any remaining columns involved in the primary key.
 	 */		
-	public void setPrimaryKeyConstraint(Column... columns) {		
-		setPrimaryKeyConstraint(null, columns);
+	public void setPrimaryKeyConstraint(Column firstColumn, Column... remainingColumns) {		
+		this.setPrimaryKeyConstraint(null, firstColumn, remainingColumns);
 	}	
 	
 	/**
@@ -350,7 +396,7 @@ public class Table implements Serializable {
 	 * @param name The name of the unique constraint (optional -- a version of this method exists without the need to set a name).
 	 * @param columns The column set that should (as a set, rather than individually) be unique.
 	 */	
-	public UniqueConstraint addUniqueConstraint(String name, Column... columns) {
+	public UniqueConstraint addUniqueConstraint(String name, List<Column> columns) {
 		return addUniqueConstraint(new UniqueConstraint(this, name, columns));
 	}			
 
@@ -358,8 +404,27 @@ public class Table implements Serializable {
 	 * Sets a compound column unique constraint on the table.
 	 * @param columns The column set that should (as a set, rather than individually) be unique.
 	 */	
-	public UniqueConstraint addUniqueConstraint(Column... columns) {
+	public UniqueConstraint addUniqueConstraint(List<Column> columns) {
 		return addUniqueConstraint(null, columns);
+	}		
+	
+	/**
+	 * Sets a compound column unique constraint on the table.
+	 * @param name The name of the unique constraint (optional -- a version of this method exists without the need to set a name).
+	 * @param firstColumn The first (or only column) involved in the unique constraint.
+	 * @param remainingColumns Any remaining columns involved in the unique constraint.
+	 */	
+	public UniqueConstraint addUniqueConstraint(String name, Column firstColumn, Column... remainingColumns) {
+		return addUniqueConstraint(new UniqueConstraint(this, name, firstColumn, remainingColumns));
+	}			
+
+	/**
+	 * Sets a compound column unique constraint on the table.
+	 * @param firstColumn The first (or only column) involved in the unique constraint.
+	 * @param remainingColumns Any remaining columns involved in the unique constraint.
+	 */	
+	public UniqueConstraint addUniqueConstraint(Column firstColumn, Column... remainingColumns) {
+		return addUniqueConstraint(null, firstColumn, remainingColumns);
 	}			
 	
 	/**

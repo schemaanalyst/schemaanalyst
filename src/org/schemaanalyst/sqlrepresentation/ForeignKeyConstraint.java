@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -21,12 +22,78 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 	 * Constructor.
 	 * @param table The table containing the foreign key(s).
 	 * @param name A name for the constraint (can be null).
+	 * @param columns Columns over which the foreign key is defined
+	 * @param referenceTable The table containing the columns that the foreign keys reference.	
+	 * @param referenceColumns Columns in the reference table paired with each column in columns
+	 */
+	protected ForeignKeyConstraint(Table table, String name, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+		super(table, name, columns);
+		setReferenceColumns(referenceTable, referenceColumns);
+	}
+	
+	/**
+	 * Constructor.
+	 * @param table The table containing the foreign key(s).
+	 * @param name A name for the constraint (can be null).
+	 * @param columns Columns over which the foreign key is defined
+	 * @param referenceTable The table containing the columns that the foreign keys reference.	
+	 * @param referenceColumns Columns in the reference table paired with each column in columns
+	 */	
+	protected ForeignKeyConstraint(Table table, String name, Column[] columns, Table referenceTable, Column[] referenceColumns) {
+		super(table, name, Arrays.asList(columns));
+		setReferenceColumns(referenceTable, Arrays.asList(referenceColumns));
+	}	
+	
+	/**
+	 * Constructor.
+	 * @param table The table containing the foreign key(s).
+	 * @param name A name for the constraint (can be null).
+	 * @param column A single column over which the foreign key is defined
+	 * @param referenceTable The table containing the columns that the foreign keys reference.	
+	 * @param referenceColumn A column in the reference table paired with the column in the original table defining the foreign key relationship
+	 */		
+	protected ForeignKeyConstraint(Table table, String name, Column column, Table referenceTable, Column referenceColumn) {
+		super(table, name, column);
+		List<Column> referenceColumns = new ArrayList<Column>();
+		referenceColumns.add(referenceColumn);
+		setReferenceColumns(referenceTable, referenceColumns);
+	}
+	
+	/**
+	 * Sets the reference table and reference columns involved in the foreign key.
+	 * @param referenceTable The referenced table.
+	 * @param referenceColumns The columns in the reference table that define the foreign key relationship.
+	 */	
+	protected void setReferenceColumns(Table referenceTable, List<Column> referenceColumns) {
+		this.referenceTable = referenceTable;
+		if (referenceColumns.size() != columns.size()) {
+			throw new SchemaConstructionException("Foreign key constraints must have matching column numbers \""+table+"\"");
+		}
+		
+		this.referenceColumns = new ArrayList<Column>();
+		
+		for (Column referenceColumn : referenceColumns) {
+			if (!referenceTable.hasColumn(referenceColumn)) {
+				throw new SchemaConstructionException(
+						"Reference column \"" + referenceColumn + 
+						"\" does not exist in reference table \"" + referenceTable +"\"");
+			}
+			this.referenceColumns.add(referenceColumn);
+		}				
+	}
+	
+	/**
+	 * @deprecated
+	 * Constructor.
+	 * @param table The table containing the foreign key(s).
+	 * @param name A name for the constraint (can be null).
 	 * @param referenceTable The table containing the columns that the foreign keys reference.
 	 * @param columns The columns involved.  The first <tt>n</tt> columns at indexes <tt>0..n-1</tt> should be from <tt>table</tt> and 
 	 * the second <tt>n</tt> columns their pairs in <tt>referenceTable</tt> in order from indexes <tt>n..(n*2)-1.</tt> 
 	 */
 	protected ForeignKeyConstraint(Table table, String name, Table referenceTable, Column... columns) {
-		super(table, name);
+		super(table, name, null);
+		this.columns = new ArrayList<Column>();
 		this.referenceTable = referenceTable;
 		this.referenceColumns = new ArrayList<Column>();			
 		
