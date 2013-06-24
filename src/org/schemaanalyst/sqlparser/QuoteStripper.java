@@ -20,6 +20,9 @@ public class QuoteStripper {
 	}
 	
 	static String stripQuotes(TObjectName name) {
+		if (name == null) {
+			return null;
+		}
 		return stripQuotes(name.toString());		
 	}	
 }

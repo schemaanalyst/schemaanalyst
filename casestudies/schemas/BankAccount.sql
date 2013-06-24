@@ -1,7 +1,3 @@
-DROP TABLE Account;
-
-DROP TABLE UserInfo;
-
 CREATE TABLE UserInfo 
 (
 	card_number int PRIMARY KEY, 

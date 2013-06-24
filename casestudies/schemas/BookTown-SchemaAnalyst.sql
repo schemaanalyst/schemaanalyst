@@ -1,6 +1,7 @@
 -- SchemaAnalyst version
 -- * no table inheritance (distinguished authors)
 -- * no timestamp with timezone, used timezone for "shipments.ship_date"
+-- * no create sequence statements
 
 CREATE TABLE "books" (
 	"id" integer NOT NULL,
@@ -43,8 +44,6 @@ CREATE TABLE "stock" (
 	Constraint "stock_pkey" Primary Key ("isbn")
 );
 
-CREATE SEQUENCE "subject_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
-
 CREATE TABLE "numeric_values" (
 	"num" numeric(30,6)
 );
@@ -73,8 +72,6 @@ CREATE TABLE "customers" (
 	Constraint "customers_pkey" Primary Key ("id")
 );
 
-CREATE SEQUENCE "book_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
-
 CREATE TABLE "book_queue" (
 	"title" varchar(100) NOT NULL,
 	"author_id" integer,
@@ -94,8 +91,6 @@ CREATE TABLE "favorite_books" (
 	"books" varchar(100)
 );
 
-CREATE SEQUENCE "shipments_ship_id_seq" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
-
 CREATE TABLE "employees" (
 	"id" int PRIMARY KEY NOT NULL,
 	"last_name" varchar(100) NOT NULL,
@@ -112,8 +107,6 @@ CREATE TABLE "editions" (
 	"type" character(1),
 	CONSTRAINT "integrity" CHECK (((book_id NOTNULL) AND (edition NOTNULL)))
 );
-
-CREATE SEQUENCE "author_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
 
 CREATE TABLE "distinguished_authors" (
 	"id" integer NOT NULL,
