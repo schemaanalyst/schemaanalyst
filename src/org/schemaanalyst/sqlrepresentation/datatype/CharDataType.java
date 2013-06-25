@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
-public class CharDataType extends DataType implements LengthLimited {
+public class CharDataType extends DataType 
+						  implements LengthLimited {
 	
 	private static final long serialVersionUID = 1159098580458473495L;
 	
@@ -16,5 +17,9 @@ public class CharDataType extends DataType implements LengthLimited {
 	
 	public void accept(DataTypeVisitor typeVisitor) {
 		typeVisitor.visit(this);
-	}	
+	}
+	
+	public void accept(DataTypeCategoryVisitor categoryVisitor) {
+		categoryVisitor.visit((LengthLimited) this);
+	}		
 }

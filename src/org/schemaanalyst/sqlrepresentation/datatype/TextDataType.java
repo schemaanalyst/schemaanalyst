@@ -8,4 +8,7 @@ public class TextDataType extends DataType {
 		typeVisitor.visit(this);
 	}
 
+	public void accept(DataTypeCategoryVisitor categoryVisitor) {
+		categoryVisitor.visit(this);
+	}		
 }

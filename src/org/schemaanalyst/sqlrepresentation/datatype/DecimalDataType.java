@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
-public class DecimalDataType extends DataType implements PrecisionedAndScaled {
+public class DecimalDataType extends DataType 
+							 implements PrecisionedAndScaled {
 
 	private static final long serialVersionUID = 3323085304471030116L;
 
@@ -30,4 +31,8 @@ public class DecimalDataType extends DataType implements PrecisionedAndScaled {
 	public void accept(DataTypeVisitor typeVisitor) {
 		typeVisitor.visit(this);
 	}
+	
+	public void accept(DataTypeCategoryVisitor categoryVisitor) {
+		categoryVisitor.visit((PrecisionedAndScaled) this);
+	}		
 }
