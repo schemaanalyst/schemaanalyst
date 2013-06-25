@@ -1,12 +1,17 @@
 package org.schemaanalyst.javawriter;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.datatype.DataTypeCategoryVisitor;
 import org.schemaanalyst.sqlrepresentation.datatype.LengthLimited;
@@ -15,13 +20,22 @@ import org.schemaanalyst.sqlrepresentation.datatype.Signed;
 
 public class SchemaJavaWriter {
 
-	static final String ADD_COLUMN_TO_TABLE_METHOD_NAME = "addColumn";
+	// variable name prefixes
+	static final String TABLE_VAR_NAME_PREFIX = "table";
 	
-	protected Set<String> imports;		
-	protected int indentLevel;
-	protected String java;
+	// method call names
+	static final String TABLE_ADD_COLUMN_METHOD_NAME = "addColumn",
+						TABLE_GET_COLUMN_METHOD_NAME = "getColumn",
+						TABLE_MAKE_COLUMN_LIST_METHOD_NAME = "makeColumnList",
+						TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD_NAME = "addForeignKeyConstraint",
+						TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD_NAME = "addNotNullConstraint",
+						TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD_NAME = "setPrimaryKeyConstraint",
+						TABLE_ADD_UNIQUE_CONSTRAINT_METHOD_NAME = "addUniqueConstraint";
+
 	
 	protected Schema schema;
+	protected ImportManager importManager;
+	protected JavaBuffer jb;
 	
 	public SchemaJavaWriter(Schema schema) {
 		this.schema = schema;
@@ -32,77 +46,85 @@ public class SchemaJavaWriter {
 	}
 	
 	public String writeSchema(String packageName) {
-		// initialise
-		java = "";		
-		imports = new TreeSet<String>();		
+		// initialise	
+		importManager = new ImportManager();		
+		jb = new JavaBuffer();		
 			
 		// get schema info
-		addImport(Schema.class);		
+		importManager.addImportFor(Schema.class);		
 		String schemaClassName = Schema.class.getSimpleName();
 		String schemaName = schema.getName();
 		
 		// start class
-		write("public class " + schemaName + " extends " + schemaClassName + " {");
+		jb.addln("public class " + schemaName + " extends " + schemaClassName + " {");
 		
 		// start constructor
-		writeNewLine();		
-		write(1, "public " + schemaName + "() {");		
-		write(2, "super(\"" + schemaName + "\");");
+		jb.addln();		
+		jb.addln(1, "public " + schemaName + "() {");		
+		jb.addln(2, "super(\"" + schemaName + "\");");
 		
 		// write table statements
 		List<Table> tables = schema.getTables();
 		for (Table table : tables) {
-			writeTableStatements(table);
-		}
+			addTableCode(table);
+		} 
 		
 		// end constructor		
-		write(1, "}");
+		jb.addln(1, "}");
 		
 		// end class
-		write(0, "}");		
+		jb.addln(0, "}");		
 
-		prefixImportStatements();
-		prefixPackageStatement(packageName);
-		
-		return java;
+		// get final Java code
+		String code = getPackageStatement(packageName) + importManager.writeImportStatements(); 
+		if (code != "") code += "\n";		
+		code += jb.getCode();
+		return code;
 	}
 	
-	protected void writeTableStatements(Table table) {
+	protected void addTableCode(Table table) {
 		
-		addImport(Table.class);
+		importManager.addImportFor(table);
 
-		writeNewLine();				
+		jb.addln();				
 		
 		String className = Table.class.getSimpleName();
 		String tableName = table.getName();
-		String tableVarName = getJavaVariableName("table", tableName);
+		String tableVarName = getTableVariableName(table);
 		
 		String tableConstruction = className + " " + tableVarName + " = new " + className + "(\"" + tableName + "\");";		
-		write(tableConstruction);
+		jb.addln(tableConstruction);
 		
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
-			writeColumnStatement(tableVarName, column);
+			addColumnCode(tableVarName, column);
+		}
+		
+		List<Constraint> constraints = table.getConstraints();
+		for (Constraint constraint : constraints) {
+			addConstraintCode(tableVarName, constraint);
 		}
 	}
 	
-	protected void writeColumnStatement(String tableVarName, Column column) {
+	protected void addColumnCode(String tableVarName, Column column) {
 		
 		String columnName = column.getName();
 		
 		
-		String statement = tableVarName + "." + ADD_COLUMN_TO_TABLE_METHOD_NAME + 
-						   "(\"" + columnName + "\", " + constructDataTypeCode(column.getType()) + ");";
+		String statement = tableVarName + "." + TABLE_ADD_COLUMN_METHOD_NAME + 
+						   "(\"" + columnName + "\", " + writeDataTypeConstruction(column.getType()) + ");";
 		
-		write(statement);
+		jb.addln(statement);
 	}
 	
-	protected String constructDataTypeCode(DataType dataType) {
+	protected String writeDataTypeConstruction(DataType dataType) {
 		
 		class SchemaWriterDataTypeCategoryVisitor implements DataTypeCategoryVisitor {
 
-			String code = "";
-			String getParameters(DataType type) {
+			String code;
+			
+			String writeParams(DataType type) {
+				code = "";
 				type.accept(this);
 				return "(" + code + ")";
 			}
@@ -134,57 +156,115 @@ public class SchemaJavaWriter {
 			}
 		}
 		
-		
-		addImport(dataType.getClass());
+		importManager.addImportFor(dataType);
 		String dataTypeClassName = dataType.getClass().getSimpleName();
-		return "new " + dataTypeClassName + new SchemaWriterDataTypeCategoryVisitor().getParameters(dataType);
+		return "new " + dataTypeClassName + new SchemaWriterDataTypeCategoryVisitor().writeParams(dataType);
 	}
 	
-	protected void prefixImportStatements() {
-		String bodyCode = java;
+	protected void addConstraintCode(String tableVarName, Constraint constraint) {
 		
-		java = "";
-		for (String classToImport : imports) {
-			write(0, "import " + classToImport + ";");
+		class SchemaWriterContraintVisitor implements ConstraintVisitor {
+
+			String tableVarName, code;
+			
+			String writeConstraint(String tableVarName, Constraint constraint) {
+				importManager.addImportFor(constraint);
+				this.tableVarName = tableVarName;
+				code = "";
+				constraint.accept(this);				
+				return code;
+			}
+			
+			public void visit(CheckConstraint constraint) {
+				// TODO: add code for check constraints ...
+			}
+
+			public void visit(ForeignKeyConstraint constraint) {
+				code =  writeMethodCall(TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD_NAME)  + "(";				
+				
+				code += writeConstraintName(constraint);								
+				code += writeGetColumnListCode(tableVarName, constraint.getColumns(), true);
+				
+				String refTableVarName = getTableVariableName(constraint.getReferenceTable());
+				code += refTableVarName + ", ";
+				code += writeGetColumnListCode(refTableVarName, constraint.getReferenceColumns(), true);
+				
+				code += ");";								
+			}
+
+			public void visit(NotNullConstraint constraint) {				
+				code =  writeMethodCall(TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD_NAME)  + "(";				
+				code += writeConstraintName(constraint);								
+				code += writeGetColumnCode(tableVarName, constraint.getColumn());
+				code += ");";				
+			}
+
+			public void visit(PrimaryKeyConstraint constraint) {
+				code =  writeMethodCall(TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD_NAME)  + "(";				
+				code += writeConstraintName(constraint);								
+				code += writeGetColumnListCode(tableVarName, constraint.getColumns());
+				code += ");";
+			} 
+
+			public void visit(UniqueConstraint constraint) {				
+				code =  writeMethodCall(TABLE_ADD_UNIQUE_CONSTRAINT_METHOD_NAME)  + "(";				
+				code += writeConstraintName(constraint);				
+				code += writeGetColumnListCode(tableVarName, constraint.getColumns());
+				code += ");";				
+			}	
+			
+			String writeConstraintName(Constraint constraint) {
+				return constraint.hasName() ? "\"" + constraint.getName() + "\", " : "";
+			}
+			
+			String writeMethodCall(String methodName) {
+				return tableVarName + "." + methodName;
+			}
 		}
-		writeNewLine();
 		
-		java += bodyCode; 
+		String code = new SchemaWriterContraintVisitor().writeConstraint(tableVarName, constraint);
+		jb.addln(code);
 	}
 	
-	protected void prefixPackageStatement(String packageName) {
-		String bodyCode = java;
+	protected String writeGetColumnCode(String tableVarName, Column column) {
+		return tableVarName + "." + TABLE_GET_COLUMN_METHOD_NAME + "(\"" + column.getName() + "\")";
+	}
+	
+	protected String writeGetColumnListCode(String tableVarName, List<Column> columns) {
+		return writeGetColumnListCode(tableVarName, columns, false);
+	}
+	
+	protected String writeGetColumnListCode(String tableVarName, List<Column> columns, boolean wrapInMethod) {
+		String code = "";
 		
-		java = "";
-		// write package name
-		if (packageName != null) {
-			write("package " + packageName + ";");
-			writeNewLine();
-		}	
+		boolean doWrapInMethod = wrapInMethod && columns.size() > 2; 
+		if (doWrapInMethod) {
+			code = Table.class.getSimpleName() + "." + TABLE_MAKE_COLUMN_LIST_METHOD_NAME + "(";
+		}
 		
-		java += bodyCode;
+		boolean first = true;
+		for (Column column : columns) {
+			if (first) {
+				first = false;
+			} else {
+				code += ", ";
+			}
+			code += writeGetColumnCode(tableVarName, column);
+		}
+		
+		if (doWrapInMethod) {
+			code += ")";
+		}
+		
+		return code;
 	}
 	
-	protected void addImport(Class<?> javaClass) {
-		imports.add(javaClass.getCanonicalName().toString());		
+	protected String getPackageStatement(String packageName) {
+		return (packageName == null) ? "" : "package " + packageName + ";\n\n";
 	}
 	
-	protected void setIndentLevel(int indentLevel) {
-		this.indentLevel = indentLevel;
-	}
-	
-	protected void write(int indentLevel, String line) {
-		setIndentLevel(indentLevel);
-		write(line);
-	}
-	
-	protected void write(String line) {
-		for (int i=0; i < indentLevel; i++) java += "\t";
-		java += line + "\n";			
-	}
-	
-	protected void writeNewLine() {
-		java += "\n";
+	protected String getTableVariableName(Table table) {
+		return getJavaVariableName(TABLE_VAR_NAME_PREFIX, table.getName());
 	}
 	
 	protected String getJavaVariableName(String prefix, String originalIdentifier) {
