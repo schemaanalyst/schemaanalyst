@@ -68,6 +68,6 @@ public class NistXTS749 extends Schema {
 		
 		test12649Table.addCheckConstraint(new RelationalCheckCondition(tnum2, ">", 0));
 		
-		test12649Table.addForeignKeyConstraint(staffTable, tchar, empnum);		
+		test12649Table.addForeignKeyConstraint(tchar, staffTable, empnum);		
 	}
 }

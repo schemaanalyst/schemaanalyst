@@ -76,7 +76,7 @@ public class FrenchTowns extends Schema {
 		nameColumn.setUnique();
 		nameColumn.setNotNull();
 
-		departmentsTable.addForeignKeyConstraint(regionsTable, region, code);
+		departmentsTable.addForeignKeyConstraint(region, regionsTable, code);
 
 		/*
 
@@ -99,7 +99,7 @@ public class FrenchTowns extends Schema {
 		Column nameTowns = townsTable.addColumn("name" , new VarCharDataType(100));
 		Column departmentTowns = townsTable.addColumn("department" , new VarCharDataType(4));
 
-		townsTable.addForeignKeyConstraint(departmentsTable, departmentTowns, codeDepartments);
+		townsTable.addForeignKeyConstraint(departmentTowns, departmentsTable, codeDepartments);
 
                 townsTable.addUniqueConstraint(codeTowns, departmentTowns);
                 

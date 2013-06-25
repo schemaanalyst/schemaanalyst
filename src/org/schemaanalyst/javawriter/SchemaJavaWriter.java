@@ -15,6 +15,8 @@ import org.schemaanalyst.sqlrepresentation.datatype.Signed;
 
 public class SchemaJavaWriter {
 
+	static final String ADD_COLUMN_TO_TABLE_METHOD_NAME = "addColumn";
+	
 	protected Set<String> imports;		
 	protected int indentLevel;
 	protected String java;
@@ -25,12 +27,15 @@ public class SchemaJavaWriter {
 		this.schema = schema;
 	}
 	
-	public String write() {
-
+	public String writeSchema() {
+		return writeSchema(null);
+	}
+	
+	public String writeSchema(String packageName) {
 		// initialise
 		java = "";		
-		imports = new TreeSet<String>();
-	
+		imports = new TreeSet<String>();		
+			
 		// get schema info
 		addImport(Schema.class);		
 		String schemaClassName = Schema.class.getSimpleName();
@@ -56,7 +61,9 @@ public class SchemaJavaWriter {
 		// end class
 		write(0, "}");		
 
-		addImportStatements();
+		prefixImportStatements();
+		prefixPackageStatement(packageName);
+		
 		return java;
 	}
 	
@@ -84,8 +91,8 @@ public class SchemaJavaWriter {
 		String columnName = column.getName();
 		
 		
-		String statement = tableVarName + ".addColumn(\"" + columnName + "\", " + 
-				           constructDataTypeCode(column.getType()) + ");";
+		String statement = tableVarName + "." + ADD_COLUMN_TO_TABLE_METHOD_NAME + 
+						   "(\"" + columnName + "\", " + constructDataTypeCode(column.getType()) + ");";
 		
 		write(statement);
 	}
@@ -133,7 +140,7 @@ public class SchemaJavaWriter {
 		return "new " + dataTypeClassName + new SchemaWriterDataTypeCategoryVisitor().getParameters(dataType);
 	}
 	
-	protected void addImportStatements() {
+	protected void prefixImportStatements() {
 		String bodyCode = java;
 		
 		java = "";
@@ -143,6 +150,19 @@ public class SchemaJavaWriter {
 		writeNewLine();
 		
 		java += bodyCode; 
+	}
+	
+	protected void prefixPackageStatement(String packageName) {
+		String bodyCode = java;
+		
+		java = "";
+		// write package name
+		if (packageName != null) {
+			write("package " + packageName + ";");
+			writeNewLine();
+		}	
+		
+		java += bodyCode;
 	}
 	
 	protected void addImport(Class<?> javaClass) {

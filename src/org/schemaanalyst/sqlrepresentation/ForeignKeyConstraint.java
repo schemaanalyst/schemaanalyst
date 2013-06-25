@@ -20,45 +20,30 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 	
 	/**
 	 * Constructor.
-	 * @param table The table containing the foreign key(s).
 	 * @param name A name for the constraint (can be null).
+	 * @param table The table containing the foreign key(s).
 	 * @param columns Columns over which the foreign key is defined
 	 * @param referenceTable The table containing the columns that the foreign keys reference.	
 	 * @param referenceColumns Columns in the reference table paired with each column in columns
 	 */
-	protected ForeignKeyConstraint(Table table, String name, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
-		super(table, name, columns);
+	protected ForeignKeyConstraint(String name, Table table, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+		super(name, table, columns);
 		setReferenceColumns(referenceTable, referenceColumns);
 	}
 	
 	/**
 	 * Constructor.
-	 * @param table The table containing the foreign key(s).
 	 * @param name A name for the constraint (can be null).
+	 * @param table The table containing the foreign key(s).
 	 * @param columns Columns over which the foreign key is defined
 	 * @param referenceTable The table containing the columns that the foreign keys reference.	
 	 * @param referenceColumns Columns in the reference table paired with each column in columns
 	 */	
-	protected ForeignKeyConstraint(Table table, String name, Column[] columns, Table referenceTable, Column[] referenceColumns) {
-		super(table, name, Arrays.asList(columns));
+	protected ForeignKeyConstraint(String name, Table table, Column[] columns, Table referenceTable, Column[] referenceColumns) {
+		super(name, table, Arrays.asList(columns));
 		setReferenceColumns(referenceTable, Arrays.asList(referenceColumns));
 	}	
-	
-	/**
-	 * Constructor.
-	 * @param table The table containing the foreign key(s).
-	 * @param name A name for the constraint (can be null).
-	 * @param column A single column over which the foreign key is defined
-	 * @param referenceTable The table containing the columns that the foreign keys reference.	
-	 * @param referenceColumn A column in the reference table paired with the column in the original table defining the foreign key relationship
-	 */		
-	protected ForeignKeyConstraint(Table table, String name, Column column, Table referenceTable, Column referenceColumn) {
-		super(table, name, column);
-		List<Column> referenceColumns = new ArrayList<Column>();
-		referenceColumns.add(referenceColumn);
-		setReferenceColumns(referenceTable, referenceColumns);
-	}
-	
+		
 	/**
 	 * Sets the reference table and reference columns involved in the foreign key.
 	 * @param referenceTable The referenced table.
@@ -82,76 +67,39 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 		}				
 	}
 	
-	/**
-	 * @deprecated
-	 * Constructor.
-	 * @param table The table containing the foreign key(s).
-	 * @param name A name for the constraint (can be null).
-	 * @param referenceTable The table containing the columns that the foreign keys reference.
-	 * @param columns The columns involved.  The first <tt>n</tt> columns at indexes <tt>0..n-1</tt> should be from <tt>table</tt> and 
-	 * the second <tt>n</tt> columns their pairs in <tt>referenceTable</tt> in order from indexes <tt>n..(n*2)-1.</tt> 
-	 */
-	protected ForeignKeyConstraint(Table table, String name, Table referenceTable, Column... columns) {
-		super(table, name, null);
-		this.columns = new ArrayList<Column>();
-		this.referenceTable = referenceTable;
-		this.referenceColumns = new ArrayList<Column>();			
-		
-		int midPoint = columns.length / 2;
-		for (int i=0; i < columns.length; i++) {
-			Column column = columns[i];
-			
-			if (i < midPoint) {				
-				if (!table.hasColumn(column)) {
-					throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");					
-				}
-				this.columns.add(column);
-			} else {
-				if (!referenceTable.hasColumn(column)) {
-					throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
-				}
-				this.referenceColumns.add(column);
-			}			
-		}
-		
-		if (this.columns.size() != this.referenceColumns.size()) {
-			throw new SchemaConstructionException("Mismatched number of foreign key columns and reference columns");
-		}
-	}
-	
-	/**
-	 * Adds a foreign key column / reference column pair to the foreign key constraint.
-	 * @param column The foreign key column to add from the instance's table.
-	 * @param referenceColumn The referencing column to add from the reference table.
-	 */
-	public void addColumnPair(Column column, Column referenceColumn) {
-		if (!table.hasColumn(column)) {
-			throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
-		}
-		if (!referenceTable.hasColumn(column)) {
-			throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");					
-		}
-		columns.add(column);
-		referenceColumns.add(referenceColumn);
-	}	
+    /**
+     * Adds a foreign key column / reference column pair to the foreign key constraint.
+     * @param column The foreign key column to add from the instance's table.
+     * @param referenceColumn The referencing column to add from the reference table.
+     */
+    public void addColumnPair(Column column, Column referenceColumn) {
+            if (!table.hasColumn(column)) {
+                    throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
+            }
+            if (!referenceTable.hasColumn(column)) {
+                    throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");                                  
+            }
+            columns.add(column);
+            referenceColumns.add(referenceColumn);
+    }       
 
-	/** 
-	 * Removes a column from the foreign key, and its pairing reference column in the reference table.  Only the 
-	 * column from the foreign key table needs to be specified, however.
-	 * @param column The column of the foreign key table. 
-	 */
-	public void removeColumnPair(Column column) {
-		int index = -1;
-		for (int i=0; i < columns.size(); i++) {
-			if (column.equals(columns.get(i))) {
-				index = i;
-			}
-		}
-		if (index != -1) {
-			columns.remove(index);
-			referenceColumns.remove(index);
-		}
-	}	
+    /** 
+     * Removes a column from the foreign key, and its pairing reference column in the reference table.  Only the 
+     * column from the foreign key table needs to be specified, however.
+     * @param column The column of the foreign key table. 
+     */
+    public void removeColumnPair(Column column) {
+            int index = -1;
+            for (int i=0; i < columns.size(); i++) {
+                    if (column.equals(columns.get(i))) {
+                            index = i;
+                    }
+            }
+            if (index != -1) {
+                    columns.remove(index);
+                    referenceColumns.remove(index);
+            }
+    } 	
 	
 	/**
 	 * Gets the reference columns of the foreign key.
@@ -192,11 +140,9 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 					  				  "as its schema does not have the reference table \"" + referenceTable + "\"");
 
 		}		
-		
-		// create the copy
-		ForeignKeyConstraint copy = new ForeignKeyConstraint(targetTable, name, targetReferenceTable);
 
 		// copy columns, but mapped to those of the new table
+		List<Column> targetTableColumns = new ArrayList<Column>();
 		for (Column column : this.columns) {
 			Column targetTableColumn = targetTable.getColumn(column.getName());
 			
@@ -205,24 +151,27 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 										  "as it does not have the column \"" + column + "\"");
 			}
 			
-			copy.columns.add(targetTableColumn);
+			targetTableColumns.add(targetTableColumn);
 		}		
 		
 		
 		// copy reference columns, but mapped to those of the new reference table
+		List<Column> targetReferenceTableColumns = new ArrayList<Column>();
 		for (Column column : this.referenceColumns) {
-			Column targetReferenceTableColumn = copy.referenceTable.getColumn(column.getName()); 
+			Column targetReferenceTableColumn = targetReferenceTable.getColumn(column.getName()); 
 			
 			if (targetReferenceTableColumn == null) {
 				throw new SchemaConstructionException("Cannot copy ForeignKey to table \"" + targetTable + "\" " + 
-										  "as its reference table \"" + copy.referenceTable + "\" " +
+										  "as its reference table \"" + targetReferenceTable + "\" " +
 										  "does not hve the column \"" + targetReferenceTableColumn + "\"");
 			}
 			
-			copy.referenceColumns.add(targetReferenceTableColumn);
+			targetReferenceTableColumns.add(targetReferenceTableColumn);
 		}
 		
-		targetTable.addForeignKeyConstraint(copy);	
+		ForeignKeyConstraint copy = new ForeignKeyConstraint(
+				name, targetTable, targetTableColumns, 
+				targetReferenceTable, targetReferenceTableColumns);
 		
 		return copy;
 	}

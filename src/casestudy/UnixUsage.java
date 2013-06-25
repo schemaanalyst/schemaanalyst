@@ -145,9 +145,9 @@ public class UnixUsage extends Schema {
 		Column ENROLL_DATE = USER_INFOTable.addColumn("ENROLL_DATE", new DateDataType());
 
 		USER_IDInfo.setPrimaryKey();
-		USER_INFOTable.addForeignKeyConstraint(DEPT_INFOTable, DEPT_IDInfo, DEPT_ID);
-		USER_INFOTable.addForeignKeyConstraint(OFFICE_INFOTable, OFFICE_IDInfo, OFFICE_ID);
-		USER_INFOTable.addForeignKeyConstraint(RACE_INFOTable, RACEInfo, RACE_CODE);
+		USER_INFOTable.addForeignKeyConstraint(DEPT_IDInfo, DEPT_INFOTable, DEPT_ID);
+		USER_INFOTable.addForeignKeyConstraint(OFFICE_IDInfo, OFFICE_INFOTable, OFFICE_ID);
+		USER_INFOTable.addForeignKeyConstraint(RACEInfo, RACE_INFOTable, RACE_CODE);
 
 		/*
 		  
@@ -174,8 +174,8 @@ public class UnixUsage extends Schema {
 		Column SCORE = TRANSCRIPTTable.addColumn("SCORE", new IntDataType());
 		
                 TRANSCRIPTTable.setPrimaryKeyConstraint(USER_ID, COURSE_IDTrans);
-		TRANSCRIPTTable.addForeignKeyConstraint(USER_INFOTable, USER_ID, USER_IDInfo);
-		TRANSCRIPTTable.addForeignKeyConstraint(COURSE_INFOTable, COURSE_IDTrans, COURSE_ID);
+		TRANSCRIPTTable.addForeignKeyConstraint(USER_ID, USER_INFOTable, USER_IDInfo);
+		TRANSCRIPTTable.addForeignKeyConstraint(COURSE_IDTrans, COURSE_INFOTable, COURSE_ID);
 	
 		/*
 		  
@@ -220,7 +220,7 @@ public class UnixUsage extends Schema {
 		Column COMMAND_SEQ = USAGE_HISTORYTable.addColumn("COMMAND_SEQ", new IntDataType());
 		Column COMMAND = USAGE_HISTORYTable.addColumn("COMMAND", new VarCharDataType(50));
 		
-		USAGE_HISTORYTable.addForeignKeyConstraint(USER_INFOTable, USER_IDUsage, USER_IDInfo);
+		USAGE_HISTORYTable.addForeignKeyConstraint(USER_IDUsage, USER_INFOTable, USER_IDInfo);
 	     
 	}
 }

@@ -134,16 +134,19 @@ public class NistDML182NotNulls extends Schema {
 		ordersCode14.setNotNull();
 		ordersCode15.setNotNull();
 		
-		orders.addForeignKeyConstraint(idCodes,
-							 ordersCode1, ordersCode2, ordersCode3, 
-						     ordersCode4, ordersCode5, ordersCode6, 
-						     ordersCode7, ordersCode8, ordersCode9, 
-						     ordersCode10, ordersCode11, ordersCode12, 
-						     ordersCode13, ordersCode14, ordersCode15,
-						     idCodesCode1, idCodesCode2, idCodesCode3, 
-							 idCodesCode4, idCodesCode5, idCodesCode6, 
-							 idCodesCode7, idCodesCode8, idCodesCode9, 
-							 idCodesCode10, idCodesCode11, idCodesCode12, 
-							 idCodesCode13, idCodesCode14, idCodesCode15);
+		orders.addForeignKeyConstraint(
+				Table.makeColumnList(
+						ordersCode1, ordersCode2, ordersCode3, 
+					    ordersCode4, ordersCode5, ordersCode6, 
+					    ordersCode7, ordersCode8, ordersCode9, 
+					    ordersCode10, ordersCode11, ordersCode12, 
+					    ordersCode13, ordersCode14, ordersCode15),
+				idCodes,
+				Table.makeColumnList(
+						idCodesCode1, idCodesCode2, idCodesCode3, 
+						idCodesCode4, idCodesCode5, idCodesCode6, 
+						idCodesCode7, idCodesCode8, idCodesCode9, 
+						idCodesCode10, idCodesCode11, idCodesCode12, 
+						idCodesCode13, idCodesCode14, idCodesCode15));
 	}	
 }

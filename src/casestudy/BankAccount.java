@@ -70,6 +70,6 @@ public class BankAccount extends Schema {
 		
 		Column accountCardNumber = account.addColumn("card_number", new IntDataType());
 		accountCardNumber.setNotNull();
-		//accountCardNumber.setForeignKey(userInfo, userInfoCardNumber);
+		accountCardNumber.setForeignKey(userInfo, userInfoCardNumber);
 	}
 }

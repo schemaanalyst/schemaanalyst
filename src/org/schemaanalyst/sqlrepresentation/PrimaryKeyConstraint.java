@@ -15,23 +15,12 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 
 	/**
 	 * Constructor.
-	 * @param table The table of this primary key.
 	 * @param name A name for the primary key constraint (optional - can be null).
-	 * @param firstColumn The first (or only column) involved in the primary key.
-	 * @param remainingColumns Any remaining columns involved in the primary key.
-	 */
-	protected PrimaryKeyConstraint(Table table, String name, Column firstColumn, Column... remainingColumns) {
-		super(table, name, firstColumn, remainingColumns);
-	}	
-	
-	/**
-	 * Constructor.
 	 * @param table The table of this primary key.
-	 * @param name A name for the primary key constraint (optional - can be null).
 	 * @param columns The columns involved in the primary key.
 	 */
-	protected PrimaryKeyConstraint(Table table, String name, List<Column> columns) {
-		super(table, name, columns);
+	protected PrimaryKeyConstraint(String name, Table table, List<Column> columns) {
+		super(name, table, columns);
 	}	
 		
 	/**
@@ -67,7 +56,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 	 * @return The copy of the PrimaryKey instance created as a result of calling the method.
 	 */
 	public PrimaryKeyConstraint copyTo(Table targetTable) {
-		List<Column> copyColumns = new ArrayList<Column>();
+		List<Column> targetTableColumns = new ArrayList<Column>();
 		
 		// copy columns, but mapped to those of the new table
 		for (Column column : this.columns) {
@@ -78,10 +67,10 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 						  				  "\" as it does not have the column \"" + column + "\"");				
 			}
 			
-			copyColumns.add(targetTableColumn);
+			targetTableColumns.add(targetTableColumn);
 		}
 		
-		PrimaryKeyConstraint copy = new PrimaryKeyConstraint(targetTable, this.name, copyColumns);
+		PrimaryKeyConstraint copy = new PrimaryKeyConstraint(this.name, targetTable, targetTableColumns);
 		targetTable.setPrimaryKeyConstraint(copy);
 		return copy;
 	}

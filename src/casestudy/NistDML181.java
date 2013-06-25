@@ -56,6 +56,6 @@ public class NistDML181 extends Schema {
 		Column title = ordersTable .addColumn("TITLE" , new VarCharDataType(80));
 		Column cost = ordersTable .addColumn("COST" , new NumericDataType(5,2));
 
-		ordersTable.addForeignKeyConstraint(longNamedPeopleTable, firstNameOrders, lastNameOrders, firstName, lastName);
+		ordersTable.addForeignKeyConstraint(firstNameOrders, lastNameOrders, longNamedPeopleTable, firstName, lastName);
 	}
 }

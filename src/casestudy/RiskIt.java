@@ -96,7 +96,7 @@ public class RiskIt extends Schema {
 		
 		Column PARENTS = youthTable.addColumn("PARENTS", new CharDataType(50));
 
-		youthTable.addForeignKeyConstraint(userrecordTable, SSNYouth, SSN);
+		youthTable.addForeignKeyConstraint(SSNYouth, userrecordTable, SSN);
 
 		/*
 		  
@@ -166,8 +166,8 @@ public class RiskIt extends Schema {
 		
 		wageTable.setPrimaryKeyConstraint(INDUSTRYCODEWage, OCCUPATIONCODEWage);
 
-		wageTable.addForeignKeyConstraint(industryTable, INDUSTRYCODEWage, INDUSTRYCODE);
-		wageTable.addForeignKeyConstraint(occupationTable, OCCUPATIONCODEWage, OCCUPATIONCODE);
+		wageTable.addForeignKeyConstraint(INDUSTRYCODEWage, industryTable, INDUSTRYCODE);
+		wageTable.addForeignKeyConstraint(OCCUPATIONCODEWage, occupationTable, OCCUPATIONCODE);
 
 		/*
 
@@ -213,7 +213,7 @@ public class RiskIt extends Schema {
 		Column MIGRATIONMOVE = migrationTable.addColumn("MIGRATIONMOVE", new CharDataType(50));
 		Column MIGRATIONFROMSUNBELT = migrationTable.addColumn("MIGRATIONFROMSUNBELT", new CharDataType(50));
 
-		migrationTable.addForeignKeyConstraint(userrecordTable, SSNMig, SSN);
+		migrationTable.addForeignKeyConstraint(SSNMig, userrecordTable, SSN);
 
 		/*
 		  
@@ -237,7 +237,7 @@ public class RiskIt extends Schema {
 		Column EDUCATION = educationTable.addColumn("EDUCATION", new CharDataType(50));
 		Column EDUENROLL = educationTable.addColumn("EDUENROLL", new CharDataType(50));
 
-		educationTable.addForeignKeyConstraint(userrecordTable, SSNEduc, SSN);
+		educationTable.addForeignKeyConstraint(SSNEduc, userrecordTable, SSN);
 
 		/*
 
@@ -261,7 +261,7 @@ public class RiskIt extends Schema {
 		Column UNEMPLOYMENTREASON = employmentstatTable.addColumn("UNEMPLOYMENTREASON", new CharDataType(50));
                 Column EMPLOYMENTSTAT = employmentstatTable.addColumn("EMPLOYMENTSTAT", new CharDataType(50));
 		
-		employmentstatTable.addForeignKeyConstraint(userrecordTable, SSNEmpStat, SSN);
+		employmentstatTable.addForeignKeyConstraint(SSNEmpStat, userrecordTable, SSN);
 
 		/*
 
@@ -307,7 +307,7 @@ public class RiskIt extends Schema {
 		Column CAPITALLOSSES = investmentTable.addColumn("CAPITALLOSSES", new IntDataType());
 		Column STOCKDIVIDENDS = investmentTable.addColumn("STOCKDIVIDENDS", new IntDataType());
 
-		investmentTable.addForeignKeyConstraint(userrecordTable, SSNInvest, SSN);
+		investmentTable.addForeignKeyConstraint(SSNInvest, userrecordTable, SSN);
 
 		/*
 
@@ -345,9 +345,9 @@ public class RiskIt extends Schema {
 		Column SELFEMPLOYED = jobTable.addColumn("SELFEMPLOYED", new SmallIntDataType());
 		Column WORKWEEKS = jobTable.addColumn("WORKWEEKS", new IntDataType());
 
-		jobTable.addForeignKeyConstraint(occupationTable, OCCUPATIONCODEJob, OCCUPATIONCODE);
-		jobTable.addForeignKeyConstraint(userrecordTable, SSNJob, SSN);
-		jobTable.addForeignKeyConstraint(industryTable, INDUSTRYCODEJob, INDUSTRYCODE);
+		jobTable.addForeignKeyConstraint(OCCUPATIONCODEJob, occupationTable, OCCUPATIONCODE);
+		jobTable.addForeignKeyConstraint(SSNJob, userrecordTable, SSN);
+		jobTable.addForeignKeyConstraint(INDUSTRYCODEJob, industryTable, INDUSTRYCODE);
 		
 
     }

@@ -52,6 +52,6 @@ public class NistDML183Ints extends Schema {
 		Column y = sTable.addColumn("Y" , new IntDataType());
 		Column z = sTable.addColumn("Z" , new IntDataType());
 
-                sTable.addForeignKeyConstraint(tTable, x, y, a, b);
+                sTable.addForeignKeyConstraint(x, y, tTable, a, b);
 	}
 }

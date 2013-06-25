@@ -61,6 +61,6 @@ public class NistDML183NotNulls extends Schema {
 		y.setNotNull();
 		z.setNotNull();
 
-		sTable.addForeignKeyConstraint(tTable, x, y, a, b);
+		sTable.addForeignKeyConstraint(x, y, tTable, a, b);
 	}
 }

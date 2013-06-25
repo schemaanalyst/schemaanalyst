@@ -568,8 +568,8 @@ public class PagilaPrime extends Schema {
         
         manager.setPrimaryKeyConstraint(manager_staff_id, manager_store_id);
         
-        manager.addForeignKeyConstraint(staff, manager_staff_id, staff_staff_id);
-        manager.addForeignKeyConstraint(store, manager_store_id, store_store_id);
+        manager.addForeignKeyConstraint(manager_staff_id, staff, staff_staff_id);
+        manager.addForeignKeyConstraint(manager_store_id, store, store_store_id);
         
         /*
             Foreign key statements:
@@ -693,83 +693,83 @@ public class PagilaPrime extends Schema {
 
         */
         
-        address.addForeignKeyConstraint(city, address_city_id, city_city_id);
+        address.addForeignKeyConstraint(address_city_id, city, city_city_id);
               
-        city.addForeignKeyConstraint(country, city_country_id, country_country_id);
+        city.addForeignKeyConstraint(city_country_id, country, country_country_id);
 
-        customer.addForeignKeyConstraint(address, customer_address_id, address_address_id);
+        customer.addForeignKeyConstraint(customer_address_id, address, address_address_id);
 
-        customer.addForeignKeyConstraint(store, customer_store_id, store_store_id);
+        customer.addForeignKeyConstraint(customer_store_id, store, store_store_id);
 
-        film_actor.addForeignKeyConstraint(actor, film_actor_actor_id, actor_actor_id);
+        film_actor.addForeignKeyConstraint(film_actor_actor_id, actor, actor_actor_id);
 
-        film_actor.addForeignKeyConstraint(film, film_actor_film_id, film_film_id);
+        film_actor.addForeignKeyConstraint(film_actor_film_id, film, film_film_id);
 
-        film_category.addForeignKeyConstraint(category, film_category_category_id, category_category_id);
+        film_category.addForeignKeyConstraint(film_category_category_id, category, category_category_id);
 
-        film_category.addForeignKeyConstraint(film, film_category_film_id, film_film_id);
+        film_category.addForeignKeyConstraint(film_category_film_id, film, film_film_id);
 
-        film.addForeignKeyConstraint(language, film_language_id, language_language_id);
+        film.addForeignKeyConstraint(film_language_id, language, language_language_id);
 
-        film.addForeignKeyConstraint(language, film_original_language_id, language_language_id);
+        film.addForeignKeyConstraint(film_original_language_id, language, language_language_id);
 
-        inventory.addForeignKeyConstraint(film, inventory_film_id, film_film_id);
+        inventory.addForeignKeyConstraint(inventory_film_id, film, film_film_id);
 
-        inventory.addForeignKeyConstraint(store, inventory_store_id, store_store_id);
+        inventory.addForeignKeyConstraint(inventory_store_id, store, store_store_id);
 
-        payment.addForeignKeyConstraint(customer, payment.getColumn("customer_id"), customer_customer_id);
+        payment.addForeignKeyConstraint(payment.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_01.addForeignKeyConstraint(customer, payment_p2007_01.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_01.addForeignKeyConstraint(payment_p2007_01.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_01.addForeignKeyConstraint(rental, payment_p2007_01.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_01.addForeignKeyConstraint(payment_p2007_01.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_01.addForeignKeyConstraint(staff, payment_p2007_01.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_01.addForeignKeyConstraint(payment_p2007_01.getColumn("staff_id"), staff, staff_staff_id);
 
-        payment_p2007_02.addForeignKeyConstraint(customer, payment_p2007_02.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_02.addForeignKeyConstraint(payment_p2007_02.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_02.addForeignKeyConstraint(rental, payment_p2007_02.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_02.addForeignKeyConstraint(payment_p2007_02.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_02.addForeignKeyConstraint(staff, payment_p2007_02.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_02.addForeignKeyConstraint(payment_p2007_02.getColumn("staff_id"), staff, staff_staff_id);
 
-        payment_p2007_03.addForeignKeyConstraint(customer, payment_p2007_03.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_03.addForeignKeyConstraint(payment_p2007_03.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_03.addForeignKeyConstraint(rental, payment_p2007_03.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_03.addForeignKeyConstraint(payment_p2007_03.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_03.addForeignKeyConstraint(staff, payment_p2007_03.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_03.addForeignKeyConstraint(payment_p2007_03.getColumn("staff_id"), staff, staff_staff_id);
 
-        payment_p2007_04.addForeignKeyConstraint(customer, payment_p2007_04.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_04.addForeignKeyConstraint(payment_p2007_04.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_04.addForeignKeyConstraint(rental, payment_p2007_04.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_04.addForeignKeyConstraint(payment_p2007_04.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_04.addForeignKeyConstraint(staff, payment_p2007_04.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_04.addForeignKeyConstraint(payment_p2007_04.getColumn("staff_id"), staff, staff_staff_id);
 
-        payment_p2007_05.addForeignKeyConstraint(customer, payment_p2007_05.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_05.addForeignKeyConstraint(payment_p2007_05.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_05.addForeignKeyConstraint(rental, payment_p2007_05.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_05.addForeignKeyConstraint(payment_p2007_05.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_05.addForeignKeyConstraint(staff, payment_p2007_05.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_05.addForeignKeyConstraint(payment_p2007_05.getColumn("staff_id"), staff, staff_staff_id);
 
-        payment_p2007_06.addForeignKeyConstraint(customer, payment_p2007_06.getColumn("customer_id"), customer_customer_id);
+        payment_p2007_06.addForeignKeyConstraint(payment_p2007_06.getColumn("customer_id"), customer, customer_customer_id);
 
-        payment_p2007_06.addForeignKeyConstraint(rental, payment_p2007_06.getColumn("rental_id"), rental_rental_id);
+        payment_p2007_06.addForeignKeyConstraint(payment_p2007_06.getColumn("rental_id"), rental, rental_rental_id);
 
-        payment_p2007_06.addForeignKeyConstraint(staff, payment_p2007_06.getColumn("staff_id"), staff_staff_id);
+        payment_p2007_06.addForeignKeyConstraint(payment_p2007_06.getColumn("staff_id"), staff, staff_staff_id);
         
-        rental.addForeignKeyConstraint(customer, rental_customer_id, customer_customer_id);
+        rental.addForeignKeyConstraint(rental_customer_id, customer, customer_customer_id);
 
-        rental.addForeignKeyConstraint(inventory, rental_inventory_id, inventory_inventory_id);
+        rental.addForeignKeyConstraint(rental_inventory_id, inventory, inventory_inventory_id);
 
-        rental.addForeignKeyConstraint(staff, rental_staff_id, staff_staff_id);
+        rental.addForeignKeyConstraint(rental_staff_id, staff, staff_staff_id);
 
-        staff.addForeignKeyConstraint(address, staff_address_id, address_address_id);
+        staff.addForeignKeyConstraint(staff_address_id, address, address_address_id);
 
-        staff.addForeignKeyConstraint(store, staff_store_id, store_store_id);
+        staff.addForeignKeyConstraint(staff_store_id, store, store_store_id);
 
-        store.addForeignKeyConstraint(address, store_address_id, address_address_id);
+        store.addForeignKeyConstraint(store_address_id, address, address_address_id);
         
-        payment.addForeignKeyConstraint(rental, payment.getColumn("rental_id"), rental_rental_id);
+        payment.addForeignKeyConstraint(payment.getColumn("rental_id"), rental, rental_rental_id);
         
-        payment.addForeignKeyConstraint(staff, payment.getColumn("staff_id"), staff_staff_id);
+        payment.addForeignKeyConstraint(payment.getColumn("staff_id"), staff, staff_staff_id);
         
         
     }

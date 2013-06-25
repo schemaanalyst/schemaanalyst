@@ -68,7 +68,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
 	 * @return The table created
 	 */
 	public Table createTable(String name) {
-		Table table = new Table(this, name);
+		Table table = new Table(name, this);
 		if (tables.contains(table)) {
 			throw new SchemaConstructionException("Table "+table+" already exists in this schema");
 		}

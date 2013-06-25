@@ -9,7 +9,7 @@ public class Runner {
 	public static void main(String[] args) {
 		
 		SchemaJavaWriter jw = new SchemaJavaWriter(new BankAccount());
-		System.out.println(jw.write());
+		System.out.println(jw.writeSchema("casestudy"));
 		
 		
 		

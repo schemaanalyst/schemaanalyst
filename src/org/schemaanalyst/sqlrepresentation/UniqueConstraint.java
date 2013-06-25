@@ -6,26 +6,15 @@ import java.util.List;
 public class UniqueConstraint extends MultiColumnConstraint {
 
 	private static final long serialVersionUID = -3188129142878269469L;
-	
+		
 	/**
 	 * Constructor.
-	 * @param table The table of this unique constraint.
 	 * @param name A name for the unique constraint (optional - can be null).
-	 * @param firstColumn The first (or only column) involved in the unique constraint.
-	 * @param remainingColumns Any remaining columns involved in the unique constraint.
-	 */
-	protected UniqueConstraint(Table table, String name, Column firstColumn, Column... remainingColumns) {
-		super(table, name, firstColumn, remainingColumns);
-	}		
-	
-	/**
-	 * Constructor.
 	 * @param table The table of this unique constraint.
-	 * @param name A name for the unique constraint (optional - can be null).
 	 * @param columns The columns involved in the unique constraint.
 	 */	
-	protected UniqueConstraint(Table table, String name, List<Column> columns) {
-		super(table, name, columns);
+	protected UniqueConstraint(String name, Table table, List<Column> columns) {
+		super(name, table, columns);
 	}
 	
 	/**
@@ -61,7 +50,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
 	 * @return The copy of the Unique instance created as a result of calling the method.
 	 */	
 	public UniqueConstraint copyTo(Table targetTable) {
-		List<Column> copyColumns = new ArrayList<Column>();
+		List<Column> targetTableColumns = new ArrayList<Column>();
 
 		// copy columns, but mapped to those of the new table
 		for (Column column : this.columns) {
@@ -72,10 +61,10 @@ public class UniqueConstraint extends MultiColumnConstraint {
 						"Cannot copy Unique constraint to table " + targetTable + 
 						" as it does not hve the column " + column);				
 			}			
-			copyColumns.add(tableColumn);
+			targetTableColumns.add(tableColumn);
 		}		
 		
-		UniqueConstraint copy = new UniqueConstraint(targetTable, this.name, copyColumns);
+		UniqueConstraint copy = new UniqueConstraint(this.name, targetTable, targetTableColumns);
 		targetTable.addUniqueConstraint(copy);
 		return copy;
 	}

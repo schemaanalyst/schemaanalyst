@@ -97,20 +97,20 @@ public class SQLWriter {
 			
 			// write column constraints
 			PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
-			if (primaryKey != null && !primaryKey.isMultiColumn() && primaryKey.involvesColumn(column)) {
+			if (primaryKey != null && !primaryKey.hasMultipleColumns() && primaryKey.involvesColumn(column)) {
 				sql.append("\t"); 
 				sql.append(constraintSQLWriter.writeConstraint(primaryKey));
 			}
 			
 			for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
-				if (!foreignKey.isMultiColumn() && foreignKey.involvesColumn(column)) {
+				if (!foreignKey.hasMultipleColumns() && foreignKey.involvesColumn(column)) {
 					sql.append("\t"); 
 					sql.append(constraintSQLWriter.writeConstraint(foreignKey));
 				}	
 			}			
 			
 			for (UniqueConstraint unique : table.getUniqueConstraints()) {
-				if (!unique.isMultiColumn() && unique.involvesColumn(column)) {
+				if (!unique.hasMultipleColumns() && unique.involvesColumn(column)) {
 					sql.append("\t"); 
 					sql.append(constraintSQLWriter.writeConstraint(unique));
 				}	
@@ -126,14 +126,14 @@ public class SQLWriter {
 		
 		// write primary key
 		PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
-		if (primaryKey != null && primaryKey.isMultiColumn()) {
+		if (primaryKey != null && primaryKey.hasMultipleColumns()) {
 			sql.append(",\n\t"); 
 			sql.append(constraintSQLWriter.writeConstraint(primaryKey));
 		}
 		
 		// write foreign keys
 		for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
-			if (foreignKey.isMultiColumn()) {
+			if (foreignKey.hasMultipleColumns()) {
 				sql.append(",\n\t"); 
 				sql.append(constraintSQLWriter.writeConstraint(foreignKey));
 			}
@@ -141,7 +141,7 @@ public class SQLWriter {
 		
 		// write uniques
 		for (UniqueConstraint unique : table.getUniqueConstraints()) {
-			if (unique.isMultiColumn()) {
+			if (unique.hasMultipleColumns()) {
 				sql.append(",\n\t"); 
 				sql.append(constraintSQLWriter.writeConstraint(unique));
 			}

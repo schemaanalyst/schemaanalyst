@@ -1,7 +1,6 @@
 package org.schemaanalyst.sqlrepresentation;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,27 +18,12 @@ public abstract class MultiColumnConstraint extends Constraint {
 	
 	/**
 	 * Constructor.
-	 * @param table The table on which the integrity constraint holds.
 	 * @param name A name for the constraint (optional - can be null).
-	 * @param firstColumn The first (or only column) involved in the constraint.
-	 * @param remainingColumns Any remaining columns involved in the integrity constraint.
-	 */
-	protected MultiColumnConstraint(Table table, String name, Column firstColumn, Column... remainingColumns) {	
-		super(table, name);
-		List<Column> allColumns = new ArrayList<Column>();
-		allColumns.add(firstColumn);
-		allColumns.addAll(Arrays.asList(remainingColumns));
-		setColumns(allColumns);
-	}
-	
-	/**
-	 * Constructor.
 	 * @param table The table on which the integrity constraint holds.
-	 * @param name A name for the constraint (optional - can be null).
 	 * @param columns The columns involved in the integrity constraint.
 	 */
-	protected MultiColumnConstraint(Table table, String name, List<Column> columns) {
-		super(table, name);
+	protected MultiColumnConstraint(String name, Table table, List<Column> columns) {
+		super(name, table);
 		setColumns(columns);		
 	}		
 
@@ -92,7 +76,7 @@ public abstract class MultiColumnConstraint extends Constraint {
 	 * Returns true if more than one column involved in this constraint.
 	 * @return True if more than one column involved in this constraint, else false.
 	 */
-	public boolean isMultiColumn() {
+	public boolean hasMultipleColumns() {
 		return columns.size() > 1;
 	}
 }

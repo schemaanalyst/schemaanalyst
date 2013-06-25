@@ -61,6 +61,6 @@ public class NistDML181NotNulls extends Schema {
 
 		firstNameOrders.setNotNull();
 		lastNameOrders.setNotNull();
-		ordersTable.addForeignKeyConstraint(longNamedPeopleTable, firstNameOrders, lastNameOrders, firstName, lastName);
+		ordersTable.addForeignKeyConstraint(firstNameOrders, lastNameOrders, longNamedPeopleTable, firstName, lastName);
 	}
 }

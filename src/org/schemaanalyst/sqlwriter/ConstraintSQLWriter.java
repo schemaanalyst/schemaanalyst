@@ -72,7 +72,7 @@ public class ConstraintSQLWriter {
 	
 	public String writeForeignKey(ForeignKeyConstraint foreignKey) {
 		String sql = "";
-		if (foreignKey.isMultiColumn()) {
+		if (foreignKey.hasMultipleColumns()) {
 			sql += "FOREIGN KEY (" + writeColumnList(foreignKey.getColumns()) + ")";
 		}
 		sql += " REFERENCES " + foreignKey.getReferenceTable().getName() + 
@@ -86,7 +86,7 @@ public class ConstraintSQLWriter {
 	
 	public String writePrimaryKey(PrimaryKeyConstraint primaryKey) {
 		String sql = "PRIMARY KEY";
-		if (primaryKey.isMultiColumn()) {
+		if (primaryKey.hasMultipleColumns()) {
 			sql += " (" + writeColumnList(primaryKey.getColumns()) + ")";
 		}
 		return sql;					
@@ -94,7 +94,7 @@ public class ConstraintSQLWriter {
 	
 	public String writeUnique(UniqueConstraint unique) {
 		String sql = "UNIQUE";
-		if (unique.isMultiColumn()) {
+		if (unique.hasMultipleColumns()) {
 			sql += " (" + writeColumnList(unique.getColumns()) + ")";
 		}
 		return sql;

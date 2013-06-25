@@ -18,23 +18,23 @@ public class CheckConstraint extends Constraint {
 	
 	/**
 	 * Constructor.
-	 * @param table The table on which the check constraint should hold.
 	 * @param name An identifying name for the constraint (can be null).
+	 * @param table The table on which the check constraint should hold.
 	 * @param checkCondition The condition associated with the check constraint.
 	 */
-	protected CheckConstraint(Table table, String name, CheckCondition checkCondition) {
-		super(table, name);
+	protected CheckConstraint(String name, Table table, CheckCondition checkCondition) {
+		super(name, table);
 		this.checkCondition = checkCondition;
 	}
 	
 	/**
 	 * Constructor.
-	 * @param table The table on which the check constraint should hold.
 	 * @param name An identifying name for the constraint (can be null).
+	 * @param table The table on which the check constraint should hold.
 	 * @param checkCondition The condition associated with the check constraint.
 	 */
-	protected CheckConstraint(Table table, String name, Expression expression) {
-		super(table, name);
+	protected CheckConstraint(String name, Table table, Expression expression) {
+		super(name, table);
 		this.expression = expression;
 	}	
 	
@@ -72,7 +72,7 @@ public class CheckConstraint extends Constraint {
 	 */
 	public CheckConstraint copyTo(Table targetTable) {
 		// TODO -- remap checkCondition to the new table ...		
-		CheckConstraint copy = new CheckConstraint(targetTable, this.name, this.checkCondition);
+		CheckConstraint copy = new CheckConstraint(this.name, targetTable, this.checkCondition);
 		targetTable.addCheckConstraint(copy);
 		return copy;
 	}

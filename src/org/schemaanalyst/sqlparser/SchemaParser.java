@@ -214,24 +214,10 @@ public class SchemaParser {
 		String referenceTableName = stripQuotes(referenceTableNameObject);
 		Table referenceTable = schema.getTable(referenceTableName);
 
-		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);
-		
-		List<String> referenceColumnNames = new ArrayList<>();		
-		if (referenceColumnNameObjectList == null) {
-			for (Column column : columns) {
-				referenceColumnNames.add(column.getName());
-			}			
-		} else {
-			for (int i=0; i < referenceColumnNameObjectList.size(); i++) {
-				referenceColumnNames.add(stripQuotes(referenceColumnNameObjectList.getObjectName(i)));
-			}
-		}
-		
-		for (String columnName : referenceColumnNames) {
-			columns.add(referenceTable.getColumn(columnName));
-		}
-		
-		currentTable.addForeignKeyConstraint(constraintName, referenceTable, columns.toArray(new Column[0]));				
+		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);		
+		List<Column> referenceColumns = getColumns(referenceTable, null, referenceColumnNameObjectList); 
+								
+		currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);				
 	}
 	
 	protected void addNotNullConstraint(

@@ -916,7 +916,7 @@ public class ITrust extends Schema {
                 
                 Column ovReactionOverrideOverrideComment = ovReactionOverride.addColumn("OverrideComment", new VarCharDataType(255));
                 
-                ovReactionOverride.addForeignKeyConstraint(ovMedication, ovReactionOverrideOVMedicationID, ovMedicationID);
+                ovReactionOverride.addForeignKeyConstraint(ovReactionOverrideOVMedicationID, ovMedication, ovMedicationID);
                 
                 /*     
                     CREATE TABLE OVDiagnosis (

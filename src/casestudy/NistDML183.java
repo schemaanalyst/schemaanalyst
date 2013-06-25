@@ -50,6 +50,6 @@ public class NistDML183 extends Schema {
 		Column y = sTable.addColumn("Y" , new CharDataType(1));
 		Column z = sTable.addColumn("Z" , new CharDataType(1));
 
-		sTable.addForeignKeyConstraint(tTable, x, y, a, b);
+		sTable.addForeignKeyConstraint(x, y, tTable, a, b);
 	}
 }

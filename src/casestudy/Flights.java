@@ -82,6 +82,6 @@ public class Flights extends Schema {
 		
 		flightAvailable.setPrimaryKeyConstraint("FLTAVAIL_PK", flightAvailableFlightId, flightAvailableSegmentNumber);
 		
-		flightAvailable.addForeignKeyConstraint("FLTS_FK", flights, flightAvailableFlightId, flightAvailableSegmentNumber, flightsFlightId, flightsSegmentNumber);
+		flightAvailable.addForeignKeyConstraint("FLTS_FK", flightAvailableFlightId, flightAvailableSegmentNumber, flights, flightsFlightId, flightsSegmentNumber);
 	}
 }

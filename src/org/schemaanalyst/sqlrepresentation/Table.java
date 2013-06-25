@@ -2,6 +2,7 @@ package org.schemaanalyst.sqlrepresentation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,10 +33,10 @@ public class Table implements Serializable {
 	
 	/**
 	 * Constructs a Table.
-	 * @param schema The schema to which this table belongs.
 	 * @param name The name of the schema.
+	 * @param schema The schema to which this table belongs.
 	 */
-	protected Table(Schema schema, String name) {
+	protected Table(String name, Schema schema) {
 		this.schema = schema;
 		this.name = name;
 
@@ -78,7 +79,7 @@ public class Table implements Serializable {
 	 * @return The column just created.
 	 */
 	public Column addColumn(String name, DataType type) {
-		Column column = new Column(this, name, type);
+		Column column = new Column(name, this, type);
 		if (columns.contains(column)) {
 			throw new SchemaConstructionException("Table \""+this.name+"\" already has a column named \""+name+"\"");
 		}
@@ -118,13 +119,26 @@ public class Table implements Serializable {
 	}
 	
 	/**
+	 * Helper method for constructing column lists
+	 * @param firstColumn A column to add to the list.
+	 * @param remainingColumns An array of columns to add to the list.
+	 * @return A list of columns containing first column and remaining columns 
+	 */	
+	public static List<Column> makeColumnList(Column firstColumn, Column... remainingColumns) {
+        List<Column> allColumns = new ArrayList<Column>();
+        allColumns.add(firstColumn);
+        allColumns.addAll(Arrays.asList(remainingColumns));
+        return allColumns;		
+	}
+	
+	/**
 	 * Adds a check constraint to the table.
 	 * @param name A name for the check constraint (optional -- a version of this method exists without the requirement to specify a name).
 	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
 	public CheckConstraint addCheckConstraint(String name, Expression expression) {
-		return addCheckConstraint(new CheckConstraint(this, name, expression));
+		return addCheckConstraint(new CheckConstraint(name, this, expression));
 	}	
 	
 	/**
@@ -143,7 +157,7 @@ public class Table implements Serializable {
 	 * @return A reference to the Check object created as a result of the add
 	 */
 	public CheckConstraint addCheckConstraint(String name, CheckCondition checkCondition) {
-		return addCheckConstraint(new CheckConstraint(this, name, checkCondition));
+		return addCheckConstraint(new CheckConstraint(name, this, checkCondition));
 	}	
 	
 	/**
@@ -183,56 +197,85 @@ public class Table implements Serializable {
 	public List<CheckConstraint> getCheckConstraints() {
 		return Collections.unmodifiableList(checkConstraints);
 	}	
+	
+	/**
+	 * Adds a foreign key to the table.
+	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
+	 * @param columns The table column involved in the foreign key. 
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param referenceColumn The column in the reference table involved in the foreign key. 
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */		
+	public ForeignKeyConstraint addForeignKeyConstraint(String name, Column column, Table referenceTable, Column referenceColumn) {
+		return addForeignKeyConstraint(name, makeColumnList(column), referenceTable, makeColumnList(referenceColumn));
+	}		
+	
+	/**
+	 * Adds a foreign key to the table.
+	 * @param columns The table column involved in the foreign key. 
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param referenceColumn The column in the reference table involved in the foreign key. 
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */	
+	public ForeignKeyConstraint addForeignKeyConstraint(Column column, Table referenceTable, Column referenceColumn) {
+		return addForeignKeyConstraint(null, column, referenceTable, referenceColumn);
+	}			
 
+	/**
+	 * Adds a foreign key to the table.
+	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).	 * 
+	 * @param column1 The first table column involved in the foreign key. 
+	 * @param column2 The second table column involved in the foreign key.
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param referenceColumn1 The first column in the reference table involved in the foreign key (paired with column1 in the original table) 
+	 * @param referenceColumn2 The second column in the reference table involved in the foreign key (paired with column2 in the original table)
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */		
+	public ForeignKeyConstraint addForeignKeyConstraint(String name, 
+														Column column1, Column column2, 
+														Table referenceTable, Column referenceColumn1, Column referenceColumn2) {
+		return addForeignKeyConstraint(name, 
+							           makeColumnList(column1, column2), 
+									   referenceTable, makeColumnList(referenceColumn1, referenceColumn2));
+	}	
+
+	/**
+	 * Adds a foreign key to the table. 
+	 * @param column1 The first table column involved in the foreign key. 
+	 * @param column2 The second table column involved in the foreign key.
+	 * @param referenceTable The table which the foreign key column references.
+	 * @param referenceColumn1 The first column in the reference table involved in the foreign key (paired with column1 in the original table) 
+	 * @param referenceColumn2 The second column in the reference table involved in the foreign key (paired with column2 in the original table)
+	 * @return A reference to the ForeignKey object created as a result of the add 
+	 */			
+	public ForeignKeyConstraint addForeignKeyConstraint(Column column1, Column column2, 
+														Table referenceTable, Column referenceColumn1, Column referenceColumn2) {
+		return addForeignKeyConstraint(null, column1, column2, referenceTable, referenceColumn1, referenceColumn2);
+	}		
 	
 	/**
 	 * Adds a foreign key to the table.
-	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
+	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).	 * 
+	 * @param columns The table columns involved in the foreign key. 
 	 * @param referenceTable The table which the foreign key column references.
-	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
-	 * columns corresponding to the paired reference table columns.
+	 * @param referenceColumns The columns in the reference table involved in the foreign key (paired with each column -- in order -- in the original table) 
 	 * @return A reference to the ForeignKey object created as a result of the add 
-	 */
-	public ForeignKeyConstraint addForeignKeyConstraint(String name, Table referenceTable, List<Column> columns) {
-		return null;
+	 */		
+	public ForeignKeyConstraint addForeignKeyConstraint(String name, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+		return addForeignKeyConstraint(new ForeignKeyConstraint(name, this, columns, referenceTable, referenceColumns));
 	}	
-		
+
 	/**
-	 * Adds a foreign key to the table.
-	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
+	 * Adds a foreign key to the table. 
+	 * @param columns The table columns involved in the foreign key. 
 	 * @param referenceTable The table which the foreign key column references.
-	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
-	 * columns corresponding to the paired reference table columns.
+	 * @param referenceColumns The columns in the reference table involved in the foreign key (paired with eacch column -- in order -- in the original table) 
 	 * @return A reference to the ForeignKey object created as a result of the add 
-	 */
-	public ForeignKeyConstraint addForeignKeyConstraint(Table referenceTable, List<Column> columns) {
-		return null;
-	}	
-		
-	
-	/**
-	 * Adds a foreign key to the table.
-	 * @param name The name of the foreign key (optional -- a version of this method exists without the need to specify this).
-	 * @param referenceTable The table which the foreign key column references.
-	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
-	 * columns corresponding to the paired reference table columns.
-	 * @return A reference to the ForeignKey object created as a result of the add 
-	 */
-	public ForeignKeyConstraint addForeignKeyConstraint(String name, Table referenceTable, Column... columns) {
-		return addForeignKeyConstraint(new ForeignKeyConstraint(this, name, referenceTable, columns));
-	}	
-	
-	/**
-	 * Adds a foreign key to the table.
-	 * @param referenceTable The table which the foreign key column references.
-	 * @param columns The columns involved in the foreign key.  The first n columns belong to the home table with the next n 
-	 * columns corresponding to the paired reference table columns.
-	 * @return A reference to the ForeignKey object created as a result of the add 
-	 */
-	public ForeignKeyConstraint addForeignKeyConstraint(Table referenceTable, Column... columns) {
-		return addForeignKeyConstraint(null, referenceTable, columns);
-	}	
-	
+	 */			
+	public ForeignKeyConstraint addForeignKeyConstraint(List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+		return addForeignKeyConstraint(null, columns, referenceTable, referenceColumns);
+	}		
+
 	/**
 	 * Adds a foreign key to the table.
 	 * @param foreignKeyConstraint The foreign key to be added.
@@ -273,7 +316,7 @@ public class Table implements Serializable {
 	 * @return The NotNull instance created as a result of the add.
 	 */
 	public NotNullConstraint addNotNullConstraint(String name, Column column) {
-		return addNotNullConstraint(new NotNullConstraint(this, name, column));	
+		return addNotNullConstraint(new NotNullConstraint(name, this, column));	
 	}
 
 	/**
@@ -302,7 +345,7 @@ public class Table implements Serializable {
 	 * @return True if the not null constraint existed on the table and was removed, else false.
 	 */
 	public boolean removeNotNullConstraint(Column column) {
-		return notNullConstraints.remove(new NotNullConstraint(this, null, column));
+		return notNullConstraints.remove(new NotNullConstraint(null, this, column));
 	}	
 	
 	/**
@@ -320,7 +363,7 @@ public class Table implements Serializable {
 	 * @return True if a not null constraint exists on the table, else false.
 	 */
 	public boolean isNotNull(Column column) {
-		return notNullConstraints.contains(new NotNullConstraint(this, null, column));
+		return notNullConstraints.contains(new NotNullConstraint(null, this, column));
 	}
 		
 	/**
@@ -337,7 +380,7 @@ public class Table implements Serializable {
 	 * @param columns The primary key columns.
 	 */	
 	public void setPrimaryKeyConstraint(String name, List<Column> columns) {		
-		setPrimaryKeyConstraint(new PrimaryKeyConstraint(this, name, columns));
+		setPrimaryKeyConstraint(new PrimaryKeyConstraint(name, this, columns));
 	}
 	
 	/**
@@ -356,7 +399,7 @@ public class Table implements Serializable {
 	 * @param remainingColumns Any remaining columns involved in the primary key.
 	 */	
 	public void setPrimaryKeyConstraint(String name, Column firstColumn, Column... remainingColumns) {
-		this.setPrimaryKeyConstraint(new PrimaryKeyConstraint(this, name, firstColumn, remainingColumns));
+		this.setPrimaryKeyConstraint(new PrimaryKeyConstraint(name, this, makeColumnList(firstColumn, remainingColumns)));
 	}	
 	
 	/**
@@ -397,7 +440,7 @@ public class Table implements Serializable {
 	 * @param columns The column set that should (as a set, rather than individually) be unique.
 	 */	
 	public UniqueConstraint addUniqueConstraint(String name, List<Column> columns) {
-		return addUniqueConstraint(new UniqueConstraint(this, name, columns));
+		return addUniqueConstraint(new UniqueConstraint(name, this, columns));
 	}			
 
 	/**
@@ -415,7 +458,7 @@ public class Table implements Serializable {
 	 * @param remainingColumns Any remaining columns involved in the unique constraint.
 	 */	
 	public UniqueConstraint addUniqueConstraint(String name, Column firstColumn, Column... remainingColumns) {
-		return addUniqueConstraint(new UniqueConstraint(this, name, firstColumn, remainingColumns));
+		return addUniqueConstraint(new UniqueConstraint(name, this, makeColumnList(firstColumn, remainingColumns)));
 	}			
 
 	/**

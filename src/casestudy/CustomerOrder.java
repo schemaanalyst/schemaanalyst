@@ -42,7 +42,7 @@ public class CustomerOrder extends Schema {
 		dbCategoryTable.setPrimaryKeyConstraint(idDbCategoryColumn);
 		idDbCategoryColumn.setNotNull();
 		nameCategoryColumn.setNotNull();
-		dbCategoryTable.addForeignKeyConstraint(dbCategoryTable, parentIdCategoryColumn, idDbCategoryColumn);
+		dbCategoryTable.addForeignKeyConstraint(parentIdCategoryColumn, dbCategoryTable, idDbCategoryColumn);
 
 		/*
 
@@ -80,7 +80,7 @@ public class CustomerOrder extends Schema {
 		categoryIdColumn.setNotNull();
 		priceColumn.setNotNull();
 		manufacturerColumn.setNotNull();
-		dbProductTable.addForeignKeyConstraint(dbCategoryTable, categoryIdColumn, idDbCategoryColumn);
+		dbProductTable.addForeignKeyConstraint(categoryIdColumn, dbCategoryTable, idDbCategoryColumn);
 
 		/*
 		  
@@ -123,7 +123,7 @@ public class CustomerOrder extends Schema {
 		Column activeColumn = dbUserTable.addColumn("active", new SmallIntDataType());
 
 		dbUserTable.setPrimaryKeyConstraint(idDbUserColumn);
-                dbUserTable.addForeignKeyConstraint(dbRoleTable, roleIdColumn, nameRowColumn);
+                dbUserTable.addForeignKeyConstraint(roleIdColumn, dbRoleTable, nameRowColumn);
                 dbUserTable.addCheckConstraint(new InCheckCondition(activeColumn, 0, 1));
                 
                 idDbUserColumn.setNotNull();
@@ -163,7 +163,7 @@ public class CustomerOrder extends Schema {
 		lastNameCustomerColumn.setNotNull();
 		
 		dbCustomerTable.setPrimaryKeyConstraint(idDbCustomerColumn);
-		dbCustomerTable.addForeignKeyConstraint(dbUserTable, idDbCustomerColumn, idDbUserColumn);
+		dbCustomerTable.addForeignKeyConstraint(idDbCustomerColumn, dbUserTable, idDbUserColumn);
 
 		/*
 
@@ -191,7 +191,7 @@ public class CustomerOrder extends Schema {
 		createdAtColumn.setNotNull();		
 		
 		dbOrderTable.setPrimaryKeyConstraint(idDbOrderColumn);
-		dbOrderTable.addForeignKeyConstraint(dbCustomerTable, customerIdColumn, idDbCustomerColumn);
+		dbOrderTable.addForeignKeyConstraint(customerIdColumn, dbCustomerTable, idDbCustomerColumn);
 
 		/*
 
@@ -223,8 +223,8 @@ public class CustomerOrder extends Schema {
 		totalPriceOrderItemColumn.setNotNull();
 
 		dbOrderItemTable.setPrimaryKeyConstraint(idDbOrderItemColumn);
-		dbOrderItemTable.addForeignKeyConstraint(dbOrderTable, orderIdDbOrderItemColumn, idDbOrderColumn);
-		dbOrderItemTable.addForeignKeyConstraint(dbProductTable, productEanCodeColumn, eanCodeColumn);
+		dbOrderItemTable.addForeignKeyConstraint(orderIdDbOrderItemColumn, dbOrderTable, idDbOrderColumn);
+		dbOrderItemTable.addForeignKeyConstraint(productEanCodeColumn, dbProductTable, eanCodeColumn);
 
 	}
 }

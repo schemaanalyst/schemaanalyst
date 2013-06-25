@@ -24,11 +24,11 @@ public class Column implements Serializable, Operand, Expression {
 	
 	/**
 	 * Constructor.
-	 * @param table The table to which this column belongs.
 	 * @param name The name of the column.
+	 * @param table The table to which this column belongs.
 	 * @param type The type of the column (see the types sub-package).
 	 */
-	protected Column(Table table, String name, DataType type) {
+	protected Column(String name, Table table, DataType type) {
 		this.table = table;
 		this.name = name;
 		this.type = type;
@@ -101,7 +101,7 @@ public class Column implements Serializable, Operand, Expression {
 	 * @param referenceColumn The reference column with which the primary key is paired with in another table (the reference table).
 	 */
 	public void setForeignKey(Table referenceTable, Column referenceColumn) {
-		table.addForeignKeyConstraint(referenceTable, this, referenceColumn);
+		table.addForeignKeyConstraint(this, referenceTable, referenceColumn);
 	}
 		
 	/**

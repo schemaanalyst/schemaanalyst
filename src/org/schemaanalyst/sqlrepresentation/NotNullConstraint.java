@@ -13,12 +13,12 @@ public class NotNullConstraint extends Constraint {
 	
 	/**
 	 * Constructor.
-	 * @param table The table containing the column on which the NOT NULL constraint holds.
 	 * @param name A name for the constraint (optional - can be null).
+	 * @param table The table containing the column on which the NOT NULL constraint holds.
 	 * @param column The column that is designated to be NOT NULL.
 	 */
-	protected NotNullConstraint(Table table, String name, Column column) {
-		super(table, name);
+	protected NotNullConstraint(String name, Table table, Column column) {
+		super(name, table);
 		if (!table.hasColumn(column)) {
 			throw new SchemaConstructionException("Column \""+column+"\" does not exist in table \""+table+"\"");
 		}
@@ -55,7 +55,7 @@ public class NotNullConstraint extends Constraint {
 					  				  " as it does not hve the column " + column);
 		}
 		
-		NotNullConstraint copy = new NotNullConstraint(targetTable, this.name, targetTableColumn);
+		NotNullConstraint copy = new NotNullConstraint(this.name, targetTable, targetTableColumn);
 		targetTable.addNotNullConstraint(copy);
 		return copy;
 	}

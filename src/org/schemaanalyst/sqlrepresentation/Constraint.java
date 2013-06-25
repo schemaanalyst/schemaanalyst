@@ -17,12 +17,12 @@ public abstract class Constraint implements Serializable {
 	
 	/**
 	 * Constructor.
-	 * @param table The table on which the constraint holds.
 	 * @param name An identifying name for the constraint (optional - can be null).
+	 * @param table The table on which the constraint holds.
 	 */
-	protected Constraint(Table table, String name) {		
-		this.table = table;
+	protected Constraint(String name, Table table) {		
 		this.name = name;
+		this.table = table;
 	}	
 	
 	/**

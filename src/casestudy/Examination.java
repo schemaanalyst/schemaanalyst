@@ -112,7 +112,7 @@ public class Examination extends Schema {
                 
                 Column examLogTimeEnter = examLog.addColumn("timeEnter", new DateDataType());
                 
-                examLog.addForeignKeyConstraint(exam, examLogEKey, examEKey);
+                examLog.addForeignKeyConstraint(examLogEKey, exam, examEKey);
                 
                 examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreNEW, RelationalOperator.GREATER_OR_EQUALS, 0));            
                 examLog.addCheckConstraint(new RelationalCheckCondition(examLogScoreNEW, RelationalOperator.LESS_OR_EQUALS, 100));
