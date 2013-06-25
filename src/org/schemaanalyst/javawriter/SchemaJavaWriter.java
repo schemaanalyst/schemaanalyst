@@ -76,11 +76,12 @@ public class SchemaJavaWriter {
 		// end class
 		jb.addln(0, "}");		
 
-		// get final Java code
-		String code = getPackageStatement(packageName) + importManager.writeImportStatements(); 
-		if (code != "") code += "\n";		
-		code += jb.getCode();
-		return code;
+		// get final Java java
+		String preamble = getPackageStatement(packageName) + importManager.writeImportStatements(); 
+		if (preamble != "") {
+			preamble += "\n";		
+		}
+		return preamble + jb.getCode();
 	}
 	
 	protected void addTableCode(Table table) {
@@ -122,12 +123,12 @@ public class SchemaJavaWriter {
 		
 		class SchemaWriterDataTypeCategoryVisitor implements DataTypeCategoryVisitor {
 
-			String code;
+			String java;
 			
 			String writeParams(DataType type) {
-				code = "";
+				java = "";
 				type.accept(this);
-				return "(" + code + ")";
+				return "(" + java + ")";
 			}
 			
 			public void visit(DataType type) {
@@ -135,16 +136,16 @@ public class SchemaJavaWriter {
 			}
 
 			public void visit(LengthLimited type) {
-				code += type.getLength();
+				java += type.getLength();
 			}
 
 			public void visit(PrecisionedAndScaled type) {
 				Integer precision = type.getPrecision(); 
 				if (precision != null) {
-					code += precision;
+					java += precision;
 					Integer scale = type.getScale();
 					if (scale != null) {
-						code += ", " + scale;
+						java += ", " + scale;
 					}
 				}
 			}
@@ -152,7 +153,7 @@ public class SchemaJavaWriter {
 			public void visit(Signed type) {
 				boolean isSigned = type.isSigned();
 				if (!isSigned) {
-					code += "false";
+					java += "false";
 				}
 			}
 		}
@@ -166,52 +167,52 @@ public class SchemaJavaWriter {
 		
 		class SchemaWriterContraintVisitor implements ConstraintVisitor {
 
-			String tableVarName, code;
+			String tableVarName, java;
 			
 			String writeConstraint(String tableVarName, Constraint constraint) {
 				this.tableVarName = tableVarName;
-				code = "";
+				java = "";
 				constraint.accept(this);				
-				return code;
+				return java;
 			}
 			
 			public void visit(CheckConstraint constraint) {
-				// TODO: add code for check constraints ...
+				// TODO: add java for check constraints ...
 			}
 
 			public void visit(ForeignKeyConstraint constraint) {
-				code =  writeMethodCall(TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD)  + "(";				
+				java =  writeMethodCall(TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD)  + "(";				
 				
-				code += writeConstraintName(constraint);								
-				code += writeGetColumnListCode(tableVarName, constraint.getColumns(), true);
-				code += ", ";
+				java += writeConstraintName(constraint);								
+				java += writeGetColumnListCode(tableVarName, constraint.getColumns(), true);
+				java += ", ";
 				
 				String refTableVarName = getTableVariableName(constraint.getReferenceTable());
-				code += refTableVarName + ", ";
-				code += writeGetColumnListCode(refTableVarName, constraint.getReferenceColumns(), true);
+				java += refTableVarName + ", ";
+				java += writeGetColumnListCode(refTableVarName, constraint.getReferenceColumns(), true);
 				
-				code += ");";								
+				java += ");";								
 			}
 
 			public void visit(NotNullConstraint constraint) {				
-				code =  writeMethodCall(TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD)  + "(";				
-				code += writeConstraintName(constraint);								
-				code += writeGetColumnCode(tableVarName, constraint.getColumn());
-				code += ");";				
+				java =  writeMethodCall(TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD)  + "(";				
+				java += writeConstraintName(constraint);								
+				java += writeGetColumnCode(tableVarName, constraint.getColumn());
+				java += ");";				
 			}
 
 			public void visit(PrimaryKeyConstraint constraint) {
-				code =  writeMethodCall(TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD)  + "(";				
-				code += writeConstraintName(constraint);								
-				code += writeGetColumnListCode(tableVarName, constraint.getColumns());
-				code += ");";
+				java =  writeMethodCall(TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD)  + "(";				
+				java += writeConstraintName(constraint);								
+				java += writeGetColumnListCode(tableVarName, constraint.getColumns());
+				java += ");";
 			} 
 
 			public void visit(UniqueConstraint constraint) {				
-				code =  writeMethodCall(TABLE_ADD_UNIQUE_CONSTRAINT_METHOD)  + "(";				
-				code += writeConstraintName(constraint);				
-				code += writeGetColumnListCode(tableVarName, constraint.getColumns());
-				code += ");";				
+				java =  writeMethodCall(TABLE_ADD_UNIQUE_CONSTRAINT_METHOD)  + "(";				
+				java += writeConstraintName(constraint);				
+				java += writeGetColumnListCode(tableVarName, constraint.getColumns());
+				java += ");";				
 			}	
 			
 			String writeConstraintName(Constraint constraint) {
@@ -223,8 +224,8 @@ public class SchemaJavaWriter {
 			}
 		}
 		
-		String code = new SchemaWriterContraintVisitor().writeConstraint(tableVarName, constraint);
-		jb.addln(code);
+		String java = new SchemaWriterContraintVisitor().writeConstraint(tableVarName, constraint);
+		jb.addln(java);
 	}
 	
 	protected String writeGetColumnCode(String tableVarName, Column column) {
@@ -236,11 +237,11 @@ public class SchemaJavaWriter {
 	}
 	
 	protected String writeGetColumnListCode(String tableVarName, List<Column> columns, boolean wrapInMethod) {
-		String code = "";
+		String java = "";
 		
 		boolean doWrapInMethod = wrapInMethod && columns.size() > 2; 
 		if (doWrapInMethod) {
-			code = Table.class.getSimpleName() + "." + TABLE_MAKE_COLUMN_LIST_METHOD + "(";
+			java = Table.class.getSimpleName() + "." + TABLE_MAKE_COLUMN_LIST_METHOD + "(";
 		}
 		
 		boolean first = true;
@@ -248,16 +249,16 @@ public class SchemaJavaWriter {
 			if (first) {
 				first = false;
 			} else {
-				code += ", ";
+				java += ", ";
 			}
-			code += writeGetColumnCode(tableVarName, column);
+			java += writeGetColumnCode(tableVarName, column);
 		}
 		
 		if (doWrapInMethod) {
-			code += ")";
+			java += ")";
 		}
 		
-		return code;
+		return java;
 	}
 	
 	protected String getPackageStatement(String packageName) {

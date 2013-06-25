@@ -18,6 +18,8 @@ import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -32,20 +34,23 @@ public class SchemaParser {
 	
 	protected Schema schema;
 	protected TGSqlParser sqlParser; 
+	protected Logger logger;
 	
-	public Schema parse(File file, String name, Database database) {
-		instantiateParser(database);
+	public Schema parse(File file, String name, Database database, Logger logger) {
+		setup(database, logger);
 		sqlParser.setSqlfilename(file.getPath());
 		return performParse(name);		
 	}
-	
-	public Schema parse(String sql, String name, Database database) {		
-		instantiateParser(database);
+
+
+	public Schema parse(String sql, String name, Database database, Logger logger) {		
+		setup(database, logger);
 		sqlParser.sqltext = sql;
 		return performParse(name);
 	}
 	
-	protected void instantiateParser(Database database) {
+	private void setup(Database database, Logger logger) {
+		this.logger = logger;
 		sqlParser = new TGSqlParser(VendorResolver.resolve(database));
 	}
 		
@@ -67,7 +72,7 @@ public class SchemaParser {
 	
 	protected void analyseStatement(TCustomSqlStatement statement) {
 
-		switch (statement.sqlstatementtype){
+		switch (statement.sqlstatementtype) {
 
         	case sstcreatetable:
         		analyseCreateTableStatement((TCreateTableSqlStatement) statement);
@@ -76,10 +81,7 @@ public class SchemaParser {
         		analyseAlterTableStatement((TAlterTableStatement) statement);
         		break;
         	default:
-        		throw new SQLParseException(
-        				"Cannot handle \"" + 
-        				statement.sqlstatementtype.toString() + 
-        				"\" in schema parsing mode");
+        		logger.log(Level.WARNING, "Ignored statement \"" + statement + "\" on line " + statement.getLineNo());        		
         }		
 	}
 	
@@ -96,7 +98,7 @@ public class SchemaParser {
             TColumnDefinition columnDefinition = columnList.getColumn(i);
 	    	String columnName = stripQuotes(columnDefinition.getColumnName());	 	    	
 	    	
-	    	DataType type = DataTypeMapper.map(columnDefinition.getDatatype());	    	
+	    	DataType type = DataTypeMapper.map(columnDefinition.getDatatype(), columnDefinition);	    	
 	    	Column column = table.addColumn(columnName, type);          	
         		    	
 	    	// analyse any inline column constraints

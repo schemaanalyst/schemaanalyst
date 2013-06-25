@@ -2,6 +2,7 @@ package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.EDataType;
 import gudusoft.gsqlparser.nodes.TConstant;
+import gudusoft.gsqlparser.nodes.TParseTreeNode;
 import gudusoft.gsqlparser.nodes.TTypeName;
 
 import org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType;
@@ -21,11 +22,15 @@ import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 class DataTypeMapper {
+		
+	static DataType map(TTypeName dataType, TParseTreeNode node) {
+		return (new DataTypeMapper()).getDataType(dataType, node);
+	}	
 	
 	// REFER TO the JavaDocs for TTypeName
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html	
 
-	DataType getDataType(TTypeName dataType) {
+	DataType getDataType(TTypeName dataType, TParseTreeNode node) {
 		
 		EDataType enumType = dataType.getDataType();	
 		String typeString = dataType.toString();
@@ -139,7 +144,7 @@ class DataTypeMapper {
 		}		
 		
 		// Data type not supported
-		throw new UnsupportedFeatureException(dataType);
+		throw new UnsupportedFeatureException(dataType, node);
 	}	
 	
 	Integer getArgument(TConstant argument) {
@@ -158,7 +163,4 @@ class DataTypeMapper {
 		return getArgument(dataType.getScale());
 	}	
 	
-	static DataType map(TTypeName dataType) {
-		return (new DataTypeMapper()).getDataType(dataType);
-	}	
 }

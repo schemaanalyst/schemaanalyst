@@ -2,6 +2,7 @@ package org.schemaanalyst.test.sqlparser;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.mysql.MySQL;
@@ -24,9 +25,11 @@ public class Runner {
 	}
 
 	private static void parseAndPrintTextSchema(String caseStudy, Database database, SQLWriter sqlWriter) {
+		Logger logger = Logger.getLogger("test");
+		
 		File file = new File(getCaseStudiesPath() + caseStudy + ".sql");		
 		SchemaParser schemaParser = new SchemaParser();
-		Schema parsedSchema = schemaParser.parse(file, caseStudy, database);
+		Schema parsedSchema = schemaParser.parse(file, caseStudy, database, logger);
 		
 		List<String> parsedSQLStatements = sqlWriter.writeCreateTableStatements(parsedSchema);
 		

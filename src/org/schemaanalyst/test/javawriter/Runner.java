@@ -11,8 +11,6 @@ public class Runner {
 		SchemaJavaWriter jw = new SchemaJavaWriter(new BankAccount());
 		System.out.println(jw.writeSchema("casestudy"));
 		
-		
-		
 	}
 
 }

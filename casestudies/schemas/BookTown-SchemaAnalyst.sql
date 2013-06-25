@@ -1,7 +1,56 @@
--- SchemaAnalyst version
--- * no table inheritance (distinguished authors)
--- * no timestamp with timezone, used timezone for "shipments.ship_date"
--- * no create sequence statements
+DROP TABLE IF EXISTS books CASCADE;
+
+DROP TABLE IF EXISTS publishers CASCADE;
+
+DROP TABLE IF EXISTS authors CASCADE;
+
+DROP TABLE IF EXISTS states CASCADE;
+
+DROP TABLE IF EXISTS my_list CASCADE;
+
+DROP TABLE IF EXISTS stock CASCADE;
+
+DROP SEQUENCE IF EXISTS subject_ids CASCADE;
+
+DROP SEQUENCE IF EXISTS author_ids CASCADE;
+
+DROP TABLE IF EXISTS numeric_values CASCADE;
+
+DROP TABLE IF EXISTS daily_inventory CASCADE;
+
+DROP TABLE IF EXISTS money_example CASCADE;
+
+DROP TABLE IF EXISTS shipments CASCADE;
+
+DROP TABLE IF EXISTS customers CASCADE;
+
+DROP TABLE IF EXISTS book_queue CASCADE;
+
+DROP TABLE IF EXISTS stock_backup CASCADE;
+
+DROP TABLE IF EXISTS favorite_books CASCADE;
+
+DROP TABLE IF EXISTS employees CASCADE;
+
+DROP TABLE IF EXISTS editions CASCADE;
+
+DROP TABLE IF EXISTS distinguished_authors CASCADE;
+
+DROP TABLE IF EXISTS favorite_authors CASCADE;
+
+DROP TABLE IF EXISTS "varchar(100)_sorting" CASCADE;
+
+DROP TABLE IF EXISTS subjects CASCADE;
+
+DROP TABLE IF EXISTS alternate_stock CASCADE;
+
+DROP TABLE IF EXISTS book_backup CASCADE;
+
+DROP TABLE IF EXISTS schedules CASCADE;
+
+DROP SEQUENCE IF EXISTS "shipments_ship_id_seq";
+
+DROP SEQUENCE IF EXISTS "book_ids";
 
 CREATE TABLE "books" (
 	"id" integer NOT NULL,
@@ -44,6 +93,8 @@ CREATE TABLE "stock" (
 	Constraint "stock_pkey" Primary Key ("isbn")
 );
 
+CREATE SEQUENCE "subject_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
+
 CREATE TABLE "numeric_values" (
 	"num" numeric(30,6)
 );
@@ -62,7 +113,7 @@ CREATE TABLE "shipments" (
 	"id" integer DEFAULT nextval('"shipments_ship_id_seq"'::varchar(100)) NOT NULL,
 	"customer_id" integer,
 	"isbn" varchar(100),
-	"ship_date" timestamp
+	"ship_date" timestamp --with time zone
 );
 
 CREATE TABLE "customers" (
@@ -71,6 +122,8 @@ CREATE TABLE "customers" (
 	"first_name" varchar(100),
 	Constraint "customers_pkey" Primary Key ("id")
 );
+
+CREATE SEQUENCE "book_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
 
 CREATE TABLE "book_queue" (
 	"title" varchar(100) NOT NULL,
@@ -91,6 +144,8 @@ CREATE TABLE "favorite_books" (
 	"books" varchar(100)
 );
 
+CREATE SEQUENCE "shipments_ship_id_seq" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
+
 CREATE TABLE "employees" (
 	"id" int PRIMARY KEY NOT NULL,
 	"last_name" varchar(100) NOT NULL,
@@ -108,13 +163,15 @@ CREATE TABLE "editions" (
 	CONSTRAINT "integrity" CHECK (((book_id NOTNULL) AND (edition NOTNULL)))
 );
 
+CREATE SEQUENCE "author_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
+
 CREATE TABLE "distinguished_authors" (
 	"id" integer NOT NULL,
 	"last_name" varchar(100),
 	"first_name" varchar(100),
 	"award" varchar(100),
-	Constraint "authors_pkey" Primary Key ("id")	
-);
+	Constraint "authors_pkey" Primary Key ("id")
+)
 
 CREATE TABLE "favorite_authors" (
 	"employee_id" int,
