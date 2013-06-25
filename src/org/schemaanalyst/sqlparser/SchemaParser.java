@@ -18,7 +18,6 @@ import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.database.Database;
@@ -36,26 +35,23 @@ public class SchemaParser {
 	protected TGSqlParser sqlParser; 
 	protected Logger logger;
 	
-	public Schema parse(File file, String name, Database database, Logger logger) {
-		setup(database, logger);
-		sqlParser.setSqlfilename(file.getPath());
-		return performParse(name);		
-	}
-
-
-	public Schema parse(String sql, String name, Database database, Logger logger) {		
-		setup(database, logger);
-		sqlParser.sqltext = sql;
-		return performParse(name);
+	public SchemaParser(Database database, Logger logger) {
+		this.logger = logger;
+		sqlParser = new TGSqlParser(VendorResolver.resolve(database));		
 	}
 	
-	private void setup(Database database, Logger logger) {
-		this.logger = logger;
-		sqlParser = new TGSqlParser(VendorResolver.resolve(database));
+	public Schema parseSchema(String schemaName, File file) {
+		sqlParser.setSqlfilename(file.getPath());
+		return performParse(schemaName);		
 	}
-		
-	protected Schema performParse(String name) {	
-		schema = new Schema(name);
+
+	public Schema parseSchema(String schemaName, String sql) {		
+		sqlParser.sqltext = sql;
+		return performParse(schemaName);
+	}
+			
+	protected Schema performParse(String schemaName) {	
+		schema = new Schema(schemaName);
 		
 		int result = sqlParser.parse();
 		if (result != 0) {
@@ -64,137 +60,142 @@ public class SchemaParser {
 		
         TStatementList list = sqlParser.sqlstatements;        
         for (int i=0; i < list.size(); i++) {        	
-        	analyseStatement(list.get(i));
+        	parseSQLStatement(list.get(i));
         }	
 		
 		return schema;
 	}
 	
-	protected void analyseStatement(TCustomSqlStatement statement) {
+	protected void parseSQLStatement(TCustomSqlStatement node) {
 
-		switch (statement.sqlstatementtype) {
-
+		switch (node.sqlstatementtype) {
         	case sstcreatetable:
-        		analyseCreateTableStatement((TCreateTableSqlStatement) statement);
+        		parseCreateTableStatement((TCreateTableSqlStatement) node);
         		break;
         	case sstaltertable:
-        		analyseAlterTableStatement((TAlterTableStatement) statement);
+        		parseAlterTableStatement((TAlterTableStatement) node);
         		break;
         	default:
-        		logger.log(Level.WARNING, "Ignored statement \"" + statement + "\" on line " + statement.getLineNo());        		
+        		// only CREATE TABLE and ALTER TABLE are handled
+        		logger.warning("Ignored statmeent " + " \"" + node + "\" on line " + node.getLineNo());        		
         }		
 	}
 	
-	protected void analyseCreateTableStatement(TCreateTableSqlStatement createTableStatement) {
-    	
-		// create table
-		String tableName = stripQuotes(createTableStatement.getTableName());	  
+	protected void parseCreateTableStatement(TCreateTableSqlStatement node) {
+		// create a Table object
+		String tableName = stripQuotes(node.getTableName());	  
     	Table table = schema.createTable(tableName);	
 		
-    	TColumnDefinitionList columnList = createTableStatement.getColumnList();
+    	// log this event
+    	logger.info("Parsing table \"" + tableName + "\" one line " + node.getLineNo());    	
     	
-    	// analyse columns
+    	// parse columns
+    	TColumnDefinitionList columnList = node.getColumnList();
         for (int i=0; i< columnList.size(); i++){
-            TColumnDefinition columnDefinition = columnList.getColumn(i);
-	    	String columnName = stripQuotes(columnDefinition.getColumnName());	 	    	
-	    	
-	    	DataType type = DataTypeMapper.map(columnDefinition.getDatatype(), columnDefinition);	    	
-	    	Column column = table.addColumn(columnName, type);          	
-        		    	
-	    	// analyse any inline column constraints
-	    	TConstraintList	list = columnDefinition.getConstraints();
-	    	if (list != null) {
-		    	for (int j=0 ; j < list.size(); j++) {
-		    		analyseConstraint(list.getConstraint(j), table, column);
-		    	}
-	    	}	
+            parseColumn(table, columnList.getColumn(i));	
         }
         
         // analyse table constraints
-        analyseConstraintList(createTableStatement.getTableConstraints(), table);
+        parseConstraintList(table, null, node.getTableConstraints());
+	}
+
+	protected void parseColumn(Table table, TColumnDefinition node) {
+		// get the column name		
+		String columnName = stripQuotes(node.getColumnName());	 	    	
+		
+    	// log this event
+    	logger.info("Parsing column \"" + columnName + "\" one line " + node.getLineNo());   		
+		
+    	// get data type and add column to table
+		DataType type = DataTypeMapper.map(node.getDatatype(), node);	    	
+		Column column = table.addColumn(columnName, type);          	
+			    	
+		// parse any inline column constraints
+		parseConstraintList(table, column, node.getConstraints());
 	}
 	
-	protected void analyseAlterTableStatement(TAlterTableStatement alterTableStatement) {
-		String tableName = stripQuotes(alterTableStatement.getTableName());
+	protected void parseAlterTableStatement(TAlterTableStatement node) {
+		logger.warning("Parsing alter table statement, which has a buggy/incomplete implementation on line " + node.getLineNo());    		
+		
+		String tableName = stripQuotes(node.getTableName());
 		Table table = schema.getTable(tableName);
 		
-		System.out.println(alterTableStatement.getTableElementList());
-		
-		TAlterTableOptionList optionList = alterTableStatement.getAlterTableOptionList();
+		TAlterTableOptionList optionList = node.getAlterTableOptionList();
 		for (int i=0; i < optionList.size(); i++){
-	    	analyseAlterTableOption(optionList.getAlterTableOption(i), table);
+	    	parseAlterTableOption(table, optionList.getAlterTableOption(i));
 		}
 	}
 	
-	protected void analyseAlterTableOption(TAlterTableOption alterTableOption, Table currentTable) {
-
-        switch (alterTableOption.getOptionType()){		
+	protected void parseAlterTableOption(Table currentTable, TAlterTableOption node) {
+		logger.warning("Parsing alter table option statement, which has a buggy/incomplete implementation on line " + node.getLineNo());
+		
+        switch (node.getOptionType()){		
         	case AddConstraint:
-        		analyseConstraintList(alterTableOption.getConstraintList(), currentTable);
+        		parseConstraintList(currentTable, null, node.getConstraintList());
         		break;
         	case AddConstraintPK:
         		setPrimaryKeyConstraint(
         				currentTable, null, 
-        				alterTableOption.getConstraintName(),
-        				alterTableOption.getColumnNameList());
+        				node.getConstraintName(),
+        				node.getColumnNameList());
         		break;
         	case AddConstraintUnique:
         		addUniqueConstraint(
         				currentTable, null,
-        				alterTableOption.getConstraintName(),
-        				alterTableOption.getColumnNameList());
+        				node.getConstraintName(),
+        				node.getColumnNameList());
         		break;        		
         	default:
-        		throw new UnsupportedFeatureException(alterTableOption);
+        		throw new UnsupportedFeatureException(node);
         }
 	}
 	
-	protected void analyseConstraintList(TConstraintList constraintList, Table currentTable) {
-		if (constraintList != null) {
-			for (int i=0; i < constraintList.size(); i++) {
-				analyseConstraint(constraintList.getConstraint(i), currentTable, null);
+	protected void parseConstraintList(Table currentTable, Column currentColumn, TConstraintList node) {
+		if (node != null) {
+			for (int i=0; i < node.size(); i++) {
+				parseConstraint(currentTable, currentColumn, node.getConstraint(i));
 			}
 		}
 	}
 	
-	protected void analyseConstraint(TConstraint constraintDefinition, Table currentTable, Column currentColumn) {
+	protected void parseConstraint(Table currentTable, Column currentColumn, TConstraint node) {
 		
-      	switch (constraintDefinition.getConstraint_type()) {    	
+      	switch (node.getConstraint_type()) {    	
     		case check:
     			addCheckConstraint(
     					currentTable, currentColumn,
-    					constraintDefinition.getConstraintName(), 
-    					constraintDefinition.getCheckCondition());
+    					node.getConstraintName(), 
+    					node.getCheckCondition());
 	    		break;
     		case foreign_key:
     		case reference:
     			addForeignKeyConstraint(
     					currentTable, currentColumn,
-    					constraintDefinition.getConstraintName(), 
-    					constraintDefinition.getColumnList(), 
-    					constraintDefinition.getReferencedObject(),
-    					constraintDefinition.getReferencedColumnList());
+    					node.getConstraintName(), 
+    					node.getColumnList(), 
+    					node.getReferencedObject(),
+    					node.getReferencedColumnList());
     			break;
     		case notnull:
     			addNotNullConstraint(
     					currentTable, currentColumn, 
-    					constraintDefinition.getConstraintName(), 
-    					constraintDefinition.getColumnList());
+    					node.getConstraintName(), 
+    					node.getColumnList());
     			break;    			
     		case primary_key:    			
     			setPrimaryKeyConstraint(
     					currentTable, currentColumn,
-    					constraintDefinition.getConstraintName(), 
-    					constraintDefinition.getColumnList());
+    					node.getConstraintName(), 
+    					node.getColumnList());
     			break;
     		case unique:
     			addUniqueConstraint(
     					currentTable, currentColumn,
-    					constraintDefinition.getConstraintName(), 
-    					constraintDefinition.getColumnList());
+    					node.getConstraintName(), 
+    					node.getColumnList());
     			break;
     		default:
-    			throw new UnsupportedFeatureException(constraintDefinition);
+    			throw new UnsupportedFeatureException(node);
     	}    	
 	}
 
@@ -216,8 +217,8 @@ public class SchemaParser {
 		String referenceTableName = stripQuotes(referenceTableNameObject);
 		Table referenceTable = schema.getTable(referenceTableName);
 
-		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);		
-		List<Column> referenceColumns = getColumns(referenceTable, null, referenceColumnNameObjectList); 
+		List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);		
+		List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList); 
 								
 		currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);				
 	}
@@ -227,7 +228,7 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 		
 		String constraintName = stripQuotes(constraintNameObject);
-		Column[] columns = getColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
+		Column[] columns = mapColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
 		currentTable.addNotNullConstraint(constraintName, columns[0]);		
 	}	
 	
@@ -236,7 +237,7 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 		
 		String constraintName = stripQuotes(constraintNameObject);
-		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);
+		List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
 		currentTable.setPrimaryKeyConstraint(constraintName, columns);
 	}
 	
@@ -245,11 +246,11 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 		
 		String constraintName = stripQuotes(constraintNameObject);
-		List<Column> columns = getColumns(currentTable, currentColumn, columnNameObjectList);
+		List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
 		currentTable.addUniqueConstraint(constraintName, columns);		
 	}	
 	
-	protected List<Column> getColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {
+	protected List<Column> mapColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {
 		List<Column> columns = new ArrayList<Column>();
 		
 		if (currentColumn != null) {
