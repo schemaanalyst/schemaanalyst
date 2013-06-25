@@ -1,48 +1,30 @@
 package experiment;
 
-import plume.*;
 
-import com.thoughtworks.xstream.XStream;
-import com.thoughtworks.xstream.io.xml.StaxDriver; 
-
+import experiment.util.XMLSerialiser;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Arrays;
 import java.util.ArrayList;
-
-import java.io.PrintWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
-import experiment.Parameters;
-import experiment.FormatExperimentParameters;
+import org.schemaanalyst.configuration.FolderConfiguration;
 
-public class GlobalExperimentParameters implements Parameters {
-
-    /** 
-      <arg value="--debug=false" /> 
-      <arg value="--foreignkeys=true" /> 
-      <arg value="--script=true" /> 
-      <arg value="--wantmutationreport_mrp=false" /> 
-      <arg value="--wantmutationreport_txt=true" /> 
-      <arg value="--onlymutationsummary=false" /> 
-      <arg value="--project=/home/gkapfham/working/research/projects/dbatdg/" />
-      <arg value="--host=localhost" />
-      <arg value="--port=5432" />
-    */
+public class GlobalExperimentParameters extends Parameters {
+    
+    private static final String DEFAULT_LOCATION =
+            FolderConfiguration.config_dir + File.separator + "globalexperimentparameters.xml";
     private ArrayList<String> parameters;
 
-    /** The PrintWriter that can save the report on the file system */
-    private static PrintWriter reportOutputSer;
-
+    /**
+     * Default constructor.
+     */
     public GlobalExperimentParameters() {
-	parameters = new ArrayList<String>();
+	parameters = new ArrayList<>();
     }
 
-    /** Set the default parameters for the global experiment parameters */
+    /**
+     * Set the default values.
+     */
+    @Override
     public void setDefaultParameters() {
 	parameters.add("--standalone=false");
 	parameters.add("--debug=false");
@@ -59,74 +41,57 @@ public class GlobalExperimentParameters implements Parameters {
         parameters.add("--mutation2013_execution=false");
     }
 
-    /** Return all of the global parameters */
+    /**
+     * Return the parameters.
+     * @return The parameters.
+     */
     public List<String> getParameters() {
 	return parameters;
     }
 
-    /** Save all of the parameters to a file, for later editing and usage */
-    public static void save(GlobalExperimentParameters globalparameters) {
-	try {
-	    // configure the output serializer correctly
-	    reportOutputSer = new PrintWriter(ExperimentConfiguration.project +
-					      "/" + "Experiments/" +
-					      "GlobalExperimentParameters.xml");
-	}
-	
-	catch(FileNotFoundException e) {
-	    e.printStackTrace();
-	}
-
-	// create the XStream object and then serialize the file
-	XStream xstream = new XStream(new StaxDriver());
-	String xml = xstream.toXML(globalparameters);
-	String formattedXml = FormatExperimentParameters.format(xml);
-	print(reportOutputSer, formattedXml);
+    /**
+     * Save all of the parameters to a file, in a pretty printed XML format.
+     *
+     * @param globalparameters The parameters object.
+     * @param location The file location.
+     */
+    public static void saveToXml(GlobalExperimentParameters globalparameters, String location) {
+        XMLSerialiser.save(globalparameters, location);
     }
 
-    /** Retrieve the parameters from the file system */
-    public static GlobalExperimentParameters retrieve() {
-	GlobalExperimentParameters restoredParameters = null;
-	try {
-	    // create the file that stores the XML
-	    File parameters = new File(ExperimentConfiguration.project +
-				       "/" + "Experiments/" +
-				       "GlobalExperimentParameters.xml");
-	    
-	    // read in the contents of the file to a string
-	    String xml = new Scanner(parameters).useDelimiter("\\A").next();
-
-	    // reload the parameters object and return it
-	    XStream xstream = new XStream(new StaxDriver());
-	    restoredParameters = (GlobalExperimentParameters)xstream.fromXML(xml);
-	}
-	
-	catch(FileNotFoundException e) {
-	    e.printStackTrace();
-	}
-	return restoredParameters;
+    /**
+     * Save all of the parameters to a file, in a pretty printed XML format. The
+     * file location is determined using the DEFAULT_LOCATION variable.
+     *
+     * @param globalparameters The parameters object.
+     */
+    public static void saveToXml(GlobalExperimentParameters globalparameters) {
+        XMLSerialiser.save(globalparameters, DEFAULT_LOCATION);
     }
 
-    /** Return a string representation of the parameters */
-    public String toString() {
-	return Arrays.toString(parameters.toArray(new String[parameters.size()]));
+    /**
+     * Load a parameters object from a file, formatted in XML.
+     * 
+     * @param location The file path.
+     * @return The parameters object.
+     */
+    public static GlobalExperimentParameters loadFromXML(String location) {
+        return XMLSerialiser.<GlobalExperimentParameters>load(location);
     }
 
-    /** Print out a specified line with a specified PrintWriter */
-    private static void print(PrintWriter writer, String line) {
-	writer.println(line);
-	writer.flush();
+    /**
+     * Load a parameters object from a file, formatted in XML.
+     * 
+     * @return The parameters object.
+     */
+    public static GlobalExperimentParameters loadFromXML() {
+        return XMLSerialiser.<GlobalExperimentParameters>load(DEFAULT_LOCATION);
     }
 
     /** Write out the default parameters to the file system*/
     public static void main(String[] args) {
-	// extract all of the database configurations
-	ExperimentConfiguration configuration = new ExperimentConfiguration();
-	Options options = new Options("GlobalExperimentParameters [options]", configuration);
-	options.parse_or_usage(args);
-
-	GlobalExperimentParameters parameters = new GlobalExperimentParameters();
-	parameters.setDefaultParameters();
-	GlobalExperimentParameters.save(parameters);
+        GlobalExperimentParameters parameters = new GlobalExperimentParameters();
+        parameters.setDefaultParameters();
+        GlobalExperimentParameters.saveToXml(parameters);
     }
 }

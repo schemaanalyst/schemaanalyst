@@ -5,19 +5,15 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 
 import java.util.List;
 import java.util.Scanner;
-import java.util.Arrays;
 import java.util.ArrayList;
 
 import java.io.PrintWriter;
 import java.io.FileWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import experiment.util.XMLFormatter;
 
-import experiment.ExperimentalResult;
-import experiment.ExperimentConfiguration;
 
 public class ExperimentalResults {
 
@@ -261,7 +257,7 @@ public class ExperimentalResults {
 	// create the XStream object and then serialize the file
 	XStream xstream = new XStream(new StaxDriver());
 	String xml = xstream.toXML(this);
-	String formattedXml = FormatExperimentParameters.format(xml);
+	String formattedXml = XMLFormatter.format(xml);
 	print(reportOutputSer, formattedXml);
     }
 

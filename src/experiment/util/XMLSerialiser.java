@@ -1,32 +1,22 @@
 /*
  */
-package experiment.results;
+package experiment.util;
 
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-import org.xml.sax.InputSource;
 
 /**
  * A general purpose XML serialiser and deserialiser. Uses SAX for formatting of
  * the output file and XStream for the IO.
- * @author chris
+ * 
+ * @author Chris J. Wright
  */
 public class XMLSerialiser {
     
@@ -49,7 +39,7 @@ public class XMLSerialiser {
             }
             try (PrintWriter writer = new PrintWriter(output)) {
                 xstream.processAnnotations(object.getClass());
-                String xml = format(xstream.toXML(object)); //
+                String xml = XMLFormatter.format(xstream.toXML(object));
                 writer.println(xml);
                 writer.flush();
             }
@@ -76,29 +66,6 @@ public class XMLSerialiser {
             return object;
         } catch (XStreamException xEx) {
             throw new RuntimeException("Failed to deserialise the target file", xEx);
-        }
-    }
-    
-    /**
-     * Formats XML to allow better readability.
-     * 
-     * @param xml The XML to format
-     * @return The formatted XML
-     */
-    private static String format(String xml) {
-        try {
-            Transformer serializer= SAXTransformerFactory.newInstance().newTransformer();
-            serializer.setOutputProperty(OutputKeys.INDENT, "yes");
-            serializer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-            Source xmlSource=new SAXSource(new InputSource(new ByteArrayInputStream(xml.getBytes())));
-            StreamResult res =  new StreamResult(new ByteArrayOutputStream());            
-            serializer.transform(xmlSource, res);
-            return new String(((ByteArrayOutputStream)res.getOutputStream()).toByteArray());
-        } 
-	catch(IllegalArgumentException|TransformerException|TransformerFactoryConfigurationError ex){
-            Logger.getLogger(XMLSerialiser.class.getName()).log(Level.SEVERE, "Failed to format"
-                    + " XML correctly", ex);
-	    return xml;
         }
     }
     

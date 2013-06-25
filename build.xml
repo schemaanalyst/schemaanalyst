@@ -1,30 +1,22 @@
-<project xmlns:jacoco="antlib:org.jacoco.ant">
+<project>
 	
 	<!-- SETUP VARIABLES AND PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<property name="lib.dir" value="lib" />
-	<property name="src.dir" location="src" />
-	<property name="build.dir" location="build" />
-	<property name="dist.dir" location="dist" />
-	<property name="dist.name" value="SchemaAnalyst" />
-	<property name="config.dir" value="config" />
-	<property name="run.dir" value="run" />
-	<property name="databases.dir" value="databases" />
+	<property name="config_dir" value="config"/> <!-- Needed to bootstrap the loading -->
 
-	<!-- Load the database configurations. -->
-	<loadproperties>
-		<file file="${config.dir}/databases.properties" />
-	</loadproperties>
+	<!-- Load the variable configurations. -->
+	<loadproperties srcfile="config/folders.properties" />
+	<loadproperties srcfile="${config_dir}/databases.properties" />
 
 	<!-- The common classpath for building the system. -->
-	<path id="build.classpath">
-		<fileset dir="${lib.dir}" includes="*.jar" />
+	<path id="build_classpath">
+		<fileset dir="${lib_dir}" includes="*.jar" />
 	</path>
 
 	<!-- The classpath for running the system. -->
-	<path id="run.classpath">
-		<pathelement path="${build.dir}"/>
-		<fileset dir="${lib.dir}" includes="*.jar"/>
+	<path id="run_classpath">
+		<pathelement path="${build_dir}"/>
+		<fileset dir="${lib_dir}" includes="*.jar"/>
 	</path>
 	
 
@@ -32,42 +24,38 @@
 
 	<!-- CLEANING TASK - "ant clean" -->
 	<target name="clean">
-		<delete dir="${build.dir}"/>
-		<delete dir="${dist.dir}"/>
-		<delete dir="${run.dir}"/>
-		<delete dir="${databases.dir}"/>
+		<delete dir="${build_dir}"/>
+		<delete dir="${dist_dir}"/>
+		<delete dir="${run_dir}"/>
+		<delete dir="${databases_dir}"/>
+		<delete file="${config_dir}/localexperimentparameters.xml"/>
+		<delete file="${config_dir}/globalexperimentparameters.xml"/>
 	</target>
 
 	<!-- COMPILING TASK - "ant compile" -->  
 	<target name="compile">
-		<mkdir dir="${build.dir}"/>
-		<javac srcdir="${src.dir}" destdir="${build.dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
-			<classpath refid="build.classpath"/>
+		<mkdir dir="${build_dir}"/>
+		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
+			<classpath refid="build_classpath"/>
 			<!-- <compilerarg value="-Xlint:unchecked"/> -->
+			<!-- <compilerarg value="-Xlint:deprecation"/> -->
 		</javac>
 	</target>
 
 	<!-- JAR TASK - "ant jar" -->
 	<target name="jar" depends="compile">
-		<mkdir dir="${dist.dir}"/>
-		<jar destfile="${dist.dir}/${dist.name}.jar" basedir="${build.dir}"/>
+		<mkdir dir="${dist_dir}"/>
+		<jar destfile="${dist_dir}/${dist_name}.jar" basedir="${build_dir}"/>
 	</target>
 
 	<!-- SETUP TASK - "ant setup" -->
 	<target name="setup">
-		<mkdir dir="${databases.dir}"/>
+		<mkdir dir="${databases_dir}"/>
 	</target>
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
 	<!-- RUNNING TASK - "ant schemaanalyst" -->
-	<!-- Derby Server Port: 1527 -->
-	<!-- Postgres Server Port: 5432 -->
-	<!-- Possibilities for the search technique: -->
-	<!-- alternatingvalue_defaults -->
-	<!-- alternatingvalue -->
-	<!-- random -->
-	<!-- naiverandom -->
 	<target name="schemaanalyst">
 		<java fork="true" classname="org.schemaanalyst.SchemaAnalyst" maxmemory="1024m">
 			<arg value="--debug=false" /> 
@@ -82,16 +70,16 @@
 			<arg value="--satisfyrows=2" /> 
 			<arg value="--negaterows=1" /> 
 			<arg value="--maxevaluations=100000" /> 
-			<arg value="--project=${user.dir}/" />
-			<arg value="--type=${db.hsqldb}" />
-			<arg value="--host=${db.hsqldb.host}" />
-			<arg value="--port=${db.hsqldb.port}" />
+			<arg value="--project=${user_dir}/" />
+			<arg value="--type=${db_hsqldb}" />
+			<arg value="--host=${db_hsqldb_host}" />
+			<arg value="--port=${db_hsqldb_port}" />
 			<arg value="--database=casestudy.Inventory" />
 			<arg value="--scriptfile=casestudy.Inventory.sql" />
 			<arg value="--mutantscriptfile=casestudy.Inventory.mutant.sql" />
 			<arg value="--mutationreport_mrp=casestudy.Inventory.mrp" />
 			<arg value="--mutationreport_txt=casestudy.hsqldb.Inventory.txt" />
-			<classpath refid="run.classpath" />
+			<classpath refid="run_classpath" />
 		</java>
 	</target>
 
@@ -99,8 +87,8 @@
 	<target name="experiment">
 		<junit fork="yes">
 			<test name="experiment.AllExperiments" />
-			<jvmarg value="-Dproject=${user.dir}" />
-			<classpath refid="run.classpath" />
+			<jvmarg value="-Dproject=${user_dir}" />
+			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
 	</target>
@@ -112,7 +100,7 @@
 		<junit fork="yes">
 			<test name="experiment.ExperimentsToProperties" />
 			<jvmarg value="-Dproject=${user.dir}" />
-			<classpath refid="run.classpath" />
+			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
 	</target>
@@ -121,25 +109,23 @@
 	<target name="experimentFromProperties">
 		<java fork="true" classname="experiment.ExperimentFromProperties">
 			<arg value="${uniqueid}" />
-			<classpath refid="run.classpath" />
+			<classpath refid="run_classpath" />
 		</java>
 	</target>
 
 	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
 	<target name="globalexperimentparameters">
-		<mkdir dir="${run.dir}" />
 		<java fork="true" classname="experiment.GlobalExperimentParameters">
 			<arg value="--project=${user.dir}" />
-			<classpath refid="run.classpath" />
+			<classpath refid="run_classpath" />
 		</java>
 	</target>
 
 	<!-- RUNNING TASK - "ant localexperimentparameters" -->
 	<target name="localexperimentparameters">
-		<mkdir dir="${run.dir}" />
 		<java fork="true" classname="experiment.LocalExperimentParameters">
 			<arg value="--project=${user.dir}" />
-			<classpath refid="run.classpath" />
+			<classpath refid="run_classpath" />
 		</java>
 	</target>
 

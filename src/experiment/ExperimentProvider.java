@@ -2,18 +2,13 @@ package experiment;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Calendar;
-
-import experiment.GlobalExperimentParameters;
-import experiment.LocalExperimentParameters;
 
 public class ExperimentProvider {
 
     /** Load the global parameters from the file system and return to the JUnitParams-driven experimentation framework */
     public static List<String> getGlobalExperimentParameters() {
 	// load the global experiment parameters from the file system
-	GlobalExperimentParameters globalParametersContainer = GlobalExperimentParameters.retrieve();
+	GlobalExperimentParameters globalParametersContainer = GlobalExperimentParameters.loadFromXML();
 	
 	// extract the list of the parameters and return them for inclusion in the main global listing
 	List<String> globalParameters = globalParametersContainer.getParameters();
@@ -27,7 +22,7 @@ public class ExperimentProvider {
 	configuration.project = System.getProperty("project");
 
 	// load the parameters from the file system
-	LocalExperimentParameters localExperimentParameters = LocalExperimentParameters.retrieve();
+	LocalExperimentParameters localExperimentParameters = LocalExperimentParameters.loadFromXML();
 	List<String> datagenerators = localExperimentParameters.getDatagenerators();
 	List<String> databases = localExperimentParameters.getDatabases();
 	List<String> satisfyrowss = localExperimentParameters.getSatisfyrows();

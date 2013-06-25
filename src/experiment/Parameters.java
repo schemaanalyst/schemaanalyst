@@ -1,15 +1,26 @@
 package experiment;
 
-import plume.*;
+import org.schemaanalyst.util.ReflectiveToString;
 
-import java.util.List;
-import java.util.Scanner;
-import java.util.Arrays;
-import java.util.ArrayList;
+/**
+ * Represents classes used to store parameters that specify behavior at runtime.
+ * 
+ * @author Chris J. Wright
+ */
+public abstract class Parameters {
 
-public interface Parameters {
-
-    public void setDefaultParameters();
-    public String toString();
-
+    /**
+     * Sets the default values for the parameters.
+     */
+    public abstract void setDefaultParameters();
+    
+    /**
+     * Create the String representation of this object.
+     *
+     * @return The representation.
+     */
+    @Override
+    public String toString() {
+        return ReflectiveToString.toString(this);
+    }
 }

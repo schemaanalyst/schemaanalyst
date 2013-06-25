@@ -2,7 +2,7 @@
  */
 package experiment.mutation2013;
 
-import experiment.results.XMLSerialiser;
+import experiment.util.XMLSerialiser;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.io.FileUtils;

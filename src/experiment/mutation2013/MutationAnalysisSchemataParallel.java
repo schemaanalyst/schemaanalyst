@@ -4,7 +4,7 @@ package experiment.mutation2013;
 
 import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
-import experiment.results.XMLSerialiser;
+import experiment.util.XMLSerialiser;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
