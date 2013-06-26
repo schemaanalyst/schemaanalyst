@@ -2,6 +2,7 @@ package experiment;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ExperimentProvider {
 
@@ -132,7 +133,7 @@ public class ExperimentProvider {
 	}
 	
 	// debugging information and then return the local experiment parameters
-	System.out.println("ExperimentProvider -- all of the parameters: " + allParameters.toArray());
+	System.out.println("ExperimentProvider -- all of the parameters: " + Arrays.toString(allParameters.toArray()));
 	return allParameters.toArray();
     }
 }

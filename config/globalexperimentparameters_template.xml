@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?><experiment.GlobalExperimentParameters>
+  <parameters>
+    <string>--standalone=false</string>
+    <string>--debug=false</string>
+    <string>--foreignkeys=true</string>
+    <string>--script=false</string>
+    <string>--wantmutationreport_mrp=false</string>
+    <string>--wantmutationreport_txt=false</string>
+    <string>--onlymutationsummary=false</string>
+    <string>--project={PROJECT}</string>
+    <string>--host=localhost</string>
+    <string>--port={PORT}</string>
+    <string>--spy=false</string>
+    <string>--mutation2013_datageneration=false</string>
+    <string>--mutation2013_execution=true</string>
+  </parameters>
+</experiment.GlobalExperimentParameters>
+

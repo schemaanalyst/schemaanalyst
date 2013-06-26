@@ -5,8 +5,10 @@ package experiment.mutation2013;
 import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
 import experiment.util.XMLSerialiser;
+import java.io.File;
 import java.util.List;
 import org.schemaanalyst.configuration.Configuration;
+import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.mutation.MutantRecord;
@@ -55,7 +57,7 @@ public class MutationAnalysis {
         SQLWriter sqlWriter = database.getSQLWriter();
 
         // load the SQL execution report for the ORIGINAL create tables
-        String reportPath = "results/data-generation/" + Configuration.database + ".xml";
+        String reportPath = FolderConfiguration.results_dir + File.separator + "data-generation" + File.separator + Configuration.database + ".xml";
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // initialize the connection to the real relational database

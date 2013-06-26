@@ -28,8 +28,7 @@
 		<delete dir="${dist_dir}"/>
 		<delete dir="${run_dir}"/>
 		<delete dir="${databases_dir}"/>
-		<delete file="${config_dir}/localexperimentparameters.xml"/>
-		<delete file="${config_dir}/globalexperimentparameters.xml"/>
+		<delete dir="${results_dir}"/>
 	</target>
 
 	<!-- COMPILING TASK - "ant compile" -->  
@@ -87,7 +86,7 @@
 	<target name="experiment">
 		<junit fork="yes">
 			<test name="experiment.AllExperiments" />
-			<jvmarg value="-Dproject=${user_dir}" />
+			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>

@@ -3,7 +3,6 @@ package org.schemaanalyst.mutation;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.lang.StringBuilder;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver; 
@@ -11,16 +10,13 @@ import com.thoughtworks.xstream.io.xml.StaxDriver;
 import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.mutation.MutationUtilities;
-import org.schemaanalyst.mutation.MutationReportScores;
-import org.schemaanalyst.mutation.MutationReportScore;
+import org.schemaanalyst.configuration.FolderConfiguration;
 
 public class MutationReport {
+    
+    public static final String DEFAULT_LOCATION = FolderConfiguration.results_dir + File.separator;
 
     /** The report of the ORIGINAL, NON-MUTANT schema */
     private SQLExecutionReport originalReport;
@@ -41,7 +37,7 @@ public class MutationReport {
     private static PrintWriter reportOutputText;
 
     public MutationReport() {
-	mutantReports = new ArrayList<MutantReport>();
+	mutantReports = new ArrayList<>();
 	mutationReportScores = new MutationReportScores();
     }
 
@@ -204,8 +200,7 @@ public class MutationReport {
 	try {
 	    // create the scripts directory for storing the automatically
 	    // generated scripts for satisfying and violating the schema
-	    File reportsDirectory = new File(Configuration.project +
-					     "MutationReports/");
+	    File reportsDirectory = new File(DEFAULT_LOCATION);
 	    
 	    // if the Scripts/ directory does not exist, then create it
 	    if (!reportsDirectory.exists()) {
@@ -215,16 +210,12 @@ public class MutationReport {
 	    
 	    // create a PrintWriter associated with the serialization file
 	    if(Configuration.wantmutationreport_mrp) {
-		reportOutputSer = new PrintWriter(Configuration.project +
-						  "/" + "MutationReports/" +
-						  Configuration.mutationreport_mrp);
+		reportOutputSer = new PrintWriter(FolderConfiguration.results_dir + Configuration.mutationreport_mrp);
 	    }
 
 	    // create the PrintWriter associated with the text file
 	    if(Configuration.wantmutationreport_txt) {
-		reportOutputText = new PrintWriter(Configuration.project +
-						   "/" + "MutationReports/" +
-						   Configuration.mutationreport_txt);
+		reportOutputText = new PrintWriter(FolderConfiguration.results_dir + Configuration.mutationreport_txt);
 	    }
 	}
 
@@ -239,9 +230,7 @@ public class MutationReport {
     public static void configureForReportLoading() {
 	// create the File associated with the serialized file; this can be
 	// used during the reloading process
-	report = new File(Configuration.project +
-			  "/" + "MutationReports/" +
-			  Configuration.mutationreport_mrp);
+	report = new File(FolderConfiguration.results_dir + Configuration.mutationreport_mrp);
     }
 
     /** Save the MutationReport to the file system using XStream */

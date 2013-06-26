@@ -13,9 +13,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import experiment.util.XMLFormatter;
+import org.schemaanalyst.configuration.FolderConfiguration;
 
 
 public class ExperimentalResults {
+    
+    private static final String DEFAULT_LOCATION = FolderConfiguration.results_dir + File.separator;
 
     /** The header with the name of all of the parameters and measured variables */
     private ArrayList<String> header;
@@ -52,18 +55,12 @@ public class ExperimentalResults {
 
     /** Initialize the experimental results */
     public ExperimentalResults() {
-	header = new ArrayList<String>();
-	experimentalResult = new ExperimentalResult();
-	wroteHeader = false;
-	wroteCountHeader = false;
-	wroteInsertCountHeader = false;
-	wroteExecutionTimeHeader = false;
-	name = "";
+	this("");
     }
 
     /** Initialize the experimental results with the provided name for the file */
     public ExperimentalResults(String name) {
-	header = new ArrayList<String>();
+	header = new ArrayList<>();
 	experimentalResult = new ExperimentalResult();
 	wroteHeader = false;
 	wroteCountHeader = false;
@@ -188,9 +185,7 @@ public class ExperimentalResults {
 	
 	try {
 	    // write the header to the file for the very first time
-	    dataOutputHeader = new PrintWriter(ExperimentConfiguration.project +
-					       "/" + "Experiments/" +
-					       name + "ExperimentalResults.dat");
+	    dataOutputHeader = new PrintWriter(DEFAULT_LOCATION + "experimentalresults.dat");
 	}
 	    
 	catch(FileNotFoundException e) {
@@ -217,9 +212,7 @@ public class ExperimentalResults {
 	
 	try {
 	    // write the header to the file for the very first time
-	    dataOutput = new FileWriter(ExperimentConfiguration.project +
-					"/" + "Experiments/" +
-					name + "ExperimentalResults.dat", PLEASE_APPEND);
+	    dataOutput = new FileWriter(DEFAULT_LOCATION + "experimentalresults.dat", PLEASE_APPEND);
 	}
 
 	catch(IOException e) {
@@ -235,8 +228,7 @@ public class ExperimentalResults {
 	try {
 	    // create the scripts directory for storing the automatically
 	    // generated scripts for satisfying and violating the schema
-	    File experimentsDirectory = new File(ExperimentConfiguration.project +
-					     "/" + "Experiments/");
+	    File experimentsDirectory = new File(DEFAULT_LOCATION);
 	    
 	    // if the Scripts/ directory does not exist, then create it
 	    if (!experimentsDirectory.exists()) {
@@ -245,9 +237,7 @@ public class ExperimentalResults {
 	    }	    
 
 	    // configure the output serializer correctly
-	    reportOutputSer = new PrintWriter(ExperimentConfiguration.project +
-					      "/" + "Experiments/" +
-					      "ExperimentalResults.xml");
+	    reportOutputSer = new PrintWriter(DEFAULT_LOCATION + "experimentalresults.xml");
 	}
 	
 	catch(FileNotFoundException e) {
@@ -267,8 +257,7 @@ public class ExperimentalResults {
 	try {
 	    // create the scripts directory for storing the automatically
 	    // generated scripts for satisfying and violating the schema
-	    File experimentsDirectory = new File(ExperimentConfiguration.project +
-					     "/" + "Experiments/");
+	    File experimentsDirectory = new File(DEFAULT_LOCATION);
 	    
 	    // if the Scripts/ directory does not exist, then create it
 	    if (!experimentsDirectory.exists()) {
@@ -277,9 +266,7 @@ public class ExperimentalResults {
 	    }	    
 
 	    // create the file that stores the XML
-	    File parameters = new File(ExperimentConfiguration.project +
-				       "/" + "Experiments/" +
-				       "ExperimentalResults.xml");
+	    File parameters = new File(DEFAULT_LOCATION + "experimentalresults.xml");
 	    
 	    // read in the contents of the file to a string
 	    String xml = new Scanner(parameters).useDelimiter("\\A").next();
