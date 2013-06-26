@@ -107,7 +107,7 @@ public class SchemaParser {
     	logger.info("Parsing column \"" + columnName + "\" one line " + node.getLineNo());   		
 		
     	// get data type and add column to table
-		DataType type = DataTypeMapper.map(node.getDatatype(), node);	    	
+		DataType type = DataTypeParser.map(node.getDatatype(), node);	    	
 		Column column = table.addColumn(columnName, type);          	
 			    	
 		// parse any inline column constraints
@@ -146,7 +146,7 @@ public class SchemaParser {
         				node.getColumnNameList());
         		break;        		
         	default:
-        		throw new UnsupportedFeatureException(node);
+        		throw new UnsupportedSQLException(node);
         }
 	}
 	
@@ -195,7 +195,7 @@ public class SchemaParser {
     					node.getColumnList());
     			break;
     		default:
-    			throw new UnsupportedFeatureException(node);
+    			throw new UnsupportedSQLException(node);
     	}    	
 	}
 
@@ -204,7 +204,7 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TExpression expressionNode) {
 
 		String constraintName = stripQuotes(constraintNameObject);
-		Expression expression = ExpressionMapper.map(currentTable, expressionNode);		
+		Expression expression = ExpressionParser.map(currentTable, expressionNode);		
 		currentTable.addCheckConstraint(constraintName, expression);		
 	}	
 	

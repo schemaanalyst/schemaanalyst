@@ -36,7 +36,7 @@ public class SchemaJavaWriter {
 	
 	protected Schema schema;
 	protected ImportManager importManager;
-	protected JavaBuffer jb;
+	protected JavaBuilder jb;
 	
 	public SchemaJavaWriter(Schema schema) {
 		this.schema = schema;
@@ -49,7 +49,7 @@ public class SchemaJavaWriter {
 	public String writeSchema(String packageName) {
 		// initialise	
 		importManager = new ImportManager();		
-		jb = new JavaBuffer();		
+		jb = new JavaBuilder();		
 			
 		// get schema info
 		importManager.addImportFor(Schema.class);		
@@ -57,12 +57,12 @@ public class SchemaJavaWriter {
 		String schemaName = schema.getName();
 		
 		// start class
-		jb.addln("public class " + schemaName + " extends " + schemaClassName + " {");
+		jb.appendln("public class " + schemaName + " extends " + schemaClassName + " {");
 		
 		// start constructor
-		jb.addln();		
-		jb.addln(1, "public " + schemaName + "() {");		
-		jb.addln(2, "super(\"" + schemaName + "\");");
+		jb.appendln();		
+		jb.appendln(1, "public " + schemaName + "() {");		
+		jb.appendln(2, "super(\"" + schemaName + "\");");
 		
 		// write table statements
 		List<Table> tables = schema.getTables();
@@ -71,10 +71,10 @@ public class SchemaJavaWriter {
 		} 
 		
 		// end constructor		
-		jb.addln(1, "}");
+		jb.appendln(1, "}");
 		
 		// end class
-		jb.addln(0, "}");		
+		jb.appendln(0, "}");		
 
 		// get final Java java
 		String preamble = getPackageStatement(packageName) + importManager.writeImportStatements(); 
@@ -88,14 +88,14 @@ public class SchemaJavaWriter {
 		
 		importManager.addImportFor(table);
 
-		jb.addln();				
+		jb.appendln();				
 		String className = Table.class.getSimpleName();		
 		String tableName = table.getName();
 		String tableVarName = getTableVariableName(table);
 		
 		String tableConstruction = className + " " + tableVarName + " = " + 
 								   SCHEMA_CREATE_TABLE_METHOD + "(\"" + tableName + "\");";		
-		jb.addln(tableConstruction);
+		jb.appendln(tableConstruction);
 		
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
@@ -116,7 +116,7 @@ public class SchemaJavaWriter {
 		String statement = tableVarName + "." + TABLE_ADD_COLUMN_METHOD + 
 						   "(\"" + columnName + "\", " + writeDataTypeConstruction(column.getType()) + ");";
 		
-		jb.addln(statement);
+		jb.appendln(statement);
 	}
 	
 	protected String writeDataTypeConstruction(DataType dataType) {
@@ -136,7 +136,10 @@ public class SchemaJavaWriter {
 			}
 
 			public void visit(LengthLimited type) {
-				java += type.getLength();
+				Integer length = type.getLength();
+				if (length != null) {
+					java += type.getLength();
+				}
 			}
 
 			public void visit(PrecisionedAndScaled type) {
@@ -225,7 +228,7 @@ public class SchemaJavaWriter {
 		}
 		
 		String java = new SchemaWriterContraintVisitor().writeConstraint(tableVarName, constraint);
-		jb.addln(java);
+		jb.appendln(java);
 	}
 	
 	protected String writeGetColumnCode(String tableVarName, Column column) {

@@ -23,15 +23,15 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
-public class ExpressionMapper {
+public class ExpressionParser {
 
 	static Expression map(Table currentTable, TExpression node) {
-		return (new ExpressionMapper(currentTable)).getExpression(node);
+		return (new ExpressionParser(currentTable)).getExpression(node);
 	}	
 	
 	Table currentTable;	
 	
-	ExpressionMapper(Table currentTable) {
+	ExpressionParser(Table currentTable) {
 		this.currentTable = currentTable;
 	}
 
@@ -127,7 +127,7 @@ public class ExpressionMapper {
 											 notBetween);
 
 			default:	
-				throw new UnsupportedFeatureException(node);
+				throw new UnsupportedSQLException(node);
 		}
 	}
 }

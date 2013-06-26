@@ -5,13 +5,17 @@ public class CharDataType extends DataType
 	
 	private static final long serialVersionUID = 1159098580458473495L;
 	
-	private int length;
+	private Integer length;
 	
-	public CharDataType(int length) {
+	public CharDataType() {
+		length = null;
+	}
+	
+	public CharDataType(Integer length) {
 		this.length = length;
 	}
 	
-	public int getLength() {
+	public Integer getLength() {
 		return length;
 	}
 	

@@ -4,7 +4,11 @@ public class VarCharDataType extends CharDataType {
 
 	private static final long serialVersionUID = 92948344507720958L;
 	
-	public VarCharDataType(int length) {
+	public VarCharDataType() {
+		super();
+	}	
+	
+	public VarCharDataType(Integer length) {
 		super(length);
 	}
 	

@@ -1,6 +1,4 @@
 CREATE TABLE test (
-     id INT
+     id serial
 );
 
-ALTER TABLE test
-    ADD CONSTRAINT pkey PRIMARY KEY (id);
