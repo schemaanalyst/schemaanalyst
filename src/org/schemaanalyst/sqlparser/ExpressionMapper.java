@@ -113,7 +113,7 @@ public class ExpressionMapper {
 										getExpression(node.getRightOperand()), 
 										notIn);
 
-				// *** NULL *** 				
+			// *** NULL *** 				
 			case null_t:
 				boolean notNull = node.getOperatorToken().toString().equals("NOTNULL") || node.getNotToken() != null;	
 				return new NullExpression(getExpression(node.getLeftOperand()), notNull);			
@@ -125,105 +125,6 @@ public class ExpressionMapper {
 											 getExpression(node.getLeftOperand()),
 											 getExpression(node.getRightOperand()),
 											 notBetween);
-		
-			case arithmetic_compound_operator_t:
-			case arithmetic_divide_t:
-			case arithmetic_minus_t:
-			case arithmetic_modulo_t:
-			case arithmetic_plus_t:
-			case arithmetic_t:
-			case arithmetic_times_t:
-			case array_constructor_t:			
-			case arrayaccess_t:
-			case assignment_t:
-			case at_local_t:
-			case at_time_zone_t:
-			case bitwise_and_t:
-			case bitwise_exclusive_or_t:
-			case bitwise_or_t:
-			case bitwise_shift_left_t:
-			case bitwise_shift_right_t:
-			case bitwise_t:
-			case bitwise_xor_t:
-			case case_t:
-			case collate_t:
-			case collection_constructor_list_t:
-			case collection_constructor_multiset_t:
-			case collection_constructor_set_t:
-			case concatenate_t:
-			case cursor_t:
-			case datetime_t:
-			case day_to_second_t:
-			case exists_t:
-			case exponentiate_t:
-			case fieldselection_t:
-			case floating_point_t:
-			case function_t:
-			case group_comparison_t:
-			case group_t:
-			case interval_t:
-			case is_distinct_from_t:
-			case is_document_t:
-			case is_false_t:
-			case is_of_type_t:
-			case is_t:
-			case is_true_t:
-			case is_unknown_t:
-			case left_join_t:
-			case left_shift_t:
-			case logical_not_t:
-			case logical_t:
-			case logical_xor_t:
-			case member_of_t:
-			case model_t:
-			case multiset_except_distinct_t:
-			case multiset_except_t:
-			case multiset_intersect_distinct_t:
-			case multiset_intersect_t:
-			case multiset_t:
-			case multiset_union_distinct_t:
-			case multiset_union_t:
-			case new_structured_type_t:
-			case new_variant_type_t:
-			case next_value_for_t:
-			case not_initialized_yet_t:
-			case object_access_t:
-			case pattern_matching_t:
-			case period_ldiff_t:
-			case period_p_intersect_t:
-			case period_p_normalize_t:
-			case period_rdiff_t:
-			case place_holder_t:
-			case power_t:
-			case range_t:
-			case ref_arrow_t:
-			case right_join_t:
-			case right_shift_t:
-			case row_constructor_t:
-			case scope_resolution_t:
-			case simple_source_token_t:
-			case sqlserver_proprietary_column_alias_t:
-			case subquery_t:
-			case type_constructor_t:
-			case typecast_t:
-			case unary_absolutevalue_t:
-			case unary_binary_operator_t:
-			case unary_bitwise_not_t:
-			case unary_connect_by_root_t:
-			case unary_cuberoot_t:
-			case unary_factorial_t:
-			case unary_factorialprefix_t:
-			case unary_left_unknown_t:
-			case unary_plus_t:
-			case unary_prior_t:
-			case unary_right_unknown_t:
-			case unary_squareroot_t:
-			case unary_t:
-			case units_t:
-			case unknown_t:
-			case until_changed_t:
-			case xml_t:
-			case year_to_month_t:			
 
 			default:	
 				throw new UnsupportedFeatureException(node);
