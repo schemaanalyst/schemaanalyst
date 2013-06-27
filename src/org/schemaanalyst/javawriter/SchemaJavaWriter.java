@@ -57,7 +57,7 @@ public class SchemaJavaWriter {
 		// write table statements
 		List<Table> tables = schema.getTables();
 		for (Table table : tables) {
-			addTableCode(table);
+			appendTableCode(table);
 		} 
 		
 		// end constructor		
@@ -75,7 +75,7 @@ public class SchemaJavaWriter {
 		return preamble + code.toString();
 	}
 	
-	protected void addTableCode(Table table) {
+	protected void appendTableCode(Table table) {
 		// add table creation statement
 		String tableCreation = codeWriter.writeMethodCall(
 				"this", 

@@ -67,6 +67,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("StudentResidence", new Postgres());
+		run("BankAccount-SchemaAnalyst", new Postgres());
 	}
 }

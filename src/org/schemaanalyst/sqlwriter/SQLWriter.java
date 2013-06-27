@@ -63,7 +63,7 @@ public class SQLWriter {
 	}
 	
 	public String writeComment(String comment) {
-		return "-- "+comment;
+		return "-- " + comment;
 	}
 	
 	public List<String> writeCreateTableStatements(Schema schema) {
