@@ -32,11 +32,11 @@ public class JavaWriter {
 	}	
 		
 	public String writeImportStatements() {
-		String java = "";
+		StringBuilder java = new StringBuilder();
 		for (String classToImport : imports) {
-			java += "import " + classToImport + ";\n";
+			java.append("import " + classToImport + ";" + System.lineSeparator());
 		}		
-		return java;
+		return java.toString();
 	}		
 	
 	
@@ -79,17 +79,17 @@ public class JavaWriter {
 	}
 			
 	public String writeArgsList(List<String> args) {
-		String java = "";
+		StringBuilder java = new StringBuilder();
 		boolean first = true;
 		for (String arg : args) {
 			if (first) {
 				first = false;
 			} else {
-				java += ", ";
+				java.append(", ");
 			}
-			java += arg;
+			java.append(arg);
 		}
-		return java;
+		return java.toString();
 	}
 	
 	/*** PRIMITIVE TYPES AND STRINGS ***/

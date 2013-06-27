@@ -3,7 +3,7 @@ package org.schemaanalyst.util;
 public class IndentableStringBuilder {
 
 	protected int indentLevel;
-	protected StringBuilder str;
+	protected StringBuilder sb;
 	
 	public IndentableStringBuilder() {
 		this(0);
@@ -11,35 +11,71 @@ public class IndentableStringBuilder {
 	
 	public IndentableStringBuilder(int indentLevel) {
 		this.indentLevel = indentLevel;
-		str = new StringBuilder();
+		sb = new StringBuilder();
 	}
 	
 	public void prepend(String str) {
-		this.str.insert(0, str);
+		this.sb.insert(0, str);
 	}	
 	
-	public void appendln() {
-		str.append(System.lineSeparator());
-	}	
-
 	public void appendln(String line) {
-		for (int i=0; i < indentLevel; i++) {
-			str.append("\t");
-		}
-		str.append(line);
+		indent();
+		append(line);
 		appendln();
 	}
 		
 	public void appendln(int indentLevel, String line) {
-		this.indentLevel = indentLevel;
+		setIndentLevel(indentLevel);
 		appendln(line);
 	}
 		
 	public void append(String str) {
-		this.str.append(str);
+		this.sb.append(str);
 	}	
 	
+	public void append(int indentLevel, String str) {
+		indent(indentLevel);
+		append(str);
+	}
+	
+	public void appendln(int indentLevel) {
+		indent(indentLevel);
+		appendln();
+	}
+	
+	public void appendln() {
+		sb.append(System.lineSeparator());
+	}	
+	
+	public void appendTab() {
+		sb.append("\t");
+	}
+	
+	public void appendTabbed(String str) {
+		appendTab();
+		append(str);
+	}
+		
+	public void indent(int indentLevel) {
+		setIndentLevel(indentLevel);
+		indent();
+	}	
+	
+	public void indent() {
+		for (int i=0; i < indentLevel; i++) {
+			sb.append("\t");
+		}
+	}
+	
+	public void setIndentLevel(int indentLevel) {
+		this.indentLevel = indentLevel;
+	}
+	
+	public int getIndentLevel() {
+		return indentLevel;
+	}
+	
 	public String toString() {
-		return str.toString();
+		return sb.toString();
 	}
 }

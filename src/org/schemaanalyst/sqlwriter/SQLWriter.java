@@ -14,6 +14,7 @@ import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
+import org.schemaanalyst.util.IndentableStringBuilder;
 
 public class SQLWriter {
 
@@ -78,48 +79,43 @@ public class SQLWriter {
 	
 	public String writeCreateTableStatement(Table table) {
 					
-		StringBuilder sql = new StringBuilder();
+		IndentableStringBuilder sql = new IndentableStringBuilder();
 		sql.append("CREATE TABLE ");
 		sql.append(table.getName());
-		sql.append(" ( \n");
+		sql.appendln(" (");
 		
 		boolean first = true;
 		for (Column column : table.getColumns()) {
 			if (first) first = false;
-			else sql.append(", \n");
+			else sql.appendln(0, ",");
 			
 			// write column name
-			sql.append("\t"); sql.append(column.getName()); 
+			sql.append(1, column.getName()); 
 			
 			// write column type			
-			sql.append("\t"); 
-			sql.append(dataTypeSQLWriter.writeDataType(column));
+			sql.appendTabbed(dataTypeSQLWriter.writeDataType(column));
 			
 			// write column constraints
 			PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
 			if (primaryKey != null && !primaryKey.hasMultipleColumns() && primaryKey.involvesColumn(column)) {
-				sql.append("\t"); 
-				sql.append(constraintSQLWriter.writeConstraint(primaryKey));
+				sql.appendTabbed(constraintSQLWriter.writeConstraint(primaryKey));
 			}
 			
 			for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
 				if (!foreignKey.hasMultipleColumns() && foreignKey.involvesColumn(column)) {
-					sql.append("\t"); 
-					sql.append(constraintSQLWriter.writeConstraint(foreignKey));
+					sql.appendTabbed(constraintSQLWriter.writeConstraint(foreignKey));
 				}	
 			}			
 			
 			for (UniqueConstraint unique : table.getUniqueConstraints()) {
 				if (!unique.hasMultipleColumns() && unique.involvesColumn(column)) {
-					sql.append("\t"); 
-					sql.append(constraintSQLWriter.writeConstraint(unique));
+					sql.appendTabbed(constraintSQLWriter.writeConstraint(unique));
 				}	
 			}				
 							
 			for (NotNullConstraint notNull : table.getNotNullConstraints()) {
 				if (notNull.getColumn().equals(column)) {
-					sql.append("\t"); 
-					sql.append(constraintSQLWriter.writeConstraint(notNull));
+					sql.appendTabbed(constraintSQLWriter.writeConstraint(notNull));
 				}	
 			}			
 		}
@@ -127,40 +123,41 @@ public class SQLWriter {
 		// write primary key
 		PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
 		if (primaryKey != null && primaryKey.hasMultipleColumns()) {
-			sql.append(",\n\t"); 
-			sql.append(constraintSQLWriter.writeConstraint(primaryKey));
+			sql.appendln(0, ","); 
+			sql.append(1, constraintSQLWriter.writeConstraint(primaryKey));
 		}
 		
 		// write foreign keys
 		for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
 			if (foreignKey.hasMultipleColumns()) {
-				sql.append(",\n\t"); 
-				sql.append(constraintSQLWriter.writeConstraint(foreignKey));
+				sql.appendln(0, ","); 
+				sql.append(1, constraintSQLWriter.writeConstraint(foreignKey));
 			}
 		}
 		
-		// write uniques
+		// write unique constraints
 		for (UniqueConstraint unique : table.getUniqueConstraints()) {
 			if (unique.hasMultipleColumns()) {
-				sql.append(",\n\t"); 
-				sql.append(constraintSQLWriter.writeConstraint(unique));
+				sql.appendln(0, ","); 
+				sql.append(1, constraintSQLWriter.writeConstraint(unique));
 			}
 		}		
 
-		// write checks
+		// write check constraints
 		for (CheckConstraint check : table.getCheckConstraints()) {
-			sql.append(",\n\t"); 
-			sql.append(constraintSQLWriter.writeConstraint(check));	
+			sql.appendln(0, ","); 
+			sql.append(1, constraintSQLWriter.writeConstraint(check));	
 		}				
 		
-		sql.append("\n)");
+		sql.appendln(0);
+		sql.appendln(")");
 		return sql.toString();
 	}	
 	
 	public String writeInsertStatement(Table table, List<Column> columns, List<String> values) {
-		return "INSERT INTO " + table.getName()+
-		       "("+SQLWriter.writeColumnList(columns)+") "+
-		       "VALUES("+SQLWriter.writeSeparatedList(values)+")";
+		return "INSERT INTO " + table.getName() +
+		       "(" + SQLWriter.writeColumnList(columns) + ") "+
+		       "VALUES(" + SQLWriter.writeSeparatedList(values) + ")";
 	}
 	
 	public String writeInsertStatement(Row row) {
