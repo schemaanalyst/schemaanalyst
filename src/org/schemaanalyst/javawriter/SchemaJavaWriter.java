@@ -6,6 +6,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.util.IndentableStringBuilder;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 
@@ -21,7 +22,7 @@ public class SchemaJavaWriter {
 	protected ExpressionJavaWriter expressionJavaWriter;
 	
 	// for nice indented output
-	protected IndentedCodeBuffer buff;
+	protected IndentableStringBuilder code;
 	
 	public SchemaJavaWriter(Schema schema) {
 		this.schema = schema;
@@ -38,7 +39,7 @@ public class SchemaJavaWriter {
 		expressionJavaWriter = new ExpressionJavaWriter(codeWriter);
 		constraintJavaWriter = new ConstraintJavaWriter(codeWriter, expressionJavaWriter);
 		
-		buff = new IndentedCodeBuffer();		
+		code = new IndentableStringBuilder();		
 		
 		// get schema info
 		codeWriter.addImportFor(Schema.class);		
@@ -46,12 +47,12 @@ public class SchemaJavaWriter {
 		String schemaName = schema.getName();
 		
 		// start class
-		buff.appendln("public class " + schemaName + " extends " + schemaClassName + " {");
+		code.appendln("public class " + schemaName + " extends " + schemaClassName + " {");
 		
 		// start constructor
-		buff.appendln();		
-		buff.appendln(1, "public " + schemaName + "() {");		
-		buff.appendln(2, "super(\"" + schemaName + "\");");
+		code.appendln();		
+		code.appendln(1, "public " + schemaName + "() {");		
+		code.appendln(2, "super(\"" + schemaName + "\");");
 		
 		// write table statements
 		List<Table> tables = schema.getTables();
@@ -60,10 +61,10 @@ public class SchemaJavaWriter {
 		} 
 		
 		// end constructor		
-		buff.appendln(1, "}");
+		code.appendln(1, "}");
 		
 		// end class
-		buff.appendln(0, "}");		
+		code.appendln(0, "}");		
 
 		// get final java code
 		String preamble = codeWriter.writePackageStatement(packageName) + 
@@ -71,7 +72,7 @@ public class SchemaJavaWriter {
 		if (preamble != "") {
 			preamble += System.lineSeparator();		
 		}
-		return preamble + buff.getJava();
+		return preamble + code.toString();
 	}
 	
 	protected void addTableCode(Table table) {
@@ -81,8 +82,8 @@ public class SchemaJavaWriter {
 				SCHEMA_CREATE_TABLE_METHOD, 
 				codeWriter.writeString(table.getName()));
 		
-		buff.appendln();		
-		buff.appendln(tableCreation + ";");
+		code.appendln();		
+		code.appendln(tableCreation + ";");
 		
 		// add columns
 		List<Column> columns = table.getColumns();
@@ -93,13 +94,13 @@ public class SchemaJavaWriter {
 					codeWriter.writeString(column),
 					dataTypeJavaWriter.writeConstruction(column.getDataType())); 
 			
-			buff.appendln(columnAddition + ";");
+			code.appendln(columnAddition + ";");
 		}
 	
 		// add constraints
 		List<Constraint> constraints = table.getConstraints();
 		for (Constraint constraint : constraints) {
-			buff.appendln(constraintJavaWriter.writeAdditionToTable(table, constraint) + ";");
+			code.appendln(constraintJavaWriter.writeAdditionToTable(table, constraint) + ";");
 		}
 	}
 }
