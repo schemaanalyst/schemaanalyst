@@ -33,7 +33,6 @@ public class SchemaJavaWriter {
 						TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD = "setPrimaryKeyConstraint",
 						TABLE_ADD_UNIQUE_CONSTRAINT_METHOD = "addUniqueConstraint";
 
-	
 	protected Schema schema;
 	protected ImportManager importManager;
 	protected JavaBuilder jb;
@@ -132,7 +131,7 @@ public class SchemaJavaWriter {
 			}
 			
 			public void visit(DataType type) {
-				// do nothing
+				// no params for standard types -- do nothing
 			}
 
 			public void visit(LengthLimited type) {

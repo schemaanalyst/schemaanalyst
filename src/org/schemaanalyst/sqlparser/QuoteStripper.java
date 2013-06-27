@@ -4,10 +4,10 @@ import gudusoft.gsqlparser.nodes.TObjectName;
 
 public class QuoteStripper {
 
-	static final String[] quoteChars = {"\"", "'", "`"};
+	static final String[] QUOTE_CHARS = {"\"", "'", "`"};
 	
 	static boolean isQuoted(String string) {
-		for (String quoteChar : quoteChars) {
+		for (String quoteChar : QUOTE_CHARS) {
     		if (string.startsWith(quoteChar) && string.endsWith(quoteChar)) {
     			return true;
     		}

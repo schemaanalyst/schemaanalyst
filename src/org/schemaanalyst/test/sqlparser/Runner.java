@@ -59,6 +59,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("PagilaPrime-SchemaAnalyst", new Postgres());
+		run("World-SchemaAnalyst", new MySQL());
 	}
 }

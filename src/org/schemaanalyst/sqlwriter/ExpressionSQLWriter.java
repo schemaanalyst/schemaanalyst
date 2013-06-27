@@ -34,7 +34,6 @@ public class ExpressionSQLWriter {
 				return sql;
 			}
 			
-			
 			public void visit(AndExpression expression) {
 				sql = writeAndExpression(expression);
 				
@@ -81,7 +80,7 @@ public class ExpressionSQLWriter {
 	}
 	
 	public String writeAndExpression(AndExpression expression) {
-		return writeComposedExpression(expression, "AND");
+		return writeComposedExpression(expression, " AND ");
 	}
 	
 	
@@ -109,7 +108,7 @@ public class ExpressionSQLWriter {
 			if (first) {
 				first = false;
 			} else {
-				sql += " " + operator + " ";
+				sql += operator;
 			}
 			sql += writeExpression(subexpression);
 		}
@@ -141,7 +140,7 @@ public class ExpressionSQLWriter {
 	}
 	
 	public String writeOrExpression(OrExpression expression) {
-		return writeComposedExpression(expression, "OR");
+		return writeComposedExpression(expression, " OR ");
 	}	
 	
 	public String writeParenthesisedExpression(ParenthesisedExpression expression) {

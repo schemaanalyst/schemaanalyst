@@ -29,7 +29,7 @@ public class OperandSQLWriter {
 			}
 
 			public void visit(Value value) {
-				sql = writeValue(value);
+				sql = writeValue(value);	
 			}
 		}
 		

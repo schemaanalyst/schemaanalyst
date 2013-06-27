@@ -38,12 +38,12 @@ CREATE TABLE countrylanguage (
     percentage real NOT NULL
 );
 
-ALTER TABLE countrylanguage
+ALTER TABLE ONLY countrylanguage
     ADD CONSTRAINT countrylanguage_pkey PRIMARY KEY (countrycode, "language");
 
-ALTER TABLE country
+ALTER TABLE ONLY country
     ADD CONSTRAINT country_capital_fkey FOREIGN KEY (capital) REFERENCES city(id);
 
-ALTER TABLE countrylanguage
+ALTER TABLE ONLY countrylanguage
     ADD CONSTRAINT countrylanguage_countrycode_fkey FOREIGN KEY (countrycode) REFERENCES country(code);
 

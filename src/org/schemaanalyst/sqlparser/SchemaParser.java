@@ -115,14 +115,14 @@ public class SchemaParser {
 	}
 	
 	protected void parseAlterTableStatement(TAlterTableStatement node) {
-		logger.warning("Parsing alter table statement, which has an incomplete GSP implementation" + node.getLineNo());    		
+		logger.warning("Parsing alter table statement \"" + node + "\", which has an incomplete GSP implementation at line: " + node.getLineNo());    		
 		
 		String tableName = stripQuotes(node.getTableName());
 		Table table = schema.getTable(tableName);
 		
 		TAlterTableOptionList optionList = node.getAlterTableOptionList();
 		if (optionList == null) {
-			logger.severe("Option list for alter table statement is null -- giving up" + node.getLineNo());
+			logger.severe("Option list for alter table statement for \"" + table + "\" is null -- giving up at line: " + node.getLineNo());
 		} else {		
 			for (int i=0; i < optionList.size(); i++){
 				parseAlterTableOption(table, optionList.getAlterTableOption(i));
