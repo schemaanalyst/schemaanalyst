@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.mysql.MySQL;
 import org.schemaanalyst.database.postgres.Postgres;
+import org.schemaanalyst.javawriter.SchemaJavaWriter;
 import org.schemaanalyst.sqlparser.SchemaParser;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
@@ -40,8 +41,15 @@ public class Runner {
 			parsedSQL += statement + "\n";
 		}
 		
+		SchemaJavaWriter jw = new SchemaJavaWriter(parsedSchema);
+		String javaCode = jw.writeSchema("casestudy");		
+		
 		System.out.println("-- ************ Parsed ************");
 		System.out.println(parsedSQL);
+		
+		System.out.println("-- ************ Java code ************");
+		System.out.println(javaCode);		
+		
 	}
 
 	private static void parseAndPrintOriginalSchema(String caseStudy, SQLWriter sqlWriter) throws InstantiationException,
@@ -59,6 +67,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("World-SchemaAnalyst", new MySQL());
+		run("StudentResidence", new Postgres());
 	}
 }

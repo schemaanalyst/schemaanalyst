@@ -1,5 +1,6 @@
 package org.schemaanalyst.javawriter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
@@ -16,109 +17,92 @@ import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 
 public class ConstraintJavaWriter {
 
-	protected ImportManager importManager;
-	protected VariableNameManager variableNameManager;
+	protected JavaWriter javaWriter;
+	protected ExpressionJavaWriter expressionJavaWriter;
 	
-	public ConstraintJavaWriter(ImportManager importManager,
-								VariableNameManager variableNameManager) {
-		this.importManager = importManager;
-		this.variableNameManager = variableNameManager;
+	public ConstraintJavaWriter(JavaWriter javaWriter,
+								ExpressionJavaWriter expressionJavaWriter) {
+		this.javaWriter = javaWriter;
+		this.expressionJavaWriter = expressionJavaWriter;
 	}
 	
-	public String writeAdditionToTable(String tableVarName, Constraint constraint) {
+	public String writeAdditionToTable(Table table, Constraint constraint) {
 		
-		class SchemaWriterContraintVisitor implements ConstraintVisitor {
+		class WriterContraintVisitor implements ConstraintVisitor {
 
-			String tableVarName, java;
+			Table table;
+			String methodName;
+			List<String> args;
 			
-			String writeConstraint(String tableVarName, Constraint constraint) {
-				this.tableVarName = tableVarName;
-				java = "";
-				constraint.accept(this);				
-				return java;
+			String writeConstraint(Table table, Constraint constraint) {
+				this.table = table;
+				args = new ArrayList<String>();
+				if (constraint.hasName()) {
+					args.add(javaWriter.quote(constraint.getName()));
+				}				
+				constraint.accept(this);
+				return javaWriter.writeTableMethodCall(table, methodName, args);
 			}
 			
 			public void visit(CheckConstraint constraint) {
-				// TODO: add java for check constraints ...
+				methodName = TABLE_ADD_CHECK_CONSTRAINT_METHOD;				
+				args.add(expressionJavaWriter.writeConstruction(constraint.getExpression()));
 			}
 
-			public void visit(ForeignKeyConstraint constraint) {
-				java =  writeMethodCall(TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD)  + "(";				
+			public void visit(ForeignKeyConstraint constraint) {				
+				methodName = TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD;
 				
-				java += writeConstraintName(constraint);								
-				java += writeGetColumnListCode(tableVarName, constraint.getColumns(), true);
-				java += ", ";
-				
-				String refTableVarName = variableNameManager.getVariableName(constraint.getReferenceTable());
-				java += refTableVarName + ", ";
-				java += writeGetColumnListCode(refTableVarName, constraint.getReferenceColumns(), true);
-				
-				java += ");";								
+				args.add(wrapColumnArgsString(table, constraint.getColumns()));
+				args.add(javaWriter.quote(constraint.getReferenceTable().getName()));
+				args.add(wrapColumnArgsString(table, constraint.getReferenceColumns()));	
 			}
 
-			public void visit(NotNullConstraint constraint) {				
-				java =  writeMethodCall(TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD)  + "(";				
-				java += writeConstraintName(constraint);								
-				java += writeGetColumnCode(tableVarName, constraint.getColumn());
-				java += ");";				
+			public void visit(NotNullConstraint constraint) {		
+				methodName = TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD;				
+				args.add(javaWriter.writeGetColumn(table, constraint.getColumn()));				
 			}
 
 			public void visit(PrimaryKeyConstraint constraint) {
-				java =  writeMethodCall(TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD)  + "(";				
-				java += writeConstraintName(constraint);								
-				java += writeGetColumnListCode(tableVarName, constraint.getColumns());
-				java += ");";
+				methodName = TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD;
+				addColumnArgs(table, constraint.getColumns());				
 			} 
 
 			public void visit(UniqueConstraint constraint) {				
-				java =  writeMethodCall(TABLE_ADD_UNIQUE_CONSTRAINT_METHOD)  + "(";				
-				java += writeConstraintName(constraint);				
-				java += writeGetColumnListCode(tableVarName, constraint.getColumns());
-				java += ");";				
+				methodName = TABLE_ADD_UNIQUE_CONSTRAINT_METHOD;
+				addColumnArgs(table, constraint.getColumns());				
 			}	
 			
-			String writeConstraintName(Constraint constraint) {
-				return constraint.hasName() ? "\"" + constraint.getName() + "\", " : "";
+			void addColumnArgs(Table table, List<Column> columns) {
+				args.addAll(makeColumnArgsList(table, columns));
+			}			
+			
+			List<String> makeColumnArgsList(Table table, List<Column> columns) {
+				List<String> columnArgs = new ArrayList<String>();
+				for (Column column : columns) {
+					columnArgs.add(javaWriter.writeGetColumn(table, column));
+				}
+				return columnArgs;
+			}
+
+			String wrapColumnArgsString(Table table, List<Column> columns) {
+				String columnArgsString = makeColumnArgsString(table, columns);
+				if (columns.size() > 2) {
+					return javaWriter.writeMethodCall(
+							Table.class.getSimpleName(), 
+							TABLE_MAKE_COLUMN_LIST_METHOD, 
+							columnArgsString);
+				} else {
+					return columnArgsString;
+				}
 			}
 			
-			String writeMethodCall(String methodName) {
-				return tableVarName + "." + methodName;
+			String makeColumnArgsString(Table table, List<Column> columns) {
+				List<String> columnArgs = makeColumnArgsList(table, columns);
+				return javaWriter.writeArgsList(columnArgs);
 			}
+			
 		}
 		
-		return new SchemaWriterContraintVisitor().writeConstraint(tableVarName, constraint);
-	}	
-	
-	protected String writeGetColumnCode(String tableVarName, Column column) {
-		return tableVarName + "." + TABLE_GET_COLUMN_METHOD + "(\"" + column.getName() + "\")";
-	}
-	
-	protected String writeGetColumnListCode(String tableVarName, List<Column> columns) {
-		return writeGetColumnListCode(tableVarName, columns, false);
-	}
-	
-	protected String writeGetColumnListCode(String tableVarName, List<Column> columns, boolean wrapInMethod) {
-		String java = "";
-		
-		boolean doWrapInMethod = wrapInMethod && columns.size() > 2; 
-		if (doWrapInMethod) {
-			java = Table.class.getSimpleName() + "." + TABLE_MAKE_COLUMN_LIST_METHOD + "(";
-		}
-		
-		boolean first = true;
-		for (Column column : columns) {
-			if (first) {
-				first = false;
-			} else {
-				java += ", ";
-			}
-			java += writeGetColumnCode(tableVarName, column);
-		}
-		
-		if (doWrapInMethod) {
-			java += ")";
-		}
-		
-		return java;
-	}	
+		return (new WriterContraintVisitor()).writeConstraint(table, constraint);
+	}		
 }

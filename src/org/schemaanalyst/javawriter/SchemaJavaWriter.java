@@ -13,17 +13,15 @@ public class SchemaJavaWriter {
 	
 	// schema we are writing Java for
 	protected Schema schema;
-		
-	// managers 
-	protected ImportManager importManager;
-	protected VariableNameManager variableNameManager;
-	
+			
 	// sub-writers
+	protected JavaWriter codeWriter;
 	protected ConstraintJavaWriter constraintJavaWriter;
 	protected DataTypeJavaWriter dataTypeJavaWriter;	
+	protected ExpressionJavaWriter expressionJavaWriter;
 	
-	// local JavaBuilder for pretty output
-	protected JavaBuilder jb;
+	// for nice indented output
+	protected IndentedCodeBuffer buff;
 	
 	public SchemaJavaWriter(Schema schema) {
 		this.schema = schema;
@@ -35,26 +33,25 @@ public class SchemaJavaWriter {
 	
 	public String writeSchema(String packageName) {
 		// initialise	
-		importManager = new ImportManager();
-		variableNameManager = new VariableNameManager();		
+		codeWriter = new JavaWriter();
+		dataTypeJavaWriter = new DataTypeJavaWriter(codeWriter);
+		expressionJavaWriter = new ExpressionJavaWriter(codeWriter);
+		constraintJavaWriter = new ConstraintJavaWriter(codeWriter, expressionJavaWriter);
 		
-		dataTypeJavaWriter = new DataTypeJavaWriter(importManager);
-		constraintJavaWriter = new ConstraintJavaWriter(importManager, variableNameManager);
-		
-		jb = new JavaBuilder();		
+		buff = new IndentedCodeBuffer();		
 		
 		// get schema info
-		importManager.addImportFor(Schema.class);		
+		codeWriter.addImportFor(Schema.class);		
 		String schemaClassName = Schema.class.getSimpleName();
 		String schemaName = schema.getName();
 		
 		// start class
-		jb.appendln("public class " + schemaName + " extends " + schemaClassName + " {");
+		buff.appendln("public class " + schemaName + " extends " + schemaClassName + " {");
 		
 		// start constructor
-		jb.appendln();		
-		jb.appendln(1, "public " + schemaName + "() {");		
-		jb.appendln(2, "super(\"" + schemaName + "\");");
+		buff.appendln();		
+		buff.appendln(1, "public " + schemaName + "() {");		
+		buff.appendln(2, "super(\"" + schemaName + "\");");
 		
 		// write table statements
 		List<Table> tables = schema.getTables();
@@ -63,56 +60,46 @@ public class SchemaJavaWriter {
 		} 
 		
 		// end constructor		
-		jb.appendln(1, "}");
+		buff.appendln(1, "}");
 		
 		// end class
-		jb.appendln(0, "}");		
+		buff.appendln(0, "}");		
 
-		// get final Java java
-		String preamble = getPackageStatement(packageName) + importManager.writeImportStatements(); 
+		// get final java code
+		String preamble = codeWriter.writePackageStatement(packageName) + 
+						  codeWriter.writeImportStatements(); 
 		if (preamble != "") {
 			preamble += System.lineSeparator();		
 		}
-		return preamble + jb.getCode();
+		return preamble + buff.getJava();
 	}
-	
-	protected String getPackageStatement(String packageName) {
-		return (packageName == null) ? "" : "package " + packageName + ";" + System.lineSeparator() + System.lineSeparator();
-	}	
 	
 	protected void addTableCode(Table table) {
+		// add table creation statement
+		String tableCreation = codeWriter.writeMethodCall(
+				"this", 
+				SCHEMA_CREATE_TABLE_METHOD, 
+				codeWriter.quote(table.getName()));
 		
-		importManager.addImportFor(table);
-
-		jb.appendln();				
-		String className = Table.class.getSimpleName();		
-		String tableName = table.getName();
-		String tableVarName = variableNameManager.getVariableName(table);
+		buff.appendln();		
+		buff.appendln(tableCreation + ";");
 		
-		String tableConstruction = className + " " + tableVarName + " = " + 
-								   SCHEMA_CREATE_TABLE_METHOD + "(\"" + tableName + "\");";		
-		jb.appendln(tableConstruction);
-		
+		// add columns
 		List<Column> columns = table.getColumns();
 		for (Column column : columns) {
-			addColumnCode(tableVarName, column);
+			String columnAddition = codeWriter.writeTableMethodCall(
+					table, 
+					TABLE_ADD_COLUMN_METHOD, 
+					codeWriter.quote(column),
+					dataTypeJavaWriter.writeConstruction(column.getDataType())); 
+			
+			buff.appendln(columnAddition + ";");
 		}
-		
+	
+		// add constraints
 		List<Constraint> constraints = table.getConstraints();
 		for (Constraint constraint : constraints) {
-			jb.appendln(constraintJavaWriter.writeAdditionToTable(tableVarName, constraint));
+			buff.appendln(constraintJavaWriter.writeAdditionToTable(table, constraint) + ";");
 		}
-	}
-	
-	protected void addColumnCode(String tableVarName, Column column) {
-		
-		String columnName = column.getName();
-		
-		String dataTypeConstruction = dataTypeJavaWriter.writeConstructor(column.getDataType());
-		
-		String statement = tableVarName + "." + TABLE_ADD_COLUMN_METHOD + 
-						   "(\"" + columnName + "\", " + dataTypeConstruction + ");";
-		
-		jb.appendln(statement);
 	}
 }

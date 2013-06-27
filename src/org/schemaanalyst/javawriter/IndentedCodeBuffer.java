@@ -1,20 +1,20 @@
 package org.schemaanalyst.javawriter;
 
-class JavaBuilder {
+class IndentedCodeBuffer {
 
 	int indentLevel;
 	StringBuilder java;
 	
-	JavaBuilder() {
+	IndentedCodeBuffer() {
 		this(0);
 	}
 	
-	JavaBuilder(int indentLevel) {
+	IndentedCodeBuffer(int indentLevel) {
 		this.indentLevel = indentLevel;
 		java = new StringBuilder();
 	}
 	
-	String getCode() {
+	String getJava() {
 		return java.toString();
 	}
 	
