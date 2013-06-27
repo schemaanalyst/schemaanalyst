@@ -79,7 +79,7 @@ public class SchemaJavaWriter {
 		String tableCreation = codeWriter.writeMethodCall(
 				"this", 
 				SCHEMA_CREATE_TABLE_METHOD, 
-				codeWriter.quote(table.getName()));
+				codeWriter.writeString(table.getName()));
 		
 		buff.appendln();		
 		buff.appendln(tableCreation + ";");
@@ -90,7 +90,7 @@ public class SchemaJavaWriter {
 			String columnAddition = codeWriter.writeTableMethodCall(
 					table, 
 					TABLE_ADD_COLUMN_METHOD, 
-					codeWriter.quote(column),
+					codeWriter.writeString(column),
 					dataTypeJavaWriter.writeConstruction(column.getDataType())); 
 			
 			buff.appendln(columnAddition + ";");

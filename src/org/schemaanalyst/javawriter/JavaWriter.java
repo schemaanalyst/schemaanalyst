@@ -87,9 +87,13 @@ public class JavaWriter {
 		return java;
 	}
 	
-	/*** STRINGS ***/
+	/*** PRIMITIVE TYPES AND STRINGS ***/
 	
-	public String quote(String string) {
+	public String writeBoolean(boolean toWrite) {
+		return toWrite ? "true" : "false";
+	}	
+	
+	public String writeString(String string) {
 		return "\"" + string + "\"";
 	}	
 	
@@ -104,16 +108,16 @@ public class JavaWriter {
 		return writeMethodCall(getVariableName(table), methodName, args);		
 	}
 	
-	public String writeGetColumn(Table table, Column column) {
-		return writeTableMethodCall(table, TABLE_GET_COLUMN_METHOD, quote(column));		
+	public String writeGetColumn(Column column) {
+		return writeTableMethodCall(column.getTable(), TABLE_GET_COLUMN_METHOD, writeString(column));		
 	}	
 	
-	public String quote(Column column) {
-		return quote(column.getName());
+	public String writeString(Column column) {
+		return writeString(column.getName());
 	}	
 	
-	public String quote(Table table) {
-		return quote(table.getName());
+	public String writeString(Table table) {
+		return writeString(table.getName());
 	}
 	
 	public String getVariableName(Table table) {

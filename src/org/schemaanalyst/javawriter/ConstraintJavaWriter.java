@@ -38,7 +38,7 @@ public class ConstraintJavaWriter {
 				this.table = table;
 				args = new ArrayList<String>();
 				if (constraint.hasName()) {
-					args.add(javaWriter.quote(constraint.getName()));
+					args.add(javaWriter.writeString(constraint.getName()));
 				}				
 				constraint.accept(this);
 				return javaWriter.writeTableMethodCall(table, methodName, args);
@@ -53,13 +53,13 @@ public class ConstraintJavaWriter {
 				methodName = TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD;
 				
 				args.add(wrapColumnArgsString(table, constraint.getColumns()));
-				args.add(javaWriter.quote(constraint.getReferenceTable().getName()));
+				args.add(javaWriter.writeString(constraint.getReferenceTable().getName()));
 				args.add(wrapColumnArgsString(table, constraint.getReferenceColumns()));	
 			}
 
 			public void visit(NotNullConstraint constraint) {		
 				methodName = TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD;				
-				args.add(javaWriter.writeGetColumn(table, constraint.getColumn()));				
+				args.add(javaWriter.writeGetColumn(constraint.getColumn()));				
 			}
 
 			public void visit(PrimaryKeyConstraint constraint) {
@@ -79,7 +79,7 @@ public class ConstraintJavaWriter {
 			List<String> makeColumnArgsList(Table table, List<Column> columns) {
 				List<String> columnArgs = new ArrayList<String>();
 				for (Column column : columns) {
-					columnArgs.add(javaWriter.writeGetColumn(table, column));
+					columnArgs.add(javaWriter.writeGetColumn(column));
 				}
 				return columnArgs;
 			}
