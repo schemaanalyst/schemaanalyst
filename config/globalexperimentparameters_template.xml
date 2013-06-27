@@ -11,8 +11,8 @@
     <string>--host=localhost</string>
     <string>--port={PORT}</string>
     <string>--spy=false</string>
-    <string>--mutation2013_datageneration=false</string>
-    <string>--mutation2013_execution=true</string>
+    <string>--mutation2013_datageneration=true</string>
+    <string>--mutation2013_execution=false</string>
   </parameters>
 </experiment.GlobalExperimentParameters>
 
