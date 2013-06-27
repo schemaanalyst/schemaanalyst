@@ -38,7 +38,7 @@ public class CellSQLWriter {
 			public String writeCell(Cell cell) {
 				sql = "";
 				this.cell = cell;
-				cell.getColumn().getType().accept(this);
+				cell.getColumn().getDataType().accept(this);
 				return sql;
 			}
 			

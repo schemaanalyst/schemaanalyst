@@ -53,7 +53,7 @@ public class ForeignKeyConstraintStaticMutator extends Mutator {
         // Find reference columns
         for (Table foreignTable : foreignTables) {
             for (Column foreignColumn : foreignTable.getColumns()) {
-                if (foreignColumn.getType().getClass().equals(localColumn.getType().getClass())) {
+                if (foreignColumn.getDataType().getClass().equals(localColumn.getDataType().getClass())) {
                     foreignColumns.add(foreignColumn);
                 }
             }

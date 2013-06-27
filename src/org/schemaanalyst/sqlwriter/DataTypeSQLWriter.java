@@ -112,7 +112,7 @@ public class DataTypeSQLWriter  {
 			}
 		}
 		
-		return (new DataTypeSQLWriterVisitor()).writeDataType(column.getType());
+		return (new DataTypeSQLWriterVisitor()).writeDataType(column.getDataType());
 	}	
 	
 	public String writeBigIntDataType(BigIntDataType type) {

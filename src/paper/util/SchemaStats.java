@@ -25,7 +25,7 @@ public class SchemaStats {
 			List<Column> columns = table.getColumns();
 			
 			for (Column column : columns) {
-				columnTypes.add(column.getType().getClass());
+				columnTypes.add(column.getDataType().getClass());
 			}
 			
 			numColumns += columns.size();

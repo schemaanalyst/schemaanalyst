@@ -17,7 +17,7 @@ public class Cell implements Duplicable<Cell> {
 	}
 	
 	protected Value createValue() {
-		return valueFactory.createValue(column.getType());
+		return valueFactory.createValue(column.getDataType());
 	}
 	
 	public void setNull(boolean setToNull) {

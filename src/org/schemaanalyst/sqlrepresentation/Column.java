@@ -20,7 +20,7 @@ public class Column implements Serializable, Operand, Expression {
 	
 	protected Table table;		
 	protected String name;
-	protected DataType type;
+	protected DataType dataType;
 	
 	/**
 	 * Constructor.
@@ -28,10 +28,10 @@ public class Column implements Serializable, Operand, Expression {
 	 * @param table The table to which this column belongs.
 	 * @param type The type of the column (see the types sub-package).
 	 */
-	protected Column(String name, Table table, DataType type) {
+	protected Column(String name, Table table, DataType dataType) {
 		this.table = table;
 		this.name = name;
-		this.type = type;
+		this.dataType = dataType;
 	}	
 	
 	/** 
@@ -51,19 +51,19 @@ public class Column implements Serializable, Operand, Expression {
 	}
 	
 	/**
-	 * Returns the type of the column (for example VarChar).
-	 * @return The type of the column.
+	 * Returns the data type of the column (for example VarChar).
+	 * @return The data type of the column.
 	 */
-	public DataType getType() {
-		return type;
+	public DataType getDataType() {
+		return dataType;
 	}
 	
 	/**
-	 * Changes the type of the column.
-	 * @param type The new type of the column.
+	 * Changes the data type of the column.
+	 * @param type The new data type of the column.
 	 */
-	public void setType(DataType type) {
-		this.type = type;
+	public void setDataType(DataType dataType) {
+		this.dataType = dataType;
 	}
 	
 	/**
@@ -160,6 +160,6 @@ public class Column implements Serializable, Operand, Expression {
 	 */
 	// Note that type and attributes are only shallow copied
 	public Column copyTo(Table table) {
-		return table.addColumn(this.name, this.type);
+		return table.addColumn(this.name, this.dataType);
 	}
 }

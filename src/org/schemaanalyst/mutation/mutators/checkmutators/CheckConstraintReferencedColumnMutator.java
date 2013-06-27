@@ -273,7 +273,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
         STRICT {
             @Override
             public boolean check(Column column, Column replacement) {
-                return column.getType().getClass().equals(replacement.getType().getClass());
+                return column.getDataType().getClass().equals(replacement.getDataType().getClass());
             }
         },
         /**
@@ -282,8 +282,8 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
         RELAXED {
             @Override
             public boolean check(Column column, Column replacement) {
-                Class classA = column.getType().getClass();
-                Class classB = replacement.getType().getClass();
+                Class classA = column.getDataType().getClass();
+                Class classB = replacement.getDataType().getClass();
                 if (NUMERIC_TYPES.contains(classA) && NUMERIC_TYPES.contains(classB)) {
                     return true;
                 } else if (STRING_TYPES.contains(classA) && STRING_TYPES.contains(classB)) {
