@@ -27,7 +27,7 @@ public class Runner {
 
 	private static void parseAndPrintTextSchema(String caseStudy, Database database, SQLWriter sqlWriter) {
 		Logger logger = Logger.getLogger("test");
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.WARNING);
 		
 		File file = new File(getCaseStudiesPath() + caseStudy + ".sql");		
 		SchemaParser schemaParser = new SchemaParser(database, logger);
@@ -59,6 +59,6 @@ public class Runner {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		run("_debug", new Postgres());
+		run("PagilaPrime-SchemaAnalyst", new Postgres());
 	}
 }

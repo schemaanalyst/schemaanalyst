@@ -213,11 +213,10 @@ public class DataTypeSQLWriter  {
 	
 	private String writeWidth(LengthLimited type) {
 		Integer length = type.getLength();
-		String sql = "(";
+		String sql = "";
 		if (length != null) {
-			sql += length;
+			 sql += "(" + length + ")";
 		}
-		sql += ")";
 		return sql;
 	}	
 }	

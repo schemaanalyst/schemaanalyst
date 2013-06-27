@@ -115,14 +115,18 @@ public class SchemaParser {
 	}
 	
 	protected void parseAlterTableStatement(TAlterTableStatement node) {
-		logger.warning("Parsing alter table statement, which has a buggy/incomplete implementation on line " + node.getLineNo());    		
+		logger.warning("Parsing alter table statement, which has an incomplete GSP implementation" + node.getLineNo());    		
 		
 		String tableName = stripQuotes(node.getTableName());
 		Table table = schema.getTable(tableName);
 		
 		TAlterTableOptionList optionList = node.getAlterTableOptionList();
-		for (int i=0; i < optionList.size(); i++){
-	    	parseAlterTableOption(table, optionList.getAlterTableOption(i));
+		if (optionList == null) {
+			logger.severe("Option list for alter table statement is null -- giving up" + node.getLineNo());
+		} else {		
+			for (int i=0; i < optionList.size(); i++){
+				parseAlterTableOption(table, optionList.getAlterTableOption(i));
+			}
 		}
 	}
 	
@@ -194,6 +198,15 @@ public class SchemaParser {
     					node.getConstraintName(), 
     					node.getColumnList());
     			break;
+    		case fake_auto_increment:
+    			logger.warning("Ignoring AUTO_INCREMENT -- \"" + node + "\" " + node.getLineNo());
+    			break;
+    		case default_value:
+    			logger.warning("Ignoring DEFAULT -- \"" + node + "\" " + node.getLineNo());
+    			break;
+    		case key:
+    			logger.warning("Ignoring KEY -- \"" + node + "\" " + node.getLineNo());
+    			break;    		
     		default:
     			throw new UnsupportedSQLException(node);
     	}    	
@@ -220,6 +233,13 @@ public class SchemaParser {
 		List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);		
 		List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList); 
 								
+		if (referenceColumns.size() == 0) {
+			// no reference columns we have to map those in the columns list
+			for (Column column : columns) {
+				referenceColumns.add(referenceTable.getColumn(column.getName()));
+			}
+		}
+		
 		currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);				
 	}
 	
@@ -255,7 +275,7 @@ public class SchemaParser {
 		
 		if (currentColumn != null) {
     		columns.add(currentColumn);
-    	} else {
+    	} else if (columnNameObjectList != null) {
     		for (int i=0; i < columnNameObjectList.size(); i++) {
     			String columnName = stripQuotes(columnNameObjectList.getObjectName(i));
     			Column column = currentTable.getColumn(columnName);
