@@ -19,7 +19,7 @@ public class DataTypeJavaWriter {
 	
 	public String writeConstruction(DataType dataType) {
 		
-		class SchemaWriterDataTypeCategoryVisitor implements DataTypeCategoryVisitor {
+		class WriterDataTypeCategoryVisitor implements DataTypeCategoryVisitor {
 
 			List<String> params;
 			
@@ -59,7 +59,7 @@ public class DataTypeJavaWriter {
 			}
 		}
 		
-		List<String> params = new SchemaWriterDataTypeCategoryVisitor().getParams(dataType); 
+		List<String> params = new WriterDataTypeCategoryVisitor().getParams(dataType); 
 		return codeWriter.writeConstruction(dataType, params);
 	}	
 }

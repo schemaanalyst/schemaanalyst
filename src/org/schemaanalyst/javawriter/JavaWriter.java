@@ -60,6 +60,11 @@ public class JavaWriter {
 		return "new " + object.getClass().getSimpleName() + "(" + writeArgsList(args) + ")";
 	}
 	
+	public String writeEnumValue(Enum<?> enumValue) {		
+		addImportFor(enumValue.getDeclaringClass());
+		return enumValue.getDeclaringClass().getSimpleName() + "." + enumValue.name();		
+	}
+	
 	public String writeMethodCall(String target, String methodName, String... args) {
 		return writeMethodCall(target, methodName, Arrays.asList(args));
 	}	

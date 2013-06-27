@@ -20,6 +20,7 @@ public class SchemaJavaWriter {
 	protected ConstraintJavaWriter constraintJavaWriter;
 	protected DataTypeJavaWriter dataTypeJavaWriter;	
 	protected ExpressionJavaWriter expressionJavaWriter;
+	protected ValueJavaWriter valueJavaWriter;
 	
 	// for nice indented output
 	protected IndentableStringBuilder code;
@@ -36,7 +37,8 @@ public class SchemaJavaWriter {
 		// initialise	
 		codeWriter = new JavaWriter();
 		dataTypeJavaWriter = new DataTypeJavaWriter(codeWriter);
-		expressionJavaWriter = new ExpressionJavaWriter(codeWriter);
+		valueJavaWriter = new ValueJavaWriter(codeWriter);
+		expressionJavaWriter = new ExpressionJavaWriter(codeWriter, valueJavaWriter);
 		constraintJavaWriter = new ConstraintJavaWriter(codeWriter, expressionJavaWriter);
 		
 		code = new IndentableStringBuilder();		

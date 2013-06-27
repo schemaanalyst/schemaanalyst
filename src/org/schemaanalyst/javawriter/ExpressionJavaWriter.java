@@ -20,9 +20,12 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class ExpressionJavaWriter {
 
 	protected JavaWriter javaWriter;
+	protected ValueJavaWriter valueJavaWriter;
 	
-	public ExpressionJavaWriter(JavaWriter javaWriter) {
+	public ExpressionJavaWriter(JavaWriter javaWriter,
+								ValueJavaWriter valueJavaWriter) {
 		this.javaWriter = javaWriter;
+		this.valueJavaWriter = valueJavaWriter;
 	}
 	
 	public String writeConstruction(Expression expression) {
@@ -83,15 +86,16 @@ public class ExpressionJavaWriter {
 						writeExpression(expression.getSubexpression()));				
 			}
 			
-			public void visit(RelationalExpression expression) {	
+			public void visit(RelationalExpression expression) {				
 				java = javaWriter.writeConstruction(
 						expression, 
 						writeExpression(expression.getLHS()),
+						javaWriter.writeEnumValue(expression.getRelationalOperator()),
 						writeExpression(expression.getRHS()));
 			}
 
 			public void visit(Value expression) {
-				java += expression.toString();
+				java += valueJavaWriter.writeConstruction(expression);
 			}
 		}
 		
