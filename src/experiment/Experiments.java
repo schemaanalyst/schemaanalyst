@@ -1,21 +1,13 @@
 package experiment;
 
-import plume.*;
 
 import java.util.List;
 import java.util.ArrayList;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import static org.junit.Assert.*;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import junitparams.FileParameters;
-
-import experiment.RunExperiment;
-import experiment.GlobalExperimentParameters;
-import experiment.ExperimentConfiguration;
-import experiment.ExperimentalResults;
 import experiment.mutation2013.GenerateData;
 import experiment.mutation2013.MutationAnalysis;
 import experiment.mutation2013.MutationAnalysisParallel;
@@ -87,50 +79,22 @@ public class Experiments {
 	// add the local and global parameters together
 	parameters.addAll(localParameters);
 	parameters.addAll(globalParameters);
-
-        // Parse additional runtime parameters
-        boolean mutation2013_datageneration = false;
-        boolean mutation2013_execution = false;
-        boolean mutation2013_execution_schemata = false;
-        boolean mutation2013_execution_parallel_schemata = false;
-        boolean mutation2013_execution_smart = false;
-        boolean mutation2013_execution_parallel = false;
+        
+        // Parse execution class
+        String executionClass = "";
         for (String global : globalParameters) {
-            if (global.startsWith("--mutation2013_datageneration=")) {
-                mutation2013_datageneration = Boolean.parseBoolean(global.replace("--mutation2013_datageneration=", ""));
-            } else if (global.startsWith("--mutation2013_execution=")) {
-                mutation2013_execution = Boolean.parseBoolean(global.replace("--mutation2013_execution=", ""));
-            } else if (global.startsWith("--mutation2013_execution_schemata=")) {
-                mutation2013_execution_schemata = Boolean.parseBoolean(global.replace("--mutation2013_execution_schemata=", ""));
-            } else if (global.startsWith("--mutation2013_execution_parallel_schemata=")) {
-                mutation2013_execution_parallel_schemata = Boolean.parseBoolean((global.replace("--mutation2013_execution_parallel_schemata=", "")));
-            } else if (global.startsWith("--mutation2013_execution_smart=")) {
-                mutation2013_execution_smart = Boolean.parseBoolean((global.replace("--mutation2013_execution_smart=", "")));
-            } else if (global.startsWith("--mutation2013_execution_parallel=")) {
-                mutation2013_execution_parallel = Boolean.parseBoolean((global.replace("--mutation2013_execution_parallel=", "")));
+            if (global.startsWith("--executionclass=")) {
+                executionClass = global.replace("--executionclass=", "");
             }
         }
         
 	// run the specified experiment (called repeatedly based on the full list of parameters)
-        Class targetClass;
-        if (mutation2013_datageneration) {
-            targetClass = GenerateData.class;
-        } else if (mutation2013_execution) {
-            targetClass = MutationAnalysis.class;
-        } else if (mutation2013_execution_schemata) {
-            targetClass = MutationAnalysisSchemata.class;
-        } else if (mutation2013_execution_parallel_schemata) {
-            targetClass = MutationAnalysisSchemataParallel.class;
-        } else if (mutation2013_execution_smart) {
-            targetClass= MutationAnalysisSmart.class;
-        } else if (mutation2013_execution_parallel) {
-            targetClass = MutationAnalysisParallel.class;
-        } else {
-            targetClass = SchemaAnalyst.class;
+        try {
+            Class targetClass = Class.forName(executionClass);
+            RunExperiment.runExperimentInSeparateJavaVirtualMachine(targetClass, parameters);
+        } catch (ClassNotFoundException ex) {
+            throw new RuntimeException("Unknown execution class", ex);
         }
-        
-        RunExperiment.runExperimentInSeparateJavaVirtualMachine(targetClass, parameters);
-
     }
 }
 

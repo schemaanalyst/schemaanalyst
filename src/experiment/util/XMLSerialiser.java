@@ -6,8 +6,13 @@ package experiment.util;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -60,11 +65,10 @@ public class XMLSerialiser {
      */
     @SuppressWarnings("unchecked")
     public static <Clazz> Clazz load(String path) {
-        try {
-            File input = new File(path);
-            Clazz object = (Clazz)xstream.fromXML(input);
+        try (FileReader reader = new FileReader(path)) {
+            Clazz object = (Clazz)xstream.fromXML(reader);
             return object;
-        } catch (XStreamException xEx) {
+        } catch (XStreamException | IOException xEx) {
             throw new RuntimeException("Failed to deserialise the target file", xEx);
         }
     }

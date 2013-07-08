@@ -5,6 +5,9 @@ import plume.Option;
 
 public class Configuration {
     
+        @Option("the class to execute")
+        public static String executionclass = "org.schemaanalyst.SchemaAnalyst";
+    
         @Option("the unique id for this experiment")
         public static int uniqueid = -1;
 
@@ -111,25 +114,6 @@ public class Configuration {
 
 	@Option("do you want transform empty strings to null values for DBMonster?")
 	public static boolean transformemptystrings = false;
-        
-        /** For Mutation2013 **/
-        @Option("data generation mode for Mutation2013?")
-        public static boolean mutation2013_datageneration = false;
-        
-        @Option("execution mode for Mutation2013?")
-        public static boolean mutation2013_execution = false;
-        
-        @Option("schemata execution mode for Mutation2013?")
-        public static boolean mutation2013_execution_schemata = false;
-        
-        @Option("parallel schemata execution mode for Mutation2013?")
-        public static boolean mutation2013_execution_parallel_schemata = false;
-        
-        @Option("smart execution mode for Mutation2013?")
-        public static boolean mutation2013_execution_smart = false;
-        
-        @Option("parallel execution mode for Mutation2013?")
-        public static boolean mutation2013_execution_parallel = false;
         
         /** Post-Mutation2013 Experiment **/
         @Option("thread pool size")

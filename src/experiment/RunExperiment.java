@@ -50,10 +50,11 @@ public class RunExperiment {
 
 	    // construct the java virtual machine task
 	    Java javaTask = new Java();
+            javaTask.init();
 	    
 	    // add some vm args -- these should be configured!!
 	    Argument jvmArgs = javaTask.createJvmarg();
-	    jvmArgs.setLine("-Xms1024m -Xmx1024m");
+	    jvmArgs.setLine("-Xmx1024m");
 	    
 	    // added some args for the class to launch
 	    for(String currentArgument : arguments) {
@@ -69,8 +70,9 @@ public class RunExperiment {
 	    javaTask.setClassname(experimentClass.getName());
 	    javaTask.setClasspath(Path.systemClasspath);
             
+            System.out.println("Java task: "+javaTask.toString());
+            
 	    // initialize the javaTask and then execute it
-	    javaTask.init();
 	    returnCode = javaTask.executeJava();
 	    //System.out.println("java task return code: " + returnCode);
         } 

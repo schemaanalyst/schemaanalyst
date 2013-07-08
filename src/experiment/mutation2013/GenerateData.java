@@ -3,9 +3,7 @@
 package experiment.mutation2013;
 
 import experiment.util.XMLSerialiser;
-import java.util.ArrayList;
 import java.util.List;
-import org.apache.commons.io.FileUtils;
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
