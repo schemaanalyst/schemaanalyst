@@ -1,7 +1,6 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
@@ -9,7 +8,7 @@ import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveVal
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.InCheckPredicateObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.InCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
@@ -25,7 +24,7 @@ public class TestInCheckPredicateObjectiveFunction {
 	Data data;
 	
 	boolean satisfy;
-	InCheckPredicateObjectiveFunction objFun;
+	InCheckConditionObjectiveFunction objFun;
 	InCheckCondition inPredicate;
 	
 	public TestInCheckPredicateObjectiveFunction() {
@@ -37,7 +36,7 @@ public class TestInCheckPredicateObjectiveFunction {
 	void setup(boolean satisfy, int... values) {
 		this.satisfy = satisfy;
 		this.inPredicate = new InCheckCondition(database.column, values);
-		this.objFun = new InCheckPredicateObjectiveFunction(inPredicate, database.table, null, "", satisfy, false);
+		this.objFun = new InCheckConditionObjectiveFunction(inPredicate, database.table, null, "", satisfy, false);
 	}
 	
 	void test(Integer... values) {

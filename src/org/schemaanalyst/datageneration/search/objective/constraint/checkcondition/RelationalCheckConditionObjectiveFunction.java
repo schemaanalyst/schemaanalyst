@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.constraint.checkcondition;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.OperandToValue;
@@ -14,7 +14,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
-public class RelationalCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
+public class RelationalCheckConditionObjectiveFunction extends ObjectiveFunction<Data> {
 	
 	protected RelationalCheckCondition relation;
 	protected Table table;
@@ -22,7 +22,7 @@ public class RelationalCheckPredicateObjectiveFunction extends ObjectiveFunction
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public RelationalCheckPredicateObjectiveFunction(RelationalCheckCondition relation, 
+	public RelationalCheckConditionObjectiveFunction(RelationalCheckCondition relation, 
 													 Table table, 
 													 Data state, 
 													 String description, 

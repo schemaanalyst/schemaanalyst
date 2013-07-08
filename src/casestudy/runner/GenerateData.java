@@ -6,23 +6,25 @@ import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
+import casestudy.BankAccount;
+
 public class GenerateData {
 
 	public static void main(String[] args) throws Exception {
-		for (Schema schema : InstantiateSchema.instantiateSchemas(args)) {			
+		//for (Schema schema : InstantiateSchema.instantiateSchemas(args)) {			
 			
-			//Schema schema = new PagilaPrime();
+			Schema schema = new BankAccount();
 		
-			if (!schema.getName().equals("Pagila'")) {
+			//if (!schema.getName().equals("Pagila'")) {
 			
 				DataGenerator generator = SchemaAnalyst.constructDataGenerator(
-						"alternatingvalue", schema, new ValueFactory());
+						"domainspecific", schema, new ValueFactory());
 			
 				CoverageReport report = generator.generate();
 			
 				System.out.println(report);
-			}
-		}
+			//}
+		//}
 	}		
 }
      

@@ -2,18 +2,15 @@ package org.schemaanalyst.datageneration.search.objective.constraint;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.CheckConditionObjectiveFunctionFactory;
+import org.schemaanalyst.datageneration.search.objective.expression.ExpressionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
 import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 public class ConstraintObjectiveFunctionFactory {
 	
@@ -67,44 +64,15 @@ public class ConstraintObjectiveFunctionFactory {
 	}
 	
 	protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
-		
-		class PredicateDispatcher implements CheckConditionVisitor {
 
-			ObjectiveFunction<Data> objFun;
-			Table table;
-			String description;
-			boolean allowNull;
-			
-			ObjectiveFunction<Data> dispatch(CheckConstraint checkConstraint,
-												 String description,
-												 boolean allowNull) {
-				table = checkConstraint.getTable();
-				this.description = description;
-				this.allowNull = allowNull;
-				checkConstraint.getCheckCondition().accept(this);
-				return objFun;
-			}
-			
-			public void visit(BetweenCheckCondition predicate) {
-				objFun = new BetweenCheckPredicateObjectiveFunction(
-								predicate, table, state, description, goalIsToSatisfy, allowNull);
-			}
-			
-			public void visit(InCheckCondition predicate) {
-				objFun = new InCheckPredicateObjectiveFunction(
-								predicate, table, state, description, goalIsToSatisfy, allowNull);
-			}
-
-			public void visit(RelationalCheckCondition predicate) {
-				objFun = new RelationalCheckPredicateObjectiveFunction(
-								predicate, table, state, description, goalIsToSatisfy, allowNull);
-			}
-		}		
-		
 		String description = makeDescription();
 		boolean allowNull = considerNull && goalIsToSatisfy;
-
-		return (new PredicateDispatcher()).dispatch(checkConstraint, description, allowNull);
+		
+		if (checkConstraint.getCheckCondition() != null) {
+			return (new CheckConditionObjectiveFunctionFactory(checkConstraint, state, goalIsToSatisfy, allowNull, description)).create();
+		} else {
+			return (new ExpressionObjectiveFunctionFactory()).create();
+		}
 	}
 	
 	protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {

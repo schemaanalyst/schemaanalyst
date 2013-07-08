@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.constraint.checkcondition;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
@@ -18,7 +18,7 @@ import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiv
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
 
-public class BetweenCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
+public class BetweenCheckConditionObjectiveFunction extends ObjectiveFunction<Data> {
 	
 	protected BetweenCheckCondition between;
 	protected Table table;
@@ -26,7 +26,7 @@ public class BetweenCheckPredicateObjectiveFunction extends ObjectiveFunction<Da
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 	
-	public BetweenCheckPredicateObjectiveFunction(BetweenCheckCondition between, 
+	public BetweenCheckConditionObjectiveFunction(BetweenCheckCondition between, 
 											 	  Table table, 
 											      Data state, 
 											      String description, 

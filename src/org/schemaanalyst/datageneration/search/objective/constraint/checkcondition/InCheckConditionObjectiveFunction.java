@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.constraint.checkcondition;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
@@ -17,7 +17,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 
-public class InCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
+public class InCheckConditionObjectiveFunction extends ObjectiveFunction<Data> {
 
 	protected InCheckCondition in;
 	protected Table table;
@@ -25,7 +25,7 @@ public class InCheckPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public InCheckPredicateObjectiveFunction(InCheckCondition in, 
+	public InCheckConditionObjectiveFunction(InCheckCondition in, 
 										     Table table, 
 										     Data state, 
 										     String description, 

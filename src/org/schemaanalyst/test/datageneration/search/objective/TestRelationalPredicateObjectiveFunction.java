@@ -1,13 +1,12 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.RelationalCheckPredicateObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.RelationalCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
@@ -24,7 +23,7 @@ public class TestRelationalPredicateObjectiveFunction {
 	RelationalOperator op;
 	int value;
 	
-	RelationalCheckPredicateObjectiveFunction objFun;
+	RelationalCheckConditionObjectiveFunction objFun;
 	
 	public TestRelationalPredicateObjectiveFunction() {
 		database = new OneColumnMockDatabase();
@@ -37,7 +36,7 @@ public class TestRelationalPredicateObjectiveFunction {
 		this.value = value;
 		
 		RelationalCheckCondition relationalPredicate = new RelationalCheckCondition(database.column, operator, value); 
-		objFun = new RelationalCheckPredicateObjectiveFunction(relationalPredicate, database.table, null, "", satisfy, false);
+		objFun = new RelationalCheckConditionObjectiveFunction(relationalPredicate, database.table, null, "", satisfy, false);
 	}
 	
 	void test(Integer... values) {

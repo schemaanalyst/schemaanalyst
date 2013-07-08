@@ -1,24 +1,21 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.BetweenCheckPredicateObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.BetweenCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.predicate.ValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
-
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
-
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
 
 public class TestBetweenCheckPredicateObjectiveFunction {
@@ -32,15 +29,15 @@ public class TestBetweenCheckPredicateObjectiveFunction {
 		data = database.createData(2);
 	}		
 	
-    BetweenCheckPredicateObjectiveFunction setupBetween(boolean satisfy, int lower, int upper) {
+    BetweenCheckConditionObjectiveFunction setupBetween(boolean satisfy, int lower, int upper) {
     	BetweenCheckCondition betweenPredicate = new BetweenCheckCondition(database.column, lower, upper);
-    	BetweenCheckPredicateObjectiveFunction objFun = 
-    			new BetweenCheckPredicateObjectiveFunction(betweenPredicate, database.table, null, "", satisfy, false);
+    	BetweenCheckConditionObjectiveFunction objFun = 
+    			new BetweenCheckConditionObjectiveFunction(betweenPredicate, database.table, null, "", satisfy, false);
     	return objFun;
     }
 	
     void test(boolean satisfy, int lower, int upper, Integer... values) {
-    	BetweenCheckPredicateObjectiveFunction objFun = setupBetween(satisfy, lower, upper);
+    	BetweenCheckConditionObjectiveFunction objFun = setupBetween(satisfy, lower, upper);
 		database.setDataValues(values);
 		
 		MultiObjectiveValue expectedObjVal = new SumOfMultiObjectiveValue("Top level");
