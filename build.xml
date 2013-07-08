@@ -56,7 +56,7 @@
 
 	<!-- RUNNING TASK - "ant schemaanalyst" -->
 	<target name="schemaanalyst">
-		<java fork="true" classname="org.schemaanalyst.SchemaAnalyst" maxmemory="1024m">
+		<java fork="true" classname="org.schemaanalyst.SchemaAnalyst" maxmemory="1024M">
 			<arg value="--debug=false" /> 
 			<arg value="--foreignkeys=true" /> 
 			<arg value="--script=true" /> 
@@ -84,7 +84,7 @@
 
 	<!-- RUNNING TASK - "ant experiment" -->
 	<target name="experiment">
-		<junit fork="yes">
+		<junit fork="yes" maxmemory="256M">
 			<test name="experiment.AllExperiments" />
 			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run_classpath" />
@@ -96,7 +96,7 @@
 	<target name="experimentToProperties">
 		<delete dir="ExperimentsTasks"/>
 		<mkdir dir="ExperimentTasks" />
-		<junit fork="yes">
+		<junit fork="yes" maxmemory="256M">
 			<test name="experiment.ExperimentsToProperties" />
 			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run_classpath" />
@@ -106,7 +106,7 @@
 
 	<!-- RUNNING TASK - "ant experimentFromProperties" -->
 	<target name="experimentFromProperties">
-		<java fork="true" classname="experiment.ExperimentFromProperties">
+		<java fork="true" classname="experiment.ExperimentFromProperties" maxmemory="256M">
 			<arg value="${uniqueid}" />
 			<classpath refid="run_classpath" />
 		</java>
@@ -114,7 +114,7 @@
 
 	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
 	<target name="globalexperimentparameters">
-		<java fork="true" classname="experiment.GlobalExperimentParameters">
+		<java fork="true" classname="experiment.GlobalExperimentParameters" maxmemory="256M">
 			<arg value="--project=${user.dir}" />
 			<classpath refid="run_classpath" />
 		</java>
@@ -122,7 +122,7 @@
 
 	<!-- RUNNING TASK - "ant localexperimentparameters" -->
 	<target name="localexperimentparameters">
-		<java fork="true" classname="experiment.LocalExperimentParameters">
+		<java fork="true" classname="experiment.LocalExperimentParameters" maxmemory="256M">
 			<arg value="--project=${user.dir}" />
 			<classpath refid="run_classpath" />
 		</java>
