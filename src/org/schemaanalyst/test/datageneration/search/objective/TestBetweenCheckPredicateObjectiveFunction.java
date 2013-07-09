@@ -7,8 +7,8 @@ import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveVal
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.checkcondition.BetweenCheckConditionObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.BetweenCheckConditionObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 

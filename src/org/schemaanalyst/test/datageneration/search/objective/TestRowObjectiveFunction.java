@@ -13,11 +13,11 @@ import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.RowObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ListOfCellsObjectiveFunction;
 import org.schemaanalyst.test.mock.MockCell;
 
-import static org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
@@ -44,14 +44,14 @@ public class TestRowObjectiveFunction {
 	@Test
 	public void equals_RowEquals() {
 		assertOptimal(
-				RowObjectiveFunction.compute(
+				ListOfCellsObjectiveFunction.compute(
 						newRowType(100, 100), EQUALS, newRowType(100, 100)));
 	}
 	
 	@Test
 	public void equals_RowNotEquals() {
 		ObjectiveValue actualObjVal = 
-				RowObjectiveFunction.compute(
+				ListOfCellsObjectiveFunction.compute(
 						newRowType(100, 100), EQUALS, newRowType(100, 200));
 		
 		SumOfMultiObjectiveValue expectedObjVal = new SumOfMultiObjectiveValue("Top level obj val");
@@ -65,14 +65,14 @@ public class TestRowObjectiveFunction {
 	@Test
 	public void notEquals_RowNotEquals() {
 		assertOptimal(
-				RowObjectiveFunction.compute(
+				ListOfCellsObjectiveFunction.compute(
 						newRowType(100, 100), NOT_EQUALS, newRowType(100, 200)));
 	}
 	
 	@Test
 	public void notEquals_RowEquals() {
 		ObjectiveValue actualObjVal = 
-				RowObjectiveFunction.compute(
+				ListOfCellsObjectiveFunction.compute(
 						newRowType(100, 100), NOT_EQUALS, newRowType(100, 100));
 		
 		BestOfMultiObjectiveValue expectedObjVal = new BestOfMultiObjectiveValue("Top level obj val");
@@ -86,11 +86,11 @@ public class TestRowObjectiveFunction {
 	
 	@Test(expected=ObjectiveFunctionException.class) 
 	public void nonEqualRowSizesThrowsException() {
-		RowObjectiveFunction.compute(newRowType(100, 100), EQUALS, newRowType(100, 100, 100));
+		ListOfCellsObjectiveFunction.compute(newRowType(100, 100), EQUALS, newRowType(100, 100, 100));
 	}
 	
 	@Test(expected=ObjectiveFunctionException.class) 
 	public void greater_ThrowsException() {
-		RowObjectiveFunction.compute(newRowType(100, 100), GREATER, newRowType(100, 100, 100));
+		ListOfCellsObjectiveFunction.compute(newRowType(100, 100), GREATER, newRowType(100, 100, 100));
 	}	
 }
