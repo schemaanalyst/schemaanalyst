@@ -11,15 +11,13 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-	protected RelationalExpression expression;
-	protected RelationalOperator op;
 	protected ExpressionEvaluator lhs, rhs;	
+	protected RelationalOperator op;	
 	protected ValueObjectiveFunction valObjFun;
 		
 	public RelationalExpressionObjectiveFunction(RelationalExpression expression,
 												 boolean goalIsToSatisfy,
 												 boolean allowNull) {
-		this.expression = expression;
 		lhs = new ExpressionEvaluator(expression.getLHS());
 		rhs = new ExpressionEvaluator(expression.getRHS());
 		

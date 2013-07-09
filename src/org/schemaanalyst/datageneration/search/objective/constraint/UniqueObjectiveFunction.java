@@ -30,8 +30,7 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
 	public UniqueObjectiveFunction(List<Column> columns, 
 								   Data state, 
 								   String description, 
-								   boolean goalIsToSatisfy, boolean allowNull) {
-				
+								   boolean goalIsToSatisfy, boolean allowNull) {				
 		this.columns = columns;
 		this.state = state;
 		this.description = description;
