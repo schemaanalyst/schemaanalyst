@@ -1,11 +1,10 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.NullColumnObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;

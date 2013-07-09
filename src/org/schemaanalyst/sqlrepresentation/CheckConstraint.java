@@ -1,7 +1,20 @@
 package org.schemaanalyst.sqlrepresentation;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
+import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
+import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
+import org.schemaanalyst.sqlrepresentation.expression.InExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
+import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 
 /**
@@ -13,11 +26,18 @@ public class CheckConstraint extends Constraint {
 
 	private static final long serialVersionUID = 1112035994865637833L;
 
+	/** 
+	 * @deprecated 
+	 * The condition of the check constraint -- use expression instead
+	 * */
 	protected CheckCondition checkCondition;
+	
+	/** The expression of the check constraint */
 	protected Expression expression;
 	
 	/**
 	 * Constructor.
+	 * @deprecated
 	 * @param name An identifying name for the constraint (can be null).
 	 * @param table The table on which the check constraint should hold.
 	 * @param checkCondition The condition associated with the check constraint.
@@ -39,6 +59,7 @@ public class CheckConstraint extends Constraint {
 	}	
 	
 	/**
+	 * @deprecated
 	 * Returns the condition associated with this check constraint.
 	 * @return The condition associated with this check constraint.
 	 */
@@ -64,15 +85,106 @@ public class CheckConstraint extends Constraint {
 	}
 	
 	/**
-	 * Copies the check predicate to a different table.  
-	 * (NOTE/TODO: the predicate is not currently remapped to the
-	 * new table's equivalent columns).
+	 * Copies the check predicate to a different table, deep copying expressions
+	 * but mapping columns to the target table.  
 	 * @param targetTable The table to copy the constraint to/
 	 * @return The copied Check object.
 	 */
 	public CheckConstraint copyTo(Table targetTable) {
-		// TODO -- remap checkCondition to the new table ...		
-		CheckConstraint copy = new CheckConstraint(this.name, targetTable, this.checkCondition);
+
+		// Allow for backwards compatibility with old check constraint format.
+		// NB: columns appearing in conditions are not remapped. 
+		if (checkCondition != null) {
+			CheckConstraint copy = new CheckConstraint(this.name, targetTable, this.checkCondition);
+			targetTable.addCheckConstraint(copy);
+			return copy;
+		} 
+		
+		class ExpressionRemapper implements ExpressionVisitor {
+
+			Expression expression, remappedExpression;
+			Table targetTable;
+			
+			ExpressionRemapper(Expression expression, Table targetTable) {
+				this.expression = expression;
+				this.targetTable = targetTable;
+			}
+			
+			Expression remap() {
+				remappedExpression = null;
+				expression.accept(this);
+				return remappedExpression;
+			}
+
+			private Expression remap(Expression expression) {
+				return (new ExpressionRemapper(expression, targetTable)).remap();
+			}
+			
+			private List<Expression> remapList(List<Expression> expressions) {
+				List<Expression> remappedList = new ArrayList<>();
+				for (Expression expression : expressions) {
+					remappedList.add(remap(expression));
+				}
+				return remappedList;
+			}
+			
+			public void visit(AndExpression expression) {
+				remappedExpression = new AndExpression(
+											remapList(expression.getSubexpressions()));				
+			}
+
+			public void visit(BetweenExpression expression) {
+				remappedExpression = new BetweenExpression(
+											remap(expression.getSubject()),
+											remap(expression.getLHS()),
+											remap(expression.getRHS()),
+											expression.isNotBetween());
+			}
+
+			public void visit(Column expression) {
+				remappedExpression = targetTable.getColumn(expression.getName());
+			}
+
+			public void visit(InExpression expression) {
+				remappedExpression = new InExpression(
+						remap(expression.getLHS()),
+						remap(expression.getRHS()),
+						expression.isNotIn());
+			}
+
+			public void visit(ListExpression expression) {
+				remappedExpression = new ListExpression(remapList(expression.getSubexpressions()));				
+			}
+
+			public void visit(NullExpression expression) {
+				remappedExpression = new NullExpression(
+						remap(expression.getSubexpression()),
+						expression.isNotNull());
+			}
+
+			public void visit(OrExpression expression) {
+				remappedExpression = new OrExpression(remapList(expression.getSubexpressions()));				
+			}
+
+			public void visit(ParenthesisedExpression expression) {
+				remappedExpression = new ParenthesisedExpression(
+						remap(expression.getSubexpression()));				
+			}
+
+			public void visit(RelationalExpression expression) {
+				remappedExpression = new RelationalExpression(
+						remap(expression.getLHS()),
+						expression.getRelationalOperator(),
+						remap(expression.getRHS()));							
+			}
+
+			public void visit(Value expression) {
+				remappedExpression = expression.duplicate();
+			}		
+		}
+		
+		Expression remappedExpression = (new ExpressionRemapper(expression, targetTable)).remap();
+		CheckConstraint copy = new CheckConstraint(this.name, targetTable, remappedExpression);
 		targetTable.addCheckConstraint(copy);
 		return copy;
 	}
@@ -93,6 +205,7 @@ public class CheckConstraint extends Constraint {
 		
 		CheckConstraint other = (CheckConstraint) obj;
 		
+		// allow for backwards compatibility with old check constraint format
 		if (checkCondition == null) {
 			if (other.checkCondition != null)
 				return false;
@@ -113,6 +226,16 @@ public class CheckConstraint extends Constraint {
 	 * @return An informative string regarding the constraint.
 	 */
 	public String toString() {
-		return "CHECK["+checkCondition.toString()+"]";
+		String str = "CHECK[";
+		
+		// allow for backwards compatibility with old check constraint format
+		if (checkCondition != null) {
+			str += checkCondition;
+		} else {
+			str += expression;
+		}
+		
+		str += "]";
+		return str;
 	}	
 }

@@ -1,10 +1,9 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.predicate.BooleanValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.BooleanValueObjectiveFunction;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;

@@ -27,4 +27,7 @@ public class InExpression implements Expression {
 		visitor.visit(this);
 	}	
 	
+	public String toString() {
+		return lhs + (notIn ? "NOT " : "") + "IN " + rhs; 
+	}
 }

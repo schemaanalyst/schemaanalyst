@@ -3,18 +3,16 @@ package org.schemaanalyst.test.datageneration.search.objective;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-
-import org.schemaanalyst.datageneration.search.objective.predicate.NumericValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 
-import static org.schemaanalyst.datageneration.search.objective.predicate.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-
 import static org.schemaanalyst.test.junit.BigDecimalAssert.assertEquals;
 import static org.schemaanalyst.test.junit.BigDecimalAssert.assertZero;
 

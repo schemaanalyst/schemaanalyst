@@ -969,7 +969,7 @@ public class SchemaAnalyst {
 			
 		}
 		
-		throw new RuntimeException("Unknown Data Generator +\"" + generatorName + "\"");
+		throw new RuntimeException("Unknown Data Generator \"" + generatorName + "\"");
 	}
 	
 	public static CellRandomizer constructCellRandomizationProfile(Random random) {

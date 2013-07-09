@@ -30,5 +30,9 @@ public class BetweenExpression implements Expression {
 	
 	public void accept(ExpressionVisitor visitor) {
 		visitor.visit(this);
-	}	
+	}
+	
+	public String toString() {
+		return subject + " " + (notBetween ? "NOT " : "") + "BETWEEN " + lhs + " AND " + rhs;
+	}
 }

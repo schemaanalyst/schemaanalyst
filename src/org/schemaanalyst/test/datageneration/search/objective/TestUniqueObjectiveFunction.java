@@ -1,14 +1,13 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.UniqueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.predicate.NumericValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.UniqueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
 import org.schemaanalyst.test.mock.MockDatabase;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.mock.TwoColumnMockDatabase;

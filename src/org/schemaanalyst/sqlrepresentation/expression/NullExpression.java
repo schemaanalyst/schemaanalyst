@@ -21,4 +21,8 @@ public class NullExpression implements Expression {
 	public void accept(ExpressionVisitor visitor) {
 		visitor.visit(this);
 	}	
+	
+	public String toString() {
+		return subexpression + " IS " + (notNull ? "NOT" : "") + " NULL";
+	}
 }

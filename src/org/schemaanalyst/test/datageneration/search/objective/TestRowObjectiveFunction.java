@@ -13,15 +13,14 @@ import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.predicate.NumericValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.predicate.RowObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.RowObjectiveFunction;
 import org.schemaanalyst.test.mock.MockCell;
 
-import static org.schemaanalyst.datageneration.search.objective.predicate.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertOptimal;
 

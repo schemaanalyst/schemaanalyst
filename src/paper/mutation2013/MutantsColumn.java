@@ -8,9 +8,7 @@ import casestudy.NistDML183;
 import casestudy.NistDML182;
 import casestudy.RiskIt;
 import casestudy.UnixUsage;
-import casestudy.runner.Mutate;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
-import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 
