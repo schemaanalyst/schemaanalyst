@@ -8,6 +8,7 @@ import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
@@ -32,7 +33,7 @@ public class CheckConstraint extends Constraint {
 	protected CheckCondition checkCondition;
 	
 	/** The expression of the check constraint */
-	protected Expression expression;
+	protected ExpressionTree expressionTree;
 	
 	/**
 	 * Constructor.
@@ -52,9 +53,9 @@ public class CheckConstraint extends Constraint {
 	 * @param table The table on which the check constraint should hold.
 	 * @param checkCondition The condition associated with the check constraint.
 	 */
-	protected CheckConstraint(String name, Table table, Expression expression) {
+	protected CheckConstraint(String name, Table table, ExpressionTree expressionTree) {
 		super(name, table);
-		this.expression = expression;
+		this.expressionTree = expressionTree;
 	}	
 	
 	/**
@@ -70,8 +71,8 @@ public class CheckConstraint extends Constraint {
 	 * Returns the expression denoting this check constraint.
 	 * @return The expression denoting this check constraint.
 	 */
-	public Expression getExpression() {
-		return expression;
+	public ExpressionTree getExpressionTree() {
+		return expressionTree;
 	}	
 	
 	/**
@@ -182,8 +183,10 @@ public class CheckConstraint extends Constraint {
 			}		
 		}
 		
-		Expression remappedExpression = (new ExpressionRemapper(expression, targetTable)).remap();
-		CheckConstraint copy = new CheckConstraint(this.name, targetTable, remappedExpression);
+		ExpressionTree remappedExpressionTree = 
+				(ExpressionTree) (new ExpressionRemapper(expressionTree, targetTable)).remap();
+		
+		CheckConstraint copy = new CheckConstraint(this.name, targetTable, remappedExpressionTree);
 		targetTable.addCheckConstraint(copy);
 		return copy;
 	}
@@ -211,10 +214,10 @@ public class CheckConstraint extends Constraint {
 		} else if (!checkCondition.equals(other.checkCondition))
 			return false;
 		
-		if (expression == null) {
-			if (other.expression != null)
+		if (expressionTree == null) {
+			if (other.expressionTree != null)
 				return false;
-		} else if (!expression.equals(other.expression))
+		} else if (!expressionTree.equals(other.expressionTree))
 			return false;		
 		
 		return true;
@@ -231,7 +234,7 @@ public class CheckConstraint extends Constraint {
 		if (checkCondition != null) {
 			str += checkCondition;
 		} else {
-			str += expression;
+			str += expressionTree;
 		}
 		
 		str += "]";

@@ -46,7 +46,7 @@ public class ConstraintJavaWriter {
 			
 			public void visit(CheckConstraint constraint) {
 				methodName = TABLE_ADD_CHECK_CONSTRAINT_METHOD;				
-				args.add(expressionJavaWriter.writeConstruction(constraint.getExpression()));
+				args.add(expressionJavaWriter.writeConstruction(constraint.getExpressionTree()));
 			}
 
 			public void visit(ForeignKeyConstraint constraint) {				

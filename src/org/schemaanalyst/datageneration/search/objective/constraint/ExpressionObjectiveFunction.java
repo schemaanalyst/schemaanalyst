@@ -11,20 +11,21 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.expression.RowExpressionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 
 public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
 
-	protected Expression expression;
+	protected ExpressionTree expressionTree;
 	protected Table table;
 	protected String description;
 	protected boolean goalIsToSatisfy, allowNull;
 		
-	public ExpressionObjectiveFunction(Expression expression,  
+	public ExpressionObjectiveFunction(ExpressionTree expressionTree,  
 									   Table table,
 									   String description, 
 									   boolean goalIsToSatisfy, 
 									   boolean allowNull) {
-		this.expression = expression;
+		this.expressionTree = expressionTree;
 		this.table = table;
 		this.description = description;
 		this.goalIsToSatisfy = goalIsToSatisfy;
@@ -35,7 +36,7 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
 		
 		MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);		
 		RowExpressionObjectiveFunctionFactory factory = 
-				new RowExpressionObjectiveFunctionFactory(expression, 
+				new RowExpressionObjectiveFunctionFactory(expressionTree, 
 														  goalIsToSatisfy, 
 														  allowNull);
 		ObjectiveFunction<Row> objFun = factory.create();

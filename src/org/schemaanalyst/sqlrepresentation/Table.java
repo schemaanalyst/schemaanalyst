@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 
 
 /**
@@ -137,8 +137,8 @@ public class Table implements Serializable {
 	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(String name, Expression expression) {
-		return addCheckConstraint(new CheckConstraint(name, this, expression));
+	public CheckConstraint addCheckConstraint(String name, ExpressionTree expressionTree) {
+		return addCheckConstraint(new CheckConstraint(name, this, expressionTree));
 	}	
 	
 	/**
@@ -146,8 +146,8 @@ public class Table implements Serializable {
 	 * @param checkCondition The check constraint's condition.
 	 * @return A reference to the Check object created as a result of the add
 	 */
-	public CheckConstraint addCheckConstraint(Expression expression) {
-		return addCheckConstraint(null, expression);
+	public CheckConstraint addCheckConstraint(ExpressionTree expressionTree) {
+		return addCheckConstraint(null, expressionTree);
 	}	
 
 	/**

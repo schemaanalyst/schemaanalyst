@@ -26,6 +26,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
@@ -217,8 +218,13 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TExpression expressionNode) {
 
 		String constraintName = stripQuotes(constraintNameObject);
-		Expression expression = ExpressionParser.map(currentTable, expressionNode);		
-		currentTable.addCheckConstraint(constraintName, expression);		
+		Expression expression = ExpressionParser.map(currentTable, expressionNode);	
+		
+		if (!(expression instanceof ExpressionTree)) {
+			throw new SQLParseException("Check constraints must consist of ExpressionTrees only");
+		}
+		
+		currentTable.addCheckConstraint(constraintName, (ExpressionTree) expression);		
 	}	
 	
 	protected void addForeignKeyConstraint(
