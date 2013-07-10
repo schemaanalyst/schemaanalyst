@@ -32,7 +32,7 @@ public abstract class CompoundExpression extends ExpressionTree {
 		if (index < getNumSubexpressions()) {
 			return subexpressions.get(index);
 		} 
-		throw new RuntimeException();
+		throw new NonExistentSubexpressionException(this, index);
 	}
 	
 	public abstract void accept(ExpressionVisitor visitor);

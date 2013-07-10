@@ -30,7 +30,7 @@ public class NullExpression extends ExpressionTree {
 			case SUBEXPRESSION:
 				return subexpression;
 		}
-		throw new RuntimeException();
+		throw new NonExistentSubexpressionException(this, index);
 	}	
 
 	public void accept(ExpressionVisitor visitor) {

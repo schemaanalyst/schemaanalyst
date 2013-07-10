@@ -46,7 +46,7 @@ public class BetweenExpression extends ExpressionTree {
 			case RHS:
 				return rhs;
 		}
-		throw new RuntimeException();
+		throw new NonExistentSubexpressionException(this, index);
 	}
 	
 	public void accept(ExpressionVisitor visitor) {
