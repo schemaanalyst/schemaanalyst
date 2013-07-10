@@ -16,7 +16,6 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
-
 /**
  * Represents a check constraint applied to a table in a database schema.
  * @author Phil McMinn

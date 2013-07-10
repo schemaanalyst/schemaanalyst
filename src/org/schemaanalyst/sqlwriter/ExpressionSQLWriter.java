@@ -4,7 +4,7 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ComposedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
@@ -101,7 +101,7 @@ public class ExpressionSQLWriter {
 		return column.toString();
 	}
 	
-	protected String writeComposedExpression(ComposedExpression expression, String operator) {
+	protected String writeComposedExpression(CompoundExpression expression, String operator) {
 		String sql = "";
 		boolean first = true;
 		for (Expression subexpression : expression.getSubexpressions()) {

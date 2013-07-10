@@ -3,6 +3,10 @@ package org.schemaanalyst.sqlrepresentation.checkcondition;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.sqlrepresentation.Column;
 
+
+/**
+ * @deprecated
+ */
 public class BetweenCheckCondition implements CheckCondition {
 	
 	private static final long serialVersionUID = -1051694082593826861L;

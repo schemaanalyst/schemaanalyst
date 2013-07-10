@@ -2,7 +2,11 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import org.schemaanalyst.logic.RelationalOperator;
 
-public class RelationalExpression implements Expression {
+public class RelationalExpression extends ExpressionTree {
+
+	public static final int NUM_SUBEXPRESSIONS = 2,
+							LHS = 0,
+							RHS = 1;	
 	
 	protected Expression lhs, rhs;
 	protected RelationalOperator op;
@@ -25,6 +29,20 @@ public class RelationalExpression implements Expression {
 		return rhs;
 	}
 
+	public int getNumSubexpressions() {
+		return NUM_SUBEXPRESSIONS;
+	}
+	
+	public Expression getSubexpression(int index) {
+		switch(index) {
+			case LHS:
+				return lhs;
+			case RHS:
+				return rhs;
+		}
+		throw new RuntimeException();
+	}		
+	
 	public void accept(ExpressionVisitor visitor) {
 		visitor.visit(this);
 	}

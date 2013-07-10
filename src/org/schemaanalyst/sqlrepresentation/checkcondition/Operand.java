@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Interface that represents an abstraction for elements that can be placed as parameters to predicates and functions.
  * @author Phil McMinn
- *
+ * @deprecated
  */
 public interface Operand extends Serializable {
 

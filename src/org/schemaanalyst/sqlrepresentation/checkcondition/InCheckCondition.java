@@ -11,6 +11,9 @@ import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 
+/**
+ * @deprecated
+ */
 public class InCheckCondition implements CheckCondition {
 
 	private static final long serialVersionUID = 7854975706131599964L;

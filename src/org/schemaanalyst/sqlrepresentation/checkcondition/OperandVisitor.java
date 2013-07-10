@@ -6,7 +6,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 /**
  * An interface (extended ValueVisitor) that visits operand elements that can be used as predicate and function parameters. 
  * @author Phil McMinn
- *
+ * @deprecated
  */
 
 public interface OperandVisitor {

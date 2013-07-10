@@ -4,6 +4,9 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 
+/**
+ * @deprecated
+ */
 public class RelationalCheckCondition extends RelationalPredicate<Operand>
 								  implements CheckCondition {
 

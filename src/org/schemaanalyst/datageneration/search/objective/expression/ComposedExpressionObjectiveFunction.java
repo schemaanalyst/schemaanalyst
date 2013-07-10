@@ -8,15 +8,15 @@ import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveVal
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.expression.ComposedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 public abstract class ComposedExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-	protected ComposedExpression expression;
+	protected CompoundExpression expression;
 	protected List<ObjectiveFunction<Row>> subObjFuns;
 		
-	public ComposedExpressionObjectiveFunction(ComposedExpression expression,
+	public ComposedExpressionObjectiveFunction(CompoundExpression expression,
 										 	   boolean goalIsToSatisfy,
 										 	   boolean allowNull) {
 		this.expression = expression;

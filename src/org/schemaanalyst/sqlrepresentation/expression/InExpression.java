@@ -1,7 +1,11 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-public class InExpression implements Expression {
+public class InExpression extends ExpressionTree {
 
+	public static final int NUM_SUBEXPRESSIONS = 2,
+							LHS = 0,
+							RHS = 1;	
+	
 	protected Expression lhs, rhs;
 	protected boolean notIn;
 	
@@ -23,6 +27,20 @@ public class InExpression implements Expression {
 		return rhs;
 	}	
 
+	public int getNumSubexpressions() {
+		return NUM_SUBEXPRESSIONS;
+	}
+	
+	public Expression getSubexpression(int index) {
+		switch(index) {
+			case LHS:
+				return lhs;
+			case RHS:
+				return rhs;
+		}
+		throw new RuntimeException();
+	}	
+	
 	public void accept(ExpressionVisitor visitor) {
 		visitor.visit(this);
 	}	

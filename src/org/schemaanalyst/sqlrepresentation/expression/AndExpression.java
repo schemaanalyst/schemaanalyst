@@ -2,7 +2,7 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.List;
 
-public class AndExpression extends ComposedExpression {
+public class AndExpression extends CompoundExpression {
 
 	public AndExpression(List<Expression> subexpressions) {
 		super(subexpressions);

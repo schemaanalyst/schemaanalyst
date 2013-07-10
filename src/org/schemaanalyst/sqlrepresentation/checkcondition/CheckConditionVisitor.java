@@ -1,5 +1,8 @@
 package org.schemaanalyst.sqlrepresentation.checkcondition;
 
+/**
+ * @deprecated
+ */
 public interface CheckConditionVisitor {
 	
 	public void visit(BetweenCheckCondition checkCondition);

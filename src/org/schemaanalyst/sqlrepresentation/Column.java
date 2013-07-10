@@ -14,7 +14,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
  * @author Phil McMinn
  *
  */
-public class Column implements Serializable, Operand, Expression {
+public class Column implements Expression, Operand, Serializable {
 
 	private static final long serialVersionUID = -2680046452756410766L;
 	
@@ -105,6 +105,7 @@ public class Column implements Serializable, Operand, Expression {
 	}
 		
 	/**
+	 * @deprecated
 	 * Accepts an operand visitor on this column.
 	 * @param operandVisitor The operand visitor to accept.
 	 */

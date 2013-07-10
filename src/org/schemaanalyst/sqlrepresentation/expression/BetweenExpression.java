@@ -1,6 +1,11 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-public class BetweenExpression implements Expression {
+public class BetweenExpression extends ExpressionTree {
+	
+	public static final int NUM_SUBEXPRESSIONS = 3,
+							SUBJECT = 0,
+							LHS = 1,
+							RHS = 2;
 	
 	protected Expression subject, lhs, rhs;
 	protected boolean notBetween;
@@ -26,6 +31,22 @@ public class BetweenExpression implements Expression {
 	
 	public boolean isNotBetween() {
 		return notBetween;
+	}
+	
+	public int getNumSubexpressions() {
+		return NUM_SUBEXPRESSIONS;
+	}
+	
+	public Expression getSubexpression(int index) {
+		switch(index) {
+			case SUBJECT:
+				return subject;
+			case LHS:
+				return lhs;
+			case RHS:
+				return rhs;
+		}
+		throw new RuntimeException();
 	}
 	
 	public void accept(ExpressionVisitor visitor) {
