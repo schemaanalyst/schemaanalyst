@@ -19,7 +19,7 @@ public abstract class ExpressionTree implements Expression {
 	
 	public Expression getSubexpression(int index, int... furtherIndexes) {
 		Expression subexpression = getSubexpression(index);
-		for (Integer i : furtherIndexes) {
+		for (int i : furtherIndexes) {
 			subexpression = subexpression.getSubexpression(i);				
 		}
 		return subexpression;

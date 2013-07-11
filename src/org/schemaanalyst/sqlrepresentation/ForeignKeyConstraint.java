@@ -173,6 +173,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 				name, targetTable, targetTableColumns, 
 				targetReferenceTable, targetReferenceTableColumns);
 		
+		targetTable.addForeignKeyConstraint(copy);
 		return copy;
 	}
 

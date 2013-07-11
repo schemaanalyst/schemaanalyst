@@ -3,8 +3,6 @@ package org.schemaanalyst.javawriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.data.Value;
-import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
