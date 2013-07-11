@@ -9,7 +9,8 @@ import java.util.logging.Logger;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
-import org.schemaanalyst.sqlparser.SchemaParser;
+import org.schemaanalyst.sqlparser.Parser;
+import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 public class SchemaSQLToJava {
@@ -28,9 +29,6 @@ public class SchemaSQLToJava {
 																	  InstantiationException, 
 																	  IllegalAccessException, 
 																	  FileNotFoundException {
-		Logger logger = Logger.getLogger("Parser");
-		logger.setLevel(Level.WARNING);
-		
 		Database database = Database.instantiate(databaseName);
 		
 		File sqlFile = fileForSchemaSQL(name);
@@ -38,9 +36,13 @@ public class SchemaSQLToJava {
 		if (adaptedSQLFile.exists()) {
 			sqlFile = adaptedSQLFile;
 		}
-		
-		SchemaParser schemaParser = new SchemaParser(database, logger);
-		Schema parsedSchema = schemaParser.parseSchema(name, sqlFile);
+
+		Logger logger = Logger.getLogger("Schema Mapping");
+		logger.setLevel(Level.WARNING);
+				
+		Parser parser = new Parser(database);
+		SchemaMapper mapper = new SchemaMapper(logger);
+		Schema parsedSchema = mapper.getSchema(name, parser.parse(sqlFile));
 		
 		String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");
 		PrintWriter out = new PrintWriter(fileForCaseStudyJavaSrc(name));

@@ -2,6 +2,7 @@ package org.schemaanalyst.sqlparser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import gudusoft.gsqlparser.EExpressionType;
 import gudusoft.gsqlparser.nodes.TConstant;
@@ -25,22 +26,24 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
-public class ExpressionParser {
-
-	static Expression map(Table currentTable, TExpression node) {
-		return (new ExpressionParser(currentTable)).getExpression(node);
-	}	
+public class ExpressionMapper {
 	
-	Table currentTable;	
+	protected Logger logger;
+	protected Table currentTable;
 	
-	ExpressionParser(Table currentTable) {
-		this.currentTable = currentTable;
+	public ExpressionMapper(Logger logger) {
+		this.logger = logger;
 	}
-
+	
+	public Expression getExpression(Table currentTable, TExpression node) {
+		this.currentTable = currentTable;
+		return getExpression(node);
+	}
+	
 	// REFER TO the JavaDocs for TExpression
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TExpression.html
 		
-	Expression getExpression(TExpression node) {
+	public Expression getExpression(TExpression node) {
 		
 		switch (node.getExpressionType()) {
 		

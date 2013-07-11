@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlparser;
 
+import java.util.logging.Logger;
+
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TParseTreeNode;
 import gudusoft.gsqlparser.nodes.TTypeName;
@@ -20,16 +22,18 @@ import org.schemaanalyst.sqlrepresentation.datatype.TimestampDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
-class DataTypeParser {
+class DataTypeMapper {
 		
-	static DataType map(TTypeName dataType, TParseTreeNode node) {
-		return (new DataTypeParser()).getDataType(dataType, node);
-	}	
+	protected Logger logger;
+	
+	public DataTypeMapper(Logger logger) {
+		this.logger = logger;
+	}
 	
 	// REFER TO the JavaDocs for TTypeName
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html	
 
-	DataType getDataType(TTypeName dataType, TParseTreeNode node) {
+	public DataType getDataType(TTypeName dataType, TParseTreeNode node) {
 		
 		// used in case of bugs with switch type
 		// String typeString = dataType.toString();
@@ -96,19 +100,19 @@ class DataTypeParser {
 		}
 	}	
 	
-	Integer getArgument(TConstant argument) {
+	protected Integer getArgument(TConstant argument) {
 		return argument == null ? null : Integer.valueOf(argument.toString());
 	}	
 	
-	Integer getLength(TTypeName dataType) {
+	protected Integer getLength(TTypeName dataType) {
 		return getArgument(dataType.getLength());				
 	}
 	
-	Integer getPrecision(TTypeName dataType) {
+	protected Integer getPrecision(TTypeName dataType) {
 		return getArgument(dataType.getPrecision());				
 	}
 	
-	Integer getScale(TTypeName dataType) {
+	protected Integer getScale(TTypeName dataType) {
 		return getArgument(dataType.getScale());
 	}	
 }
