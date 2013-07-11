@@ -11,7 +11,6 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.expression.RowExpressionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 
 public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
 

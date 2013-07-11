@@ -4,7 +4,9 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
@@ -36,16 +38,19 @@ public class ExpressionSQLWriter {
 			
 			public void visit(AndExpression expression) {
 				sql = writeAndExpression(expression);
-				
 			}
 
 			public void visit(BetweenExpression expression) {
 				sql = writeBetweenExpression(expression);
 			}
 			
-			public void visit(Column expression) {
-				sql = writeColumn(expression);				
+			public void visit(ColumnExpression expression) {
+				sql = writeColumn(expression.getColumn());				
 			}
+			
+			public void visit(ConstantExpression expression) {
+				sql = writeValue(expression.getValue());			
+			}	
 			
 			public void visit(InExpression expression) {
 				sql = writeInExpression(expression);				
@@ -69,10 +74,6 @@ public class ExpressionSQLWriter {
 			
 			public void visit(RelationalExpression expression) {
 				sql = writeRelationalExpression(expression);				
-			}
-
-			public void visit(Value expression) {
-				sql = writeValue(expression);			
 			}
 		}
 		

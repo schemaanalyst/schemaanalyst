@@ -1,18 +1,11 @@
 package org.schemaanalyst.datageneration.search.objective.expression;
 
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionAdapter;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class RowExpressionObjectiveFunctionFactory {
@@ -30,7 +23,7 @@ public class RowExpressionObjectiveFunctionFactory {
 	
 	public ObjectiveFunction<Row> create() {
 		
-		class ExpressionDispatcher implements ExpressionVisitor {
+		class ExpressionDispatcher extends ExpressionAdapter {
 
 			ObjectiveFunction<Row> objFun;
 			
@@ -40,21 +33,6 @@ public class RowExpressionObjectiveFunctionFactory {
 				return objFun;
 			}
 			
-			public void visit(AndExpression expression) {
-			}
-
-			public void visit(BetweenExpression expression) {
-			}
-
-			public void visit(Column expression) {
-			}
-
-			public void visit(InExpression expression) {
-			}
-
-			public void visit(ListExpression expression) {
-			}
-
 			public void visit(NullExpression expression) {
 				objFun = new NullExpressionObjectiveFunction(
 									expression, goalIsToSatisfy);
@@ -65,16 +43,10 @@ public class RowExpressionObjectiveFunctionFactory {
 						expression, goalIsToSatisfy, allowNull);				
 			}
 
-			public void visit(ParenthesisedExpression expression) {
-			}
-
 			public void visit(RelationalExpression expression) {
 				objFun = new RelationalExpressionObjectiveFunction(
 									expression, goalIsToSatisfy, allowNull);
 			}
-
-			public void visit(Value expression) {
-			}		
 		}		
 		
 		return (new ExpressionDispatcher()).dispatch();

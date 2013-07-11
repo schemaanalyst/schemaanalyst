@@ -26,7 +26,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 

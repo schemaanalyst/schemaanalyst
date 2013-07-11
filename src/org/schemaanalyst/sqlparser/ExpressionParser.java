@@ -15,6 +15,8 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
@@ -49,16 +51,18 @@ public class ExpressionParser {
 				if (column == null) {
 					throw new SQLParseException("Unknown column \"" + column + "\" for \"" + node + "\"");
 				}
-				return column;
+				return new ColumnExpression(column);
 			
 			case simple_constant_t:
 				TConstant constant = node.getConstantOperand();
 				String valueString = constant.toString();
 			
 				if (QuoteStripper.isQuoted(valueString)) {
-					return new StringValue(QuoteStripper.stripQuotes(valueString));
+					return new ConstantExpression(
+							new StringValue(QuoteStripper.stripQuotes(valueString)));
 				} else {
-					return new NumericValue(valueString);
+					return new ConstantExpression(
+							new NumericValue(valueString));
 				}	
 			
 			// *** UNARY ***
@@ -67,7 +71,7 @@ public class ExpressionParser {
 				if (node.getRightOperand().getExpressionType() == EExpressionType.simple_constant_t) {
 					
 					String value = node.toString();
-					return new NumericValue(value);
+					return new ConstantExpression(new NumericValue(value));
 				}
 			
 			// *** LOGICAL ***		

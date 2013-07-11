@@ -7,7 +7,9 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
@@ -53,9 +55,17 @@ public class ExpressionJavaWriter {
 						javaWriter.writeBoolean(expression.isNotBetween()));					
 			}
 			
-			public void visit(Column expression) {
-				java += javaWriter.writeGetColumn(expression);
+			public void visit(ColumnExpression expression) {
+				java += javaWriter.writeConstruction(
+						expression,
+						javaWriter.writeGetColumn(expression.getColumn()));
 			}
+			
+			public void visit(ConstantExpression expression) {
+				java += javaWriter.writeConstruction(
+						expression,
+						valueJavaWriter.writeConstruction(expression.getValue()));
+			}			
 			
 			public void visit(InExpression expression) {
 				java = javaWriter.writeConstruction(
@@ -92,10 +102,6 @@ public class ExpressionJavaWriter {
 						writeExpression(expression.getLHS()),
 						javaWriter.writeEnumValue(expression.getRelationalOperator()),
 						writeExpression(expression.getRHS()));
-			}
-
-			public void visit(Value expression) {
-				java += valueJavaWriter.writeConstruction(expression);
 			}
 		}
 		
