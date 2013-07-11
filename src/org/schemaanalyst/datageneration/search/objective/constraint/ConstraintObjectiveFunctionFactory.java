@@ -75,7 +75,7 @@ public class ConstraintObjectiveFunctionFactory {
 							makeDescription())).create();
 		} else {
 			return new ExpressionObjectiveFunction(
-							checkConstraint.getExpressionTree(), 
+							checkConstraint.getExpression(), 
 							checkConstraint.getTable(),
 							makeDescription(), 
 							goalIsToSatisfy, 

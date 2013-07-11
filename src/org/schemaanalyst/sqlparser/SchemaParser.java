@@ -218,13 +218,8 @@ public class SchemaParser {
 			TObjectName constraintNameObject, TExpression expressionNode) {
 
 		String constraintName = stripQuotes(constraintNameObject);
-		Expression expression = ExpressionParser.map(currentTable, expressionNode);	
-		
-		if (!(expression instanceof ExpressionTree)) {
-			throw new SQLParseException("Check constraints must consist of ExpressionTrees only");
-		}
-		
-		currentTable.addCheckConstraint(constraintName, (ExpressionTree) expression);		
+		Expression expression = ExpressionParser.map(currentTable, expressionNode);			
+		currentTable.addCheckConstraint(constraintName, expression);		
 	}	
 	
 	protected void addForeignKeyConstraint(

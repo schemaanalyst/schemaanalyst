@@ -33,7 +33,7 @@ public class CheckConstraint extends Constraint {
 	protected CheckCondition checkCondition;
 	
 	/** The expression of the check constraint */
-	protected ExpressionTree expressionTree;
+	protected Expression expression;
 	
 	/**
 	 * Constructor.
@@ -51,11 +51,11 @@ public class CheckConstraint extends Constraint {
 	 * Constructor.
 	 * @param name An identifying name for the constraint (can be null).
 	 * @param table The table on which the check constraint should hold.
-	 * @param checkCondition The condition associated with the check constraint.
+	 * @param expressions The expression associated with the check constraint.
 	 */
-	protected CheckConstraint(String name, Table table, ExpressionTree expressionTree) {
+	protected CheckConstraint(String name, Table table, Expression expression) {
 		super(name, table);
-		this.expressionTree = expressionTree;
+		this.expression = expression;
 	}	
 	
 	/**
@@ -71,8 +71,8 @@ public class CheckConstraint extends Constraint {
 	 * Returns the expression denoting this check constraint.
 	 * @return The expression denoting this check constraint.
 	 */
-	public ExpressionTree getExpressionTree() {
-		return expressionTree;
+	public Expression getExpression() {
+		return expression;
 	}	
 	
 	/**
@@ -184,7 +184,7 @@ public class CheckConstraint extends Constraint {
 		}
 		
 		ExpressionTree remappedExpressionTree = 
-				(ExpressionTree) (new ExpressionRemapper(expressionTree, targetTable)).remap();
+				(ExpressionTree) (new ExpressionRemapper(expression, targetTable)).remap();
 		
 		CheckConstraint copy = new CheckConstraint(this.name, targetTable, remappedExpressionTree);
 		targetTable.addCheckConstraint(copy);
@@ -214,10 +214,10 @@ public class CheckConstraint extends Constraint {
 		} else if (!checkCondition.equals(other.checkCondition))
 			return false;
 		
-		if (expressionTree == null) {
-			if (other.expressionTree != null)
+		if (expression == null) {
+			if (other.expression != null)
 				return false;
-		} else if (!expressionTree.equals(other.expressionTree))
+		} else if (!expression.equals(other.expression))
 			return false;		
 		
 		return true;
@@ -234,7 +234,7 @@ public class CheckConstraint extends Constraint {
 		if (checkCondition != null) {
 			str += checkCondition;
 		} else {
-			str += expressionTree;
+			str += expression;
 		}
 		
 		str += "]";

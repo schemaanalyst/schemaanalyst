@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 
@@ -62,9 +62,9 @@ public class ConstraintSQLWriter {
 	}
 	
 	public String writeCheck(CheckConstraint check) {
-		ExpressionTree expressionTree = check.getExpressionTree();
-		if (expressionTree != null) {
-			return "CHECK (" + expressionSQLWriter.writeExpression(expressionTree) + ")";
+		Expression expression = check.getExpression();
+		if (expression != null) {
+			return "CHECK (" + expressionSQLWriter.writeExpression(expression) + ")";
 		} else {
 			return "CHECK (" + checkConditionSQLWriter.writeCheckCondition(check.getCheckCondition()) + ")";
 		}

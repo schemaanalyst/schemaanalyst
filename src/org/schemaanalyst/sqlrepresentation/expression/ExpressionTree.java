@@ -6,22 +6,23 @@ import java.util.List;
 public abstract class ExpressionTree implements Expression {
 	
 	public Expression getSubexpression(List<Integer> indexes) {
-		Integer[] indexesArray = indexes.toArray(new Integer[indexes.size()]);
-		return getSubexpression(indexesArray);
+		if (indexes.size() == 0) {
+			return null;
+		}
+		int index = indexes.get(0);
+		int[] furtherIndexes = new int[indexes.size()-1];
+		for (int i=1; i < indexes.size(); i++) {
+			furtherIndexes[i] = indexes.get(i);
+		}
+		return getSubexpression(index, furtherIndexes);
 	}
 	
-	public Expression getSubexpression(Integer... indexes) {
-		Expression expression = this;
-		for (Integer i : indexes) {
-			if (expression instanceof ExpressionTree) {
-				expression = ((ExpressionTree) expression).getSubexpression(i);				
-			} else {
-				throw new NonExistentSubexpressionException(
-						"Cannot get subexpressions for expression \"" + expression + 
-						"\" -- its not an ExpressionTree");
-			}			
+	public Expression getSubexpression(int index, int... furtherIndexes) {
+		Expression subexpression = getSubexpression(index);
+		for (Integer i : furtherIndexes) {
+			subexpression = subexpression.getSubexpression(i);				
 		}
-		return expression;
+		return subexpression;
 	}
 	
 	public abstract Expression getSubexpression(int index);
