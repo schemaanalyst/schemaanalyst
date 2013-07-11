@@ -2,16 +2,18 @@
  */
 package org.schemaanalyst.mutation.mutators.mutantreduction;
 
-import casestudy.Cloc;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
+
 import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import originalcasestudy.Cloc;
 
 /**
  * Similar to Offut1993 style of selective mutation, when the n most productive

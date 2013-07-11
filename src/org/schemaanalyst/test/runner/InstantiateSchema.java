@@ -2,12 +2,12 @@ package org.schemaanalyst.test.runner;
 
 import java.util.List;
 
-import casestudy.AllCaseStudies;
-
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.postgres.Postgres;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+
+import originalcasestudy.AllCaseStudies;
 
 public class InstantiateSchema {
 	

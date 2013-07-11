@@ -12,8 +12,8 @@ import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.sqlparser.SchemaParser;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
-import casestudy.BankAccount;
-import casestudy.StudentResidence;
+import originalcasestudy.BankAccount;
+import originalcasestudy.StudentResidence;
 
 public class GenerateData {
 

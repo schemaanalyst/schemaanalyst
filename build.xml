@@ -136,9 +136,16 @@
 	
 	<!-- TOOL TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 
-	<!-- TOOL TASK - "ant schemasqltojava" -->
+	<!-- TOOL TASK - "ant schemasqltojava"
+		Parses an SQL file from the casestudies/schemas directory and writes the Java to the parsedcasestudy package
+		
+		Example usage: ant schemasqltojava -Dschema=StudentResidence -Ddatabase=Postgres	
+		
+		"database" is the name of a database class name from the databases package.  This is required so that GSP
+		can select the right grammar for parsing the SQL.
+	-->
 	<target name="schemasqltojava">
-		<java classname="org.schemaanalyst.tools.SchemaSQLToJava" maxmemory="256M">
+		<java classname="org.schemaanalyst.tool.SchemaSQLToJava" maxmemory="256M">
 			<arg value="${schema}" />
 			<arg value="${database}" />
 			<classpath refid="run_classpath" />

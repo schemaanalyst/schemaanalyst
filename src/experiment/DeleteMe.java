@@ -4,15 +4,16 @@
  */
 package experiment;
 
-import casestudy.Cloc;
-import casestudy.JWhoisServer;
-import casestudy.NistDML182;
-import casestudy.NistDML183;
-import casestudy.RiskIt;
-import casestudy.UnixUsage;
 import experiment.mutation2013.ConstraintMutatorWithoutFK;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import originalcasestudy.Cloc;
+import originalcasestudy.JWhoisServer;
+import originalcasestudy.NistDML182;
+import originalcasestudy.NistDML183;
+import originalcasestudy.RiskIt;
+import originalcasestudy.UnixUsage;
 
 /**
  *

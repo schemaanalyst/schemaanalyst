@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Usda schema.
- * Java code originally generated: 2013/07/11 14:11:25
+ * Java code originally generated: 2013/07/11 14:32:05
  *
  */
 

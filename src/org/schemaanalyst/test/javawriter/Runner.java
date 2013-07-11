@@ -2,7 +2,7 @@ package org.schemaanalyst.test.javawriter;
 
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
 
-import casestudy.BankAccount;
+import originalcasestudy.BankAccount;
 
 public class Runner {
 	

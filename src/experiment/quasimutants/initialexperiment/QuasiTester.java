@@ -2,17 +2,19 @@
  */
 package experiment.quasimutants.initialexperiment;
 
-import casestudy.*;
 import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.database.Database;
 import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.database.hsqldb.Hsqldb;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+
+import originalcasestudy.*;
 
 /**
  *
