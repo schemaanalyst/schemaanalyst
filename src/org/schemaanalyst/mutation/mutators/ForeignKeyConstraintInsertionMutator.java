@@ -14,9 +14,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
  * Produces mutants containing new foreign key constraints for each column where
  * a reference column in another table can be located of the same type.
  * 
- * @author chris
+ * @author Chris J. Wright
  */
-public class ForeignKeyConstraintStaticMutator extends Mutator {
+public class ForeignKeyConstraintInsertionMutator extends Mutator {
 
     @Override
     public void produceMutants(Table table, List<Schema> mutants) {
