@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**
  * Represents foreign key constraints.
@@ -72,12 +73,12 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      * @param column The foreign key column to add from the instance's table.
      * @param referenceColumn The referencing column to add from the reference table.
      */
-    public void addColumnPair(Column column, Column referenceColumn) {
+    public void addColumnPair(Column column, Column referenceColumn) {            
             if (!table.hasColumn(column)) {
-                    throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
+                    throw new SchemaConstructionException("Column \"" + column.getFullyQualifiedName() + "\" does not exist in table \"" + table + "\"");
             }
-            if (!referenceTable.hasColumn(column)) {
-                    throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + referenceTable + "\"");                                  
+            if (!referenceTable.hasColumn(referenceColumn)) {
+                    throw new SchemaConstructionException("Column \"" + referenceColumn.getFullyQualifiedName() + "\" does not exist in table \"" + referenceTable + "\"");                                  
             }
             columns.add(column);
             referenceColumns.add(referenceColumn);
