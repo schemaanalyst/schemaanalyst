@@ -5,8 +5,6 @@ import java.io.Serializable;
 import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionLeaf;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 
 /**
  * Represents a table column in a database schema.  Table columns are constructed by calling 
@@ -14,8 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
  * @author Phil McMinn
  *
  */
-public class Column extends ExpressionLeaf 
-					implements Operand, Serializable {
+public class Column implements Operand, Serializable {
 
 	private static final long serialVersionUID = -2680046452756410766L;
 	
@@ -112,14 +109,6 @@ public class Column extends ExpressionLeaf
 	 */
 	public void accept(OperandVisitor operandVisitor) {
 		operandVisitor.visit(this);
-	}		
-	
-	/**
-	 * Accepts an expression visitor on this column.
-	 * @param visitor The expression visitor to accept.
-	 */
-	public void accept(ExpressionVisitor visitor) {
-		visitor.visit(this);
 	}		
 	
 	/**

@@ -3,10 +3,11 @@ package org.schemaanalyst.sqlrepresentation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionTree;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
@@ -135,16 +136,22 @@ public class CheckConstraint extends Constraint {
 
 			public void visit(BetweenExpression expression) {
 				remappedExpression = new BetweenExpression(
-											remap(expression.getSubject()),
-											remap(expression.getLHS()),
-											remap(expression.getRHS()),
-											expression.isNotBetween());
+						remap(expression.getSubject()),
+						remap(expression.getLHS()),
+						remap(expression.getRHS()),
+						expression.isNotBetween());
 			}
 
-			public void visit(Column expression) {
-				remappedExpression = targetTable.getColumn(expression.getName());
+			public void visit(ColumnExpression expression) {
+				remappedExpression = new ColumnExpression(
+						targetTable.getColumn(expression.getColumn().getName()));
 			}
 
+			public void visit(ConstantExpression expression) {
+				remappedExpression = new ConstantExpression(
+						expression.getValue().duplicate());
+			}				
+			
 			public void visit(InExpression expression) {
 				remappedExpression = new InExpression(
 						remap(expression.getLHS()),
@@ -176,11 +183,7 @@ public class CheckConstraint extends Constraint {
 						remap(expression.getLHS()),
 						expression.getRelationalOperator(),
 						remap(expression.getRHS()));							
-			}
-
-			public void visit(Value expression) {
-				remappedExpression = expression.duplicate();
-			}		
+			}	
 		}
 		
 		ExpressionTree remappedExpressionTree = 

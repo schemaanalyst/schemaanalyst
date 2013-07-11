@@ -4,12 +4,9 @@ import java.io.Serializable;
 
 import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionLeaf;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
 import org.schemaanalyst.util.Duplicable;
 
-public abstract class Value extends ExpressionLeaf
-						    implements Comparable<Value>,
+public abstract class Value implements Comparable<Value>,
 									   Duplicable<Value>,  
 									   Operand, 
 									   Serializable {
@@ -25,10 +22,6 @@ public abstract class Value extends ExpressionLeaf
 	public void accept(OperandVisitor visitor) {
 		visitor.visit(this);
 	}
-
-	public void accept(ExpressionVisitor visitor) {
-		visitor.visit(this);
-	}		
 	
 	public abstract void accept(ValueVisitor visitor);
 	
