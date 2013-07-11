@@ -1,4 +1,4 @@
-package org.schemaanalyst.database;
+package org.schemaanalyst.dbms;
 
 public abstract class DatabaseInteractor {
 
@@ -9,7 +9,7 @@ public abstract class DatabaseInteractor {
     protected static final int CREATE_TABLE_ERROR = -1;
 
     /** The signature for the CREATE TABLE statement */
-    protected static final String CREATE_TABLE = "CREATE TABLE";
+    protected static final String CREATE_TABLE_SIGNATURE = "CREATE TABLE";
 
     /** The return code indicates an UPDATE, INSERT, DELETE */
     protected static final boolean UPDATE_COUNT = false;

@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.derby;
+package org.schemaanalyst.dbms.derby;
 
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlwriter.SQLWriter;

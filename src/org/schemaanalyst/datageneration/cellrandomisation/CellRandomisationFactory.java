@@ -1,13 +1,41 @@
-package org.schemaanalyst.datageneration.cellrandomization;
+package org.schemaanalyst.datageneration.cellrandomisation;
 
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 
 import org.schemaanalyst.util.random.Random;
 
-public class CellRandomizationProfiles {
+public class CellRandomisationFactory {
 
-	public static CellRandomizer small(Random random) {		
-		return new CellRandomizer(
+	public static CellRandomiser instantiate(String name, Random random) {
+
+		// get hold of the method objects of this class 
+    	Class<CellRandomisationFactory> clazz = CellRandomisationFactory.class;
+    	Method methods[] = clazz.getMethods();
+    	
+    	// get the name to match a method name by lowercasing the first letter
+    	char characters[] = name.toCharArray();
+    	characters[0] = Character.toLowerCase(characters[0]);
+    	name = new String(characters);    	
+    	
+    	// find the method for instantiating the right data generator
+    	for (Method m: methods) {
+    		if (m.getName().equals(name)) {
+    			try {
+    				Object[] args = {random};
+    				return (CellRandomiser) m.invoke(null, args);
+    			} catch (Exception e) {
+    				throw new RuntimeException(e);
+    			}
+    		}
+    	}
+    	
+    	throw new RuntimeException("Unknown cell randomiser \"" + name + "\"");
+	}
+	
+	
+	public static CellRandomiser small(Random random) {		
+		return new CellRandomiser(
 				random,
 				0.1,     				// nullProbability
 				  
@@ -42,8 +70,8 @@ public class CellRandomizationProfiles {
 	}
 	
 	
-	public static CellRandomizer large(Random random) {
-		return new CellRandomizer(
+	public static CellRandomiser large(Random random) {
+		return new CellRandomiser(
 				random,
 				0.1,     				// nullProbability
 				  
@@ -76,6 +104,4 @@ public class CellRandomizationProfiles {
 				2147483647				// timestampMax		
 		);
 	}
-	
-	
 }

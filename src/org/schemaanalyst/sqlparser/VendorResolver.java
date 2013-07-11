@@ -2,50 +2,50 @@ package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.EDbVendor;
 
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseVisitor;
-import org.schemaanalyst.database.derby.Derby;
-import org.schemaanalyst.database.derby.DerbyNetwork;
-import org.schemaanalyst.database.hsqldb.Hsqldb;
-import org.schemaanalyst.database.mysql.MySQL;
-import org.schemaanalyst.database.postgres.Postgres;
-import org.schemaanalyst.database.sqlite.SQLite;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DBMSVisitor;
+import org.schemaanalyst.dbms.derby.Derby;
+import org.schemaanalyst.dbms.derby.DerbyNetwork;
+import org.schemaanalyst.dbms.hsqldb.HSQLDB;
+import org.schemaanalyst.dbms.mysql.MySQL;
+import org.schemaanalyst.dbms.postgres.Postgres;
+import org.schemaanalyst.dbms.sqlite.SQLite;
 
 class VendorResolver {
 	
-	static EDbVendor resolve(Database database) {
+	static EDbVendor resolve(DBMS dbms) {
 		
-		class VendorResolverDatabaseVisitor implements DatabaseVisitor {
+		class VendorResolverDBMSVisitor implements DBMSVisitor {
 	
 			EDbVendor vendor;
 						
-			public void visit(Derby database) {
+			public void visit(Derby dbms) {
 				vendor = EDbVendor.dbvgeneric;
 			}
 			
-			public void visit(DerbyNetwork database) {
+			public void visit(DerbyNetwork dbms) {
 				vendor = EDbVendor.dbvgeneric;
 			}
 			
-			public void visit(Hsqldb database) {
+			public void visit(HSQLDB dbms) {
 				vendor = EDbVendor.dbvgeneric;
 			}
 
-			public void visit(MySQL database) {
+			public void visit(MySQL dbms) {
 				vendor = EDbVendor.dbvmysql;
 			}			
 			
-			public void visit(Postgres database) {
+			public void visit(Postgres dbms) {
 				vendor = EDbVendor.dbvpostgresql;
 			}
 			
-			public void visit(SQLite database) {
+			public void visit(SQLite dbms) {
 				vendor = EDbVendor.dbvgeneric;
 			}			
 		}
 		
-		VendorResolverDatabaseVisitor vrv = new VendorResolverDatabaseVisitor();
-		database.accept(vrv);
+		VendorResolverDBMSVisitor vrv = new VendorResolverDBMSVisitor();
+		dbms.accept(vrv);
 		return vrv.vendor;
 	}
 }

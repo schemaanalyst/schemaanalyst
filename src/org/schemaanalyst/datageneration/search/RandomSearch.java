@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 
 public class RandomSearch extends Search<Data>{
 	
-	protected CellRandomizer profile;
+	protected CellRandomiser profile;
 	
-	public RandomSearch(CellRandomizer profile) {
+	public RandomSearch(CellRandomiser profile) {
 		this.profile = profile;
 	}
 

@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.derby;
+package org.schemaanalyst.dbms.derby;
 
 
 import java.sql.DriverManager;

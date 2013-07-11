@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.derby;
+package org.schemaanalyst.dbms.derby;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 
 public class DerbyDatabaseInteractor extends DatabaseInteractor {
 

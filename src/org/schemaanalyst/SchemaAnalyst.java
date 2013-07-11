@@ -5,19 +5,18 @@ import java.util.ArrayList;
 import java.math.BigDecimal;
 
 import plume.*;
+
 import com.rits.cloning.Cloner;
 
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizationProfiles;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.domainspecific.DomainSpecificConstraintCoverer;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
 import org.schemaanalyst.datageneration.search.NaiveRandomConstraintCoverer;
@@ -30,6 +29,8 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -113,11 +114,11 @@ public class SchemaAnalyst {
 	    // create the database using reflection; this is based on the
 	    // type of the database provided in the configuration (i.e.,
 	    // the user could request the Postres database in FQN)
-	    Database database = constructDatabase(Configuration.type);
+	    DBMS database = constructDatabase(Configuration.type);
 	    SQLWriter sqlWriter = database.getSQLWriter();
 	    
 	    // initialize the connection to the real relational database
-	    DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
+	    DatabaseInteractor databaseInteraction = database.getDatabaseInteractor();
 	    
 	    // create the schema using reflection; this is based on the
 	    // name of the database provided in the configuration
@@ -833,9 +834,9 @@ public class SchemaAnalyst {
 	/**
  	 * Create the Database instanced based on the name provided.
 	 */
-	public static Database constructDatabase(String databaseType) {
+	public static DBMS constructDatabase(String databaseType) {
 		try {
-			return (Database) Class.forName(databaseType).newInstance();
+			return (DBMS) Class.forName(databaseType).newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException("Could not construct database type \"" + databaseType +"\"");
 		}
@@ -881,7 +882,7 @@ public class SchemaAnalyst {
 				String generatorName, Schema schema, ValueFactory valueFactory) {
 		
 		Random random = new SimpleRandom(Configuration.randomseed);
-		CellRandomizer cellRandomizer = constructCellRandomizationProfile(random);		
+		CellRandomiser cellRandomizer = constructCellRandomizationProfile(random);		
 		
 		if (generatorName.equals("alternatingvalue")) {		
 			
@@ -972,15 +973,15 @@ public class SchemaAnalyst {
 		throw new RuntimeException("Unknown Data Generator \"" + generatorName + "\"");
 	}
 	
-	public static CellRandomizer constructCellRandomizationProfile(Random random) {
+	public static CellRandomiser constructCellRandomizationProfile(Random random) {
 		String name = Configuration.randomprofile;
 		
 		if (name.equals("small")) {
-			return CellRandomizationProfiles.small(random);
+			return CellRandomisationFactory.small(random);
 		}
 		
 		if (name.equals("large")) {
-			return CellRandomizationProfiles.large(random);
+			return CellRandomisationFactory.large(random);
 		}
 		
 		throw new RuntimeException("Unknown random profile \"" + name + "\"");	

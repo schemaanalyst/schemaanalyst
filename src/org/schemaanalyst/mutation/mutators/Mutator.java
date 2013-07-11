@@ -3,7 +3,7 @@ package org.schemaanalyst.mutation.mutators;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.database.postgres.Postgres;
+import org.schemaanalyst.dbms.postgres.Postgres;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;

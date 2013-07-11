@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.postgres;
+package org.schemaanalyst.dbms.postgres;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 
 public class PostgresDatabaseInteractor extends DatabaseInteractor
 {
@@ -131,7 +131,7 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor
 	    // if this command is a create table statement and it through 
 	    // an exception, then set the return code to -1 to indicate 
 	    // that there was a special failure in creating the schema
-	    if(command.toUpperCase().contains(CREATE_TABLE)) {
+	    if(command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
 		returnCounts=CREATE_TABLE_ERROR;
 		//System.out.println("still born executeUpdate");
 	    }
@@ -210,7 +210,7 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor
 	    // if this command is a create table statement and it through 
 	    // an exception, then set the return code to -1 to indicate 
 	    // that there was a special failure in creating the schema
-	    if(command.toUpperCase().contains(CREATE_TABLE)) {
+	    if(command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
 		returnCounts=CREATE_TABLE_ERROR;
 		System.out.println("Still born execute!");
 	    }

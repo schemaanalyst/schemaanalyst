@@ -3,14 +3,14 @@ package org.schemaanalyst.test.test;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 
 import plume.*;
+
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 
 public class CreateTables {
 
@@ -39,10 +39,10 @@ public class CreateTables {
 		// create the database using reflection; this is based on the
 		// type of the database provided in the configuration (i.e.,
 		// the user could request the Postres database in FQN)
-		Database database = constructDatabase(Configuration.type);
+		DBMS database = constructDatabase(Configuration.type);
 
 		// initialize the connection to the real relational database
-		DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
+		DatabaseInteractor databaseInteraction = database.getDatabaseInteractor();
 
 		// read in the CREATE TABLE statement(s) from the file system
 		StringBuffer createTables = new StringBuffer();
@@ -87,9 +87,9 @@ public class CreateTables {
 	/**
 	 * Create the Database instanced based on the name provided.
 	 */
-	public static Database constructDatabase(String databaseType) {
+	public static DBMS constructDatabase(String databaseType) {
 		try {
-			return (Database) Class.forName(databaseType).newInstance();
+			return (DBMS) Class.forName(databaseType).newInstance();
 		} catch (Exception e) {
 			throw new RuntimeException("Could not construct database type \"" + databaseType +"\"");
 		}

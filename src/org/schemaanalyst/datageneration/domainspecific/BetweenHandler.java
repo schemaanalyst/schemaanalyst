@@ -4,7 +4,7 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
@@ -14,7 +14,7 @@ import org.schemaanalyst.util.random.Random;
 public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
 	
 	protected boolean allowNull;
-	protected CellRandomizer cellRandomizer;
+	protected CellRandomiser cellRandomizer;
 	protected Random random;	
 	
 	protected BetweenCheckCondition between;
@@ -25,7 +25,7 @@ public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
 	public BetweenHandler(BetweenAnalyst analyst,
 						  boolean goalIsToSatisfy,
 						  boolean allowNull,
-						  CellRandomizer cellRandomizer,
+						  CellRandomiser cellRandomizer,
 						  Random random) {		
 		super(analyst, goalIsToSatisfy);
 		this.allowNull = allowNull;		

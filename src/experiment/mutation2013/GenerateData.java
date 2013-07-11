@@ -3,17 +3,17 @@
 package experiment.mutation2013;
 
 import experiment.util.XMLSerialiser;
+
 import java.util.List;
+
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizationProfiles;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
@@ -23,6 +23,8 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
@@ -30,6 +32,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
+
 import plume.Options;
 
 /**
@@ -55,9 +58,9 @@ public class GenerateData {
         // create the database using reflection; this is based on the
         // type of the database provided in the configuration (i.e.,
         // the user could request the Postres database in FQN)
-        Database database = null;
+        DBMS database = null;
         try {
-            database = (Database) Class.forName(Configuration.type).newInstance();
+            database = (DBMS) Class.forName(Configuration.type).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Could not construct database type \"" + Configuration.type + "\"");
         }
@@ -67,7 +70,7 @@ public class GenerateData {
         SQLExecutionReport originalReport = new SQLExecutionReport();
 
         // initialize the connection to the real relational database
-        DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
+        DatabaseInteractor databaseInteraction = database.getDatabaseInteractor();
 
         // create the schema using reflection; this is based on the
         // name of the database provided in the configuration
@@ -134,7 +137,7 @@ public class GenerateData {
      */
     private static DataGenerator constructDataGenerator(Schema schema, ValueFactory valueFactory) {
         Random random = new SimpleRandom(Configuration.randomseed);
-        CellRandomizer cellRandomizer = constructCellRandomizationProfile(random);
+        CellRandomiser cellRandomizer = constructCellRandomizationProfile(random);
         Search<Data> search = new AlternatingValueSearch(random, new NoDataInitialization(), new RandomDataInitializer(cellRandomizer));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
@@ -157,12 +160,12 @@ public class GenerateData {
      * @param random The random number generator
      * @return The randomizer
      */
-    public static CellRandomizer constructCellRandomizationProfile(Random random) {
+    public static CellRandomiser constructCellRandomizationProfile(Random random) {
         switch (Configuration.randomprofile) {
             case "small":
-                return CellRandomizationProfiles.small(random);
+                return CellRandomisationFactory.small(random);
             case "large":
-                return CellRandomizationProfiles.large(random);
+                return CellRandomisationFactory.large(random);
             default:
                 throw new RuntimeException("Unknown random profile \"" + Configuration.randomprofile + "\"");
         }

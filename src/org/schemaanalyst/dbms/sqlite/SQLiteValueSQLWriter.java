@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.sqlite;
+package org.schemaanalyst.dbms.sqlite;
 
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.sqlwriter.ValueSQLWriter;

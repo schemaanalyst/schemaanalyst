@@ -1,4 +1,4 @@
-package org.schemaanalyst.database.sqlite;
+package org.schemaanalyst.dbms.sqlite;
 
 import java.sql.DriverManager;
 import java.sql.Connection;
@@ -6,9 +6,8 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.sqlite.SQLiteConfig;
-
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.script.ScriptCreator;
 
 import java.io.File;
@@ -187,7 +186,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
 		    // that there was a special failure in creating the schema;
 		    // note that this is unlikely to ever happen for SQLite, based
 		    // on our experience, but we are including this test anyways
-		    if(command.toUpperCase().contains(CREATE_TABLE)) {
+		    if(command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
 			returnCounts=CREATE_TABLE_ERROR;
 		    }
 

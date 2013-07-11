@@ -12,7 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * StudentResidence schema.
- * Java code originally generated: 2013/07/11 14:11:12
+ * Java code originally generated: 2013/07/11 21:49:36
  *
  */
 

@@ -4,19 +4,19 @@ import java.util.List;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.util.random.Random;
 
 public class ReferenceHandler extends ConstraintHandler<ReferenceAnalyst> {
 
 	protected boolean allowNull;
-	protected CellRandomizer cellRandomizer;
+	protected CellRandomiser cellRandomizer;
 	protected Random random;
 	
 	public ReferenceHandler(ReferenceAnalyst analyst,
 						 boolean goalIsToSatisfy,
 						 boolean allowNull,
-						 CellRandomizer cellRandomizer,
+						 CellRandomiser cellRandomizer,
 						 Random random) {		
 		super(analyst, goalIsToSatisfy);
 		this.allowNull = allowNull;

@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.cellrandomization;
+package org.schemaanalyst.datageneration.cellrandomisation;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,7 +16,7 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.util.random.Random;
 
-public class CellRandomizer {
+public class CellRandomiser {
 
 	protected Random random;
 	
@@ -31,7 +31,7 @@ public class CellRandomizer {
 	protected int stringLengthMax, characterMin, characterMax;
 	protected int timestampMin, timestampMax;
 	
-	public CellRandomizer(Random random,
+	public CellRandomiser(Random random,
 						  double nullProbability,
 						  int yearMin, int yearMax, 
 						  int monthMin, int monthMax, 

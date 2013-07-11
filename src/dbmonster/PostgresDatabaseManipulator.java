@@ -9,8 +9,8 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.List;
 
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
@@ -180,7 +180,7 @@ public class PostgresDatabaseManipulator {
 	// create the database using reflection; this is based on the
 	// type of the database provided in the configuration (i.e.,
 	// the user could request the Postres database in FQN)
-	Database database = constructDatabase(Configuration.type);
+	DBMS database = constructDatabase(Configuration.type);
 	SQLWriter sqlWriter = database.getSQLWriter();
 
 	// create the schema using reflection; this is based on the
@@ -205,7 +205,7 @@ public class PostgresDatabaseManipulator {
 	// create the database using reflection; this is based on the
 	// type of the database provided in the configuration (i.e.,
 	// the user could request the Postres database in FQN)
-	Database database = constructDatabase(Configuration.type);
+	DBMS database = constructDatabase(Configuration.type);
 	SQLWriter sqlWriter = database.getSQLWriter();
 
 	// create the schema using reflection; this is based on the
@@ -275,9 +275,9 @@ public class PostgresDatabaseManipulator {
     /**
      * Create the Database instanced based on the name provided.
      */
-    public static Database constructDatabase(String databaseType) {
+    public static DBMS constructDatabase(String databaseType) {
 	try {
-	    return (Database) Class.forName(databaseType).newInstance();
+	    return (DBMS) Class.forName(databaseType).newInstance();
 	} catch (Exception e) {
 	    throw new RuntimeException("Could not construct database type \"" + databaseType +"\"");
 	}

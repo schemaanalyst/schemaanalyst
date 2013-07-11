@@ -7,7 +7,7 @@ import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
 import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
@@ -26,12 +26,12 @@ public class ConstraintHandlerFactory {
 
 	protected Constraint constraint; 
 	protected boolean goalIsToSatisfy;
-	protected CellRandomizer cellRandomizer;
+	protected CellRandomiser cellRandomizer;
 	protected Random random;
 	
 	public ConstraintHandlerFactory(Constraint constraint, 
 									boolean goalIsToSatisfy,
-									CellRandomizer cellRandomizer,
+									CellRandomiser cellRandomizer,
 									Random random) {
 		this.constraint = constraint;
 		this.goalIsToSatisfy = goalIsToSatisfy;

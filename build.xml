@@ -136,6 +136,19 @@
 	
 	<!-- TOOL TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
 
+	<!-- TOOL TASK - "ant generatedata"
+		Generates Data but doesn't interact with the database (useful for quick testing/debugging)
+	-->
+	<target name="generatedata">
+		<java classname="org.schemaanalyst.tool.GenerateData" maxmemory="256M">
+			<arg value="${schema}" />
+			<arg value="${database}" />
+			<arg value="${datagenerator}" />
+			<classpath refid="run_classpath" />
+		</java>
+	</target>
+
+
 	<!-- TOOL TASK - "ant schemasqltojava"
 		Parses an SQL file from the casestudies/schemas directory and writes the Java to the parsedcasestudy package
 		

@@ -5,6 +5,7 @@ package experiment.mutation2013;
 import experiment.ExperimentConfiguration;
 import experiment.ExperimentalResults;
 import experiment.util.XMLSerialiser;
+
 import java.io.File;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -12,10 +13,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.configuration.FolderConfiguration;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutationReport;
@@ -28,6 +30,7 @@ import org.schemaanalyst.mutation.mutators.ConstraintMutator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+
 import plume.Options;
 
 /**
@@ -60,9 +63,9 @@ public class MutationAnalysisParallel {
         // create the database using reflection; this is based on the
         // type of the database provided in the configuration (i.e.,
         // the user could request the Postres database in FQN)
-        Database database = null;
+        DBMS database = null;
         try {
-            database = (Database) Class.forName(Configuration.type).newInstance();
+            database = (DBMS) Class.forName(Configuration.type).newInstance();
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException("Could not construct database type \"" + Configuration.type + "\"");
         }
@@ -73,7 +76,7 @@ public class MutationAnalysisParallel {
         originalReport = XMLSerialiser.load(reportPath);
 
         // initialize the connection to the real relational database
-        databaseInteraction = database.getDatabaseInteraction();
+        databaseInteraction = database.getDatabaseInteractor();
 
         // create the schema using reflection; this is based on the
         // name of the database provided in the configuration

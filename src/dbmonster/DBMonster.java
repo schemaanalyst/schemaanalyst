@@ -8,12 +8,13 @@ import java.io.PrintWriter;
 import java.io.File;
 
 import plume.*;
+
 import com.rits.cloning.Cloner;
 
 import org.schemaanalyst.SchemaAnalyst;
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -89,11 +90,11 @@ public class DBMonster {
 		// create the database using reflection; this is based on the
 		// type of the database provided in the configuration (i.e.,
 		// the user could request the Postres database in FQN)
-		Database database = constructDatabase(Configuration.type);
+		DBMS database = constructDatabase(Configuration.type);
 		SQLWriter sqlWriter = database.getSQLWriter();
 
 		// initialize the connection to the real relational database
-		DatabaseInteractor databaseInteraction = database.getDatabaseInteraction();
+		DatabaseInteractor databaseInteraction = database.getDatabaseInteractor();
 
 		// create the schema using reflection; this is based on the
 		// name of the database provided in the configuration
@@ -586,9 +587,9 @@ public class DBMonster {
     /**
      * Create the Database instanced based on the name provided.
      */
-    public static Database constructDatabase(String databaseType) {
+    public static DBMS constructDatabase(String databaseType) {
 	try {
-	    return (Database) Class.forName(databaseType).newInstance();
+	    return (DBMS) Class.forName(databaseType).newInstance();
 	} catch (Exception e) {
 	    throw new RuntimeException("Could not construct database type \"" + databaseType +"\"");
 	}

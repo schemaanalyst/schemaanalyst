@@ -4,12 +4,12 @@ import org.schemaanalyst.util.ReflectiveToString;
 import plume.Option;
 
 public class Configuration {
-    
-        @Option("the class to execute")
-        public static String executionclass = "org.schemaanalyst.SchemaAnalyst";
-    
-        @Option("the unique id for this experiment")
-        public static int uniqueid = -1;
+
+	@Option("the class to execute")
+	public static String executionclass = "org.schemaanalyst.SchemaAnalyst";
+
+	@Option("the unique id for this experiment")
+	public static int uniqueid = -1;
 
 	@Option("the current trial of an experiment campaign")
 	public static int trial = -1;
@@ -76,29 +76,29 @@ public class Configuration {
 
 	@Option("set the name of the search")
 	public static String datagenerator = "alternatingvalue_defaults";
-	
+
 	@Option("set the random profile")
 	public static String randomprofile = "small";
-	
+
 	@Option("set the random seed")
 	public static long randomseed = 0;
-	
+
 	@Option("set the maximum number of evaluations for the search")
 	public static int maxevaluations = 100000;	
-	
+
 	@Option("set the number of desired initial satisfying rows in a table -- (should be >= 2, so that primary keys and unique constraints can be properly tested)")
 	public static int satisfyrows = 2;
 
 	@Option("set the number of desired negating rows in a table")
 	public static int negaterows = 1;
-	
+
 	@Option("set the number of desired rows in the table for naive random data generation")
 	public static int naiverandom_rowspertable = 50;
-	
+
 	@Option("set the max number of tries for naive random data generation")
 	public static int naiverandom_maxtriespertable = 1000;
 
-    	@Option("do you want to run SchemaAnalyst in stand-alone mode without running experiments?")
+	@Option("do you want to run SchemaAnalyst in stand-alone mode without running experiments?")
 	public static boolean standalone = true;
 
 	@Option("do you want to run SchemaAnalyst in stand-alone mode without running experiments?")
@@ -114,13 +114,13 @@ public class Configuration {
 
 	@Option("do you want transform empty strings to null values for DBMonster?")
 	public static boolean transformemptystrings = false;
-        
-        /** Post-Mutation2013 Experiment **/
-        @Option("thread pool size")
-        public static int threadpoolsize = 8;
-        
-        @Override
-        public String toString() {
-            return ReflectiveToString.toString(this);
-        }
+
+	/** Post-Mutation2013 Experiment **/
+	@Option("thread pool size")
+	public static int threadpoolsize = 8;
+
+	@Override
+	public String toString() {
+		return ReflectiveToString.toString(this);
+	}
 }

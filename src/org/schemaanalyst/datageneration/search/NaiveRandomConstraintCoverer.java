@@ -8,7 +8,7 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -17,13 +17,13 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
 	protected Schema schema;
 	protected ConstraintEvaluator constraintEvaluator;
 	protected ValueFactory valueFactory;
-	protected CellRandomizer randomizer;
+	protected CellRandomiser randomizer;
 	protected int rowsPerTable, maxTriesPerTable;	
 	protected Map<Table, Integer> rowsAddedForEachTable;
 	
 	public NaiveRandomConstraintCoverer(Schema schema,
 										ValueFactory valueFactory,
-										CellRandomizer randomizer,
+										CellRandomiser randomizer,
 										int rowsPerTable, 
 										int maxTriesPerTable) {
 		this.schema = schema;

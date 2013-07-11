@@ -43,7 +43,7 @@ public class ExpressionMapper {
 	// REFER TO the JavaDocs for TExpression
 	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TExpression.html
 		
-	public Expression getExpression(TExpression node) {
+	protected Expression getExpression(TExpression node) {
 		
 		switch (node.getExpressionType()) {
 		

@@ -8,9 +8,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.configuration.Configuration;
-import org.schemaanalyst.database.Database;
-import org.schemaanalyst.database.DatabaseInteractor;
-import org.schemaanalyst.database.hsqldb.Hsqldb;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.dbms.hsqldb.HSQLDB;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
@@ -61,8 +61,8 @@ public class QuasiTester {
         Logger.getLogger("hsqldb.db").setLevel(Level.WARNING);
         
         // Test the mutants
-        Database db = new Hsqldb();
-        DatabaseInteractor dbInteractor = db.getDatabaseInteraction();
+        DBMS db = new HSQLDB();
+        DatabaseInteractor dbInteractor = db.getDatabaseInteractor();
         dbInteractor.initializeDatabaseConnection();
         SQLWriter dbWriter = db.getSQLWriter();
         for (Schema s : schemas) {

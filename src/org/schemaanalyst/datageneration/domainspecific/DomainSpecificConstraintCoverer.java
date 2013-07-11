@@ -8,7 +8,7 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.cellrandomization.CellRandomizer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -24,7 +24,7 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
 	protected ValueFactory valueFactory;
 	protected int satisfyRows, negateRows;
 	protected int maxEvaluations;
-	protected CellRandomizer cellRandomizer;
+	protected CellRandomiser cellRandomizer;
 	protected Random random;
 	
 	protected ConstraintGoalReport goalReport;
@@ -34,7 +34,7 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
 								   		   int satisfyRows, 
 								   		   int negateRows,
 								   		   int maxEvaluations,
-								   		   CellRandomizer cellRandomizer, 
+								   		   CellRandomiser cellRandomizer, 
 								   		   Random random) {
 		this.schema = schema;
 		this.valueFactory = valueFactory;

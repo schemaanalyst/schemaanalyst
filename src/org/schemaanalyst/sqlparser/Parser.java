@@ -5,14 +5,14 @@ import gudusoft.gsqlparser.TStatementList;
 
 import java.io.File;
 
-import org.schemaanalyst.database.Database;
+import org.schemaanalyst.dbms.DBMS;
 
 public class Parser {
 	
 	protected TGSqlParser sqlParser; 
 	
-	public Parser(Database database) {
-		sqlParser = new TGSqlParser(VendorResolver.resolve(database));		
+	public Parser(DBMS dbms) {
+		sqlParser = new TGSqlParser(VendorResolver.resolve(dbms));		
 	}
 	
 	public TStatementList parse(File file) {

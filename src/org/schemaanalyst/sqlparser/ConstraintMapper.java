@@ -89,7 +89,7 @@ public class ConstraintMapper {
 			TObjectName constraintNameObject, TExpression expressionNode) {
 
 		String constraintName = stripQuotes(constraintNameObject);
-		Expression expression = expressionMapper.getExpression(expressionNode);			
+		Expression expression = expressionMapper.getExpression(currentTable, expressionNode);			
 		currentTable.addCheckConstraint(constraintName, expression);		
 	}	
 	
