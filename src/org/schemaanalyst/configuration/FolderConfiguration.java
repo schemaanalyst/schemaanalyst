@@ -39,6 +39,12 @@ public class FolderConfiguration {
     /** The results folder, for storing experiment results. */
     public static String results_dir;
     
+    /** The folder where the original SQL for each schema is located. */
+    public static String schema_src_dir;
+    		
+    /** The folder where we write Java code corresponding to each parsed schema. */
+    public static String casestudy_src_dir;
+    
     static {
         PropertiesParser.parse(PROPERTIES_LOCATION, FolderConfiguration.class);
     }

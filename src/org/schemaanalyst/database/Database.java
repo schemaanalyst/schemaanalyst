@@ -30,5 +30,17 @@ public abstract class Database {
 	
     public abstract DatabaseInteractor getDatabaseInteraction();
     
-	public abstract void accept(DatabaseVisitor visitor);    
+	public abstract void accept(DatabaseVisitor visitor);
+	
+	public static Database instantiate(String name) throws ClassNotFoundException, 
+														   InstantiationException, 
+														   IllegalAccessException {
+		String databaseClassName = 
+				"org.schemaanalyst.database." + 
+				name.toLowerCase() + "." + name;
+		Class<?> databaseClass = Class.forName(databaseClassName);
+		Database database = (Database) databaseClass.newInstance();
+		return database;
+	}
+	
 }

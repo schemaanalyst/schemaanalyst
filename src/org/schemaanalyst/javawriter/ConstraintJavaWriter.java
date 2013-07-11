@@ -53,7 +53,7 @@ public class ConstraintJavaWriter {
 				methodName = TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD;
 				
 				args.add(wrapColumnArgsString(table, constraint.getColumns()));
-				args.add(javaWriter.writeString(constraint.getReferenceTable().getName()));
+				args.add(javaWriter.getVariableName(constraint.getReferenceTable()));
 				args.add(wrapColumnArgsString(table, constraint.getReferenceColumns()));	
 			}
 

@@ -48,7 +48,7 @@ public class JavaWriter {
 	
 	public String writeAssignment(Class<?> javaClass, String variable, String target) {
 		addImportFor(javaClass);
-		return javaClass.getSimpleName() + " = " + target;
+		return javaClass.getSimpleName() + " " + variable + " = " + target;
 	}
 	
 	public String writeConstruction(Object object, String... args) {
@@ -125,8 +125,27 @@ public class JavaWriter {
 		return writeString(table.getName());
 	}
 	
-	public String getVariableName(Table table) {
-		// TODO - camel case the original identifier to make it neater ...
-		return TABLE_VAR_PREFIX + table.getName();
+	public String getVariableName(Table table) {		
+		String name = table.getName();
+		
+		// camel case and remove illegal characters
+		StringBuffer sb = new StringBuffer();
+		boolean wasUnderline = true;
+		for (int i = 0; i < name.length(); i++) {
+			char c = name.charAt(i);
+			if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))	{
+				if (wasUnderline) {
+					sb.append(Character.toUpperCase(c));
+					wasUnderline = false;
+					continue;
+		 		}
+		 		sb.append(Character.toLowerCase(c));				
+			}
+			if (c == '_') {
+				wasUnderline = true;
+			}
+	 	}
+	 	
+	 	return TABLE_VAR_PREFIX + sb;
 	}
 }

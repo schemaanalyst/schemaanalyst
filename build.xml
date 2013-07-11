@@ -133,5 +133,16 @@
 		<antcall target="globalexperimentparameters"/>
 		<antcall target="localexperimentparameters"/>
 	</target>
+	
+	<!-- TOOL TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->	
+
+	<!-- TOOL TASK - "ant schemasqltojava" -->
+	<target name="schemasqltojava">
+		<java classname="org.schemaanalyst.tools.SchemaSQLToJava" maxmemory="256M">
+			<arg value="${schema}" />
+			<arg value="${database}" />
+			<classpath refid="run_classpath" />
+		</java>
+	</target>	
 
 </project>
