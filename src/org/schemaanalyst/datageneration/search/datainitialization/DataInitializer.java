@@ -4,5 +4,5 @@ import org.schemaanalyst.data.Data;
 
 public abstract class DataInitializer {
 
-	public abstract void initialize(Data data);
+    public abstract void initialize(Data data);
 }

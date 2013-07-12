@@ -1,37 +1,40 @@
 package org.schemaanalyst.mutation;
 
-/** This class represents the two-tuple (SQL Statement, Return Code) */
+/**
+ * This class represents the two-tuple (SQL Statement, Return Code)
+ */
 public class SQLInsertRecord extends SQLExecutionRecord {
 
-    /** Whether this SQL statement is trying to satisfy or negate constraints */
+    /**
+     * Whether this SQL statement is trying to satisfy or negate constraints
+     */
     private boolean isSatisfying = false;
 
     public SQLInsertRecord() {
-	super();
+        super();
     }
-    
+
     public SQLInsertRecord(String statement, Integer returnCode) {
         super(statement, returnCode);
     }
 
     public void tryToSatisfy() {
-	isSatisfying = true;
+        isSatisfying = true;
     }
 
     public void tryToNegate() {
-	isSatisfying = false;
+        isSatisfying = false;
     }
 
     public boolean isTryingToSatisfy() {
-	return isSatisfying;
+        return isSatisfying;
     }
 
     public boolean isTryingToNegate() {
-	return !isSatisfying;
+        return !isSatisfying;
     }
 
     public String toString() {
-	return "(INSERT: " + statement + ", " + returnCode + ", Satisfy? " + isSatisfying + " Negate? " + !isSatisfying + ")";
+        return "(INSERT: " + statement + ", " + returnCode + ", Satisfy? " + isSatisfying + " Negate? " + !isSatisfying + ")";
     }
-
 }

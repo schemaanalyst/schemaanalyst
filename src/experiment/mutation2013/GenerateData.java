@@ -119,13 +119,13 @@ public class GenerateData {
                 originalReport.addInsertStatement(currentInsert);
             }
         }
-        
+
         // drop created tables
         for (String statement : dropTableStatements) {
             databaseInteraction.executeUpdate(statement);
         }
-        
-        XMLSerialiser.save(originalReport, "results/data-generation/"+Configuration.database + ".xml");
+
+        XMLSerialiser.save(originalReport, "results/data-generation/" + Configuration.database + ".xml");
     }
 
     /**

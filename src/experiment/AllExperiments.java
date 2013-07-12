@@ -8,11 +8,8 @@ import experiment.Experiments;
 /**
  * Run all of the experiments.
  */
- 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-    Experiments.class,    
-})
-
+    Experiments.class,})
 public class AllExperiments {
 }

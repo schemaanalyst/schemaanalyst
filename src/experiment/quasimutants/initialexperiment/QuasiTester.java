@@ -55,11 +55,11 @@ public class QuasiTester {
     public static void main(String[] args) {
         // Set config parameters
         Configuration.debug = false;
-        Configuration.project = System.getProperty("user.dir")+"/";
+        Configuration.project = System.getProperty("user.dir") + "/";
         Configuration.type = "quasi-test";
         Configuration.database = "quasi-test";
         Logger.getLogger("hsqldb.db").setLevel(Level.WARNING);
-        
+
         // Test the mutants
         DBMS db = new HSQLDB();
         DatabaseInteractor dbInteractor = db.getDatabaseInteractor();

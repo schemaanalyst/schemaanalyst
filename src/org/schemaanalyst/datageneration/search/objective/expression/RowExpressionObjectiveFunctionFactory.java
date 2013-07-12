@@ -10,45 +10,45 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class RowExpressionObjectiveFunctionFactory {
 
-	protected Expression expression;
-	protected boolean goalIsToSatisfy, allowNull;
-	
-	public RowExpressionObjectiveFunctionFactory(Expression expression, 
-												 boolean goalIsToSatisfy, 
-												 boolean allowNull) {
-		this.expression = expression;
-		this.goalIsToSatisfy = goalIsToSatisfy;
-		this.allowNull = allowNull;
-	}
-	
-	public ObjectiveFunction<Row> create() {
-		
-		class ExpressionDispatcher extends ExpressionAdapter {
+    protected Expression expression;
+    protected boolean goalIsToSatisfy, allowNull;
 
-			ObjectiveFunction<Row> objFun;
-			
-			ObjectiveFunction<Row> dispatch() {
-				objFun = null;
-				expression.accept(this);
-				return objFun;
-			}
-			
-			public void visit(NullExpression expression) {
-				objFun = new NullExpressionObjectiveFunction(
-									expression, goalIsToSatisfy);
-			}
+    public RowExpressionObjectiveFunctionFactory(Expression expression,
+            boolean goalIsToSatisfy,
+            boolean allowNull) {
+        this.expression = expression;
+        this.goalIsToSatisfy = goalIsToSatisfy;
+        this.allowNull = allowNull;
+    }
 
-			public void visit(OrExpression expression) {
-				objFun = new OrExpressionObjectiveFunction(
-						expression, goalIsToSatisfy, allowNull);				
-			}
+    public ObjectiveFunction<Row> create() {
 
-			public void visit(RelationalExpression expression) {
-				objFun = new RelationalExpressionObjectiveFunction(
-									expression, goalIsToSatisfy, allowNull);
-			}
-		}		
-		
-		return (new ExpressionDispatcher()).dispatch();
-	}
+        class ExpressionDispatcher extends ExpressionAdapter {
+
+            ObjectiveFunction<Row> objFun;
+
+            ObjectiveFunction<Row> dispatch() {
+                objFun = null;
+                expression.accept(this);
+                return objFun;
+            }
+
+            public void visit(NullExpression expression) {
+                objFun = new NullExpressionObjectiveFunction(
+                        expression, goalIsToSatisfy);
+            }
+
+            public void visit(OrExpression expression) {
+                objFun = new OrExpressionObjectiveFunction(
+                        expression, goalIsToSatisfy, allowNull);
+            }
+
+            public void visit(RelationalExpression expression) {
+                objFun = new RelationalExpressionObjectiveFunction(
+                        expression, goalIsToSatisfy, allowNull);
+            }
+        }
+
+        return (new ExpressionDispatcher()).dispatch();
+    }
 }

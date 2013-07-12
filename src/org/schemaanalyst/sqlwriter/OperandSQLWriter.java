@@ -7,44 +7,45 @@ import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
 
 public class OperandSQLWriter {
 
-	protected ValueSQLWriter valueSQLWriter;
-	
-	public void setValueSQLWriter(ValueSQLWriter valueSQLWriter) {
-		this.valueSQLWriter = valueSQLWriter;
-	}
-	
-	public String writeOperand(Operand operand) {
-		
-		class OperandSQLWriterVisitor implements OperandVisitor {
-			String sql;
-			
-			public String writeOperand(Operand operand) {
-				sql = "";
-				operand.accept(this);
-				return sql;
-			}
+    protected ValueSQLWriter valueSQLWriter;
 
-			public void visit(Column column) {
-				sql = writeColumn(column);
-			}
+    public void setValueSQLWriter(ValueSQLWriter valueSQLWriter) {
+        this.valueSQLWriter = valueSQLWriter;
+    }
 
-			public void visit(Value value) {
-				sql = writeValue(value);	
-			}
-		}
-		
-		if (operand == null) {
-			return valueSQLWriter.writeNullValue();
-		} else {	
-			return (new OperandSQLWriterVisitor()).writeOperand(operand);
-		}
-	}
-		
-	public String writeColumn(Column operand) {
-		return operand.getName();
-	}
+    public String writeOperand(Operand operand) {
 
-	public String writeValue(Value value) {
-		return valueSQLWriter.writeValue(value);
-	}	
+        class OperandSQLWriterVisitor implements OperandVisitor {
+
+            String sql;
+
+            public String writeOperand(Operand operand) {
+                sql = "";
+                operand.accept(this);
+                return sql;
+            }
+
+            public void visit(Column column) {
+                sql = writeColumn(column);
+            }
+
+            public void visit(Value value) {
+                sql = writeValue(value);
+            }
+        }
+
+        if (operand == null) {
+            return valueSQLWriter.writeNullValue();
+        } else {
+            return (new OperandSQLWriterVisitor()).writeOperand(operand);
+        }
+    }
+
+    public String writeColumn(Column operand) {
+        return operand.getName();
+    }
+
+    public String writeValue(Value value) {
+        return valueSQLWriter.writeValue(value);
+    }
 }

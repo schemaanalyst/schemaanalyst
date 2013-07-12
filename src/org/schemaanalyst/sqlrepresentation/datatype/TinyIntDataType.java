@@ -2,17 +2,17 @@ package org.schemaanalyst.sqlrepresentation.datatype;
 
 public class TinyIntDataType extends IntDataType {
 
-	private static final long serialVersionUID = -8000767399672412543L;
-	
-	public TinyIntDataType() {
-		super(true);
-	}
-	
-	public TinyIntDataType(boolean signed) {
-		super(signed);
-	}		
-	
-	public void accept(DataTypeVisitor typeVisitor) {
-		typeVisitor.visit(this);
-	}
+    private static final long serialVersionUID = -8000767399672412543L;
+
+    public TinyIntDataType() {
+        super(true);
+    }
+
+    public TinyIntDataType(boolean signed) {
+        super(signed);
+    }
+
+    public void accept(DataTypeVisitor typeVisitor) {
+        typeVisitor.visit(this);
+    }
 }

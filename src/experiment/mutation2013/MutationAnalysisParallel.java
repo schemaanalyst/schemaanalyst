@@ -163,7 +163,7 @@ public class MutationAnalysisParallel {
         @Override
         public void run() {
             System.out.println("Mutant " + mutantNumber);
-            
+
             boolean stillBorn = false;
 
             // drop tables inside the previous schema
@@ -188,7 +188,7 @@ public class MutationAnalysisParallel {
                     stillBorn = true;
                 }
             }
-            
+
             // rebuild schemata prefix
             String schemataInsert = "INSERT INTO mutant_" + mutantNumber + "_";
 
@@ -201,7 +201,7 @@ public class MutationAnalysisParallel {
 
                 // extract the statement from the SQLInsertRecord
                 String statement = originalInsertRecord.getStatement();
-                
+
                 // alter for mutant schemata
                 statement = statement.replaceAll("INSERT INTO ", schemataInsert);
 
@@ -246,9 +246,9 @@ public class MutationAnalysisParallel {
             for (String statement : dropTableStatementsMutants) {
                 databaseInteraction.executeUpdate(statement);
             }
-            
+
             // store the current insertMutantRecord inside of the mutationReport
-            synchronized(mutationReport) {
+            synchronized (mutationReport) {
                 mutationReport.addMutantReport(currentMutantReport);
             }
         }

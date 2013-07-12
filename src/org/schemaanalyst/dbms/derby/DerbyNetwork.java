@@ -8,18 +8,17 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 public class DerbyNetwork extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
-
     private DerbyDatabaseInteractor databaseInteraction = new DerbyNetworkDatabaseInteractor();
 
-	public SQLWriter getSQLWriter() {
-		return sqlWriter;
-	}
+    public SQLWriter getSQLWriter() {
+        return sqlWriter;
+    }
 
-	public DatabaseInteractor getDatabaseInteractor() {
-		return databaseInteraction;
-	}
+    public DatabaseInteractor getDatabaseInteractor() {
+        return databaseInteraction;
+    }
 
-	public void accept(DBMSVisitor visitor) {
-		visitor.visit(this);
-	}	
+    public void accept(DBMSVisitor visitor) {
+        visitor.visit(this);
+    }
 }

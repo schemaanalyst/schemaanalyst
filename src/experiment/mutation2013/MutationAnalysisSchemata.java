@@ -121,7 +121,7 @@ public class MutationAnalysisSchemata {
         //databaseInteraction.executeUpdate(dropStatements);
         // create tables in new schema
         databaseInteraction.executeUpdate(createStatements);
-        
+
         int inserts = 0;
 
         int i = 1;
@@ -139,9 +139,9 @@ public class MutationAnalysisSchemata {
             SQLExecutionReport retrievedOriginalReport = originalReport;
             List<SQLInsertRecord> originalInsertStatements = retrievedOriginalReport.getInsertStatements();
             for (SQLInsertRecord originalInsertRecord : originalInsertStatements) {
-                
+
                 inserts++;
-                
+
                 // create a MutantRecord
                 MutantRecord insertMutantRecord = new MutantRecord();
 
@@ -200,7 +200,7 @@ public class MutationAnalysisSchemata {
         // calculate the mutation score and the main summary statistics
         mutationReport.calculateMutationScoresAndStatistics();
         MutationReportScore score = mutationReport.getScores().get("mutationScore");
-        
+
         // drop tables inside previous schema
         databaseInteraction.executeUpdate(dropStatements);
 
@@ -219,8 +219,8 @@ public class MutationAnalysisSchemata {
 
         experimentalResults.writeResults();
         experimentalResults.save();
-        
-        System.out.println("INSERTS: "+inserts);
+
+        System.out.println("INSERTS: " + inserts);
     }
 
     /**

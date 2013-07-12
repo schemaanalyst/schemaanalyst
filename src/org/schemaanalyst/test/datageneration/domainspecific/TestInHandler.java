@@ -26,96 +26,96 @@ import org.schemaanalyst.util.random.SimpleRandom;
 
 public class TestInHandler {
 
-	Data data;
-	Table table;
-	Column column;
-	Cell row1Cell, row2Cell, row3Cell;
-	
-	@Before
-	public void setup() {
-		data = new Data();
-		
-		Schema schema = new Schema("test_schema");
-		table = schema.createTable("test_table");
-		column = table.addColumn("test_column", new IntDataType());
-		ValueFactory vf = new ValueFactory();
-		
-		List<Cell> row1Cells = new ArrayList<>();
-		row1Cell = new Cell(column, vf);
-		row1Cells.add(row1Cell);
-		data.addRow(table, new Row(row1Cells));
-		
-		List<Cell> row2Cells = new ArrayList<>();
-		row2Cell = new Cell(column, vf);
-		row2Cells.add(row2Cell);
-		data.addRow(table, new Row(row2Cells));
-		
-		List<Cell> row3Cells = new ArrayList<>();
-		row3Cell = new Cell(column, vf);
-		row3Cells.add(row3Cell);
-		data.addRow(table, new Row(row3Cells));		
-	}
-	
-	@Test
-	public void testAttemptSatisfy() {
-		row1Cell.setValue(new NumericValue(10));
-		row2Cell.setValue(new NumericValue(20));
-		row3Cell.setValue(new NumericValue(30));
-		
-		InCheckCondition in = new InCheckCondition(column, 30, 40, 50);
-		
-		InAnalyst ia = new InAnalyst(in, table, true);
-		
-		assertFalse("Pre-handler: constraint should not be satisfied",
-					ia.isSatisfied(null, data));
+    Data data;
+    Table table;
+    Column column;
+    Cell row1Cell, row2Cell, row3Cell;
 
-		InHandler ih = new InHandler(ia, true, true, 
-				 					 CellRandomisationFactory.small(new SimpleRandom(0)), 
-				 					 new SimpleRandom(0));	
-		ih.attempt(null, data);
-		
-		assertTrue("Post-handler: constraint should be satisfied",
-				   ia.isSatisfied(null, data));		
-		
+    @Before
+    public void setup() {
+        data = new Data();
 
-		List<Cell> nonSatisfyingCells = ia.getNotInCells();
-		assertEquals("Should be 0 non-satisfying cells",
-					 0, nonSatisfyingCells.size());
-		
-		List<Cell> satisfyingCells = ia.getInCells();
-		assertEquals("Should be 3 satisfying cells",
-					 3, satisfyingCells.size());			
-	}
-	
-	@Test
-	public void testAttemptFalsify() {
-		row1Cell.setValue(new NumericValue(10));
-		row2Cell.setValue(new NumericValue(20));
-		row3Cell.setValue(new NumericValue(30));
-		
-		InCheckCondition in = new InCheckCondition(column, 30, 20, 10);
-		
-		InAnalyst ia = new InAnalyst(in, table, true);
-		
-		assertTrue("Pre-handler: constraint should be satified",
-					ia.isSatisfied(null, data));
-		
-		InHandler ih = new InHandler(ia, false, true, 
-				 CellRandomisationFactory.small(new SimpleRandom(0)), 
-				 new SimpleRandom(0));	
-		
-		ih.attempt(null, data);
-		
-		assertFalse("Post-handler: constraint should be satisfied",
-				ia.isSatisfied(null, data));		
+        Schema schema = new Schema("test_schema");
+        table = schema.createTable("test_table");
+        column = table.addColumn("test_column", new IntDataType());
+        ValueFactory vf = new ValueFactory();
+
+        List<Cell> row1Cells = new ArrayList<>();
+        row1Cell = new Cell(column, vf);
+        row1Cells.add(row1Cell);
+        data.addRow(table, new Row(row1Cells));
+
+        List<Cell> row2Cells = new ArrayList<>();
+        row2Cell = new Cell(column, vf);
+        row2Cells.add(row2Cell);
+        data.addRow(table, new Row(row2Cells));
+
+        List<Cell> row3Cells = new ArrayList<>();
+        row3Cell = new Cell(column, vf);
+        row3Cells.add(row3Cell);
+        data.addRow(table, new Row(row3Cells));
+    }
+
+    @Test
+    public void testAttemptSatisfy() {
+        row1Cell.setValue(new NumericValue(10));
+        row2Cell.setValue(new NumericValue(20));
+        row3Cell.setValue(new NumericValue(30));
+
+        InCheckCondition in = new InCheckCondition(column, 30, 40, 50);
+
+        InAnalyst ia = new InAnalyst(in, table, true);
+
+        assertFalse("Pre-handler: constraint should not be satisfied",
+                ia.isSatisfied(null, data));
+
+        InHandler ih = new InHandler(ia, true, true,
+                CellRandomisationFactory.small(new SimpleRandom(0)),
+                new SimpleRandom(0));
+        ih.attempt(null, data);
+
+        assertTrue("Post-handler: constraint should be satisfied",
+                ia.isSatisfied(null, data));
 
 
-		List<Cell> nonSatisfyingCells = ia.getNotInCells();
-		assertEquals("Should be 3 non-satisfying cells",
-				     3, nonSatisfyingCells.size());
+        List<Cell> nonSatisfyingCells = ia.getNotInCells();
+        assertEquals("Should be 0 non-satisfying cells",
+                0, nonSatisfyingCells.size());
 
-		List<Cell> satisfyingCells = ia.getInCells();
-		assertEquals("Should be 0 satisfying cells",
-					 0, satisfyingCells.size());			
-	}	
+        List<Cell> satisfyingCells = ia.getInCells();
+        assertEquals("Should be 3 satisfying cells",
+                3, satisfyingCells.size());
+    }
+
+    @Test
+    public void testAttemptFalsify() {
+        row1Cell.setValue(new NumericValue(10));
+        row2Cell.setValue(new NumericValue(20));
+        row3Cell.setValue(new NumericValue(30));
+
+        InCheckCondition in = new InCheckCondition(column, 30, 20, 10);
+
+        InAnalyst ia = new InAnalyst(in, table, true);
+
+        assertTrue("Pre-handler: constraint should be satified",
+                ia.isSatisfied(null, data));
+
+        InHandler ih = new InHandler(ia, false, true,
+                CellRandomisationFactory.small(new SimpleRandom(0)),
+                new SimpleRandom(0));
+
+        ih.attempt(null, data);
+
+        assertFalse("Post-handler: constraint should be satisfied",
+                ia.isSatisfied(null, data));
+
+
+        List<Cell> nonSatisfyingCells = ia.getNotInCells();
+        assertEquals("Should be 3 non-satisfying cells",
+                3, nonSatisfyingCells.size());
+
+        List<Cell> satisfyingCells = ia.getInCells();
+        assertEquals("Should be 0 satisfying cells",
+                0, satisfyingCells.size());
+    }
 }

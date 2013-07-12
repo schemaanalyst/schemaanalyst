@@ -9,25 +9,23 @@ import org.schemaanalyst.configuration.Configuration;
 public class MutantScriptCreator extends ScriptCreator {
 
     public void configure() {
-	try {
-	    // create the scripts directory for storing the automatically
-	    // generated scripts for satisfying and violating the schema
-	    File scriptsDirectory = new File(Configuration.project +
-					     "MutantScripts/");
-	    
-	    // if the Scripts/ directory does not exist, then create it
-	    if (!scriptsDirectory.exists()) {
-		scriptsDirectory.mkdir();  
-	    }
-	    
-	    // create a PrintWriter associated with the text file
-	    scriptOutput = new PrintWriter(Configuration.project +
-					   "MutantScripts/" +
-					   Configuration.mutantscriptfile);
-	}
+        try {
+            // create the scripts directory for storing the automatically
+            // generated scripts for satisfying and violating the schema
+            File scriptsDirectory = new File(Configuration.project
+                    + "MutantScripts/");
 
-	catch(FileNotFoundException e) {
-	    e.printStackTrace();
-	}
+            // if the Scripts/ directory does not exist, then create it
+            if (!scriptsDirectory.exists()) {
+                scriptsDirectory.mkdir();
+            }
+
+            // create a PrintWriter associated with the text file
+            scriptOutput = new PrintWriter(Configuration.project
+                    + "MutantScripts/"
+                    + Configuration.mutantscriptfile);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

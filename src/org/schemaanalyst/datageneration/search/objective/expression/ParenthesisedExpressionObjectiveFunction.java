@@ -6,7 +6,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 public class ParenthesisedExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-	public ObjectiveValue evaluate(Row row) {
-		return null;
-	}
+    public ObjectiveValue evaluate(Row row) {
+        return null;
+    }
 }

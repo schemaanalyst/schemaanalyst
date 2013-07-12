@@ -1,6 +1,5 @@
 package experiment;
 
-
 import experiment.util.XMLSerialiser;
 import java.util.List;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.io.File;
 import org.schemaanalyst.configuration.FolderConfiguration;
 
 public class GlobalExperimentParameters extends Parameters {
-    
+
     private static final String DEFAULT_LOCATION =
             FolderConfiguration.config_dir + File.separator + "globalexperimentparameters.xml";
     private ArrayList<String> parameters;
@@ -18,7 +17,7 @@ public class GlobalExperimentParameters extends Parameters {
      * Default constructor.
      */
     public GlobalExperimentParameters() {
-	parameters = new ArrayList<>();
+        parameters = new ArrayList<>();
     }
 
     /**
@@ -26,27 +25,28 @@ public class GlobalExperimentParameters extends Parameters {
      */
     @Override
     public void setDefaultParameters() {
-	parameters.add("--standalone=false");
-	parameters.add("--debug=false");
-	parameters.add("--foreignkeys=true");
-	parameters.add("--script=false");
-	parameters.add("--wantmutationreport_mrp=false");
-	parameters.add("--wantmutationreport_txt=false");
-	parameters.add("--onlymutationsummary=false");
-	parameters.add("--project="+System.getProperty("user.dir")+"/");
-	parameters.add("--host=localhost");
-	parameters.add("--port=5432");
-	parameters.add("--spy=false");
+        parameters.add("--standalone=false");
+        parameters.add("--debug=false");
+        parameters.add("--foreignkeys=true");
+        parameters.add("--script=false");
+        parameters.add("--wantmutationreport_mrp=false");
+        parameters.add("--wantmutationreport_txt=false");
+        parameters.add("--onlymutationsummary=false");
+        parameters.add("--project=" + System.getProperty("user.dir") + "/");
+        parameters.add("--host=localhost");
+        parameters.add("--port=5432");
+        parameters.add("--spy=false");
         parameters.add("--mutation2013_datageneration=false");
         parameters.add("--mutation2013_execution=false");
     }
 
     /**
      * Return the parameters.
+     *
      * @return The parameters.
      */
     public List<String> getParameters() {
-	return parameters;
+        return parameters;
     }
 
     /**
@@ -71,7 +71,7 @@ public class GlobalExperimentParameters extends Parameters {
 
     /**
      * Load a parameters object from a file, formatted in XML.
-     * 
+     *
      * @param location The file path.
      * @return The parameters object.
      */
@@ -81,14 +81,16 @@ public class GlobalExperimentParameters extends Parameters {
 
     /**
      * Load a parameters object from a file, formatted in XML.
-     * 
+     *
      * @return The parameters object.
      */
     public static GlobalExperimentParameters loadFromXML() {
         return XMLSerialiser.<GlobalExperimentParameters>load(DEFAULT_LOCATION);
     }
 
-    /** Write out the default parameters to the file system*/
+    /**
+     * Write out the default parameters to the file system
+     */
     public static void main(String[] args) {
         GlobalExperimentParameters parameters = new GlobalExperimentParameters();
         parameters.setDefaultParameters();

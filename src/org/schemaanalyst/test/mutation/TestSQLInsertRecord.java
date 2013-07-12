@@ -12,85 +12,85 @@ import org.schemaanalyst.mutation.SQLExecutionRecord;
 
 public class TestSQLInsertRecord {
 
-    @Test 
+    @Test
     public void testDefaultIsTryingToNegate() {
-	SQLInsertRecord record = new SQLInsertRecord();
-	assertTrue(record.isTryingToNegate());
-	assertTrue(!record.isTryingToSatisfy());
+        SQLInsertRecord record = new SQLInsertRecord();
+        assertTrue(record.isTryingToNegate());
+        assertTrue(!record.isTryingToSatisfy());
     }
 
-    @Test 
+    @Test
     public void testNowTryingToSatisfy() {
-	SQLInsertRecord record = new SQLInsertRecord();
-	record.tryToSatisfy();
-	assertTrue(!record.isTryingToNegate());
-	assertTrue(record.isTryingToSatisfy());
+        SQLInsertRecord record = new SQLInsertRecord();
+        record.tryToSatisfy();
+        assertTrue(!record.isTryingToNegate());
+        assertTrue(record.isTryingToSatisfy());
     }
 
-    @Test 
+    @Test
     public void testNowTryingToNegate() {
-	SQLInsertRecord record = new SQLInsertRecord();
-	record.tryToNegate();
-	assertTrue(record.isTryingToNegate());
-	assertTrue(!record.isTryingToSatisfy());
+        SQLInsertRecord record = new SQLInsertRecord();
+        record.tryToNegate();
+        assertTrue(record.isTryingToNegate());
+        assertTrue(!record.isTryingToSatisfy());
     }
 
-    @Test 
+    @Test
     public void testSQLExecutionRecordDefaultCodeAndStatement() {
-	SQLExecutionRecord record = new SQLExecutionRecord();
-	assertEquals(0, record.getReturnCode());
-	assertEquals("none", record.getStatement());
+        SQLExecutionRecord record = new SQLExecutionRecord();
+        assertEquals(0, record.getReturnCode());
+        assertEquals("none", record.getStatement());
     }
 
-    @Test 
+    @Test
     public void testMutantRecordDefaultState() {
-	MutantRecord record = new MutantRecord();
-	assertEquals(0, record.getReturnCode());
-	assertEquals("none", record.getStatement());
-    }    
+        MutantRecord record = new MutantRecord();
+        assertEquals(0, record.getReturnCode());
+        assertEquals("none", record.getStatement());
+    }
 
-    @Test 
+    @Test
     public void testDefaultIsTryingToNegateMR() {
-	MutantRecord record = new MutantRecord();
-	assertTrue(record.isTryingToNegate());
-	assertTrue(!record.isTryingToSatisfy());
+        MutantRecord record = new MutantRecord();
+        assertTrue(record.isTryingToNegate());
+        assertTrue(!record.isTryingToSatisfy());
     }
 
-    @Test 
+    @Test
     public void testNowTryingToSatisfyMR() {
-	MutantRecord record = new MutantRecord();
-	record.tryToSatisfy();
-	assertTrue(!record.isTryingToNegate());
-	assertTrue(record.isTryingToSatisfy());
+        MutantRecord record = new MutantRecord();
+        record.tryToSatisfy();
+        assertTrue(!record.isTryingToNegate());
+        assertTrue(record.isTryingToSatisfy());
     }
 
-    @Test 
+    @Test
     public void testNowTryingToNegateMR() {
-	MutantRecord record = new MutantRecord();
-	record.tryToNegate();
-	assertTrue(record.isTryingToNegate());
-	assertTrue(!record.isTryingToSatisfy());
+        MutantRecord record = new MutantRecord();
+        record.tryToNegate();
+        assertTrue(record.isTryingToNegate());
+        assertTrue(!record.isTryingToSatisfy());
     }
 
     @Test
     public void testMutantKillingDefault() {
-	MutantRecord record = new MutantRecord();
-	assertTrue(!record.didKillMutant());
+        MutantRecord record = new MutantRecord();
+        assertTrue(!record.didKillMutant());
     }
 
     @Test
     public void testMutantKillingTryOneNow() {
-	MutantRecord record = new MutantRecord();
-	assertTrue(!record.didKillMutant());
-	record.killedMutant();
-	assertTrue(record.didKillMutant());
+        MutantRecord record = new MutantRecord();
+        assertTrue(!record.didKillMutant());
+        record.killedMutant();
+        assertTrue(record.didKillMutant());
     }
 
     @Test
     public void testMutantSparing() {
-	MutantRecord record = new MutantRecord();
-	assertTrue(!record.didKillMutant());
-	record.sparedMutant();
-	assertTrue(!record.didKillMutant());
+        MutantRecord record = new MutantRecord();
+        assertTrue(!record.didKillMutant());
+        record.sparedMutant();
+        assertTrue(!record.didKillMutant());
     }
 }

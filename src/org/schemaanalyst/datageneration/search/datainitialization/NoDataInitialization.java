@@ -4,7 +4,6 @@ import org.schemaanalyst.data.Data;
 
 public class NoDataInitialization extends DataInitializer {
 
-	public void initialize(Data data) {
-	}
+    public void initialize(Data data) {
+    }
 }
-

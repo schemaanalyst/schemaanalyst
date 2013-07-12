@@ -27,9 +27,9 @@ import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckConditi
  * @author chris
  */
 public class CheckConstraintReferencedColumnMutator extends Mutator {
-    
+
     private TypeCompatibility typeCompatibility;
-    
+
     /**
      * Default constructor. Uses 'relaxed' type compatibility, where columns
      * must be of a similar type.
@@ -37,11 +37,12 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
     public CheckConstraintReferencedColumnMutator() {
         this(TypeCompatibility.RELAXED);
     }
-    
+
     /**
      * Constructor. Uses the given type compatibility to determine which columns
      * to use for mutation.
-     * @param typeCompatibility 
+     *
+     * @param typeCompatibility
      */
     public CheckConstraintReferencedColumnMutator(TypeCompatibility typeCompatibility) {
         this.typeCompatibility = typeCompatibility;
@@ -67,7 +68,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         /**
          * Constructor.
-         * 
+         *
          * @param table The table to mutate
          * @param constraint The constraint to mutate
          */
@@ -79,7 +80,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         /**
          * Create the mutants for the given constraint.
-         * 
+         *
          * @return The mutants created.
          */
         public List<Schema> createMutants() {
@@ -90,7 +91,7 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         /**
          * Mutates a given BetweenCheckPredicate constraint.
-         * 
+         *
          * @param predicate The predicate of the constraint
          */
         @Override
@@ -305,21 +306,21 @@ public class CheckConstraintReferencedColumnMutator extends Mutator {
 
         public abstract boolean check(Column column, Column replacement);
         private static final Set<Class> NUMERIC_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.sqlrepresentation.datatype.BigIntDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.FloatDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.IntDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.MediumIntDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.NumericDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.RealDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType.class
-                })));
+            org.schemaanalyst.sqlrepresentation.datatype.BigIntDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.FloatDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.IntDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.MediumIntDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.NumericDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.RealDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType.class
+        })));
         private static final Set<Class> STRING_TYPES = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(new Class[]{
-                    org.schemaanalyst.sqlrepresentation.datatype.CharDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType.class,
-                    org.schemaanalyst.sqlrepresentation.datatype.TextDataType.class
-                })));
+            org.schemaanalyst.sqlrepresentation.datatype.CharDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType.class,
+            org.schemaanalyst.sqlrepresentation.datatype.TextDataType.class
+        })));
     };
 }

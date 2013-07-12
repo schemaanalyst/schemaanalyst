@@ -35,10 +35,10 @@ public class MutationAnalysisSmart {
     private static MutantTableMap mutantTables = new MutantTableMap();
 
     public static void main(String[] args) {
-        
+
         int inserts = 0;
         int totalInserts = 0;
-        
+
         // parse options
         Options options = new Options("MutationAnalysis [options]", new Configuration());
         options.parse_or_usage(args);
@@ -100,33 +100,33 @@ public class MutationAnalysisSmart {
             addToMutantTableMap(mutant, i);
             i++;
         }
-        
+
         // create original schema tables
-        for (String create: sqlWriter.writeCreateTableStatements(schema)) {
+        for (String create : sqlWriter.writeCreateTableStatements(schema)) {
             databaseInteraction.executeUpdate(create);
         }
         // create mutant schema tables
-        for (String create: mutantCreateStatements) {
+        for (String create : mutantCreateStatements) {
             databaseInteraction.executeUpdate(create);
         }
-        
+
         HashSet<String> killed = new HashSet<>();
-        
+
         // get the original mutant reports
         SQLExecutionReport retrievedOriginalReport = originalReport;
         List<SQLInsertRecord> originalInsertStatements = retrievedOriginalReport.getInsertStatements();
         for (SQLInsertRecord originalInsertRecord : originalInsertStatements) {
-            
+
             totalInserts++;
-            
+
             String insert = originalInsertRecord.getStatement();
             String affectedTable = getAffectedTable(insert);
             int returnCode = originalInsertRecord.getReturnCode();
             databaseInteraction.executeUpdate(insert);
             inserts++;
-            
+
             // for each applicable mutant
-            for (String mutantTable: mutantTables.getMutants(affectedTable)) {
+            for (String mutantTable : mutantTables.getMutants(affectedTable)) {
                 String mutantInsert = rewriteInsert(insert, affectedTable, mutantTable);
                 int mutantReturnCode = databaseInteraction.executeUpdate(mutantInsert);
                 inserts++;
@@ -135,7 +135,7 @@ public class MutationAnalysisSmart {
                 }
             }
         }
-        
+
         // drop mutant schema tables
         for (String drop : mutantDropStatements) {
             databaseInteraction.executeUpdate(drop);
@@ -144,25 +144,25 @@ public class MutationAnalysisSmart {
         for (String drop : sqlWriter.writeDropTableStatements(schema, true)) {
             databaseInteraction.executeUpdate(drop);
         }
-        
+
         // END TIME FOR mutation analysis
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        
+
         experimentalResults.addResult("mutationtime", new Long(totalTime).toString());
         experimentalResults.addResult("mutationscore_numerator", Integer.toString(killed.size()));
         experimentalResults.addResult("mutationscore_denominator", Integer.toString(mutants.size()));
-        
+
         if (!experimentalResults.wroteHeader()) {
             experimentalResults.writeHeader();
             experimentalResults.didWriteCountHeader();
         }
-        
+
         experimentalResults.writeResults();
         experimentalResults.save();
-        
-        System.out.println("INSERTS: "+inserts);
-        System.out.println("TOTAL INSERTS: "+totalInserts);
+
+        System.out.println("INSERTS: " + inserts);
+        System.out.println("TOTAL INSERTS: " + totalInserts);
     }
 
     /**
@@ -217,39 +217,43 @@ public class MutationAnalysisSmart {
         }
         throw new RuntimeException("Could not find changed table for mutant (" + mutant.getName() + ")");
     }
-    
+
     /**
      * Retrieves the name of the table affected by an update statement.
+     *
      * @param statement The update statement
      * @return The table name
      */
     private static String getAffectedTable(String statement) {
         return statement.substring("INSERT INTO ".length(), statement.indexOf('('));
     }
-    
+
     /**
      * Rewrites an insert statement to redirect to a mutant table.
+     *
      * @param statement The insert statement
      * @param table The original table name
      * @param mutantTable The mutant table name
      * @return The rewritten insert
      */
     private static String rewriteInsert(String statement, String table, String mutantTable) {
-        return statement.replace("INSERT INTO "+table, "INSERT INTO "+mutantTable);
+        return statement.replace("INSERT INTO " + table, "INSERT INTO " + mutantTable);
     }
 
     /**
      * Adds a mutant to the mutant tables map.
+     *
      * @param mutant The mutant schema
      * @param id The mutant id
      */
     private static void addToMutantTableMap(Schema mutant, int id) {
         String changedTable = getChangedTable(mutant);
-        mutantTables.addMutant(changedTable, "mutant_"+id+"_"+changedTable);
+        mutantTables.addMutant(changedTable, "mutant_" + id + "_" + changedTable);
     }
-    
+
     /**
      * Retrieves the mutant id number from a table name.
+     *
      * @param mutantTable
      * @return The mutant id
      */

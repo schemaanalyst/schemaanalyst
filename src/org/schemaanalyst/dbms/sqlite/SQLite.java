@@ -9,14 +9,14 @@ public class SQLite extends DBMS {
     private SQLiteDatabaseInteractor databaseInteraction = new SQLiteDatabaseInteractor();
 
     public SQLite() {
-    	sqlWriter = new SQLiteSQLWriter();
+        sqlWriter = new SQLiteSQLWriter();
     }
 
     public DatabaseInteractor getDatabaseInteractor() {
-		return databaseInteraction;
+        return databaseInteraction;
     }
 
-	public void accept(DBMSVisitor visitor) {
-		visitor.visit(this);
-	}    
+    public void accept(DBMSVisitor visitor) {
+        visitor.visit(this);
+    }
 }

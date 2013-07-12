@@ -22,338 +22,335 @@ import org.schemaanalyst.util.random.Random;
 
 public class AlternatingValueSearch extends Search<Data> {
 
-	protected static final int ACCELERATION_BASE = 2;	
-	
-	protected Random random;
-	protected DataInitializer startInitializer;
-	protected DataInitializer restartInitializer;
-	
-	protected Data data;
-	protected List<Cell> cells;
-	protected ObjectiveValue lastObjVal;
-	
-	protected int direction;
-	protected int step;	
-	
-	public AlternatingValueSearch(Random random,
-								  DataInitializer startInitializer, 
-								  DataInitializer restartInitializer) {
-		this.random = random;
-		this.startInitializer = startInitializer;
-		this.restartInitializer = restartInitializer;
-	}
-	
-	public void search(Data data) {
-		// set up
-		this.data = data;
-		cells = data.getCells();
-		
-		// start
-		startInitializer.initialize(data);
-		lastObjVal = null;
-		evaluate();
-		
-		// main loop
-		while (!terminationCriterion.satisfied()) {
-			
-			alternateThroughValues();
-			
-			if (!terminationCriterion.satisfied()) {
-				restartsCounter.increment();
-			}
-			
-			if (!terminationCriterion.satisfied()) {
-				restartInitializer.initialize(data);
-				lastObjVal = null;
-				evaluate();
-			}
-		} 
-	}
-	
-	protected boolean evaluate() {
-		ObjectiveValue nextObjVal = evaluate(data);
-		boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
-		
-		if (improvement) {
-			lastObjVal = nextObjVal;
-		}		
-		
-		return improvement;		
-	}
-	
-	protected void alternateThroughValues() {
-		int numValues = cells.size();
-		int valuesWithoutImprovement = 0;
-		Iterator<Cell> iterator = cells.iterator();
+    protected static final int ACCELERATION_BASE = 2;
+    protected Random random;
+    protected DataInitializer startInitializer;
+    protected DataInitializer restartInitializer;
+    protected Data data;
+    protected List<Cell> cells;
+    protected ObjectiveValue lastObjVal;
+    protected int direction;
+    protected int step;
 
-		while (valuesWithoutImprovement < numValues && !terminationCriterion.satisfied()) {
-			
-			// restart the iteration process through the columns
-			if (!iterator.hasNext()) {
-				iterator = cells.iterator();
-			}
-			
-			Cell cell = iterator.next();
-			
-			if (valueSearch(cell)) {
-				valuesWithoutImprovement = 0;
-			} else {
-				valuesWithoutImprovement ++;
-			}
-		}		
-	}
+    public AlternatingValueSearch(Random random,
+            DataInitializer startInitializer,
+            DataInitializer restartInitializer) {
+        this.random = random;
+        this.startInitializer = startInitializer;
+        this.restartInitializer = restartInitializer;
+    }
 
-	protected boolean valueSearch(Cell cell) {
-		boolean improvement = invertNullMove(cell);
-		
-		if (!cell.isNull()) {
-			if (valueSearch(cell.getValue())) {
-				improvement = true;
-			}
-		}
+    public void search(Data data) {
+        // set up
+        this.data = data;
+        cells = data.getCells();
 
-		return improvement;
-	}
+        // start
+        startInitializer.initialize(data);
+        lastObjVal = null;
+        evaluate();
 
-	protected boolean invertNullMove(Cell cell) {
-		boolean improvement = false;
+        // main loop
+        while (!terminationCriterion.satisfied()) {
 
-		if (!terminationCriterion.satisfied()) {
-			Value originalValue = cell.getValue();
-			
-			cell.setNull(originalValue != null);
-			
-			//if (originalValue == null) {
-			//	cell.setNull(false);
-			//	cellRandomizer.randomizeCell(cell, false);
-			//} else {				
-			//	cell.setValue(null);					
-			//}
-			
-			improvement = evaluate();
-			if (!improvement) {
-				cell.setValue(originalValue);
-			}			
-		}
-		
-		return improvement;
-	}
+            alternateThroughValues();
 
-	protected boolean valueSearch(Value value) {
-		class ValueDispatcher implements ValueVisitor {
+            if (!terminationCriterion.satisfied()) {
+                restartsCounter.increment();
+            }
 
-			boolean improvement;
+            if (!terminationCriterion.satisfied()) {
+                restartInitializer.initialize(data);
+                lastObjVal = null;
+                evaluate();
+            }
+        }
+    }
 
-			public boolean improvement(Value value) {
-				value.accept(this);
-				return improvement;
-			}
+    protected boolean evaluate() {
+        ObjectiveValue nextObjVal = evaluate(data);
+        boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
 
-			public void visit(BooleanValue value) {
-				improvement = booleanValueSearch(value);
-			}
+        if (improvement) {
+            lastObjVal = nextObjVal;
+        }
 
-			public void visit(DateValue value) {
-				improvement = dateValueSearch(value);
-			}
+        return improvement;
+    }
 
-			public void visit(DateTimeValue value) {
-				improvement = dateTimeValueSearch(value);
-			}
+    protected void alternateThroughValues() {
+        int numValues = cells.size();
+        int valuesWithoutImprovement = 0;
+        Iterator<Cell> iterator = cells.iterator();
 
-			public void visit(NumericValue value) {
-				improvement = numericValueSearch(value);
-			}
+        while (valuesWithoutImprovement < numValues && !terminationCriterion.satisfied()) {
 
-			public void visit(StringValue value) {
-				improvement = stringValueSearch(value);
-			}
+            // restart the iteration process through the columns
+            if (!iterator.hasNext()) {
+                iterator = cells.iterator();
+            }
 
-			public void visit(TimeValue value) {
-				improvement = timeValueSearch(value);
-			}
+            Cell cell = iterator.next();
 
-			public void visit(TimestampValue value) {
-				improvement = timestampValueSearch(value);
-			}
-		}
+            if (valueSearch(cell)) {
+                valuesWithoutImprovement = 0;
+            } else {
+                valuesWithoutImprovement++;
+            }
+        }
+    }
 
-		return (new ValueDispatcher()).improvement(value);
-	}
+    protected boolean valueSearch(Cell cell) {
+        boolean improvement = invertNullMove(cell);
 
-	protected boolean booleanValueSearch(BooleanValue value) {
-		boolean improvement = false;
+        if (!cell.isNull()) {
+            if (valueSearch(cell.getValue())) {
+                improvement = true;
+            }
+        }
 
-		if (!terminationCriterion.satisfied()) {
-			boolean originalValue = value.get();
-			value.set(!originalValue);
+        return improvement;
+    }
 
-			improvement = evaluate();
-			if (!improvement) {
-				value.set(originalValue);
-			}
-		}
+    protected boolean invertNullMove(Cell cell) {
+        boolean improvement = false;
 
-		return improvement;
-	}
+        if (!terminationCriterion.satisfied()) {
+            Value originalValue = cell.getValue();
 
-	protected boolean compoundValueSearch(CompoundValue value) {
-		boolean improvement = false;
-		boolean iterationImprovement = true;
-		List<Value> elements = value.getElements();
-		int length = elements.size();
+            cell.setNull(originalValue != null);
 
-		while (iterationImprovement && !terminationCriterion.satisfied()) {
-			iterationImprovement = false;
+            //if (originalValue == null) {
+            //	cell.setNull(false);
+            //	cellRandomizer.randomizeCell(cell, false);
+            //} else {				
+            //	cell.setValue(null);					
+            //}
 
-			for (int i = 0; i < length && !terminationCriterion.satisfied(); i++) {
-				if (valueSearch(elements.get(i))) {
-					improvement = true;
-					iterationImprovement = true;
-				}
-			}
-		}
+            improvement = evaluate();
+            if (!improvement) {
+                cell.setValue(originalValue);
+            }
+        }
 
-		return improvement;
-	}
+        return improvement;
+    }
 
-	protected boolean dateValueSearch(DateValue value) {
-		return compoundValueSearch((CompoundValue) value);
-	}
+    protected boolean valueSearch(Value value) {
+        class ValueDispatcher implements ValueVisitor {
 
-	protected boolean dateTimeValueSearch(DateTimeValue value) {
-		return compoundValueSearch((CompoundValue) value);
-	}
+            boolean improvement;
 
-	protected boolean stringValueSearch(StringValue value) {
-		boolean improvement = false;
-		boolean iterationImprovement = true;
+            public boolean improvement(Value value) {
+                value.accept(this);
+                return improvement;
+            }
 
-		while (iterationImprovement && !terminationCriterion.satisfied()) {
-			iterationImprovement = false;
+            public void visit(BooleanValue value) {
+                improvement = booleanValueSearch(value);
+            }
 
-			if (removeCharacterMove(value)) {
-				improvement = true;
-				iterationImprovement = true;
-			}
+            public void visit(DateValue value) {
+                improvement = dateValueSearch(value);
+            }
 
-			if (addCharacterMove(value)) {
-				improvement = true;
-				iterationImprovement = true;
-			}
+            public void visit(DateTimeValue value) {
+                improvement = dateTimeValueSearch(value);
+            }
 
-			if (changeCharactersMove(value)) {
-				improvement = true;
-				iterationImprovement = true;
-			}
-		}
+            public void visit(NumericValue value) {
+                improvement = numericValueSearch(value);
+            }
 
-		return improvement;
-	}
+            public void visit(StringValue value) {
+                improvement = stringValueSearch(value);
+            }
 
-	protected boolean addCharacterMove(StringValue value) {
-		boolean improvement = false;
+            public void visit(TimeValue value) {
+                improvement = timeValueSearch(value);
+            }
 
-		if (!terminationCriterion.satisfied()) {
-			if (value.addCharacter()) {
-				improvement = evaluate();
-				if (!improvement) {
-					value.removeCharacter();
-				}
-			}
-		}
-		return improvement;
-	}
+            public void visit(TimestampValue value) {
+                improvement = timestampValueSearch(value);
+            }
+        }
 
-	protected boolean removeCharacterMove(StringValue value) {
-		boolean improvement = false;
+        return (new ValueDispatcher()).improvement(value);
+    }
 
-		if (!terminationCriterion.satisfied()) {
-			int numElements = value.getLength();
+    protected boolean booleanValueSearch(BooleanValue value) {
+        boolean improvement = false;
 
-			if (numElements > 0) {
-				// save last character first
-				NumericValue lastCharacter = value.getCharacter(value.getLength() - 1);
+        if (!terminationCriterion.satisfied()) {
+            boolean originalValue = value.get();
+            value.set(!originalValue);
 
-				if (value.removeCharacter()) {
-					improvement = evaluate();
+            improvement = evaluate();
+            if (!improvement) {
+                value.set(originalValue);
+            }
+        }
 
-					if (!improvement) {
-						value.addCharacter(lastCharacter);
-					}
-				}
-			}
-		}
-		return improvement;
-	}
+        return improvement;
+    }
 
-	protected boolean changeCharactersMove(StringValue value) {
-		boolean improvement = false;
+    protected boolean compoundValueSearch(CompoundValue value) {
+        boolean improvement = false;
+        boolean iterationImprovement = true;
+        List<Value> elements = value.getElements();
+        int length = elements.size();
 
-		if (!terminationCriterion.satisfied()) {
-			improvement = compoundValueSearch(value);
-		}
+        while (iterationImprovement && !terminationCriterion.satisfied()) {
+            iterationImprovement = false;
 
-		return improvement;
-	}
+            for (int i = 0; i < length && !terminationCriterion.satisfied(); i++) {
+                if (valueSearch(elements.get(i))) {
+                    improvement = true;
+                    iterationImprovement = true;
+                }
+            }
+        }
 
-	protected boolean numericValueSearch(NumericValue value) {		
+        return improvement;
+    }
 
-		boolean improvement = false;		
-		boolean directionalImprovement = true;
-		
-		while (directionalImprovement && !terminationCriterion.satisfied()) {
-			directionalImprovement = false;
-		
-			int[] directions = {1, -1};
-			for (int direction : directions) {
-				int step = 0;
-				
-				boolean moveIsImprovement = true;
-				
-				while (moveIsImprovement && !terminationCriterion.satisfied()) { 	
-					moveIsImprovement = numericMove(value, direction, step);
-					
-					if (moveIsImprovement) {
-						improvement = true;
-						directionalImprovement = true;
-					} 
-	
-					step ++;
-				} 			
-			}
-		}
-		return improvement;	
-	}	
+    protected boolean dateValueSearch(DateValue value) {
+        return compoundValueSearch((CompoundValue) value);
+    }
 
-	protected boolean numericMove(NumericValue value, int direction, int step) {		
-		BigDecimal originalValue = value.get();
-		
-		BigDecimal newValue = calculateNewNumericValue(direction, step, originalValue);		
-		value.set(newValue);		
-		
-		// is it an improvement?
-		boolean improvement = evaluate(); 		
-		if (!improvement) {
-			value.set(originalValue);
-		}
-		
-		return improvement;
-	}
+    protected boolean dateTimeValueSearch(DateTimeValue value) {
+        return compoundValueSearch((CompoundValue) value);
+    }
 
-	protected BigDecimal calculateNewNumericValue(int direction, int step, BigDecimal originalValue) {
-		BigDecimal stepSize = new BigDecimal(ACCELERATION_BASE).pow(step);		
-		BigDecimal scaledStepSize = stepSize.scaleByPowerOfTen(-originalValue.scale());
-		BigDecimal move = new BigDecimal(direction).multiply(scaledStepSize);
-		
-		return originalValue.add(move);
-	}
+    protected boolean stringValueSearch(StringValue value) {
+        boolean improvement = false;
+        boolean iterationImprovement = true;
 
-	protected boolean timeValueSearch(TimeValue value) {
-		return compoundValueSearch(value);
-	}
+        while (iterationImprovement && !terminationCriterion.satisfied()) {
+            iterationImprovement = false;
 
-	protected boolean timestampValueSearch(TimestampValue value) {
-		return numericValueSearch(value);
-	}
+            if (removeCharacterMove(value)) {
+                improvement = true;
+                iterationImprovement = true;
+            }
+
+            if (addCharacterMove(value)) {
+                improvement = true;
+                iterationImprovement = true;
+            }
+
+            if (changeCharactersMove(value)) {
+                improvement = true;
+                iterationImprovement = true;
+            }
+        }
+
+        return improvement;
+    }
+
+    protected boolean addCharacterMove(StringValue value) {
+        boolean improvement = false;
+
+        if (!terminationCriterion.satisfied()) {
+            if (value.addCharacter()) {
+                improvement = evaluate();
+                if (!improvement) {
+                    value.removeCharacter();
+                }
+            }
+        }
+        return improvement;
+    }
+
+    protected boolean removeCharacterMove(StringValue value) {
+        boolean improvement = false;
+
+        if (!terminationCriterion.satisfied()) {
+            int numElements = value.getLength();
+
+            if (numElements > 0) {
+                // save last character first
+                NumericValue lastCharacter = value.getCharacter(value.getLength() - 1);
+
+                if (value.removeCharacter()) {
+                    improvement = evaluate();
+
+                    if (!improvement) {
+                        value.addCharacter(lastCharacter);
+                    }
+                }
+            }
+        }
+        return improvement;
+    }
+
+    protected boolean changeCharactersMove(StringValue value) {
+        boolean improvement = false;
+
+        if (!terminationCriterion.satisfied()) {
+            improvement = compoundValueSearch(value);
+        }
+
+        return improvement;
+    }
+
+    protected boolean numericValueSearch(NumericValue value) {
+
+        boolean improvement = false;
+        boolean directionalImprovement = true;
+
+        while (directionalImprovement && !terminationCriterion.satisfied()) {
+            directionalImprovement = false;
+
+            int[] directions = {1, -1};
+            for (int direction : directions) {
+                int step = 0;
+
+                boolean moveIsImprovement = true;
+
+                while (moveIsImprovement && !terminationCriterion.satisfied()) {
+                    moveIsImprovement = numericMove(value, direction, step);
+
+                    if (moveIsImprovement) {
+                        improvement = true;
+                        directionalImprovement = true;
+                    }
+
+                    step++;
+                }
+            }
+        }
+        return improvement;
+    }
+
+    protected boolean numericMove(NumericValue value, int direction, int step) {
+        BigDecimal originalValue = value.get();
+
+        BigDecimal newValue = calculateNewNumericValue(direction, step, originalValue);
+        value.set(newValue);
+
+        // is it an improvement?
+        boolean improvement = evaluate();
+        if (!improvement) {
+            value.set(originalValue);
+        }
+
+        return improvement;
+    }
+
+    protected BigDecimal calculateNewNumericValue(int direction, int step, BigDecimal originalValue) {
+        BigDecimal stepSize = new BigDecimal(ACCELERATION_BASE).pow(step);
+        BigDecimal scaledStepSize = stepSize.scaleByPowerOfTen(-originalValue.scale());
+        BigDecimal move = new BigDecimal(direction).multiply(scaledStepSize);
+
+        return originalValue.add(move);
+    }
+
+    protected boolean timeValueSearch(TimeValue value) {
+        return compoundValueSearch(value);
+    }
+
+    protected boolean timestampValueSearch(TimestampValue value) {
+        return numericValueSearch(value);
+    }
 }

@@ -12,40 +12,40 @@ import org.schemaanalyst.dbms.postgres.Postgres;
 import org.schemaanalyst.dbms.sqlite.SQLite;
 
 class VendorResolver {
-	
-	static EDbVendor resolve(DBMS dbms) {
-		
-		class VendorResolverDBMSVisitor implements DBMSVisitor {
-	
-			EDbVendor vendor;
-						
-			public void visit(Derby dbms) {
-				vendor = EDbVendor.dbvgeneric;
-			}
-			
-			public void visit(DerbyNetwork dbms) {
-				vendor = EDbVendor.dbvgeneric;
-			}
-			
-			public void visit(HSQLDB dbms) {
-				vendor = EDbVendor.dbvgeneric;
-			}
 
-			public void visit(MySQL dbms) {
-				vendor = EDbVendor.dbvmysql;
-			}			
-			
-			public void visit(Postgres dbms) {
-				vendor = EDbVendor.dbvpostgresql;
-			}
-			
-			public void visit(SQLite dbms) {
-				vendor = EDbVendor.dbvgeneric;
-			}			
-		}
-		
-		VendorResolverDBMSVisitor vrv = new VendorResolverDBMSVisitor();
-		dbms.accept(vrv);
-		return vrv.vendor;
-	}
+    static EDbVendor resolve(DBMS dbms) {
+
+        class VendorResolverDBMSVisitor implements DBMSVisitor {
+
+            EDbVendor vendor;
+
+            public void visit(Derby dbms) {
+                vendor = EDbVendor.dbvgeneric;
+            }
+
+            public void visit(DerbyNetwork dbms) {
+                vendor = EDbVendor.dbvgeneric;
+            }
+
+            public void visit(HSQLDB dbms) {
+                vendor = EDbVendor.dbvgeneric;
+            }
+
+            public void visit(MySQL dbms) {
+                vendor = EDbVendor.dbvmysql;
+            }
+
+            public void visit(Postgres dbms) {
+                vendor = EDbVendor.dbvpostgresql;
+            }
+
+            public void visit(SQLite dbms) {
+                vendor = EDbVendor.dbvgeneric;
+            }
+        }
+
+        VendorResolverDBMSVisitor vrv = new VendorResolverDBMSVisitor();
+        dbms.accept(vrv);
+        return vrv.vendor;
+    }
 }

@@ -12,123 +12,123 @@ import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 
 public class ConstraintObjectiveFunctionFactory {
-	
-	protected Constraint constraint;
-	protected Data state;
-	protected boolean goalIsToSatisfy, considerNull;	
-	
-	public ConstraintObjectiveFunctionFactory(Constraint constraint,
-											  Data state,
-											  boolean goalIsToSatisfy,
-											  boolean considerNull) {
-		this.constraint = constraint;
-		this.state = state;
-		this.goalIsToSatisfy = goalIsToSatisfy;
-		this.considerNull = considerNull;
-	}
-	
-	public ObjectiveFunction<Data> create() {
-		
-		class ConstraintDispatcher implements ConstraintVisitor {
 
-			ObjectiveFunction<Data> objFun;
-			
-			ObjectiveFunction<Data> dispatch() {
-				constraint.accept(this);
-				return objFun;
-			}
-			
-			public void visit(CheckConstraint constraint) {
-				objFun = createForCheckConstraint(constraint);
-			}
+    protected Constraint constraint;
+    protected Data state;
+    protected boolean goalIsToSatisfy, considerNull;
 
-			public void visit(ForeignKeyConstraint constraint) {
-				objFun = createForForeignKeyConstraint(constraint);
-			}
+    public ConstraintObjectiveFunctionFactory(Constraint constraint,
+            Data state,
+            boolean goalIsToSatisfy,
+            boolean considerNull) {
+        this.constraint = constraint;
+        this.state = state;
+        this.goalIsToSatisfy = goalIsToSatisfy;
+        this.considerNull = considerNull;
+    }
 
-			public void visit(NotNullConstraint constraint) {
-				objFun = createForNotNullConstraint(constraint);
-			}
+    public ObjectiveFunction<Data> create() {
 
-			public void visit(PrimaryKeyConstraint constraint) {
-				objFun = createForPrimaryKeyConstraint(constraint);
-			}
+        class ConstraintDispatcher implements ConstraintVisitor {
 
-			public void visit(UniqueConstraint constraint) {
-				objFun = createForUniqueConstraint(constraint);
-			}
-		}
-		
-		return (new ConstraintDispatcher()).dispatch();
-	}
-	
-	protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
+            ObjectiveFunction<Data> objFun;
 
-		boolean allowNull = considerNull && goalIsToSatisfy;
-		
-		if (checkConstraint.getCheckCondition() != null) {
-			return (new CheckConditionObjectiveFunctionFactory(
-							checkConstraint, 
-							state, 
-							goalIsToSatisfy, 
-							allowNull, 
-							makeDescription())).create();
-		} else {
-			return new ExpressionObjectiveFunction(
-							checkConstraint.getExpression(), 
-							checkConstraint.getTable(),
-							makeDescription(), 
-							goalIsToSatisfy, 
-							allowNull);
-		}
-	}
-	
-	protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
+            ObjectiveFunction<Data> dispatch() {
+                constraint.accept(this);
+                return objFun;
+            }
 
-		boolean allowNull = false; //considerNull && !goalIsToSatisfy;
-		
-		return new UniqueObjectiveFunction(
-							primaryKeyConstraint.getColumns(),
-							state, 
-							makeDescription(),
-							goalIsToSatisfy, 
-							allowNull); 
-	}	
-	
-	protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
+            public void visit(CheckConstraint constraint) {
+                objFun = createForCheckConstraint(constraint);
+            }
 
-		boolean allowNull = considerNull && goalIsToSatisfy; 
+            public void visit(ForeignKeyConstraint constraint) {
+                objFun = createForForeignKeyConstraint(constraint);
+            }
 
-		return new ReferenceObjectiveFunction(
-							foreignKeyConstraint.getColumns(), 
-							foreignKeyConstraint.getReferenceColumns(),
-							state, 
-							makeDescription(),
-							goalIsToSatisfy,
-							allowNull);	
-	}	
-	
-	protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
-		
-		return new NullColumnObjectiveFunction(
-							notNullConstraint.getColumn(),
-							makeDescription(), 
-							!goalIsToSatisfy);
-	}	
-	
-	protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
+            public void visit(NotNullConstraint constraint) {
+                objFun = createForNotNullConstraint(constraint);
+            }
 
-		boolean allowNull = considerNull && goalIsToSatisfy; 
-		
-		return new UniqueObjectiveFunction(
-							uniqueConstraint.getColumns(),
-							state, 
-							makeDescription(),
-							goalIsToSatisfy, 
-							allowNull);		
-	}	
-	
-	protected String makeDescription() {
-		return ((goalIsToSatisfy) ? "Satisfy" : "Violate")  + " " + constraint.toString();	
-	}	
+            public void visit(PrimaryKeyConstraint constraint) {
+                objFun = createForPrimaryKeyConstraint(constraint);
+            }
+
+            public void visit(UniqueConstraint constraint) {
+                objFun = createForUniqueConstraint(constraint);
+            }
+        }
+
+        return (new ConstraintDispatcher()).dispatch();
+    }
+
+    protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
+
+        boolean allowNull = considerNull && goalIsToSatisfy;
+
+        if (checkConstraint.getCheckCondition() != null) {
+            return (new CheckConditionObjectiveFunctionFactory(
+                    checkConstraint,
+                    state,
+                    goalIsToSatisfy,
+                    allowNull,
+                    makeDescription())).create();
+        } else {
+            return new ExpressionObjectiveFunction(
+                    checkConstraint.getExpression(),
+                    checkConstraint.getTable(),
+                    makeDescription(),
+                    goalIsToSatisfy,
+                    allowNull);
+        }
+    }
+
+    protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
+
+        boolean allowNull = false; //considerNull && !goalIsToSatisfy;
+
+        return new UniqueObjectiveFunction(
+                primaryKeyConstraint.getColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                allowNull);
+    }
+
+    protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
+
+        boolean allowNull = considerNull && goalIsToSatisfy;
+
+        return new ReferenceObjectiveFunction(
+                foreignKeyConstraint.getColumns(),
+                foreignKeyConstraint.getReferenceColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                allowNull);
+    }
+
+    protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
+
+        return new NullColumnObjectiveFunction(
+                notNullConstraint.getColumn(),
+                makeDescription(),
+                !goalIsToSatisfy);
+    }
+
+    protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
+
+        boolean allowNull = considerNull && goalIsToSatisfy;
+
+        return new UniqueObjectiveFunction(
+                uniqueConstraint.getColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                allowNull);
+    }
+
+    protected String makeDescription() {
+        return ((goalIsToSatisfy) ? "Satisfy" : "Violate") + " " + constraint.toString();
+    }
 }

@@ -8,62 +8,62 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 public class NistDML183IntsNotNulls extends Schema {
 
     static final long serialVersionUID = -8495866472648525553L;
-	
-	public NistDML183IntsNotNulls() {
-		super("NistDML183IntsNotNulls");
-		
-		/*
+
+    public NistDML183IntsNotNulls() {
+        super("NistDML183IntsNotNulls");
+
+        /*
 		  
-		  CREATE TABLE T 
-		  (
-		  A CHAR, B CHAR, C CHAR,
-		  CONSTRAINT UniqueOnColsAandB UNIQUE (A, B)
-		  );
+         CREATE TABLE T 
+         (
+         A CHAR, B CHAR, C CHAR,
+         CONSTRAINT UniqueOnColsAandB UNIQUE (A, B)
+         );
 
-		  NOTE: Add NOT NULLs for everyone.
+         NOTE: Add NOT NULLs for everyone.
 		  
-		  NOTE: Uses INTs instead of CHAR for everyone.
+         NOTE: Uses INTs instead of CHAR for everyone.
 
-		  NOTE: for Postgres, a CHAR is the same as CHAR(1)!
+         NOTE: for Postgres, a CHAR is the same as CHAR(1)!
 
-		*/
+         */
 
-		Table tTable = createTable( "T");
+        Table tTable = createTable("T");
 
-		Column a = tTable.addColumn("A" , new IntDataType());
-		Column b = tTable.addColumn("B" , new IntDataType());
-		Column c = tTable.addColumn("C" , new IntDataType());
+        Column a = tTable.addColumn("A", new IntDataType());
+        Column b = tTable.addColumn("B", new IntDataType());
+        Column c = tTable.addColumn("C", new IntDataType());
 
-		a.setNotNull();
-		b.setNotNull();
-		c.setNotNull();
+        a.setNotNull();
+        b.setNotNull();
+        c.setNotNull();
 
-		tTable.addUniqueConstraint(a, b);		   
+        tTable.addUniqueConstraint(a, b);
 
-		/*
+        /*
 
-		  CREATE TABLE S 
-		  (
-		  X CHAR, Y CHAR, Z CHAR,
-		  CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y)
-		  REFERENCES T (A, B)
-		  );
+         CREATE TABLE S 
+         (
+         X CHAR, Y CHAR, Z CHAR,
+         CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y)
+         REFERENCES T (A, B)
+         );
 
-		  Change everthing to INTs.
+         Change everthing to INTs.
 
-		  Add NOT NULLs for everyone.
+         Add NOT NULLs for everyone.
 
-		 */
+         */
 
-		Table sTable = createTable( "S");
-		
-		Column x = sTable.addColumn("X" , new IntDataType());
-		Column y = sTable.addColumn("Y" , new IntDataType());
-		Column z = sTable.addColumn("Z" , new IntDataType());
+        Table sTable = createTable("S");
 
-		x.setNotNull();
-		y.setNotNull();
-		z.setNotNull();
-		sTable.addForeignKeyConstraint(x, y, tTable, a, b);
-	}
+        Column x = sTable.addColumn("X", new IntDataType());
+        Column y = sTable.addColumn("Y", new IntDataType());
+        Column z = sTable.addColumn("Z", new IntDataType());
+
+        x.setNotNull();
+        y.setNotNull();
+        z.setNotNull();
+        sTable.addForeignKeyConstraint(x, y, tTable, a, b);
+    }
 }

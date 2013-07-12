@@ -2,10 +2,9 @@ package org.schemaanalyst.mutation;
 
 public interface MutantRecordImpl {
 
-    public void killedMutant(); 
+    public void killedMutant();
 
-    public void sparedMutant(); 
+    public void sparedMutant();
 
-    public boolean didKillMutant(); 
-    
+    public boolean didKillMutant();
 }

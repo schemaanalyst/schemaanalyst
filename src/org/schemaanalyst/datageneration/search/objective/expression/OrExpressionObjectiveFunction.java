@@ -7,13 +7,13 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 
 public class OrExpressionObjectiveFunction extends ComposedExpressionObjectiveFunction {
 
-	public OrExpressionObjectiveFunction(OrExpression expression,
-										 boolean goalIsToSatisfy,
-										 boolean allowNull) {
-		super(expression, goalIsToSatisfy, allowNull);
-	}
+    public OrExpressionObjectiveFunction(OrExpression expression,
+            boolean goalIsToSatisfy,
+            boolean allowNull) {
+        super(expression, goalIsToSatisfy, allowNull);
+    }
 
-	protected MultiObjectiveValue instantiateMultiObjectiveValue() {
-		return new BestOfMultiObjectiveValue();
-	}
+    protected MultiObjectiveValue instantiateMultiObjectiveValue() {
+        return new BestOfMultiObjectiveValue();
+    }
 }

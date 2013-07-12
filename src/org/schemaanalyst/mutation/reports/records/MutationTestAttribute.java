@@ -7,9 +7,9 @@ package org.schemaanalyst.mutation.reports.records;
  */
 public enum MutationTestAttribute {
 
-    KILLED, 
-    NOT_KILLED, 
-    STILL_BORN, 
+    KILLED,
+    NOT_KILLED,
+    STILL_BORN,
     INTERSECTION;
 
     /**

@@ -18,7 +18,7 @@ public class MutantTableMap {
     public MutantTableMap() {
         map = new HashMap<>();
     }
-    
+
     public void addMutant(String table, String mutantTable) {
         Set<String> set;
         if (map.containsKey(table)) {
@@ -29,7 +29,7 @@ public class MutantTableMap {
         }
         set.add(mutantTable);
     }
-    
+
     public Set<String> getMutants(String table) {
         if (map.containsKey(table)) {
             return map.get(table);

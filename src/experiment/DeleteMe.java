@@ -20,7 +20,8 @@ import originalcasestudy.UnixUsage;
  * @author chris
  */
 public class DeleteMe {
-    public static void main(String[] args) throws Exception {      
+
+    public static void main(String[] args) throws Exception {
         mutate(new Cloc());
         mutate(new JWhoisServer());
         mutate(new RiskIt());
@@ -28,9 +29,9 @@ public class DeleteMe {
         mutate(new NistDML183());
         mutate(new NistDML182());
     }
-    
+
     public static void mutate(Schema schema) {
         ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
-        System.out.println(schema.getName()+": "+cm.produceMutants(schema).size());
+        System.out.println(schema.getName() + ": " + cm.produceMutants(schema).size());
     }
 }

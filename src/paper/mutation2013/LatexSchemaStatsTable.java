@@ -35,36 +35,35 @@ import originalcasestudy.World;
 import paper.util.SchemaStatsTable;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {
-	
-	public static Schema[] schemas = {
-		new Cloc(),
-                new JWhoisServer(),
-		new NistDML182(),
-		new NistDML183(),
-		new RiskIt(),
-		new UnixUsage(),
-	};	
-	
-	public LatexSchemaStatsTable() {
-		super(" & ", " \\\\\n");
-	}
-	
-	protected void writeHeader(StringBuffer table) {	
-		table.append("%!TEX root=mut13-schemata.tex\n");
-	}
-	
-	protected void writeFooter(StringBuffer table,
-			   int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
-			   int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls, 
-			   int totalNumPrimaryKeys, int totalNumUniques) {
-		table.append("\\midrule \n");
-		
-		writeRow(table, "{\\bf Total}", totalNumTables, totalNumColumns, // totalUniqueColumnTypes, 
-				 totalNumChecks, totalNumForeignKeys, totalNumNotNulls, totalNumPrimaryKeys, totalNumUniques);		
-	}	
-	
-	public static void main(String[] args) {
-		LatexSchemaStatsTable table = new LatexSchemaStatsTable();
-		System.out.println(table.write(schemas));
-	}
+
+    public static Schema[] schemas = {
+        new Cloc(),
+        new JWhoisServer(),
+        new NistDML182(),
+        new NistDML183(),
+        new RiskIt(),
+        new UnixUsage(),};
+
+    public LatexSchemaStatsTable() {
+        super(" & ", " \\\\\n");
+    }
+
+    protected void writeHeader(StringBuffer table) {
+        table.append("%!TEX root=mut13-schemata.tex\n");
+    }
+
+    protected void writeFooter(StringBuffer table,
+            int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
+            int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls,
+            int totalNumPrimaryKeys, int totalNumUniques) {
+        table.append("\\midrule \n");
+
+        writeRow(table, "{\\bf Total}", totalNumTables, totalNumColumns, // totalUniqueColumnTypes, 
+                totalNumChecks, totalNumForeignKeys, totalNumNotNulls, totalNumPrimaryKeys, totalNumUniques);
+    }
+
+    public static void main(String[] args) {
+        LatexSchemaStatsTable table = new LatexSchemaStatsTable();
+        System.out.println(table.write(schemas));
+    }
 }

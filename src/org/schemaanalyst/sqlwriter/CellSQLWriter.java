@@ -21,172 +21,173 @@ import org.schemaanalyst.sqlrepresentation.datatype.TimestampDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
-public class CellSQLWriter { 
-	
-	protected ValueSQLWriter valueSQLWriter;
-	
-	public void setValueSQLWriter(ValueSQLWriter valueSQLWriter) {
-		this.valueSQLWriter = valueSQLWriter;
-	}
-	
-	public String writeCell(Cell cell) {
-		
-		class CellSQLWriterVisitor implements DataTypeVisitor {
-			String sql;
-			Cell cell;
-			
-			public String writeCell(Cell cell) {
-				sql = "";
-				this.cell = cell;
-				cell.getColumn().getDataType().accept(this);
-				return sql;
-			}
-			
-			public void visit(BigIntDataType type) {
-				sql = writeBigIntCell(cell, type);
-			}
+public class CellSQLWriter {
 
-			public void visit(BooleanDataType type) {
-				sql = writeBooleanCell(cell, type);
-			}
+    protected ValueSQLWriter valueSQLWriter;
 
-			public void visit(CharDataType type) {
-				sql = writeCharCell(cell, type);
-			}
+    public void setValueSQLWriter(ValueSQLWriter valueSQLWriter) {
+        this.valueSQLWriter = valueSQLWriter;
+    }
 
-			public void visit(DateDataType type) {
-				sql = writeDateCell(cell, type);
-			}
+    public String writeCell(Cell cell) {
 
-			public void visit(DateTimeDataType type) {
-				sql = writeDateTimeCell(cell, type);
-			}
+        class CellSQLWriterVisitor implements DataTypeVisitor {
 
-			public void visit(DecimalDataType type) {
-				sql = writeDecimalCell(cell, type);				
-			}
+            String sql;
+            Cell cell;
 
-			public void visit(DoubleDataType type) {
-				sql = writeDoubleCell(cell, type);				
-			}
+            public String writeCell(Cell cell) {
+                sql = "";
+                this.cell = cell;
+                cell.getColumn().getDataType().accept(this);
+                return sql;
+            }
 
-			public void visit(FloatDataType type) {
-				sql = writeFloatCell(cell, type);				
-			}
+            public void visit(BigIntDataType type) {
+                sql = writeBigIntCell(cell, type);
+            }
 
-			public void visit(IntDataType type) {
-				sql = writeIntCell(cell, type);				
-			}
+            public void visit(BooleanDataType type) {
+                sql = writeBooleanCell(cell, type);
+            }
 
-			public void visit(MediumIntDataType type) {
-				sql = writeMediumIntCell(cell, type);				
-			}
+            public void visit(CharDataType type) {
+                sql = writeCharCell(cell, type);
+            }
 
-			public void visit(NumericDataType type) {
-				sql = writeNumericCell(cell, type);				
-			}
+            public void visit(DateDataType type) {
+                sql = writeDateCell(cell, type);
+            }
 
-			public void visit(RealDataType type) {
-				sql = writeRealCell(cell, type);				
-			}
+            public void visit(DateTimeDataType type) {
+                sql = writeDateTimeCell(cell, type);
+            }
 
-			public void visit(SmallIntDataType type) {
-				sql = writeSmallIntCell(cell, type);				
-			}
+            public void visit(DecimalDataType type) {
+                sql = writeDecimalCell(cell, type);
+            }
 
-			public void visit(TextDataType type) {
-				sql = writeTextCell(cell, type);				
-			}
+            public void visit(DoubleDataType type) {
+                sql = writeDoubleCell(cell, type);
+            }
 
-			public void visit(TimeDataType type) {
-				sql = writeTimeCell(cell, type);				
-			}
+            public void visit(FloatDataType type) {
+                sql = writeFloatCell(cell, type);
+            }
 
-			public void visit(TimestampDataType type) {
-				sql = writeTimestampCell(cell, type);				
-			}
+            public void visit(IntDataType type) {
+                sql = writeIntCell(cell, type);
+            }
 
-			public void visit(TinyIntDataType type) {
-				sql = writeTinyIntCell(cell, type);				
-			}
+            public void visit(MediumIntDataType type) {
+                sql = writeMediumIntCell(cell, type);
+            }
 
-			public void visit(VarCharDataType type) {
-				sql = writeVarCharCell(cell, type);				
-			}			
-		}
+            public void visit(NumericDataType type) {
+                sql = writeNumericCell(cell, type);
+            }
 
-		return (new CellSQLWriterVisitor()).writeCell(cell);
-	}
+            public void visit(RealDataType type) {
+                sql = writeRealCell(cell, type);
+            }
 
-	public String writeBigIntCell(Cell cell, BigIntDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+            public void visit(SmallIntDataType type) {
+                sql = writeSmallIntCell(cell, type);
+            }
 
-	public String writeBooleanCell(Cell cell, BooleanDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+            public void visit(TextDataType type) {
+                sql = writeTextCell(cell, type);
+            }
 
-	public String writeCharCell(Cell cell, CharDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}	
+            public void visit(TimeDataType type) {
+                sql = writeTimeCell(cell, type);
+            }
 
-	public String writeDateCell(Cell cell, DateDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());		
-	}
+            public void visit(TimestampDataType type) {
+                sql = writeTimestampCell(cell, type);
+            }
 
-	public String writeDateTimeCell(Cell cell, DateTimeDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());		
-	}
+            public void visit(TinyIntDataType type) {
+                sql = writeTinyIntCell(cell, type);
+            }
 
-	public String writeDecimalCell(Cell cell, DecimalDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+            public void visit(VarCharDataType type) {
+                sql = writeVarCharCell(cell, type);
+            }
+        }
 
-	public String writeDoubleCell(Cell cell, DoubleDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+        return (new CellSQLWriterVisitor()).writeCell(cell);
+    }
 
-	public String writeFloatCell(Cell cell, FloatDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}	
+    public String writeBigIntCell(Cell cell, BigIntDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeIntCell(Cell cell, IntDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());		
-	}
+    public String writeBooleanCell(Cell cell, BooleanDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeMediumIntCell(Cell cell, MediumIntDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());			
-	}	
+    public String writeCharCell(Cell cell, CharDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeNumericCell(Cell cell, NumericDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeDateCell(Cell cell, DateDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeRealCell(Cell cell, RealDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}	
+    public String writeDateTimeCell(Cell cell, DateTimeDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeSmallIntCell(Cell cell, SmallIntDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeDecimalCell(Cell cell, DecimalDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeTextCell(Cell cell, TextDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeDoubleCell(Cell cell, DoubleDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeTimeCell(Cell cell, TimeDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeFloatCell(Cell cell, FloatDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeTimestampCell(Cell cell, TimestampDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeIntCell(Cell cell, IntDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeTinyIntCell(Cell cell, TinyIntDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}
+    public String writeMediumIntCell(Cell cell, MediumIntDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 
-	public String writeVarCharCell(Cell cell, VarCharDataType type) {
-		return valueSQLWriter.writeValue(cell.getValue());
-	}	
+    public String writeNumericCell(Cell cell, NumericDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeRealCell(Cell cell, RealDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeSmallIntCell(Cell cell, SmallIntDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeTextCell(Cell cell, TextDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeTimeCell(Cell cell, TimeDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeTimestampCell(Cell cell, TimestampDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeTinyIntCell(Cell cell, TinyIntDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
+
+    public String writeVarCharCell(Cell cell, VarCharDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }
 }

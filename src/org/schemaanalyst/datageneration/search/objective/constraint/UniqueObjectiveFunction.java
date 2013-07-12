@@ -21,87 +21,86 @@ import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 
 public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
 
-	protected List<Column> columns;
-	protected RelationalOperator op;
-	protected Data state;
-	protected String description;
-	protected boolean goalIsToSatisfy, allowNull;
-		
-	public UniqueObjectiveFunction(List<Column> columns, 
-								   Data state, 
-								   String description, 
-								   boolean goalIsToSatisfy, boolean allowNull) {				
-		this.columns = columns;
-		this.state = state;
-		this.description = description;
-		this.goalIsToSatisfy = goalIsToSatisfy;
-		this.allowNull = allowNull;
-		
-		this.op = goalIsToSatisfy ? NOT_EQUALS : EQUALS;
-	}
+    protected List<Column> columns;
+    protected RelationalOperator op;
+    protected Data state;
+    protected String description;
+    protected boolean goalIsToSatisfy, allowNull;
 
-	public ObjectiveValue evaluate(Data data) {
-		List<List<Cell>> dataRows = data.getCells(columns);
-		List<List<Cell>> stateRows = state.getCells(columns);
+    public UniqueObjectiveFunction(List<Column> columns,
+            Data state,
+            String description,
+            boolean goalIsToSatisfy, boolean allowNull) {
+        this.columns = columns;
+        this.state = state;
+        this.description = description;
+        this.goalIsToSatisfy = goalIsToSatisfy;
+        this.allowNull = allowNull;
 
-		// special case for negating and there being one or fewer rows
-		if (!goalIsToSatisfy && dataRows.size() + stateRows.size() <= 1) {
-			return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
-		}
-		
-		MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-		ListIterator<List<Cell>> dataRowsIterator = dataRows.listIterator();
+        this.op = goalIsToSatisfy ? NOT_EQUALS : EQUALS;
+    }
 
-		while (dataRowsIterator.hasNext()) {
-			List<Cell> dataRow = dataRowsIterator.next();
+    public ObjectiveValue evaluate(Data data) {
+        List<List<Cell>> dataRows = data.getCells(columns);
+        List<List<Cell>> stateRows = state.getCells(columns);
 
-			if (dataRowsIterator.hasNext() || stateRows.size() > 0) {
-				String description = "Row "+dataRow;
-				
-				MultiObjectiveValue rowObjVal = goalIsToSatisfy 
-						? new SumOfMultiObjectiveValue(description)
-						: new BestOfMultiObjectiveValue(description);
-				
-				evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
-				evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, 0);
-			
-				objVal.add(rowObjVal);
-			}
-		}
-		
-		return objVal;
-	}
+        // special case for negating and there being one or fewer rows
+        if (!goalIsToSatisfy && dataRows.size() + stateRows.size() <= 1) {
+            return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
+        }
 
-	protected void evaluateRowAgainstOtherRows(
-			MultiObjectiveValue objVal, 
-			List<Cell> row, List<List<Cell>> otherRows, int fromIndex) {
-		
-		ListIterator<List<Cell>> rowsIterator = otherRows.listIterator(fromIndex);
+        MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
+        ListIterator<List<Cell>> dataRowsIterator = dataRows.listIterator();
 
-		while (rowsIterator.hasNext()) {
-			List<Cell> compareRow = rowsIterator.next();
-			objVal.add(evaluateRow(row, compareRow, allowNull));
-		}
-	}
-	
-	protected ObjectiveValue evaluateRow(List<Cell> row, List<Cell> otherRow, boolean allowNull) {
-		
-		if (allowNull) {
-			
-			MultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
-			rowObjVal.add(evaluateRow(row, otherRow, false));
-		
-			List<Cell> allCells = new ArrayList<>(row);
-			allCells.addAll(otherRow);		
-			for (Cell cell : allCells) {
-				rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
-			}
-		
-			return rowObjVal;
-			
-		} else {
-			return ListOfCellsObjectiveFunction.compute(row, op, otherRow);
-		}
-	}
+        while (dataRowsIterator.hasNext()) {
+            List<Cell> dataRow = dataRowsIterator.next();
 
+            if (dataRowsIterator.hasNext() || stateRows.size() > 0) {
+                String description = "Row " + dataRow;
+
+                MultiObjectiveValue rowObjVal = goalIsToSatisfy
+                        ? new SumOfMultiObjectiveValue(description)
+                        : new BestOfMultiObjectiveValue(description);
+
+                evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
+                evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, 0);
+
+                objVal.add(rowObjVal);
+            }
+        }
+
+        return objVal;
+    }
+
+    protected void evaluateRowAgainstOtherRows(
+            MultiObjectiveValue objVal,
+            List<Cell> row, List<List<Cell>> otherRows, int fromIndex) {
+
+        ListIterator<List<Cell>> rowsIterator = otherRows.listIterator(fromIndex);
+
+        while (rowsIterator.hasNext()) {
+            List<Cell> compareRow = rowsIterator.next();
+            objVal.add(evaluateRow(row, compareRow, allowNull));
+        }
+    }
+
+    protected ObjectiveValue evaluateRow(List<Cell> row, List<Cell> otherRow, boolean allowNull) {
+
+        if (allowNull) {
+
+            MultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
+            rowObjVal.add(evaluateRow(row, otherRow, false));
+
+            List<Cell> allCells = new ArrayList<>(row);
+            allCells.addAll(otherRow);
+            for (Cell cell : allCells) {
+                rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
+            }
+
+            return rowObjVal;
+
+        } else {
+            return ListOfCellsObjectiveFunction.compute(row, op, otherRow);
+        }
+    }
 }

@@ -19,71 +19,71 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class EasyData extends Data {
 
-	protected Schema schema;
-	
-	public EasyData(Schema schema) {
-		this.schema = schema;
-	}
-	
-	public void addRow(String tableName, String rowData, ValueFactory valueFactory) {
-		
-		class SetValueFromString implements ValueVisitor {
+    protected Schema schema;
 
-			String string;
-			
-			public void set(Cell cell, String string) {
-				if (string.equals("NULL")) {
-					cell.setNull(true);
-				} else {
-					this.string = string;
-					cell.setNull(false);
-					cell.getValue().accept(this);
-				}
-			}
-			
-			public void visit(BooleanValue value) {
-				// to complete...
-			}			
-			
-			public void visit(DateValue value) {
-				// to complete...
-			}
-			
-			public void visit(DateTimeValue value) {				
-				// to complete...
-			}
-			
-			public void visit(NumericValue value) {
-				value.set(string);
-			}
-			
-			public void visit(StringValue value) {
-				// remove quotes
-				int endIndex = Math.max(1, string.length()-1);
-				String stringValue = string.substring(1, endIndex);
-				
-				value.set(stringValue);
-			}
-			
-			public void visit(TimeValue value) {
-				// to complete...				
-			}
-			
-			public void visit(TimestampValue value) {
-				// to complete...				
-			}			
-		}
-		
-		Table table = schema.getTable(tableName);
-		Row row = super.addRow(table, valueFactory);
-		
-		List<Cell> cells = row.getCells();
-		String[] valueStrings = rowData.split(",");
-		
-		SetValueFromString svfs = new SetValueFromString();
-		
-		for (int i=0; i < valueStrings.length; i++) {
-			svfs.set(cells.get(i), valueStrings[i].trim());
-		}
-	}
+    public EasyData(Schema schema) {
+        this.schema = schema;
+    }
+
+    public void addRow(String tableName, String rowData, ValueFactory valueFactory) {
+
+        class SetValueFromString implements ValueVisitor {
+
+            String string;
+
+            public void set(Cell cell, String string) {
+                if (string.equals("NULL")) {
+                    cell.setNull(true);
+                } else {
+                    this.string = string;
+                    cell.setNull(false);
+                    cell.getValue().accept(this);
+                }
+            }
+
+            public void visit(BooleanValue value) {
+                // to complete...
+            }
+
+            public void visit(DateValue value) {
+                // to complete...
+            }
+
+            public void visit(DateTimeValue value) {
+                // to complete...
+            }
+
+            public void visit(NumericValue value) {
+                value.set(string);
+            }
+
+            public void visit(StringValue value) {
+                // remove quotes
+                int endIndex = Math.max(1, string.length() - 1);
+                String stringValue = string.substring(1, endIndex);
+
+                value.set(stringValue);
+            }
+
+            public void visit(TimeValue value) {
+                // to complete...				
+            }
+
+            public void visit(TimestampValue value) {
+                // to complete...				
+            }
+        }
+
+        Table table = schema.getTable(tableName);
+        Row row = super.addRow(table, valueFactory);
+
+        List<Cell> cells = row.getCells();
+        String[] valueStrings = rowData.split(",");
+
+        SetValueFromString svfs = new SetValueFromString();
+
+        for (int i = 0; i < valueStrings.length; i++) {
+            svfs.set(cells.get(i), valueStrings[i].trim());
+        }
+    }
 }

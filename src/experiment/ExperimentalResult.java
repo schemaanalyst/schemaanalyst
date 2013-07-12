@@ -5,22 +5,30 @@ import java.util.ArrayList;
 
 public class ExperimentalResult {
 
-    /** The list of values for this result row; connected to the header of the ExperimentalResults */
+    /**
+     * The list of values for this result row; connected to the header of the
+     * ExperimentalResults
+     */
     private ArrayList<String> results;
 
-    /** Standard constructor */
+    /**
+     * Standard constructor
+     */
     public ExperimentalResult() {
-	results = new ArrayList<String>();
+        results = new ArrayList<String>();
     }
 
-    /** Return the results */
+    /**
+     * Return the results
+     */
     public List<String> getResults() {
-	return results;
+        return results;
     }
 
-    /** Add an experimental result at a designated location */
+    /**
+     * Add an experimental result at a designated location
+     */
     public void addResult(int location, String result) {
-	results.add(location, result);
+        results.add(location, result);
     }
-
 }

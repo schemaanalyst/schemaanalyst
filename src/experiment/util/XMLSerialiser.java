@@ -2,7 +2,6 @@
  */
 package experiment.util;
 
-
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.XStreamException;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
@@ -20,17 +19,17 @@ import java.util.logging.Logger;
 /**
  * A general purpose XML serialiser and deserialiser. Uses SAX for formatting of
  * the output file and XStream for the IO.
- * 
+ *
  * @author Chris J. Wright
  */
 public class XMLSerialiser {
-    
+
     private static XStream xstream = new XStream(new StaxDriver());
-    
+
     /**
-     * Serialises a given object to an XML file. If the file cannot be written, 
+     * Serialises a given object to an XML file. If the file cannot be written,
      * the cause will be written to the class logger.
-     * 
+     *
      * @param object The object to serialise
      * @param path The file to serialise to
      * @return Whether serialisation was successful
@@ -55,22 +54,21 @@ public class XMLSerialiser {
             return false;
         }
     }
-    
+
     /**
-     * Deserialises a file into an object. If the object cannot be loaded, the 
+     * Deserialises a file into an object. If the object cannot be loaded, the
      * cause will be thrown as a RuntimeException.
-     * 
+     *
      * @param path The file to deserialise
      * @return The object deserialised
      */
     @SuppressWarnings("unchecked")
     public static <Clazz> Clazz load(String path) {
         try (FileReader reader = new FileReader(path)) {
-            Clazz object = (Clazz)xstream.fromXML(reader);
+            Clazz object = (Clazz) xstream.fromXML(reader);
             return object;
         } catch (XStreamException | IOException xEx) {
             throw new RuntimeException("Failed to deserialise the target file", xEx);
         }
     }
-    
 }

@@ -16,17 +16,17 @@ import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckConditi
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /**
- * Mutates the relational operators in relational check constraints. Makes use 
- * of an internal private visitor class to 'visit' each constraint, to easily 
+ * Mutates the relational operators in relational check constraints. Makes use
+ * of an internal private visitor class to 'visit' each constraint, to easily
  * determine the type at runtime.
  *
  * @author chris
  */
 public class CheckConstraintRelationalOperatorMutator extends Mutator {
-    
+
     @Override
     public void produceMutants(Table table, List<Schema> mutants) {
-        for (CheckConstraint checkConstraint: table.getCheckConstraints()) {
+        for (CheckConstraint checkConstraint : table.getCheckConstraints()) {
             Visitor v = new Visitor(table, checkConstraint);
             mutants.addAll(v.createMutants());
         }
@@ -43,7 +43,7 @@ public class CheckConstraintRelationalOperatorMutator extends Mutator {
 
         /**
          * Constructor.
-         * 
+         *
          * @param table The table to mutate
          * @param constraint The constraint to mutate
          */
@@ -54,7 +54,7 @@ public class CheckConstraintRelationalOperatorMutator extends Mutator {
 
         /**
          * Create the mutants for the given constraint.
-         * 
+         *
          * @return The mutants created
          */
         public List<Schema> createMutants() {
@@ -65,7 +65,7 @@ public class CheckConstraintRelationalOperatorMutator extends Mutator {
 
         /**
          * Do nothing for BetweenCheckPredicate.
-         * 
+         *
          * @param predicate The predicate of the constraint
          */
         @Override
@@ -75,7 +75,7 @@ public class CheckConstraintRelationalOperatorMutator extends Mutator {
 
         /**
          * Do nothing for InCheckPredicate.
-         * 
+         *
          * @param predicate The predicate of the constraint
          */
         @Override
@@ -84,9 +84,9 @@ public class CheckConstraintRelationalOperatorMutator extends Mutator {
         }
 
         /**
-         * Mutate a given RelationalCheckPredicate. Produces a mutant for each 
+         * Mutate a given RelationalCheckPredicate. Produces a mutant for each
          * alternative relational operator, with the original LHS and RHS.
-         * 
+         *
          * @param predicate The predicate of the constraint
          */
         @Override

@@ -11,31 +11,31 @@ import org.schemaanalyst.util.random.SimpleRandom;
 
 public class GenerateData {
 
-	public static void generate(String schemaName,
-								String dbmsName,
-								String dataGeneratorName) throws ClassNotFoundException, 
-																 InstantiationException, 
-																 IllegalAccessException {
-	    //TODO: use basic params here
-		//Configuration.database = schema
-		//Configuration.type = database
-		//Configuration.datagenerator = datagenerator
-		
-		Schema schema = SchemaSQLParser.parse(schemaName, dbmsName);
-		
-		Random random = new SimpleRandom(0L);
-		
-		DataGenerator generator = DataGeneratorFactory.instantiate(
-				dataGeneratorName, 
-				schema,
-				new ValueFactory(), // should come from dbms
-				random,
-				CellRandomisationFactory.instantiate("Small", random));		
-		CoverageReport report = generator.generate();		
-		System.out.println(report);			
-	}
-	
-	public static void main(String[] args) throws Exception {
-		generate(args[0], args[1], args[2]);
-	}
+    public static void generate(String schemaName,
+            String dbmsName,
+            String dataGeneratorName) throws ClassNotFoundException,
+            InstantiationException,
+            IllegalAccessException {
+        //TODO: use basic params here
+        //Configuration.database = schema
+        //Configuration.type = database
+        //Configuration.datagenerator = datagenerator
+
+        Schema schema = SchemaSQLParser.parse(schemaName, dbmsName);
+
+        Random random = new SimpleRandom(0L);
+
+        DataGenerator generator = DataGeneratorFactory.instantiate(
+                dataGeneratorName,
+                schema,
+                new ValueFactory(), // should come from dbms
+                random,
+                CellRandomisationFactory.instantiate("Small", random));
+        CoverageReport report = generator.generate();
+        System.out.println(report);
+    }
+
+    public static void main(String[] args) throws Exception {
+        generate(args[0], args[1], args[2]);
+    }
 }

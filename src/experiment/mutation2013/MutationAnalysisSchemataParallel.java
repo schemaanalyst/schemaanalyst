@@ -143,7 +143,7 @@ public class MutationAnalysisSchemataParallel {
         // calculate the mutation score and the main summary statistics
         mutationReport.calculateMutationScoresAndStatistics();
         MutationReportScore score = mutationReport.getScores().get("mutationScore");
-        
+
         // drop tables inside previous schema
         databaseInteraction.executeUpdate(dropStatements);
 
@@ -176,20 +176,21 @@ public class MutationAnalysisSchemataParallel {
             }
         }
     }
-    
+
     private static class MutationAnalysisRunnable implements Runnable {
+
         MutationReport mutationReport;
         int mutantNumber;
         SQLExecutionReport originalReport;
         DatabaseInteractor databaseInteraction;
-        
+
         public MutationAnalysisRunnable(MutationReport mutationReport, SQLExecutionReport originalReport, DatabaseInteractor databaseInteraction, int mutantNumber) {
             this.mutationReport = mutationReport;
             this.originalReport = originalReport;
             this.mutantNumber = mutantNumber;
             this.databaseInteraction = databaseInteraction;
         }
-        
+
         @Override
         public void run() {
             System.out.println("Mutant " + mutantNumber);
@@ -247,12 +248,9 @@ public class MutationAnalysisSchemataParallel {
             currentMutantReport.computeIntersection();
 
             // store the current insertMutantRecord inside of the mutationReport
-            synchronized(mutationReport) {
+            synchronized (mutationReport) {
                 mutationReport.addMutantReport(currentMutantReport);
             }
         }
-        
     }
 }
-
-

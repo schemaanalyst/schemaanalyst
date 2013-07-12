@@ -2,6 +2,5 @@ package org.schemaanalyst.util;
 
 public interface Duplicable<T> {
 
-	public T duplicate();
-	
+    public T duplicate();
 }

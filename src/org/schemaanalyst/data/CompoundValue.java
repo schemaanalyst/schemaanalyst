@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface CompoundValue {
 
-	public List<Value> getElements();
+    public List<Value> getElements();
 }

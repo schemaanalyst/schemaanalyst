@@ -10,27 +10,27 @@ import org.schemaanalyst.datageneration.search.objective.relationalpredicate.Nul
 
 public class TestNullValueObjectiveFunction {
 
-	@Test 
-	public void nullShouldBeNull() {
-		assertOptimal(
-				NullValueObjectiveFunction.compute(null, true));
-	}
-	
-	@Test 
-	public void nullShouldntBeNull() {		
-		assertEquivalent(ObjectiveValue.worstObjectiveValue("Worst"),
-				NullValueObjectiveFunction.compute(null, false));
-	}	
-	
-	@Test 
-	public void notNullShouldBeNull() {
-		assertEquivalent(ObjectiveValue.worstObjectiveValue("Worst"),
-				NullValueObjectiveFunction.compute(new NumericValue(), true));
-	}
-	
-	@Test 
-	public void notNullShouldntBeNull() {
-		assertOptimal(
-				NullValueObjectiveFunction.compute(new NumericValue(), false));
-	}	
+    @Test
+    public void nullShouldBeNull() {
+        assertOptimal(
+                NullValueObjectiveFunction.compute(null, true));
+    }
+
+    @Test
+    public void nullShouldntBeNull() {
+        assertEquivalent(ObjectiveValue.worstObjectiveValue("Worst"),
+                NullValueObjectiveFunction.compute(null, false));
+    }
+
+    @Test
+    public void notNullShouldBeNull() {
+        assertEquivalent(ObjectiveValue.worstObjectiveValue("Worst"),
+                NullValueObjectiveFunction.compute(new NumericValue(), true));
+    }
+
+    @Test
+    public void notNullShouldntBeNull() {
+        assertOptimal(
+                NullValueObjectiveFunction.compute(new NumericValue(), false));
+    }
 }

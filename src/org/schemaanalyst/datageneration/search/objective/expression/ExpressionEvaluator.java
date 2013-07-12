@@ -9,35 +9,35 @@ import org.schemaanalyst.sqlrepresentation.expression.ExpressionAdapter;
 
 public class ExpressionEvaluator {
 
-	protected Expression expression;
-	
-	public ExpressionEvaluator(Expression expression) {
-		this.expression = expression;
-	}
-	
-	public Value evaluate(Row row) {
-		
-		class ExpressionDispatcher extends ExpressionAdapter {
-			
-			Row row;
-			Value value;
-			
-			Value dispatch(Row row) {
-				this.row = row;
-				value = null;
-				expression.accept(this);
-				return value;
-			}
+    protected Expression expression;
 
-			public void visit(ColumnExpression expression) {
-				value = row.getCell(expression.getColumn()).getValue();				
-			}
+    public ExpressionEvaluator(Expression expression) {
+        this.expression = expression;
+    }
 
-			public void visit(ConstantExpression expression) {
-				value = expression.getValue();
-			}
-		}
-		
-		return (new ExpressionDispatcher()).dispatch(row);
-	}
+    public Value evaluate(Row row) {
+
+        class ExpressionDispatcher extends ExpressionAdapter {
+
+            Row row;
+            Value value;
+
+            Value dispatch(Row row) {
+                this.row = row;
+                value = null;
+                expression.accept(this);
+                return value;
+            }
+
+            public void visit(ColumnExpression expression) {
+                value = row.getCell(expression.getColumn()).getValue();
+            }
+
+            public void visit(ConstantExpression expression) {
+                value = expression.getValue();
+            }
+        }
+
+        return (new ExpressionDispatcher()).dispatch(row);
+    }
 }

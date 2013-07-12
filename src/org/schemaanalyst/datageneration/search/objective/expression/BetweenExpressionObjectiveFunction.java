@@ -12,53 +12,53 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 
-public class BetweenExpressionObjectiveFunction  extends ObjectiveFunction<Row> {
+public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-	protected ExpressionEvaluator subjectExpression, lhsExpression, rhsExpression;
-	protected ValueObjectiveFunction lhsObjFun, rhsObjFun;
-	protected RelationalOperator lhsOp, rhsOp;
-	protected boolean goalIsToSatisfy;
-	
-	public BetweenExpressionObjectiveFunction(BetweenExpression expression,
-										      boolean goalIsToSatisfy,
-											  boolean allowNull) {		
-		this.goalIsToSatisfy = goalIsToSatisfy;
-		
-		subjectExpression = new ExpressionEvaluator(expression.getSubject());
-		lhsExpression = new ExpressionEvaluator(expression.getLHS());
-		rhsExpression = new ExpressionEvaluator(expression.getRHS());
+    protected ExpressionEvaluator subjectExpression, lhsExpression, rhsExpression;
+    protected ValueObjectiveFunction lhsObjFun, rhsObjFun;
+    protected RelationalOperator lhsOp, rhsOp;
+    protected boolean goalIsToSatisfy;
 
-		lhsOp = RelationalOperator.GREATER_OR_EQUALS;
-		rhsOp = RelationalOperator.LESS_OR_EQUALS;
-		
-		if (!goalIsToSatisfy) {
-			lhsOp = lhsOp.inverse();
-			rhsOp = rhsOp.inverse();
-		}
-		
-		lhsObjFun = new ValueObjectiveFunction(); 
-		rhsObjFun = new ValueObjectiveFunction();
-	}
-	
-	public ObjectiveValue evaluate(Row row) {
-		MultiObjectiveValue objVal = 
-				goalIsToSatisfy ? new SumOfMultiObjectiveValue()
-								: new BestOfMultiObjectiveValue();
-				
-		Value subjectValue = subjectExpression.evaluate(row);
-				
-		objVal.add(lhsObjFun.evaluate(
-				new RelationalPredicate<Value>(
-						subjectValue,
-						lhsOp, 
-						lhsExpression.evaluate(row))));				
-		
-		objVal.add(lhsObjFun.evaluate(
-				new RelationalPredicate<Value>(
-						subjectValue,
-						rhsOp, 
-						rhsExpression.evaluate(row))));		
+    public BetweenExpressionObjectiveFunction(BetweenExpression expression,
+            boolean goalIsToSatisfy,
+            boolean allowNull) {
+        this.goalIsToSatisfy = goalIsToSatisfy;
 
-		return objVal;
-	}
+        subjectExpression = new ExpressionEvaluator(expression.getSubject());
+        lhsExpression = new ExpressionEvaluator(expression.getLHS());
+        rhsExpression = new ExpressionEvaluator(expression.getRHS());
+
+        lhsOp = RelationalOperator.GREATER_OR_EQUALS;
+        rhsOp = RelationalOperator.LESS_OR_EQUALS;
+
+        if (!goalIsToSatisfy) {
+            lhsOp = lhsOp.inverse();
+            rhsOp = rhsOp.inverse();
+        }
+
+        lhsObjFun = new ValueObjectiveFunction();
+        rhsObjFun = new ValueObjectiveFunction();
+    }
+
+    public ObjectiveValue evaluate(Row row) {
+        MultiObjectiveValue objVal =
+                goalIsToSatisfy ? new SumOfMultiObjectiveValue()
+                : new BestOfMultiObjectiveValue();
+
+        Value subjectValue = subjectExpression.evaluate(row);
+
+        objVal.add(lhsObjFun.evaluate(
+                new RelationalPredicate<Value>(
+                subjectValue,
+                lhsOp,
+                lhsExpression.evaluate(row))));
+
+        objVal.add(lhsObjFun.evaluate(
+                new RelationalPredicate<Value>(
+                subjectValue,
+                rhsOp,
+                rhsExpression.evaluate(row))));
+
+        return objVal;
+    }
 }

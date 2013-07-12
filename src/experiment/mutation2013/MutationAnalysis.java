@@ -32,21 +32,22 @@ import plume.Options;
  * @author chris
  */
 public class MutationAnalysis {
+
     private static int STILL_BORN = -1;
 
-    public static void main(String[] args) {        
+    public static void main(String[] args) {
         // parse options
         Options options = new Options("MutationAnalysis [options]", new Configuration());
         options.parse_or_usage(args);
         ExperimentConfiguration.project = Configuration.project;
-        
+
         // Start results file
         ExperimentalResults experimentalResults = ExperimentalResults.retrieve();
         experimentalResults.reset();
         experimentalResults.addResult("datagenerator", Configuration.datagenerator);
-	experimentalResults.addResult("database", MutationUtilities.removePrefixFromCaseStudyName(Configuration.database));
-	experimentalResults.addResult("type", MutationUtilities.removePrefixFromCaseStudyName(Configuration.type));
-	experimentalResults.addResult("trial", Integer.toString(Configuration.trial));
+        experimentalResults.addResult("database", MutationUtilities.removePrefixFromCaseStudyName(Configuration.database));
+        experimentalResults.addResult("type", MutationUtilities.removePrefixFromCaseStudyName(Configuration.type));
+        experimentalResults.addResult("trial", Integer.toString(Configuration.trial));
 
         // create the database using reflection; this is based on the
         // type of the database provided in the configuration (i.e.,
@@ -77,18 +78,18 @@ public class MutationAnalysis {
 
         // start mutation timing
         long startTime = System.currentTimeMillis();
-        
+
         boolean stillBorn = false;
-        
+
         MutationReport mutationReport = new MutationReport();
         mutationReport.setOriginalReport(originalReport);
-        
+
         // create all of the MUTANT SCHEMAS that we store inside of the database 
         ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
         List<Schema> mutants = cm.produceMutants(schema);
         int i = 1;
         for (Schema mutant : mutants) {
-            
+
             System.out.println("Mutant " + i);
 
             // drop tables inside the previous schema
@@ -132,7 +133,7 @@ public class MutationAnalysis {
 
                 // extract the number of modified record counts, used in mutation analysis
                 Integer returnCounts = databaseInteraction.executeUpdate(statement);
-                
+
                 // add the return code to the insertMutantRecord
                 insertMutantRecord.setReturnCode(returnCounts);
 
@@ -151,11 +152,11 @@ public class MutationAnalysis {
                 } else {
                     insertMutantRecord.killedMutant();
                 }
-                
+
                 // add this insertMutantRecord to the mutant report
                 currentMutantReport.addMutantStatement(insertMutantRecord);
             }
-            
+
             // indicate we have moved on to the next MUTANT
             i++;
 
@@ -171,7 +172,7 @@ public class MutationAnalysis {
 
             // store the current insertMutantRecord inside of the mutationReport
             mutationReport.addMutantReport(currentMutantReport);
-            
+
             // drop tables inside the previous schema
             for (String statement : dropTableStatementsMutants) {
                 databaseInteraction.executeUpdate(statement);
@@ -185,16 +186,16 @@ public class MutationAnalysis {
         // END TIME FOR mutation analysis
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        
+
         experimentalResults.addResult("mutationtime", new Long(totalTime).toString());
         experimentalResults.addResult("mutationscore_numerator", Integer.toString(score.getNumerator()));
         experimentalResults.addResult("mutationscore_denominator", Integer.toString(score.getDenominator()));
-        
+
         if (!experimentalResults.wroteHeader()) {
             experimentalResults.writeHeader();
             experimentalResults.didWriteCountHeader();
         }
-        
+
         experimentalResults.writeResults();
         experimentalResults.save();
     }

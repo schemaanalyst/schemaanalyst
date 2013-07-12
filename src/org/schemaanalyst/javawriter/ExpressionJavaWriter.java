@@ -19,98 +19,98 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class ExpressionJavaWriter {
 
-	protected JavaWriter javaWriter;
-	protected ValueJavaWriter valueJavaWriter;
-	
-	public ExpressionJavaWriter(JavaWriter javaWriter,
-								ValueJavaWriter valueJavaWriter) {
-		this.javaWriter = javaWriter;
-		this.valueJavaWriter = valueJavaWriter;
-	}
-	
-	public String writeConstruction(Expression expression) {
-		
-		class WriterExpressionVisitor implements ExpressionVisitor {
+    protected JavaWriter javaWriter;
+    protected ValueJavaWriter valueJavaWriter;
 
-			String java;
-			
-			public String writeExpression(Expression expression) {
-				java = "";
-				expression.accept(this);
-				return java;
-			}
-			
-			public void visit(AndExpression expression) {
-				java += writeComposedExpresionConstruction(expression);				
-			}
+    public ExpressionJavaWriter(JavaWriter javaWriter,
+            ValueJavaWriter valueJavaWriter) {
+        this.javaWriter = javaWriter;
+        this.valueJavaWriter = valueJavaWriter;
+    }
 
-			public void visit(BetweenExpression expression) {
-				java = javaWriter.writeConstruction(
-						expression,
-						writeExpression(expression.getSubject()),						
-						writeExpression(expression.getLHS()),
-						writeExpression(expression.getRHS()),
-						javaWriter.writeBoolean(expression.isNotBetween()));					
-			}
-			
-			public void visit(ColumnExpression expression) {
-				java += javaWriter.writeConstruction(
-						expression,
-						javaWriter.writeGetColumn(expression.getColumn()));
-			}
-			
-			public void visit(ConstantExpression expression) {
-				java += javaWriter.writeConstruction(
-						expression,
-						valueJavaWriter.writeConstruction(expression.getValue()));
-			}			
-			
-			public void visit(InExpression expression) {
-				java = javaWriter.writeConstruction(
-						expression, 
-						writeExpression(expression.getLHS()),
-						writeExpression(expression.getRHS()),
-						javaWriter.writeBoolean(expression.isNotIn()));				
-			}
-			
-			public void visit(ListExpression expression) {
-				java += writeComposedExpresionConstruction(expression);
-			}			
-			
-			public void visit(NullExpression expression) {
-				java = javaWriter.writeConstruction(
-						expression, 
-						writeExpression(expression.getSubexpression()),
-						javaWriter.writeBoolean(expression.isNotNull()));
-			}
+    public String writeConstruction(Expression expression) {
 
-			public void visit(OrExpression expression) {
-				java += writeComposedExpresionConstruction(expression);
-			}
+        class WriterExpressionVisitor implements ExpressionVisitor {
 
-			public void visit(ParenthesisedExpression expression) {
-				java = javaWriter.writeConstruction(
-						expression, 
-						writeExpression(expression.getSubexpression()));				
-			}
-			
-			public void visit(RelationalExpression expression) {				
-				java = javaWriter.writeConstruction(
-						expression, 
-						writeExpression(expression.getLHS()),
-						javaWriter.writeEnumValue(expression.getRelationalOperator()),
-						writeExpression(expression.getRHS()));
-			}
-		}
-		
-		return (new WriterExpressionVisitor()).writeExpression(expression);
-	}
-	
-	String writeComposedExpresionConstruction(CompoundExpression expression) {
-		List<String> args = new ArrayList<>();
-		for (Expression subexpression : expression.getSubexpressions()) {
-			args.add(writeConstruction(subexpression));
-		}
-		return javaWriter.writeConstruction(expression, args);				
-	}	
+            String java;
+
+            public String writeExpression(Expression expression) {
+                java = "";
+                expression.accept(this);
+                return java;
+            }
+
+            public void visit(AndExpression expression) {
+                java += writeComposedExpresionConstruction(expression);
+            }
+
+            public void visit(BetweenExpression expression) {
+                java = javaWriter.writeConstruction(
+                        expression,
+                        writeExpression(expression.getSubject()),
+                        writeExpression(expression.getLHS()),
+                        writeExpression(expression.getRHS()),
+                        javaWriter.writeBoolean(expression.isNotBetween()));
+            }
+
+            public void visit(ColumnExpression expression) {
+                java += javaWriter.writeConstruction(
+                        expression,
+                        javaWriter.writeGetColumn(expression.getColumn()));
+            }
+
+            public void visit(ConstantExpression expression) {
+                java += javaWriter.writeConstruction(
+                        expression,
+                        valueJavaWriter.writeConstruction(expression.getValue()));
+            }
+
+            public void visit(InExpression expression) {
+                java = javaWriter.writeConstruction(
+                        expression,
+                        writeExpression(expression.getLHS()),
+                        writeExpression(expression.getRHS()),
+                        javaWriter.writeBoolean(expression.isNotIn()));
+            }
+
+            public void visit(ListExpression expression) {
+                java += writeComposedExpresionConstruction(expression);
+            }
+
+            public void visit(NullExpression expression) {
+                java = javaWriter.writeConstruction(
+                        expression,
+                        writeExpression(expression.getSubexpression()),
+                        javaWriter.writeBoolean(expression.isNotNull()));
+            }
+
+            public void visit(OrExpression expression) {
+                java += writeComposedExpresionConstruction(expression);
+            }
+
+            public void visit(ParenthesisedExpression expression) {
+                java = javaWriter.writeConstruction(
+                        expression,
+                        writeExpression(expression.getSubexpression()));
+            }
+
+            public void visit(RelationalExpression expression) {
+                java = javaWriter.writeConstruction(
+                        expression,
+                        writeExpression(expression.getLHS()),
+                        javaWriter.writeEnumValue(expression.getRelationalOperator()),
+                        writeExpression(expression.getRHS()));
+            }
+        }
+
+        return (new WriterExpressionVisitor()).writeExpression(expression);
+    }
+
+    String writeComposedExpresionConstruction(CompoundExpression expression) {
+        List<String> args = new ArrayList<>();
+        for (Expression subexpression : expression.getSubexpressions()) {
+            args.add(writeConstruction(subexpression));
+        }
+        return javaWriter.writeConstruction(expression, args);
+    }
 }

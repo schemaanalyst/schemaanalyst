@@ -9,44 +9,54 @@ import uk.co.chrisjameswright.proptoobj.PropertiesParser;
  * @author Chris J. Wright
  */
 public class FolderConfiguration {
-    
+
     private final static String PROPERTIES_LOCATION = "config/folders.properties";
-    
-    /** The libraries folder. */
+    /**
+     * The libraries folder.
+     */
     public static String lib_dir;
-    
-    /** The Java sources folder. */
+    /**
+     * The Java sources folder.
+     */
     public static String src_dir;
-    
-    /** The build folder containing compiled classes. */
+    /**
+     * The build folder containing compiled classes.
+     */
     public static String build_dir;
-    
-    /** The distribution folder containing the JAR file. */
+    /**
+     * The distribution folder containing the JAR file.
+     */
     public static String dist_dir;
-    
-    /** The name of the JAR file in the distribution folder. */
+    /**
+     * The name of the JAR file in the distribution folder.
+     */
     public static String dist_name;
-    
-    /** The configuration folder. */
+    /**
+     * The configuration folder.
+     */
     public static String config_dir;
-    
-    /** The run folder. */
+    /**
+     * The run folder.
+     */
     public static String run_dir;
-    
-    /** The databases folder, for storing database files. */
+    /**
+     * The databases folder, for storing database files.
+     */
     public static String database_dir;
-    
-    /** The results folder, for storing experiment results. */
+    /**
+     * The results folder, for storing experiment results.
+     */
     public static String results_dir;
-    
-    /** The folder where the original SQL for each schema is located. */
+    /**
+     * The folder where the original SQL for each schema is located.
+     */
     public static String schema_src_dir;
-    		
-    /** The folder where we write Java code corresponding to each parsed schema. */
+    /**
+     * The folder where we write Java code corresponding to each parsed schema.
+     */
     public static String casestudy_src_dir;
-    
+
     static {
         PropertiesParser.parse(PROPERTIES_LOCATION, FolderConfiguration.class);
     }
-    
 }

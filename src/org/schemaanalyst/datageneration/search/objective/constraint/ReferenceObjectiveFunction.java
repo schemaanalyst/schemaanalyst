@@ -19,69 +19,68 @@ import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 
 public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
-	protected List<Column> columns;
-	protected List<Column> referenceColumns;
-	protected RelationalOperator op;
+    protected List<Column> columns;
+    protected List<Column> referenceColumns;
+    protected RelationalOperator op;
+    protected Data state;
+    protected String description;
+    protected boolean goalIsToSatisfy, allowNull;
 
-	protected Data state;
-	protected String description;
-	protected boolean goalIsToSatisfy, allowNull;
-	
-	public ReferenceObjectiveFunction(List<Column> columns, 
-									  List<Column> referenceColumns, 
-									  Data state, 
-									  String description, 
-									  boolean goalIsToSatisfy, 
-									  boolean allowNull) {		
-		this.columns = columns;
-		this.referenceColumns = referenceColumns;
-		this.state = state;
-		this.description = description;
-		this.goalIsToSatisfy = goalIsToSatisfy;		
-		this.allowNull = allowNull;
-		
-		this.op = goalIsToSatisfy ? EQUALS : NOT_EQUALS;
-	}
-	
-	public ObjectiveValue evaluate(Data data) {
-		MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-		
-		List<List<Cell>> rows = data.getCells(columns);
-		
-		// add all reference rows from data and the state
-		List<List<Cell>> referenceRows = data.getCells(referenceColumns);
-		referenceRows.addAll(state.getCells(referenceColumns));	
-		
-		for (List<Cell> row : rows) {
-			objVal.add(evaluateRow(row, referenceRows, allowNull));
-		}		
-		
-		return objVal;
-	}			
+    public ReferenceObjectiveFunction(List<Column> columns,
+            List<Column> referenceColumns,
+            Data state,
+            String description,
+            boolean goalIsToSatisfy,
+            boolean allowNull) {
+        this.columns = columns;
+        this.referenceColumns = referenceColumns;
+        this.state = state;
+        this.description = description;
+        this.goalIsToSatisfy = goalIsToSatisfy;
+        this.allowNull = allowNull;
 
-	protected ObjectiveValue evaluateRow(List<Cell> row, List<List<Cell>> referenceRows, boolean allowNull) {
-		
-		MultiObjectiveValue rowObjVal;
-		
-		if (allowNull) {
-			rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
-			rowObjVal.add(evaluateRow(row, referenceRows, false));
-			
-			for (Cell cell : row) {
-				rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
-			}
-		} else {
-			String description = "Evaluating row with reference rows";
-			
-			rowObjVal = goalIsToSatisfy 
-					? new BestOfMultiObjectiveValue(description)
-					: new SumOfMultiObjectiveValue(description);
-					
-			for (List<Cell> referenceRow : referenceRows) {
-				rowObjVal.add(ListOfCellsObjectiveFunction.compute(row, op, referenceRow));
-			}			
-		}
-		
-		return rowObjVal;
-	}
+        this.op = goalIsToSatisfy ? EQUALS : NOT_EQUALS;
+    }
+
+    public ObjectiveValue evaluate(Data data) {
+        MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
+
+        List<List<Cell>> rows = data.getCells(columns);
+
+        // add all reference rows from data and the state
+        List<List<Cell>> referenceRows = data.getCells(referenceColumns);
+        referenceRows.addAll(state.getCells(referenceColumns));
+
+        for (List<Cell> row : rows) {
+            objVal.add(evaluateRow(row, referenceRows, allowNull));
+        }
+
+        return objVal;
+    }
+
+    protected ObjectiveValue evaluateRow(List<Cell> row, List<List<Cell>> referenceRows, boolean allowNull) {
+
+        MultiObjectiveValue rowObjVal;
+
+        if (allowNull) {
+            rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
+            rowObjVal.add(evaluateRow(row, referenceRows, false));
+
+            for (Cell cell : row) {
+                rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
+            }
+        } else {
+            String description = "Evaluating row with reference rows";
+
+            rowObjVal = goalIsToSatisfy
+                    ? new BestOfMultiObjectiveValue(description)
+                    : new SumOfMultiObjectiveValue(description);
+
+            for (List<Cell> referenceRow : referenceRows) {
+                rowObjVal.add(ListOfCellsObjectiveFunction.compute(row, op, referenceRow));
+            }
+        }
+
+        return rowObjVal;
+    }
 }

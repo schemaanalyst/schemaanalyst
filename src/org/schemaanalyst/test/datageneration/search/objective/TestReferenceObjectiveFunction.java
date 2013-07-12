@@ -4,9 +4,7 @@ import org.junit.Test;
 
 public class TestReferenceObjectiveFunction {
 
-	@Test
-	public void test() {
-		
-	}
-	
+    @Test
+    public void test() {
+    }
 }

@@ -1,6 +1,5 @@
 package experiment;
 
-
 import experiment.util.XMLSerialiser;
 import java.util.List;
 import java.util.ArrayList;
@@ -187,7 +186,7 @@ public class LocalExperimentParameters extends Parameters {
 
     /**
      * Load a parameters object from a file, formatted in XML.
-     * 
+     *
      * @param location The file path.
      * @return The parameters object.
      */
@@ -197,7 +196,7 @@ public class LocalExperimentParameters extends Parameters {
 
     /**
      * Load a parameters object from a file, formatted in XML.
-     * 
+     *
      * @return The parameters object.
      */
     public static LocalExperimentParameters loadFromXML() {

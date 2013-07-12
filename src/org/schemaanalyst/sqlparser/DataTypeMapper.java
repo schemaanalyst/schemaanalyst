@@ -23,96 +23,95 @@ import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 class DataTypeMapper {
-		
-	protected Logger logger;
-	
-	public DataTypeMapper(Logger logger) {
-		this.logger = logger;
-	}
-	
-	// REFER TO the JavaDocs for TTypeName
-	// http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html	
 
-	public DataType getDataType(TTypeName dataType, TParseTreeNode node) {
-		
-		// used in case of bugs with switch type
-		// String typeString = dataType.toString();
-		
-		switch (dataType.getDataType()) {
-		
-			// *** BOOLEAN *** 
-			case bool_t:
-			case boolean_t:
-				return new BooleanDataType();
-			
-			// *** CHARACTER STRING *** 
-			case char_t:	
-				// [GSP BUG 49, DBMS Postgres] "character/char" parsed as VARCHAR 				
-				return new CharDataType(getLength(dataType));			    		
+    protected Logger logger;
 
-			case varchar_t:	
-				return new VarCharDataType(getLength(dataType));		
-			
-			// [TODO] New data type required to handle nchar/nvarchar?				
-				
-			// text 
-			// [TODO] New data type required to handle longtext?
-			case text_t:
-			// case longtext_t:	
-				return new TextDataType();		
-					
-			// *** NUMERIC *** 	
-			case dec_t:
-				return new DecimalDataType(getPrecision(dataType), getScale(dataType));			
-			
-			case int_t:
-	    		return new IntDataType();
-			
-			case smallint_t:
-				return new SmallIntDataType();		
+    public DataTypeMapper(Logger logger) {
+        this.logger = logger;
+    }
 
-			case tinyint_t:
-				return new TinyIntDataType();		
-								
-	    	// numeric
-			case numeric_t:		
-				return new NumericDataType(getPrecision(dataType), getScale(dataType));
-		
-			case real_t:
-				return new RealDataType();
-				
-			// *** TEMPORAL *** 
-			case date_t:
-				return new DateDataType();
+    // REFER TO the JavaDocs for TTypeName
+    // http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html	
+    public DataType getDataType(TTypeName dataType, TParseTreeNode node) {
 
-			case datetime_t:
-				return new DateTimeDataType();	
-			
-			case time_t:			
-				return new TimeDataType();				
-				
-			case timestamp_t:			
-				return new TimestampDataType();
-			
-			default:
-				// Data type not supported
-				throw new UnsupportedSQLException(dataType, node);
-		}
-	}	
-	
-	protected Integer getArgument(TConstant argument) {
-		return argument == null ? null : Integer.valueOf(argument.toString());
-	}	
-	
-	protected Integer getLength(TTypeName dataType) {
-		return getArgument(dataType.getLength());				
-	}
-	
-	protected Integer getPrecision(TTypeName dataType) {
-		return getArgument(dataType.getPrecision());				
-	}
-	
-	protected Integer getScale(TTypeName dataType) {
-		return getArgument(dataType.getScale());
-	}	
+        // used in case of bugs with switch type
+        // String typeString = dataType.toString();
+
+        switch (dataType.getDataType()) {
+
+            // *** BOOLEAN *** 
+            case bool_t:
+            case boolean_t:
+                return new BooleanDataType();
+
+            // *** CHARACTER STRING *** 
+            case char_t:
+                // [GSP BUG 49, DBMS Postgres] "character/char" parsed as VARCHAR 				
+                return new CharDataType(getLength(dataType));
+
+            case varchar_t:
+                return new VarCharDataType(getLength(dataType));
+
+            // [TODO] New data type required to handle nchar/nvarchar?				
+
+            // text 
+            // [TODO] New data type required to handle longtext?
+            case text_t:
+                // case longtext_t:	
+                return new TextDataType();
+
+            // *** NUMERIC *** 	
+            case dec_t:
+                return new DecimalDataType(getPrecision(dataType), getScale(dataType));
+
+            case int_t:
+                return new IntDataType();
+
+            case smallint_t:
+                return new SmallIntDataType();
+
+            case tinyint_t:
+                return new TinyIntDataType();
+
+            // numeric
+            case numeric_t:
+                return new NumericDataType(getPrecision(dataType), getScale(dataType));
+
+            case real_t:
+                return new RealDataType();
+
+            // *** TEMPORAL *** 
+            case date_t:
+                return new DateDataType();
+
+            case datetime_t:
+                return new DateTimeDataType();
+
+            case time_t:
+                return new TimeDataType();
+
+            case timestamp_t:
+                return new TimestampDataType();
+
+            default:
+                // Data type not supported
+                throw new UnsupportedSQLException(dataType, node);
+        }
+    }
+
+    protected Integer getArgument(TConstant argument) {
+        return argument == null ? null : Integer.valueOf(argument.toString());
+    }
+
+    protected Integer getLength(TTypeName dataType) {
+        return getArgument(dataType.getLength());
+    }
+
+    protected Integer getPrecision(TTypeName dataType) {
+        return getArgument(dataType.getPrecision());
+    }
+
+    protected Integer getScale(TTypeName dataType) {
+        return getArgument(dataType.getScale());
+    }
 }

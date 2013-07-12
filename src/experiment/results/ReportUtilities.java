@@ -4,15 +4,15 @@ package experiment.results;
 
 /**
  * Utility methods for use when writing reports.
- * 
+ *
  * @author chris
  */
 public class ReportUtilities {
-    
+
     /**
-     * Converts any collection that can be iterated into a CSV format, with a 
+     * Converts any collection that can be iterated into a CSV format, with a
      * given separator.
-     * 
+     *
      * @param values The collection to iterate over
      * @param seperator The separator to use between values
      * @return The CSV format string
@@ -20,8 +20,8 @@ public class ReportUtilities {
     public static String convertIterableToCSV(Iterable<String> values, String seperator) {
         StringBuilder output = new StringBuilder();
         boolean first = true;
-        
-        for (String value: values) {
+
+        for (String value : values) {
             if (first) {
                 first = false;
             } else {
@@ -29,8 +29,7 @@ public class ReportUtilities {
             }
             output.append(value);
         }
-        
+
         return output.toString();
     }
-    
 }

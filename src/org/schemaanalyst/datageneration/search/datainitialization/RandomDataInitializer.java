@@ -8,16 +8,16 @@ import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 
 public class RandomDataInitializer extends DataInitializer {
 
-	protected CellRandomiser cellRandomizer;
-	
-	public RandomDataInitializer(CellRandomiser cellRandomizer) {
-		this.cellRandomizer = cellRandomizer;
-	}
-	
-	public void initialize(Data data) {
-		List<Cell> cells = data.getCells();
-		for (Cell cell : cells) {
-			cellRandomizer.randomizeCell(cell);
-		}
-	}
+    protected CellRandomiser cellRandomizer;
+
+    public RandomDataInitializer(CellRandomiser cellRandomizer) {
+        this.cellRandomizer = cellRandomizer;
+    }
+
+    public void initialize(Data data) {
+        List<Cell> cells = data.getCells();
+        for (Cell cell : cells) {
+            cellRandomizer.randomizeCell(cell);
+        }
+    }
 }

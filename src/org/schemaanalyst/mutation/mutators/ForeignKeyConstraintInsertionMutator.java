@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 /**
  * Produces mutants containing new foreign key constraints for each column where
  * a reference column in another table can be located of the same type.
- * 
+ *
  * @author Chris J. Wright
  */
 public class ForeignKeyConstraintInsertionMutator extends Mutator {
@@ -25,7 +25,7 @@ public class ForeignKeyConstraintInsertionMutator extends Mutator {
         for (ForeignKeyConstraint fkey : table.getForeignKeyConstraints()) {
             columns.removeAll(fkey.getColumns());
         }
-        
+
         for (Column localColumn : table.getColumns()) {
             List<Column> refColumns = findColumns(localColumn);
             for (Column foreignColumn : refColumns) {
@@ -33,7 +33,7 @@ public class ForeignKeyConstraintInsertionMutator extends Mutator {
             }
         }
     }
-    
+
     private void produceMutant(Column localColumn, Column foreignColumn, List<Schema> mutants) {
         Schema mutant = localColumn.getTable().getSchema().duplicate();
         Column dupLocalColumn = mutant.getTable(localColumn.getTable().getName()).getColumn(localColumn.getName());
@@ -44,12 +44,12 @@ public class ForeignKeyConstraintInsertionMutator extends Mutator {
 
     private List<Column> findColumns(Column localColumn) {
         List<Column> foreignColumns = new ArrayList<>();
-        
+
         // Ignore localColumn's table
         Schema schema = localColumn.getTable().getSchema();
         List<Table> foreignTables = new ArrayList<>(schema.getTables());
         foreignTables.remove(localColumn.getTable());
-        
+
         // Find reference columns
         for (Table foreignTable : foreignTables) {
             for (Column foreignColumn : foreignTable.getColumns()) {

@@ -2,6 +2,5 @@ package org.schemaanalyst.datageneration;
 
 public abstract class DataGenerator {
 
-	public abstract CoverageReport generate();
-	
+    public abstract CoverageReport generate();
 }
