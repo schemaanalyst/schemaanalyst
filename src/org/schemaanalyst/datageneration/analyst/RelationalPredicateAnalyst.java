@@ -6,11 +6,11 @@ import java.util.List;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.logic.EvaluableRelationalPredicate;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 
 public class RelationalPredicateAnalyst extends ConstraintAnalyst {
 

@@ -15,10 +15,10 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 public class TestBetweenAnalyst {

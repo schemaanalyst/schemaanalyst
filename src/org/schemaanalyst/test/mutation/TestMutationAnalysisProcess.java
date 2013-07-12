@@ -3,13 +3,13 @@ package org.schemaanalyst.test.mutation;
 import java.io.File;
 
 import org.junit.Test;
+
 import static org.junit.Assert.*;
 
 import org.schemaanalyst.mutation.MutationReport;
 import org.schemaanalyst.mutation.MutationReportScores;
 import org.schemaanalyst.mutation.MutationReportScore;
-import org.schemaanalyst.configuration.Configuration;
-
+import org.schemaanalyst.deprecated.Configuration;
 import org.apache.tools.ant.ProjectHelper;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.BuildException;

@@ -8,18 +8,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.schemaanalyst.data.Value;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 
 /**
  * Mutates all types of check constraint by replacing columns

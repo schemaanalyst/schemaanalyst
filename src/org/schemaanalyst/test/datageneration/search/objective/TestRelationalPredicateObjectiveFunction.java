@@ -8,8 +8,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.RelationalCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;

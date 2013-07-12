@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import org.schemaanalyst.configuration.Configuration;
+import org.schemaanalyst.deprecated.Configuration;
 
 public class ScriptCreator {
 

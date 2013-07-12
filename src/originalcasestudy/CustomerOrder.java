@@ -1,9 +1,9 @@
 package originalcasestudy;
 
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType;

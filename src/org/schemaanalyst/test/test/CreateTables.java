@@ -8,9 +8,9 @@ import java.io.FileNotFoundException;
 
 import plume.*;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.Configuration;
 
 public class CreateTables {
 

@@ -2,7 +2,7 @@ package org.schemaanalyst.dbms.derby;
 
 import java.sql.DriverManager;
 
-import org.schemaanalyst.configuration.Configuration;
+import org.schemaanalyst.deprecated.Configuration;
 
 public class DerbyNetworkDatabaseInteractor extends DerbyDatabaseInteractor {
 

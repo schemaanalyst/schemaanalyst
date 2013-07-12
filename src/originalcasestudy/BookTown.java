@@ -1,7 +1,7 @@
 package originalcasestudy;
 
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.*;
 
 public class BookTown extends Schema {

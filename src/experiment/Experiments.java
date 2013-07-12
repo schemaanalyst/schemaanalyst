@@ -2,6 +2,7 @@ package experiment;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -14,7 +15,7 @@ import experiment.mutation2013.MutationAnalysisSchemata;
 import experiment.mutation2013.MutationAnalysisSchemataParallel;
 import experiment.mutation2013.MutationAnalysisSmart;
 
-import org.schemaanalyst.SchemaAnalyst;
+import org.schemaanalyst.deprecated.SchemaAnalyst;
 
 @RunWith(JUnitParamsRunner.class)
 public class Experiments {

@@ -1,8 +1,8 @@
 package org.schemaanalyst.data;
 
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.OperandVisitor;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
 
 public class OperandToValue {
 

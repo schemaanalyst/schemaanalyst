@@ -6,8 +6,8 @@ import java.util.List;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Value;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 
 public class InAnalyst extends ConstraintAnalyst {
 

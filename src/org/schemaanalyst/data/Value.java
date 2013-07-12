@@ -2,8 +2,8 @@ package org.schemaanalyst.data;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.sqlrepresentation.checkcondition.OperandVisitor;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.OperandVisitor;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Value implements Comparable<Value>,

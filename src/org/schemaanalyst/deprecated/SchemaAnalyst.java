@@ -1,4 +1,4 @@
-package org.schemaanalyst;
+package org.schemaanalyst.deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import plume.*;
 
 import com.rits.cloning.Cloner;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;

@@ -4,15 +4,16 @@ package org.schemaanalyst.mutation.mutators.checkmutators;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckConditionVisitor;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /**

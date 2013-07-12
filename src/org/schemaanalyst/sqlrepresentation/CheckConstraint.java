@@ -3,7 +3,7 @@ package org.schemaanalyst.sqlrepresentation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.sqlrepresentation.checkcondition.CheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;

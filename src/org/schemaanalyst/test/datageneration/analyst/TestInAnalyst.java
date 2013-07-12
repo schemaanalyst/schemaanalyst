@@ -5,17 +5,16 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.InAnalyst;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 import static org.junit.Assert.*;

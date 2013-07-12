@@ -11,10 +11,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.mutation.MutationReport;
 import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.SQLExecutionReport;

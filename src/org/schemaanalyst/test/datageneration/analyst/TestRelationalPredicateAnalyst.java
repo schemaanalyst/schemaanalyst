@@ -15,11 +15,11 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 public class TestRelationalPredicateAnalyst {

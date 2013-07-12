@@ -14,10 +14,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutationReport;

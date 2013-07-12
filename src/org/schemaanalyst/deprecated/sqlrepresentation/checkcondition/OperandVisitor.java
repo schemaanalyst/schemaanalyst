@@ -1,4 +1,4 @@
-package org.schemaanalyst.sqlrepresentation.checkcondition;
+package org.schemaanalyst.deprecated.sqlrepresentation.checkcondition;
 
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;

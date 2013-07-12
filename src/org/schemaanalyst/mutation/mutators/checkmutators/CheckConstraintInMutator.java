@@ -4,13 +4,14 @@ package org.schemaanalyst.mutation.mutators.checkmutators;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.schemaanalyst.data.Value;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 
 /**
  * Creates mutants of 'In ...' type check constraints by removing each value in

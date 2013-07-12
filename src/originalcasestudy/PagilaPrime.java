@@ -4,9 +4,9 @@
 package originalcasestudy;
 
 import org.schemaanalyst.data.TimestampValue;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
-import org.schemaanalyst.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.*;
 
 /**

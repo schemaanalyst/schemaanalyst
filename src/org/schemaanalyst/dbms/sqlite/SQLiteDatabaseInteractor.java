@@ -6,8 +6,8 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.sqlite.SQLiteConfig;
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.script.ScriptCreator;
 
 import java.io.File;

@@ -2,7 +2,6 @@ package org.schemaanalyst.datageneration;
 
 import java.lang.reflect.Method;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
@@ -18,6 +17,7 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 

@@ -8,11 +8,11 @@ import org.schemaanalyst.data.OperandToValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.util.random.Random;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;

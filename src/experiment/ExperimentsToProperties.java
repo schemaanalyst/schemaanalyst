@@ -6,15 +6,18 @@ import experiment.mutation2013.MutationAnalysisParallel;
 import experiment.mutation2013.MutationAnalysisSchemata;
 import experiment.mutation2013.MutationAnalysisSchemataParallel;
 import experiment.mutation2013.MutationAnalysisSmart;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
 import junitparams.JUnitParamsRunner;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.schemaanalyst.SchemaAnalyst;
+import org.schemaanalyst.deprecated.SchemaAnalyst;
 
 @RunWith(JUnitParamsRunner.class)
 public class ExperimentsToProperties {

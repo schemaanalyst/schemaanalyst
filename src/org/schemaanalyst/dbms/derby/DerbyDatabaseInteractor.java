@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
 
-import org.schemaanalyst.configuration.Configuration;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.Configuration;
 
 public class DerbyDatabaseInteractor extends DatabaseInteractor {
 

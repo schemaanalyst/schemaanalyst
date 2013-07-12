@@ -141,9 +141,9 @@
 	-->
 	<target name="generatedata">
 		<java classname="org.schemaanalyst.tool.GenerateData" maxmemory="256M">
-			<arg value="${schema}" />
-			<arg value="${database}" />
-			<arg value="${datagenerator}" />
+			<arg value="--schemaName=${schema}" />
+			<arg value="--dbmsName=${dbms}" />
+			<arg value="--dataGeneratorName=${datagenerator}" />
 			<classpath refid="run_classpath" />
 		</java>
 	</target>

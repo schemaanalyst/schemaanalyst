@@ -17,10 +17,10 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.InAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
 import org.schemaanalyst.datageneration.domainspecific.InHandler;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.util.random.SimpleRandom;
 

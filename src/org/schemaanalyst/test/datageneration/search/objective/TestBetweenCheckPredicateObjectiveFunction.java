@@ -9,7 +9,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.BetweenCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.checkcondition.BetweenCheckCondition;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.test.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
