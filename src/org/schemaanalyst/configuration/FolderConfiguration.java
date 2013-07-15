@@ -2,7 +2,8 @@
  */
 package org.schemaanalyst.configuration;
 
-import uk.co.chrisjameswright.proptoobj.PropertiesParser;
+import org.schemaanalyst.util.PropertiesParser;
+
 
 /**
  *
