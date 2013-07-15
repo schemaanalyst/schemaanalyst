@@ -18,7 +18,7 @@ public class LoggingConfiguration {
     /**
      * 
      */
-    private static String level;
+    private static String log_level;
 
     static {
         PropertiesParser.parse(PROPERTIES_LOCATION, LoggingConfiguration.class);
