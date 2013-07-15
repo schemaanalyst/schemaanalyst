@@ -14,7 +14,7 @@ import org.schemaanalyst.util.PropertiesParser;
  */
 public class DatabaseConfiguration {
 
-    private final static String PROPERTIES_LOCATION = FolderConfiguration.config_dir + File.separator + "folders.properties";
+    private final static String PROPERTIES_LOCATION = FolderConfiguration.config_dir + File.separator + "database.properties";
     /**
      * The host address of the DBMS that hosts the database.
      */
