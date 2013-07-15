@@ -4,8 +4,11 @@ package org.schemaanalyst.configuration;
 
 import org.schemaanalyst.util.PropertiesParser;
 
-
 /**
+ * Contains the properties describing the layout of the project directories,
+ * loaded automatically on demand. This includes the hard-coded path to the
+ * 'config' directory, which should be used to bootstrap the loading of other
+ * configuration files.
  *
  * @author Chris J. Wright
  */
