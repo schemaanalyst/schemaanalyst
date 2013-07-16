@@ -4,6 +4,7 @@ package org.schemaanalyst.util;
 
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
@@ -47,49 +48,75 @@ public class PropertiesParser {
      * @return The instantiated POJO.
      */
     public static <T> T parse(File file, Class clazz) {
-        try (FileReader reader = new FileReader(file)) {
-            Properties p = new Properties();
-            p.load(reader);
-            return reflectFields(p, clazz);
-        } catch (Exception ex) {
+        try {
+            T obj = (T) clazz.newInstance();
+            return parse(file, obj);
+        } catch (InstantiationException | IllegalAccessException ex) {
             throw new RuntimeException("Failed to parse properties file to object", ex);
         }
     }
-
+    
     /**
-     * Process the items from the Properties into the class.
+     * Parses a file at the given path into an existing object.
+     * 
+     * @param filepath The path to the Properties file.
+     * @param object The POJO to parse values into.
+     * @return The POJO.
+     */
+    public static <T> T parse(String filepath, T object) {
+        return parse(new File(filepath), object);
+    }
+    
+    /**
+     * Parses a file at the given path into an existing object.
+     * 
+     * @param file The properties file.
+     * @param object The POJO to parse values into.
+     * @return The POJO.
+     */
+    public static <T> T parse(File file, T object) {
+        try (FileReader reader = new FileReader(file)) {
+            Properties p = new Properties();
+            p.load(reader);
+            return reflectFields(p, object);
+        } catch (IOException | IllegalAccessException | InstantiationException ex) {
+            throw new RuntimeException("Failed to parse properties file to object", ex);
+        }
+    }
+    
+    /**
+     * Process the items from the Properties into the POJO.
      * 
      * @param <T> The type of the POJO.
      * @param p The Properties object.
-     * @param clazz The class of the POJO.
-     * @return The instantiated POJO.
+     * @param object The POJO.
+     * @return The populated POJO.
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws SecurityException 
      */
-    private static <T> T reflectFields(Properties p, Class clazz) throws IllegalAccessException, InstantiationException, SecurityException {
-        T obj = (T) clazz.newInstance();
+    private static <T> T reflectFields(Properties p, T object)throws IllegalAccessException, InstantiationException, SecurityException {
         for (String prop : p.stringPropertyNames()) {
             try {
-                Field f = clazz.getDeclaredField(prop);
+                Field f = object.getClass().getDeclaredField(prop);
                 Class type = f.getType();
                 if (type.equals(int.class) || type.equals(Integer.class) ) {
-                    f.set(obj, Integer.parseInt(p.getProperty(prop)));
+                    f.set(object, Integer.parseInt(p.getProperty(prop)));
                 } else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
-                    f.set(obj, Boolean.parseBoolean(p.getProperty(prop)));
+                    f.set(object, Boolean.parseBoolean(p.getProperty(prop)));
                 } else if (type.equals(long.class) || type.equals(Long.class)) {
-                    f.set(obj, Long.parseLong(p.getProperty(prop)));
+                    f.set(object, Long.parseLong(p.getProperty(prop)));
                 } else if (type.equals(double.class) || type.equals(Double.class)) {
-                    f.set(obj, Double.parseDouble(p.getProperty(prop)));
+                    f.set(object, Double.parseDouble(p.getProperty(prop)));
                 } else if (type.equals(float.class) || type.equals(Float.class)) {
-                    f.set(obj, Float.parseFloat(p.getProperty(prop)));
+                    f.set(object, Float.parseFloat(p.getProperty(prop)));
                 } else {
-                    f.set(obj, p.getProperty(prop));
+                    f.set(object, p.getProperty(prop));
                 }
             } catch (NoSuchFieldException ex) {
                 // Ignore this field
             }
         }
-        return obj;
+        return object;
     }
 }
