@@ -4,37 +4,41 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.util.runner.Option;
+import org.schemaanalyst.util.runner.Runner;
 
-public class SchemaSQLToJava {
+public class SchemaSQLToJava extends Runner {
 
-    public static File fileForCaseStudyJavaSrc(String name) {
-        return new File(FolderConfiguration.casestudy_src_dir + "/" + name + ".java");
+    @Option("Input SQL file")
+    protected String schemaSqlFile;
+    @Option("DBMS dialect")
+    protected String dbmsName;
+
+    public File fileForCaseStudyJavaSrc(String name) {
+        return new File(folderConfiguration.getCasestudySrcDir() + "/" + name + ".java");
     }
 
-    public static void parse(String name, String dbmsName) throws ClassNotFoundException,
-            InstantiationException,
-            IllegalAccessException,
-            FileNotFoundException {
+    public void parse(String name, String dbmsName){
+        try {
+            Schema parsedSchema = SchemaSQLParser.parse(name, dbmsName, folderConfiguration.getCasestudySrcDir());
+            String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");
+            try (PrintWriter out = new PrintWriter(fileForCaseStudyJavaSrc(name))) {
+                out.println(javaCode);
+            }
+        } catch (ClassNotFoundException | FileNotFoundException | IllegalAccessException | InstantiationException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
-        Schema parsedSchema = SchemaSQLParser.parse(name, dbmsName);
-        String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");
-
-        PrintWriter out = new PrintWriter(fileForCaseStudyJavaSrc(name));
-        out.println(javaCode);
-        out.close();
+    @Override
+    public void run() {
+        parse(schemaSqlFile, dbmsName);
     }
 
     public static void main(String[] args) throws Exception {
-        if (args.length != 2) {
-            System.out.println(
-                    "Usage: java "
-                    + SchemaSQLToJava.class.getName()
-                    + " schema_sql_file database");
-            System.exit(1);
-        }
-        parse(args[0], args[1]);
+        SchemaSQLToJava tool = new SchemaSQLToJava();
+        tool.run();
     }
 }
