@@ -6,7 +6,7 @@
 
 	<!-- Load the variable configurations. -->
 	<loadproperties srcfile="config/folders.properties" />
-	<loadproperties srcfile="${config_dir}/databases.properties" />
+	<loadproperties srcfile="${config_dir}/database.properties" />
 
 	<!-- The common classpath for building the system. -->
 	<path id="build_classpath">
@@ -159,7 +159,7 @@
 	-->
 	<target name="schemasqltojava">
 		<java classname="org.schemaanalyst.tool.SchemaSQLToJava" maxmemory="256M">
-			<arg value="${schema}" />
+			<arg value="${schema_name}" />
 			<arg value="${database}" />
 			<classpath refid="run_classpath" />
 		</java>

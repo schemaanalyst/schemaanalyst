@@ -7,38 +7,36 @@ import java.io.PrintWriter;
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Option;
+import org.schemaanalyst.util.runner.RequiredOptions;
 import org.schemaanalyst.util.runner.Runner;
 
+@RequiredOptions("schema_name dbms")
 public class SchemaSQLToJava extends Runner {
 
-    @Option("Input SQL file")
-    protected String schemaSqlFile;
-    @Option("DBMS dialect")
-    protected String dbmsName;
+    @Option("The name of the schema to be processed")
+    private String schema_name;
+    
+    @Option("The DBMS whose dialect of SQL is to be used")
+    private String dbms;
 
-    public File fileForCaseStudyJavaSrc(String name) {
-        return new File(folderConfiguration.getCasestudySrcDir() + "/" + name + ".java");
+    public SchemaSQLToJava(String... args) {
+        super(args);
     }
-
-    public void parse(String name, String dbmsName){
+   
+    public void run() {
         try {
-            Schema parsedSchema = SchemaSQLParser.parse(name, dbmsName, folderConfiguration.getCasestudySrcDir());
-            String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");
-            try (PrintWriter out = new PrintWriter(fileForCaseStudyJavaSrc(name))) {
+            Schema parsedSchema = SchemaSQLParser.parse(schema_name, dbms, folderConfiguration.getCasestudySrcDir());
+            String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");            
+            File javaFile = new File(folderConfiguration.getCasestudySrcDir() + "/" + schema_name + ".java");
+            try (PrintWriter out = new PrintWriter(javaFile)) {
                 out.println(javaCode);
             }
-        } catch (ClassNotFoundException | FileNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException | FileNotFoundException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @Override
-    public void run() {
-        parse(schemaSqlFile, dbmsName);
-    }
-
-    public static void main(String[] args) throws Exception {
-        SchemaSQLToJava tool = new SchemaSQLToJava();
-        tool.run();
+    public static void main(String... args) {
+        new SchemaSQLToJava(args).run();
     }
 }
