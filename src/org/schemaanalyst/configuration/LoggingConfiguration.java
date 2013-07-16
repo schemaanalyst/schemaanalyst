@@ -32,4 +32,12 @@ public class LoggingConfiguration {
     public LoggingConfiguration(String path) {
         PropertiesParser.parse(path, this);
     }
+
+    /**
+     * The logging level to use.
+     * @return the log_level
+     */
+    public String getLogLevel() {
+        return log_level;
+    }
 }
