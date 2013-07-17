@@ -135,7 +135,9 @@ public class Table implements Serializable {
     public static List<Column> makeColumnList(Column firstColumn, Column... remainingColumns) {
         List<Column> allColumns = new ArrayList<Column>();
         allColumns.add(firstColumn);
-        allColumns.addAll(Arrays.asList(remainingColumns));
+        for (Column column : remainingColumns) {
+            allColumns.add(column);    
+        }
         return allColumns;
     }
 

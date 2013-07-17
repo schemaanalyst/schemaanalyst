@@ -10,3 +10,9 @@ public @interface Option {
     String value() default "";
     String choicesMethod() default "";
 }
+
+// TODO:
+// * show default value in usage
+// * if boolean don't show value
+// 
+
