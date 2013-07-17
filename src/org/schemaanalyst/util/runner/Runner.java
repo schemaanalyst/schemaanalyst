@@ -12,7 +12,7 @@ import java.util.Set;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
-import org.schemaanalyst.util.StringUtilities;
+import org.schemaanalyst.util.StringUtils;
 
 public abstract class Runner {
     
@@ -24,11 +24,11 @@ public abstract class Runner {
 
     // must be spaces, not tabs to work properly:
     protected static final String USAGE_OPTION_INDENT = 
-            StringUtilities.repeat(" ", 4);
+            StringUtils.repeat(" ", 4);
     
     // a repetition of the above
     protected static final String USAGE_OPTION_DESCRIPTION_INDENT = 
-            StringUtilities.repeat(USAGE_OPTION_INDENT, 4);
+            StringUtils.repeat(USAGE_OPTION_INDENT, 4);
     
     // various configurations
     protected FolderConfiguration folderConfiguration;
@@ -292,7 +292,7 @@ public abstract class Runner {
                 try {
                     String[] choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
                     if (choices.length > 0) {
-                        String allChoices = StringUtilities.implode(choices, " | ");
+                        String allChoices = StringUtils.implode(choices, " | ");
                         description += ". Possible choices are: " + allChoices;
                     }                    
                 } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 

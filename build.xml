@@ -160,7 +160,7 @@
 	<target name="schemasqltojava">
 		<java classname="org.schemaanalyst.tool.SchemaSQLToJava" maxmemory="256M">
 			<arg value="${schema_name}" />
-			<arg value="${database}" />
+			<arg value="${dbms}" />
 			<classpath refid="run_classpath" />
 		</java>
 	</target>	
