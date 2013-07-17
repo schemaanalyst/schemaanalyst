@@ -15,6 +15,7 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.util.StringUtils;
 
 public class ExpressionSQLWriter {
 
@@ -81,7 +82,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeAndExpression(AndExpression expression) {
-        return writeComposedExpression(expression, " AND ");
+		return StringUtils.implode(expression.getSubexpressions(), " AND ");	
     }
 
     public String writeBetweenExpression(BetweenExpression expression) {
@@ -101,20 +102,6 @@ public class ExpressionSQLWriter {
         return column.toString();
     }
 
-    protected String writeComposedExpression(CompoundExpression expression, String operator) {
-        String sql = "";
-        boolean first = true;
-        for (Expression subexpression : expression.getSubexpressions()) {
-            if (first) {
-                first = false;
-            } else {
-                sql += operator;
-            }
-            sql += writeExpression(subexpression);
-        }
-        return sql;
-    }
-
     public String writeInExpression(InExpression expression) {
         String sql = writeExpression(expression.getLHS());
         if (expression.isNotIn()) {
@@ -126,7 +113,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeListExpression(ListExpression expression) {
-        return "(" + writeComposedExpression(expression, ", ") + ")";
+        return "(" + StringUtils.implode(expression.getSubexpressions(), ", ") + ")";
     }
 
     public String writeNullExpression(NullExpression expression) {
@@ -140,7 +127,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeOrExpression(OrExpression expression) {
-        return writeComposedExpression(expression, " OR ");
+		return StringUtils.implode(expression.getSubexpressions(), " OR ");	
     }
 
     public String writeParenthesisedExpression(ParenthesisedExpression expression) {

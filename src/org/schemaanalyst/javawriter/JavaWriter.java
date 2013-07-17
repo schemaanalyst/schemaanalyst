@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.util.StringUtils;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 
@@ -78,17 +79,7 @@ public class JavaWriter {
     }
 
     public String writeArgsList(List<String> args) {
-        StringBuilder java = new StringBuilder();
-        boolean first = true;
-        for (String arg : args) {
-            if (first) {
-                first = false;
-            } else {
-                java.append(", ");
-            }
-            java.append(arg);
-        }
-        return java.toString();
+        return StringUtils.implode(args, ", ");
     }
 
     /**

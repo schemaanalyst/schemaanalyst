@@ -9,6 +9,7 @@ import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.StringUtils;
 
 /**
  * A class that represents data belonging to a series of tables.
@@ -304,25 +305,16 @@ public class Data implements Duplicable<Data> {
      * Returns a string representation of this data instance.
      */
     public String toString() {
-        StringBuilder s = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         Set<Table> tables = data.keySet();
-
-        boolean first = true;
 
         if (tables != null) {
             for (Table table : tables) {
                 List<Row> rows = data.get(table);
-                for (Row row : rows) {
-                    if (first) {
-                        first = false;
-                    } else {
-                        s.append("\n");
-                    }
-
-                    s.append(row.toString());
-                }
+				sb.append(StringUtils.implode(rows, System.lineSeparator()));
+				sb.append(System.lineSeparator());
             }
         }
-        return s.toString();
+        return sb.toString();
     }
 }

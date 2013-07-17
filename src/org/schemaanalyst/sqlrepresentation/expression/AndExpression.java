@@ -2,6 +2,8 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.List;
 
+import org.schemaanalyst.util.StringUtils;
+
 public class AndExpression extends CompoundExpression {
 
     public AndExpression(List<Expression> subexpressions) {
@@ -17,6 +19,6 @@ public class AndExpression extends CompoundExpression {
     }
 
     public String toString() {
-        return toString(" AND ");
+        return StringUtils.implode(subexpressions, " AND ");
     }
 }

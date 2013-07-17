@@ -8,6 +8,7 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.StringUtils;
 
 public class Row implements Duplicable<Row> {
 
@@ -107,18 +108,10 @@ public class Row implements Duplicable<Row> {
     }
 
     public String toString() {
-        StringBuilder s = new StringBuilder();
-        s.append(table);
-        s.append(": ");
-        boolean first = true;
-        for (Cell cell : cells) {
-            if (first) {
-                first = false;
-            } else {
-                s.append(", ");
-            }
-            s.append(cell.toString());
-        }
-        return s.toString();
+        StringBuilder sb = new StringBuilder();
+        sb.append(table);
+        sb.append(": ");
+		sb.append(StringUtils.implode(cells, ", "));
+        return sb.toString();
     }
 }

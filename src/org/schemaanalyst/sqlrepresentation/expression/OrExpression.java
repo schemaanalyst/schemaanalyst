@@ -2,6 +2,8 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.List;
 
+import org.schemaanalyst.util.StringUtils;
+
 public class OrExpression extends CompoundExpression {
 
     public OrExpression(List<Expression> subexpressions) {
@@ -17,6 +19,6 @@ public class OrExpression extends CompoundExpression {
     }
 
     public String toString() {
-        return toString(" OR ");
+        return StringUtils.implode(subexpressions, " OR ");        
     }
 }

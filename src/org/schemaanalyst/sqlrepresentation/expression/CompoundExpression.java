@@ -36,18 +36,4 @@ public abstract class CompoundExpression extends ExpressionTree {
     }
 
     public abstract void accept(ExpressionVisitor visitor);
-
-    public String toString(String separator) {
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Expression expression : subexpressions) {
-            if (first) {
-                first = false;
-            } else {
-                sb.append(separator);
-            }
-            sb.append(expression.toString());
-        }
-        return sb.toString();
-    }
 }
