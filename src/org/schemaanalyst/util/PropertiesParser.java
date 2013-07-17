@@ -99,7 +99,10 @@ public class PropertiesParser {
         for (String prop : p.stringPropertyNames()) {
             try {
                 Field f = object.getClass().getDeclaredField(prop);
-                f.setAccessible(true);
+                boolean wasAccessible = f.isAccessible();
+                if (!wasAccessible) {
+                    f.setAccessible(true);
+                }
                 Class type = f.getType();
                 if (type.equals(int.class) || type.equals(Integer.class) ) {
                     f.set(object, Integer.parseInt(p.getProperty(prop)));
@@ -113,6 +116,9 @@ public class PropertiesParser {
                     f.set(object, Float.parseFloat(p.getProperty(prop)));
                 } else {
                     f.set(object, p.getProperty(prop));
+                }
+                if (!wasAccessible) {
+                    f.setAccessible(false);
                 }
             } catch (NoSuchFieldException ex) {
                 // Ignore this field
