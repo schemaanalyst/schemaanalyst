@@ -37,8 +37,7 @@ public abstract class Runner {
 
     public Runner(String... args) {
         parseArgs(args);
-        // Chris -- getting an exception:
-        // loadConfiguration();
+        loadConfiguration();
     }
 
     /**
