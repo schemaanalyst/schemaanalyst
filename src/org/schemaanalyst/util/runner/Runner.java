@@ -12,6 +12,7 @@ import java.util.Set;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
+import org.schemaanalyst.util.StringUtilities;
 
 public abstract class Runner {
     
@@ -22,11 +23,12 @@ public abstract class Runner {
     protected static final String NO_OPTION_CLI_VALUE_DEFAULT = "true";
 
     // must be spaces, not tabs to work properly:
-    protected static final String USAGE_OPTION_INDENT = "    ";
+    protected static final String USAGE_OPTION_INDENT = 
+            StringUtilities.repeat(" ", 4);
     
     // a repetition of the above
-    protected static final String USAGE_OPTION_DESCRIPTION_INDENT = USAGE_OPTION_INDENT + USAGE_OPTION_INDENT + 
-                                                                    USAGE_OPTION_INDENT + USAGE_OPTION_INDENT;
+    protected static final String USAGE_OPTION_DESCRIPTION_INDENT = 
+            StringUtilities.repeat(USAGE_OPTION_INDENT, 4);
     
     // various configurations
     protected FolderConfiguration folderConfiguration;
@@ -75,14 +77,16 @@ public abstract class Runner {
                     
                     if (!isField(fieldName)) {
                         throw new RuntimeException(
-                                "Required option \"" + fieldName + "\" is not a field of " +
-                                        getClass().getCanonicalName());
+                                "Required option \"" + fieldName + 
+                                "\" is not a field of " +
+                                getClass().getCanonicalName());
                     }
                     
                     if (!isOption(fieldName)) {
                         throw new RuntimeException(
-                                "Required option field \"" + fieldName + "\" is not specified as an option for " +
-                                        getClass().getCanonicalName());
+                                "Required option field \"" + fieldName + 
+                                "\" is not specified as an option for " +
+                                getClass().getCanonicalName());
                     }
                     
                     processOption(fieldName, arg);
@@ -288,22 +292,10 @@ public abstract class Runner {
  
                 try {
                     String[] choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
-                    String allChoices = "";
-                    boolean first = true;
-                    for (String choice : choices) {
-                        if (first) {
-                            first = false;
-                        } else {
-                            allChoices += " | ";
-                        }
-                        allChoices += choice;
-                    }
-                    if (allChoices.length() > 0) {
-                        allChoices = ". Possible choices are: " + allChoices;
-                    }
-                    
-                    description += allChoices;
-                    
+                    if (choices.length > 0) {
+                        String allChoices = StringUtilities.implode(choices, " | ");
+                        description += ". Possible choices are: " + allChoices;
+                    }                    
                 } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
                         IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException("Could not invoke \"" + choicesMethod + "\" to get choices for option \"" + name + "\"");
