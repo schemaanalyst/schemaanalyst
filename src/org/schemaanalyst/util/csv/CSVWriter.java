@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import org.schemaanalyst.util.StringUtilities;
 
 /**
  * A simple writer for saving CSVResult objects to files.
@@ -56,9 +57,9 @@ public class CSVWriter {
         boolean writeHeader = writeHeader();
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(path, true)))) {
             if (writeHeader) {
-                writer.println(CSVUtilities.convertIterableToCSV(result.getValues().keySet(), separator));
+                writer.println(StringUtilities.implode(result.getValues().keySet(), separator));
             }
-            writer.println(CSVUtilities.convertIterableToCSV(result.getValues().values(), separator));
+            writer.println(StringUtilities.implode(result.getValues().values(), separator));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

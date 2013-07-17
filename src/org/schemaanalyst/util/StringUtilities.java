@@ -1,7 +1,5 @@
 package org.schemaanalyst.util;
 
-import java.util.List;
-
 public class StringUtilities {
 
     public static String repeat(String toRepeat, int times) {
@@ -12,7 +10,7 @@ public class StringUtilities {
         return sb.toString();
     }
     
-    public static String implode(List<String> items, String sep) {
+    public static String implode(Iterable<String> items, String sep) {
         StringBuilder sb = new StringBuilder();
         boolean first = true;
         for (String item : items) {
