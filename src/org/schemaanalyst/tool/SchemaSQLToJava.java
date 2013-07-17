@@ -25,7 +25,7 @@ public class SchemaSQLToJava extends Runner {
    
     public void run() {
         try {
-            Schema parsedSchema = SchemaSQLParser.parse(schema_name, dbms, folderConfiguration.getCasestudySrcDir());
+            Schema parsedSchema = SchemaSQLParser.parse(schema_name, dbms, folderConfiguration.getSchemaSrcDir());
             String javaCode = (new SchemaJavaWriter(parsedSchema)).writeSchema("parsedcasestudy");            
             File javaFile = new File(folderConfiguration.getCasestudySrcDir() + "/" + schema_name + ".java");
             try (PrintWriter out = new PrintWriter(javaFile)) {
