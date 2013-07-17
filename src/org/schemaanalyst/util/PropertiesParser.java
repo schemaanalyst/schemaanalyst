@@ -99,6 +99,7 @@ public class PropertiesParser {
         for (String prop : p.stringPropertyNames()) {
             try {
                 Field f = object.getClass().getDeclaredField(prop);
+                f.setAccessible(true);
                 Class type = f.getType();
                 if (type.equals(int.class) || type.equals(Integer.class) ) {
                     f.set(object, Integer.parseInt(p.getProperty(prop)));
