@@ -8,8 +8,9 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.util.runner.Runner;
 
-public class SchemaSQLParser {
+public class SchemaSQLParser extends Runner {
 
     private static final String ADAPTED_SQL_FILE_SUFFIX = "-SchemaAnalyst";
 
@@ -38,5 +39,9 @@ public class SchemaSQLParser {
         File sqlFile = schemaAnalystFileForSchemaSQL(name, casestudySrcDir);
 
         return mapper.getSchema(name, parser.parse(sqlFile));
+    }
+    
+    public void run() {
+        
     }
 }

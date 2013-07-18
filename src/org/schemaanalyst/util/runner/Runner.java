@@ -37,6 +37,7 @@ public abstract class Runner {
 
     public Runner(String... args) {
         parseArgs(args);
+        validateParameters();
         loadConfiguration();
     }
 
@@ -188,22 +189,27 @@ public abstract class Runner {
     }
         
     protected void quitWithError(String errorMessage) {
-        System.out.println(errorMessage);
+        System.out.println("ERROR: " + errorMessage + ".");
+        System.out.println("Please check your parameter settings.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
 
     protected void quitWithUsage() {
-        usage();
+        printUsage();
         System.exit(1);
     }
     
-    protected void usage() {
+    protected void quitWithValidationError(String fieldName, String message) {
+        quitWithError("\"" + fieldName + "\" " + message);
+    }    
+    
+    protected void printUsage() {
         StringBuilder usage = new StringBuilder();
         
         String requiredParamsList = getRequiredParamsList();        
         String nonRequiredParamsList = getNonRequiredParamsList();
         
-        usage.append("Usage: java " + getClass().getCanonicalName());
+        usage.append("USAGE: java " + getClass().getCanonicalName());
         if (requiredParamsList.length() > 0) {
             usage.append(" " + getRequiredParamsString());
         }
@@ -311,7 +317,7 @@ public abstract class Runner {
                 }
             }
             
-            info += description;;
+            info += description;
         }
         
         info += "\n";
@@ -319,4 +325,6 @@ public abstract class Runner {
     }
 
     public abstract void run();
+    
+    protected abstract void validateParameters();
 }

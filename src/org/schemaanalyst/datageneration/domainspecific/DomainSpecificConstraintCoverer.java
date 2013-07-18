@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -19,7 +19,7 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
 
     protected Schema schema;
     protected Data state;
-    protected ValueFactory valueFactory;
+    protected DBMS dbms;
     protected int satisfyRows, negateRows;
     protected int maxEvaluations;
     protected CellRandomiser cellRandomizer;
@@ -27,14 +27,14 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
     protected ConstraintGoalReport goalReport;
 
     public DomainSpecificConstraintCoverer(Schema schema,
-            ValueFactory valueFactory,
-            int satisfyRows,
-            int negateRows,
-            int maxEvaluations,
-            CellRandomiser cellRandomizer,
-            Random random) {
+                                           DBMS dbms,
+                                           int satisfyRows,
+                                           int negateRows,
+                                           int maxEvaluations,
+                                           CellRandomiser cellRandomizer,
+                                           Random random) {
         this.schema = schema;
-        this.valueFactory = valueFactory;
+        this.dbms = dbms;
         this.satisfyRows = satisfyRows;
         this.negateRows = negateRows;
         this.maxEvaluations = maxEvaluations;
@@ -65,7 +65,7 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
 
         // create the appropriate data object
         Data data = new Data();
-        data.addRows(tables, numRows, valueFactory);
+        data.addRows(tables, numRows, dbms.getValueFactory());
 
         // perform the search
         perform(constraintProblem, data);

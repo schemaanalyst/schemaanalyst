@@ -3,7 +3,6 @@ package org.schemaanalyst.datageneration;
 import java.lang.reflect.Method;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.domainspecific.DomainSpecificConstraintCoverer;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
@@ -17,6 +16,7 @@ import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCr
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
@@ -24,10 +24,10 @@ import org.schemaanalyst.util.random.Random;
 public class DataGeneratorFactory {
 
     public static DataGenerator instantiate(String name,
-            Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
+                                            Schema schema,
+                                            DBMS dbms,
+                                            Random random,
+                                            CellRandomiser cellRandomiser) {
 
         // get hold of the method objects of this class 
         Class<DataGeneratorFactory> clazz = DataGeneratorFactory.class;
@@ -42,7 +42,7 @@ public class DataGeneratorFactory {
         for (Method m : methods) {
             if (m.getName().equals(name)) {
                 try {
-                    Object[] args = {schema, valueFactory, random, cellRandomiser};
+                    Object[] args = {schema, dbms, random, cellRandomiser};
                     return (DataGenerator) m.invoke(null, args);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -54,14 +54,13 @@ public class DataGeneratorFactory {
     }
 
     public static SearchConstraintCoverer alternatingValue(Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
+                                                           DBMS dbms,
+                                                           Random random,
+                                                           CellRandomiser cellRandomiser) {
 
-        Search<Data> search = new AlternatingValueSearch(
-                random,
-                new RandomDataInitializer(cellRandomiser),
-                new RandomDataInitializer(cellRandomiser));
+        Search<Data> search = new AlternatingValueSearch(random,
+                                                         new RandomDataInitializer(cellRandomiser),
+                                                         new RandomDataInitializer(cellRandomiser));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(),
@@ -72,19 +71,18 @@ public class DataGeneratorFactory {
 
         return new SearchConstraintCoverer(search,
                 schema,
-                valueFactory,
+                dbms,
                 Configuration.satisfyrows,
                 Configuration.negaterows);
     }
 
     public static SearchConstraintCoverer alternatingValueDefaults(Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
-        Search<Data> search = new AlternatingValueSearch(
-                random,
-                new NoDataInitialization(),
-                new RandomDataInitializer(cellRandomiser));
+                                                                   DBMS dbms,
+                                                                   Random random,
+                                                                   CellRandomiser cellRandomiser) {
+        Search<Data> search = new AlternatingValueSearch(random,
+                                                         new NoDataInitialization(),
+                                                         new RandomDataInitializer(cellRandomiser));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(),
@@ -94,16 +92,16 @@ public class DataGeneratorFactory {
         search.setTerminationCriterion(terminationCriterion);
 
         return new SearchConstraintCoverer(search,
-                schema,
-                valueFactory,
-                Configuration.satisfyrows,
-                Configuration.negaterows);
+                                           schema,
+                                           dbms,
+                                           Configuration.satisfyrows,
+                                           Configuration.negaterows);
     }
 
     public static SearchConstraintCoverer random(Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
+                                                 DBMS dbms,
+                                                 Random random,
+                                                 CellRandomiser cellRandomiser) {
 
         Search<Data> search = new RandomSearch(cellRandomiser);
 
@@ -114,36 +112,34 @@ public class DataGeneratorFactory {
 
         search.setTerminationCriterion(terminationCriterion);
 
-        return new SearchConstraintCoverer(
-                search,
-                schema,
-                valueFactory,
-                Configuration.satisfyrows,
-                Configuration.negaterows);
+        return new SearchConstraintCoverer(search,
+                                           schema,
+                                           dbms,
+                                           Configuration.satisfyrows,
+                                           Configuration.negaterows);
     }
 
     public static NaiveRandomConstraintCoverer naiveRandom(Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
+                                                           DBMS dbms,
+                                                           Random random,
+                                                           CellRandomiser cellRandomiser) {
         return new NaiveRandomConstraintCoverer(schema,
-                valueFactory,
-                cellRandomiser,
-                Configuration.naiverandom_rowspertable,
-                Configuration.naiverandom_maxtriespertable);
+                                                dbms,
+                                                cellRandomiser,
+                                                Configuration.naiverandom_rowspertable,
+                                                Configuration.naiverandom_maxtriespertable);
     }
 
     public static DomainSpecificConstraintCoverer domainSpecific(Schema schema,
-            ValueFactory valueFactory,
-            Random random,
-            CellRandomiser cellRandomiser) {
-        return new DomainSpecificConstraintCoverer(
-                schema,
-                valueFactory,
-                Configuration.satisfyrows,
-                Configuration.negaterows,
-                Configuration.maxevaluations,
-                cellRandomiser,
-                random);
+                                                                 DBMS dbms,
+                                                                 Random random,
+                                                                 CellRandomiser cellRandomiser) {
+        return new DomainSpecificConstraintCoverer(schema,
+                                                   dbms,
+                                                   Configuration.satisfyrows,
+                                                   Configuration.negaterows,
+                                                   Configuration.maxevaluations,
+                                                   cellRandomiser,
+                                                   random);
     }
 }
