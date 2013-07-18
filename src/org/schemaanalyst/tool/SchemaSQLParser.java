@@ -5,7 +5,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -27,10 +26,9 @@ public class SchemaSQLParser {
         return file;
     }
 
-    public static Schema parse(String name, String dbmsName, String casestudySrcDir) throws ClassNotFoundException,
-            InstantiationException,
-            IllegalAccessException {
-        DBMS dbms = DBMSFactory.instantiate(dbmsName);
+    public static Schema parse(String name, DBMS dbms, String casestudySrcDir) throws ClassNotFoundException,
+                                                                                      InstantiationException,
+                                                                                      IllegalAccessException {
         Parser parser = new Parser(dbms);
 
         Logger logger = Logger.getLogger("Schema Mapping");
