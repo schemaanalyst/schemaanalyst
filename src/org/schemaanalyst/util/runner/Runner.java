@@ -171,14 +171,14 @@ public abstract class Runner {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("\"" + value + "\" for " + fieldName + " is not an integer");
+                    quitWithValidationError(fieldName, "value \"" + value + "\" is not an integer");
                 }
             } else if (field.getType().equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("\"" + value + "\" for " + fieldName + " is not a long integer");
+                    quitWithValidationError(fieldName, "value \"" + value + "\" is not a long integer");
                 }
             } else if (field.getType().equals(String.class)) {
                 field.set(this, value);
@@ -190,7 +190,7 @@ public abstract class Runner {
         
     protected void quitWithError(String errorMessage) {
         System.out.println("ERROR: " + errorMessage + ".");
-        System.out.println("Please check your parameter settings.  Here's Graham with a quick reminder:\n");
+        System.out.println("Please check your usage.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
 
@@ -200,7 +200,7 @@ public abstract class Runner {
     }
     
     protected void quitWithValidationError(String fieldName, String message) {
-        quitWithError("\"" + fieldName + "\" " + message);
+        quitWithError(fieldName + " " + message);
     }    
     
     protected void printUsage() {
