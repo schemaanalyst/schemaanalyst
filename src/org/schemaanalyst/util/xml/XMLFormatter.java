@@ -1,6 +1,6 @@
 /*
  */
-package experiment.util;
+package org.schemaanalyst.util.xml;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
