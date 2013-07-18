@@ -6,7 +6,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({java.lang.annotation.ElementType.FIELD})
-public @interface Option {
+public @interface Parameter {
     String value() default "";
     String choicesMethod() default "";
 }

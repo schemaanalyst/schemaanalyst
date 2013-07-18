@@ -6,17 +6,17 @@ import java.io.PrintWriter;
 
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.runner.Option;
-import org.schemaanalyst.util.runner.RequiredOptions;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
-@RequiredOptions("schema_name dbms")
+@RequiredParameters("schema_name dbms")
 public class SchemaSQLToJava extends Runner {
 
-    @Option("The name of the schema to be processed")
+    @Parameter("The name of the schema to be processed")
     private String schema_name;
     
-    @Option("The DBMS whose dialect of SQL is to be used")
+    @Parameter("The DBMS whose dialect of SQL is to be used")
     private String dbms;
 
     public SchemaSQLToJava(String... args) {

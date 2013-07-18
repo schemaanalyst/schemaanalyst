@@ -11,6 +11,9 @@ import org.schemaanalyst.util.random.SimpleRandom;
 
 public class GenerateData {
 
+    /*
+     * PSM TODO fix compile errors ...
+    
     public static void generate(String schemaName,
             String dbmsName,
             String dataGeneratorName) throws ClassNotFoundException,
@@ -38,4 +41,6 @@ public class GenerateData {
     public static void main(String[] args) throws Exception {
         generate(args[0], args[1], args[2]);
     }
+    
+    */
 }

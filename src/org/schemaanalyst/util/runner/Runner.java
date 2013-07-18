@@ -23,12 +23,12 @@ public abstract class Runner {
     protected static final String NO_OPTION_CLI_VALUE_DEFAULT = "true";
 
     // must be spaces, not tabs to work properly:
-    protected static final String USAGE_OPTION_INDENT = 
+    protected static final String USAGE_PARAM_INDENT = 
             StringUtils.repeat(" ", 4);
     
     // a repetition of the above
-    protected static final String USAGE_OPTION_DESCRIPTION_INDENT = 
-            StringUtils.repeat(USAGE_OPTION_INDENT, 4);
+    protected static final String USAGE_PARAM_DESCRIPTION_INDENT = 
+            StringUtils.repeat(USAGE_PARAM_INDENT, 4);
     
     // various configurations
     protected FolderConfiguration folderConfiguration;
@@ -50,8 +50,8 @@ public abstract class Runner {
     }
 
     protected void parseArgs(String... args) {
-        String[] requiredOptions = getRequriedOptionFieldNames(); 
-        int numRequiredOptionsProcessed = 0;
+        String[] requiredParams = getRequriedParamFieldNames(); 
+        int numRequiredParamsProcessed = 0;
         
         for (String arg : args) {
             if (arg.equals(HELP_OPTION)) {
@@ -69,10 +69,10 @@ public abstract class Runner {
                     fieldName = arg.substring(LONG_OPTION_PREFIX.length(), equalsPos);
                     value = arg.substring(equalsPos + 1);
                 }
-                processOption(fieldName, value);                
+                processParam(fieldName, value);                
             } else {
-                if (numRequiredOptionsProcessed < requiredOptions.length) {
-                    String fieldName = requiredOptions[numRequiredOptionsProcessed];
+                if (numRequiredParamsProcessed < requiredParams.length) {
+                    String fieldName = requiredParams[numRequiredParamsProcessed];
                     
                     if (!isField(fieldName)) {
                         throw new RuntimeException(
@@ -81,40 +81,40 @@ public abstract class Runner {
                                 getClass().getCanonicalName());
                     }
                     
-                    if (!isOption(fieldName)) {
+                    if (!isParam(fieldName)) {
                         throw new RuntimeException(
                                 "Required option field \"" + fieldName + 
                                 "\" is not specified as an option for " +
                                 getClass().getCanonicalName());
                     }
                     
-                    processOption(fieldName, arg);
-                    numRequiredOptionsProcessed ++;
+                    processParam(fieldName, arg);
+                    numRequiredParamsProcessed ++;
                 } else {
                     quitWithError("Too many arguments");
                 }
             }
         }
         
-        if (numRequiredOptionsProcessed < requiredOptions.length) {            
-            quitWithError("No value supplied for " + requiredOptions[numRequiredOptionsProcessed]);
+        if (numRequiredParamsProcessed < requiredParams.length) {            
+            quitWithError("No value supplied for " + requiredParams[numRequiredParamsProcessed]);
         }
     }
     
-    protected String getRequiredOptionsString() {
+    protected String getRequiredParamsString() {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation annotation : annotations) {
-            if (annotation instanceof RequiredOptions) {
-                RequiredOptions requiredOptions = (RequiredOptions) annotation;
-                String allOptions = requiredOptions.value();
-                return allOptions.replace("\\s+", " ");
+            if (annotation instanceof RequiredParameters) {
+                RequiredParameters requiredParams = (RequiredParameters) annotation;
+                String allParams = requiredParams.value();
+                return allParams.replace("\\s+", " ");
             }
         }
         return "";
     }
     
-    protected String[] getRequriedOptionFieldNames() {
-        return getRequiredOptionsString().split(" ");
+    protected String[] getRequriedParamFieldNames() {
+        return getRequiredParamsString().split(" ");
     }
     
     protected boolean isField(String fieldName) {
@@ -129,27 +129,27 @@ public abstract class Runner {
         return null;  
     }
     
-    protected boolean isOption(String fieldName) {
-        return getOption(fieldName) != null;
+    protected boolean isParam(String fieldName) {
+        return getParam(fieldName) != null;
     }
     
-    protected Option getOption(String fieldName) {        
-        return getOption(getField(fieldName));        
+    protected Parameter getParam(String fieldName) {        
+        return getParam(getField(fieldName));        
     }
     
-    protected Option getOption(Field field) {
+    protected Parameter getParam(Field field) {
         if (field != null) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
-                if (annotation instanceof Option) {
-                    return (Option) annotation;
+                if (annotation instanceof Parameter) {
+                    return (Parameter) annotation;
                 }
             }
         }        
         return null;     
     }
 
-    protected void processOption(String fieldName, String value) {
+    protected void processParam(String fieldName, String value) {
         // get hold of the instance field
         Field field = getField(fieldName);
         if (field == null) {
@@ -157,8 +157,8 @@ public abstract class Runner {
         }
 
         // get hold of the option instance for the field
-        Option option = getOption(field);
-        if (option == null) {
+        Parameter param = getParam(field);
+        if (param == null) {
             quitWithError("Unknown option \"" + fieldName + "\"");
         }
 
@@ -193,48 +193,48 @@ public abstract class Runner {
     protected void usage() {
         StringBuilder usage = new StringBuilder();
         
-        String requiredOptionsList = getRequiredOptionsList();        
-        String nonRequiredOptionsList = getNonRequiredOptionsList();
+        String requiredParamsList = getRequiredParamsList();        
+        String nonRequiredParamsList = getNonRequiredParamsList();
         
         usage.append("Usage: java " + getClass().getCanonicalName());
-        if (requiredOptionsList.length() > 0) {
-            usage.append(" " + getRequiredOptionsString());
+        if (requiredParamsList.length() > 0) {
+            usage.append(" " + getRequiredParamsString());
         }
-        if (nonRequiredOptionsList.length() > 0) {
+        if (nonRequiredParamsList.length() > 0) {
             usage.append(" <options>");
         }
         usage.append(System.lineSeparator());
         
-        if (requiredOptionsList.length() > 0) {
+        if (requiredParamsList.length() > 0) {
             usage.append("where:");
             usage.append(System.lineSeparator());
-            usage.append(requiredOptionsList);
+            usage.append(requiredParamsList);
         }
-        if (nonRequiredOptionsList.length() > 0) {
-            usage.append(((requiredOptionsList.length() > 0) ? "and" : "where"));
+        if (nonRequiredParamsList.length() > 0) {
+            usage.append(((requiredParamsList.length() > 0) ? "and" : "where"));
             usage.append(" possible options include:");
             usage.append(System.lineSeparator());
-            usage.append(nonRequiredOptionsList);
+            usage.append(nonRequiredParamsList);
         }
      
         System.out.println(usage);
     }    
     
-    protected String getRequiredOptionsList() {
+    protected String getRequiredParamsList() {
         StringBuilder list = new StringBuilder();
         
-        for (String fieldName : getRequriedOptionFieldNames()) {
-            Option option = getOption(fieldName);
-            if (option == null) {
+        for (String fieldName : getRequriedParamFieldNames()) {
+            Parameter param = getParam(fieldName);
+            if (param == null) {
                 throw new RuntimeException("xxx to complete xxx");
             }              
-            list.append(getOptionInfo(fieldName, "", option));
+            list.append(getParamInfo(fieldName, "", param));
         }        
         
         return list.toString();
     }
     
-    protected String getNonRequiredOptionsList() {
+    protected String getNonRequiredParamsList() {
         // sort fields        
         Field[] fields = getClass().getDeclaredFields();
         List<String> fieldsList = new ArrayList<String>();
@@ -244,28 +244,28 @@ public abstract class Runner {
         Collections.sort(fieldsList);
         
         // put required fields into a set
-        String[] requiredOptionFieldNames = getRequriedOptionFieldNames();
-        Set<String> requiredOptionFieldNamesSet = new HashSet<>();
-        for (String fieldName : requiredOptionFieldNames) {
-            requiredOptionFieldNamesSet.add(fieldName);
+        String[] requiredParamFieldNames = getRequriedParamFieldNames();
+        Set<String> requiredParamFieldNamesSet = new HashSet<>();
+        for (String fieldName : requiredParamFieldNames) {
+            requiredParamFieldNamesSet.add(fieldName);
         }
         
         StringBuilder list = new StringBuilder();
         // find which have fields have options and are not required, and append
         for (String fieldName : fieldsList) {
-            Option option = getOption(fieldName);
-            if (option != null && !requiredOptionFieldNamesSet.contains(fieldName)) {
+            Parameter param = getParam(fieldName);
+            if (param != null && !requiredParamFieldNamesSet.contains(fieldName)) {
                 String name = "--" + fieldName;
                 String value = "<value>";
-                list.append(getOptionInfo(name, value, option));
+                list.append(getParamInfo(name, value, param));
             }
         }        
         
         return list.toString();
     }
     
-    protected String getOptionInfo(String name, String value, Option option) {
-        String info = USAGE_OPTION_INDENT + name;
+    protected String getParamInfo(String name, String value, Parameter option) {
+        String info = USAGE_PARAM_INDENT + name;
         
         if (value.length() > 0) {
             info += "=" + value;
@@ -273,10 +273,10 @@ public abstract class Runner {
 
         String description = option.value();
         if (description.length() > 0) {        
-            if (info.length() > USAGE_OPTION_DESCRIPTION_INDENT.length()) {
-                info += "\n" + USAGE_OPTION_DESCRIPTION_INDENT;
+            if (info.length() > USAGE_PARAM_DESCRIPTION_INDENT.length()) {
+                info += "\n" + USAGE_PARAM_DESCRIPTION_INDENT;
             } else {
-                int spacesToAdd = USAGE_OPTION_DESCRIPTION_INDENT.length() - info.length();
+                int spacesToAdd = USAGE_PARAM_DESCRIPTION_INDENT.length() - info.length();
                 for (int i=0; i < spacesToAdd; i++) {                    
                     info += " ";
                 }

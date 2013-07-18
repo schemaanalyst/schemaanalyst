@@ -1,16 +1,16 @@
 package org.schemaanalyst.util.runner;
 
-@RequiredOptions("schema_name dbms")
+@RequiredParameters("schema_name dbms")
 public class RunnerTest extends Runner {
     
-    @Option("The name of the schema")
+    @Parameter("The name of the schema")
     private String schema_name;
 
-    @Option(value="The name of the DBMS", 
+    @Parameter(value="The name of the DBMS", 
             choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     private String dbms;
     
-    @Option("The number of repetitions for the experiment")
+    @Parameter("The number of repetitions for the experiment")
     private int num_repetitions;
     
     public RunnerTest(String... args) {
