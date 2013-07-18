@@ -174,6 +174,13 @@ public abstract class Runner {
                 } catch (NumberFormatException e) {
                     quitWithError("Unable to parse value \"" + value + "\" for " + fieldName + " as an integer");
                 }
+            } else if (field.getType().equals(Long.TYPE)) {
+                try {
+                    long longValue = Long.parseLong(value);
+                    field.setLong(this, longValue);
+                } catch (NumberFormatException e) {
+                    quitWithError("Unable to parse value \"" + value + "\" for " + fieldName + " as a long");
+                }
             }   
         } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException(e);
