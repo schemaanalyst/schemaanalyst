@@ -26,7 +26,7 @@ public class RunnerTest extends Runner {
 
     protected void validateParameters() {
         if (num_repetitions <= 0) {
-            quitWithValidationError("num_repetitions", "should be 1 or greater");
+            quitWithError("num_repetitions should be 1 or greater");
         }
     }    
     
