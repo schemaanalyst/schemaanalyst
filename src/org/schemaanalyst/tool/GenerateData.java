@@ -1,6 +1,5 @@
 package org.schemaanalyst.tool;
 
-import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.DataGeneratorFactory;
@@ -17,20 +16,20 @@ import org.schemaanalyst.util.runner.Runner;
 @RequiredParameters("schema dbms datagenerator")
 public class GenerateData extends Runner {
 
-    @Parameter
+    @Parameter("The name of the schema to be processed")
     private String schema;
     
-    @Parameter
+    @Parameter("The identification string of the DBMS to be used")
     private String dbms;
     
-    @Parameter
+    @Parameter("The identification string of the data generator to be used")
     private String datagenerator;
     
-    @Parameter
+    @Parameter("The random seed to start the search algorithm")
     private long seed = 0;
     
-    @Parameter
-    private String cellrandomizationprofile = "Small";
+    @Parameter("The identification string of the cell randomisation profile to be used")
+    private String cellrandomisationprofile = "Small";
     
     public GenerateData(String... args) {
         super(args);
@@ -41,14 +40,17 @@ public class GenerateData extends Runner {
         try {
             // get hold of required objects for parameter strings
             DBMS dbmsObject = DBMSFactory.instantiate(dbms);                 
+            
             Schema schemaObject = SchemaSQLParser.parse(schema, dbmsObject, folderConfiguration.getSchemaSrcDir());    
+            
             Random random = new SimpleRandom(seed);    
+            
             DataGenerator generator = DataGeneratorFactory.instantiate(
                     datagenerator,
                     schemaObject,
-                    new ValueFactory(), // TODO; should come from dbms
+                    dbmsObject,
                     random,
-                    CellRandomisationFactory.instantiate(cellrandomizationprofile, random));
+                    CellRandomisationFactory.instantiate(cellrandomisationprofile, random));
             
             // generate data
             CoverageReport report = generator.generate();
@@ -57,6 +59,10 @@ public class GenerateData extends Runner {
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         } 
+    }
+    
+    protected void validateParameters() {
+        // to complete
     }
     
     public static void main(String... args) {

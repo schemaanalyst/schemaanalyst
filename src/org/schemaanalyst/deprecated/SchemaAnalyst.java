@@ -893,7 +893,7 @@ public class SchemaAnalyst {
 
         Random random = new SimpleRandom(Configuration.randomseed);
         CellRandomiser cellRandomizer = constructCellRandomizationProfile(random);
-
+/*
         if (generatorName.equals("alternatingvalue")) {
 
             Search<Data> search = new AlternatingValueSearch(
@@ -974,8 +974,10 @@ public class SchemaAnalyst {
                     Configuration.negaterows,
                     Configuration.maxevaluations,
                     cellRandomizer, random);
-
+            
         }
+        
+        */
 
         throw new RuntimeException("Unknown Data Generator \"" + generatorName + "\"");
     }

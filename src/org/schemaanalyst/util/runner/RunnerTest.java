@@ -21,8 +21,14 @@ public class RunnerTest extends Runner {
         System.out.println("schema_name is " + schema_name);
         System.out.println("dbms is " + dbms);
         System.out.println("num_repetitions is " + num_repetitions);
-        usage();
+        printUsage();
     }
+
+    protected void validateParameters() {
+        if (num_repetitions <= 0) {
+            quitWithValidationError("num_repetitions", "should be 1 or greater");
+        }
+    }    
     
     public static void main(String... args) {
         new RunnerTest(args).run();

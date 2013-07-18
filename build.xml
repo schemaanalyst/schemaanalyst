@@ -141,9 +141,9 @@
 	-->
 	<target name="generatedata">
 		<java classname="org.schemaanalyst.tool.GenerateData" maxmemory="256M">
-			<arg value="--schemaName=${schema}" />
-			<arg value="--dbmsName=${dbms}" />
-			<arg value="--dataGeneratorName=${datagenerator}" />
+			<arg value="${schema}" />
+			<arg value="${dbms}" />
+			<arg value="${datagenerator}" />
 			<classpath refid="run_classpath" />
 		</java>
 	</target>
@@ -159,7 +159,7 @@
 	-->
 	<target name="schemasqltojava">
 		<java classname="org.schemaanalyst.tool.SchemaSQLToJava" maxmemory="256M">
-			<arg value="${schema_name}" />
+			<arg value="${schema}" />
 			<arg value="${dbms}" />
 			<classpath refid="run_classpath" />
 		</java>

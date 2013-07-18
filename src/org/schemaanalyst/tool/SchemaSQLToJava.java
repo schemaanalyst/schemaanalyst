@@ -41,6 +41,10 @@ public class SchemaSQLToJava extends Runner {
             throw new RuntimeException(e);
         }
     }
+    
+    protected void validateParameters() {
+        // to complete
+    }    
 
     public static void main(String... args) {
         new SchemaSQLToJava(args).run();
