@@ -187,6 +187,12 @@ public abstract class Runner {
             throw new RuntimeException(e);
         }
     }
+    
+    protected void validateThat(boolean assertion, String errorMessage) {
+        if (!assertion) {
+            quitWithError(errorMessage);
+        }
+    }
 
     protected void quitWithHelp() {
         printDescription();

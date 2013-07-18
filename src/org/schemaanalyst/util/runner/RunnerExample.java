@@ -43,9 +43,7 @@ public class RunnerExample extends Runner {
 
     // This method provides further validation steps on the parameter values.
     protected void validateParameters() {
-        if (num_repetitions <= 0) {
-            quitWithError("num_repetitions should be 1 or greater");
-        }
+        validateThat(num_repetitions > 0, "num_repetitions should be 1 or greater");
     }    
     
     // A main method must be provided in this format (i.e. construction with args and 
