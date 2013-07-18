@@ -155,16 +155,16 @@ public class GenerateResults extends Runner {
     @Override
     protected void validateParameters() {
         if (maxEvaluations <= 0) {
-            quitWithValidationError("maxEvaluations", "Must be > 0");
+            quitWithError("maxEvaluations must be > 0");
         }
         if (satisfyRows < 0) {
-            quitWithValidationError("satisfyRows", "Must be >= 0");
+            quitWithError("satisfyRows must be >= 0");
         }
         if (negateRows < 0) {
-            quitWithValidationError("negateRows", "Must be >= 0");
+            quitWithError("negateRows must be >= 0");
         }
         if (!randomprofile.equals("small") && !randomprofile.equals("large")) {
-            quitWithValidationError("randomProfile", "Must be 'small' or 'large'");
+            quitWithError("randomProfile must be 'small' or 'large'");
         }
     }
 }
