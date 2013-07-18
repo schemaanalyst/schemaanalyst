@@ -165,23 +165,23 @@ public abstract class Runner {
         // parse the value into the field
         field.setAccessible(true);
         try {
-            if (field.getType().equals(String.class)) {
-                field.set(this, value);
-            } else if (field.getType().equals(Integer.TYPE)) {
+            if (field.getType().equals(Integer.TYPE)) {
                 try {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("Unable to parse value \"" + value + "\" for " + fieldName + " as an integer");
+                    quitWithError("\"" + value + "\" for " + fieldName + " is not an integer");
                 }
             } else if (field.getType().equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("Unable to parse value \"" + value + "\" for " + fieldName + " as a long");
+                    quitWithError("\"" + value + "\" for " + fieldName + " is not a long integer");
                 }
-            }   
+            } else if (field.getType().equals(String.class)) {
+                field.set(this, value);
+            } 
         } catch (IllegalArgumentException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
@@ -213,13 +213,13 @@ public abstract class Runner {
         usage.append(System.lineSeparator());
         
         if (requiredParamsList.length() > 0) {
-            usage.append("where:");
+            usage.append("with:");
             usage.append(System.lineSeparator());
             usage.append(requiredParamsList);
         }
         if (nonRequiredParamsList.length() > 0) {
-            usage.append(((requiredParamsList.length() > 0) ? "and" : "where"));
-            usage.append(" possible options include:");
+            usage.append(((requiredParamsList.length() > 0) ? "and " : ""));
+            usage.append("where possible options include:");
             usage.append(System.lineSeparator());
             usage.append(nonRequiredParamsList);
         }
@@ -233,7 +233,10 @@ public abstract class Runner {
         for (String fieldName : getRequriedParamFieldNames()) {
             Parameter param = getParam(fieldName);
             if (param == null) {
-                throw new RuntimeException("xxx to complete xxx");
+                throw new RuntimeException(
+                        "Field \"" + fieldName + 
+                        "\" specified in RequiredParameters annotation " + 
+                        "is not annotated as a parameter in " + getClass().getCanonicalName());
             }              
             list.append(getParamInfo(fieldName, "", param));
         }        
@@ -308,9 +311,10 @@ public abstract class Runner {
                 }
             }
             
-            info += description + "\n";
+            info += description;;
         }
         
+        info += "\n";
         return info;
     }
 

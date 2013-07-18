@@ -35,7 +35,7 @@ public class PropertiesParser {
      * @param clazz The class of the POJO.
      * @return The instantiated POJO.
      */
-    public static <T> T parse(String filepath, Class clazz) {
+    public static <T> T parse(String filepath, Class<?> clazz) {
         return parse(new File(filepath), clazz);
     }
 
@@ -47,7 +47,8 @@ public class PropertiesParser {
      * @param clazz The class of the POJO.
      * @return The instantiated POJO.
      */
-    public static <T> T parse(File file, Class clazz) {
+    @SuppressWarnings("unchecked")
+    public static <T> T parse(File file, Class<?> clazz) {
         try {
             T obj = (T) clazz.newInstance();
             return parse(file, obj);
@@ -103,7 +104,7 @@ public class PropertiesParser {
                 if (!wasAccessible) {
                     f.setAccessible(true);
                 }
-                Class type = f.getType();
+                Class<?> type = f.getType();
                 if (type.equals(int.class) || type.equals(Integer.class) ) {
                     f.set(object, Integer.parseInt(p.getProperty(prop)));
                 } else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
