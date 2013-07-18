@@ -1,19 +1,22 @@
 package org.schemaanalyst.util.runner;
 
+@Description("This class doesn't do anything, it's purpose is to show by example how " + 
+             "entry points to the SchemaAnalyst tool can be created by extending " + 
+             "the Runner class, and demonstrate the possible features.")
 @RequiredParameters("schema_name dbms")
-public class RunnerTest extends Runner {
+public class RunnerExample extends Runner {
     
     @Parameter("The name of the schema")
     private String schema_name;
 
     @Parameter(value="The name of the DBMS", 
-            choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
+               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     private String dbms;
     
     @Parameter("The number of repetitions for the experiment")
     private int num_repetitions;
     
-    public RunnerTest(String... args) {
+    public RunnerExample(String... args) {
         super(args);
     }
     
@@ -31,6 +34,6 @@ public class RunnerTest extends Runner {
     }    
     
     public static void main(String... args) {
-        new RunnerTest(args).run();
+        new RunnerExample(args).run();
     }
 }

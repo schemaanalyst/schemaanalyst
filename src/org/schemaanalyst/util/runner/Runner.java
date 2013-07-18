@@ -56,7 +56,7 @@ public abstract class Runner {
         
         for (String arg : args) {
             if (arg.equals(HELP_OPTION)) {
-                quitWithUsage();
+                quitWithHelp();
             }
 
             if (arg.startsWith(LONG_OPTION_PREFIX)) {                               
@@ -187,16 +187,34 @@ public abstract class Runner {
             throw new RuntimeException(e);
         }
     }
-        
+
+    protected void quitWithHelp() {
+        printDescription();
+        System.out.println();
+        quitWithUsage();
+    }    
+    
+    protected void quitWithUsage() {
+        printUsage();
+        System.exit(1);
+    }
+    
     protected void quitWithError(String errorMessage) {
         System.out.println("ERROR: " + errorMessage + ".");
         System.out.println("Please check your usage.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
-
-    protected void quitWithUsage() {
-        printUsage();
-        System.exit(1);
+    
+    protected void printDescription() {
+        Annotation[] annotations = getClass().getAnnotations();
+        for (Annotation annotation : annotations) {
+            if (annotation instanceof Description) {
+                String description = ((Description) annotation).value();
+                if (description.length() > 0) {
+                    System.out.println("DESCRIPTION: " + description);
+                }
+            }
+        }        
     }
     
     protected void printUsage() {
