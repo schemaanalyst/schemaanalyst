@@ -44,4 +44,8 @@ public class SchemaSQLParser extends Runner {
     public void run() {
         
     }
+
+    protected void validateParameters() {
+        
+    }
 }

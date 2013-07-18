@@ -171,14 +171,14 @@ public abstract class Runner {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("\"" + value + "\" for " + fieldName + " is not an integer");
+                    quitWithError(fieldName + " value \"" + value + "\" is not an integer");
                 }
             } else if (field.getType().equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
-                    quitWithError("\"" + value + "\" for " + fieldName + " is not a long integer");
+                    quitWithError(fieldName + " value \"" + value + "\" is not a long integer");
                 }
             } else if (field.getType().equals(String.class)) {
                 field.set(this, value);
@@ -190,7 +190,7 @@ public abstract class Runner {
         
     protected void quitWithError(String errorMessage) {
         System.out.println("ERROR: " + errorMessage + ".");
-        System.out.println("Please check your parameter settings.  Here's Graham with a quick reminder:\n");
+        System.out.println("Please check your usage.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
 
@@ -198,10 +198,6 @@ public abstract class Runner {
         printUsage();
         System.exit(1);
     }
-    
-    protected void quitWithValidationError(String fieldName, String message) {
-        quitWithError("\"" + fieldName + "\" " + message);
-    }    
     
     protected void printUsage() {
         StringBuilder usage = new StringBuilder();
@@ -313,7 +309,8 @@ public abstract class Runner {
                     }                    
                 } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
                         IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    throw new RuntimeException("Could not invoke \"" + choicesMethod + "\" to get choices for option \"" + name + "\"");
+                    throw new RuntimeException("Could not invoke \"" + choicesMethod + 
+                                                    "\" to get choices for option \"" + name + "\"");
                 }
             }
             
