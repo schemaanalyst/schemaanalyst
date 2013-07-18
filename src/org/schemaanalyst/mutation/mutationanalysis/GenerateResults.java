@@ -4,7 +4,6 @@ package org.schemaanalyst.mutation.mutationanalysis;
 
 import java.io.File;
 import java.util.List;
-import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.DataGeneratorFactory;
@@ -112,8 +111,7 @@ public class GenerateResults extends Runner {
         }
 
         // Generate the test data
-        ValueFactory valueFactory = dbms.getValueFactory();
-        DataGenerator dataGenerator = constructDataGenerator(schema, valueFactory);
+        DataGenerator dataGenerator = constructDataGenerator(schema, dbms);
         CoverageReport covReport = dataGenerator.generate();
         
         // Insert the test data
@@ -138,29 +136,12 @@ public class GenerateResults extends Runner {
      * Creates an AVM data generator for the given Schema and ValueFactory.
      *
      * @param schema The schema in use.
-     * @param valueFactory The value factory to use.
+     * @param dbms The DBMS in use.
      * @return The data generator.
      */
-    private DataGenerator constructDataGenerator(Schema schema, ValueFactory valueFactory) {
+    private DataGenerator constructDataGenerator(Schema schema, DBMS dbms) {
         Random random = new SimpleRandom(randomseed);
-        return DataGeneratorFactory.instantiate(datagenerator, schema, valueFactory, random, constructCellRandomizationProfile(random));
-    }
-    
-    /**
-     * Creates a randomizer for the configured random profile.
-     *
-     * @param random The random number generator.
-     * @return The randomizer.
-     */
-    protected CellRandomiser constructCellRandomizationProfile(Random random) {
-        switch (randomprofile) {
-            case "small":
-                return CellRandomisationFactory.small(random);
-            case "large":
-                return CellRandomisationFactory.large(random);
-            default:
-                throw new RuntimeException("Unknown random profile \"" + Configuration.randomprofile + "\"");
-        }
+        return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
     }
 
     public GenerateResults(String... args) {
@@ -169,5 +150,21 @@ public class GenerateResults extends Runner {
 
     public static void main(String[] args) {
         new GenerateResults(args).run();
+    }
+
+    @Override
+    protected void validateParameters() {
+        if (maxEvaluations <= 0) {
+            quitWithValidationError("maxEvaluations", "Must be > 0");
+        }
+        if (satisfyRows < 0) {
+            quitWithValidationError("satisfyRows", "Must be >= 0");
+        }
+        if (negateRows < 0) {
+            quitWithValidationError("negateRows", "Must be >= 0");
+        }
+        if (!randomprofile.equals("small") && !randomprofile.equals("large")) {
+            quitWithValidationError("randomProfile", "Must be 'small' or 'large'");
+        }
     }
 }
