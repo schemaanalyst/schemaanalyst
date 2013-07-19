@@ -3,6 +3,9 @@ package org.schemaanalyst.mutation;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Contains the results of executing CREATE TABLE and INSERT statements
+ */
 public class SQLExecutionReport {
 
     /**
