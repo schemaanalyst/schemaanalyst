@@ -14,42 +14,49 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
+ * Run the 'Original' style of mutation analysis. This requires that the result
+ * generation tool has been run, as it bases the mutation analysis on the
+ * results produced by it.
  *
  * @author Chris J. Wright
  */
+@Description("Runs the 'Original' style of mutation analysis. This requires that"
+        + " the result generation tool has been run, as it bases the mutation "
+        + "analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
 public class OriginalTechnique extends Runner {
 
     /**
      * The name of the schema to use.
      */
-    @Parameter
+    @Parameter("The name of the schema to use.")
     protected String casestudy;
     /**
      * The number of the trial.
      */
-    @Parameter
+    @Parameter("The number of the trial.")
     protected int trial;
     /**
      * The folder to retrieve the generated results.
      */
-    @Parameter
+    @Parameter("The folder to retrieve the generated results.")
     protected String inputfolder; // Default in validate
     /**
      * The folder to write the results.
      */
-    @Parameter
-    protected  String outputFolder; // Default in validate
+    @Parameter("The folder to write the results.")
+    protected String outputFolder; // Default in validate
     /**
      * Whether to submit drop statements prior to running.
      */
-    @Parameter
+    @Parameter("Whether to submit drop statements prior to running.")
     protected boolean dropFirst = false;
 
     @Override
@@ -112,7 +119,7 @@ public class OriginalTechnique extends Runner {
             for (String stmt : createStmts) {
                 databaseInteractor.executeUpdate(stmt);
             }
-            
+
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
@@ -122,20 +129,20 @@ public class OriginalTechnique extends Runner {
                     break; // Stop once killed
                 }
             }
-            
+
             // Drop tables
             for (String stmt : dropStmts) {
                 databaseInteractor.executeUpdate(stmt);
             }
         }
-        
+
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
-        
+
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
-        
+
         new CSVWriter(outputFolder + casestudy + ".dat").write(result);
     }
 
@@ -149,7 +156,7 @@ public class OriginalTechnique extends Runner {
             outputFolder = folderConfiguration.getResultsDir() + File.separator;
         }
     }
-    
+
     public static void main(String[] args) {
         new OriginalTechnique().run(args);
     }
