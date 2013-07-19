@@ -4,12 +4,21 @@ package org.schemaanalyst.mutation.mutationanalysis;
 
 import java.io.File;
 import java.util.List;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.DataGeneratorFactory;
 import org.schemaanalyst.datageneration.GoalReport;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
+import org.schemaanalyst.datageneration.search.Search;
+import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
+import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
+import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
+import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
+import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
+import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -75,7 +84,10 @@ public class GenerateResults extends Runner {
     protected String datagenerator = "alternatingValue";
 
     @Override
-    public void run() {
+    public void run(String... args) {
+        // Parse arguments
+        initialise(args);
+
         // Instantiate the DBMS and related objects
         DBMS dbms;
         try {
@@ -113,7 +125,7 @@ public class GenerateResults extends Runner {
         // Generate the test data
         DataGenerator dataGenerator = constructDataGenerator(schema, dbms);
         CoverageReport covReport = dataGenerator.generate();
-        
+
         // Insert the test data
         for (GoalReport goalReport : covReport.getSuccessfulGoalReports()) {
             List<String> insertStmts = sqlWriter.writeInsertStatements(goalReport.getData());
@@ -122,18 +134,18 @@ public class GenerateResults extends Runner {
                 sqlReport.addInsertStatement(record);
             }
         }
-        
+
         // Drop tables
         for (String stmt : dropStmts) {
             databaseInteractor.executeUpdate(stmt);
         }
-        
+
         // Store results
         XMLSerialiser.save(sqlReport, outputfolder + File.separator + casestudy + ".xml");
     }
 
     /**
-     * Creates an AVM data generator for the given Schema and ValueFactory.
+     * Creates a data generator for the given Schema and ValueFactory.
      *
      * @param schema The schema in use.
      * @param dbms The DBMS in use.
@@ -141,15 +153,29 @@ public class GenerateResults extends Runner {
      */
     private DataGenerator constructDataGenerator(Schema schema, DBMS dbms) {
         Random random = new SimpleRandom(randomseed);
-        return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
-    }
+        // TODO: Use DataGeneratorFactory
+        // return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
+        CellRandomiser cellRandomiser = CellRandomisationFactory.instantiate(randomprofile, random);
+        Search<Data> search = new AlternatingValueSearch(random,
+                new RandomDataInitializer(cellRandomiser),
+                new RandomDataInitializer(cellRandomiser));
 
-    public GenerateResults(String... args) {
-        super(args);
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(search.getEvaluationsCounter(),
+                maxEvaluations),
+                new OptimumTerminationCriterion<>(search));
+
+        search.setTerminationCriterion(terminationCriterion);
+
+        return new SearchConstraintCoverer(search,
+                schema,
+                dbms,
+                satisfyRows,
+                negateRows);
     }
 
     public static void main(String[] args) {
-        new GenerateResults(args).run();
+        new GenerateResults().run(args);
     }
 
     @Override
