@@ -20,12 +20,10 @@ public class SchemaSQLToJava extends Runner {
     
     @Parameter("The DBMS whose dialect of SQL is to be used")
     private String dbms;
-
-    public SchemaSQLToJava(String... args) {
-        super(args);
-    }
    
-    public void run() {
+    @Override
+    public void run(String... args) {
+        initialise(args);
         try {
             // get hold of objects for string parameters
             DBMS dbmsObject = DBMSFactory.instantiate(dbms); 
@@ -42,11 +40,12 @@ public class SchemaSQLToJava extends Runner {
         }
     }
     
+    @Override
     protected void validateParameters() {
-        // to complete
+        //TODO: Add validation
     }    
 
     public static void main(String... args) {
-        new SchemaSQLToJava(args).run();
+        new SchemaSQLToJava().run(args);
     }
 }

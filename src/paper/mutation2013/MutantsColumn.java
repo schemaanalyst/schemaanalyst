@@ -2,7 +2,7 @@
  */
 package paper.mutation2013;
 
-import experiment.mutation2013.ConstraintMutatorWithoutFK;
+import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 
