@@ -27,9 +27,8 @@ public abstract class Runner {
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
     
-    // a set of the parameters that were specified at the command line
-    // and their original values
-    protected HashMap<String, String> originalParamValues;
+    // a store of overwritten default values 
+    protected HashMap<String, Object> overwrittenDefaults;
     
     // various configurations
     protected FolderConfiguration folderConfiguration;
@@ -66,7 +65,7 @@ public abstract class Runner {
 
     protected void parseArgs(String... args) {
         // record which parameters were parsed and their original values
-        originalParamValues = new HashMap<>();
+        overwrittenDefaults = new HashMap<>();
         
         String[] requiredParams = getRequriedParameterFieldNames(); 
         int numRequiredParamsProcessed = 0;
@@ -87,7 +86,7 @@ public abstract class Runner {
                     fieldName = arg.substring(LONG_OPTION_PREFIX.length(), equalsPos);
                     value = arg.substring(equalsPos + 1);
                 }
-                processParameter(fieldName, value);                
+                setFieldWithParameterValue(fieldName, value);                
             } else {
                 if (numRequiredParamsProcessed < requiredParams.length) {
                     String fieldName = requiredParams[numRequiredParamsProcessed];
@@ -106,7 +105,7 @@ public abstract class Runner {
                                 getClass().getCanonicalName());
                     }
                     
-                    processParameter(fieldName, arg);
+                    setFieldWithParameterValue(fieldName, arg);
                     numRequiredParamsProcessed ++;
                 } else {
                     quitWithError("Too many arguments");
@@ -135,24 +134,24 @@ public abstract class Runner {
         return getRequiredParametersString().split(" ");
     }
     
-    protected boolean isField(String fieldName) {
-        return getField(fieldName) != null;
+    protected boolean isField(String name) {
+        return getField(name) != null;
     }
     
-    protected Field getField(String fieldName) {
+    protected Field getField(String name) {
         try {
-            return this.getClass().getDeclaredField(fieldName);
+            return this.getClass().getDeclaredField(name);
         } catch (NoSuchFieldException e) {           
         } 
         return null;  
     }
     
-    protected boolean isParameter(String fieldName) {
-        return getParameter(fieldName) != null;
+    protected boolean isParameter(String name) {
+        return getParameter(name) != null;
     }
     
-    protected Parameter getParameter(String fieldName) {        
-        return getParameter(getField(fieldName));        
+    protected Parameter getParameter(String name) {        
+        return getParameter(getField(name));        
     }
     
     protected Parameter getParameter(Field field) {
@@ -167,41 +166,34 @@ public abstract class Runner {
         return null;     
     }
 
-    protected void processParameter(String fieldName, String value) {
-        // set the original param values entry
-        originalParamValues.put(fieldName, value);
-        
+    protected void setFieldWithParameterValue(String name, String value) {
         // get hold of the instance field
-        Field field = getField(fieldName);
-        if (field == null) {
-            quitWithError("Unknown option \"" + fieldName + "\"");
-        }
+        Field field = getField(name);
+        check(field != null, "Unknown parameter \"" + name + "\"");
 
         // get hold of the option instance for the field
         Parameter param = getParameter(field);
-        if (param == null) {
-            quitWithError("Unknown option \"" + fieldName + "\"");
-        }
+        check(param != null, "Unknown parameter \"" + name + "\"");
 
         // parse the value into the field
         field.setAccessible(true);
         try {
+            // store the original value of the field
+            overwrittenDefaults.put(name, field.get(this));        
+                        
             if (field.getType().equals(Integer.TYPE)) {
                 try {
                     int intValue = Integer.parseInt(value);
-                    System.out.println("Setting int for " + fieldName+ ": "+intValue);
                     field.setInt(this, intValue);
-                    System.out.println("Value is: "+field.getInt(this));
-                    System.out.println("Value is: "+field.toGenericString());
                 } catch (NumberFormatException e) {
-                    quitWithError(fieldName + " value \"" + value + "\" is not an integer");
+                    quitWithError(name + " value \"" + value + "\" is not an integer");
                 }
             } else if (field.getType().equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
-                    quitWithError(fieldName + " value \"" + value + "\" is not a long integer");
+                    quitWithError(name + " value \"" + value + "\" is not a long integer");
                 }
             } else if (field.getType().equals(String.class)) {
                 field.set(this, value);
@@ -211,13 +203,14 @@ public abstract class Runner {
         }
     }
     
-    protected boolean wasParameterSpecified(String parameterName) {
-        return originalParamValues.containsKey(parameterName);
+    protected boolean wasParameterSpecified(String name) {
+        // if there's an entry in the overwrittenParamDefaults, the parameter was set 
+        return overwrittenDefaults.containsKey(name);
     }
     
-    protected void check(boolean test, String failureMessage) {
+    protected void check(boolean test, String errorMessage) {
         if (!test) {
-            quitWithError(failureMessage);
+            quitWithError(errorMessage);
         }
     }
 
@@ -290,12 +283,23 @@ public abstract class Runner {
                         "Field \"" + fieldName + 
                         "\" specified in RequiredParameters annotation " + 
                         "is not annotated as a parameter in " + getClass().getCanonicalName());
-            }              
-            list.append(getParameterUsageInfo(fieldName, "", param));
+            } 
+            String paramUsageInfo = formatRequiredParameterUsageInfo(fieldName, param); 
+            list.append(paramUsageInfo);            
         }        
         
         return list.toString();
     }
+    
+    protected String formatRequiredParameterUsageInfo(String name, Parameter param) {
+        String formattedName = name;
+        String formattedValue = "";
+        String description = param.value();
+        String[] choices = getParameterChoices(name, param);
+        String defaultValue = "";
+        
+        return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
+    }    
     
     protected String getOptionalParamsUsageList() {
         // sort fields        
@@ -318,51 +322,46 @@ public abstract class Runner {
         for (String fieldName : fieldsList) {
             Parameter param = getParameter(fieldName);
             if (param != null && !requiredParamFieldNamesSet.contains(fieldName)) {
-                String name = "--" + fieldName;
-                String value = "<value>";
-                list.append(getParameterUsageInfo(name, value, param));
+                String paramUsageInfo = formatOptionalParameterUsageInfo(fieldName, param); 
+                list.append(paramUsageInfo);
             }
         }        
         
         return list.toString();
     }
     
-    protected String getParameterUsageInfo(String name, String value, Parameter param) {
+    protected String formatOptionalParameterUsageInfo(String name, Parameter param) {
+        String formattedName = "--" + name;
+        String formattedValue = "<value>";
+        String description = param.value();
+        String[] choices = getParameterChoices(name, param);
+        String defaultValue = getParameterDefaultAsString(name);
+        
+        return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
+    }
+    
+    protected String formatParameterUsageInfo(String name, String value, String description, 
+                                              String[] choices, String defaultValue) {
         String info = USAGE_INDENT + name;
         
         if (value.length() > 0) {
             info += "=" + value;
         }
 
-        String description = param.value();
         if (description.length() > 0) {        
             if (info.length() > USAGE_HANGING_INDENT.length()) {
                 info += "\n" + USAGE_HANGING_INDENT;
             } else {
                 int spacesToAdd = USAGE_HANGING_INDENT.length() - info.length();
-                for (int i=0; i < spacesToAdd; i++) {                    
-                    info += " ";
-                }
+                info += StringUtils.repeat(" ", spacesToAdd);
             }
             
-            String choicesMethod = param.choicesMethod();
-            if (choicesMethod.length() > 0) {
-                int methodDot = choicesMethod.lastIndexOf(".");
-                String className = choicesMethod.substring(0, methodDot);
-                String methodName = choicesMethod.substring(methodDot + 1);
-                
- 
-                try {
-                    String[] choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
-                    if (choices.length > 0) {
-                        String allChoices = StringUtils.implode(choices, " | ");
-                        description += ". Possible choices are: " + allChoices;
-                    }                    
-                } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
-                        IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    throw new RuntimeException("Could not invoke \"" + choicesMethod + 
-                                                    "\" to get choices for option \"" + name + "\"");
-                }
+            if (choices.length > 0) {
+                description += ". Possible choices are: " + StringUtils.implode(choices, " | ");
+            }                    
+                        
+            if (defaultValue.length() > 0) {
+                description += ". Default: " + defaultValue;
             }
             
             info += description;
@@ -370,5 +369,48 @@ public abstract class Runner {
         
         info += "\n";
         return info;
+    }
+    
+    protected String getParameterDefaultAsString(String name) {
+        Object defaultValue = getParameterDefault(name);
+        return (defaultValue != null) ? defaultValue.toString() : "";        
+    }
+    
+    protected Object getParameterDefault(String name) {
+        // default information
+        Object defaultValue = null;
+        if (wasParameterSpecified(name)) {
+            defaultValue = overwrittenDefaults.get(name);
+        } else {
+            Field field = getField(name);
+            check(field != null, "Unknown field \"" + name + "\"");
+            try {
+                field.setAccessible(true);
+                defaultValue = field.get(this);
+            } catch (IllegalArgumentException | IllegalAccessException e) {
+                throw new RuntimeException("Cannot access field \"" + name + "\"");
+            }
+        } 
+        return defaultValue;
+    }
+    
+    protected String[] getParameterChoices(String name, Parameter param) {
+        String[] choices = new String[0];
+        
+        String choicesMethod = param.choicesMethod();        
+        if (choicesMethod.length() > 0) {
+            int methodDot = choicesMethod.lastIndexOf(".");
+            String className = choicesMethod.substring(0, methodDot);
+            String methodName = choicesMethod.substring(methodDot + 1);
+
+            try {
+                choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
+            } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
+                    IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+                throw new RuntimeException("Could not invoke \"" + choicesMethod + 
+                                           "\" to get choices for option \"" + name + "\"");
+            }
+        }
+        return choices;
     }
 }
