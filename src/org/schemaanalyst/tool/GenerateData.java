@@ -28,7 +28,8 @@ public class GenerateData extends Runner {
                "The SQL must be placed in the schemas subdirectory of casestudies")
     private String schema;
     
-    @Parameter("The identification string of the DBMS to be used")
+    @Parameter(value="The identification string of the DBMS to be used",
+               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     private String dbms;
     
     @Parameter("The identification string of the data generator to be used")

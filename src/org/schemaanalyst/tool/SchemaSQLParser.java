@@ -23,7 +23,8 @@ public class SchemaSQLParser extends Runner {
                "in the schemas subdirectory of casestudies")
     protected String schema;
 
-    @Parameter("The ID string of the DBMS whose dialect of SQL is to be used")
+    @Parameter(value="The ID string of the DBMS whose dialect of SQL is to be used",
+               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     protected String dbms;
     
     protected Schema schemaObject;

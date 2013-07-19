@@ -1,4 +1,4 @@
-package BankAccount;
+package parsedcasestudy;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * BankAccount schema.
- * Java code originally generated: 2013/07/19 13:47:34
+ * Java code originally generated: 2013/07/19 20:59:13
  *
  */
 

@@ -157,17 +157,22 @@ public abstract class Runner {
     
     /**
      * Pulls out the value of the @RequiredParameters annotation for the Runner class,
-     * if one has been specified.
+     * if one has been specified, going back through superclasses if one not defined
+     * for the current class.
      * @return The value of the @RequiredParameters annotation, if specified in the class.
      */
     protected String getRequiredParametersString() {
-        Annotation[] annotations = getClass().getAnnotations();
-        for (Annotation annotation : annotations) {
-            if (annotation instanceof RequiredParameters) {
-                RequiredParameters requiredParams = (RequiredParameters) annotation;
-                String allParams = requiredParams.value();
-                return allParams.replace("\\s+", " ");
+        Class<?> currentClass = getClass();
+        while (currentClass != null) {
+            Annotation[] annotations = currentClass.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof RequiredParameters) {
+                    RequiredParameters requiredParams = (RequiredParameters) annotation;
+                    String allParams = requiredParams.value();
+                    return allParams.replace("\\s+", " ");
+                }
             }
+            currentClass = currentClass.getSuperclass();
         }
         return "";
     }
@@ -464,13 +469,17 @@ public abstract class Runner {
      * Builds the usage list for optional parameters
      * @return A string reflecting the usage requirements of optional parameters.
      */             
-    protected String getOptionalParamsUsageList() {
-        // sort fields -- TODO: get those of parent also
-        Field[] fields = getClass().getDeclaredFields();
+    protected String getOptionalParamsUsageList() {        
+        // get and sort fields
         List<String> fieldsList = new ArrayList<String>();
-        for (Field field : fields) {
-            fieldsList.add(field.getName());
+        Class<?> currentClass = getClass();
+        while (currentClass != null) {
+            for (Field field : currentClass.getDeclaredFields()) {
+                fieldsList.add(field.getName());
+            }            
+            currentClass = currentClass.getSuperclass();
         }
+        
         Collections.sort(fieldsList);
         
         // put required fields into a set
