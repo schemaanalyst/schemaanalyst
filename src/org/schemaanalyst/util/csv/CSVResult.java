@@ -28,8 +28,8 @@ public class CSVResult {
      * @param value The value.
      * @return The CSVResult for chaining.
      */
-    public CSVResult addValue(String attribute, String value) {
-        results.put(attribute, value);
+    public CSVResult addValue(String attribute, Object value) {
+        results.put(attribute, value.toString());
         return this;
     }
     
