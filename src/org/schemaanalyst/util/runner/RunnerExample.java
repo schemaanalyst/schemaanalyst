@@ -68,7 +68,7 @@ public class RunnerExample extends Runner {
         // use the wasParameterSpecified method to check whether an optional parameter
         // was actually passed as an argument
         boolean numTriesCheck = true;
-        if (wasParameterSpecified("numtries")) {
+        if (wasOptionalParameterSpecified("numtries")) {
             if (!search.equals("random")) {
                 numTriesCheck = false;
             }

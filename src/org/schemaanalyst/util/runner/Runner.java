@@ -203,7 +203,7 @@ public abstract class Runner {
         }
     }
     
-    protected boolean wasParameterSpecified(String name) {
+    protected boolean wasOptionalParameterSpecified(String name) {
         // if there's an entry in the overwrittenParamDefaults, the parameter was set 
         return overwrittenDefaults.containsKey(name);
     }
@@ -379,7 +379,7 @@ public abstract class Runner {
     protected Object getParameterDefault(String name) {
         // default information
         Object defaultValue = null;
-        if (wasParameterSpecified(name)) {
+        if (wasOptionalParameterSpecified(name)) {
             defaultValue = overwrittenDefaults.get(name);
         } else {
             Field field = getField(name);
