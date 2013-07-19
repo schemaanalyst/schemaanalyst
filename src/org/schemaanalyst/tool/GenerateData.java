@@ -31,11 +31,9 @@ public class GenerateData extends Runner {
     @Parameter("The identification string of the cell randomisation profile to be used")
     private String cellrandomisationprofile = "Small";
     
-    public GenerateData(String... args) {
-        super(args);
-    }
-    
-    public void run() {
+    @Override
+    public void run(String... args) {
+        initialise(args);
         
         try {
             // get hold of required objects for parameter strings
@@ -66,7 +64,7 @@ public class GenerateData extends Runner {
     }
     
     public static void main(String... args) {
-        new GenerateData(args).run();
+        new GenerateData().run(args);
     }    
 
 }
