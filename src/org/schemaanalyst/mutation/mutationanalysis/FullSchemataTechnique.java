@@ -149,8 +149,4 @@ public class OriginalTechnique extends Runner {
             outputFolder = folderConfiguration.getResultsDir() + File.separator;
         }
     }
-    
-    public static void main(String[] args) {
-        new OriginalTechnique().run(args);
-    }
 }
