@@ -40,12 +40,19 @@ public class SchemaSQLParser extends Runner {
 
         return mapper.getSchema(name, parser.parse(sqlFile));
     }
-    
-    public void run() {
-        
+
+    @Override
+    protected void validateParameters() {
+        //TODO: Add validation
     }
 
-    protected void validateParameters() {
-        
+    @Override
+    public void run(String... args) {
+        initialise(args);
+        //TODO: Finish run method
+    }
+    
+    public static void main(String[] args) {
+        new SchemaSQLParser().run(args);
     }
 }
