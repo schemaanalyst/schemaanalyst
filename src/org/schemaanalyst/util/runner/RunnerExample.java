@@ -40,7 +40,12 @@ public class RunnerExample extends Runner {
     // An integer parameter
     @Parameter("The number of tries to generate data, only needed if the search is set to random ")
     private int numtries = 10000;    
-   
+    
+    // A boolean flag parameter, showing the use of the valueAsSwitch annotation field 
+    // (see documentation for the Parameter annotation)
+    @Parameter(value="Set debug messages on", valueAsSwitch="true")
+    private boolean debug = false;
+    
     // A constructor is not required, but you may want to override the default setting
     // of always loading the configuration first.
     public RunnerExample() {
@@ -59,6 +64,7 @@ public class RunnerExample extends Runner {
         System.out.println("numrepetitions is " + numrepetitions);
         System.out.println("seed is " + seed);
         System.out.println("numtries is " + numtries);
+        System.out.println("debug is " + debug);
     }
 
     // This method provides further validation steps on the parameter values.

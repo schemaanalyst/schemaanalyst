@@ -4,47 +4,27 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.javawriter.SchemaJavaWriter;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 
-@RequiredParameters("schema_name dbms")
-public class SchemaSQLToJava extends Runner {
+@Description("Parses a schema and generates Java code for it.")
+@RequiredParameters("schema dbms")
+public class SchemaSQLToJava extends SchemaSQLParser {
 
-    @Parameter("The name of the schema to be processed")
-    private String schema;
-    
-    @Parameter("The DBMS whose dialect of SQL is to be used")
-    private String dbms;
-   
-    @Override
     public void run(String... args) {
         initialise(args);
-        try {
-            // get hold of objects for string parameters
-            DBMS dbmsObject = DBMSFactory.instantiate(dbms); 
-            Schema schemaObject = SchemaSQLParser.parse(schema, dbmsObject, folderConfiguration.getSchemaSrcDir());
-                        
-            // generate and write Java code
-            String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema("parsedcasestudy");            
-            File javaFile = new File(folderConfiguration.getCasestudySrcDir() + "/" + schema + ".java");
-            try (PrintWriter out = new PrintWriter(javaFile)) {
-                out.println(javaCode);
-            }            
-        } catch (ClassNotFoundException | FileNotFoundException | IllegalAccessException | InstantiationException e) {
-            throw new RuntimeException(e);
+        
+        // generate and write Java code
+        String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema(schema);            
+        File javaFile = new File(folderConfiguration.getCasestudySrcDir() + "/" + schema + ".java");
+        try (PrintWriter out = new PrintWriter(javaFile)) {
+            out.println(javaCode);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         }
     }
     
-    @Override
-    protected void validateParameters() {
-        //TODO: Add validation
-    }    
-
     public static void main(String... args) {
         new SchemaSQLToJava().run(args);
     }

@@ -113,7 +113,7 @@ CREATE TABLE "shipments" (
 	"id" integer DEFAULT nextval('"shipments_ship_id_seq"'::varchar(100)) NOT NULL,
 	"customer_id" integer,
 	"isbn" varchar(100),
-	"ship_date" timestamp --with time zone
+	"ship_date" timestamp with time zone
 );
 
 CREATE TABLE "customers" (
@@ -166,12 +166,9 @@ CREATE TABLE "editions" (
 CREATE SEQUENCE "author_ids" start 0 increment 1 maxvalue 2147483647 minvalue 0  cache 1 ;
 
 CREATE TABLE "distinguished_authors" (
-	"id" integer NOT NULL,
-	"last_name" varchar(100),
-	"first_name" varchar(100),
-	"award" varchar(100),
-	Constraint "authors_pkey" Primary Key ("id")
+	"award" varchar(100)
 )
+INHERITS ("authors");
 
 CREATE TABLE "favorite_authors" (
 	"employee_id" int,

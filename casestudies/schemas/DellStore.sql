@@ -10,7 +10,7 @@ CREATE TABLE cust_hist (
 );
 
 CREATE TABLE customers (
-    customerid serial NOT NULL,
+    customerid int NOT NULL,
     firstname character varying(50) NOT NULL,
     lastname character varying(50) NOT NULL,
     address1 character varying(50) NOT NULL,
@@ -47,7 +47,7 @@ CREATE TABLE orderlines (
 );
 
 CREATE TABLE orders (
-    orderid serial NOT NULL,
+    orderid int NOT NULL,
     orderdate date NOT NULL,
     customerid integer,
     netamount numeric(12,2) NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE products (
-    prod_id serial NOT NULL,
+    prod_id int NOT NULL,
     category integer NOT NULL,
     title character varying(50) NOT NULL,
     actor character varying(50) NOT NULL,

@@ -65,7 +65,7 @@ CREATE TABLE user (
 
   -- Password hashes, see User::crypt() and User::comparePasswords()
   -- in User.php for the algorithm
-  user_password int NOT NULL,
+  user_password tinyblob NOT NULL,
 
   -- When using 'mail me a new password', a random
   -- password is generated and the hash stored here.
@@ -73,18 +73,18 @@ CREATE TABLE user (
   -- someone actually logs in with the new password,
   -- at which point the hash is moved to user_password
   -- and the old password is invalidated.
-  user_newpassword int NOT NULL,
+  user_newpassword tinyblob NOT NULL,
 
   -- Timestamp of the last time when a new password was
   -- sent, for throttling and expiring purposes
   -- Emailed passwords will expire $wgNewPasswordExpiry
   -- (a week) after being set. If user_newpass_time is NULL
   -- (eg. created by mail) it doesn't expire.
-  user_newpass_time int,
+  user_newpass_time binary(14),
 
   -- Note: email should be restricted, not public info.
   -- Same with passwords.
-  user_email text NOT NULL,
+  user_email tinytext NOT NULL,
 
   -- If the browser sends an If-Modified-Since header, a 304 response is
   -- suppressed if the value in this field for the current user is later than
@@ -92,29 +92,29 @@ CREATE TABLE user (
   -- for the browser cache of logged-in users. Among other things, it is used
   -- to prevent pages generated for a previously logged in user from being
   -- displayed after a session expiry followed by a fresh login.
-  user_touched int NOT NULL default '',
+  user_touched binary(14) NOT NULL default '',
 
   -- A pseudorandomly generated value that is stored in
   -- a cookie when the "remember password" feature is
   -- used (previously, a hash of the password was used, but
   -- this was vulnerable to cookie-stealing attacks)
-  user_token int NOT NULL default '',
+  user_token binary(32) NOT NULL default '',
 
   -- Initially NULL; when a user's e-mail address has been
   -- validated by returning with a mailed token, this is
   -- set to the current timestamp.
-  user_email_authenticated int,
+  user_email_authenticated binary(14),
 
   -- Randomly generated token created when the e-mail address
   -- is set and a confirmation test mail sent.
-  user_email_token int,
+  user_email_token binary(32),
 
   -- Expiration date for the user_email_token
-  user_email_token_expires int,
+  user_email_token_expires binary(14),
 
   -- Timestamp of account registration.
   -- Accounts predating this schema addition may contain NULL.
-  user_registration int,
+  user_registration binary(14),
 
   -- Count of edits and edit-like actions.
   --
@@ -140,7 +140,7 @@ CREATE INDEX /*i*/user_email ON user (user_email(50));
 -- permissions assigned to a user in each project.
 --
 -- This table replaces the old user_rights field which used a
--- comma-separated int.
+-- comma-separated blob.
 --
 CREATE TABLE user_groups (
   -- Key to user_id
@@ -154,7 +154,7 @@ CREATE TABLE user_groups (
   -- with particular permissions. A user will have the combined
   -- permissions of any group they're explicitly in, plus
   -- the implicit '*' and 'user' groups.
-  ug_group int NOT NULL default ''
+  ug_group varbinary(255) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/ug_user_group ON user_groups (ug_user,ug_group);
@@ -166,7 +166,7 @@ CREATE INDEX /*i*/ug_group ON user_groups (ug_group);
 CREATE TABLE user_former_groups (
   -- Key to user_id
   ufg_user int unsigned NOT NULL default 0,
-  ufg_group int NOT NULL default ''
+  ufg_group varbinary(255) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/ufg_user_group ON user_former_groups (ufg_user,ufg_group);
@@ -180,10 +180,10 @@ CREATE TABLE user_newtalk (
   user_id int NOT NULL default 0,
   -- If the user is an anonymous user their IP address is stored here
   -- since the user_id of 0 is ambiguous
-  user_ip int NOT NULL default '',
+  user_ip varbinary(40) NOT NULL default '',
   -- The highest timestamp of revisions of the talk page viewed
   -- by this user
-  user_last_timestamp int NULL default NULL
+  user_last_timestamp varbinary(14) NULL default NULL
 ) /*$wgDBTableOptions*/;
 
 -- Indexes renamed for SQLite in 1.14
@@ -193,7 +193,7 @@ CREATE INDEX /*i*/un_user_ip ON user_newtalk (user_ip);
 
 --
 -- User preferences and perhaps other fun stuff. :)
--- Replaces the old user.user_options int, with a couple nice properties:
+-- Replaces the old user.user_options blob, with a couple nice properties:
 --
 -- 1) We only store non-default settings, so changes to the defauls
 --    are now reflected for everybody, not just new accounts.
@@ -205,10 +205,10 @@ CREATE TABLE user_properties (
   up_user int NOT NULL,
 
   -- Name of the option being saved. This is indexed for bulk lookup.
-  up_property int NOT NULL,
+  up_property varbinary(255) NOT NULL,
 
   -- Property value as a string.
-  up_value int
+  up_value blob
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/user_properties_user_property ON user_properties (up_user,up_property);
@@ -234,10 +234,10 @@ CREATE TABLE page (
 
   -- Comma-separated set of permission keys indicating who
   -- can move or edit the page.
-  page_restrictions int NOT NULL,
+  page_restrictions tinyblob NOT NULL,
 
   -- Number of times this page has been viewed.
-  page_counter int unsigned NOT NULL default 0,
+  page_counter bigint unsigned NOT NULL default 0,
 
   -- 1 indicates the article is a redirect.
   page_is_redirect tinyint unsigned NOT NULL default 0,
@@ -254,7 +254,7 @@ CREATE TABLE page (
   -- Aside from editing this includes permission changes,
   -- creation or deletion of linked pages, and alteration
   -- of contained templates.
-  page_touched int NOT NULL default '',
+  page_touched binary(14) NOT NULL default '',
 
   -- Handy key to revision.rev_id of the current revision.
   -- This may be 0 during page creation, but that shouldn't
@@ -265,7 +265,7 @@ CREATE TABLE page (
   page_len int unsigned NOT NULL,
 
   -- content model, see CONTENT_MODEL_XXX constants
-  page_content_model int DEFAULT NULL
+  page_content_model varbinary(32) DEFAULT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/name_title ON page (page_namespace,page_title);
@@ -294,7 +294,7 @@ CREATE TABLE revision (
   -- Text comment summarizing the change.
   -- This text is shown in the history and other changes lists,
   -- rendered in a subset of wiki markup by Linker::formatComment()
-  rev_comment int NOT NULL,
+  rev_comment tinyblob NOT NULL,
 
   -- Key to user.user_id of the user who made this edit.
   -- Stores 0 for anonymous edits and for some mass imports.
@@ -304,7 +304,7 @@ CREATE TABLE revision (
   rev_user_text varchar(255) binary NOT NULL default '',
 
   -- Timestamp of when revision was created
-  rev_timestamp int NOT NULL default '',
+  rev_timestamp binary(14) NOT NULL default '',
 
   -- Records whether the user marked the 'minor edit' checkbox.
   -- Many automated edits are marked as minor.
@@ -321,13 +321,13 @@ CREATE TABLE revision (
   rev_parent_id int unsigned default NULL,
 
   -- SHA-1 text content hash in base-36
-  rev_sha1 int NOT NULL default '',
+  rev_sha1 varbinary(32) NOT NULL default '',
 
   -- content model, see CONTENT_MODEL_XXX constants
-  rev_content_model int DEFAULT NULL,
+  rev_content_model varbinary(32) DEFAULT NULL,
 
   -- content format, see CONTENT_FORMAT_XXX constants
-  rev_content_format int DEFAULT NULL
+  rev_content_format varbinary(64) DEFAULT NULL
 
 ) /*$wgDBTableOptions*/ MAX_ROWS=10000000 AVG_ROW_LENGTH=1024;
 -- In case tables are created as MyISAM, use row hints for MySQL <5.0 to avoid 4GB limit
@@ -357,7 +357,7 @@ CREATE TABLE text (
 
   -- Depending on the contents of the old_flags field, the text
   -- may be convenient plain text, or it may be funkily encoded.
-  old_text int NOT NULL,
+  old_text mediumblob NOT NULL,
 
   -- Comma-separated list of flags:
   -- gzip: text is compressed with PHP's gzdeflate() function.
@@ -368,7 +368,7 @@ CREATE TABLE text (
   --         The object either contains multiple versions compressed
   --         together to achieve a better compression ratio, or it refers
   --         to another row where the text can be found.
-  old_flags int NOT NULL
+  old_flags tinyblob NOT NULL
 ) /*$wgDBTableOptions*/ MAX_ROWS=10000000 AVG_ROW_LENGTH=10240;
 -- In case tables are created as MyISAM, use row hints for MySQL <5.0 to avoid 4GB limit
 
@@ -389,17 +389,17 @@ CREATE TABLE archive (
   -- so old archived pages will remain accessible after
   -- upgrading from 1.4 to 1.5.
   -- Text may be gzipped or otherwise funky.
-  ar_text int NOT NULL,
+  ar_text mediumblob NOT NULL,
 
   -- Basic revision stuff...
-  ar_comment int NOT NULL,
+  ar_comment tinyblob NOT NULL,
   ar_user int unsigned NOT NULL default 0,
   ar_user_text varchar(255) binary NOT NULL,
-  ar_timestamp int NOT NULL default '',
+  ar_timestamp binary(14) NOT NULL default '',
   ar_minor_edit tinyint NOT NULL default 0,
 
   -- See ar_text note.
-  ar_flags int NOT NULL,
+  ar_flags tinyblob NOT NULL,
 
   -- When revisions are deleted, their unique rev_id is stored
   -- here so it can be retained after undeletion. This is necessary
@@ -438,13 +438,13 @@ CREATE TABLE archive (
   ar_parent_id int unsigned default NULL,
 
   -- SHA-1 text content hash in base-36
-  ar_sha1 int NOT NULL default '',
+  ar_sha1 varbinary(32) NOT NULL default '',
 
   -- content model, see CONTENT_MODEL_XXX constants
-  ar_content_model int DEFAULT NULL,
+  ar_content_model varbinary(32) DEFAULT NULL,
 
   -- content format, see CONTENT_FORMAT_XXX constants
-  ar_content_format int DEFAULT NULL
+  ar_content_format varbinary(64) DEFAULT NULL
 
 ) /*$wgDBTableOptions*/;
 
@@ -526,7 +526,7 @@ CREATE TABLE categorylinks (
   -- A binary string obtained by applying a sortkey generation algorithm
   -- (Collation::getSortKey()) to page_title, or cl_sortkey_prefix . "\n"
   -- . page_title if cl_sortkey_prefix is nonempty.
-  cl_sortkey int NOT NULL default '',
+  cl_sortkey varbinary(230) NOT NULL default '',
 
   -- A prefix for the raw sortkey manually specified by the user, either via
   -- [[Category:Foo|prefix]] or {{defaultsort:prefix}}.  If nonempty, it's
@@ -546,13 +546,13 @@ CREATE TABLE categorylinks (
   -- yet updated.  '' means no collation, this is a legacy row that needs to be
   -- updated by updateCollation.php.  In the future, it might be possible to
   -- specify different collations per category.
-  cl_collation int NOT NULL default '',
+  cl_collation varbinary(32) NOT NULL default '',
 
   -- Stores whether cl_from is a category, file, or other page, so we can
   -- paginate the three categories separately.  This never has to be updated
   -- after the page is created, since none of these page types can be moved to
   -- any other.
-  cl_type int NOT NULL default 'page'
+  cl_type ENUM('page', 'subcat', 'file') NOT NULL default 'page'
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/cl_from ON categorylinks (cl_from,cl_to);
@@ -583,13 +583,13 @@ CREATE TABLE category (
   cat_title varchar(255) binary NOT NULL,
 
   -- The numbers of member pages (including categories and media), subcatego-
-  -- ries, and Image: namespace members, respectively.  These are   to
+  -- ries, and Image: namespace members, respectively.  These are signed to
   -- make underflow more obvious.  We make the first number include the second
   -- two for better sorting: subtracting for display is easy, adding for order-
   -- ing is not.
-  cat_pages int   NOT NULL default 0,
-  cat_subcats int   NOT NULL default 0,
-  cat_files int   NOT NULL default 0
+  cat_pages int signed NOT NULL default 0,
+  cat_subcats int signed NOT NULL default 0,
+  cat_files int signed NOT NULL default 0
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/cat_title ON category (cat_title);
@@ -606,7 +606,7 @@ CREATE TABLE externallinks (
   el_from int unsigned NOT NULL default 0,
 
   -- The URL
-  el_to int NOT NULL,
+  el_to blob NOT NULL,
 
   -- In the case of HTTP URLs, this is the URL with any username or password
   -- removed, and with the labels in the hostname reversed and converted to
@@ -619,7 +619,7 @@ CREATE TABLE externallinks (
   -- which allows for fast searching for all pages under example.com with the
   -- clause:
   --      WHERE el_index LIKE 'http://com.example.%'
-  el_index int NOT NULL
+  el_index blob NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/el_from ON externallinks (el_from, el_to(40));
@@ -634,7 +634,7 @@ CREATE TABLE langlinks (
   ll_from int unsigned NOT NULL default 0,
 
   -- Language code of the target
-  ll_lang int NOT NULL default '',
+  ll_lang varbinary(20) NOT NULL default '',
 
   -- Title of the target, including namespace
   ll_title varchar(255) binary NOT NULL default ''
@@ -652,7 +652,7 @@ CREATE TABLE iwlinks (
   iwl_from int unsigned NOT NULL default 0,
 
   -- Interwiki prefix code of the target
-  iwl_prefix int NOT NULL default '',
+  iwl_prefix varbinary(20) NOT NULL default '',
 
   -- Title of the target, including namespace
   iwl_title varchar(255) binary NOT NULL default ''
@@ -672,26 +672,26 @@ CREATE TABLE site_stats (
   ss_row_id int unsigned NOT NULL,
 
   -- Total number of page views, if hit counters are enabled.
-  ss_total_views int unsigned default 0,
+  ss_total_views bigint unsigned default 0,
 
   -- Total number of edits performed.
-  ss_total_edits int unsigned default 0,
+  ss_total_edits bigint unsigned default 0,
 
   -- An approximate count of pages matching the following criteria:
   -- * in namespace 0
   -- * not a redirect
   -- * contains the text '[['
   -- See Article::isCountable() in includes/Article.php
-  ss_good_articles int unsigned default 0,
+  ss_good_articles bigint unsigned default 0,
 
   -- Total pages, theoretically equal to SELECT COUNT(*) FROM page; except faster
-  ss_total_pages int default '-1',
+  ss_total_pages bigint default '-1',
 
   -- Number of users, theoretically equal to SELECT COUNT(*) FROM user;
-  ss_users int default '-1',
+  ss_users bigint default '-1',
 
   -- Number of users that still edit
-  ss_active_users int default '-1',
+  ss_active_users bigint default '-1',
 
   -- Number of images, equivalent to SELECT COUNT(*) FROM image
   ss_images int default 0
@@ -722,7 +722,7 @@ CREATE TABLE ipblocks (
   ipb_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
   -- Blocked IP address in dotted-quad form or user name.
-  ipb_address int NOT NULL,
+  ipb_address tinyblob NOT NULL,
 
   -- Blocked user ID or 0 for IP blocks.
   ipb_user int unsigned NOT NULL default 0,
@@ -734,43 +734,43 @@ CREATE TABLE ipblocks (
   ipb_by_text varchar(255) binary NOT NULL default '',
 
   -- Text comment made by blocker.
-  ipb_reason int NOT NULL,
+  ipb_reason tinyblob NOT NULL,
 
   -- Creation (or refresh) date in standard YMDHMS form.
   -- IP blocks expire automatically.
-  ipb_timestamp int NOT NULL default '',
+  ipb_timestamp binary(14) NOT NULL default '',
 
   -- Indicates that the IP address was banned because a banned
   -- user accessed a page through it. If this is 1, ipb_address
   -- will be hidden, and the block identified by block ID number.
-  ipb_auto int NOT NULL default 0,
+  ipb_auto bool NOT NULL default 0,
 
   -- If set to 1, block applies only to logged-out users
-  ipb_anon_only int NOT NULL default 0,
+  ipb_anon_only bool NOT NULL default 0,
 
   -- Block prevents account creation from matching IP addresses
-  ipb_create_account int NOT NULL default 1,
+  ipb_create_account bool NOT NULL default 1,
 
   -- Block triggers autoblocks
-  ipb_enable_autoblock int NOT NULL default '1',
+  ipb_enable_autoblock bool NOT NULL default '1',
 
   -- Time at which the block will expire.
   -- May be "infinity"
-  ipb_expiry int NOT NULL default '',
+  ipb_expiry varbinary(14) NOT NULL default '',
 
   -- Start and end of an address range, in hexadecimal
   -- Size chosen to allow IPv6
-  ipb_range_start int NOT NULL,
-  ipb_range_end int NOT NULL,
+  ipb_range_start tinyblob NOT NULL,
+  ipb_range_end tinyblob NOT NULL,
 
   -- Flag for entries hidden from users and Sysops
-  ipb_deleted int NOT NULL default 0,
+  ipb_deleted bool NOT NULL default 0,
 
   -- Block prevents user from accessing Special:Emailuser
-  ipb_block_email int NOT NULL default 0,
+  ipb_block_email bool NOT NULL default 0,
 
   -- Block allows user to edit their own talk page
-  ipb_allow_usertalk int NOT NULL default 0,
+  ipb_allow_usertalk bool NOT NULL default 0,
 
   -- ID of the block that caused this block to exist
   -- Autoblocks set this to the original block
@@ -808,37 +808,37 @@ CREATE TABLE image (
   img_height int NOT NULL default 0,
 
   -- Extracted Exif metadata stored as a serialized PHP array.
-  img_metadata int NOT NULL,
+  img_metadata mediumblob NOT NULL,
 
   -- For images, bits per pixel if known.
   img_bits int NOT NULL default 0,
 
   -- Media type as defined by the MEDIATYPE_xxx constants
-  img_media_type int default NULL,
+  img_media_type ENUM("UNKNOWN", "BITMAP", "DRAWING", "AUDIO", "VIDEO", "MULTIMEDIA", "OFFICE", "TEXT", "EXECUTABLE", "ARCHIVE") default NULL,
 
   -- major part of a MIME media type as defined by IANA
   -- see http://www.iana.org/assignments/media-types/
-  img_major_mime int NOT NULL default "unknown",
+  img_major_mime ENUM("unknown", "application", "audio", "image", "text", "video", "message", "model", "multipart") NOT NULL default "unknown",
 
   -- minor part of a MIME media type as defined by IANA
   -- the minor parts are not required to adher to any standard
   -- but should be consistent throughout the database
   -- see http://www.iana.org/assignments/media-types/
-  img_minor_mime int NOT NULL default "unknown",
+  img_minor_mime varbinary(100) NOT NULL default "unknown",
 
   -- Description field as entered by the uploader.
   -- This is displayed in image upload history and logs.
-  img_description int NOT NULL,
+  img_description tinyblob NOT NULL,
 
   -- user_id and user_name of uploader.
   img_user int unsigned NOT NULL default 0,
   img_user_text varchar(255) binary NOT NULL,
 
   -- Time of the upload.
-  img_timestamp int NOT NULL default '',
+  img_timestamp varbinary(14) NOT NULL default '',
 
   -- SHA-1 content hash in base-36
-  img_sha1 int NOT NULL default ''
+  img_sha1 varbinary(32) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/img_usertext_timestamp ON image (img_user_text,img_timestamp);
@@ -870,17 +870,17 @@ CREATE TABLE oldimage (
   oi_width int NOT NULL default 0,
   oi_height int NOT NULL default 0,
   oi_bits int NOT NULL default 0,
-  oi_description int NOT NULL,
+  oi_description tinyblob NOT NULL,
   oi_user int unsigned NOT NULL default 0,
   oi_user_text varchar(255) binary NOT NULL,
-  oi_timestamp int NOT NULL default '',
+  oi_timestamp binary(14) NOT NULL default '',
 
-  oi_metadata int NOT NULL,
-  oi_media_type int default NULL,
-  oi_major_mime int NOT NULL default "unknown",
-  oi_minor_mime int NOT NULL default "unknown",
+  oi_metadata mediumblob NOT NULL,
+  oi_media_type ENUM("UNKNOWN", "BITMAP", "DRAWING", "AUDIO", "VIDEO", "MULTIMEDIA", "OFFICE", "TEXT", "EXECUTABLE", "ARCHIVE") default NULL,
+  oi_major_mime ENUM("unknown", "application", "audio", "image", "text", "video", "message", "model", "multipart") NOT NULL default "unknown",
+  oi_minor_mime varbinary(100) NOT NULL default "unknown",
   oi_deleted tinyint unsigned NOT NULL default 0,
-  oi_sha1 int NOT NULL default ''
+  oi_sha1 varbinary(32) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/oi_usertext_timestamp ON oldimage (oi_user_text,oi_timestamp);
@@ -906,39 +906,39 @@ CREATE TABLE filearchive (
   -- Which storage bin (directory tree or object store) the file data
   -- is stored in. Should be 'deleted' for files that have been deleted;
   -- any other bin is not yet in use.
-  fa_storage_group int,
+  fa_storage_group varbinary(16),
 
   -- SHA-1 of the file contents plus extension, used as a key for storage.
   -- eg 8f8a562add37052a1848ff7771a2c515db94baa9.jpg
   --
   -- If NULL, the file was missing at deletion time or has been purged
   -- from the archival storage.
-  fa_storage_key int default '',
+  fa_storage_key varbinary(64) default '',
 
   -- Deletion information, if this file is deleted.
   fa_deleted_user int,
-  fa_deleted_timestamp int default '',
+  fa_deleted_timestamp binary(14) default '',
   fa_deleted_reason text,
 
   -- Duped fields from image
   fa_size int unsigned default 0,
   fa_width int default 0,
   fa_height int default 0,
-  fa_metadata int,
+  fa_metadata mediumblob,
   fa_bits int default 0,
-  fa_media_type int default NULL,
-  fa_major_mime int default "unknown",
-  fa_minor_mime int default "unknown",
-  fa_description int,
+  fa_media_type ENUM("UNKNOWN", "BITMAP", "DRAWING", "AUDIO", "VIDEO", "MULTIMEDIA", "OFFICE", "TEXT", "EXECUTABLE", "ARCHIVE") default NULL,
+  fa_major_mime ENUM("unknown", "application", "audio", "image", "text", "video", "message", "model", "multipart") default "unknown",
+  fa_minor_mime varbinary(100) default "unknown",
+  fa_description tinyblob,
   fa_user int unsigned default 0,
   fa_user_text varchar(255) binary,
-  fa_timestamp int default '',
+  fa_timestamp binary(14) default '',
 
   -- Visibility of deleted revisions, bitfield
   fa_deleted tinyint unsigned NOT NULL default 0,
 
   -- sha1 hash of file content
-  fa_sha1 int NOT NULL default ''
+  fa_sha1 varbinary(32) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 -- pick out by image name
@@ -977,7 +977,7 @@ CREATE TABLE uploadstash (
   us_source_type varchar(50),
 
   -- the date/time on which the file was added
-  us_timestamp int NOT NULL,
+  us_timestamp varbinary(14) NOT NULL,
 
   us_status varchar(50) NOT NULL,
 
@@ -985,7 +985,7 @@ CREATE TABLE uploadstash (
   us_chunk_inx int unsigned NULL,
 
   -- Serialized file properties from File::getPropsFromPath
-  us_props int,
+  us_props blob,
 
   -- file size in bytes
   us_size int unsigned NOT NULL,
@@ -993,7 +993,7 @@ CREATE TABLE uploadstash (
   us_sha1 varchar(31) NOT NULL,
   us_mime varchar(255),
   -- Media type as defined by the MEDIATYPE_xxx constants, should duplicate definition in the image table
-  us_media_type int default NULL,
+  us_media_type ENUM("UNKNOWN", "BITMAP", "DRAWING", "AUDIO", "VIDEO", "MULTIMEDIA", "OFFICE", "TEXT", "EXECUTABLE", "ARCHIVE") default NULL,
   -- image-specific properties
   us_image_width int unsigned,
   us_image_height int unsigned,
@@ -1016,10 +1016,10 @@ CREATE INDEX /*i*/us_timestamp ON uploadstash (us_timestamp);
 --
 CREATE TABLE recentchanges (
   rc_id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  rc_timestamp int NOT NULL default '',
+  rc_timestamp varbinary(14) NOT NULL default '',
 
   -- This is no longer used
-  rc_cur_time int NOT NULL default '',
+  rc_cur_time varbinary(14) NOT NULL default '',
 
   -- As in revision
   rc_user int unsigned NOT NULL default 0,
@@ -1063,7 +1063,7 @@ CREATE TABLE recentchanges (
 
   -- Recorded IP address the edit was made from, if the
   -- $wgPutIPinRC option is enabled.
-  rc_ip int NOT NULL default '',
+  rc_ip varbinary(40) NOT NULL default '',
 
   -- Text length in characters before
   -- and after the edit
@@ -1076,11 +1076,11 @@ CREATE TABLE recentchanges (
   -- Value corresonding to log_id, specific log entries
   rc_logid int unsigned NOT NULL default 0,
   -- Store log type info here, or null
-  rc_log_type int NULL default NULL,
+  rc_log_type varbinary(255) NULL default NULL,
   -- Store log action or null
-  rc_log_action int NULL default NULL,
+  rc_log_action varbinary(255) NULL default NULL,
   -- Log params
-  rc_params int NULL
+  rc_params blob NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/rc_timestamp ON recentchanges (rc_timestamp);
@@ -1104,7 +1104,7 @@ CREATE TABLE watchlist (
 
   -- Timestamp when user was last sent a notification e-mail;
   -- cleared when the user visits the page.
-  wl_notificationtimestamp int
+  wl_notificationtimestamp varbinary(14)
 
 ) /*$wgDBTableOptions*/;
 
@@ -1128,7 +1128,7 @@ CREATE TABLE searchindex (
   si_title varchar(255) NOT NULL default '',
 
   -- Munged version of body text
-  si_text int NOT NULL
+  si_text mediumtext NOT NULL
 ) ENGINE=MyISAM;
 
 CREATE UNIQUE INDEX /*i*/si_page ON searchindex (si_page);
@@ -1146,19 +1146,19 @@ CREATE TABLE interwiki (
   -- The URL of the wiki, with "$1" as a placeholder for an article name.
   -- Any spaces in the name will be transformed to underscores before
   -- insertion.
-  iw_url int NOT NULL,
+  iw_url blob NOT NULL,
 
   -- The URL of the file api.php
-  iw_api int NOT NULL,
+  iw_api blob NOT NULL,
 
   -- The name of the database (for a connection to be established with wfGetLB( 'wikiid' ))
   iw_wikiid varchar(64) NOT NULL,
 
-  -- A intean value indicating whether the wiki is in this project
+  -- A boolean value indicating whether the wiki is in this project
   -- (used, for example, to detect redirect loops)
-  iw_local int NOT NULL,
+  iw_local bool NOT NULL,
 
-  -- intean value indicating whether interwiki transclusions are allowed.
+  -- Boolean value indicating whether interwiki transclusions are allowed.
   iw_trans tinyint NOT NULL default 0
 ) /*$wgDBTableOptions*/;
 
@@ -1170,7 +1170,7 @@ CREATE UNIQUE INDEX /*i*/iw_prefix ON interwiki (iw_prefix);
 --
 CREATE TABLE querycache (
   -- A key name, generally the base name of of the special page.
-  qc_type int NOT NULL,
+  qc_type varbinary(32) NOT NULL,
 
   -- Some sort of stored value. Sizes, counts...
   qc_value int unsigned NOT NULL default 0,
@@ -1187,8 +1187,8 @@ CREATE INDEX /*i*/qc_type ON querycache (qc_type,qc_value);
 -- For a few generic cache operations if not using Memcached
 --
 CREATE TABLE objectcache (
-  keyname int NOT NULL default '' PRIMARY KEY,
-  value int,
+  keyname varbinary(255) NOT NULL default '' PRIMARY KEY,
+  value mediumblob,
   exptime datetime
 ) /*$wgDBTableOptions*/;
 CREATE INDEX /*i*/exptime ON objectcache (exptime);
@@ -1198,9 +1198,9 @@ CREATE INDEX /*i*/exptime ON objectcache (exptime);
 -- Cache of interwiki transclusion
 --
 CREATE TABLE transcache (
-  tc_url int NOT NULL,
+  tc_url varbinary(255) NOT NULL,
   tc_contents text,
-  tc_time int NOT NULL
+  tc_time binary(14) NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/tc_url_idx ON transcache (tc_url);
@@ -1213,11 +1213,11 @@ CREATE TABLE logging (
   -- Symbolic keys for the general log type and the action type
   -- within the log. The output format will be controlled by the
   -- action field, but only the type controls categorization.
-  log_type int NOT NULL default '',
-  log_action int NOT NULL default '',
+  log_type varbinary(32) NOT NULL default '',
+  log_action varbinary(32) NOT NULL default '',
 
   -- Timestamp. Duh.
-  log_timestamp int NOT NULL default '19700101000000',
+  log_timestamp binary(14) NOT NULL default '19700101000000',
 
   -- The user who performed this action; key to user_id
   log_user int unsigned NOT NULL default 0,
@@ -1236,7 +1236,7 @@ CREATE TABLE logging (
 
   -- miscellaneous parameters:
   -- LF separated list (old system) or serialized PHP array (new system)
-  log_params int NOT NULL,
+  log_params blob NOT NULL,
 
   -- rev_deleted for logs
   log_deleted tinyint unsigned NOT NULL default 0
@@ -1253,7 +1253,7 @@ CREATE INDEX /*i*/type_action ON logging (log_type, log_action, log_timestamp);
 
 CREATE TABLE log_search (
   -- The type of ID (rev ID, log ID, rev timestamp, username)
-  ls_field int NOT NULL,
+  ls_field varbinary(32) NOT NULL,
   -- The value of the ID
   ls_value varchar(255) NOT NULL,
   -- Key to log_id
@@ -1269,7 +1269,7 @@ CREATE TABLE job (
 
   -- Command name
   -- Limited to 60 to prevent key length overflow
-  job_cmd int NOT NULL default '',
+  job_cmd varbinary(60) NOT NULL default '',
 
   -- Namespace and title to act on
   -- Should be 0 and '' if the command does not operate on a title
@@ -1278,11 +1278,11 @@ CREATE TABLE job (
 
   -- Timestamp of when the job was inserted
   -- NULL for jobs added before addition of the timestamp
-  job_timestamp int NULL default NULL,
+  job_timestamp varbinary(14) NULL default NULL,
 
   -- Any other parameters to the command
   -- Stored as a PHP serialized array, or an empty string if there are no parameters
-  job_params int NOT NULL,
+  job_params blob NOT NULL,
 
   -- Random, non-unique, number used for job acquisition (for lock concurrency)
   job_random integer unsigned NOT NULL default 0,
@@ -1291,13 +1291,13 @@ CREATE TABLE job (
   job_attempts integer unsigned NOT NULL default 0,
 
   -- Field that conveys process locks on rows via process UUIDs
-  job_token int NOT NULL default '',
+  job_token varbinary(32) NOT NULL default '',
 
   -- Timestamp when the job was locked
-  job_token_timestamp int NULL default NULL,
+  job_token_timestamp varbinary(14) NULL default NULL,
 
   -- Base 36 SHA1 of the job parameters relevant to detecting duplicates
-  job_sha1 int NOT NULL default ''
+  job_sha1 varbinary(32) NOT NULL default ''
 ) /*$wgDBTableOptions*/;
 
 CREATE INDEX /*i*/job_sha1 ON job (job_sha1);
@@ -1311,10 +1311,10 @@ CREATE INDEX /*i*/job_timestamp ON job (job_timestamp);
 CREATE TABLE querycache_info (
   -- Special page name
   -- Corresponds to a qc_type value
-  qci_type int NOT NULL default '',
+  qci_type varbinary(32) NOT NULL default '',
 
   -- Timestamp of last update
-  qci_timestamp int NOT NULL default '19700101000000'
+  qci_timestamp binary(14) NOT NULL default '19700101000000'
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/qci_type ON querycache_info (qci_type);
@@ -1341,7 +1341,7 @@ CREATE INDEX /*i*/rd_ns_title ON redirect (rd_namespace,rd_title,rd_from);
 -- Used for caching expensive grouped queries that need two links (for example double-redirects)
 CREATE TABLE querycachetwo (
   -- A key name, generally the base name of of the special page.
-  qcc_type int NOT NULL,
+  qcc_type varbinary(32) NOT NULL,
 
   -- Some sort of stored value. Sizes, counts...
   qcc_value int unsigned NOT NULL default 0,
@@ -1365,15 +1365,15 @@ CREATE TABLE page_restrictions (
   -- Page to apply restrictions to (Foreign Key to page).
   pr_page int NOT NULL,
   -- The protection type (edit, move, etc)
-  pr_type int NOT NULL,
+  pr_type varbinary(60) NOT NULL,
   -- The protection level (Sysop, autoconfirmed, etc)
-  pr_level int NOT NULL,
+  pr_level varbinary(60) NOT NULL,
   -- Whether or not to cascade the protection down to pages transcluded.
   pr_cascade tinyint NOT NULL,
   -- Field for future support of per-user restriction.
   pr_user int NULL,
   -- Field for time-limited protection.
-  pr_expiry int NULL,
+  pr_expiry varbinary(14) NULL,
   -- Field for an ID for this restrictions row (sort-key for Special:ProtectedPages)
   pr_id int unsigned NOT NULL PRIMARY KEY AUTO_INCREMENT
 ) /*$wgDBTableOptions*/;
@@ -1389,10 +1389,10 @@ CREATE TABLE protected_titles (
   pt_namespace int NOT NULL,
   pt_title varchar(255) binary NOT NULL,
   pt_user int unsigned NOT NULL,
-  pt_reason int,
-  pt_timestamp int NOT NULL,
-  pt_expiry int NOT NULL default '',
-  pt_create_perm int NOT NULL
+  pt_reason tinyblob,
+  pt_timestamp binary(14) NOT NULL,
+  pt_expiry varbinary(14) NOT NULL default '',
+  pt_create_perm varbinary(60) NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/pt_namespace_title ON protected_titles (pt_namespace,pt_title);
@@ -1402,8 +1402,8 @@ CREATE INDEX /*i*/pt_timestamp ON protected_titles (pt_timestamp);
 -- Name/value pairs indexed by page_id
 CREATE TABLE page_props (
   pp_page int NOT NULL,
-  pp_propname int NOT NULL,
-  pp_value int NOT NULL
+  pp_propname varbinary(60) NOT NULL,
+  pp_value blob NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/pp_page_propname ON page_props (pp_page,pp_propname);
@@ -1413,7 +1413,7 @@ CREATE UNIQUE INDEX /*i*/pp_propname_page ON page_props (pp_propname,pp_page);
 -- A table to log updates, one text key row per update.
 CREATE TABLE updatelog (
   ul_key varchar(255) NOT NULL PRIMARY KEY,
-  ul_value int
+  ul_value blob
 ) /*$wgDBTableOptions*/;
 
 
@@ -1428,7 +1428,7 @@ CREATE TABLE change_tag (
   -- Tag applied
   ct_tag varchar(255) NOT NULL,
   -- Parameters for the tag, presently unused
-  ct_params int NULL
+  ct_params blob NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/change_tag_rc_tag ON change_tag (ct_rc_id,ct_tag);
@@ -1448,7 +1448,7 @@ CREATE TABLE tag_summary (
   -- REVID for the change
   ts_rev_id int NULL,
   -- Comma-separated list of tags
-  ts_tags int NOT NULL
+  ts_tags blob NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/tag_summary_rc_id ON tag_summary (ts_rc_id);
@@ -1463,32 +1463,32 @@ CREATE TABLE valid_tag (
 -- Table for storing localisation data
 CREATE TABLE l10n_cache (
   -- Language code
-  lc_lang int NOT NULL,
+  lc_lang varbinary(32) NOT NULL,
   -- Cache key
   lc_key varchar(255) NOT NULL,
   -- Value
-  lc_value int NOT NULL
+  lc_value mediumblob NOT NULL
 ) /*$wgDBTableOptions*/;
 CREATE INDEX /*i*/lc_lang_key ON l10n_cache (lc_lang, lc_key);
 
--- Table for caching JSON message ints for the resource loader
+-- Table for caching JSON message blobs for the resource loader
 CREATE TABLE msg_resource (
   -- Resource name
-  mr_resource int NOT NULL,
+  mr_resource varbinary(255) NOT NULL,
   -- Language code
-  mr_lang int NOT NULL,
-  -- JSON int
-  mr_int int NOT NULL,
+  mr_lang varbinary(32) NOT NULL,
+  -- JSON blob
+  mr_blob mediumblob NOT NULL,
   -- Timestamp of last update
-  mr_timestamp int NOT NULL
+  mr_timestamp binary(14) NOT NULL
 ) /*$wgDBTableOptions*/;
 CREATE UNIQUE INDEX /*i*/mr_resource_lang ON msg_resource (mr_resource, mr_lang);
 
 -- Table for administering which message is contained in which resource
 CREATE TABLE msg_resource_links (
-  mrl_resource int NOT NULL,
+  mrl_resource varbinary(255) NOT NULL,
   -- Message key
-  mrl_message int NOT NULL
+  mrl_message varbinary(255) NOT NULL
 ) /*$wgDBTableOptions*/;
 CREATE UNIQUE INDEX /*i*/mrl_message_resource ON msg_resource_links (mrl_message, mrl_resource);
 
@@ -1497,11 +1497,11 @@ CREATE UNIQUE INDEX /*i*/mrl_message_resource ON msg_resource_links (mrl_message
 -- Currently only used for tracking images that CSS depends on
 CREATE TABLE module_deps (
   -- Module name
-  md_module int NOT NULL,
+  md_module varbinary(255) NOT NULL,
   -- Skin name
-  md_skin int NOT NULL,
-  -- JSON int with file dependencies
-  md_deps int NOT NULL
+  md_skin varbinary(32) NOT NULL,
+  -- JSON blob with file dependencies
+  md_deps mediumblob NOT NULL
 ) /*$wgDBTableOptions*/;
 CREATE UNIQUE INDEX /*i*/md_module_skin ON module_deps (md_module, md_skin);
 
@@ -1511,38 +1511,38 @@ CREATE TABLE sites (
   site_id                    INT UNSIGNED        NOT NULL PRIMARY KEY AUTO_INCREMENT,
 
   -- Global identifier for the site, ie 'enwiktionary'
-  site_global_key            int       NOT NULL,
+  site_global_key            varbinary(32)       NOT NULL,
 
   -- Type of the site, ie 'mediawiki'
-  site_type                  int       NOT NULL,
+  site_type                  varbinary(32)       NOT NULL,
 
   -- Group of the site, ie 'wikipedia'
-  site_group                 int       NOT NULL,
+  site_group                 varbinary(32)       NOT NULL,
 
   -- Source of the site data, ie 'local', 'wikidata', 'my-magical-repo'
-  site_source                int       NOT NULL,
+  site_source                varbinary(32)       NOT NULL,
 
   -- Language code of the sites primary language.
-  site_language              int       NOT NULL,
+  site_language              varbinary(32)       NOT NULL,
 
   -- Protocol of the site, ie 'http://', 'irc://', '//'
   -- This field is an index for lookups and is build from type specific data in site_data.
-  site_protocol              int       NOT NULL,
+  site_protocol              varbinary(32)       NOT NULL,
 
   -- Domain of the site in reverse order, ie 'org.mediawiki.www.'
   -- This field is an index for lookups and is build from type specific data in site_data.
   site_domain                VARCHAR(255)        NOT NULL,
 
   -- Type dependent site data.
-  site_data                  int                NOT NULL,
+  site_data                  BLOB                NOT NULL,
 
   -- If site.tld/path/key:pageTitle should forward users to  the page on
   -- the actual site, where "key" is the local identifier.
-  site_forward              int                NOT NULL,
+  site_forward              bool                NOT NULL,
 
   -- Type dependent site config.
   -- For instance if template transclusion should be allowed if it's a MediaWiki.
-  site_config               int                NOT NULL
+  site_config               BLOB                NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/sites_global_key ON sites (site_global_key);
@@ -1560,10 +1560,10 @@ CREATE TABLE site_identifiers (
   si_site                    INT UNSIGNED        NOT NULL,
 
   -- local key type, ie 'interwiki' or 'langlink'
-  si_type                    int       NOT NULL,
+  si_type                    varbinary(32)       NOT NULL,
 
   -- local key value, ie 'en' or 'wiktionary'
-  si_key                     int       NOT NULL
+  si_key                     varbinary(32)       NOT NULL
 ) /*$wgDBTableOptions*/;
 
 CREATE UNIQUE INDEX /*i*/site_ids_type ON site_identifiers (si_type, si_key);

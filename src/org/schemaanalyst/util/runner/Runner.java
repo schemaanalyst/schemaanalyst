@@ -15,13 +15,16 @@ import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
 import org.schemaanalyst.util.StringUtils;
 
+/**
+ * Represents an entry point to the SchemaAnalyst system, parses in key configuration files
+ * and allows instance fields to take on values specified from the command line with the help
+ * of the @Description, @RequiredParameters and @Parameter annotations. 
+ * @author phil
+ */
 public abstract class Runner {
     
     public static final String LONG_OPTION_PREFIX = "--";
     public static final String HELP_OPTION = LONG_OPTION_PREFIX + "help";
-    
-    // what to make the value of an option if no value is specified on the command line
-    protected static final String NO_OPTION_CLI_VALUE_DEFAULT = "true";
 
     // must be spaces, not tabs to work properly:
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
@@ -34,21 +37,42 @@ public abstract class Runner {
     protected FolderConfiguration folderConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
     protected LoggingConfiguration loggingConfiguration;
-
+    
+    /**
+     * Constructor.  Instantiates the Runner and loads configuration files.
+     */
     public Runner() {
         this(true);
     }
     
+    /**
+     * Constructor.  
+     * @param loadConfiguration If true, loads the configuration file.
+     */
     public Runner(boolean loadConfiguration) {
         if (loadConfiguration) {
             loadConfiguration();
         }
     }
     
+    /**
+     * Executes the main code of the runner
+     * @param args The arguments passed from the command line.
+     */
     public abstract void run(String... args);
     
+    /**
+     * This method should be overridden to perform any additional validation
+     * required of the field values passed in through the values of args 
+     * to the run method.
+     */
     protected abstract void validateParameters();    
     
+    /**
+     * Intialises the Runner by parsing args into field values and then
+     * validating them through a call to validateParameters.
+     * @param args The arguments passed in from the command line.
+     */    
     protected void initialise(String... args) {
         parseArgs(args);
         validateParameters();
@@ -63,46 +87,59 @@ public abstract class Runner {
         loggingConfiguration = new LoggingConfiguration();
     }
 
+    /**
+     * Parses args passed in from the command line into field values.
+     * @param args The arguments passed in from the command line.
+     */
     protected void parseArgs(String... args) {
-        // record which parameters were parsed and their original values
+        // record which options parameters were parsed and their original defaults
+        // this is in case there is an error in parsing values and the usage must
+        // be printed with default values for each field (which may have been
+        // set to new values in the parsing process).
         overwrittenDefaults = new HashMap<>();
         
         String[] requiredParams = getRequriedParameterFieldNames(); 
         int numRequiredParamsProcessed = 0;
         
         for (String arg : args) {
+            // if the user wants help, give it to them
             if (arg.equals(HELP_OPTION)) {
                 quitWithHelp();
             }
 
-            if (arg.startsWith(LONG_OPTION_PREFIX)) {                               
+            if (arg.startsWith(LONG_OPTION_PREFIX)) {     
+                // parse an optional parameter 
+                
                 String fieldName = "";
                 String value = "";
+                int startPos = LONG_OPTION_PREFIX.length();
                 int equalsPos = arg.indexOf("=");
                 if (equalsPos == -1) {
-                    fieldName = arg.substring(1);
-                    value = NO_OPTION_CLI_VALUE_DEFAULT;
+                    fieldName = arg.substring(startPos);
                 } else {
-                    fieldName = arg.substring(LONG_OPTION_PREFIX.length(), equalsPos);
+                    fieldName = arg.substring(startPos, equalsPos);
                     value = arg.substring(equalsPos + 1);
                 }
+                
                 setFieldWithParameterValue(fieldName, value);                
             } else {
+                // parse a required parameter
                 if (numRequiredParamsProcessed < requiredParams.length) {
                     String fieldName = requiredParams[numRequiredParamsProcessed];
                     
+                    // ensure there's been no errors in setting up @RequiredParameters  
                     if (!isField(fieldName)) {
                         throw new RuntimeException(
-                                "Required option \"" + fieldName + 
-                                "\" is not a field of " +
-                                getClass().getCanonicalName());
+                                fieldName + " is specified in @RequiredParameters for " + 
+                                getClass().getCanonicalName() + " but no such field exists " + 
+                                "in that class or its superclasses");
                     }
                     
                     if (!isParameter(fieldName)) {
                         throw new RuntimeException(
-                                "Required option field \"" + fieldName + 
-                                "\" is not specified as an option for " +
-                                getClass().getCanonicalName());
+                                fieldName + " is specified in @RequiredParameters for " + 
+                                getClass().getCanonicalName() + " but is not marked with @Parameter " + 
+                                "for that class or its superclasses");
                     }
                     
                     setFieldWithParameterValue(fieldName, arg);
@@ -118,6 +155,11 @@ public abstract class Runner {
         }
     }
     
+    /**
+     * Pulls out the value of the @RequiredParameters annotation for the Runner class,
+     * if one has been specified.
+     * @return The value of the @RequiredParameters annotation, if specified in the class.
+     */
     protected String getRequiredParametersString() {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation annotation : annotations) {
@@ -130,30 +172,66 @@ public abstract class Runner {
         return "";
     }
     
+    /**
+     * Returns an array of strings representing fields specified (in the same order) in 
+     * the @RequiredFields annotation.
+     */
     protected String[] getRequriedParameterFieldNames() {
         return getRequiredParametersString().split(" ");
     }
     
+    /**
+     * Checks whether a string is the name of a field in the extension of the class.
+     * @param name The name string to be checked.
+     * @return True if the string is a field of the extension of this Runner class, else false.
+     */
     protected boolean isField(String name) {
         return getField(name) != null;
     }
     
+    /**
+     * Using reflection, gets the Field object for the field of the extension of this class,
+     * as specfied by the name string. 
+     * @param name The name of the field to be obtained.
+     * @return A Field instance, or null if there is no field corresponding to name 
+     */
     protected Field getField(String name) {
-        try {
-            return this.getClass().getDeclaredField(name);
-        } catch (NoSuchFieldException e) {           
-        } 
+        Class<?> currentClass = getClass();
+        while (currentClass != null) {
+            try {
+                return currentClass.getDeclaredField(name);
+            } catch (NoSuchFieldException e) {           
+            }
+            currentClass = currentClass.getSuperclass();
+        }
         return null;  
     }
     
+    /**
+     * Checks whether the field specified by name is a parameter, that is, whether it is
+     * marked up with a @Parameter annotation.
+     * @param name The name of the field to check.
+     * @return True if the field specified by name is a parameter, else false.
+     */
     protected boolean isParameter(String name) {
         return getParameter(name) != null;
     }
     
+    /** 
+     * Gets the @Parameter annotation for the field specified by the string name, if such an
+     * annotation exists.
+     * @param name The name of the field for which the annotation is requested.
+     * @return The annotation, if it exists, else false.
+     */
     protected Parameter getParameter(String name) {        
         return getParameter(getField(name));        
     }
     
+    /** 
+     * Gets the @Parameter annotation for Field, if such an annotation exists.
+     * @param name The field for which the annotation is requested.
+     * @return The annotation, if it exists, else false.
+     */    
     protected Parameter getParameter(Field field) {
         if (field != null) {
             Annotation[] annotations = field.getAnnotations();
@@ -166,6 +244,12 @@ public abstract class Runner {
         return null;     
     }
 
+    /**
+     * Sets a field specified by the string name with the value specified by the string value.
+     * If the field is not a string (i.e., an int, double etc.), the value is parsed.       
+     * @param name The name of the field to set. 
+     * @param value The value with which to set it.
+     */    
     protected void setFieldWithParameterValue(String name, String value) {
         // get hold of the instance field
         Field field = getField(name);
@@ -189,13 +273,35 @@ public abstract class Runner {
                   name + " value \"" + value + "\" is not one of a list of pre-specified choices");
         }
         
+        // is the value a switch?
+        String valueAsSwitch = param.valueAsSwitch();
+        if (valueAsSwitch.length() > 0) {
+            check(value.length() == 0, name + " is a switch, so no value is requried");
+            value = valueAsSwitch;
+        }        
+        
         // parse the value into the field
         field.setAccessible(true);
         try {
             // store the original value of the field
             overwrittenDefaults.put(name, field.get(this));        
                         
-            if (field.getType().equals(Integer.TYPE)) {
+            if (field.getType().equals(Boolean.TYPE)) {
+                try {
+                    boolean booleanValue = Boolean.parseBoolean(value);
+                    field.setBoolean(this, booleanValue);
+                } catch (NumberFormatException e) {
+                    quitWithError(name + " value \"" + value + "\" is not a boolean");
+                }
+            } else if (field.getType().equals(Double.TYPE)) {
+                try {
+                    double doubleValue = Double.parseDouble(value);
+                    field.setDouble(this, doubleValue);
+                } catch (NumberFormatException e) {
+                    quitWithError(name + " value \"" + value + 
+                                  "\" is not a double-precision floating point value");
+                }                
+            } else if (field.getType().equals(Integer.TYPE)) {
                 try {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
@@ -217,34 +323,60 @@ public abstract class Runner {
         }
     }
     
+    /**
+     * Check whether a parameter was specified at the command line or not.
+     * @param name The name of the parameter.
+     * @return True if the parameter was set, else false.
+     */
     protected boolean wasParameterSpecified(String name) {
         // if there's an entry in the overwrittenParamDefaults, the parameter was set 
         return overwrittenDefaults.containsKey(name);
     }
     
+    /**
+     * Performs a check specified by an expression evaluating to a boolean ("test"), and
+     * if the check fails, quits with an errorMessage. This method can be used to help to 
+     * validate parameters in the validateParameters method, which must be overridden.
+     * @param test The expression to test.
+     * @param errorMessage The message to be printed if the check does not pass.
+     */
     protected void check(boolean test, String errorMessage) {
         if (!test) {
             quitWithError(errorMessage);
         }
     }
 
+    /**
+     * Prints the description and usage and quits.
+     */
     protected void quitWithHelp() {
         printDescription();
         System.out.println();
         quitWithUsage();
     }    
-    
+
+    /**
+     * Quits with the usage message.
+     */
     protected void quitWithUsage() {
         printUsage();
         System.exit(1);
     }
     
+    /**
+     * Quits with a error message and usage.
+     * @param errorMessage The error message to relay to the user.
+     */
     protected void quitWithError(String errorMessage) {
         System.out.println("ERROR: " + errorMessage + ".");
         System.out.println("Please check your usage.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
     
+    /**
+     * Prints the contents of the @Description annotation, if one is specified
+     * for the class.
+     */
     protected void printDescription() {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation annotation : annotations) {
@@ -257,6 +389,9 @@ public abstract class Runner {
         }        
     }
     
+    /**
+     * Prints the usage message for the class's parameters.
+     */
     protected void printUsage() {
         StringBuilder usage = new StringBuilder();
         
@@ -287,6 +422,10 @@ public abstract class Runner {
         System.out.println(usage);
     }    
     
+    /**
+     * Builds the usage list for required parameters
+     * @return A string reflecting the usage requirements of required parameters.
+     */            
     protected String getRequiredParametersUsageList() {
         StringBuilder list = new StringBuilder();
         
@@ -305,6 +444,12 @@ public abstract class Runner {
         return list.toString();
     }
     
+    /**
+     * Format a required parameter for the usage list.
+     * @param name The name of the parameter.
+     * @param param The parameter annotation for the field corresponding to the parameter
+     * @return A string denoting the usage of this parameter.
+     */
     protected String formatRequiredParameterUsageInfo(String name, Parameter param) {
         String formattedName = name;
         String formattedValue = "";
@@ -315,8 +460,12 @@ public abstract class Runner {
         return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
     }    
     
+    /**
+     * Builds the usage list for optional parameters
+     * @return A string reflecting the usage requirements of optional parameters.
+     */             
     protected String getOptionalParamsUsageList() {
-        // sort fields        
+        // sort fields -- TODO: get those of parent also
         Field[] fields = getClass().getDeclaredFields();
         List<String> fieldsList = new ArrayList<String>();
         for (Field field : fields) {
@@ -344,16 +493,31 @@ public abstract class Runner {
         return list.toString();
     }
     
+    /**
+     * Format an optional parameter for the usage list.
+     * @param name The name of the parameter.
+     * @param param The parameter annotation for the field corresponding to the parameter
+     * @return A string denoting the usage of this parameter.
+     */    
     protected String formatOptionalParameterUsageInfo(String name, Parameter param) {
         String formattedName = "--" + name;
-        String formattedValue = "<value>";
+        String formattedValue = (param.valueAsSwitch().length() > 0) ? "" : "value";
         String description = param.value();
         String[] choices = getParameterChoices(name, param);
-        String defaultValue = getParameterDefaultAsString(name);
+        String defaultValue = (param.valueAsSwitch().length() > 0) ? "" :  getParameterDefaultAsString(name);
         
         return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
     }
     
+    /**
+     * Format usage information for a parameter
+     * @param name The parameter name as it should appear in the list (e.g. with initial hyphens).
+     * @param value The indicative value string.
+     * @param description A short description of the parameter.
+     * @param choices A String array of possible choices for the parameter. 
+     * @param defaultValue The default value of the parameter, if it is optional and not specified.
+     * @return Usage information for the parameter as a string.
+     */
     protected String formatParameterUsageInfo(String name, String value, String description, 
                                               String[] choices, String defaultValue) {
         String info = USAGE_INDENT + name;
@@ -385,11 +549,22 @@ public abstract class Runner {
         return info;
     }
     
+    /**
+     * Get the default value of a parameter, converted to a string.
+     * @param name The name of the parameter whose default is sought.
+     * @return The default value of the parameter in string format.
+     */
     protected String getParameterDefaultAsString(String name) {
         Object defaultValue = getParameterDefault(name);
         return (defaultValue != null) ? defaultValue.toString() : "";        
     }
     
+    /**
+     * Get the default value of a parameter, as an object (could be a 
+     * wrapper for a primitive type, e.g. Integer).
+     * @param name The name of the parameter.
+     * @return The default value of the parameter as an object.
+     */
     protected Object getParameterDefault(String name) {
         // default information
         Object defaultValue = null;
@@ -408,6 +583,15 @@ public abstract class Runner {
         return defaultValue;
     }
     
+    /**
+     * Get the possible limited list of choices for a parameter, as a string array.
+     * The string array is constructed from a method call.  The method is specified
+     * by the parameter annotation.
+     * @param name The name of the parameter.
+     * @param param A reference to the annotation of the parameter's instance field.
+     * @return A string array denoting the enumeration of possible choices for values 
+     * of the parameter.
+     */    
     protected String[] getParameterChoices(String name, Parameter param) {
         String[] choices = new String[0];
         
