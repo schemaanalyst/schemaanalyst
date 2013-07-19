@@ -28,6 +28,8 @@ public class RunnerExample extends Runner {
     
     // Parameters are not limited to Strings, they can also be of any primitive type. 
     // Runner checks the value passed at the command line are actual ints, doubles, longs etc.
+    // This is an optional parameter, as it is not specified in the "RequiredParameters"
+    // class annotation.  Default values can be set by initialising the variable.
     @Parameter("The number of repetitions of the search")
     private int numrepetitions = 5;
     
@@ -38,15 +40,18 @@ public class RunnerExample extends Runner {
     // An integer parameter
     @Parameter("The number of tries to generate data, only needed if the search is set to random ")
     private int numtries = 10000;    
-    
-    // A constructor must be supplied in this format, i.e. with the args parameter and a call
-    // to super.
-    public RunnerExample(String... args) {
-        super(args);
+   
+    // A constructor is not required, but you may want to override the default setting
+    // of always loading the configuration first.
+    public RunnerExample() {
+        super(false);
     }
     
     // This method contains the actual high-level steps of the task to be executed.
-    public void run() {
+    // The first line of the method must be a call to initialise, in order to parse
+    // and validate arguments
+    public void run(String... args) {
+        initialise(args);
         System.out.println("Parsed parameters:");
         System.out.println("schema is " + schema);
         System.out.println("dbms is " + dbms);
@@ -60,15 +65,21 @@ public class RunnerExample extends Runner {
     protected void validateParameters() {
         check(numrepetitions > 0, "numrepetitions should be 1 or greater");
         
-        // use the isParameterSet method to check whether an optional parameter
+        // use the wasParameterSpecified method to check whether an optional parameter
         // was actually passed as an argument
-        check(wasParameterSpecified("numtries") && search.equals("random"), 
-              "numtries should be set if and only if the search is set to random");
+        boolean numTriesCheck = true;
+        if (wasParameterSpecified("numtries")) {
+            if (!search.equals("random")) {
+                numTriesCheck = false;
+            }
+        }
+              
+        check(numTriesCheck, "numtries should be set if and only if the search is set to random");
     }    
     
     // A main method must be provided in this format (i.e. construction with args and 
     // a call to the run method).
     public static void main(String... args) {
-        new RunnerExample(args).run();
+        new RunnerExample().run(args);
     }
 }

@@ -36,10 +36,23 @@ public abstract class Runner {
     protected DatabaseConfiguration databaseConfiguration;
     protected LoggingConfiguration loggingConfiguration;
 
-    public Runner(String... args) {
+    public Runner() {
+        this(true);
+    }
+    
+    public Runner(boolean loadConfiguration) {
+        if (loadConfiguration) {
+            loadConfiguration();
+        }
+    }
+    
+    public abstract void run(String... args);
+    
+    protected abstract void validateParameters();    
+    
+    protected void initialise(String... args) {
         parseArgs(args);
         validateParameters();
-        loadConfiguration();
     }
 
     /**
@@ -176,7 +189,10 @@ public abstract class Runner {
             if (field.getType().equals(Integer.TYPE)) {
                 try {
                     int intValue = Integer.parseInt(value);
+                    System.out.println("Setting int for " + fieldName+ ": "+intValue);
                     field.setInt(this, intValue);
+                    System.out.println("Value is: "+field.getInt(this));
+                    System.out.println("Value is: "+field.toGenericString());
                 } catch (NumberFormatException e) {
                     quitWithError(fieldName + " value \"" + value + "\" is not an integer");
                 }
@@ -355,8 +371,4 @@ public abstract class Runner {
         info += "\n";
         return info;
     }
-
-    public abstract void run();
-    
-    protected abstract void validateParameters();
 }
