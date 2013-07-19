@@ -8,14 +8,6 @@ import org.junit.runner.RunWith;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import experiment.mutation2013.GenerateData;
-import experiment.mutation2013.MutationAnalysis;
-import experiment.mutation2013.MutationAnalysisParallel;
-import experiment.mutation2013.MutationAnalysisSchemata;
-import experiment.mutation2013.MutationAnalysisSchemataParallel;
-import experiment.mutation2013.MutationAnalysisSmart;
-
-import org.schemaanalyst.deprecated.SchemaAnalyst;
 
 @RunWith(JUnitParamsRunner.class)
 public class Experiments {
