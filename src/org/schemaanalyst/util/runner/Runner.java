@@ -175,6 +175,20 @@ public abstract class Runner {
         Parameter param = getParameter(field);
         check(param != null, "Unknown parameter \"" + name + "\"");
 
+        // if choices are available for this method, ensure that the value 
+        // is equal to one of them
+        String choices[] = getParameterChoices(name, param);
+        if (choices.length > 0) {
+            boolean foundMatch = false;
+            for (String choice : choices) {
+                if (choice.equals(value)) {
+                    foundMatch = true;
+                }
+            }
+            check(foundMatch, 
+                  name + " value \"" + value + "\" is not one of a list of pre-specified choices");
+        }
+        
         // parse the value into the field
         field.setAccessible(true);
         try {
@@ -203,7 +217,7 @@ public abstract class Runner {
         }
     }
     
-    protected boolean wasOptionalParameterSpecified(String name) {
+    protected boolean wasParameterSpecified(String name) {
         // if there's an entry in the overwrittenParamDefaults, the parameter was set 
         return overwrittenDefaults.containsKey(name);
     }
@@ -379,7 +393,7 @@ public abstract class Runner {
     protected Object getParameterDefault(String name) {
         // default information
         Object defaultValue = null;
-        if (wasOptionalParameterSpecified(name)) {
+        if (wasParameterSpecified(name)) {
             defaultValue = overwrittenDefaults.get(name);
         } else {
             Field field = getField(name);
