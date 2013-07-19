@@ -49,7 +49,7 @@ public class GenerateResults extends Runner {
      * The folder to store the generated results.
      */
     @Parameter
-    protected String outputfolder = folderConfiguration.getResultsDir();
+    protected String outputfolder = folderConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
     /**
      * The number of max evaluations.
      */
@@ -139,7 +139,7 @@ public class GenerateResults extends Runner {
         }
 
         // Store results
-        XMLSerialiser.save(sqlReport, outputfolder + File.separator + casestudy + ".xml");
+        XMLSerialiser.save(sqlReport, outputfolder + casestudy + ".xml");
     }
 
     /**
