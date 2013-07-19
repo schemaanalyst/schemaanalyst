@@ -14,5 +14,5 @@ public @interface Parameter {
 // TODO:
 // * show default value in usage
 // * if boolean don't show value
-// 
+// * validate based on enum strings
 

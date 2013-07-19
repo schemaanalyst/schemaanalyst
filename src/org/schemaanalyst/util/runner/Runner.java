@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -23,12 +24,12 @@ public abstract class Runner {
     protected static final String NO_OPTION_CLI_VALUE_DEFAULT = "true";
 
     // must be spaces, not tabs to work properly:
-    protected static final String USAGE_PARAM_INDENT = 
-            StringUtils.repeat(" ", 4);
+    protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
+    protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
     
-    // a repetition of the above
-    protected static final String USAGE_PARAM_DESCRIPTION_INDENT = 
-            StringUtils.repeat(USAGE_PARAM_INDENT, 4);
+    // a set of the parameters that were specified at the command line
+    // and their original values
+    protected HashMap<String, String> originalParamValues;
     
     // various configurations
     protected FolderConfiguration folderConfiguration;
@@ -51,7 +52,10 @@ public abstract class Runner {
     }
 
     protected void parseArgs(String... args) {
-        String[] requiredParams = getRequriedParamFieldNames(); 
+        // record which parameters were parsed and their original values
+        originalParamValues = new HashMap<>();
+        
+        String[] requiredParams = getRequriedParameterFieldNames(); 
         int numRequiredParamsProcessed = 0;
         
         for (String arg : args) {
@@ -70,7 +74,7 @@ public abstract class Runner {
                     fieldName = arg.substring(LONG_OPTION_PREFIX.length(), equalsPos);
                     value = arg.substring(equalsPos + 1);
                 }
-                processParam(fieldName, value);                
+                processParameter(fieldName, value);                
             } else {
                 if (numRequiredParamsProcessed < requiredParams.length) {
                     String fieldName = requiredParams[numRequiredParamsProcessed];
@@ -82,14 +86,14 @@ public abstract class Runner {
                                 getClass().getCanonicalName());
                     }
                     
-                    if (!isParam(fieldName)) {
+                    if (!isParameter(fieldName)) {
                         throw new RuntimeException(
                                 "Required option field \"" + fieldName + 
                                 "\" is not specified as an option for " +
                                 getClass().getCanonicalName());
                     }
                     
-                    processParam(fieldName, arg);
+                    processParameter(fieldName, arg);
                     numRequiredParamsProcessed ++;
                 } else {
                     quitWithError("Too many arguments");
@@ -102,7 +106,7 @@ public abstract class Runner {
         }
     }
     
-    protected String getRequiredParamsString() {
+    protected String getRequiredParametersString() {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation annotation : annotations) {
             if (annotation instanceof RequiredParameters) {
@@ -114,8 +118,8 @@ public abstract class Runner {
         return "";
     }
     
-    protected String[] getRequriedParamFieldNames() {
-        return getRequiredParamsString().split(" ");
+    protected String[] getRequriedParameterFieldNames() {
+        return getRequiredParametersString().split(" ");
     }
     
     protected boolean isField(String fieldName) {
@@ -130,15 +134,15 @@ public abstract class Runner {
         return null;  
     }
     
-    protected boolean isParam(String fieldName) {
-        return getParam(fieldName) != null;
+    protected boolean isParameter(String fieldName) {
+        return getParameter(fieldName) != null;
     }
     
-    protected Parameter getParam(String fieldName) {        
-        return getParam(getField(fieldName));        
+    protected Parameter getParameter(String fieldName) {        
+        return getParameter(getField(fieldName));        
     }
     
-    protected Parameter getParam(Field field) {
+    protected Parameter getParameter(Field field) {
         if (field != null) {
             Annotation[] annotations = field.getAnnotations();
             for (Annotation annotation : annotations) {
@@ -150,7 +154,10 @@ public abstract class Runner {
         return null;     
     }
 
-    protected void processParam(String fieldName, String value) {
+    protected void processParameter(String fieldName, String value) {
+        // set the original param values entry
+        originalParamValues.put(fieldName, value);
+        
         // get hold of the instance field
         Field field = getField(fieldName);
         if (field == null) {
@@ -158,7 +165,7 @@ public abstract class Runner {
         }
 
         // get hold of the option instance for the field
-        Parameter param = getParam(field);
+        Parameter param = getParameter(field);
         if (param == null) {
             quitWithError("Unknown option \"" + fieldName + "\"");
         }
@@ -188,9 +195,13 @@ public abstract class Runner {
         }
     }
     
-    protected void validateThat(boolean assertion, String errorMessage) {
-        if (!assertion) {
-            quitWithError(errorMessage);
+    protected boolean wasParameterSpecified(String parameterName) {
+        return originalParamValues.containsKey(parameterName);
+    }
+    
+    protected void check(boolean test, String failureMessage) {
+        if (!test) {
+            quitWithError(failureMessage);
         }
     }
 
@@ -226,12 +237,12 @@ public abstract class Runner {
     protected void printUsage() {
         StringBuilder usage = new StringBuilder();
         
-        String requiredParamsList = getRequiredParamsList();        
-        String nonRequiredParamsList = getNonRequiredParamsList();
+        String requiredParamsList = getRequiredParametersUsageList();        
+        String nonRequiredParamsList = getOptionalParamsUsageList();
         
         usage.append("USAGE: java " + getClass().getCanonicalName());
         if (requiredParamsList.length() > 0) {
-            usage.append(" " + getRequiredParamsString());
+            usage.append(" " + getRequiredParametersString());
         }
         if (nonRequiredParamsList.length() > 0) {
             usage.append(" <options>");
@@ -253,24 +264,24 @@ public abstract class Runner {
         System.out.println(usage);
     }    
     
-    protected String getRequiredParamsList() {
+    protected String getRequiredParametersUsageList() {
         StringBuilder list = new StringBuilder();
         
-        for (String fieldName : getRequriedParamFieldNames()) {
-            Parameter param = getParam(fieldName);
+        for (String fieldName : getRequriedParameterFieldNames()) {
+            Parameter param = getParameter(fieldName);
             if (param == null) {
                 throw new RuntimeException(
                         "Field \"" + fieldName + 
                         "\" specified in RequiredParameters annotation " + 
                         "is not annotated as a parameter in " + getClass().getCanonicalName());
             }              
-            list.append(getParamInfo(fieldName, "", param));
+            list.append(getParameterUsageInfo(fieldName, "", param));
         }        
         
         return list.toString();
     }
     
-    protected String getNonRequiredParamsList() {
+    protected String getOptionalParamsUsageList() {
         // sort fields        
         Field[] fields = getClass().getDeclaredFields();
         List<String> fieldsList = new ArrayList<String>();
@@ -280,7 +291,7 @@ public abstract class Runner {
         Collections.sort(fieldsList);
         
         // put required fields into a set
-        String[] requiredParamFieldNames = getRequriedParamFieldNames();
+        String[] requiredParamFieldNames = getRequriedParameterFieldNames();
         Set<String> requiredParamFieldNamesSet = new HashSet<>();
         for (String fieldName : requiredParamFieldNames) {
             requiredParamFieldNamesSet.add(fieldName);
@@ -289,36 +300,36 @@ public abstract class Runner {
         StringBuilder list = new StringBuilder();
         // find which have fields have options and are not required, and append
         for (String fieldName : fieldsList) {
-            Parameter param = getParam(fieldName);
+            Parameter param = getParameter(fieldName);
             if (param != null && !requiredParamFieldNamesSet.contains(fieldName)) {
                 String name = "--" + fieldName;
                 String value = "<value>";
-                list.append(getParamInfo(name, value, param));
+                list.append(getParameterUsageInfo(name, value, param));
             }
         }        
         
         return list.toString();
     }
     
-    protected String getParamInfo(String name, String value, Parameter option) {
-        String info = USAGE_PARAM_INDENT + name;
+    protected String getParameterUsageInfo(String name, String value, Parameter param) {
+        String info = USAGE_INDENT + name;
         
         if (value.length() > 0) {
             info += "=" + value;
         }
 
-        String description = option.value();
+        String description = param.value();
         if (description.length() > 0) {        
-            if (info.length() > USAGE_PARAM_DESCRIPTION_INDENT.length()) {
-                info += "\n" + USAGE_PARAM_DESCRIPTION_INDENT;
+            if (info.length() > USAGE_HANGING_INDENT.length()) {
+                info += "\n" + USAGE_HANGING_INDENT;
             } else {
-                int spacesToAdd = USAGE_PARAM_DESCRIPTION_INDENT.length() - info.length();
+                int spacesToAdd = USAGE_HANGING_INDENT.length() - info.length();
                 for (int i=0; i < spacesToAdd; i++) {                    
                     info += " ";
                 }
             }
             
-            String choicesMethod = option.choicesMethod();
+            String choicesMethod = param.choicesMethod();
             if (choicesMethod.length() > 0) {
                 int methodDot = choicesMethod.lastIndexOf(".");
                 String className = choicesMethod.substring(0, methodDot);
