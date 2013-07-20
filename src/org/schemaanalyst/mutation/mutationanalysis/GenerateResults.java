@@ -4,6 +4,7 @@ package org.schemaanalyst.mutation.mutationanalysis;
 
 import java.io.File;
 import java.util.List;
+
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
@@ -21,6 +22,7 @@ import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.util.runner.Runner;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
@@ -30,7 +32,6 @@ import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**

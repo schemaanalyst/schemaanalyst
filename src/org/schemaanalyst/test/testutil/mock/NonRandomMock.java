@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.mock;
+package org.schemaanalyst.test.testutil.mock;
 
 import org.schemaanalyst.util.random.Random;
 

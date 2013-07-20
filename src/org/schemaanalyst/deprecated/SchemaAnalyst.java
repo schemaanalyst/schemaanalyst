@@ -30,6 +30,7 @@ import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCri
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlrepresentation.Schema;

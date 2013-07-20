@@ -6,7 +6,7 @@ import java.sql.Statement;
 import java.sql.SQLException;
 
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.Configuration;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class PostgresDatabaseInteractor extends DatabaseInteractor {
 

@@ -13,8 +13,8 @@ import com.rits.cloning.Cloner;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.Configuration;
 import org.schemaanalyst.deprecated.SchemaAnalyst;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 import org.schemaanalyst.script.ScriptCreator;
 import org.schemaanalyst.script.MutantScriptCreator;
 import org.schemaanalyst.sqlrepresentation.Schema;

@@ -13,8 +13,8 @@ import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-import static org.schemaanalyst.test.junit.BigDecimalAssert.assertEquals;
-import static org.schemaanalyst.test.junit.BigDecimalAssert.assertZero;
+import static org.schemaanalyst.test.testutil.BigDecimalAssert.assertEquals;
+import static org.schemaanalyst.test.testutil.BigDecimalAssert.assertZero;
 
 public class TestNumericalValueObjectiveFunction {
 

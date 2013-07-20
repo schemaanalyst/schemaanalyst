@@ -6,8 +6,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.BooleanValueObjectiveFunction;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
 public class TestBooleanValueObjectiveFunction {
 

@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.junit;
+package org.schemaanalyst.test.testutil;
 
 import static org.junit.Assert.assertTrue;
 

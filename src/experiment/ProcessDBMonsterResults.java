@@ -18,7 +18,7 @@ import java.util.regex.Matcher;
 import experiment.ExperimentUtilities;
 
 import org.schemaanalyst.mutation.MutationUtilities;
-import org.schemaanalyst.deprecated.Configuration;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class ProcessDBMonsterResults {
 

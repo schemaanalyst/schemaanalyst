@@ -12,7 +12,7 @@ import java.util.List;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.Configuration;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutationReport;

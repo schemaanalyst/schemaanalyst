@@ -1,5 +1,6 @@
 package org.schemaanalyst.util.runner;
 
+import java.io.PrintStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -8,21 +9,36 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
 import org.schemaanalyst.util.StringUtils;
+import org.schemaanalyst.util.exit.ExitManager;
+import org.schemaanalyst.util.exit.SystemExit;
 
 /**
- * Represents an entry point to the SchemaAnalyst system, parses in key configuration files
+ * <p>Represents an entry point to the SchemaAnalyst system, parses in key configuration files
  * and allows instance fields to take on values specified from the command line with the help
- * of the @Description, @RequiredParameters and @Parameter annotations. 
+ * of the @Description, @RequiredParameters and @Parameter annotations.</p>
+ * 
+ * <p>Important nomenclature: <br />
+ * <strong>Arguments (args) </strong> -- raw values passed to a main method at the command line. 
+ * <strong>Parameters</strong> -- name/value pairs for which a value may be required or optional.  For 
+ * required parameters, only the value is passed at the command line whereas for optional parameters, 
+ * the name must be passed with the value.  (Furthermore, some optional parameters may be switches 
+ * (boolean flags) in which case no value is passed, just the name, in order to set the switch.)
+ * Required parameters are specified in the space-delimited value of a  @RequiredParameters annotation
+ * for a class.  Every other parameter is assumed to be optional.
+ * <strong>Fields</strong> -- instance fields of a class which are mapped to parameters through the
+ * @Parameter annotation.
+ *  
  * @author phil
  */
 public abstract class Runner {
-    
+
     public static final String LONG_OPTION_PREFIX = "--";
     public static final String HELP_OPTION = LONG_OPTION_PREFIX + "help";
 
@@ -30,76 +46,179 @@ public abstract class Runner {
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
     
-    // a store of overwritten default values 
-    protected HashMap<String, Object> overwrittenDefaults;
-    
-    // various configurations
+    // configurations
     protected FolderConfiguration folderConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
     protected LoggingConfiguration loggingConfiguration;
+        
+    // parameter/field/defaults introspection information
+    protected List<String> requiredParameterNames;
+    
+    protected Map<String, Field> parameterFields;
+    protected Map<String, Parameter> parameters;
+    protected Map<String, Object> optionalParameterDefaults;
+    
+    // set of parameters parsed in from args
+    protected Set<String> parsedParameters;
+    
+    // use an exit manager so that can exits can be overridden or mocked for testing    
+    protected ExitManager exitManager = new SystemExit();
+    
+    // store the command line output stream as an instance variable so that it
+    // can be mocked or redirected
+    protected PrintStream cli = System.out; 
     
     /**
-     * Constructor.  Instantiates the Runner and loads configuration files.
-     */
-    public Runner() {
-        this(true);
-    }
-    
-    /**
-     * Constructor.  
-     * @param loadConfiguration If true, loads the configuration file.
-     */
-    public Runner(boolean loadConfiguration) {
-        if (loadConfiguration) {
-            loadConfiguration();
-        }
-    }
-    
-    /**
-     * Executes the main code of the runner
+     * Executes the runner
      * @param args The arguments passed from the command line.
-     */
-    public abstract void run(String... args);
+     */    
+    public void run(String... args) {
+        initialise(args);
+        task();
+    }
+
+    /**
+     * Describes the main steps of the task of the runner
+     */ 
+    protected abstract void task(); 
     
     /**
      * This method should be overridden to perform any additional validation
      * required of the field values passed in through the values of args 
      * to the run method.
-     */
-    protected abstract void validateParameters();    
+     */    
+    protected abstract void validateParameters();        
     
     /**
      * Intialises the Runner by parsing args into field values and then
      * validating them through a call to validateParameters.
      * @param args The arguments passed in from the command line.
-     */    
+     */      
     protected void initialise(String... args) {
+        inspectParameters();
         parseArgs(args);
+        loadConfiguration();
         validateParameters();
     }
-
+    
     /**
      * Loads the properties files from their default locations.
      */
-    protected void loadConfiguration() {
+    protected void loadConfiguration() {       
         folderConfiguration = new FolderConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
-        loggingConfiguration = new LoggingConfiguration();
+        loggingConfiguration = new LoggingConfiguration();        
+    }
+    
+    /**
+     * Furnishes parameter/field information through reflection
+     */
+    protected void inspectParameters() {
+        acquireRequiredParameterNames();       
+        acquireParametersAndFieldInformation();
+        crosscheckRequiredParameters();
     }
 
     /**
+     * Goes through class and back through subclasses collecting
+     * parameter-field information 
+     */
+    protected void acquireParametersAndFieldInformation() {
+        parameters = new HashMap<>();
+        parameterFields = new HashMap<>();
+        optionalParameterDefaults = new HashMap<>();        
+        
+        // get all fields with @Parameter annotations
+        // and put them in the appropriate data structure
+        // (requiredParameters & requiredParameterFields or
+        // (optionalParameters & optionalParameterFields)
+        Class<?> currentClass = getClass();
+        while (currentClass != null) {
+            Field[] fields = currentClass.getDeclaredFields();            
+            for (Field field : fields) {
+
+                // Go through the field's annotations to see 
+                // if it is a parameter
+                Annotation[] annotations = field.getAnnotations();
+                
+                for (Annotation annotation : annotations) {
+                    if (annotation instanceof Parameter) {
+                        
+                        // it's a parameter
+                        String name = field.getName();
+                        Parameter parameter = (Parameter) annotation;
+                        
+                        // if we already have this parameter from an
+                        // earlier sub-class, ignore it.
+                        if (!parameters.containsKey(name)) {
+                            parameters.put(name, parameter);
+                            parameterFields.put(name, field);
+                        
+                            // we need to be able to set the field
+                            field.setAccessible(true);
+                        }
+                        
+                        boolean optional = isOptionalParameter(name);
+                        if (optional) {
+                            // save the default value
+                            try {
+                                optionalParameterDefaults.put(name, field.get(this));
+                            } catch (IllegalAccessException e) {
+                                throw new PropertyFieldAccessException(
+                                        "Property field \"" + name + "\" cannot be accessed", e);
+                            }
+                        }
+                    }
+                }                                
+            }            
+            currentClass = currentClass.getSuperclass();
+        }
+    }
+    
+    /**
+     * Acquires the list of required parameter names from the
+     * @RequiredParameters annotation.  If one does not exist for
+     * the current class, parent classes are explored by moving
+     * back through the class's inheritance hierarchy.
+     */
+    protected void acquireRequiredParameterNames() {
+        requiredParameterNames = new ArrayList<>();
+        
+        Class<?> currentClass = getClass();
+        while (currentClass != null) {
+            Annotation[] annotations = currentClass.getAnnotations();
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof RequiredParameters) {
+                    String str = ((RequiredParameters) annotation).value();
+                    requiredParameterNames = StringUtils.explode(str, " ");
+                    return;
+                }
+            }
+            currentClass = currentClass.getSuperclass();
+        }        
+    }
+    
+    /**
+     * Ensure each field name extracted from the @RequiredParameters
+     * annotation was found as an actual parameter.
+     */
+    protected void crosscheckRequiredParameters() {
+        for (String name : requiredParameterNames) {
+            if (!parameters.containsKey(name)) {
+                throw new UnknownPropertyException(
+                        "\"" + name + "\" specified in @RequiredParameters is not " + 
+                        "a parameter for " + getClass());
+            }
+        }
+    }
+    
+    /**
      * Parses args passed in from the command line into field values.
      * @param args The arguments passed in from the command line.
-     */
+     */    
     protected void parseArgs(String... args) {
-        // record which options parameters were parsed and their original defaults
-        // this is in case there is an error in parsing values and the usage must
-        // be printed with default values for each field (which may have been
-        // set to new values in the parsing process).
-        overwrittenDefaults = new HashMap<>();
-        
-        String[] requiredParams = getRequriedParameterFieldNames(); 
-        int numRequiredParamsProcessed = 0;
+        parsedParameters = new HashSet<>();
+        int numReqProcessed = 0;
         
         for (String arg : args) {
             // if the user wants help, give it to them
@@ -108,166 +227,76 @@ public abstract class Runner {
             }
 
             if (arg.startsWith(LONG_OPTION_PREFIX)) {     
-                // parse an optional parameter 
-                
-                String fieldName = "";
-                String value = "";
-                int startPos = LONG_OPTION_PREFIX.length();
-                int equalsPos = arg.indexOf("=");
-                if (equalsPos == -1) {
-                    fieldName = arg.substring(startPos);
-                } else {
-                    fieldName = arg.substring(startPos, equalsPos);
-                    value = arg.substring(equalsPos + 1);
-                }
-                
-                setFieldWithParameterValue(fieldName, value);                
+                parseOptionalParameter(arg);            
             } else {
                 // parse a required parameter
-                if (numRequiredParamsProcessed < requiredParams.length) {
-                    String fieldName = requiredParams[numRequiredParamsProcessed];
-                    
-                    // ensure there's been no errors in setting up @RequiredParameters  
-                    if (!isField(fieldName)) {
-                        throw new RuntimeException(
-                                fieldName + " is specified in @RequiredParameters for " + 
-                                getClass().getCanonicalName() + " but no such field exists " + 
-                                "in that class or its superclasses");
-                    }
-                    
-                    if (!isParameter(fieldName)) {
-                        throw new RuntimeException(
-                                fieldName + " is specified in @RequiredParameters for " + 
-                                getClass().getCanonicalName() + " but is not marked with @Parameter " + 
-                                "for that class or its superclasses");
-                    }
-                    
-                    setFieldWithParameterValue(fieldName, arg);
-                    numRequiredParamsProcessed ++;
+                if (numReqProcessed < requiredParameterNames.size()) {
+                    parseRequiredParameter(numReqProcessed, arg);                    
+                    numReqProcessed ++;
                 } else {
+                    cli.println(numReqProcessed + " " + requiredParameterNames.size());
                     quitWithError("Too many arguments");
                 }
             }
         }
         
-        if (numRequiredParamsProcessed < requiredParams.length) {            
-            quitWithError("No value supplied for " + requiredParams[numRequiredParamsProcessed]);
-        }
-    }
-    
-    /**
-     * Pulls out the value of the @RequiredParameters annotation for the Runner class,
-     * if one has been specified, going back through superclasses if one not defined
-     * for the current class.
-     * @return The value of the @RequiredParameters annotation, if specified in the class.
-     */
-    protected String getRequiredParametersString() {
-        Class<?> currentClass = getClass();
-        while (currentClass != null) {
-            Annotation[] annotations = currentClass.getAnnotations();
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof RequiredParameters) {
-                    RequiredParameters requiredParams = (RequiredParameters) annotation;
-                    String allParams = requiredParams.value();
-                    return allParams.replace("\\s+", " ");
-                }
-            }
-            currentClass = currentClass.getSuperclass();
-        }
-        return "";
-    }
-    
-    /**
-     * Returns an array of strings representing fields specified (in the same order) in 
-     * the @RequiredFields annotation.
-     */
-    protected String[] getRequriedParameterFieldNames() {
-        return getRequiredParametersString().split(" ");
-    }
-    
-    /**
-     * Checks whether a string is the name of a field in the extension of the class.
-     * @param name The name string to be checked.
-     * @return True if the string is a field of the extension of this Runner class, else false.
-     */
-    protected boolean isField(String name) {
-        return getField(name) != null;
-    }
-    
-    /**
-     * Using reflection, gets the Field object for the field of the extension of this class,
-     * as specfied by the name string. 
-     * @param name The name of the field to be obtained.
-     * @return A Field instance, or null if there is no field corresponding to name 
-     */
-    protected Field getField(String name) {
-        Class<?> currentClass = getClass();
-        while (currentClass != null) {
-            try {
-                return currentClass.getDeclaredField(name);
-            } catch (NoSuchFieldException e) {           
-            }
-            currentClass = currentClass.getSuperclass();
-        }
-        return null;  
-    }
-    
-    /**
-     * Checks whether the field specified by name is a parameter, that is, whether it is
-     * marked up with a @Parameter annotation.
-     * @param name The name of the field to check.
-     * @return True if the field specified by name is a parameter, else false.
-     */
-    protected boolean isParameter(String name) {
-        return getParameter(name) != null;
-    }
-    
-    /** 
-     * Gets the @Parameter annotation for the field specified by the string name, if such an
-     * annotation exists.
-     * @param name The name of the field for which the annotation is requested.
-     * @return The annotation, if it exists, else false.
-     */
-    protected Parameter getParameter(String name) {        
-        return getParameter(getField(name));        
-    }
-    
-    /** 
-     * Gets the @Parameter annotation for Field, if such an annotation exists.
-     * @param name The field for which the annotation is requested.
-     * @return The annotation, if it exists, else false.
-     */    
-    protected Parameter getParameter(Field field) {
-        if (field != null) {
-            Annotation[] annotations = field.getAnnotations();
-            for (Annotation annotation : annotations) {
-                if (annotation instanceof Parameter) {
-                    return (Parameter) annotation;
-                }
-            }
+        if (numReqProcessed < requiredParameterNames.size()) {            
+            quitWithError("No value supplied for " + 
+                    requiredParameterNames.get(numReqProcessed));
         }        
-        return null;     
     }
-
+    
+    /**
+     * Parses a required parameter from the args list.
+     * @param n The number of the required parameter as it appears 
+     *          in the @RequiredParameters declaration.
+     * @param arg The argument string passed in from args.
+     */
+    protected void parseRequiredParameter(int n, String arg) {
+        String name = requiredParameterNames.get(n);
+        setField(name, arg);
+    }
+       
+    /**
+     * Parses an optional parameter from the args list.
+     * @param arg The argument string passed in from args.
+     */    
+    protected void parseOptionalParameter(String arg) {
+        String name = "";
+        String value = "";
+        int startPos = LONG_OPTION_PREFIX.length();
+        int equalsPos = arg.indexOf("=");
+        if (equalsPos == -1) {
+            name = arg.substring(startPos);
+        } else {
+            name = arg.substring(startPos, equalsPos);
+            value = arg.substring(equalsPos + 1);
+        } 
+        
+        // this could be a user error (mistyped parameter name), so no exception thrown
+        if (!parameters.containsKey(name)) {
+            quitWithError("No such property \"" + name + "\" for " + getClass());
+        }
+        
+        // if it's a required property, it cannot be set using a long option name
+        if (isRequiredParameter(name)) {
+            quitWithError("Property \"" + name + "\" is required and cannot be set using a long option name");
+        }
+        
+        setField(name, value);            
+    }
+     
     /**
      * Sets a field specified by the string name with the value specified by the string value.
      * If the field is not a string (i.e., an int, double etc.), the value is parsed.       
      * @param name The name of the field to set. 
      * @param value The value with which to set it.
-     */    
-    protected void setFieldWithParameterValue(String name, String value) {
-        // get hold of the instance field
-        Field field = getField(name);
-        check(field != null, "Unknown parameter \"" + name + "\"");
-
-        // get hold of the option instance for the field
-        Parameter param = getParameter(field);
-        check(param != null, "Unknown parameter \"" + name + "\"");
-
+     */ 
+    protected void setField(String name, String value) {
         // if choices are available for this method, ensure that the value 
         // is equal to one of them
-        String choices[] = getParameterChoices(name, param);
-        if (choices.length > 0) {
+        List<String> choices = acquireParameterChoices(name);
+        if (choices.size() > 0) {
             boolean foundMatch = false;
             for (String choice : choices) {
                 if (choice.equals(value)) {
@@ -275,30 +304,30 @@ public abstract class Runner {
                 }
             }
             check(foundMatch, 
-                  name + " value \"" + value + "\" is not one of a list of pre-specified choices");
+                  name + " value \"" + value + 
+                  "\" is not one of the list of pre-specified choices");
         }
         
         // is the value a switch?
-        String valueAsSwitch = param.valueAsSwitch();
+        String valueAsSwitch = parameters.get(name).valueAsSwitch();
         if (valueAsSwitch.length() > 0) {
-            check(value.length() == 0, name + " is a switch, so no value is requried");
+            check(value.length() == 0, 
+                  name + " is a switch, so no value is requried");
             value = valueAsSwitch;
         }        
         
         // parse the value into the field
-        field.setAccessible(true);
+        Field field = parameterFields.get(name);
+        Class<?> type = field.getType();
         try {
-            // store the original value of the field
-            overwrittenDefaults.put(name, field.get(this));        
-                        
-            if (field.getType().equals(Boolean.TYPE)) {
+            if (type.equals(Boolean.TYPE)) {
                 try {
                     boolean booleanValue = Boolean.parseBoolean(value);
                     field.setBoolean(this, booleanValue);
                 } catch (NumberFormatException e) {
                     quitWithError(name + " value \"" + value + "\" is not a boolean");
                 }
-            } else if (field.getType().equals(Double.TYPE)) {
+            } else if (type.equals(Double.TYPE)) {
                 try {
                     double doubleValue = Double.parseDouble(value);
                     field.setDouble(this, doubleValue);
@@ -306,36 +335,86 @@ public abstract class Runner {
                     quitWithError(name + " value \"" + value + 
                                   "\" is not a double-precision floating point value");
                 }                
-            } else if (field.getType().equals(Integer.TYPE)) {
+            } else if (type.equals(Integer.TYPE)) {
                 try {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
                 } catch (NumberFormatException e) {
                     quitWithError(name + " value \"" + value + "\" is not an integer");
                 }
-            } else if (field.getType().equals(Long.TYPE)) {
+            } else if (type.equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
                     quitWithError(name + " value \"" + value + "\" is not a long integer");
                 }
-            } else if (field.getType().equals(String.class)) {
+            } else if (type.equals(String.class)) {
                 field.set(this, value);
             } 
-        } catch (IllegalArgumentException | IllegalAccessException e) {
-            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new PropertyFieldAccessException(
+                    "Could not access field \"" + field + 
+                    "\" in order to set with property value", e);
+        } 
+        
+        parsedParameters.add(name);
+    }    
+
+    /**
+     * Get the possible limited list of choices for a parameter, as a string array.
+     * The string array is constructed from a method call.  The method is specified
+     * by the parameter annotation in the form "class.method".
+     * @param name The name of the parameter.
+     * @return A string list denoting the enumeration of possible choices for values 
+     * of the parameter.
+     */     
+    @SuppressWarnings("unchecked")
+    protected List<String> acquireParameterChoices(String name) {
+        List<String> choices = new ArrayList<>();
+        
+        String choicesMethod = parameters.get(name).choicesMethod();        
+        if (choicesMethod.length() > 0) {
+            int methodDot = choicesMethod.lastIndexOf(".");
+            String className = choicesMethod.substring(0, methodDot);
+            String methodName = choicesMethod.substring(methodDot + 1);
+
+            try {
+                choices = (List<String>) Class.forName(className).getMethod(methodName).invoke(null);
+            } catch (NoSuchMethodException | ClassNotFoundException | 
+                     IllegalAccessException | InvocationTargetException e) {
+                throw new ChoicesMethodInvocationException(
+                        "Could not invoke \"" + choicesMethod + 
+                        "\" to get choices for option \"" + name + "\"", e);
+            }
         }
+        
+        return choices;        
+    }
+       
+    /**
+     * Check whether a parameter is a required parameter
+     * @return True if the parameter is required, else false.
+     */
+    protected boolean isRequiredParameter(String name) {
+        return requiredParameterNames.contains(name);
     }
     
     /**
-     * Check whether a parameter was specified at the command line or not.
+     * Check whether a parameter is an optional parameter
+     * @return True if the parameter is optional, else false.
+     */
+    protected boolean isOptionalParameter(String name) {
+        return !isRequiredParameter(name);
+    }    
+    
+    /**
+     * Check whether the value for a parameter was parsed at the command line or not.
      * @param name The name of the parameter.
      * @return True if the parameter was set, else false.
      */
-    protected boolean wasParameterSpecified(String name) {
-        // if there's an entry in the overwrittenParamDefaults, the parameter was set 
-        return overwrittenDefaults.containsKey(name);
+    protected boolean wasParameterPassed(String name) { 
+        return parsedParameters.contains(name);
     }
     
     /**
@@ -355,8 +434,8 @@ public abstract class Runner {
      * Prints the description and usage and quits.
      */
     protected void quitWithHelp() {
-        printDescription();
-        System.out.println();
+        cli.println(getDescription());
+        cli.println();
         quitWithUsage();
     }    
 
@@ -364,8 +443,8 @@ public abstract class Runner {
      * Quits with the usage message.
      */
     protected void quitWithUsage() {
-        printUsage();
-        System.exit(1);
+        cli.println(getUsage());
+        exitManager.exit(1);
     }
     
     /**
@@ -373,168 +452,128 @@ public abstract class Runner {
      * @param errorMessage The error message to relay to the user.
      */
     protected void quitWithError(String errorMessage) {
-        System.out.println("ERROR: " + errorMessage + ".");
-        System.out.println("Please check your usage.  Here's Graham with a quick reminder:\n");
+        cli.println("ERROR: " + errorMessage + ".");
+        cli.println("Please check your usage.  Here's Graham with a quick reminder:\n");
         quitWithUsage();
     }
     
     /**
-     * Prints the contents of the @Description annotation, if one is specified
-     * for the class.
+     * Get the value of the @Description of this Runner class, if one exists.
+     * @return The description of the Runner.
      */
-    protected void printDescription() {
+    protected String getDescription() {
         Annotation[] annotations = getClass().getAnnotations();
         for (Annotation annotation : annotations) {
             if (annotation instanceof Description) {
-                String description = ((Description) annotation).value();
-                if (description.length() > 0) {
-                    System.out.println("DESCRIPTION: " + description);
-                }
+                return ((Description) annotation).value();
             }
-        }        
-    }
-    
-    /**
-     * Prints the usage message for the class's parameters.
-     */
-    protected void printUsage() {
-        StringBuilder usage = new StringBuilder();
-        
-        String requiredParamsList = getRequiredParametersUsageList();        
-        String nonRequiredParamsList = getOptionalParamsUsageList();
-        
-        usage.append("USAGE: java " + getClass().getCanonicalName());
-        if (requiredParamsList.length() > 0) {
-            usage.append(" " + getRequiredParametersString());
         }
-        if (nonRequiredParamsList.length() > 0) {
-            usage.append(" <options>");
-        }
-        usage.append(System.lineSeparator());
-        
-        if (requiredParamsList.length() > 0) {
-            usage.append("with:");
-            usage.append(System.lineSeparator());
-            usage.append(requiredParamsList);
-        }
-        if (nonRequiredParamsList.length() > 0) {
-            usage.append(((requiredParamsList.length() > 0) ? "and " : ""));
-            usage.append("where possible options include:");
-            usage.append(System.lineSeparator());
-            usage.append(nonRequiredParamsList);
-        }
-     
-        System.out.println(usage);
+        return null;
     }    
     
     /**
+     * Gets the usage message for the class's parameters.
+     */
+    protected String getUsage() {
+        StringBuilder usage = new StringBuilder();
+                
+        boolean haveRequired = requiredParameterNames.size() > 0;
+        boolean haveOptional = parameters.size() > requiredParameterNames.size(); 
+        
+        usage.append("USAGE: java " + getClass().getCanonicalName() + " ");
+        if (haveRequired) {
+            usage.append(StringUtils.implode(requiredParameterNames, " ") + " ");
+        }
+        if (haveOptional) {
+            usage.append("<options>");
+        }
+        usage.append(System.lineSeparator());
+        
+        if (haveRequired) {
+            usage.append("with:");
+            usage.append(System.lineSeparator());
+            usage.append(getRequiredParametersUsage());
+        }
+        if (haveOptional) {
+            if (haveRequired) {
+                usage.append("and ");                
+            }
+            usage.append("where possible options include:");
+            usage.append(System.lineSeparator());
+            usage.append(getOptionalParametersUsage());
+        }
+        
+        return usage.toString();
+    }
+            
+    /**
      * Builds the usage list for required parameters
      * @return A string reflecting the usage requirements of required parameters.
-     */            
-    protected String getRequiredParametersUsageList() {
+     */     
+    protected String getRequiredParametersUsage() {
         StringBuilder list = new StringBuilder();
         
-        for (String fieldName : getRequriedParameterFieldNames()) {
-            Parameter param = getParameter(fieldName);
-            if (param == null) {
-                throw new RuntimeException(
-                        "Field \"" + fieldName + 
-                        "\" specified in RequiredParameters annotation " + 
-                        "is not annotated as a parameter in " + getClass().getCanonicalName());
-            } 
-            String paramUsageInfo = formatRequiredParameterUsageInfo(fieldName, param); 
-            list.append(paramUsageInfo);            
+        for (String name : requiredParameterNames) {
+            String usage = getParameterUsage(name);        
+            list.append(usage);            
         }        
         
         return list.toString();
     }
-    
-    /**
-     * Format a required parameter for the usage list.
-     * @param name The name of the parameter.
-     * @param param The parameter annotation for the field corresponding to the parameter
-     * @return A string denoting the usage of this parameter.
-     */
-    protected String formatRequiredParameterUsageInfo(String name, Parameter param) {
-        String formattedName = name;
-        String formattedValue = "";
-        String description = param.value();
-        String[] choices = getParameterChoices(name, param);
-        String defaultValue = "";
-        
-        return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
-    }    
     
     /**
      * Builds the usage list for optional parameters
      * @return A string reflecting the usage requirements of optional parameters.
-     */             
-    protected String getOptionalParamsUsageList() {        
-        // get and sort fields
-        List<String> fieldsList = new ArrayList<String>();
-        Class<?> currentClass = getClass();
-        while (currentClass != null) {
-            for (Field field : currentClass.getDeclaredFields()) {
-                fieldsList.add(field.getName());
-            }            
-            currentClass = currentClass.getSuperclass();
-        }
-        
-        Collections.sort(fieldsList);
-        
-        // put required fields into a set
-        String[] requiredParamFieldNames = getRequriedParameterFieldNames();
-        Set<String> requiredParamFieldNamesSet = new HashSet<>();
-        for (String fieldName : requiredParamFieldNames) {
-            requiredParamFieldNamesSet.add(fieldName);
-        }
+     */       
+    protected String getOptionalParametersUsage() {
+        List<String> names = new ArrayList<>();
+        names.addAll(parameters.keySet());
+        Collections.sort(names);
         
         StringBuilder list = new StringBuilder();
-        // find which have fields have options and are not required, and append
-        for (String fieldName : fieldsList) {
-            Parameter param = getParameter(fieldName);
-            if (param != null && !requiredParamFieldNamesSet.contains(fieldName)) {
-                String paramUsageInfo = formatOptionalParameterUsageInfo(fieldName, param); 
-                list.append(paramUsageInfo);
+        for (String name : names) {
+            // don't re-include required parameters in the list
+            if (isOptionalParameter(name)) {
+                String usage = getParameterUsage(name);
+                list.append(usage);
             }
-        }        
+        }
         
         return list.toString();
     }
     
     /**
-     * Format an optional parameter for the usage list.
+     * Formats a parameter for the usage list.
      * @param name The name of the parameter.
-     * @param param The parameter annotation for the field corresponding to the parameter
      * @return A string denoting the usage of this parameter.
-     */    
-    protected String formatOptionalParameterUsageInfo(String name, Parameter param) {
-        String formattedName = "--" + name;
-        String formattedValue = (param.valueAsSwitch().length() > 0) ? "" : "value";
-        String description = param.value();
-        String[] choices = getParameterChoices(name, param);
-        String defaultValue = (param.valueAsSwitch().length() > 0) ? "" :  getParameterDefaultAsString(name);
+     */      
+    protected String getParameterUsage(String name) {
+        Parameter parameter = parameters.get(name);
+        boolean required = isRequiredParameter(name);
         
-        return formatParameterUsageInfo(formattedName, formattedValue, description, choices, defaultValue);        
-    }
-    
-    /**
-     * Format usage information for a parameter
-     * @param name The parameter name as it should appear in the list (e.g. with initial hyphens).
-     * @param value The indicative value string.
-     * @param description A short description of the parameter.
-     * @param choices A String array of possible choices for the parameter. 
-     * @param defaultValue The default value of the parameter, if it is optional and not specified.
-     * @return Usage information for the parameter as a string.
-     */
-    protected String formatParameterUsageInfo(String name, String value, String description, 
-                                              String[] choices, String defaultValue) {
-        String info = USAGE_INDENT + name;
-        
-        if (value.length() > 0) {
-            info += "=" + value;
+        String formattedName = name;
+        if (required) {
+            formattedName = LONG_OPTION_PREFIX + name;
         }
-
+        
+        String value = "";
+        if (!required) {
+            if (parameter.valueAsSwitch().length() == 0) {
+                value = "=<value>";
+            }
+        }
+       
+        String description = parameter.value();
+        
+        String choices = StringUtils.implode(acquireParameterChoices(name), " | ");
+        
+        String defaultValue = "";
+        if (!required) {
+            defaultValue = optionalParameterDefaults.get(name).toString();
+        }
+        
+        String info = USAGE_INDENT + formattedName + value;
+        
         if (description.length() > 0) {        
             if (info.length() > USAGE_HANGING_INDENT.length()) {
                 info += "\n" + USAGE_HANGING_INDENT;
@@ -543,8 +582,8 @@ public abstract class Runner {
                 info += StringUtils.repeat(" ", spacesToAdd);
             }
             
-            if (choices.length > 0) {
-                description += ". Possible choices are: " + StringUtils.implode(choices, " | ");
+            if (choices.length() > 0) {
+                description += ". Possible choices are: " + choices;
             }                    
                         
             if (defaultValue.length() > 0) {
@@ -555,69 +594,6 @@ public abstract class Runner {
         }
         
         info += "\n";
-        return info;
-    }
-    
-    /**
-     * Get the default value of a parameter, converted to a string.
-     * @param name The name of the parameter whose default is sought.
-     * @return The default value of the parameter in string format.
-     */
-    protected String getParameterDefaultAsString(String name) {
-        Object defaultValue = getParameterDefault(name);
-        return (defaultValue != null) ? defaultValue.toString() : "";        
-    }
-    
-    /**
-     * Get the default value of a parameter, as an object (could be a 
-     * wrapper for a primitive type, e.g. Integer).
-     * @param name The name of the parameter.
-     * @return The default value of the parameter as an object.
-     */
-    protected Object getParameterDefault(String name) {
-        // default information
-        Object defaultValue = null;
-        if (wasParameterSpecified(name)) {
-            defaultValue = overwrittenDefaults.get(name);
-        } else {
-            Field field = getField(name);
-            check(field != null, "Unknown field \"" + name + "\"");
-            try {
-                field.setAccessible(true);
-                defaultValue = field.get(this);
-            } catch (IllegalArgumentException | IllegalAccessException e) {
-                throw new RuntimeException("Cannot access field \"" + name + "\"");
-            }
-        } 
-        return defaultValue;
-    }
-    
-    /**
-     * Get the possible limited list of choices for a parameter, as a string array.
-     * The string array is constructed from a method call.  The method is specified
-     * by the parameter annotation.
-     * @param name The name of the parameter.
-     * @param param A reference to the annotation of the parameter's instance field.
-     * @return A string array denoting the enumeration of possible choices for values 
-     * of the parameter.
-     */    
-    protected String[] getParameterChoices(String name, Parameter param) {
-        String[] choices = new String[0];
-        
-        String choicesMethod = param.choicesMethod();        
-        if (choicesMethod.length() > 0) {
-            int methodDot = choicesMethod.lastIndexOf(".");
-            String className = choicesMethod.substring(0, methodDot);
-            String methodName = choicesMethod.substring(methodDot + 1);
-
-            try {
-                choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
-            } catch (NoSuchMethodException | SecurityException | ClassNotFoundException | 
-                    IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                throw new RuntimeException("Could not invoke \"" + choicesMethod + 
-                                           "\" to get choices for option \"" + name + "\"");
-            }
-        }
-        return choices;
+        return info;        
     }
 }

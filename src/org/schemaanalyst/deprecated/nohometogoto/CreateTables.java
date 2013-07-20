@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.test;
+package org.schemaanalyst.deprecated.nohometogoto;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -10,7 +10,7 @@ import plume.*;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.Configuration;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class CreateTables {
 

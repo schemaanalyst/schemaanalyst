@@ -10,9 +10,9 @@ import org.schemaanalyst.datageneration.search.objective.constraint.checkconditi
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.test.mock.OneColumnMockDatabase;
+import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 
 public class TestRelationalPredicateObjectiveFunction {
 

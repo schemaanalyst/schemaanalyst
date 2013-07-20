@@ -10,13 +10,13 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.BetweenCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.test.mock.OneColumnMockDatabase;
+import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 
 public class TestBetweenCheckPredicateObjectiveFunction {
 

@@ -8,12 +8,12 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.UniqueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction;
-import org.schemaanalyst.test.mock.MockDatabase;
-import org.schemaanalyst.test.mock.OneColumnMockDatabase;
-import org.schemaanalyst.test.mock.TwoColumnMockDatabase;
+import org.schemaanalyst.test.testutil.mock.MockDatabase;
+import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
+import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
 public class TestUniqueObjectiveFunction {
 

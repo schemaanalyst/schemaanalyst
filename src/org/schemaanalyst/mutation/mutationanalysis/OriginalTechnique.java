@@ -3,11 +3,14 @@
 package org.schemaanalyst.mutation.mutationanalysis;
 
 import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
+
 import java.io.File;
 import java.util.List;
+
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.deprecated.util.runner.Runner;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -17,7 +20,6 @@ import org.schemaanalyst.util.csv.CSVWriter;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**

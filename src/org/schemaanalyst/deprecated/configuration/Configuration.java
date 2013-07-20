@@ -1,4 +1,4 @@
-package org.schemaanalyst.deprecated;
+package org.schemaanalyst.deprecated.configuration;
 
 import org.schemaanalyst.util.ReflectiveToString;
 import plume.Option;

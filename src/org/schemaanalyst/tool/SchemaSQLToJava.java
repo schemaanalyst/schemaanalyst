@@ -9,8 +9,6 @@ import org.schemaanalyst.util.runner.Description;
 
 @Description("Parses a schema and generates Java code for it.")
 public class SchemaSQLToJava extends SchemaSQLParser {
-     
-    
     
     public void run(String... args) {
         initialise(args);

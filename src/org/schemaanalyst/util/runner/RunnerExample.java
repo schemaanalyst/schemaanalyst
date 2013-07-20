@@ -7,7 +7,9 @@ package org.schemaanalyst.util.runner;
              "the Runner class, and demonstrate the possible features.")
 
 // This annotation sets up the parameters that must be passed from the command line
-// They are specified without switches and must be supplied in the order specified
+// They are specified without switches and must be supplied in the order specified.
+// If one is not specified, Runner will look in the superclass.  (Parameters are also
+// searched for in superclasses.)
 @RequiredParameters("schema dbms search")
 public class RunnerExample extends Runner {
     
@@ -46,17 +48,8 @@ public class RunnerExample extends Runner {
     @Parameter(value="Set debug messages on", valueAsSwitch="true")
     private boolean debug = false;
     
-    // A constructor is not required, but you may want to override the default setting
-    // of always loading the configuration first.
-    public RunnerExample() {
-        super(false);
-    }
-    
     // This method contains the actual high-level steps of the task to be executed.
-    // The first line of the method must be a call to initialise, in order to parse
-    // and validate arguments
-    public void run(String... args) {
-        initialise(args);
+    protected void task() {
         System.out.println("Parsed parameters:");
         System.out.println("schema is " + schema);
         System.out.println("dbms is " + dbms);
@@ -73,14 +66,14 @@ public class RunnerExample extends Runner {
         
         // use the wasParameterSpecified method to check whether an optional parameter
         // was actually passed as an argument
-        boolean numTriesCheck = true;
-        if (wasParameterSpecified("numtries")) {
+        boolean numtriesCheck = true;
+        if (wasParameterPassed("numtries")) {
             if (!search.equals("random")) {
-                numTriesCheck = false;
+                numtriesCheck = false;
             }
         }
               
-        check(numTriesCheck, "numtries should be set if and only if the search is set to random");
+        check(numtriesCheck, "numtries should be set if and only if the search is set to random");
     }    
     
     // A main method must be provided in this format (i.e. construction with args and 

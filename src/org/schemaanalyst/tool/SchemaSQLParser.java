@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
+import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -13,7 +14,6 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 
 @Description("Parses a schema SQL file and then writes it back to the console.")
 @RequiredParameters("schema dbms")
@@ -62,9 +62,7 @@ public class SchemaSQLParser extends Runner {
         parseSchema();
     }
     
-    public void run(String... args) {
-        initialise(args);
-        
+    protected void task() {
         // write the schema back to the console
         SQLWriter sqlWriter = dbmsObject.getSQLWriter();
         System.out.println(sqlWriter.writeCreateTableStatements(schemaObject));

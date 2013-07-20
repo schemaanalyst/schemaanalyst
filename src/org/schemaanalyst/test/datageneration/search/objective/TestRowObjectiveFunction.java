@@ -15,14 +15,14 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ListOfCellsObjectiveFunction;
-import org.schemaanalyst.test.mock.MockCell;
+import org.schemaanalyst.test.testutil.mock.MockCell;
 
 import static org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
 public class TestRowObjectiveFunction {
 

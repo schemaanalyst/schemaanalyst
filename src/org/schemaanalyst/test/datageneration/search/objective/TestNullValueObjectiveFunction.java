@@ -1,7 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.junit.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;

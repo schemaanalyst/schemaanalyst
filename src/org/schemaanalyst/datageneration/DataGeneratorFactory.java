@@ -17,7 +17,7 @@ import org.schemaanalyst.datageneration.search.termination.CounterTerminationCri
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.deprecated.Configuration;
+import org.schemaanalyst.deprecated.configuration.Configuration;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 

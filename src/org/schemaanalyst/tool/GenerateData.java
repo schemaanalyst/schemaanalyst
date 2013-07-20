@@ -10,6 +10,7 @@ import org.schemaanalyst.datageneration.DataGeneratorFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
+import org.schemaanalyst.deprecated.util.runner.Runner;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -18,7 +19,6 @@ import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 
 @Description("Generates constraint covering data for a schema, printing the INSERTs to the screen.")
 @RequiredParameters("schema dbms datagenerator")
