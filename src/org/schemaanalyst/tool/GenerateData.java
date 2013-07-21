@@ -10,7 +10,7 @@ import org.schemaanalyst.datageneration.DataGeneratorFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
-import org.schemaanalyst.deprecated.util.runner.Runner;
+import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -41,9 +41,7 @@ public class GenerateData extends Runner {
     @Parameter("The identification string of the cell randomisation profile to be used")
     private String cellrandomisationprofile = "Small";
     
-    public void run(String... args) {
-        initialise(args);
-        
+    protected void task() {
         try {
             // get a DBMS instance
             DBMS dbmsObject = DBMSFactory.instantiate(dbms);

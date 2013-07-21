@@ -11,21 +11,29 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import org.schemaanalyst.util.exit.ExceptionExit;
-import org.schemaanalyst.util.exit.ExitException;
+import org.schemaanalyst.util.runner.ArgumentException;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.runner.RequiredParameters;
 
 public class TestRunner {
 
-    class MockRunner extends Runner {
+    class TestableRunner extends Runner {
         
-        public MockRunner() {
-            exitManager = new ExceptionExit(); 
+        public TestableRunner() {
+            super(false, false); 
+            out = new PrintStream(new OutputStream() {
+                public void write(int b) throws IOException {
+                    // stop usage output
+                }
+            });             
         }
         
-        protected void loadConfiguration() {}
+        // get all raw exceptions
+        public void Run(String... args) {
+            doRun(args);
+        }
+        
         public void task() {}
         public void validateParameters() {}
         
@@ -46,20 +54,11 @@ public class TestRunner {
         }
     }
 
-    class SilentMockRunner extends MockRunner {
-        public SilentMockRunner() {
-            cli = new PrintStream(new OutputStream() {
-                public void write(int b) throws IOException {
-                    // stop usage output
-                }
-            }); 
-        }        
-    }
     
-    class R1 extends SilentMockRunner {}
+    class R1 extends TestableRunner {}
         
     @RequiredParameters("   test1 test2  test3 ")
-    class R2 extends SilentMockRunner {
+    class R2 extends TestableRunner {
         @Parameter String test1;
         @Parameter String test2;
         @Parameter String test3;
@@ -71,7 +70,7 @@ public class TestRunner {
         @Parameter String test4 = "default";        
     }    
     
-    class R5 extends SilentMockRunner {
+    class R5 extends TestableRunner {
         @Parameter(value="test param", valueAsSwitch="true")
         boolean test = false;
     }
@@ -180,19 +179,19 @@ public class TestRunner {
                      "default", r.test4);    
     }
     
-    @Test(expected=ExitException.class)
+    @Test(expected=ArgumentException.class)
     public void testTooFewRequiredParametersPassed() {
         String[] args1 = {"a", "b"};
         R4 r = new R4(); r.run(args1);        
     }    
     
-    @Test(expected=ExitException.class)
+    @Test(expected=ArgumentException.class)
     public void testTooManyRequiredParametersPassed() {
         String[] args1 = {"a", "b", "c", "d"};
         R4 r = new R4(); r.run(args1);        
     }        
     
-    @Test(expected=ExitException.class)
+    @Test(expected=ArgumentException.class)
     public void testUnknownParameterPassed() {
         String[] args1 = {"a", "b", "c", "--test2000=hello"};
         R4 r = new R4(); r.run(args1);        
@@ -221,7 +220,7 @@ public class TestRunner {
                    r.test);        
     }
     
-    @Test(expected=ExitException.class)
+    @Test(expected=ArgumentException.class)
     public void testPassedValueForSwitch() {
         String[] args1 = {"--test=hello"};
         R5 r = new R5(); r.run(args1);        

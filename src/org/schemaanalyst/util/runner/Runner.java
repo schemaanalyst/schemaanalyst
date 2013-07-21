@@ -16,8 +16,6 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
 import org.schemaanalyst.util.StringUtils;
-import org.schemaanalyst.util.exit.ExitManager;
-import org.schemaanalyst.util.exit.SystemExit;
 
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key configuration files
@@ -61,22 +59,35 @@ public abstract class Runner {
     // set of parameters parsed in from args
     protected Set<String> parsedParameters;
     
-    // use an exit manager so that can exits can be overridden or mocked for testing    
-    protected ExitManager exitManager = new SystemExit();
-    
     // store the command line output stream as an instance variable so that it
     // can be mocked or redirected
-    protected PrintStream cli = System.out; 
+    protected PrintStream out = System.out; 
+    
+    // ensures the process does not abnormally terminate by catching all exceptions
+    protected boolean catchExceptions;
+    
+    // sets whether the configuration is to be loaded on initialisation or not.
+    protected boolean loadConfiguration;
     
     /**
-     * Executes the runner
-     * @param args The arguments passed from the command line.
-     */    
-    public void run(String... args) {
-        initialise(args);
-        task();
+     * Constructor.
+     */
+    public Runner() {
+        this(true, true);
     }
 
+    /**
+     * Constructor.
+     * @param loadConfiguration Set whether to load the configuration or not during
+     * initialisation.
+     * @param catchExceptions If set to true, the Runner handles all RuntimeExceptions
+     * rather than letting them terminate the current Java process. 
+     */    
+    public Runner(boolean loadConfiguration, boolean catchExceptions) {
+        this.loadConfiguration = loadConfiguration;
+        this.catchExceptions = catchExceptions;
+    }
+    
     /**
      * Describes the main steps of the task of the runner
      */ 
@@ -87,18 +98,54 @@ public abstract class Runner {
      * required of the field values passed in through the values of args 
      * to the run method.
      */    
-    protected abstract void validateParameters();        
+    protected abstract void validateParameters();    
     
     /**
-     * Intialises the Runner by parsing args into field values and then
-     * validating them through a call to validateParameters.
-     * @param args The arguments passed in from the command line.
-     */      
+     * Executes the runner.  All exceptions thrown are caught, so that
+     * the Java process remains unterminated.
+     * @param args The arguments passed from the command line.
+     */    
+    public void run(String... args) {
+        
+        if (catchExceptions) {
+            try {
+                doRun(args);
+            } catch (ArgumentException | ExitException e) {
+                // do nothing -- information already logged
+            } catch (RuntimeException e) {
+                e.printStackTrace(out);
+            }
+        } else {
+            try {
+                doRun(args);
+            } catch (ExitException e) {
+                System.exit(e.getCode());
+            }
+        }
+            
+    }
+
+    /**
+     * Initialises the runner and executes the Runner's task
+     * @param args The arguments passed from the command line.
+     */
+    protected void doRun(String... args) {
+        initialise(args);
+        task();         
+    }    
+        
+    /**
+     * Initialises the Runner by performing introspection of parameters, 
+     * parsing args, validating parameters and loading general configuration information.
+     * @param args The arguments passed from the command line.
+     */
     protected void initialise(String... args) {
         inspectParameters();
         parseArgs(args);
-        loadConfiguration();
-        validateParameters();
+        validateParameters();        
+        if (loadConfiguration) {
+            loadConfiguration();
+        }
     }
     
     /**
@@ -164,7 +211,7 @@ public abstract class Runner {
                             try {
                                 optionalParameterDefaults.put(name, field.get(this));
                             } catch (IllegalAccessException e) {
-                                throw new PropertyFieldAccessException(
+                                throw new RunnerException(
                                         "Property field \"" + name + "\" cannot be accessed", e);
                             }
                         }
@@ -205,7 +252,7 @@ public abstract class Runner {
     protected void crosscheckRequiredParameters() {
         for (String name : requiredParameterNames) {
             if (!parameters.containsKey(name)) {
-                throw new UnknownPropertyException(
+                throw new RunnerException(
                         "\"" + name + "\" specified in @RequiredParameters is not " + 
                         "a parameter for " + getClass());
             }
@@ -223,7 +270,7 @@ public abstract class Runner {
         for (String arg : args) {
             // if the user wants help, give it to them
             if (arg.equals(HELP_OPTION)) {
-                quitWithHelp();
+                exitWithHelp();
             }
 
             if (arg.startsWith(LONG_OPTION_PREFIX)) {     
@@ -234,14 +281,14 @@ public abstract class Runner {
                     parseRequiredParameter(numReqProcessed, arg);                    
                     numReqProcessed ++;
                 } else {
-                    cli.println(numReqProcessed + " " + requiredParameterNames.size());
-                    quitWithError("Too many arguments");
+                    out.println(numReqProcessed + " " + requiredParameterNames.size());
+                    exitWithArgumentException("Too many arguments");
                 }
             }
         }
         
         if (numReqProcessed < requiredParameterNames.size()) {            
-            quitWithError("No value supplied for " + 
+            exitWithArgumentException("No value supplied for " + 
                     requiredParameterNames.get(numReqProcessed));
         }        
     }
@@ -275,12 +322,12 @@ public abstract class Runner {
         
         // this could be a user error (mistyped parameter name), so no exception thrown
         if (!parameters.containsKey(name)) {
-            quitWithError("No such property \"" + name + "\" for " + getClass());
+            exitWithArgumentException("No such property \"" + name + "\" for " + getClass());
         }
         
         // if it's a required property, it cannot be set using a long option name
         if (isRequiredParameter(name)) {
-            quitWithError("Property \"" + name + "\" is required and cannot be set using a long option name");
+            exitWithArgumentException("Property \"" + name + "\" is required and cannot be set using a long option name");
         }
         
         setField(name, value);            
@@ -325,14 +372,14 @@ public abstract class Runner {
                     boolean booleanValue = Boolean.parseBoolean(value);
                     field.setBoolean(this, booleanValue);
                 } catch (NumberFormatException e) {
-                    quitWithError(name + " value \"" + value + "\" is not a boolean");
+                    exitWithArgumentException(name + " value \"" + value + "\" is not a boolean");
                 }
             } else if (type.equals(Double.TYPE)) {
                 try {
                     double doubleValue = Double.parseDouble(value);
                     field.setDouble(this, doubleValue);
                 } catch (NumberFormatException e) {
-                    quitWithError(name + " value \"" + value + 
+                    exitWithArgumentException(name + " value \"" + value + 
                                   "\" is not a double-precision floating point value");
                 }                
             } else if (type.equals(Integer.TYPE)) {
@@ -340,20 +387,20 @@ public abstract class Runner {
                     int intValue = Integer.parseInt(value);
                     field.setInt(this, intValue);
                 } catch (NumberFormatException e) {
-                    quitWithError(name + " value \"" + value + "\" is not an integer");
+                    exitWithArgumentException(name + " value \"" + value + "\" is not an integer");
                 }
             } else if (type.equals(Long.TYPE)) {
                 try {
                     long longValue = Long.parseLong(value);
                     field.setLong(this, longValue);
                 } catch (NumberFormatException e) {
-                    quitWithError(name + " value \"" + value + "\" is not a long integer");
+                    exitWithArgumentException(name + " value \"" + value + "\" is not a long integer");
                 }
             } else if (type.equals(String.class)) {
                 field.set(this, value);
             } 
         } catch (IllegalAccessException e) {
-            throw new PropertyFieldAccessException(
+            throw new RunnerException(
                     "Could not access field \"" + field + 
                     "\" in order to set with property value", e);
         } 
@@ -383,7 +430,7 @@ public abstract class Runner {
                 choices = (List<String>) Class.forName(className).getMethod(methodName).invoke(null);
             } catch (NoSuchMethodException | ClassNotFoundException | 
                      IllegalAccessException | InvocationTargetException e) {
-                throw new ChoicesMethodInvocationException(
+                throw new RunnerException(
                         "Could not invoke \"" + choicesMethod + 
                         "\" to get choices for option \"" + name + "\"", e);
             }
@@ -426,35 +473,30 @@ public abstract class Runner {
      */
     protected void check(boolean test, String errorMessage) {
         if (!test) {
-            quitWithError(errorMessage);
+            exitWithArgumentException(errorMessage);
         }
     }
 
     /**
      * Prints the description and usage and quits.
      */
-    protected void quitWithHelp() {
-        cli.println(getDescription());
-        cli.println();
-        quitWithUsage();
+    protected void exitWithHelp() {
+        out.println(getDescription());
+        out.println();
+        out.println(getUsage());
+        throw new ExitException(1);
     }    
-
-    /**
-     * Quits with the usage message.
-     */
-    protected void quitWithUsage() {
-        cli.println(getUsage());
-        exitManager.exit(1);
-    }
     
     /**
      * Quits with a error message and usage.
-     * @param errorMessage The error message to relay to the user.
+     * @param message The error message to relay to the user.
      */
-    protected void quitWithError(String errorMessage) {
-        cli.println("ERROR: " + errorMessage + ".");
-        cli.println("Please check your usage.  Here's Graham with a quick reminder:\n");
-        quitWithUsage();
+    protected void exitWithArgumentException(String message) {
+        out.println("ERROR: " + message + ".\n" +
+                    "Please check your usage.  " +
+                    "Here's Graham with a quick reminder:\n");
+        out.println(getUsage());
+        throw new ArgumentException(message);
     }
     
     /**

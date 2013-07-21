@@ -10,17 +10,16 @@ import org.schemaanalyst.util.runner.Description;
 @Description("Parses a schema and generates Java code for it.")
 public class SchemaSQLToJava extends SchemaSQLParser {
     
-    public void run(String... args) {
-        initialise(args);
-        
-        // TODO: "parsedcasestudy" should be a configuration value
-        String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema("parsedcasestudy");            
-        File javaFile = new File(folderConfiguration.getCasestudySrcDir() + "/" + schema + ".java");
-        try (PrintWriter out = new PrintWriter(javaFile)) {
-            out.println(javaCode);
+    protected void task() {
+        String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema(folderConfiguration.getCaseStudyPackage());            
+        File javaFile = new File(folderConfiguration.getCaseStudySrcDir() + "/" + schema + ".java");
+        try (PrintWriter fileOut = new PrintWriter(javaFile)) {
+            fileOut.println(javaCode);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
+        out.println(javaCode);
+        out.println("[Code written to " + javaFile + "]");
     }
     
     public static void main(String... args) {

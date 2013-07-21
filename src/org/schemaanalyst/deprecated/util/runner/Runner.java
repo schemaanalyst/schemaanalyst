@@ -14,12 +14,9 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
 import org.schemaanalyst.configuration.LoggingConfiguration;
 import org.schemaanalyst.util.StringUtils;
-import org.schemaanalyst.util.runner.ChoicesMethodInvocationException;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.PropertyFieldAccessException;
 import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.UnknownPropertyException;
 
 /**
  * The older version of Runner, before I refactored it to make it more testable.
@@ -134,14 +131,14 @@ public abstract class Runner {
                     
                     // ensure there's been no errors in setting up @RequiredParameters  
                     if (!isField(fieldName)) {
-                        throw new UnknownPropertyException(
+                        throw new RuntimeException(
                                 fieldName + " is specified in @RequiredParameters for " + 
                                 getClass().getCanonicalName() + " but no such field exists " + 
                                 "in that class or its superclasses");
                     }
                     
                     if (!isParameter(fieldName)) {
-                        throw new UnknownPropertyException(
+                        throw new RuntimeException(
                                 fieldName + " is specified in @RequiredParameters for " + 
                                 getClass().getCanonicalName() + " but is not marked with @Parameter " + 
                                 "for that class or its superclasses");
@@ -337,7 +334,7 @@ public abstract class Runner {
                 field.set(this, value);
             } 
         } catch (IllegalAccessException e) {
-            throw new PropertyFieldAccessException(
+            throw new RuntimeException(
                     "Could not access field \"" + field + 
                     "\" in order to set with property value", e);
         }
@@ -452,7 +449,7 @@ public abstract class Runner {
         for (String fieldName : getRequriedParameterFieldNames()) {
             Parameter param = getParameter(fieldName);
             if (param == null) {
-                throw new UnknownPropertyException(
+                throw new RuntimeException(
                         "Field \"" + fieldName + 
                         "\" specified in RequiredParameters annotation " + 
                         "is not annotated as a parameter in " + 
@@ -605,7 +602,7 @@ public abstract class Runner {
                 field.setAccessible(true);
                 defaultValue = field.get(this);
             } catch (IllegalAccessException e) {
-                throw new PropertyFieldAccessException(
+                throw new RuntimeException(
                         "Could not access field \"" + name + "\" to obtain default value", e);
             }
         } 
@@ -634,7 +631,7 @@ public abstract class Runner {
                 choices = (String[]) Class.forName(className).getMethod(methodName).invoke(null);
             } catch (NoSuchMethodException | ClassNotFoundException | 
                      IllegalAccessException | InvocationTargetException e) {
-                throw new ChoicesMethodInvocationException(
+                throw new RuntimeException(
                         "Could not invoke \"" + choicesMethod + 
                         "\" to get choices for option \"" + name + "\"", e);
             }

@@ -55,7 +55,11 @@ public class FolderConfiguration {
     /**
      * The folder where we write Java code corresponding to each parsed schema.
      */
-    private String casestudy_src_dir;
+    private String case_study_src_dir;
+    /**
+     * The package where we write Java code corresponding to each parsed schema.
+     */
+    private String case_study_package;
     
     /**
      * Construct using the default Properties file location.
@@ -156,7 +160,15 @@ public class FolderConfiguration {
      * The folder where we write Java code corresponding to each parsed schema.
      * @return the casestudy_src_dir
      */
-    public String getCasestudySrcDir() {
-        return casestudy_src_dir;
+    public String getCaseStudySrcDir() {
+        return case_study_src_dir;
     }
+    
+    /**
+     * The package where we write Java code corresponding to each parsed schema.
+     * @return the casestudy_src_dir
+     */
+    public String getCaseStudyPackage() {
+        return case_study_package;
+    }    
 }
