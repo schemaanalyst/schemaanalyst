@@ -31,17 +31,17 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * Runs the 'Up-Front Schemata' style of mutation analysis. This requires that
- * the result generation tool has been run, as it bases the mutation analysis on
- * the results produced by it.
+ * Run the 'Just-in-Time' style of mutation analysis. This requires that the
+ * result generation tool has been run, as it bases the mutation analysis on the
+ * results produced by it.
  *
  * @author Chris J. Wright
  */
-@Description("Runs the 'Up-Front Schemata' style of mutation analysis. This requires"
-        + " that the result generation tool has been run, as it bases the "
+@Description("Runs the 'Just-in-time' style of mutation analysis. This requires "
+        + "that the result generation tool has been run, as it bases the "
         + "mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class UpFrontSchemataTechnique extends Runner {
+public class JustInTimeSchemata extends Runner {
 
     /**
      * The name of the schema to use.
@@ -110,47 +110,16 @@ public class UpFrontSchemataTechnique extends Runner {
         // Create the mutant schemas
         ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
         List<Schema> mutants = cm.produceMutants(schema);
-
+        
         // Schemata step: Rename the mutants
         renameMutants(mutants);
-
-        // Schemata step: Build single drop statement
-        StringBuilder dropBuilder = new StringBuilder();
-        for (Schema mutant : mutants) {
-            for (String statement : sqlWriter.writeDropTableStatements(mutant, true)) {
-                dropBuilder.append(statement);
-                dropBuilder.append("; ");
-                dropBuilder.append(System.lineSeparator());
-            }
-        }
-        String dropStmt = dropBuilder.toString();
-
-        // Schemata step: Build single create statement
-        // add new mutant tables
-        StringBuilder createBuilder = new StringBuilder();
-        for (Schema mutant : mutants) {
-            for (String statement : sqlWriter.writeCreateTableStatements(mutant)) {
-                createBuilder.append(statement);
-                createBuilder.append("; ");
-                createBuilder.append(System.lineSeparator());
-            }
-        }
-        String createStmt = createBuilder.toString();
-
-        // Schemata step: Drop existing tables before iterating mutants
-        if (dropFirst) {
-            databaseInteractor.executeUpdate(dropStmt);
-        }
-
-        // Schemata step: Create table before iterating mutants
-        databaseInteractor.executeUpdate(createStmt);
 
         // Begin mutation analysis
         ExecutorService executor = Executors.newFixedThreadPool(threads);
         int killed = 0;
         Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, databaseInteractor, originalReport);
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, schema, sqlWriter, databaseInteractor, originalReport, dropFirst);
             Future<Boolean> callResult = executor.submit(callable);
             callResults.add(callResult);
         }
@@ -164,9 +133,7 @@ public class UpFrontSchemataTechnique extends Runner {
             }
         }
         executor.shutdown();
-
-        // Schemata step: Drop tables after iterating mutants
-        databaseInteractor.executeUpdate(dropStmt);
+        
 
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
@@ -177,7 +144,7 @@ public class UpFrontSchemataTechnique extends Runner {
 
         new CSVWriter(outputFolder + casestudy + ".dat").write(result);
     }
-
+    
     /**
      * Prepends each mutant with the relevant mutation number
      *
@@ -203,29 +170,50 @@ public class UpFrontSchemataTechnique extends Runner {
     }
 
     public static void main(String[] args) {
-        new UpFrontSchemataTechnique().run(args);
+        new JustInTimeSchemata().run(args);
     }
-
+    
     private static class MutationAnalysisCallable implements Callable<Boolean> {
 
         int id;
+        Schema schema;
+        SQLWriter sqlWriter;
         DatabaseInteractor databaseInteractor;
         SQLExecutionReport originalReport;
+        boolean dropFirst;
 
-        public MutationAnalysisCallable(int id, DatabaseInteractor databaseInteractor, SQLExecutionReport originalReport) {
+        public MutationAnalysisCallable(int id, Schema schema, SQLWriter sqlWriter, DatabaseInteractor databaseInteractor, SQLExecutionReport originalReport, boolean dropFirst) {
             this.id = id;
+            this.schema = schema;
+            this.sqlWriter = sqlWriter;
             this.databaseInteractor = databaseInteractor;
             this.originalReport = originalReport;
+            this.dropFirst = dropFirst;
         }
-
+        
         @Override
         public Boolean call() throws Exception {
             boolean killed = false;
+            
             System.out.println("Mutant " + id);
-
+            
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
-
+            
+            // Drop existing tables
+            List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
+            if (dropFirst) {
+                for (String stmt : dropStmts) {
+                    databaseInteractor.executeUpdate(stmt);
+                }
+            }
+            
+            // Create the schema in the database
+            List<String> createStmts = sqlWriter.writeCreateTableStatements(schema);
+            for (String stmt : createStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+            
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
@@ -239,8 +227,14 @@ public class UpFrontSchemataTechnique extends Runner {
                     break; // Stop once killed
                 }
             }
-
+            
+            // Drop tables
+            for (String stmt : dropStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+            
             return killed;
         }
+        
     }
 }
