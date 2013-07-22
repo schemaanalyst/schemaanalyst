@@ -3,6 +3,7 @@ package org.schemaanalyst.test.util.runner;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,7 @@ import org.schemaanalyst.util.runner.ArgumentException;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.RunnerException;
 
 public class TestRunner {
 
@@ -53,7 +55,6 @@ public class TestRunner {
             return super.wasParameterPassed(name);
         }
     }
-
     
     class R1 extends TestableRunner {}
         
@@ -69,10 +70,35 @@ public class TestRunner {
     class R4 extends R2 {
         @Parameter String test4 = "default";        
     }    
+
+    class R4a extends R2 {
+        @Parameter String test4;        
+    }
+    
+    class R4b extends TestableRunner {
+        @Parameter String test;        
+    }     
     
     class R5 extends TestableRunner {
         @Parameter(value="test param", valueAsSwitch="true")
         boolean test = false;
+    }
+    
+    @RequiredParameters("testing")
+    class R6 extends TestableRunner {
+        @Parameter String test;
+    }   
+    
+    public static List<String> choices() {
+        List<String> choices = new ArrayList<>();
+        choices.add("one");
+        choices.add("two");
+        choices.add("three");
+        return choices;
+    }
+    
+    static String choicesWrongReturnType() {
+        return "hello";
     }
     
     @Test
@@ -144,6 +170,12 @@ public class TestRunner {
                      "c", r.test3);           
     }
     
+    @Test(expected=RunnerException.class)
+    public void testNonExistantRequiredParameter() {
+        String[] args1 = {"a"};
+        R6 r = new R6(); r.run(args1); 
+    }
+    
     @Test
     public void testOptionalParameter() {
         String[] args1 = {"a", "b", "c", "--test4=hello"};
@@ -175,9 +207,35 @@ public class TestRunner {
         assertFalse("R4 optional param 4 should not have been passed",
                    r.wasParameterPassed("test4"));        
         
-        assertEquals("R4 optional param 3 was not set and should be 'default'",
+        assertEquals("R4 optional param 4 was not set and should be 'default'",
                      "default", r.test4);    
     }
+    
+    @Test
+    public void testOptionalParameterNoDefaultRequiredParametersPresent() {
+        String[] args = {"a", "b", "c"};
+        R4a r = new R4a(); r.run(args);              
+
+        // check param is not set
+        assertFalse("R4a optional param 4 should not have been passed",
+                    r.wasParameterPassed("test4"));        
+        
+        assertNull("R4 optional param 4 was not set and there is no default",
+                   r.test4);    
+    }    
+    
+    @Test(expected=ArgumentException.class)
+    public void testOptionalParameterNoDefaultNoRequiredParametersPresent() {
+        String[] args = {"hello"};
+        R4b r = new R4b(); r.run(args);              
+
+        // check param is not set
+        assertFalse("R4b optional param should not have been passed",
+                    r.wasParameterPassed("test"));        
+        
+        assertNull("R4 optional param was not set and there is no default",
+                   r.test);    
+    }    
     
     @Test(expected=ArgumentException.class)
     public void testTooFewRequiredParametersPassed() {
@@ -239,7 +297,31 @@ public class TestRunner {
         
         assertEquals("R4 optional param 4 was passed but not set so should be null",
                      null, r.test4);        
+    }    
+    
+    class R7 extends TestableRunner {
+        @Parameter(value="test")   
+        String test;
     }
     
-    // TODO: test choices
+    class R8 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="org.schemaanalyst.test.util.runner.TestRunner.choicesWrongReturnType")   
+        String test;
+    }    
+
+    class R9 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="WrongClass.wrongMethod")   
+        String test;
+    }  
+    
+    @Test
+    public void testChoicesCorrectChoice() {
+        String[] args = {"--test=two"};
+        R7 r = new R7(); r.run(args);
+        
+        assertEquals("R7 passed allowable choice",
+                     "two", r.test);
+    }
 }
