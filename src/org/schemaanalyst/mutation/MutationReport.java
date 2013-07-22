@@ -16,7 +16,8 @@ import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class MutationReport {
 
-    public static final String DEFAULT_LOCATION = FolderConfiguration.results_dir + File.separator;
+    public static final String RESULTS_DIR = "results";
+    public static final String DEFAULT_LOCATION = RESULTS_DIR + File.separator;
     /**
      * The report of the ORIGINAL, NON-MUTANT schema
      */
@@ -230,12 +231,12 @@ public class MutationReport {
 
             // create a PrintWriter associated with the serialization file
             if (Configuration.wantmutationreport_mrp) {
-                reportOutputSer = new PrintWriter(FolderConfiguration.results_dir + Configuration.mutationreport_mrp);
+                reportOutputSer = new PrintWriter(DEFAULT_LOCATION + Configuration.mutationreport_mrp);
             }
 
             // create the PrintWriter associated with the text file
             if (Configuration.wantmutationreport_txt) {
-                reportOutputText = new PrintWriter(FolderConfiguration.results_dir + Configuration.mutationreport_txt);
+                reportOutputText = new PrintWriter(DEFAULT_LOCATION + Configuration.mutationreport_txt);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -250,7 +251,7 @@ public class MutationReport {
     public static void configureForReportLoading() {
         // create the File associated with the serialized file; this can be
         // used during the reloading process
-        report = new File(FolderConfiguration.results_dir + Configuration.mutationreport_mrp);
+        report = new File(DEFAULT_LOCATION + Configuration.mutationreport_mrp);
     }
 
     /**
