@@ -22,7 +22,7 @@ import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.util.runner.Runner;
+import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
@@ -83,10 +83,7 @@ public class GenerateResults extends Runner {
     protected String datagenerator = "alternatingValue";
 
     @Override
-    public void run(String... args) {
-        // Parse arguments
-        initialise(args);
-
+    public void task() {
         // Instantiate the DBMS and related objects
         DBMS dbms;
         try {
@@ -180,16 +177,16 @@ public class GenerateResults extends Runner {
     @Override
     protected void validateParameters() {
         if (maxEvaluations <= 0) {
-            quitWithError("maxEvaluations must be > 0");
+            exitWithArgumentException("maxEvaluations must be > 0");
         }
         if (satisfyRows < 0) {
-            quitWithError("satisfyRows must be >= 0");
+            exitWithArgumentException("satisfyRows must be >= 0");
         }
         if (negateRows < 0) {
-            quitWithError("negateRows must be >= 0");
+            exitWithArgumentException("negateRows must be >= 0");
         }
         if (!randomprofile.equals("small") && !randomprofile.equals("large")) {
-            quitWithError("randomProfile must be 'small' or 'large'");
+            exitWithArgumentException("randomProfile must be 'small' or 'large'");
         }
     }
 }

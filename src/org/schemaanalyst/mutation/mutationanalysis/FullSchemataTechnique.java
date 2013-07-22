@@ -10,7 +10,7 @@ import java.util.List;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.util.runner.Runner;
+import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.SQLInsertRecord;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -63,10 +63,7 @@ public class FullSchemataTechnique extends Runner {
     protected boolean dropFirst = false;
 
     @Override
-    public void run(String... args) {
-        // Parse arguments
-        initialise(args);
-
+    public void task() {
         // Start results file
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbDbms());
