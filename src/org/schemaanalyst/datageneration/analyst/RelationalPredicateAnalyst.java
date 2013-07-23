@@ -58,7 +58,7 @@ public class RelationalPredicateAnalyst extends ConstraintAnalyst {
 
     protected boolean rowSatisfies(RelationalOperator op, Value lhsValue, Value rhsValue) {
         Boolean rowSatisfied =
-                new EvaluableRelationalPredicate<Value>(lhsValue, op, rhsValue)
+                new EvaluableRelationalPredicate<>(lhsValue, op, rhsValue)
                 .isSatisfied3VL();
 
         if (rowSatisfied == null) {

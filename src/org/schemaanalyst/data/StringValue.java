@@ -16,7 +16,7 @@ public class StringValue extends Value
     protected int characterDefault = LOWER_A_CHAR;
     protected int characterMin = UPPER_A_CHAR;
     protected int characterMax = LOWER_Z_CHAR;
-    protected List<NumericValue> characters = new ArrayList<NumericValue>();
+    protected List<NumericValue> characters = new ArrayList<>();
 
     public StringValue() {
     }
@@ -45,7 +45,7 @@ public class StringValue extends Value
     }
 
     public List<Value> getElements() {
-        List<Value> elements = new ArrayList<Value>();
+        List<Value> elements = new ArrayList<>();
         elements.addAll(characters);
         return elements;
     }

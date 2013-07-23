@@ -88,6 +88,6 @@ public class NumericValueObjectiveFunction extends ObjectiveFunction<RelationalP
 
     public static ObjectiveValue compute(NumericValue lhs, RelationalOperator op, NumericValue rhs) {
         NumericValueObjectiveFunction objFun = new NumericValueObjectiveFunction();
-        return objFun.evaluate(new RelationalPredicate<NumericValue>(lhs, op, rhs));
+        return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

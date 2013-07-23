@@ -64,7 +64,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
             throw new SchemaConstructionException("Foreign key constraints must have matching column numbers \"" + table + "\"");
         }
 
-        this.referenceColumns = new ArrayList<Column>();
+        this.referenceColumns = new ArrayList<>();
 
         for (Column referenceColumn : referenceColumns) {
             if (!referenceTable.hasColumn(referenceColumn)) {
@@ -162,7 +162,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
         }
 
         // copy columns, but mapped to those of the new table
-        List<Column> targetTableColumns = new ArrayList<Column>();
+        List<Column> targetTableColumns = new ArrayList<>();
         for (Column column : this.columns) {
             Column targetTableColumn = targetTable.getColumn(column.getName());
 
@@ -176,7 +176,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 
 
         // copy reference columns, but mapped to those of the new reference table
-        List<Column> targetReferenceTableColumns = new ArrayList<Column>();
+        List<Column> targetReferenceTableColumns = new ArrayList<>();
         for (Column column : this.referenceColumns) {
             Column targetReferenceTableColumn = targetReferenceTable.getColumn(column.getName());
 

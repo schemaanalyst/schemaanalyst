@@ -15,7 +15,7 @@ public class ExperimentalResult {
      * Standard constructor
      */
     public ExperimentalResult() {
-        results = new ArrayList<String>();
+        results = new ArrayList<>();
     }
 
     /**

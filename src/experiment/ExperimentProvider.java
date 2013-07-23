@@ -52,10 +52,10 @@ public class ExperimentProvider {
         System.out.println("trials: " + trials);
 
         // declare the allParameters that is in the format required by JUnitParams
-        ArrayList<Object[]> allParameters = new ArrayList<Object[]>();
+        ArrayList<Object[]> allParameters = new ArrayList<>();
 
         // declare the currentParameterList which is like a "row" in the table of parameters
-        ArrayList<String> currentParameterList = new ArrayList<String>();
+        ArrayList<String> currentParameterList = new ArrayList<>();
 
         // NOTE: of necessity, this code is hard-coded for the local parameters that we used in the experiments; 
         // there is no way to avoid this given the way that JUnitParams passes the parameters to the test methods
@@ -135,7 +135,7 @@ public class ExperimentProvider {
                 currentParameterList.remove(database);
             }
             // RE-CREATE the parameter listing
-            currentParameterList = new ArrayList<String>();
+            currentParameterList = new ArrayList<>();
         }
 
         // debugging information and then return the local experiment parameters

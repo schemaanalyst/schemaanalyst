@@ -39,7 +39,7 @@ public abstract class MultiColumnConstraint extends Constraint {
             throw new SchemaConstructionException("Constraints must be defined over one or more columns for table \"" + table + "\"");
         }
 
-        this.columns = new ArrayList<Column>();
+        this.columns = new ArrayList<>();
 
         for (Column column : columns) {
             if (!table.hasColumn(column)) {

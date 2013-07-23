@@ -336,9 +336,9 @@ public class MutationReport {
      */
     public String createMutantReportSummary() {
 
-        ArrayList<String> killed = new ArrayList<String>();
-        ArrayList<String> stillborn = new ArrayList<String>();
-        ArrayList<String> intersection = new ArrayList<String>();
+        ArrayList<String> killed = new ArrayList<>();
+        ArrayList<String> stillborn = new ArrayList<>();
+        ArrayList<String> intersection = new ArrayList<>();
 
         StringBuilder builder = new StringBuilder();
 

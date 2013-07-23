@@ -27,7 +27,7 @@ public class InCheckCondition implements CheckCondition {
 
     public InCheckCondition(Column column, int... values) {
         this.column = column;
-        this.values = new ArrayList<Value>();
+        this.values = new ArrayList<>();
         for (int value : values) {
             this.values.add(new NumericValue(value));
         }
@@ -35,7 +35,7 @@ public class InCheckCondition implements CheckCondition {
 
     public InCheckCondition(Column column, String... values) {
         this.column = column;
-        this.values = new ArrayList<Value>();
+        this.values = new ArrayList<>();
         for (String value : values) {
             this.values.add(new StringValue(value));
         }

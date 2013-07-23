@@ -28,7 +28,7 @@ public class Data implements Duplicable<Data> {
      * database type.
      */
     public Data() {
-        data = new LinkedHashMap<Table, List<Row>>();
+        data = new LinkedHashMap<>();
     }
 
     /**
@@ -53,7 +53,7 @@ public class Data implements Duplicable<Data> {
         List<Row> tableData = data.get(table);
 
         if (tableData == null) {
-            tableData = new ArrayList<Row>();
+            tableData = new ArrayList<>();
             data.put(table, tableData);
         }
 
@@ -115,7 +115,7 @@ public class Data implements Duplicable<Data> {
      * @return A list of tables involved in this data instance.
      */
     public List<Table> getTables() {
-        List<Table> tables = new ArrayList<Table>();
+        List<Table> tables = new ArrayList<>();
         tables.addAll(data.keySet());
         return tables;
     }
@@ -127,7 +127,7 @@ public class Data implements Duplicable<Data> {
      * @return The list of rows for the table.
      */
     public List<Row> getRows(Table table) {
-        List<Row> rows = new ArrayList<Row>();
+        List<Row> rows = new ArrayList<>();
         if (data.containsKey(table)) {
             rows.addAll(data.get(table));
         }
@@ -175,7 +175,7 @@ public class Data implements Duplicable<Data> {
      * @return A list of all the cells in this data instance.
      */
     public List<Cell> getCells() {
-        List<Cell> cells = new ArrayList<Cell>();
+        List<Cell> cells = new ArrayList<>();
         for (Table table : getTables()) {
             for (Row row : getRows(table)) {
                 cells.addAll(row.getCells());
@@ -191,7 +191,7 @@ public class Data implements Duplicable<Data> {
      * @return A list of cells for the column.
      */
     public List<Cell> getCells(Column column) {
-        List<Cell> cells = new ArrayList<Cell>();
+        List<Cell> cells = new ArrayList<>();
         List<Row> rows = getRows(column.getTable());
 
         if (rows != null) {
@@ -228,12 +228,12 @@ public class Data implements Duplicable<Data> {
         }
 
         // Construct the "vertical slice"
-        List<Row> rows = new ArrayList<Row>();
+        List<Row> rows = new ArrayList<>();
         if (columns.size() > 0) {
             List<Row> tableRows = getRows(table);
             if (tableRows != null) {
                 for (Row row : tableRows) {
-                    List<Cell> cells = new ArrayList<Cell>();
+                    List<Cell> cells = new ArrayList<>();
                     for (Column column : columns) {
                         cells.add(row.getCell(column));
                     }
@@ -263,12 +263,12 @@ public class Data implements Duplicable<Data> {
         }
 
         // Construct the "slice"
-        List<List<Cell>> cells = new ArrayList<List<Cell>>();
+        List<List<Cell>> cells = new ArrayList<>();
         if (columns.size() > 0) {
             List<Row> rows = getRows(table);
             if (rows != null) {
                 for (Row row : getRows(table)) {
-                    List<Cell> rowValues = new ArrayList<Cell>();
+                    List<Cell> rowValues = new ArrayList<>();
                     for (Column column : columns) {
                         rowValues.add(row.getCell(column));
                     }
@@ -288,7 +288,7 @@ public class Data implements Duplicable<Data> {
 
         // copy the data
         for (Table table : getTables()) {
-            List<Row> duplicateRows = new ArrayList<Row>();
+            List<Row> duplicateRows = new ArrayList<>();
 
             List<Row> rows = getRows(table);
             for (Row row : rows) {

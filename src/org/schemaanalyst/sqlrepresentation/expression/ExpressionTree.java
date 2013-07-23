@@ -30,7 +30,7 @@ public abstract class ExpressionTree implements Expression {
     public abstract int getNumSubexpressions();
 
     public List<Expression> getSubexpressions() {
-        List<Expression> subexpressions = new ArrayList<Expression>();
+        List<Expression> subexpressions = new ArrayList<>();
         for (int i = 0; i < getNumSubexpressions(); i++) {
             subexpressions.add(getSubexpression(i));
         }

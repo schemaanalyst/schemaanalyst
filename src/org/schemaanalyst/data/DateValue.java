@@ -44,7 +44,7 @@ public class DateValue extends Value
     }
 
     public List<Value> getElements() {
-        List<Value> elements = new ArrayList<Value>();
+        List<Value> elements = new ArrayList<>();
         elements.add(year);
         elements.add(month);
         elements.add(day);

@@ -15,7 +15,7 @@ public class SpyLogParser {
      * parsed further
      */
     public static List<String> createParseableLines(String filename) throws FileNotFoundException {
-        ArrayList<String> lines = new ArrayList<String>();
+        ArrayList<String> lines = new ArrayList<>();
         Scanner s = new Scanner(new File(filename));
         while (s.hasNextLine()) {
             String line = s.nextLine();
@@ -28,7 +28,7 @@ public class SpyLogParser {
      * Parse out the components of a line of the log file.
      */
     public static List<String> createComponentsOfLines(String line) {
-        ArrayList<String> components = new ArrayList<String>();
+        ArrayList<String> components = new ArrayList<>();
         StringTokenizer tokenizer = new StringTokenizer(line, "|");
         while (tokenizer.hasMoreTokens()) {
             components.add(tokenizer.nextToken());
@@ -86,7 +86,7 @@ public class SpyLogParser {
      * Create relevant components from a specified filename
      */
     public static List<String> createRelevantComponents(String filename) throws FileNotFoundException {
-        ArrayList<String> relevantComponents = new ArrayList<String>();
+        ArrayList<String> relevantComponents = new ArrayList<>();
         List<String> parseableLines = createParseableLines(filename);
         for (String parseableLine : parseableLines) {
             List<String> componentsOfLine = createComponentsOfLines(parseableLine);

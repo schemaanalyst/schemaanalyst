@@ -26,6 +26,6 @@ public abstract class ExpressionLeaf implements Expression {
     }
 
     public List<Expression> getSubexpressions() {
-        return new ArrayList<Expression>();
+        return new ArrayList<>();
     }
 }

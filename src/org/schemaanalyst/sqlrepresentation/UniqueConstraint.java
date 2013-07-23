@@ -59,7 +59,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      * the method.
      */
     public UniqueConstraint copyTo(Table targetTable) {
-        List<Column> targetTableColumns = new ArrayList<Column>();
+        List<Column> targetTableColumns = new ArrayList<>();
 
         // copy columns, but mapped to those of the new table
         for (Column column : this.columns) {

@@ -47,7 +47,7 @@ public class CreateTables {
 
         // read in the CREATE TABLE statement(s) from the file system
         StringBuffer createTables = new StringBuffer();
-        ArrayList<String> createTablesList = new ArrayList<String>();
+        ArrayList<String> createTablesList = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(new File(Configuration.project + CREATE_TABLES
                     + Configuration.createtables));

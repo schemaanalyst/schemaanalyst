@@ -93,7 +93,7 @@ public class TestExperimentalResults {
 
     @Test
     public void testCorrectConversionOfListStringToString() {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         list.add("first");
         list.add("second");
         list.add("20");

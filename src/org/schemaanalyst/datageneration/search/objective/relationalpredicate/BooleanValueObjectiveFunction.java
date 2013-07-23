@@ -42,6 +42,6 @@ public class BooleanValueObjectiveFunction extends ObjectiveFunction<RelationalP
 
     public static ObjectiveValue compute(BooleanValue lhs, RelationalOperator op, BooleanValue rhs) {
         BooleanValueObjectiveFunction objFun = new BooleanValueObjectiveFunction();
-        return objFun.evaluate(new RelationalPredicate<BooleanValue>(lhs, op, rhs));
+        return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

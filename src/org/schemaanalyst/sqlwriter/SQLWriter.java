@@ -54,7 +54,7 @@ public class SQLWriter {
     }
 
     public List<String> writeComments(List<String> comments) {
-        List<String> statements = new ArrayList<String>();
+        List<String> statements = new ArrayList<>();
 
         for (String comment : comments) {
             statements.add(writeComment(comment));
@@ -68,7 +68,7 @@ public class SQLWriter {
     }
 
     public List<String> writeCreateTableStatements(Schema schema) {
-        List<String> statements = new ArrayList<String>();
+        List<String> statements = new ArrayList<>();
 
         List<Table> tables = schema.getTables();
         for (Table table : tables) {
@@ -166,7 +166,7 @@ public class SQLWriter {
     public String writeInsertStatement(Row row) {
         Table table = row.getTable();
         List<Column> columns = table.getColumns();
-        List<String> valueStrings = new ArrayList<String>();
+        List<String> valueStrings = new ArrayList<>();
 
         for (Cell cell : row.getCells()) {
             String string = cellSQLWriter.writeCell(cell);
@@ -177,7 +177,7 @@ public class SQLWriter {
     }
 
     public List<String> writeInsertStatements(Data data) {
-        List<String> statements = new ArrayList<String>();
+        List<String> statements = new ArrayList<>();
 
         List<Table> tables = data.getTables();
         tables = Schema.orderByDependencies(tables);
@@ -198,7 +198,7 @@ public class SQLWriter {
     }
 
     public List<String> writeDropTableStatements(Schema schema, boolean addIfExists) {
-        List<String> statements = new ArrayList<String>();
+        List<String> statements = new ArrayList<>();
 
         List<Table> tables = schema.getTablesInReverseOrder();
         for (Table table : tables) {
@@ -235,7 +235,7 @@ public class SQLWriter {
     }
 
     public static String writeColumnList(List<Column> columns) {
-        List<String> columnStrings = new ArrayList<String>();
+        List<String> columnStrings = new ArrayList<>();
         for (Column column : columns) {
             columnStrings.add(column.getName());
         }

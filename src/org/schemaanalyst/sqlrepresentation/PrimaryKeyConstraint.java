@@ -66,7 +66,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      * calling the method.
      */
     public PrimaryKeyConstraint copyTo(Table targetTable) {
-        List<Column> targetTableColumns = new ArrayList<Column>();
+        List<Column> targetTableColumns = new ArrayList<>();
 
         // copy columns, but mapped to those of the new table
         for (Column column : this.columns) {

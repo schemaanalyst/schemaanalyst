@@ -22,7 +22,7 @@ public class DBMSFactory {
     }
     
     public static List<String> getDBMSChoices() {
-        List<String> choices = new ArrayList<String>();
+        List<String> choices = new ArrayList<>();
         choices.add("Postgres");
         choices.add("SQLite");
         return choices;

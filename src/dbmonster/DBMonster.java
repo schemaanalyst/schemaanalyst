@@ -172,7 +172,7 @@ public class DBMonster {
 
         // create a list of relevant statements from the SpyLog from DBMonster
         // (we are looking for both SELECT and INSERT statements)
-        List<String> selectAndInsertStatements = new ArrayList<String>();
+        List<String> selectAndInsertStatements = new ArrayList<>();
 
         try {
             selectAndInsertStatements = SpyLogParser.createRelevantComponents(Configuration.spylog);
@@ -304,7 +304,7 @@ public class DBMonster {
                     (DBMonsterSQLExecutionReport) mutationReport.getOriginalReport();
             List<SQLInsertRecord> originalInsertStatements = retrievedOriginalReport.getInsertStatements();
             List<SQLSelectRecord> originalSelectStatements = retrievedOriginalReport.getSelectStatements();
-            ArrayList<SQLExecutionRecord> completeList = new ArrayList<SQLExecutionRecord>();
+            ArrayList<SQLExecutionRecord> completeList = new ArrayList<>();
             completeList.addAll(originalInsertStatements);
             completeList.addAll(originalSelectStatements);
 
@@ -481,7 +481,7 @@ public class DBMonster {
         List<String> mutationTypes = mutationTypeStatusSummary.getMutantTypes();
 
         // create a listing of the various mutant status codes that we need
-        ArrayList<String> mutationStatusCodes = new ArrayList<String>();
+        ArrayList<String> mutationStatusCodes = new ArrayList<>();
         mutationStatusCodes.add(KILLED);
         mutationStatusCodes.add(NOTKILLED);
         mutationStatusCodes.add(STILLBORN);

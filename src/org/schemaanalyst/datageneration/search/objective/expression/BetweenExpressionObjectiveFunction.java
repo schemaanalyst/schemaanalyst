@@ -48,13 +48,13 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         Value subjectValue = subjectExpression.evaluate(row);
 
         objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<Value>(
+                new RelationalPredicate<>(
                 subjectValue,
                 lhsOp,
                 lhsExpression.evaluate(row))));
 
         objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<Value>(
+                new RelationalPredicate<>(
                 subjectValue,
                 rhsOp,
                 rhsExpression.evaluate(row))));

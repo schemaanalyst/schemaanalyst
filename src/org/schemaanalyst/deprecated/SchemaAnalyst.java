@@ -476,12 +476,12 @@ public class SchemaAnalyst {
     public static void saveSatisfyNegateMutationInformationRedundant(ExperimentalResults experimentalResults,
             MutationReport mutationReport) {
         // create a listing of the purpose of the insert statements
-        ArrayList<String> insertPurposes = new ArrayList<String>();
+        ArrayList<String> insertPurposes = new ArrayList<>();
         insertPurposes.add("satisfy");
         insertPurposes.add("negate");
 
         // create a listing of the status of the mutants
-        ArrayList<String> mutantStatuses = new ArrayList<String>();
+        ArrayList<String> mutantStatuses = new ArrayList<>();
         mutantStatuses.add("Kill");
         mutantStatuses.add("NotKill");
 
@@ -548,7 +548,7 @@ public class SchemaAnalyst {
         List<String> mutationTypes = mutationTypeStatusSummary.getMutantTypes();
 
         // create a listing of the various mutant status codes that we need
-        ArrayList<String> mutationStatusCodes = new ArrayList<String>();
+        ArrayList<String> mutationStatusCodes = new ArrayList<>();
         // mutationStatusCodes.add(KILLED);
         // mutationStatusCodes.add(NOTKILLED);
         mutationStatusCodes.add(STILLBORN);
@@ -702,12 +702,12 @@ public class SchemaAnalyst {
      */
     public static void saveMutationScoresRedundant(ExperimentalResults experimentalResults, MutationReport mutationReport) {
         // create the list for the metric variable in the data table
-        ArrayList<String> metrics = new ArrayList<String>();
+        ArrayList<String> metrics = new ArrayList<>();
         metrics.add("mutationScore");
         metrics.add("weightedMutationScore");
 
         // create the list for the part variable in the data table
-        ArrayList<String> parts = new ArrayList<String>();
+        ArrayList<String> parts = new ArrayList<>();
         parts.add("numerator");
         parts.add("denominator");
         parts.add("score");

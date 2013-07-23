@@ -485,7 +485,7 @@ public abstract class Runner {
      */             
     protected String getOptionalParamsUsageList() {        
         // get and sort fields
-        List<String> fieldsList = new ArrayList<String>();
+        List<String> fieldsList = new ArrayList<>();
         Class<?> currentClass = getClass();
         while (currentClass != null) {
             for (Field field : currentClass.getDeclaredFields()) {

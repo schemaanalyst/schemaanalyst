@@ -83,6 +83,6 @@ public class ValueObjectiveFunction extends ObjectiveFunction<RelationalPredicat
 
     public static ObjectiveValue compute(Value lhs, RelationalOperator op, Value rhs) {
         ValueObjectiveFunction objFun = new ValueObjectiveFunction();
-        return objFun.evaluate(new RelationalPredicate<Value>(lhs, op, rhs));
+        return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

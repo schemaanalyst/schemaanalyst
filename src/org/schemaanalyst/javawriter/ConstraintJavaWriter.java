@@ -36,7 +36,7 @@ public class ConstraintJavaWriter {
 
             String writeConstraint(Table table, Constraint constraint) {
                 this.table = table;
-                args = new ArrayList<String>();
+                args = new ArrayList<>();
                 if (constraint.hasName()) {
                     args.add(javaWriter.writeString(constraint.getName()));
                 }
@@ -77,7 +77,7 @@ public class ConstraintJavaWriter {
             }
 
             List<String> makeColumnArgsList(Table table, List<Column> columns) {
-                List<String> columnArgs = new ArrayList<String>();
+                List<String> columnArgs = new ArrayList<>();
                 for (Column column : columns) {
                     columnArgs.add(javaWriter.writeGetColumn(column));
                 }

@@ -44,7 +44,7 @@ public class TimeValue extends Value
     }
 
     public List<Value> getElements() {
-        List<Value> elements = new ArrayList<Value>();
+        List<Value> elements = new ArrayList<>();
         elements.add(hour);
         elements.add(minute);
         elements.add(second);

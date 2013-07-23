@@ -27,8 +27,8 @@ public class Schema implements Serializable, Duplicable<Schema> {
      */
     public Schema(String name) {
         this.name = name;
-        this.comments = new ArrayList<String>();
-        this.tables = new ArrayList<Table>();
+        this.comments = new ArrayList<>();
+        this.tables = new ArrayList<>();
     }
 
     /**
@@ -124,7 +124,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
      * reverse order to getTables).
      */
     public List<Table> getTablesInReverseOrder() {
-        List<Table> reverseOrder = new ArrayList<Table>(tables);
+        List<Table> reverseOrder = new ArrayList<>(tables);
         Collections.copy(reverseOrder, tables);
         Collections.reverse(reverseOrder);
         return reverseOrder;

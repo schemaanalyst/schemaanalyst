@@ -42,7 +42,7 @@ public class ProcessDBMonsterResults {
      * Process all of the files in a current directory
      */
     public static List<String> process(File directory) {
-        ArrayList<String> data = new ArrayList<String>();
+        ArrayList<String> data = new ArrayList<>();
         String filecontents = "";
 
         File files[] = directory.listFiles();
@@ -69,7 +69,7 @@ public class ProcessDBMonsterResults {
                 }
 
                 // add the other important labels to a list
-                ArrayList<String> row = new ArrayList<String>();
+                ArrayList<String> row = new ArrayList<>();
                 row.add("dbmonster");
                 row.add(MutationUtilities.removePrefixAndSuffixFromCaseStudyName(file.getName()));
                 row.add("org.schemaanalyst.database.postgres.Postgres");
@@ -131,7 +131,7 @@ public class ProcessDBMonsterResults {
      */
     public static List<String> extract(String rawdata) {
         // declare the ArrayList that will store the refined data
-        ArrayList<String> refineddata = new ArrayList<String>();
+        ArrayList<String> refineddata = new ArrayList<>();
 
         // declare a pattern that matches the part of the string (a number followed by ms)
         Pattern timingValueOnly = Pattern.compile("\\d+ ns");
@@ -167,7 +167,7 @@ public class ProcessDBMonsterResults {
      */
     public static void writeHeader() {
         // convert the header to a string that can be written to a file
-        ArrayList<String> header = new ArrayList<String>();
+        ArrayList<String> header = new ArrayList<>();
         header.add("datagenerator");
         header.add("database");
         header.add("type");

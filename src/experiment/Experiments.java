@@ -53,10 +53,10 @@ public class Experiments {
         configuration.project = System.getProperty("project");
 
         // the final list of parameters (global plus local)
-        ArrayList<String> parameters = new ArrayList<String>();
+        ArrayList<String> parameters = new ArrayList<>();
 
         // local parameters that change on a per-experiment basis
-        ArrayList<String> localParameters = new ArrayList<String>();
+        ArrayList<String> localParameters = new ArrayList<>();
         localParameters.add(datagenerator);
         localParameters.add(database);
         localParameters.add(satisfyrows);

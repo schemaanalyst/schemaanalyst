@@ -60,9 +60,9 @@ public class BetweenAnalyst extends ConstraintAnalyst {
     }
 
     protected boolean rowSatisfies(Value lowerValue, Value upperValue, Value columnValue) {
-        Boolean lowerBoundSatisfied = new EvaluableRelationalPredicate<Value>(lowerValue, "<=", columnValue).isSatisfied3VL();
+        Boolean lowerBoundSatisfied = new EvaluableRelationalPredicate<>(lowerValue, "<=", columnValue).isSatisfied3VL();
 
-        Boolean upperBoundSatisfied = new EvaluableRelationalPredicate<Value>(columnValue, "<=", upperValue).isSatisfied3VL();
+        Boolean upperBoundSatisfied = new EvaluableRelationalPredicate<>(columnValue, "<=", upperValue).isSatisfied3VL();
 
         if (lowerBoundSatisfied == null || upperBoundSatisfied == null) {
             return satisfyOnNull;

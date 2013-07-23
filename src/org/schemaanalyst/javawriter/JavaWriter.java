@@ -17,7 +17,7 @@ public class JavaWriter {
     protected SortedSet<String> imports;
 
     public JavaWriter() {
-        imports = new TreeSet<String>();
+        imports = new TreeSet<>();
     }
 
     /**

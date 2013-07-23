@@ -11,7 +11,7 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 public abstract class Mutator {
 
     public List<Schema> produceMutants(Schema schema) {
-        List<Schema> mutants = new ArrayList<Schema>();
+        List<Schema> mutants = new ArrayList<>();
         produceMutants(schema, mutants);
         return mutants;
     }
@@ -23,7 +23,7 @@ public abstract class Mutator {
     }
 
     public List<Schema> produceMutants(Table table) {
-        List<Schema> mutants = new ArrayList<Schema>();
+        List<Schema> mutants = new ArrayList<>();
         produceMutants(table, mutants);
         return mutants;
     }

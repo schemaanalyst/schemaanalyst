@@ -143,7 +143,7 @@ public class ConstraintMapper {
     }
 
     protected List<Column> mapColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {
-        List<Column> columns = new ArrayList<Column>();
+        List<Column> columns = new ArrayList<>();
 
         if (currentColumn != null) {
             columns.add(currentColumn);

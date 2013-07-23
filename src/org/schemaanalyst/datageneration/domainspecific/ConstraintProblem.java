@@ -33,7 +33,7 @@ public class ConstraintProblem {
         tables.addAll(getTablesForConstraintsToSatisfy());
         tables.addAll(getTablesForConstraintsToNegate());
 
-        List<Table> tableList = new ArrayList<Table>();
+        List<Table> tableList = new ArrayList<>();
         tableList.addAll(tables);
         return tableList;
     }

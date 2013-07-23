@@ -153,6 +153,6 @@ public class CompoundValueObjectiveFunction extends ObjectiveFunction<Relational
 
     public static ObjectiveValue compute(CompoundValue lhs, RelationalOperator op, CompoundValue rhs) {
         CompoundValueObjectiveFunction objFun = new CompoundValueObjectiveFunction();
-        return objFun.evaluate(new RelationalPredicate<CompoundValue>(lhs, op, rhs));
+        return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

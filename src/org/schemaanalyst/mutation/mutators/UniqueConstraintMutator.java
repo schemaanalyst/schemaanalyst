@@ -18,7 +18,7 @@ public class UniqueConstraintMutator extends Mutator {
 
     public void produceMutants(Table table, List<Schema> mutants) {
         originalSchema = table.getSchema();
-        columnSets = new HashSet<Set<Column>>();
+        columnSets = new HashSet<>();
 
         this.table = table;
         this.mutants = mutants;
@@ -45,7 +45,7 @@ public class UniqueConstraintMutator extends Mutator {
     }
 
     private Set<Column> makeColumnSet(UniqueConstraint uniqueConstraint) {
-        Set<Column> columnSet = new HashSet<Column>();
+        Set<Column> columnSet = new HashSet<>();
         for (Column column : uniqueConstraint.getColumns()) {
             columnSet.add(column);
         }
@@ -106,7 +106,7 @@ public class UniqueConstraintMutator extends Mutator {
     }
 
     private void makeNewUniqueConstraintMutant(Column column) {
-        Set<Column> columnSet = new HashSet<Column>();
+        Set<Column> columnSet = new HashSet<>();
         columnSet.add(column);
 
         if (!columnSets.contains(columnSet)) {

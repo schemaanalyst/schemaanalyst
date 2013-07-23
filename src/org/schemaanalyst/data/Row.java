@@ -17,7 +17,7 @@ public class Row implements Duplicable<Row> {
 
     protected Row() {
         table = null;
-        cells = new ArrayList<Cell>();
+        cells = new ArrayList<>();
     }
 
     public Row(Table table, ValueFactory valueFactory) {

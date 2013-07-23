@@ -62,6 +62,6 @@ public class ListOfCellsObjectiveFunction extends ObjectiveFunction<RelationalPr
 
     public static ObjectiveValue compute(List<Cell> lhs, RelationalOperator op, List<Cell> rhs) {
         ListOfCellsObjectiveFunction objFun = new ListOfCellsObjectiveFunction();
-        return objFun.evaluate(new RelationalPredicate<List<Cell>>(lhs, op, rhs));
+        return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

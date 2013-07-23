@@ -29,7 +29,7 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
 
     public ObjectiveValue evaluate(Row row) {
         return valObjFun.evaluate(
-                new RelationalPredicate<Value>(
+                new RelationalPredicate<>(
                 lhs.evaluate(row),
                 op,
                 rhs.evaluate(row)));

@@ -105,7 +105,7 @@ public class ExperimentalResults {
      * execution to the next
      */
     public void reset() {
-        header = new ArrayList<String>();
+        header = new ArrayList<>();
         experimentalResult = new ExperimentalResult();
     }
 

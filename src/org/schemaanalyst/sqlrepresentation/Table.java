@@ -39,13 +39,13 @@ public class Table implements Serializable {
         this.schema = schema;
         this.name = name;
 
-        columns = new ArrayList<Column>();
+        columns = new ArrayList<>();
 
         // constraints
-        checkConstraints = new ArrayList<CheckConstraint>();
-        foreignKeyConstraints = new ArrayList<ForeignKeyConstraint>();
-        notNullConstraints = new ArrayList<NotNullConstraint>();
-        uniqueConstraints = new ArrayList<UniqueConstraint>();
+        checkConstraints = new ArrayList<>();
+        foreignKeyConstraints = new ArrayList<>();
+        notNullConstraints = new ArrayList<>();
+        uniqueConstraints = new ArrayList<>();
 
         // the primary key is null until one is created through setPrimaryKey
         primaryKeyConstraint = null;
@@ -133,7 +133,7 @@ public class Table implements Serializable {
      * @return A list of columns containing first column and remaining columns
      */
     public static List<Column> makeColumnList(Column firstColumn, Column... remainingColumns) {
-        List<Column> allColumns = new ArrayList<Column>();
+        List<Column> allColumns = new ArrayList<>();
         allColumns.add(firstColumn);
         for (Column column : remainingColumns) {
             allColumns.add(column);    
@@ -599,7 +599,7 @@ public class Table implements Serializable {
      * @return A list containing all the constraints on the table.
      */
     public List<Constraint> getConstraints() {
-        List<Constraint> constraints = new ArrayList<Constraint>();
+        List<Constraint> constraints = new ArrayList<>();
         if (primaryKeyConstraint != null) {
             constraints.add(primaryKeyConstraint);
         }
@@ -617,9 +617,9 @@ public class Table implements Serializable {
      * @return A list of connected tables.
      */
     public List<Table> getConnectedTables() {
-        List<Table> referencedTables = new ArrayList<Table>();
+        List<Table> referencedTables = new ArrayList<>();
 
-        List<Table> toVisit = new ArrayList<Table>();
+        List<Table> toVisit = new ArrayList<>();
         toVisit.add(this);
 
         while (toVisit.size() > 0) {
