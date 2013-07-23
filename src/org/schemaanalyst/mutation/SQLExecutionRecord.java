@@ -48,7 +48,8 @@ public class SQLExecutionRecord {
         return returnCode;
     }
 
+    @Override
     public String toString() {
-        return "(" + statement + ", " + returnCode + ")";
+        return "SQLExecutionRecord{" + "statement=" + statement + ", returnCode=" + returnCode + '}';
     }
 }

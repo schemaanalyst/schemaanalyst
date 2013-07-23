@@ -34,7 +34,8 @@ public class SQLInsertRecord extends SQLExecutionRecord {
         return !isSatisfying;
     }
 
+    @Override
     public String toString() {
-        return "(INSERT: " + statement + ", " + returnCode + ", Satisfy? " + isSatisfying + " Negate? " + !isSatisfying + ")";
+        return "SQLInsertRecord{" + "isSatisfying=" + isSatisfying + '}';
     }
 }

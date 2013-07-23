@@ -5,7 +5,9 @@ package org.schemaanalyst.mutation;
  */
 public class SQLSelectRecord extends SQLExecutionRecord {
 
+    @Override
     public String toString() {
-        return "(SELECT: " + statement + ", " + returnCode + ")";
+        return "SQLInsertRecord{" + "statement=" + statement + ", returnCode=" + returnCode + '}';
     }
+    
 }
