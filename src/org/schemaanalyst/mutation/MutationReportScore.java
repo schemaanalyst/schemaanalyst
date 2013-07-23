@@ -19,13 +19,6 @@ public class MutationReportScore {
      */
     private double score;
 
-    public MutationReportScore() {
-        name = "";
-        numerator = 0;
-        denominator = 0;
-        score = 0;
-    }
-
     public MutationReportScore(String name, int numerator, int denominator) {
         this.name = name;
         this.numerator = numerator;
@@ -34,13 +27,20 @@ public class MutationReportScore {
     }
 
     public double getValue(String description) {
-        double answer = -1.0;
-        if (description.equals("numerator")) {
-            answer = (new Double(numerator)).doubleValue();
-        } else if (description.equals("denominator")) {
-            answer = (new Double(denominator)).doubleValue();
-        } else if (description.equals("score")) {
-            answer = score;
+        double answer;
+        switch (description) {
+            case "numerator":
+                answer = (new Double(numerator)).doubleValue();
+                break;
+            case "denominator":
+                answer = (new Double(denominator)).doubleValue();
+                break;
+            case "score":
+                computeScore();
+                answer = score;
+                break;
+            default:
+                throw new RuntimeException("Unrecognized value: " + description);
         }
         return answer;
     }
@@ -62,12 +62,12 @@ public class MutationReportScore {
     }
 
     public double getScore() {
+        computeScore();
         return score;
     }
 
-    public double computeScore() {
-        double score = ((double) numerator / (double) denominator);
-        return score;
+    private double computeScore() {
+        return ((double) numerator / (double) denominator);
     }
 
     public void setName(String name) {
@@ -78,6 +78,7 @@ public class MutationReportScore {
         return name;
     }
 
+    @Override
     public String toString() {
         return "(" + name + ", (" + numerator + " / " + denominator + " = " + score + "))";
     }
