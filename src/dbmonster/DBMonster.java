@@ -349,10 +349,8 @@ public class DBMonster {
                 // determine whether or not this insert killed the schema mutant; it kills
                 // the mutant when its return code is the same as the return code of the
                 // orginal insert statement, for the mutant schema instead of original schema
-                if (insertMutantRecord.getReturnCode() == originalInsertRecord.getReturnCode()) {
-                    insertMutantRecord.sparedMutant();
-                } else {
-                    insertMutantRecord.killedMutant();
+                if (insertMutantRecord.getReturnCode() != originalInsertRecord.getReturnCode()) {
+                    insertMutantRecord.setKilled(true);
                 }
 
                 // add this insertMutantRecord to the mutant report

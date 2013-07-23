@@ -119,7 +119,7 @@ public class MutationReport {
             // go through each of the mutant statements
             for (MutantRecord currentMutantStatement : currentMutantReport.getMutantStatements()) {
                 // this insert killed the current mutant schema
-                if (currentMutantStatement.didKillMutant() || currentMutantReport.wasBornStill()) {
+                if (currentMutantStatement.isKilled() || currentMutantReport.wasBornStill()) {
                     insideCurrentMutantReportKills++;
 
                     // this mutant was satisfying and it killed

@@ -2,7 +2,6 @@ package org.schemaanalyst.deprecated;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.math.BigDecimal;
 
 import plume.*;
 
@@ -16,18 +15,6 @@ import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.datageneration.domainspecific.DomainSpecificConstraintCoverer;
-import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
-import org.schemaanalyst.datageneration.search.NaiveRandomConstraintCoverer;
-import org.schemaanalyst.datageneration.search.RandomSearch;
-import org.schemaanalyst.datageneration.search.Search;
-import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
-import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
-import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
-import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.deprecated.configuration.Configuration;
@@ -38,7 +25,6 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.mutation.MutationReport;
-import org.schemaanalyst.mutation.MutationReportScores;
 import org.schemaanalyst.mutation.MutationReportScore;
 import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutantRecord;
@@ -382,10 +368,8 @@ public class SchemaAnalyst {
                 // determine whether or not this insert killed the schema mutant; it kills
                 // the mutant when its return code is the same as the return code of the
                 // orginal insert statement, for the mutant schema instead of original schema
-                if (insertMutantRecord.getReturnCode() == originalInsertRecord.getReturnCode()) {
-                    insertMutantRecord.sparedMutant();
-                } else {
-                    insertMutantRecord.killedMutant();
+                if (insertMutantRecord.getReturnCode() != originalInsertRecord.getReturnCode()) {
+                    insertMutantRecord.setKilled(true);
                 }
 
                 // add this insertMutantRecord to the mutant report

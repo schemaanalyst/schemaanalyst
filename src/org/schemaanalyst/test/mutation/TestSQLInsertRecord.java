@@ -1,7 +1,5 @@
 package org.schemaanalyst.test.mutation;
 
-import java.util.List;
-import java.util.Arrays;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -75,22 +73,14 @@ public class TestSQLInsertRecord {
     @Test
     public void testMutantKillingDefault() {
         MutantRecord record = new MutantRecord();
-        assertTrue(!record.didKillMutant());
+        assertTrue(!record.isKilled());
     }
 
     @Test
     public void testMutantKillingTryOneNow() {
         MutantRecord record = new MutantRecord();
-        assertTrue(!record.didKillMutant());
-        record.killedMutant();
-        assertTrue(record.didKillMutant());
-    }
-
-    @Test
-    public void testMutantSparing() {
-        MutantRecord record = new MutantRecord();
-        assertTrue(!record.didKillMutant());
-        record.sparedMutant();
-        assertTrue(!record.didKillMutant());
+        assertTrue(!record.isKilled());
+        record.setKilled(true);
+        assertTrue(record.isKilled());
     }
 }

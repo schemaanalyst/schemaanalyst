@@ -10,26 +10,22 @@ public class MutantRecord extends SQLInsertRecord {
      * The boolean flag indicating whether this statement killed the MUTANT
      * schema
      */
-    private boolean killedMutant;
+    private boolean killed;
 
     public MutantRecord() {
         super();
-        killedMutant = false;
+        killed = false;
     }
 
-    public void killedMutant() {
-        killedMutant = true;
+    public void setKilled(boolean killed) {
+        this.killed = killed;
     }
-
-    public void sparedMutant() {
-        killedMutant = false;
-    }
-
-    public boolean didKillMutant() {
-        return killedMutant;
+    
+    public boolean isKilled() {
+        return killed;
     }
 
     public String toString() {
-        return "(" + super.toString() + ", Killed? " + killedMutant + ")";
+        return "(" + super.toString() + ", Killed? " + killed + ")";
     }
 }
