@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.mutation.mutationanalysis;
+package org.schemaanalyst.mutation.analysis;
 
 import java.io.File;
 import java.util.List;

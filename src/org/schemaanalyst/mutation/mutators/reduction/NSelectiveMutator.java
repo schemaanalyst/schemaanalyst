@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.mutation.mutators.mutantreduction;
+package org.schemaanalyst.mutation.mutators.reduction;
 
 import java.util.ArrayList;
 import java.util.Comparator;

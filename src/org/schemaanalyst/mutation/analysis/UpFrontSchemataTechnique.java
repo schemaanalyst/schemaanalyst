@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.mutation.mutationanalysis;
+package org.schemaanalyst.mutation.analysis;
 
 import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 
