@@ -41,7 +41,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
         + "that the result generation tool has been run, as it bases the "
         + "mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class JustInTimeSchemata extends Runner {
+public class JustInTimeSchemataTechnique extends Runner {
 
     /**
      * The name of the schema to use.
@@ -170,7 +170,7 @@ public class JustInTimeSchemata extends Runner {
     }
 
     public static void main(String[] args) {
-        new JustInTimeSchemata().run(args);
+        new JustInTimeSchemataTechnique().run(args);
     }
     
     private static class MutationAnalysisCallable implements Callable<Boolean> {
