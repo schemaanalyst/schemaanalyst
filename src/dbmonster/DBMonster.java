@@ -361,7 +361,7 @@ public class DBMonster {
             i++;
 
             if (stillBorn) {
-                currentMutantReport.bornStill();
+                currentMutantReport.setStillBorn(true);
                 stillBorn = false;
             }
 

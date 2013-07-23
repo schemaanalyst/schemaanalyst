@@ -381,13 +381,13 @@ public class SchemaAnalyst {
 
             // store the mutant still born information for this MutantReport
             if (stillBorn) {
-                currentMutantReport.bornStill();
+                currentMutantReport.setStillBorn(true);
                 stillBorn = false;
             }
 
             // don't know if it is killed yet here
             // System.out.println("Computing intersection!");
-            currentMutantReport.computeIntersection();
+            currentMutantReport.computeIntersected();
 
             // store the current insertMutantRecord inside of the mutationReport
             mutationReport.addMutantReport(currentMutantReport);

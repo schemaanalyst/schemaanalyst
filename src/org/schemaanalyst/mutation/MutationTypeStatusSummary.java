@@ -57,18 +57,18 @@ public class MutationTypeStatusSummary {
      */
     public void process(MutantReport mutantReport) {
         // handle the killed information
-        if (mutantReport.didKillMutant()) {
+        if (mutantReport.isKilled()) {
             this.killed(mutantReport.getDescription());
         } else {
             this.notKilled(mutantReport.getDescription());
         }
 
         // handle the still born information
-        if (mutantReport.wasBornStill()) {
+        if (mutantReport.isStillBorn()) {
             this.stillBorn(mutantReport.getDescription());
         }
 
-        if (mutantReport.wasIntersection()) {
+        if (mutantReport.isIntersected()) {
             this.intersected(mutantReport.getDescription());
         }
     }

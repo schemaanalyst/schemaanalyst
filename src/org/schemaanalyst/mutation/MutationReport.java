@@ -119,7 +119,7 @@ public class MutationReport {
             // go through each of the mutant statements
             for (MutantRecord currentMutantStatement : currentMutantReport.getMutantStatements()) {
                 // this insert killed the current mutant schema
-                if (currentMutantStatement.isKilled() || currentMutantReport.wasBornStill()) {
+                if (currentMutantStatement.isKilled() || currentMutantReport.isStillBorn()) {
                     insideCurrentMutantReportKills++;
 
                     // this mutant was satisfying and it killed
@@ -145,10 +145,10 @@ public class MutationReport {
             // if at least one of the statements kills the mutant schema, then increment the outer kill value
             if (insideCurrentMutantReportKills > 0) {
                 currentMutantReportKills++;
-                currentMutantReport.killMutant();
+                currentMutantReport.setKilled(true);
             }
 
-            currentMutantReport.computeIntersection();
+            currentMutantReport.computeIntersected();
 
             // increment the variables for the running totals
             totalMutantReportKills += insideCurrentMutantReportKills;
@@ -345,28 +345,28 @@ public class MutationReport {
         //builder.append("mutant, killed, notkilled \n");
         for (MutantReport currentMutantReport : mutantReports) {
 
-            if (currentMutantReport.didKillMutant()) {
+            if (currentMutantReport.isKilled()) {
                 killed.add(Integer.toString(currentMutantReport.getNumericalIdentifier()));
             }
 
-            if (currentMutantReport.wasBornStill()) {
+            if (currentMutantReport.isStillBorn()) {
                 stillborn.add(Integer.toString(currentMutantReport.getNumericalIdentifier()));
             }
 
-            if (currentMutantReport.wasIntersection()) {
+            if (currentMutantReport.isIntersected()) {
                 intersection.add(Integer.toString(currentMutantReport.getNumericalIdentifier()));
             }
 
             builder.append("Mutant " + currentMutantReport.getNumericalIdentifier()
-                    + " - Was it Killed? " + currentMutantReport.didKillMutant()
-                    + " - Was it Still Born? " + currentMutantReport.wasBornStill()
-                    + " - Was it Intersected? " + currentMutantReport.wasIntersection()
+                    + " - Was it Killed? " + currentMutantReport.isKilled()
+                    + " - Was it Still Born? " + currentMutantReport.isStillBorn()
+                    + " - Was it Intersected? " + currentMutantReport.isIntersected()
                     + " - Purpose? " + currentMutantReport.getDescription() + "\n");
 
             builder.append("" + currentMutantReport.getNumericalIdentifier() + ","
-                    + currentMutantReport.didKillMutant() + ","
-                    + currentMutantReport.wasBornStill()
-                    + currentMutantReport.wasIntersection() + "\n");
+                    + currentMutantReport.isKilled() + ","
+                    + currentMutantReport.isStillBorn()
+                    + currentMutantReport.isIntersected() + "\n");
             // }
 
         }

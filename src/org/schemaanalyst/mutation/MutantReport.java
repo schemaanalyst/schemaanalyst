@@ -25,7 +25,11 @@ public class MutantReport {
      * The flag to indicate whether or not this mutant was still born
      */
     private boolean stillBorn;
-    private boolean intersection;
+    /**
+     * The flag to indicate whether or not this mutant was still born and killed
+     * (intersected)
+     */
+    private boolean intersected;
     /**
      * The description of the mutant that was executed
      */
@@ -46,7 +50,7 @@ public class MutantReport {
         nextNumericalIdentifier++;
         killed = false;
         stillBorn = false;
-        intersection = false;
+        intersected = false;
         description = "";
     }
 
@@ -93,52 +97,46 @@ public class MutantReport {
     }
 
     /**
-     * Indicate that the mutant was killed
+     * Indicate whether the mutant was killed
      */
-    public void killMutant() {
-        killed = true;
+    public void setKilled(boolean killed) {
+        this.killed = killed;
     }
 
     /**
      * Determine whether or not the mutant was killed
      */
-    public boolean didKillMutant() {
+    public boolean isKilled() {
         return killed;
     }
 
     /**
-     * Indicate that the mutant was born still
+     * Indicate whether the mutant was still born
      */
-    public void bornStill() {
-        stillBorn = true;
+    public void setStillBorn(boolean stillBorn) {
+        this.stillBorn = stillBorn;
     }
 
     /**
-     * Determine whether or not the mutant was born still
+     * Determine whether or not the mutant was still born
      */
-    public boolean wasBornStill() {
+    public boolean isStillBorn() {
         return stillBorn;
     }
 
-    public void computeIntersection() {
-
-        // System.out.println("CI");
-
-        // System.out.println("stillborn = " + stillBorn);
-        // System.out.println("killed = " + killed);
-
-        if (stillBorn && killed) {
-            intersection = true;
-        } else {
-            intersection = false;
-        }
-
-        // System.out.println("== " + intersection);
-
+    /**
+     * Determine whether this mutant was stillborn and killed
+     */
+    public void computeIntersected() {
+        intersected = stillBorn && killed;
     }
 
-    public boolean wasIntersection() {
-        return intersection;
+    /**
+     * Determine whether or not the mutant was stillborn and killed
+     * (intersected)
+     */
+    public boolean isIntersected() {
+        return intersected;
     }
 
     /**
