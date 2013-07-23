@@ -3,8 +3,18 @@ package org.schemaanalyst.util;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for String operations.
+ */
 public class StringUtils {
 
+    /**
+     * Repeats a String a specified number of times.
+     * 
+     * @param toRepeat The String to repeat
+     * @param times The number of times
+     * @return The String repeated
+     */
     public static String repeat(String toRepeat, int times) {
         StringBuilder sb = new StringBuilder();
         for (int i=0; i < times; i++) {
@@ -13,6 +23,14 @@ public class StringUtils {
         return sb.toString();
     }
     
+    /**
+     * Implodes an Iterable object into a String, using a given separator.
+     * 
+     * @param <T> The generic class
+     * @param items The iterable object to implode
+     * @param sep The separator to use
+     * @return The String representation created
+     */
     public static <T> String implode(Iterable<T> items, String sep) {
         if (items == null) {
             return "";
@@ -31,6 +49,14 @@ public class StringUtils {
         return sb.toString();
     }
     
+    /**
+     * Implodes an Array into a String, using a given separator.
+     * 
+     * @param <T> The generic class
+     * @param items The Array to implode
+     * @param sep The separator to use
+     * @return The String representation created
+     */
     public static <T> String implode(T[] items, String sep) {
         if (items == null) {
             return "";
@@ -46,6 +72,14 @@ public class StringUtils {
         return sb.toString();
     }
     
+    /**
+     * Explodes a String into a List, based on a separator. Uses ArrayList as 
+     * the backing List implementation.
+     * 
+     * @param str The String to explode
+     * @param sep The separator delimiting values
+     * @return The List of values created
+     */
     public static List<String> explode(String str, String sep) {
         String[] splitStrings = str.split(sep);
         List<String> list = new ArrayList<>();
