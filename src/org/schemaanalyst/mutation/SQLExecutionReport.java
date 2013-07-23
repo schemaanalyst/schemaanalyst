@@ -19,8 +19,8 @@ public class SQLExecutionReport {
     protected List<SQLInsertRecord> insertStatements;
 
     public SQLExecutionReport() {
-        createTableStatements = new ArrayList<SQLExecutionRecord>();
-        insertStatements = new ArrayList<SQLInsertRecord>();
+        createTableStatements = new ArrayList<>();
+        insertStatements = new ArrayList<>();
     }
 
     /**
