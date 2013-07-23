@@ -2,14 +2,12 @@ package org.schemaanalyst.mutation;
 
 import java.util.LinkedHashMap;
 
-import org.schemaanalyst.mutation.MutationReportScore;
-
 public class MutationReportScores {
 
     LinkedHashMap<String, MutationReportScore> scores;
 
     public MutationReportScores() {
-        scores = new LinkedHashMap<String, MutationReportScore>();
+        scores = new LinkedHashMap<>();
     }
 
     public void add(MutationReportScore report) {
