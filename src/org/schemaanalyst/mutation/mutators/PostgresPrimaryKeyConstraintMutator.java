@@ -1,6 +1,6 @@
 /*
  */
-package experiment.mutation2013;
+package org.schemaanalyst.mutation.mutators;
 
 import java.util.List;
 import org.schemaanalyst.mutation.mutators.Mutator;

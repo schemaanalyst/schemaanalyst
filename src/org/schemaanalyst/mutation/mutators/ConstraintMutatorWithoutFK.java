@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.mutators;
 
-import experiment.mutation2013.PostgresPrimaryKeyConstraintMutator;
 import org.schemaanalyst.mutation.mutators.*;
 import java.util.List;
 
