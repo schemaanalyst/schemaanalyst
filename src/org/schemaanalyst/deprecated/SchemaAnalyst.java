@@ -630,7 +630,7 @@ public class SchemaAnalyst {
                     Integer.toString(mutationTypeStatusSummary.getKilledCount(mutationType)));
             // add the results for the mutants that were NOT KILLED
             experimentalResults.addResult((MutationUtilities.squashMutantDescription(mutationType)).toLowerCase() + NOTKILLED,
-                    Integer.toString(mutationTypeStatusSummary.getNotKilledCount(mutationType)));
+                    Integer.toString(mutationTypeStatusSummary.getAliveCount(mutationType)));
             // add the results for the mutants that were STILL BORN
             experimentalResults.addResult((MutationUtilities.squashMutantDescription(mutationType)).toLowerCase() + STILLBORN,
                     Integer.toString(mutationTypeStatusSummary.getStillBornCount(mutationType)));

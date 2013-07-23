@@ -118,11 +118,11 @@ public class TestMutationReport {
     @Test
     public void testMutantTypeSummaryInformationNotKillingTheMutants() {
         MutationTypeStatusSummary summary = new MutationTypeStatusSummary();
-        summary.notKilled("not null");
-        summary.notKilled("primary key");
-        summary.notKilled("not null");
-        assertEquals(2, summary.getNotKilledCount("not null"));
-        assertEquals(1, summary.getNotKilledCount("primary key"));
+        summary.alive("not null");
+        summary.alive("primary key");
+        summary.alive("not null");
+        assertEquals(2, summary.getAliveCount("not null"));
+        assertEquals(1, summary.getAliveCount("primary key"));
     }
 
     @Test
@@ -138,41 +138,41 @@ public class TestMutationReport {
     @Test
     public void testMutantTypeSummaryInformationKillingAndNotKillingTheMutants() {
         MutationTypeStatusSummary summary = new MutationTypeStatusSummary();
-        summary.notKilled("not null");
+        summary.alive("not null");
         summary.killed("not null");
-        summary.notKilled("primary key");
-        summary.notKilled("not null");
-        assertEquals(2, summary.getNotKilledCount("not null"));
+        summary.alive("primary key");
+        summary.alive("not null");
+        assertEquals(2, summary.getAliveCount("not null"));
         assertEquals(1, summary.getKilledCount("not null"));
-        assertEquals(1, summary.getNotKilledCount("primary key"));
+        assertEquals(1, summary.getAliveCount("primary key"));
     }
 
     @Test
     public void testMutantTypeSummaryInformationKillingAndNotKillingTheMutantsAndStillBornForGoodMeasure() {
         MutationTypeStatusSummary summary = new MutationTypeStatusSummary();
-        summary.notKilled("not null");
+        summary.alive("not null");
         summary.killed("not null");
         summary.stillBorn("not null");
-        summary.notKilled("primary key");
-        summary.notKilled("not null");
-        assertEquals(2, summary.getNotKilledCount("not null"));
+        summary.alive("primary key");
+        summary.alive("not null");
+        assertEquals(2, summary.getAliveCount("not null"));
         assertEquals(1, summary.getKilledCount("not null"));
         assertEquals(1, summary.getStillBornCount("not null"));
-        assertEquals(1, summary.getNotKilledCount("primary key"));
+        assertEquals(1, summary.getAliveCount("primary key"));
     }
 
     @Test
     public void testMutantTypeSummaryInformationKillingAndNotKillingTheMutantsAndStillBornForGoodMeasureGetTheList() {
         MutationTypeStatusSummary summary = new MutationTypeStatusSummary();
-        summary.notKilled("not null");
+        summary.alive("not null");
         summary.killed("not null");
         summary.stillBorn("not null");
-        summary.notKilled("primary key");
-        summary.notKilled("not null");
-        assertEquals(2, summary.getNotKilledCount("not null"));
+        summary.alive("primary key");
+        summary.alive("not null");
+        assertEquals(2, summary.getAliveCount("not null"));
         assertEquals(1, summary.getKilledCount("not null"));
         assertEquals(1, summary.getStillBornCount("not null"));
-        assertEquals(1, summary.getNotKilledCount("primary key"));
+        assertEquals(1, summary.getAliveCount("primary key"));
         assertTrue(summary.getMutantTypes().contains("not null"));
         assertTrue(!summary.getMutantTypes().contains("foreign key"));
         assertTrue(summary.getMutantTypes().contains("primary key"));

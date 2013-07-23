@@ -5,17 +5,15 @@ import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
 
-import org.schemaanalyst.mutation.MutantReport;
-
 /**
  * Stores the summary information about a mutant type and how many mutants were
- * and were not killed
+ * and were not killed.
  */
 public class MutationTypeStatusSummary {
 
     /**
      * The HashMap relating the mutant type, as a String, to the
-     * MutantTypeStatus
+     * MutantTypeStatus.
      */
     private LinkedHashMap<String, MutationTypeStatus> summaryMap;
 
@@ -23,7 +21,7 @@ public class MutationTypeStatusSummary {
      * Initialize the HashMap for the summary information
      */
     public MutationTypeStatusSummary() {
-        summaryMap = new LinkedHashMap<String, MutationTypeStatus>();
+        summaryMap = new LinkedHashMap<>();
     }
 
     /**
@@ -31,7 +29,7 @@ public class MutationTypeStatusSummary {
      */
     public List<String> getMutantTypes() {
         Set<String> summaryMapKeys = summaryMap.keySet();
-        List<String> mutantTypeList = new ArrayList<String>(summaryMapKeys);
+        List<String> mutantTypeList = new ArrayList<>(summaryMapKeys);
         return mutantTypeList;
     }
 
@@ -40,14 +38,19 @@ public class MutationTypeStatusSummary {
      */
     public int getStatusCount(String mutationType, String status) {
         int count = -1;
-        if (status.equals("killed")) {
-            count = this.getKilledCount(mutationType);
-        } else if (status.equals("notkilled")) {
-            count = this.getNotKilledCount(mutationType);
-        } else if (status.equals("stillborn")) {
-            count = this.getStillBornCount(mutationType);
-        } else if (status.equals("intersection")) {
-            count = this.getIntersectionCount(mutationType);
+        switch (status) {
+            case "killed":
+                count = this.getKilledCount(mutationType);
+                break;
+            case "notkilled":
+                count = this.getAliveCount(mutationType);
+                break;
+            case "stillborn":
+                count = this.getStillBornCount(mutationType);
+                break;
+            case "intersection":
+                count = this.getIntersectionCount(mutationType);
+                break;
         }
         return count;
     }
@@ -60,7 +63,7 @@ public class MutationTypeStatusSummary {
         if (mutantReport.isKilled()) {
             this.killed(mutantReport.getDescription());
         } else {
-            this.notKilled(mutantReport.getDescription());
+            this.alive(mutantReport.getDescription());
         }
 
         // handle the still born information
@@ -108,7 +111,7 @@ public class MutationTypeStatusSummary {
     /**
      * Not killed again for a specified type of mutant
      */
-    public void notKilled(String mutationType) {
+    public void alive(String mutationType) {
         // we have already encountered this mutation, increment
         if (summaryMap.containsKey(mutationType)) {
             MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
@@ -148,7 +151,7 @@ public class MutationTypeStatusSummary {
     /**
      * Get the not killed count for the specified type of mutant
      */
-    public int getNotKilledCount(String mutationType) {
+    public int getAliveCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
         return mutationTypeStatus.getAlive();
     }
@@ -161,15 +164,16 @@ public class MutationTypeStatusSummary {
         return mutationTypeStatus.getStillBorn();
     }
 
+    /**
+     * Get the intersection count for the specified type of mutant
+     */
     public int getIntersectionCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
         return mutationTypeStatus.getIntersected();
     }
 
-    /**
-     * Return the string representation
-     */
+    @Override
     public String toString() {
-        return summaryMap.toString();
+        return "MutationTypeStatusSummary{" + "summaryMap=" + summaryMap + '}';
     }
 }
