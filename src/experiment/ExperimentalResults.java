@@ -12,12 +12,11 @@ import java.io.FileWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import experiment.util.XMLFormatter;
-import org.schemaanalyst.configuration.FolderConfiguration;
+import org.schemaanalyst.util.xml.XMLFormatter;
 
 public class ExperimentalResults {
 
-    private static final String DEFAULT_LOCATION = FolderConfiguration.results_dir + File.separator;
+    private static final String DEFAULT_LOCATION = "results" + File.separator;
     /**
      * The header with the name of all of the parameters and measured variables
      */

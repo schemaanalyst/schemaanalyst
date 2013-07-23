@@ -1,16 +1,15 @@
 package experiment;
 
-import experiment.util.XMLSerialiser;
+import org.schemaanalyst.util.xml.XMLSerialiser;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.File;
 
-import org.schemaanalyst.configuration.FolderConfiguration;
 
 public class GlobalExperimentParameters extends Parameters {
 
     private static final String DEFAULT_LOCATION =
-            FolderConfiguration.config_dir + File.separator + "globalexperimentparameters.xml";
+            "config" + File.separator + "globalexperimentparameters.xml";
     private ArrayList<String> parameters;
 
     /**
