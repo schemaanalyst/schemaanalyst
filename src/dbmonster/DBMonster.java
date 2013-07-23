@@ -277,7 +277,7 @@ public class DBMonster {
             // ** same as SchemaAnalyst, this line of code needs to be better tested
 
             // add the comments for this mutant to the currentMutantReport
-            currentMutantReport.setDescription(MutationUtilities.
+            currentMutantReport.setDescription(
                     abbreviateMutantDescription(mutantCommentsBuilder.toString(), START, END));
 
             // create the MUTANT schema inside of the real database
@@ -638,10 +638,16 @@ public class DBMonster {
             print(statement, dataOutput);
         }
     }
-
+    
     /**
-     *
+     * Abbreviate the description of a mutant for the production of graphs
      */
+    public static String abbreviateMutantDescription(String description, String startDelimiter, String endDelimiter) {
+        int startIndex = description.indexOf(startDelimiter);
+        int endIndex = description.indexOf(endDelimiter);
+        return description.substring(startIndex + 1, endIndex);
+    }
+
     public static void print(String line, PrintWriter dataOutput) {
         dataOutput.println(line);
         dataOutput.flush();

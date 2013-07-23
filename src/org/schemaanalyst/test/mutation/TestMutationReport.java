@@ -1,8 +1,6 @@
 package org.schemaanalyst.test.mutation;
 
-import java.util.List;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -11,12 +9,9 @@ import org.schemaanalyst.mutation.MutantReport;
 import org.schemaanalyst.mutation.MutantRecord;
 import org.schemaanalyst.mutation.MutationUtilities;
 import org.schemaanalyst.mutation.SQLExecutionRecord;
-import org.schemaanalyst.mutation.SQLSelectRecord;
-import org.schemaanalyst.mutation.SQLInsertRecord;
 import org.schemaanalyst.mutation.SQLExecutionReport;
 import org.schemaanalyst.mutation.DBMonsterSQLExecutionReport;
 import org.schemaanalyst.mutation.MutationTypeStatusSummary;
-import org.schemaanalyst.mutation.MutationTypeStatus;
 
 public class TestMutationReport {
 
@@ -159,24 +154,6 @@ public class TestMutationReport {
         assertTrue(!summary.getMutantTypes().contains("foreign key"));
         assertTrue(summary.getMutantTypes().contains("primary key"));
         assertTrue(!summary.getMutantTypes().contains("unique"));
-    }
-
-    @Test
-    public void testMutantDescriptionAbbreviation() {
-        String fullDescription = "Mutant with primary key column \"id\" replaced with \"user_name\" on table \"Account\" (Primary Key, 3)";
-        String abbreviatedDescription = MutationUtilities.abbreviateMutantDescription(fullDescription, "(", ",");
-        String expectedDescription = "Primary Key";
-        assertEquals(expectedDescription, abbreviatedDescription);
-    }
-
-    @Test
-    public void testMutantDescriptionAbbreviationSquashingCorrectly() {
-        String fullDescription = "Mutant with primary key column \"id\" replaced with \"user_name\" on table \"Account\" (Primary Key, 3)";
-        String abbreviatedDescription = MutationUtilities.abbreviateMutantDescription(fullDescription, "(", ",");
-        String expectedDescription = "Primary Key";
-        String expectedDescriptionSquashed = "PrimaryKey";
-        assertEquals(expectedDescription, abbreviatedDescription);
-        assertEquals(expectedDescriptionSquashed, MutationUtilities.squashMutantDescription(abbreviatedDescription));
     }
 
     @Test

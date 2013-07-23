@@ -1,7 +1,5 @@
 package org.schemaanalyst.test.mutation;
 
-import java.util.List;
-import java.util.Arrays;
 
 import org.junit.Test;
 import static org.junit.Assert.*;

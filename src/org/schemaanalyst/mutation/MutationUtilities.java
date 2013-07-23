@@ -3,15 +3,6 @@ package org.schemaanalyst.mutation;
 public class MutationUtilities {
 
     /**
-     * Abbreviate the description of a mutant for the production of graphs
-     */
-    public static String abbreviateMutantDescription(String description, String startDelimiter, String endDelimiter) {
-        int startIndex = description.indexOf(startDelimiter);
-        int endIndex = description.indexOf(endDelimiter);
-        return description.substring(startIndex + 1, endIndex);
-    }
-
-    /**
      * Squash the description of a mutant type by removing all of the spaces
      */
     public static String squashMutantDescription(String description) {
