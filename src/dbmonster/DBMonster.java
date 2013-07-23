@@ -502,7 +502,7 @@ public class DBMonster {
 
                 // add in the counts in a way that is redundant but more amenable to analysis in R
                 currentExperimentalResults.addResult("mutationtype",
-                        (MutationUtilities.squashMutantDescription(mutationType)).toLowerCase());
+                        (mutationType.replace(" ", "")).toLowerCase());
                 currentExperimentalResults.addResult("mutationstatus",
                         mutationStatusCode);
                 currentExperimentalResults.addResult("mutationcount",

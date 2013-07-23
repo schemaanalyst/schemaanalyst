@@ -3,13 +3,6 @@ package org.schemaanalyst.mutation;
 public class MutationUtilities {
 
     /**
-     * Squash the description of a mutant type by removing all of the spaces
-     */
-    public static String squashMutantDescription(String description) {
-        return description.replace(" ", "");
-    }
-
-    /**
      * Strip off the prefix from the name of a case study, helpful for producing
      * better formatting graphs in R
      */

@@ -572,7 +572,7 @@ public class SchemaAnalyst {
 
                 // add in the counts in a way that is redundant but more amenable to analysis in R
                 currentExperimentalResults.addResult("mutationtype",
-                        (MutationUtilities.squashMutantDescription(mutationType)).toLowerCase());
+                        (mutationType.replace(" ", "")).toLowerCase());
                 currentExperimentalResults.addResult("mutationstatus",
                         mutationStatusCode);
 
@@ -626,13 +626,13 @@ public class SchemaAnalyst {
         // for loop adds three variables to the data file (kill, not killed, still born)
         for (String mutationType : mutationTypes) {
             // add the results for the mutants that were KILLED
-            experimentalResults.addResult((MutationUtilities.squashMutantDescription(mutationType)).toLowerCase() + KILLED,
+            experimentalResults.addResult((mutationType.replace(" ", "")).toLowerCase() + KILLED,
                     Integer.toString(mutationTypeStatusSummary.getKilledCount(mutationType)));
             // add the results for the mutants that were NOT KILLED
-            experimentalResults.addResult((MutationUtilities.squashMutantDescription(mutationType)).toLowerCase() + NOTKILLED,
+            experimentalResults.addResult((mutationType.replace(" ", "")).toLowerCase() + NOTKILLED,
                     Integer.toString(mutationTypeStatusSummary.getAliveCount(mutationType)));
             // add the results for the mutants that were STILL BORN
-            experimentalResults.addResult((MutationUtilities.squashMutantDescription(mutationType)).toLowerCase() + STILLBORN,
+            experimentalResults.addResult((mutationType.replace(" ", "")).toLowerCase() + STILLBORN,
                     Integer.toString(mutationTypeStatusSummary.getStillBornCount(mutationType)));
         }
     }
