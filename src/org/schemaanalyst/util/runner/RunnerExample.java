@@ -50,14 +50,14 @@ public class RunnerExample extends Runner {
     
     // This method contains the actual high-level steps of the task to be executed.
     protected void task() {
-        System.out.println("Parsed parameters:");
-        System.out.println("schema is " + schema);
-        System.out.println("dbms is " + dbms);
-        System.out.println("search is " + search);
-        System.out.println("numrepetitions is " + numrepetitions);
-        System.out.println("seed is " + seed);
-        System.out.println("numtries is " + numtries);
-        System.out.println("debug is " + debug);
+        out.println("Parsed parameters:");
+        out.println("schema is " + schema);
+        out.println("dbms is " + dbms);
+        out.println("search is " + search);
+        out.println("numrepetitions is " + numrepetitions);
+        out.println("seed is " + seed);
+        out.println("numtries is " + numtries);
+        out.println("debug is " + debug);
     }
 
     // This method provides further validation steps on the parameter values.

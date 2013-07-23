@@ -28,7 +28,7 @@ import org.schemaanalyst.util.StringUtils;
  * required parameters, only the value is passed at the command line whereas for optional parameters, 
  * the name must be passed with the value.  (Furthermore, some optional parameters may be switches 
  * (boolean flags) in which case no value is passed, just the name, in order to set the switch.)
- * Required parameters are specified in the space-delimited value of a  @RequiredParameters annotation
+ * Required parameters are specified in the space-delimited value of a @RequiredParameters annotation
  * for a class.  Every other parameter is assumed to be optional.
  * <strong>Fields</strong> -- instance fields of a class which are mapped to parameters through the
  * @Parameter annotation.
@@ -105,8 +105,7 @@ public abstract class Runner {
      * the Java process remains unterminated.
      * @param args The arguments passed from the command line.
      */    
-    public void run(String... args) {
-        
+    public void run(String... args) {        
         if (catchExceptions) {
             try {
                 doRun(args);
@@ -122,7 +121,6 @@ public abstract class Runner {
                 System.exit(e.getCode());
             }
         }
-            
     }
 
     /**
@@ -611,7 +609,10 @@ public abstract class Runner {
         
         String defaultValue = "";
         if (!required) {
-            defaultValue = optionalParameterDefaults.get(name).toString();
+            Object defaultObject = optionalParameterDefaults.get(name);
+            if (defaultObject != null) {
+                defaultValue = optionalParameterDefaults.get(name).toString();
+            }
         }
         
         String info = USAGE_INDENT + formattedName + value;
