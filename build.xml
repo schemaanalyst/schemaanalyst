@@ -52,84 +52,14 @@
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
-	<!-- RUNNING TASK - "ant schemaanalyst" -->
-	<target name="schemaanalyst">
-		<java fork="true" classname="org.schemaanalyst.SchemaAnalyst" maxmemory="1024M">
-			<arg value="--debug=false" /> 
-			<arg value="--foreignkeys=true" /> 
-			<arg value="--script=true" /> 
-			<arg value="--wantmutationreport_mrp=false" /> 
-			<arg value="--wantmutationreport_txt=true" /> 
-			<arg value="--onlymutationsummary=true" /> 
-			<arg value="--datagenerator=alternatingvalue_defaults" /> 
-			<arg value="--naiverandom_rowspertable=50" /> 
-			<arg value="--naiverandom_maxtriespertable=1000" />
-			<arg value="--satisfyrows=2" /> 
-			<arg value="--negaterows=1" /> 
-			<arg value="--maxevaluations=100000" /> 
-			<arg value="--project=${user_dir}/" />
-			<arg value="--type=${db_hsqldb}" />
-			<arg value="--host=${db_hsqldb_host}" />
-			<arg value="--port=${db_hsqldb_port}" />
-			<arg value="--database=casestudy.Inventory" />
-			<arg value="--scriptfile=casestudy.Inventory.sql" />
-			<arg value="--mutantscriptfile=casestudy.Inventory.mutant.sql" />
-			<arg value="--mutationreport_mrp=casestudy.Inventory.mrp" />
-			<arg value="--mutationreport_txt=casestudy.hsqldb.Inventory.txt" />
-			<classpath refid="run_classpath" />
-		</java>
-	</target>
-
 	<!-- RUNNING TASK - "ant experiment" -->
-	<target name="experiment">
+	<!-- <target name="experiment">
 		<junit fork="yes" maxmemory="256M">
 			<test name="experiment.AllExperiments" />
 			<jvmarg value="-Dproject=${user.dir}" />
 			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
-	</target>
-
-	<!-- RUNNING TASK - "ant experimentToProperties" -->
-	<target name="experimentToProperties">
-		<delete dir="ExperimentsTasks"/>
-		<mkdir dir="ExperimentTasks" />
-		<junit fork="yes" maxmemory="256M">
-			<test name="experiment.ExperimentsToProperties" />
-			<jvmarg value="-Dproject=${user.dir}" />
-			<classpath refid="run_classpath" />
-			<formatter type="brief" usefile="false" />
-		</junit>
-	</target>
-
-	<!-- RUNNING TASK - "ant experimentFromProperties" -->
-	<target name="experimentFromProperties">
-		<java fork="true" classname="experiment.ExperimentFromProperties" maxmemory="256M">
-			<arg value="${uniqueid}" />
-			<classpath refid="run_classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant globalexperimentparameters" -->
-	<target name="globalexperimentparameters">
-		<java fork="true" classname="experiment.GlobalExperimentParameters" maxmemory="256M">
-			<arg value="--project=${user.dir}" />
-			<classpath refid="run_classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant localexperimentparameters" -->
-	<target name="localexperimentparameters">
-		<java fork="true" classname="experiment.LocalExperimentParameters" maxmemory="256M">
-			<arg value="--project=${user.dir}" />
-			<classpath refid="run_classpath" />
-		</java>
-	</target>
-
-	<!-- RUNNING TASK - "ant experimentparameters" -->
-	<target name="experimentparameters">
-		<antcall target="globalexperimentparameters"/>
-		<antcall target="localexperimentparameters"/>
-	</target>
+	</target> -->
 
 </project>
