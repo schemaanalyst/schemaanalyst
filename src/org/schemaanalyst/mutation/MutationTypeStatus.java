@@ -1,93 +1,95 @@
 package org.schemaanalyst.mutation;
 
 /**
- * Stores the summary information about a mutant type and how many mutants were
- * and were not killed
+ * Stores the summary counts of how many mutants were killed, remained alive,
+ * were still born and the intersection of killed and still born (interstected).
  */
 public class MutationTypeStatus {
 
     /**
      * The count of the mutants that were killed
      */
-    private int killedCount;
+    private int killed = 0;
     /**
      * The count of the mutants that were not killed
      */
-    private int notKilledCount;
+    private int alive = 0;
     /**
      * The count of the mutants that were still born
      */
-    private int stillBornCount;
+    private int stillBorn = 0;
     /**
      * The count of the intersection of K and Q
      */
-    private int intersection;
+    private int intersected = 0;
 
     /**
-     * Initialize the count to zero
+     * Increment the killed count.
      */
-    public MutationTypeStatus() {
-        killedCount = 0;
-        notKilledCount = 0;
-        stillBornCount = 0;
-        intersection = 0;
+    public void incrementKilled() {
+        killed++;
     }
 
     /**
-     * One more killed for this type
+     * Increment the alive count.
      */
-    public void killed() {
-        killedCount++;
+    public void incrementAlive() {
+        alive++;
     }
 
     /**
-     * One more not killed for this type
+     * Increment the still born count.
      */
-    public void notKilled() {
-        notKilledCount++;
+    public void incrementStillBorn() {
+        stillBorn++;
     }
 
     /**
-     * One more still born for this type
+     * Increment the intersected count.
      */
-    public void stillBorn() {
-        stillBornCount++;
-    }
-
-    public void intersected() {
-        intersection++;
+    public void incrementIntersected() {
+        intersected++;
     }
 
     /**
-     * Grab the killed count
+     * Get the killed count.
+     *
+     * @return The killed count.
      */
-    public int getKilledCount() {
-        return killedCount;
+    public int getKilled() {
+        return killed;
     }
 
     /**
-     * Grab the not killed count
+     * Get the alive count.
+     *
+     * @return The alive count.
      */
-    public int getNotKilledCount() {
-        return notKilledCount;
+    public int getAlive() {
+        return alive;
     }
 
     /**
-     * Grab the still born count
+     * Get the still born count.
+     *
+     * @return The still born count.
      */
-    public int getStillBornCount() {
-        return stillBornCount;
-    }
-
-    public int getIntersectionCount() {
-        return intersection;
+    public int getStillBorn() {
+        return stillBorn;
     }
 
     /**
-     * Return the string representation
+     * Get the intersected count.
+     *
+     * @return The intersected count.
      */
+    public int getIntersected() {
+        return intersected;
+    }
+
+    
+    @Override
     public String toString() {
-        return "(killed=" + killedCount + ", notkilled=" + notKilledCount + ", stillborn=" + stillBornCount
-                + "intersection=" + intersection + ")";
+        return "MutationTypeStatus{" + "killed=" + killed + ", alive=" + alive + ", stillBorn=" + stillBorn + ", intersected=" + intersected + '}';
     }
 }

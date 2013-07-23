@@ -80,11 +80,11 @@ public class MutationTypeStatusSummary {
         // we have already encountered this mutation, increment
         if (summaryMap.containsKey(mutationType)) {
             MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-            mutationTypeStatus.intersected();
+            mutationTypeStatus.incrementIntersected();
         } // this is the first time we have seend this mutant, add it now
         else {
             MutationTypeStatus mutationTypeStatusNew = new MutationTypeStatus();
-            mutationTypeStatusNew.intersected();
+            mutationTypeStatusNew.incrementIntersected();
             summaryMap.put(mutationType, mutationTypeStatusNew);
         }
     }
@@ -96,11 +96,11 @@ public class MutationTypeStatusSummary {
         // we have already encountered this mutation, increment
         if (summaryMap.containsKey(mutationType)) {
             MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-            mutationTypeStatus.killed();
+            mutationTypeStatus.incrementKilled();
         } // this is the first time we have seend this mutant, add it now
         else {
             MutationTypeStatus mutationTypeStatusNew = new MutationTypeStatus();
-            mutationTypeStatusNew.killed();
+            mutationTypeStatusNew.incrementKilled();
             summaryMap.put(mutationType, mutationTypeStatusNew);
         }
     }
@@ -112,11 +112,11 @@ public class MutationTypeStatusSummary {
         // we have already encountered this mutation, increment
         if (summaryMap.containsKey(mutationType)) {
             MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-            mutationTypeStatus.notKilled();
+            mutationTypeStatus.incrementAlive();
         } // this is the first time we have seend this mutant, add it now
         else {
             MutationTypeStatus mutationTypeStatusNew = new MutationTypeStatus();
-            mutationTypeStatusNew.notKilled();
+            mutationTypeStatusNew.incrementAlive();
             summaryMap.put(mutationType, mutationTypeStatusNew);
         }
     }
@@ -128,11 +128,11 @@ public class MutationTypeStatusSummary {
         // we have already encountered this mutation, increment
         if (summaryMap.containsKey(mutationType)) {
             MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-            mutationTypeStatus.stillBorn();
+            mutationTypeStatus.incrementStillBorn();
         } // this is the first time we have seend this mutant, add it now
         else {
             MutationTypeStatus mutationTypeStatusNew = new MutationTypeStatus();
-            mutationTypeStatusNew.stillBorn();
+            mutationTypeStatusNew.incrementStillBorn();
             summaryMap.put(mutationType, mutationTypeStatusNew);
         }
     }
@@ -142,7 +142,7 @@ public class MutationTypeStatusSummary {
      */
     public int getKilledCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-        return mutationTypeStatus.getKilledCount();
+        return mutationTypeStatus.getKilled();
     }
 
     /**
@@ -150,7 +150,7 @@ public class MutationTypeStatusSummary {
      */
     public int getNotKilledCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-        return mutationTypeStatus.getNotKilledCount();
+        return mutationTypeStatus.getAlive();
     }
 
     /**
@@ -158,12 +158,12 @@ public class MutationTypeStatusSummary {
      */
     public int getStillBornCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-        return mutationTypeStatus.getStillBornCount();
+        return mutationTypeStatus.getStillBorn();
     }
 
     public int getIntersectionCount(String mutationType) {
         MutationTypeStatus mutationTypeStatus = summaryMap.get(mutationType);
-        return mutationTypeStatus.getIntersectionCount();
+        return mutationTypeStatus.getIntersected();
     }
 
     /**

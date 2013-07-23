@@ -25,7 +25,8 @@ public class MutantRecord extends SQLInsertRecord {
         return killed;
     }
 
+    @Override
     public String toString() {
-        return "(" + super.toString() + ", Killed? " + killed + ")";
+        return "MutantRecord{" + "killed=" + killed + '}';
     }
 }

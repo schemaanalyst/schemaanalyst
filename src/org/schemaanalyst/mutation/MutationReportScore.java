@@ -80,6 +80,6 @@ public class MutationReportScore {
 
     @Override
     public String toString() {
-        return "(" + name + ", (" + numerator + " / " + denominator + " = " + score + "))";
+        return "MutationReportScore{" + "name=" + name + ", numerator=" + numerator + ", denominator=" + denominator + ", score=" + score + '}';
     }
 }
