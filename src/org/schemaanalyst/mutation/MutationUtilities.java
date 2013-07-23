@@ -1,25 +1,9 @@
 package org.schemaanalyst.mutation;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class MutationUtilities {
 
     /**
-     * Create a string representation of an array's items suitable for diffing
-     */
-    public static String convertListToString(List list) {
-        StringBuffer values = new StringBuffer();
-
-        for (Object currentItem : list) {
-            values.append(currentItem.toString() + "\n");
-        }
-
-        return values.toString();
-    }
-
-    /**
-     * Abbreviate the decsription of a mutant for the production of graphs
+     * Abbreviate the description of a mutant for the production of graphs
      */
     public static String abbreviateMutantDescription(String description, String startDelimiter, String endDelimiter) {
         int startIndex = description.indexOf(startDelimiter);

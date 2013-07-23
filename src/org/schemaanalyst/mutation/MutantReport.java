@@ -2,6 +2,7 @@ package org.schemaanalyst.mutation;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.schemaanalyst.util.StringUtils;
 
 public class MutantReport {
 
@@ -153,11 +154,13 @@ public class MutantReport {
         return description;
     }
 
+    @Override
     public String toString() {
         return "MUTANT NUMBER: " + numericalIdentifier + "\nKilled? " + killed
                 + "\nStill born? " + stillBorn
                 + "\nDESCRIPTION: " + description
                 + "\nCREATE TABLES: \n" + createTableStatements
-                + "\nMUTANTS: \n" + MutationUtilities.convertListToString(mutantStatements);
+                + "\nMUTANTS: \n" + StringUtils.implode(mutantStatements, "\n")
+                + "\n";
     }
 }

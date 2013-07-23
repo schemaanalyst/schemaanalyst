@@ -71,14 +71,6 @@ public class TestMutationReport {
     }
 
     @Test
-    public void testMutationUtilitiesStringCreation() {
-        ArrayList list = new ArrayList();
-        list.add("a");
-        list.add("b");
-        assertEquals("a\nb\n", MutationUtilities.convertListToString(list));
-    }
-
-    @Test
     public void testSQLExecutionReportInitialStateWithEmptyLists() {
         SQLExecutionReport report = new SQLExecutionReport();
         ArrayList<SQLExecutionRecord> list = new ArrayList();
@@ -93,16 +85,6 @@ public class TestMutationReport {
         assertEquals(report.getCreateTableStatements(), list);
         assertEquals(report.getInsertStatements(), list);
         assertEquals(report.getSelectStatements(), list);
-    }
-
-    @Test
-    public void testMutationUtilitiesStringCreationBiggerExample() {
-        ArrayList list = new ArrayList();
-        list.add("a");
-        list.add("b");
-        list.add("new");
-        list.add("INSERT");
-        assertEquals("a\nb\nnew\nINSERT\n", MutationUtilities.convertListToString(list));
     }
 
     @Test

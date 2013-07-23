@@ -2,6 +2,7 @@ package org.schemaanalyst.mutation;
 
 import java.util.List;
 import java.util.ArrayList;
+import org.schemaanalyst.util.StringUtils;
 
 /**
  * Contains the results of executing CREATE TABLE and INSERT statements
@@ -50,11 +51,10 @@ public class SQLExecutionReport {
         return insertStatements;
     }
 
-    /**
-     * Textual representatoin of the SQLExecutionReport
-     */
+    @Override
     public String toString() {
-        return "CREATE TABLES: \n" + MutationUtilities.convertListToString(createTableStatements) + "\n"
-                + "INSERT STATEMENTS: \n" + MutationUtilities.convertListToString(insertStatements);
+        return "SQLExecutionReport{"
+                + "createStatements=\n" + StringUtils.implode(createTableStatements,"\n") + "\n"
+                + "insertStatements=\n" + StringUtils.implode(insertStatements,"\n") + "\n}";
     }
 }
