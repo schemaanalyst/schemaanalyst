@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
@@ -69,6 +70,8 @@ public abstract class Runner {
     protected boolean catchExceptions;
     // sets whether the configuration is to be loaded on initialisation or not.
     protected boolean loadConfiguration;
+    // logger
+    protected Logger logger;
 
     /**
      * Constructor.
@@ -151,6 +154,7 @@ public abstract class Runner {
         if (loadConfiguration) {
             loadConfiguration();
         }
+        logger = Logger.getLogger(Runner.class.getName());
     }
 
     /**
@@ -323,7 +327,7 @@ public abstract class Runner {
      * @param arg The argument string passed in from args.
      */
     protected void parseOptionalParameter(String arg) {
-        String name = "";
+        String name;
         String value = "";
         int startPos = LONG_OPTION_PREFIX.length();
         int equalsPos = arg.indexOf("=");
@@ -548,9 +552,9 @@ public abstract class Runner {
         boolean haveRequired = requiredParameterNames.size() > 0;
         boolean haveOptional = parameters.size() > requiredParameterNames.size();
 
-        usage.append("USAGE: java " + getClass().getCanonicalName() + " ");
+        usage.append("USAGE: java ").append(getClass().getCanonicalName()).append(" ");
         if (haveRequired) {
-            usage.append(StringUtils.implode(requiredParameterNames, " ") + " ");
+            usage.append(StringUtils.implode(requiredParameterNames, " ")).append(" ");
         }
         if (haveOptional) {
             usage.append("<options>");
