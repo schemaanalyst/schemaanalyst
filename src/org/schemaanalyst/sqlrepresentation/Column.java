@@ -115,6 +115,7 @@ public class Column implements Operand, Serializable {
      * @deprecated Accepts an operand visitor on this column.
      * @param operandVisitor The operand visitor to accept.
      */
+    @Override
     public void accept(OperandVisitor operandVisitor) {
         operandVisitor.visit(this);
     }
@@ -122,6 +123,7 @@ public class Column implements Operand, Serializable {
     /**
      * Checks whether the current instance is equal to another object.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -150,6 +152,7 @@ public class Column implements Operand, Serializable {
     /**
      * Returns the name of the column.
      */
+    @Override
     public String toString() {
         return getName();
     }

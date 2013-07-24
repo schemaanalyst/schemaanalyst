@@ -14,6 +14,7 @@ public class CombinedTerminationCriterion implements TerminationCriterion {
         }
     }
 
+    @Override
     public boolean satisfied() {
         for (TerminationCriterion criterion : criteria) {
             if (criterion.satisfied()) {

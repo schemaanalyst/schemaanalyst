@@ -12,6 +12,7 @@ public class SmallIntDataType extends IntDataType {
         super(signed);
     }
 
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }

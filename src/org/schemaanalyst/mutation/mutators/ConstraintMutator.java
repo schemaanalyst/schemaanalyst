@@ -25,6 +25,7 @@ public class ConstraintMutator extends Mutator {
         uniqueMutator = new UniqueConstraintMutator();
     }
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         checkMutator.produceMutants(table, mutants);
         foreignKeyMutator.produceMutants(table, mutants);

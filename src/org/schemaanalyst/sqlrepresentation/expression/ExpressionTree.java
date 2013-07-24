@@ -5,6 +5,7 @@ import java.util.List;
 
 public abstract class ExpressionTree implements Expression {
 
+    @Override
     public Expression getSubexpression(List<Integer> indexes) {
         if (indexes.size() == 0) {
             return null;
@@ -17,6 +18,7 @@ public abstract class ExpressionTree implements Expression {
         return getSubexpression(index, furtherIndexes);
     }
 
+    @Override
     public Expression getSubexpression(int index, int... furtherIndexes) {
         Expression subexpression = getSubexpression(index);
         for (int i : furtherIndexes) {
@@ -25,10 +27,13 @@ public abstract class ExpressionTree implements Expression {
         return subexpression;
     }
 
+    @Override
     public abstract Expression getSubexpression(int index);
 
+    @Override
     public abstract int getNumSubexpressions();
 
+    @Override
     public List<Expression> getSubexpressions() {
         List<Expression> subexpressions = new ArrayList<>();
         for (int i = 0; i < getNumSubexpressions(); i++) {

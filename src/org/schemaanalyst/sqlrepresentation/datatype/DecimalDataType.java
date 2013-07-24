@@ -19,18 +19,22 @@ public class DecimalDataType extends DataType
         this.scale = scale;
     }
 
+    @Override
     public Integer getPrecision() {
         return precision;
     }
 
+    @Override
     public Integer getScale() {
         return scale;
     }
 
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
 
+    @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((PrecisionedAndScaled) this);
     }

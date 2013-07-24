@@ -20,14 +20,17 @@ public abstract class CompoundExpression extends ExpressionTree {
         this.subexpressions = Arrays.asList(subexpressions);
     }
 
+    @Override
     public List<Expression> getSubexpressions() {
         return Collections.unmodifiableList(subexpressions);
     }
 
+    @Override
     public int getNumSubexpressions() {
         return subexpressions.size();
     }
 
+    @Override
     public Expression getSubexpression(int index) {
         if (index < getNumSubexpressions()) {
             return subexpressions.get(index);
@@ -35,5 +38,6 @@ public abstract class CompoundExpression extends ExpressionTree {
         throw new NonExistentSubexpressionException(this, index);
     }
 
+    @Override
     public abstract void accept(ExpressionVisitor visitor);
 }

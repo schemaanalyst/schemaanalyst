@@ -33,16 +33,19 @@ public class RowExpressionObjectiveFunctionFactory {
                 return objFun;
             }
 
+            @Override
             public void visit(NullExpression expression) {
                 objFun = new NullExpressionObjectiveFunction(
                         expression, goalIsToSatisfy);
             }
 
+            @Override
             public void visit(OrExpression expression) {
                 objFun = new OrExpressionObjectiveFunction(
                         expression, goalIsToSatisfy, allowNull);
             }
 
+            @Override
             public void visit(RelationalExpression expression) {
                 objFun = new RelationalExpressionObjectiveFunction(
                         expression, goalIsToSatisfy, allowNull);

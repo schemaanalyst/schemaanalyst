@@ -14,6 +14,7 @@ public class RandomDataInitializer extends DataInitializer {
         this.cellRandomizer = cellRandomizer;
     }
 
+    @Override
     public void initialize(Data data) {
         List<Cell> cells = data.getCells();
         for (Cell cell : cells) {

@@ -12,10 +12,12 @@ public class SQLite extends DBMS {
         sqlWriter = new SQLiteSQLWriter();
     }
 
+    @Override
     public DatabaseInteractor getDatabaseInteractor() {
         return databaseInteraction;
     }
 
+    @Override
     public void accept(DBMSVisitor visitor) {
         visitor.visit(this);
     }

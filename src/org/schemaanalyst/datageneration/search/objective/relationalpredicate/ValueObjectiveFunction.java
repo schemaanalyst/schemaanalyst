@@ -18,6 +18,7 @@ import org.schemaanalyst.logic.RelationalPredicate;
 
 public class ValueObjectiveFunction extends ObjectiveFunction<RelationalPredicate<Value>> {
 
+    @Override
     public ObjectiveValue evaluate(RelationalPredicate<Value> predicate) {
 
         class ValueObjectiveFunctionDispatcher implements ValueVisitor {
@@ -33,30 +34,37 @@ public class ValueObjectiveFunction extends ObjectiveFunction<RelationalPredicat
                 return objVal;
             }
 
+            @Override
             public void visit(BooleanValue lhs) {
                 objVal = BooleanValueObjectiveFunction.compute(lhs, op, (BooleanValue) rhs);
             }
 
+            @Override
             public void visit(DateValue lhs) {
                 objVal = CompoundValueObjectiveFunction.compute(lhs, op, (CompoundValue) rhs);
             }
 
+            @Override
             public void visit(DateTimeValue lhs) {
                 objVal = CompoundValueObjectiveFunction.compute(lhs, op, (CompoundValue) rhs);
             }
 
+            @Override
             public void visit(NumericValue lhs) {
                 objVal = NumericValueObjectiveFunction.compute(lhs, op, (NumericValue) rhs);
             }
 
+            @Override
             public void visit(StringValue lhs) {
                 objVal = CompoundValueObjectiveFunction.compute(lhs, op, (CompoundValue) rhs);
             }
 
+            @Override
             public void visit(TimeValue lhs) {
                 objVal = CompoundValueObjectiveFunction.compute(lhs, op, (CompoundValue) rhs);
             }
 
+            @Override
             public void visit(TimestampValue lhs) {
                 objVal = NumericValueObjectiveFunction.compute(lhs, op, (NumericValue) rhs);
             }

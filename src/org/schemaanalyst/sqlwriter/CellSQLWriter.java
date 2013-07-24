@@ -43,74 +43,92 @@ public class CellSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(BigIntDataType type) {
                 sql = writeBigIntCell(cell, type);
             }
 
+            @Override
             public void visit(BooleanDataType type) {
                 sql = writeBooleanCell(cell, type);
             }
 
+            @Override
             public void visit(CharDataType type) {
                 sql = writeCharCell(cell, type);
             }
 
+            @Override
             public void visit(DateDataType type) {
                 sql = writeDateCell(cell, type);
             }
 
+            @Override
             public void visit(DateTimeDataType type) {
                 sql = writeDateTimeCell(cell, type);
             }
 
+            @Override
             public void visit(DecimalDataType type) {
                 sql = writeDecimalCell(cell, type);
             }
 
+            @Override
             public void visit(DoubleDataType type) {
                 sql = writeDoubleCell(cell, type);
             }
 
+            @Override
             public void visit(FloatDataType type) {
                 sql = writeFloatCell(cell, type);
             }
 
+            @Override
             public void visit(IntDataType type) {
                 sql = writeIntCell(cell, type);
             }
 
+            @Override
             public void visit(MediumIntDataType type) {
                 sql = writeMediumIntCell(cell, type);
             }
 
+            @Override
             public void visit(NumericDataType type) {
                 sql = writeNumericCell(cell, type);
             }
 
+            @Override
             public void visit(RealDataType type) {
                 sql = writeRealCell(cell, type);
             }
 
+            @Override
             public void visit(SmallIntDataType type) {
                 sql = writeSmallIntCell(cell, type);
             }
 
+            @Override
             public void visit(TextDataType type) {
                 sql = writeTextCell(cell, type);
             }
 
+            @Override
             public void visit(TimeDataType type) {
                 sql = writeTimeCell(cell, type);
             }
 
+            @Override
             public void visit(TimestampDataType type) {
                 sql = writeTimestampCell(cell, type);
             }
 
+            @Override
             public void visit(TinyIntDataType type) {
                 sql = writeTinyIntCell(cell, type);
             }
 
+            @Override
             public void visit(VarCharDataType type) {
                 sql = writeVarCharCell(cell, type);
             }

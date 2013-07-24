@@ -56,6 +56,7 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         return getValue().compareTo(BEST) == 0;
     }
 
+    @Override
     public int compareTo(ObjectiveValue other) {
         return -getValue().compareTo(other.getValue());
     }
@@ -83,6 +84,7 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         sb.append(getValue());
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         appendToStringBuilder(sb, "");

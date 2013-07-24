@@ -85,6 +85,7 @@ public class CheckConstraint extends Constraint {
      *
      * @param visitor The visitor that wishes to visit the constraint.
      */
+    @Override
     public void accept(ConstraintVisitor visitor) {
         visitor.visit(this);
     }
@@ -134,11 +135,13 @@ public class CheckConstraint extends Constraint {
                 return remappedList;
             }
 
+            @Override
             public void visit(AndExpression expression) {
                 remappedExpression = new AndExpression(
                         remapList(expression.getSubexpressions()));
             }
 
+            @Override
             public void visit(BetweenExpression expression) {
                 remappedExpression = new BetweenExpression(
                         remap(expression.getSubject()),
@@ -147,16 +150,19 @@ public class CheckConstraint extends Constraint {
                         expression.isNotBetween());
             }
 
+            @Override
             public void visit(ColumnExpression expression) {
                 remappedExpression = new ColumnExpression(
                         targetTable.getColumn(expression.getColumn().getName()));
             }
 
+            @Override
             public void visit(ConstantExpression expression) {
                 remappedExpression = new ConstantExpression(
                         expression.getValue().duplicate());
             }
 
+            @Override
             public void visit(InExpression expression) {
                 remappedExpression = new InExpression(
                         remap(expression.getLHS()),
@@ -164,25 +170,30 @@ public class CheckConstraint extends Constraint {
                         expression.isNotIn());
             }
 
+            @Override
             public void visit(ListExpression expression) {
                 remappedExpression = new ListExpression(remapList(expression.getSubexpressions()));
             }
 
+            @Override
             public void visit(NullExpression expression) {
                 remappedExpression = new NullExpression(
                         remap(expression.getSubexpression()),
                         expression.isNotNull());
             }
 
+            @Override
             public void visit(OrExpression expression) {
                 remappedExpression = new OrExpression(remapList(expression.getSubexpressions()));
             }
 
+            @Override
             public void visit(ParenthesisedExpression expression) {
                 remappedExpression = new ParenthesisedExpression(
                         remap(expression.getSubexpression()));
             }
 
+            @Override
             public void visit(RelationalExpression expression) {
                 remappedExpression = new RelationalExpression(
                         remap(expression.getLHS()),
@@ -207,6 +218,7 @@ public class CheckConstraint extends Constraint {
      * @return True if the other object is a Check object with the same
      * predicate, else false.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -245,6 +257,7 @@ public class CheckConstraint extends Constraint {
      *
      * @return An informative string regarding the constraint.
      */
+    @Override
     public String toString() {
         String str = "CHECK[";
 

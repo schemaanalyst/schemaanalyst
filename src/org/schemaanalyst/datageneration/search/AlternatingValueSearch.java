@@ -40,6 +40,7 @@ public class AlternatingValueSearch extends Search<Data> {
         this.restartInitializer = restartInitializer;
     }
 
+    @Override
     public void search(Data data) {
         // set up
         this.data = data;
@@ -146,30 +147,37 @@ public class AlternatingValueSearch extends Search<Data> {
                 return improvement;
             }
 
+            @Override
             public void visit(BooleanValue value) {
                 improvement = booleanValueSearch(value);
             }
 
+            @Override
             public void visit(DateValue value) {
                 improvement = dateValueSearch(value);
             }
 
+            @Override
             public void visit(DateTimeValue value) {
                 improvement = dateTimeValueSearch(value);
             }
 
+            @Override
             public void visit(NumericValue value) {
                 improvement = numericValueSearch(value);
             }
 
+            @Override
             public void visit(StringValue value) {
                 improvement = stringValueSearch(value);
             }
 
+            @Override
             public void visit(TimeValue value) {
                 improvement = timeValueSearch(value);
             }
 
+            @Override
             public void visit(TimestampValue value) {
                 improvement = timestampValueSearch(value);
             }

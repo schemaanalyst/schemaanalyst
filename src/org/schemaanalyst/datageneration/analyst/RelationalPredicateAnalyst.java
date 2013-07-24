@@ -29,6 +29,7 @@ public class RelationalPredicateAnalyst extends ConstraintAnalyst {
         this.satisfyOnNull = satisfyOnNull;
     }
 
+    @Override
     public boolean isSatisfied(Data state, Data data) {
         this.data = data;
         this.satisfyingRowNos = new ArrayList<>();

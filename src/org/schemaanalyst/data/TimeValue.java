@@ -43,6 +43,7 @@ public class TimeValue extends Value
         this.second.set(second);
     }
 
+    @Override
     public List<Value> getElements() {
         List<Value> elements = new ArrayList<>();
         elements.add(hour);
@@ -51,10 +52,12 @@ public class TimeValue extends Value
         return elements;
     }
 
+    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }
 
+    @Override
     public TimeValue duplicate() {
         TimeValue duplicate = new TimeValue();
         duplicate.hour = hour.duplicate();
@@ -63,6 +66,7 @@ public class TimeValue extends Value
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -80,6 +84,7 @@ public class TimeValue extends Value
         return result;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -97,6 +102,7 @@ public class TimeValue extends Value
                 && second.equals(other.second);
     }
 
+    @Override
     public String toString() {
         return String.format(
                 "'%02d:%02d:%02d'",

@@ -22,6 +22,7 @@ public class TestNumericalValueObjectiveFunction {
 
         class MockNumericalValueObjectiveFunction extends NumericValueObjectiveFunction {
 
+            @Override
             public BigDecimal computeDistance(BigDecimal lhs, RelationalOperator op, BigDecimal rhs) {
                 return super.computeDistance(lhs, op, rhs);
             }

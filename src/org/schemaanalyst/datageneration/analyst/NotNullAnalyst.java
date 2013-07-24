@@ -16,6 +16,7 @@ public class NotNullAnalyst extends ConstraintAnalyst {
         this.column = column;
     }
 
+    @Override
     public boolean isSatisfied(Data state, Data data) {
         nullCells = new ArrayList<>();
         notNullCells = new ArrayList<>();

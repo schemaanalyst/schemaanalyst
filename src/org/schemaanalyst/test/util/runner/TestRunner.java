@@ -25,6 +25,7 @@ public class TestRunner {
         public TestableRunner() {
             super(false, false); 
             out = new PrintStream(new OutputStream() {
+                @Override
                 public void write(int b) throws IOException {
                     // stop usage output
                 }
@@ -36,7 +37,9 @@ public class TestRunner {
             doRun(args);
         }
         
+        @Override
         public void task() {}
+        @Override
         public void validateParameters() {}
         
         public List<String> getRequiredParameterNames() {
@@ -51,6 +54,7 @@ public class TestRunner {
             return optionalParameterDefaults;
         }
         
+        @Override
         public boolean wasParameterPassed(String name) {
             return super.wasParameterPassed(name);
         }

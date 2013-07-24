@@ -9,6 +9,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ForeignKeyConstraintMutator extends Mutator {
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
             for (Column column : foreignKey.getColumns()) {

@@ -18,6 +18,7 @@ public class ConstraintGoalReport extends GoalReport {
         return constraint;
     }
 
+    @Override
     public String getDescription() {
         if (constraint == null) {
             return "Satisfying all constraints";

@@ -19,12 +19,14 @@ public class NonRandomMock extends Random {
         this.nextInts = nextInts;
     }
 
+    @Override
     public int nextInt() {
         int next = nextInts[nextIntsIndex];
         nextIntsIndex++;
         return next;
     }
 
+    @Override
     public int nextInt(int upperBound) {
         int next = nextInt();
         if (next > upperBound) {

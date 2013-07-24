@@ -16,6 +16,7 @@ public class ConstraintCoverageReport extends CoverageReport {
         this.numConstraints = schema.getConstraints().size();
     }
 
+    @Override
     public int getTotalCovered() {
         int total = 0;
         for (GoalReport goalReport : goalReports) {
@@ -32,10 +33,12 @@ public class ConstraintCoverageReport extends CoverageReport {
         return total;
     }
 
+    @Override
     public int getNumGoals() {
         return numConstraints * 2;
     }
 
+    @Override
     protected void appendDescriptionToStringBuilder(StringBuilder sb) {
         super.appendDescriptionToStringBuilder(sb);
         appendSchemaToStringBuilder(sb);

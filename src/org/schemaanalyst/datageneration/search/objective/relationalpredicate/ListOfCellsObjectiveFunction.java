@@ -16,6 +16,7 @@ import org.schemaanalyst.logic.RelationalPredicate;
 
 public class ListOfCellsObjectiveFunction extends ObjectiveFunction<RelationalPredicate<List<Cell>>> {
 
+    @Override
     public ObjectiveValue evaluate(RelationalPredicate<List<Cell>> predicate) {
         List<Cell> lhs = predicate.getLHS();
         List<Cell> rhs = predicate.getRHS();

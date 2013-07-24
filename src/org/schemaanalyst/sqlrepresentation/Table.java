@@ -649,6 +649,7 @@ public class Table implements Serializable {
     /**
      * Return's the table name.
      */
+    @Override
     public String toString() {
         return getName();
     }
@@ -656,6 +657,7 @@ public class Table implements Serializable {
     /**
      * Tests whether this table object equals another object.
      */
+    @Override
     public boolean equals(Object obj) {
         if (obj != null && obj instanceof Table) {
             Table other = (Table) obj;

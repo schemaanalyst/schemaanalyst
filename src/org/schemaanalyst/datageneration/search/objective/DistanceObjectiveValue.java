@@ -28,12 +28,14 @@ public class DistanceObjectiveValue extends ObjectiveValue {
     }
 
     // if the value is set directly, the distance is set to null	
+    @Override
     public void normalizeAndSetValue(BigDecimal value) {
         this.distance = null;
         super.setValue(value);
     }
 
     // if the value is set directly, the distance is set to null
+    @Override
     public void setValue(BigDecimal value) {
         this.distance = null;
         super.setValue(value);
@@ -43,6 +45,7 @@ public class DistanceObjectiveValue extends ObjectiveValue {
         return distance;
     }
 
+    @Override
     public void appendToStringBuilder(StringBuilder sb, String indent) {
         super.appendToStringBuilder(sb, indent);
         sb.append(" [Distance: ");

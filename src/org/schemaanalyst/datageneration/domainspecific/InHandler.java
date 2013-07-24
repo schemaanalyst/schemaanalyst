@@ -26,6 +26,7 @@ public class InHandler extends ConstraintHandler<InAnalyst> {
         this.random = random;
     }
 
+    @Override
     protected void attemptToSatisfy() {
         List<Cell> notInCells = analyst.getNotInCells();
         List<Value> inValues = analyst.getInValues();
@@ -36,6 +37,7 @@ public class InHandler extends ConstraintHandler<InAnalyst> {
         }
     }
 
+    @Override
     protected void attemptToFalsify() {
         for (Cell cell : analyst.getInCells()) {
             randomizer.randomizeCell(cell, allowNull);

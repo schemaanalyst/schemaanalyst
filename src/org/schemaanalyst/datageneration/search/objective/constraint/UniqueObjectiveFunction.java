@@ -40,6 +40,7 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
         this.op = goalIsToSatisfy ? NOT_EQUALS : EQUALS;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
         List<List<Cell>> dataRows = data.getCells(columns);
         List<List<Cell>> stateRows = state.getCells(columns);

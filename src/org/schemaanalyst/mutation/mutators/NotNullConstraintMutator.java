@@ -9,6 +9,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class NotNullConstraintMutator extends Mutator {
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
 

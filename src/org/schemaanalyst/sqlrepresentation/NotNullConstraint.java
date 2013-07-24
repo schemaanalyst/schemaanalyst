@@ -42,6 +42,7 @@ public class NotNullConstraint extends Constraint {
      * @param visitor The IntegrityConstraintVisitor instance visiting this
      * constraint.
      */
+    @Override
     public void accept(ConstraintVisitor visitor) {
         visitor.visit(this);
     }
@@ -75,6 +76,7 @@ public class NotNullConstraint extends Constraint {
      * @return True if the other object is a NotNull object with the same
      * column, else false.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -105,6 +107,7 @@ public class NotNullConstraint extends Constraint {
      *
      * @return An informative string.
      */
+    @Override
     public String toString() {
         return "NOT NULL(" + column + ")";
     }

@@ -20,6 +20,7 @@ public class SimpleConstraintGoalReport extends GoalReport {
         return isSatisfied;
     }
 
+    @Override
     public String getDescription() {
         return constraint + " satisfied: " + isSatisfied;
     }

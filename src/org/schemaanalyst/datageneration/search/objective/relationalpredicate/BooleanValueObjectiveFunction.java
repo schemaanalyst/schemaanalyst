@@ -9,6 +9,7 @@ import org.schemaanalyst.logic.RelationalPredicate;
 
 public class BooleanValueObjectiveFunction extends ObjectiveFunction<RelationalPredicate<BooleanValue>> {
 
+    @Override
     public ObjectiveValue evaluate(RelationalPredicate<BooleanValue> predicate) {
         BooleanValue lhs = predicate.getLHS();
         BooleanValue rhs = predicate.getRHS();

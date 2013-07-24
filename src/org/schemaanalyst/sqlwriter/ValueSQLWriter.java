@@ -23,30 +23,37 @@ public class ValueSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(BooleanValue value) {
                 sql = writeBooleanValue(value);
             }
 
+            @Override
             public void visit(DateValue value) {
                 sql = writeDateValue(value);
             }
 
+            @Override
             public void visit(DateTimeValue value) {
                 sql = writeDateTimeValue(value);
             }
 
+            @Override
             public void visit(NumericValue value) {
                 sql = writeNumericValue(value);
             }
 
+            @Override
             public void visit(StringValue value) {
                 sql = writeStringValue(value);
             }
 
+            @Override
             public void visit(TimeValue value) {
                 sql = writeTimeValue(value);
             }
 
+            @Override
             public void visit(TimestampValue value) {
                 sql = writeTimestampValue(value);
             }

@@ -18,6 +18,7 @@ public class MutationReportScores {
         return scores.get(name);
     }
 
+    @Override
     public String toString() {
         return scores.toString();
     }

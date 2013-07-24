@@ -51,6 +51,7 @@ public class Cell implements Duplicable<Cell> {
         return value;
     }
 
+    @Override
     public Cell duplicate() {
         Cell duplicate = new Cell(column, valueFactory);
         if (isNull()) {
@@ -66,6 +67,7 @@ public class Cell implements Duplicable<Cell> {
         return Value.equals3VL(this.value, other.value);
     }
 
+    @Override
     public String toString() {
         String str = column + "(";
         if (isNull()) {

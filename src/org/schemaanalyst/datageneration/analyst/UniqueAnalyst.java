@@ -22,6 +22,7 @@ public class UniqueAnalyst extends ConstraintAnalyst {
         this.satisfyOnNull = satisfyOnNull;
     }
 
+    @Override
     public boolean isSatisfied(Data state, Data data) {
         // get data and state rows
         dataRows = data.getRows(columns);

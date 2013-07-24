@@ -44,11 +44,13 @@ public class ConstraintJavaWriter {
                 return javaWriter.writeTableMethodCall(table, methodName, args);
             }
 
+            @Override
             public void visit(CheckConstraint constraint) {
                 methodName = TABLE_ADD_CHECK_CONSTRAINT_METHOD;
                 args.add(expressionJavaWriter.writeConstruction(constraint.getExpression()));
             }
 
+            @Override
             public void visit(ForeignKeyConstraint constraint) {
                 methodName = TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD;
 
@@ -57,16 +59,19 @@ public class ConstraintJavaWriter {
                 args.add(wrapColumnArgsString(table, constraint.getReferenceColumns()));
             }
 
+            @Override
             public void visit(NotNullConstraint constraint) {
                 methodName = TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD;
                 args.add(javaWriter.writeGetColumn(constraint.getColumn()));
             }
 
+            @Override
             public void visit(PrimaryKeyConstraint constraint) {
                 methodName = TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD;
                 addColumnArgs(table, constraint.getColumns());
             }
 
+            @Override
             public void visit(UniqueConstraint constraint) {
                 methodName = TABLE_ADD_UNIQUE_CONSTRAINT_METHOD;
                 addColumnArgs(table, constraint.getColumns());

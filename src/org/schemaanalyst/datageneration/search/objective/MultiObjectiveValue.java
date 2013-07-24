@@ -26,6 +26,7 @@ public abstract class MultiObjectiveValue extends ObjectiveValue {
 
     protected abstract void computeValue();
 
+    @Override
     public BigDecimal getValue() {
         if (computeValue) {
             computeValue();

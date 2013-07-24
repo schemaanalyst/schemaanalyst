@@ -24,6 +24,7 @@ public class ReferenceHandler extends ConstraintHandler<ReferenceAnalyst> {
         this.random = random;
     }
 
+    @Override
     protected void attemptToSatisfy() {
         List<Row> nonReferencingRows = analyst.getNonReferencingRows();
         List<Row> referenceRows = analyst.getReferenceRows();
@@ -36,6 +37,7 @@ public class ReferenceHandler extends ConstraintHandler<ReferenceAnalyst> {
         }
     }
 
+    @Override
     protected void attemptToFalsify() {
         List<Row> referencingRows = analyst.getReferencingRows();
 

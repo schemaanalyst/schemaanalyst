@@ -27,6 +27,7 @@ public class CompoundValueObjectiveFunction extends ObjectiveFunction<Relational
     protected List<Value> lhsSubValues, rhsSubValues;
     protected int smallestSize, sizeDiff;
 
+    @Override
     public ObjectiveValue evaluate(RelationalPredicate<CompoundValue> predicate) {
         this.lhs = predicate.getLHS();
         this.op = predicate.getOperator();

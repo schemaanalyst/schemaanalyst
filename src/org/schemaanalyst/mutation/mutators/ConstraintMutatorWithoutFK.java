@@ -24,6 +24,7 @@ public class ConstraintMutatorWithoutFK extends Mutator {
         uniqueMutator = new UniqueConstraintMutator();
     }
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         checkMutator.produceMutants(table, mutants);
         notNullMutator.produceMutants(table, mutants);

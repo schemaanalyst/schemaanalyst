@@ -18,6 +18,7 @@ public class TestAlternatingValueSearch {
 
     class MockObjectiveFunction extends ObjectiveFunction<Data> {
 
+        @Override
         public ObjectiveValue evaluate(Data data) {
             return ObjectiveValue.worstObjectiveValue();
         }
@@ -29,6 +30,7 @@ public class TestAlternatingValueSearch {
             super(null, new NoDataInitialization(), null);
         }
 
+        @Override
         protected boolean valueSearch(Cell cell) {
             evaluate(data);
             return false;
@@ -45,6 +47,7 @@ public class TestAlternatingValueSearch {
             this.improveUntil = improveUntil;
         }
 
+        @Override
         protected boolean valueSearch(Cell cell) {
             evaluate(data);
             count++;

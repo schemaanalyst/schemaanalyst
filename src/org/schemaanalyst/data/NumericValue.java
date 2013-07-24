@@ -69,18 +69,22 @@ public class NumericValue extends Value {
         return BigDecimal.ONE.scaleByPowerOfTen(-value.scale());
     }
 
+    @Override
     public void increment() {
         value = value.add(getStepSize());
     }
 
+    @Override
     public void decrement() {
         value = value.subtract(getStepSize());
     }
 
+    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }
 
+    @Override
     public NumericValue duplicate() {
         NumericValue duplicate = new NumericValue();
         duplicate.value = value;
@@ -89,6 +93,7 @@ public class NumericValue extends Value {
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -97,6 +102,7 @@ public class NumericValue extends Value {
         return value.compareTo(((NumericValue) v).value);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -112,6 +118,7 @@ public class NumericValue extends Value {
         return value.compareTo(other.value) == 0;
     }
 
+    @Override
     public String toString() {
         return value.toPlainString();
     }

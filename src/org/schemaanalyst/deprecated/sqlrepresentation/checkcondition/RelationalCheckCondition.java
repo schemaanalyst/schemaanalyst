@@ -28,6 +28,7 @@ public class RelationalCheckCondition extends RelationalPredicate<Operand>
         super(lhs, operator, new NumericValue(rhs));
     }
 
+    @Override
     public void accept(CheckConditionVisitor visitor) {
         visitor.visit(this);
     }

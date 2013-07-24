@@ -50,22 +50,27 @@ public class ConstraintHandlerFactory {
                 return constraintHandler;
             }
 
+            @Override
             public void visit(CheckConstraint constraint) {
                 constraintHandler = create(constraint);
             }
 
+            @Override
             public void visit(ForeignKeyConstraint constraint) {
                 constraintHandler = create(constraint);
             }
 
+            @Override
             public void visit(NotNullConstraint constraint) {
                 constraintHandler = create(constraint);
             }
 
+            @Override
             public void visit(PrimaryKeyConstraint constraint) {
                 constraintHandler = create(constraint);
             }
 
+            @Override
             public void visit(UniqueConstraint constraint) {
                 constraintHandler = create(constraint);
             }
@@ -87,14 +92,17 @@ public class ConstraintHandlerFactory {
                 return constraintHandler;
             }
 
+            @Override
             public void visit(BetweenCheckCondition predicate) {
                 constraintHandler = create(predicate, table);
             }
 
+            @Override
             public void visit(InCheckCondition predicate) {
                 constraintHandler = create(predicate, table);
             }
 
+            @Override
             public void visit(RelationalCheckCondition predicate) {
                 constraintHandler = create(predicate, table);
             }

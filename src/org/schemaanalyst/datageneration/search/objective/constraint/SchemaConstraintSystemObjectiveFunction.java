@@ -54,6 +54,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
                 : "Satisfy all except " + constraintToInvalidate;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
         SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 

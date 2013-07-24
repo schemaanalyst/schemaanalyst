@@ -29,19 +29,23 @@ public class ConstraintAnalystFactory {
                 return analyst;
             }
 
+            @Override
             public void visit(CheckConstraint constraint) {
             }
 
+            @Override
             public void visit(ForeignKeyConstraint foreignKey) {
                 analyst = new ReferenceAnalyst(foreignKey.getColumns(),
                         foreignKey.getReferenceColumns(),
                         considerNull);
             }
 
+            @Override
             public void visit(NotNullConstraint notNull) {
                 analyst = new NotNullAnalyst(notNull.getColumn());
             }
 
+            @Override
             public void visit(PrimaryKeyConstraint primaryKey) {
                 // NULL should never satisfy a primary key constraint
                 // hence can never consider NULL.
@@ -50,6 +54,7 @@ public class ConstraintAnalystFactory {
                         false);
             }
 
+            @Override
             public void visit(UniqueConstraint unique) {
                 analyst = new UniqueAnalyst(unique.getColumns(),
                         considerNull);

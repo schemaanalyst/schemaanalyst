@@ -28,10 +28,12 @@ public class RelationalExpression extends ExpressionTree {
         return rhs;
     }
 
+    @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;
     }
 
+    @Override
     public Expression getSubexpression(int index) {
         switch (index) {
             case LHS:
@@ -42,10 +44,12 @@ public class RelationalExpression extends ExpressionTree {
         throw new NonExistentSubexpressionException(this, index);
     }
 
+    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public String toString() {
         return lhs + " " + op + " " + rhs;
     }

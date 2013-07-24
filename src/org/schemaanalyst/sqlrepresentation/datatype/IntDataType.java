@@ -14,14 +14,17 @@ public class IntDataType extends DataType
         this.signed = signed;
     }
 
+    @Override
     public boolean isSigned() {
         return signed;
     }
 
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
 
+    @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((Signed) this);
     }

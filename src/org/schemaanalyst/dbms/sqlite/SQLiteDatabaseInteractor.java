@@ -44,6 +44,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
     /**
      * Initialize the connection to the SQLite database.
      */
+    @Override
     public void initializeDatabaseConnection() {
         // the connection is initially null
         connection = null;
@@ -146,6 +147,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
      * records were changed inside of a table. So, this is designed for an
      * INSERT, UPDATE, or DELETE.
      */
+    @Override
     public Integer executeUpdate(String command) {
         // create a List for storing the return counts that
         // tell us how many records were modified in the database
@@ -218,6 +220,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
      *
      * I think that this only needs to be used with DBMonster integration.
      */
+    @Override
     public Integer execute(String command) {
         // create a List for storing the return counts that
         // tell us how many records were modified in the database

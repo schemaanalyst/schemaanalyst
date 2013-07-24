@@ -20,10 +20,12 @@ public class NullExpression extends ExpressionTree {
         return notNull;
     }
 
+    @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;
     }
 
+    @Override
     public Expression getSubexpression(int index) {
         switch (index) {
             case SUBEXPRESSION:
@@ -32,10 +34,12 @@ public class NullExpression extends ExpressionTree {
         throw new NonExistentSubexpressionException(this, index);
     }
 
+    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public String toString() {
         return subexpression + " IS " + (notNull ? "NOT" : "") + " NULL";
     }

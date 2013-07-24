@@ -39,10 +39,12 @@ public class RelationalPredicateHandler extends ConstraintHandler<RelationalPred
         this.predicate = analyst.getPredicate();
     }
 
+    @Override
     protected void attemptToSatisfy() {
         attemptEntries(analyst.getFalsifyingEntries(), predicate.getOperator());
     }
 
+    @Override
     protected void attemptToFalsify() {
         attemptEntries(analyst.getSatisfyingEntries(), predicate.getOperator().inverse());
     }

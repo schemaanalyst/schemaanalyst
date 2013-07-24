@@ -14,6 +14,7 @@ public class ConstantExpression extends ExpressionLeaf {
         return value;
     }
 
+    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }

@@ -26,10 +26,12 @@ public class SimpleConstraintCoverageReport extends CoverageReport {
         toUse.add(report.getConstraint());
     }
 
+    @Override
     public int getTotalCovered() {
         return satisfiedConstraints.size() + negatedConstraints.size();
     }
 
+    @Override
     public int getNumGoals() {
         return schema.getConstraints().size() * 2;
     }

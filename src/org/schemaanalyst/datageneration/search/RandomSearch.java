@@ -14,6 +14,7 @@ public class RandomSearch extends Search<Data> {
         this.profile = profile;
     }
 
+    @Override
     public void search(Data candidateSolution) {
         List<Cell> cells = candidateSolution.getCells();
         do {

@@ -23,6 +23,7 @@ public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
         this.goalIsToSatisfy = goalIsToSatisfy;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);

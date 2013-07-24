@@ -25,10 +25,12 @@ public class OperandSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(Column column) {
                 sql = writeColumn(column);
             }
 
+            @Override
             public void visit(Value value) {
                 sql = writeValue(value);
             }

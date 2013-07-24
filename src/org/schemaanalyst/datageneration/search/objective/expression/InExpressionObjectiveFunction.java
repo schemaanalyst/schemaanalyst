@@ -6,6 +6,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
+    @Override
     public ObjectiveValue evaluate(Row row) {
         return null;
     }

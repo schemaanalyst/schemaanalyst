@@ -27,6 +27,7 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
         valObjFun = new ValueObjectiveFunction();
     }
 
+    @Override
     public ObjectiveValue evaluate(Row row) {
         return valObjFun.evaluate(
                 new RelationalPredicate<>(

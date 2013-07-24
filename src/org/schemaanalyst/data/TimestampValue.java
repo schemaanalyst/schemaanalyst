@@ -34,16 +34,19 @@ public class TimestampValue extends NumericValue {
         set(milliseconds);
     }
 
+    @Override
     public void accept(ValueVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public TimestampValue duplicate() {
         TimestampValue duplicate = new TimestampValue();
         duplicate.value = value;
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -52,6 +55,7 @@ public class TimestampValue extends NumericValue {
         return value.compareTo(((TimestampValue) v).value);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -65,6 +69,7 @@ public class TimestampValue extends NumericValue {
         return true;
     }
 
+    @Override
     public String toString() {
         long longValue = value.longValue();
         Calendar calendar = Calendar.getInstance();

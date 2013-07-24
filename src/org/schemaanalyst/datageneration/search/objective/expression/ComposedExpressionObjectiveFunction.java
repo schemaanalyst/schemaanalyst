@@ -27,6 +27,7 @@ public abstract class ComposedExpressionObjectiveFunction extends ObjectiveFunct
         }
     }
 
+    @Override
     public ObjectiveValue evaluate(Row row) {
         MultiObjectiveValue objVal = new BestOfMultiObjectiveValue();
         for (ObjectiveFunction<Row> objFun : subObjFuns) {

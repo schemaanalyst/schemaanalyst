@@ -283,6 +283,7 @@ public class Data implements Duplicable<Data> {
     /**
      * Copies this data instance.
      */
+    @Override
     public Data duplicate() {
         Data duplicate = new Data();
 
@@ -304,6 +305,7 @@ public class Data implements Duplicable<Data> {
     /**
      * Returns a string representation of this data instance.
      */
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         Set<Table> tables = data.keySet();

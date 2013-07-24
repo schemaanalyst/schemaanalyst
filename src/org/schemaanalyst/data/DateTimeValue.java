@@ -42,6 +42,7 @@ public class DateTimeValue extends DateValue {
         this.second.set(second);
     }
 
+    @Override
     public List<Value> getElements() {
         List<Value> elements = super.getElements();
         elements.add(hour);
@@ -50,10 +51,12 @@ public class DateTimeValue extends DateValue {
         return elements;
     }
 
+    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }
 
+    @Override
     public DateTimeValue duplicate() {
         DateTimeValue duplicate = new DateTimeValue();
         duplicate.year = year.duplicate();
@@ -65,6 +68,7 @@ public class DateTimeValue extends DateValue {
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -91,6 +95,7 @@ public class DateTimeValue extends DateValue {
         return result;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -108,6 +113,7 @@ public class DateTimeValue extends DateValue {
                 && second.equals(other.second);
     }
 
+    @Override
     public String toString() {
         return String.format(
                 "'%04d-%02d-%02d %02d:%02d:%02d'",

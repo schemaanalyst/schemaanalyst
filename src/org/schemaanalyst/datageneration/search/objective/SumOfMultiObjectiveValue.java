@@ -14,6 +14,7 @@ public class SumOfMultiObjectiveValue extends MultiObjectiveValue {
         super(description);
     }
 
+    @Override
     protected void computeValue() {
         sum = BigDecimal.ZERO;
         for (ObjectiveValue objVal : objVals) {
@@ -24,6 +25,7 @@ public class SumOfMultiObjectiveValue extends MultiObjectiveValue {
         computeValue = false;
     }
 
+    @Override
     public void appendToStringBuilder(StringBuilder sb, String indent) {
         if (computeValue) {
             computeValue();

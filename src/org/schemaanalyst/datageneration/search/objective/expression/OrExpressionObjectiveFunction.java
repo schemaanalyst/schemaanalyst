@@ -13,6 +13,7 @@ public class OrExpressionObjectiveFunction extends ComposedExpressionObjectiveFu
         super(expression, goalIsToSatisfy, allowNull);
     }
 
+    @Override
     protected MultiObjectiveValue instantiateMultiObjectiveValue() {
         return new BestOfMultiObjectiveValue();
     }

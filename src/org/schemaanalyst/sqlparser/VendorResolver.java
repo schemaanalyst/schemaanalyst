@@ -19,26 +19,32 @@ class VendorResolver {
 
             EDbVendor vendor;
 
+            @Override
             public void visit(Derby dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 
+            @Override
             public void visit(DerbyNetwork dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 
+            @Override
             public void visit(HSQLDB dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 
+            @Override
             public void visit(MySQL dbms) {
                 vendor = EDbVendor.dbvmysql;
             }
 
+            @Override
             public void visit(Postgres dbms) {
                 vendor = EDbVendor.dbvpostgresql;
             }
 
+            @Override
             public void visit(SQLite dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }

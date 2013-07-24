@@ -10,14 +10,17 @@ public class DerbyNetwork extends DBMS {
     private SQLWriter sqlWriter = new DerbySQLWriter();
     private DerbyDatabaseInteractor databaseInteraction = new DerbyNetworkDatabaseInteractor();
 
+    @Override
     public SQLWriter getSQLWriter() {
         return sqlWriter;
     }
 
+    @Override
     public DatabaseInteractor getDatabaseInteractor() {
         return databaseInteraction;
     }
 
+    @Override
     public void accept(DBMSVisitor visitor) {
         visitor.visit(this);
     }

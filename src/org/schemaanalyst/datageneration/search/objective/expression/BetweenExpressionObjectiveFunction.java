@@ -40,6 +40,7 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         rhsObjFun = new ValueObjectiveFunction();
     }
 
+    @Override
     public ObjectiveValue evaluate(Row row) {
         MultiObjectiveValue objVal =
                 goalIsToSatisfy ? new SumOfMultiObjectiveValue()

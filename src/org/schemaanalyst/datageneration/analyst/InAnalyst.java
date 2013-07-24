@@ -26,6 +26,7 @@ public class InAnalyst extends ConstraintAnalyst {
         this.allowNull = allowNull;
     }
 
+    @Override
     public boolean isSatisfied(Data state, Data data) {
         inCells = new ArrayList<>();
         notInCells = new ArrayList<>();

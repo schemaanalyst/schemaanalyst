@@ -14,6 +14,7 @@ public class ColumnExpression extends ExpressionLeaf {
         return column;
     }
 
+    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }

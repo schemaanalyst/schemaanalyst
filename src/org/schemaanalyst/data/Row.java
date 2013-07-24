@@ -68,6 +68,7 @@ public class Row implements Duplicable<Row> {
         }
     }
 
+    @Override
     public Row duplicate() {
         Row duplicate = new Row();
         duplicate.table = this.table;
@@ -107,6 +108,7 @@ public class Row implements Duplicable<Row> {
         return rowsEqual;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(table);

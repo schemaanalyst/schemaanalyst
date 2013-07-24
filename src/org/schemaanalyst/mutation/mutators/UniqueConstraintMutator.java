@@ -16,6 +16,7 @@ public class UniqueConstraintMutator extends Mutator {
     private Set<Set<Column>> columnSets;
     private List<Schema> mutants;
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         originalSchema = table.getSchema();
         columnSets = new HashSet<>();

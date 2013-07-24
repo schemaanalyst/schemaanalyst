@@ -38,6 +38,7 @@ public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
         upper = between.getUpper();
     }
 
+    @Override
     protected void attemptToSatisfy() {
 
         for (int rowNo : analyst.getFalsifyingEntries()) {
@@ -56,6 +57,7 @@ public class BetweenHandler extends ConstraintHandler<BetweenAnalyst> {
         }
     }
 
+    @Override
     protected void attemptToFalsify() {
 
         for (int rowNo : analyst.getSatisfyingEntries()) {

@@ -32,6 +32,7 @@ public class SearchConstraintCoverer extends DataGenerator {
         this.state = new Data();
     }
 
+    @Override
     public ConstraintCoverageReport generate() {
         ConstraintCoverageReport report = new ConstraintCoverageReport(schema);
 

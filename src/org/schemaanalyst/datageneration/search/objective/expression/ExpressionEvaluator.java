@@ -29,10 +29,12 @@ public class ExpressionEvaluator {
                 return value;
             }
 
+            @Override
             public void visit(ColumnExpression expression) {
                 value = row.getCell(expression.getColumn()).getValue();
             }
 
+            @Override
             public void visit(ConstantExpression expression) {
                 value = expression.getValue();
             }

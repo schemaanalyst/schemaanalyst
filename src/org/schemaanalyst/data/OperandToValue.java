@@ -22,10 +22,12 @@ public class OperandToValue {
                 return value;
             }
 
+            @Override
             public void visit(Column column) {
                 value = data.getCell(column.getTable(), column, row).getValue();
             }
 
+            @Override
             public void visit(Value value) {
                 this.value = value;
             }

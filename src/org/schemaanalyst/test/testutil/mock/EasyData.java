@@ -41,22 +41,27 @@ public class EasyData extends Data {
                 }
             }
 
+            @Override
             public void visit(BooleanValue value) {
                 // to complete...
             }
 
+            @Override
             public void visit(DateValue value) {
                 // to complete...
             }
 
+            @Override
             public void visit(DateTimeValue value) {
                 // to complete...
             }
 
+            @Override
             public void visit(NumericValue value) {
                 value.set(string);
             }
 
+            @Override
             public void visit(StringValue value) {
                 // remove quotes
                 int endIndex = Math.max(1, string.length() - 1);
@@ -65,10 +70,12 @@ public class EasyData extends Data {
                 value.set(stringValue);
             }
 
+            @Override
             public void visit(TimeValue value) {
                 // to complete...				
             }
 
+            @Override
             public void visit(TimestampValue value) {
                 // to complete...				
             }

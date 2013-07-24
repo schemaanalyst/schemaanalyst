@@ -56,18 +56,21 @@ public class SchemaSQLParser extends Runner {
         schemaObject = mapper.getSchema(schema, parser.parse(sqlFile));                    
     }
     
+    @Override
     protected void initialise(String... args) {
         super.initialise(args);        
         instantiateDBMS();
         parseSchema();
     }
     
+    @Override
     protected void task() {
         // write the schema back to the console
         SQLWriter sqlWriter = dbmsObject.getSQLWriter();
         System.out.println(sqlWriter.writeCreateTableStatements(schemaObject));
     }
 
+    @Override
     protected void validateParameters() {
         // nothing to do here
     }

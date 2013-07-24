@@ -38,22 +38,27 @@ public class ConstraintObjectiveFunctionFactory {
                 return objFun;
             }
 
+            @Override
             public void visit(CheckConstraint constraint) {
                 objFun = createForCheckConstraint(constraint);
             }
 
+            @Override
             public void visit(ForeignKeyConstraint constraint) {
                 objFun = createForForeignKeyConstraint(constraint);
             }
 
+            @Override
             public void visit(NotNullConstraint constraint) {
                 objFun = createForNotNullConstraint(constraint);
             }
 
+            @Override
             public void visit(PrimaryKeyConstraint constraint) {
                 objFun = createForPrimaryKeyConstraint(constraint);
             }
 
+            @Override
             public void visit(UniqueConstraint constraint) {
                 objFun = createForUniqueConstraint(constraint);
             }

@@ -43,16 +43,19 @@ public class CheckConditionObjectiveFunctionFactory {
                 return objFun;
             }
 
+            @Override
             public void visit(BetweenCheckCondition predicate) {
                 objFun = new BetweenCheckConditionObjectiveFunction(
                         predicate, table, state, description, goalIsToSatisfy, allowNull);
             }
 
+            @Override
             public void visit(InCheckCondition predicate) {
                 objFun = new InCheckConditionObjectiveFunction(
                         predicate, table, state, description, goalIsToSatisfy, allowNull);
             }
 
+            @Override
             public void visit(RelationalCheckCondition predicate) {
                 objFun = new RelationalCheckConditionObjectiveFunction(
                         predicate, table, state, description, goalIsToSatisfy, allowNull);

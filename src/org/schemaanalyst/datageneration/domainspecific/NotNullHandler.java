@@ -12,6 +12,7 @@ public class NotNullHandler extends ConstraintHandler<NotNullAnalyst> {
         super(analyst, goalIsToSatisfy);
     }
 
+    @Override
     protected void attemptToSatisfy() {
         List<Cell> cells = analyst.getNullCells();
 
@@ -20,6 +21,7 @@ public class NotNullHandler extends ConstraintHandler<NotNullAnalyst> {
         }
     }
 
+    @Override
     protected void attemptToFalsify() {
         List<Cell> cells = analyst.getNotNullCells();
 

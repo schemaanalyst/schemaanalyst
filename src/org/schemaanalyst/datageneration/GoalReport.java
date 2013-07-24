@@ -80,6 +80,7 @@ public abstract class GoalReport {
         appendDataToStringBuilder(sb);
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         appendToStringBuilder(sb);

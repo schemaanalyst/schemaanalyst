@@ -43,6 +43,7 @@ public class DateValue extends Value
         this.day.set(day);
     }
 
+    @Override
     public List<Value> getElements() {
         List<Value> elements = new ArrayList<>();
         elements.add(year);
@@ -51,10 +52,12 @@ public class DateValue extends Value
         return elements;
     }
 
+    @Override
     public void accept(ValueVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public DateValue duplicate() {
         DateValue duplicate = new DateValue();
         duplicate.year = year.duplicate();
@@ -63,6 +66,7 @@ public class DateValue extends Value
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -80,6 +84,7 @@ public class DateValue extends Value
         return result;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -97,6 +102,7 @@ public class DateValue extends Value
                 && year.equals(other.year);
     }
 
+    @Override
     public String toString() {
         return String.format(
                 "'%04d-%02d-%02d'",

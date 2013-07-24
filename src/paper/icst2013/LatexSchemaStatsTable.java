@@ -68,10 +68,12 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         super(" & ", " \\\\\n");
     }
 
+    @Override
     protected void writeHeader(StringBuffer table) {
         table.append("%!TEX root=../../icst13-schemaanalyst.tex\n");
     }
 
+    @Override
     protected void writeFooter(StringBuffer table,
             int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
             int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls,

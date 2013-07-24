@@ -17,6 +17,7 @@ public class NumericValueObjectiveFunction extends ObjectiveFunction<RelationalP
 
     public static final BigDecimal K = ONE;
 
+    @Override
     public ObjectiveValue evaluate(RelationalPredicate<NumericValue> predicate) {
         BigDecimal lhs = predicate.getLHS().get();
         RelationalOperator op = predicate.getOperator();

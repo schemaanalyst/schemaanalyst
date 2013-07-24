@@ -14,10 +14,12 @@ public class AndExpression extends CompoundExpression {
         super(subexpressions);
     }
 
+    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public String toString() {
         return StringUtils.implode(subexpressions, " AND ");
     }

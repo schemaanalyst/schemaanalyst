@@ -27,6 +27,7 @@ public class RelationalPredicate<T> {
         return rhs;
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -65,6 +66,7 @@ public class RelationalPredicate<T> {
         return true;
     }
 
+    @Override
     public String toString() {
         return lhs + " " + operator + " " + rhs;
     }

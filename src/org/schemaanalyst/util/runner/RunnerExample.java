@@ -49,6 +49,7 @@ public class RunnerExample extends Runner {
     private boolean debug = false;
     
     // This method contains the actual high-level steps of the task to be executed.
+    @Override
     protected void task() {
         out.println("Parsed parameters:");
         out.println("schema is " + schema);
@@ -61,6 +62,7 @@ public class RunnerExample extends Runner {
     }
 
     // This method provides further validation steps on the parameter values.
+    @Override
     protected void validateParameters() {
         check(numrepetitions > 0, "numrepetitions should be 1 or greater");
         

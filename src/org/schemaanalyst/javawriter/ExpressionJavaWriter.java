@@ -40,10 +40,12 @@ public class ExpressionJavaWriter {
                 return java;
             }
 
+            @Override
             public void visit(AndExpression expression) {
                 java += writeComposedExpresionConstruction(expression);
             }
 
+            @Override
             public void visit(BetweenExpression expression) {
                 java = javaWriter.writeConstruction(
                         expression,
@@ -53,18 +55,21 @@ public class ExpressionJavaWriter {
                         javaWriter.writeBoolean(expression.isNotBetween()));
             }
 
+            @Override
             public void visit(ColumnExpression expression) {
                 java += javaWriter.writeConstruction(
                         expression,
                         javaWriter.writeGetColumn(expression.getColumn()));
             }
 
+            @Override
             public void visit(ConstantExpression expression) {
                 java += javaWriter.writeConstruction(
                         expression,
                         valueJavaWriter.writeConstruction(expression.getValue()));
             }
 
+            @Override
             public void visit(InExpression expression) {
                 java = javaWriter.writeConstruction(
                         expression,
@@ -73,10 +78,12 @@ public class ExpressionJavaWriter {
                         javaWriter.writeBoolean(expression.isNotIn()));
             }
 
+            @Override
             public void visit(ListExpression expression) {
                 java += writeComposedExpresionConstruction(expression);
             }
 
+            @Override
             public void visit(NullExpression expression) {
                 java = javaWriter.writeConstruction(
                         expression,
@@ -84,16 +91,19 @@ public class ExpressionJavaWriter {
                         javaWriter.writeBoolean(expression.isNotNull()));
             }
 
+            @Override
             public void visit(OrExpression expression) {
                 java += writeComposedExpresionConstruction(expression);
             }
 
+            @Override
             public void visit(ParenthesisedExpression expression) {
                 java = javaWriter.writeConstruction(
                         expression,
                         writeExpression(expression.getSubexpression()));
             }
 
+            @Override
             public void visit(RelationalExpression expression) {
                 java = javaWriter.writeConstruction(
                         expression,

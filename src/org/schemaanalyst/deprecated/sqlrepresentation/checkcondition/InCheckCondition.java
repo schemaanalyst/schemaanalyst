@@ -49,10 +49,12 @@ public class InCheckCondition implements CheckCondition {
         return Collections.unmodifiableList(values);
     }
 
+    @Override
     public void accept(CheckConditionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -97,6 +99,7 @@ public class InCheckCondition implements CheckCondition {
         return true;
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(column);

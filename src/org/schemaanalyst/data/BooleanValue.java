@@ -20,20 +20,24 @@ public class BooleanValue extends Value {
         this.value = value;
     }
 
+    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }
 
+    @Override
     public BooleanValue duplicate() {
         BooleanValue duplicate = new BooleanValue();
         duplicate.value = value;
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value other) {
         throw new DataException("Cannot compare BooleanValues");
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -49,6 +53,7 @@ public class BooleanValue extends Value {
         return value == other.value;
     }
 
+    @Override
     public String toString() {
         return value ? "TRUE" : "FALSE";
     }

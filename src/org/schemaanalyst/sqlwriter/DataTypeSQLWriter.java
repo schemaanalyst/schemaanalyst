@@ -39,74 +39,92 @@ public class DataTypeSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(BigIntDataType type) {
                 sql = writeBigIntDataType(type);
             }
 
+            @Override
             public void visit(BooleanDataType type) {
                 sql = writeBooleanDataType(type);
             }
 
+            @Override
             public void visit(CharDataType type) {
                 sql = writeCharDataType(type);
             }
 
+            @Override
             public void visit(DateDataType type) {
                 sql = writeDateDataType(type);
             }
 
+            @Override
             public void visit(DateTimeDataType type) {
                 sql = writeDateTimeDataType(type);
             }
 
+            @Override
             public void visit(DecimalDataType type) {
                 sql = writeDecimalDataType(type);
             }
 
+            @Override
             public void visit(DoubleDataType type) {
                 sql = writeDoubleDataType(type);
             }
 
+            @Override
             public void visit(FloatDataType type) {
                 sql = writeFloatDataType(type);
             }
 
+            @Override
             public void visit(IntDataType type) {
                 sql = writeIntDataType(type);
             }
 
+            @Override
             public void visit(MediumIntDataType type) {
                 sql = writeMediumIntDataType(type);
             }
 
+            @Override
             public void visit(NumericDataType type) {
                 sql = writeNumericDataType(type);
             }
 
+            @Override
             public void visit(RealDataType type) {
                 sql = writeRealDataType(type);
             }
 
+            @Override
             public void visit(SmallIntDataType type) {
                 sql = writeSmallIntDataType(type);
             }
 
+            @Override
             public void visit(TextDataType type) {
                 sql = writeTextDataType(type);
             }
 
+            @Override
             public void visit(TimeDataType type) {
                 sql = writeTimeDataType(type);
             }
 
+            @Override
             public void visit(TimestampDataType type) {
                 sql = writeTimestampDataType(type);
             }
 
+            @Override
             public void visit(TinyIntDataType type) {
                 sql = writeTinyIntDataType(type);
             }
 
+            @Override
             public void visit(VarCharDataType type) {
                 sql = writeVarCharDataType(type);
             }

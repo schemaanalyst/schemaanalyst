@@ -25,6 +25,7 @@ public class ReferenceAnalyst extends ConstraintAnalyst {
         this.satisfyOnNull = satisfyOnNull;
     }
 
+    @Override
     public boolean isSatisfied(Data state, Data data) {
         // initialize data rows
         List<Row> dataRows = data.getRows(columns);

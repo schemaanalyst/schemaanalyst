@@ -139,6 +139,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      * @param visitor The IntegrityConstraintVisitor instance visiting this
      * constraint.
      */
+    @Override
     public void accept(ConstraintVisitor visitor) {
         visitor.visit(this);
     }
@@ -206,6 +207,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      * @return True if the other object is a ForeignKey object with the same
      * columns and reference table, else false.
      */
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -253,6 +255,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      *
      * @return An informative string.
      */
+    @Override
     public String toString() {
         return "FOREIGN KEY" + columns.toString();
     }

@@ -10,6 +10,7 @@ public class BestOfMultiObjectiveValue extends MultiObjectiveValue {
         super(description);
     }
 
+    @Override
     protected void computeValue() {
         ObjectiveValue best = ObjectiveValue.worstObjectiveValue(description);
         for (ObjectiveValue objVal : objVals) {
@@ -21,6 +22,7 @@ public class BestOfMultiObjectiveValue extends MultiObjectiveValue {
         computeValue = false;
     }
 
+    @Override
     public void appendToStringBuilder(StringBuilder sb, String indent) {
         if (computeValue) {
             computeValue();

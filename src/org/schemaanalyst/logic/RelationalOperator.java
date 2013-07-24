@@ -9,6 +9,7 @@ public enum RelationalOperator {
     GREATER_OR_EQUALS,
     LESS_OR_EQUALS;
 
+    @Override
     public String toString() {
         if (this == EQUALS) {
             return "=";

@@ -75,6 +75,7 @@ public class IndentableStringBuilder {
         return indentLevel;
     }
 
+    @Override
     public String toString() {
         return sb.toString();
     }

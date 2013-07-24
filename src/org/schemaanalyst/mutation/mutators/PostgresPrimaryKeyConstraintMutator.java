@@ -17,6 +17,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
  */
 public class PostgresPrimaryKeyConstraintMutator extends Mutator {
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         // get hold of original primaryKey
         PrimaryKeyConstraint primaryKeyConstraint = table.getPrimaryKeyConstraint();

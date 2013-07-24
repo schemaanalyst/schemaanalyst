@@ -42,6 +42,7 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
         this.op = goalIsToSatisfy ? EQUALS : NOT_EQUALS;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 

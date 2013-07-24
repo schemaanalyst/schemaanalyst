@@ -12,6 +12,7 @@ public class OptimumTerminationCriterion<T extends Duplicable<T>> implements Ter
         this.search = search;
     }
 
+    @Override
     public boolean satisfied() {
         ObjectiveValue objectiveValue = search.getBestObjectiveValue();
         return objectiveValue != null && search.getBestObjectiveValue().isOptimal();

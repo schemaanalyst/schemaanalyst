@@ -29,10 +29,12 @@ public class DataTypeJavaWriter {
                 return params;
             }
 
+            @Override
             public void visit(DataType type) {
                 // no params for standard types -- do nothing
             }
 
+            @Override
             public void visit(LengthLimited type) {
                 Integer length = type.getLength();
                 if (length != null) {
@@ -40,6 +42,7 @@ public class DataTypeJavaWriter {
                 }
             }
 
+            @Override
             public void visit(PrecisionedAndScaled type) {
                 Integer precision = type.getPrecision();
                 if (precision != null) {
@@ -51,6 +54,7 @@ public class DataTypeJavaWriter {
                 }
             }
 
+            @Override
             public void visit(Signed type) {
                 boolean isSigned = type.isSigned();
                 if (!isSigned) {

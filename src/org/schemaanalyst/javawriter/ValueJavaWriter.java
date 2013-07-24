@@ -33,30 +33,37 @@ public class ValueJavaWriter {
                 return params;
             }
 
+            @Override
             public void visit(BooleanValue value) {
                 params.add(codeWriter.writeBoolean(value.get()));
             }
 
+            @Override
             public void visit(DateValue value) {
                 // ... to complete
             }
 
+            @Override
             public void visit(DateTimeValue value) {
                 // ... to complete
             }
 
+            @Override
             public void visit(NumericValue value) {
                 params.add(value.get().toString());
             }
 
+            @Override
             public void visit(StringValue value) {
                 params.add(codeWriter.writeString(value.get()));
             }
 
+            @Override
             public void visit(TimeValue value) {
                 // ... to complete				
             }
 
+            @Override
             public void visit(TimestampValue value) {
                 // ... to complete				
             }

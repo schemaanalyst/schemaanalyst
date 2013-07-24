@@ -8,6 +8,7 @@ import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class MutantScriptCreator extends ScriptCreator {
 
+    @Override
     public void configure() {
         try {
             // create the scripts directory for storing the automatically

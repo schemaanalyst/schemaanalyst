@@ -5,10 +5,12 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class DerbySQLWriter extends SQLWriter {
 
+    @Override
     public String writeDropTableStatement(Table table) {
         return writeDropTableStatement(table, false);
     }
 
+    @Override
     public String writeDropTableStatement(Table table, boolean addIfExists) {
         String sql = "DROP TABLE ";
         //if (addIfExists) {

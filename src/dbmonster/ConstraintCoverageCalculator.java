@@ -189,6 +189,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
             String valueString;
             String fail;
 
+            @Override
             public void visit(BooleanValue value) {
                 if (valueString.equalsIgnoreCase("true")) {
                     value.set(true);
@@ -199,6 +200,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
                 }
             }
 
+            @Override
             public void visit(DateValue value) {
                 String[] parts = valueString.split("-");
                 if (parts.length == 3) {
@@ -210,10 +212,12 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
                 }
             }
 
+            @Override
             public void visit(DateTimeValue value) {
                 throw new RuntimeException("ERROR: Don't know how to parse DateTimeValue yet!");
             }
 
+            @Override
             public void visit(NumericValue value) {
                 if (valueString.equals("")) {
                     fail = "Could not parse NumericValue \"" + valueString + "\"";
@@ -222,10 +226,12 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
                 }
             }
 
+            @Override
             public void visit(StringValue value) {
                 value.set(valueString);
             }
 
+            @Override
             public void visit(TimeValue value) {
                 String[] parts = valueString.split(":");
                 if (parts.length == 3) {
@@ -237,6 +243,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
                 }
             }
 
+            @Override
             public void visit(TimestampValue value) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS z");
 

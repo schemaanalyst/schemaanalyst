@@ -21,6 +21,7 @@ public class TestSearchEvaluation {
             this.value = value;
         }
 
+        @Override
         public DuplicableDouble duplicate() {
             return new DuplicableDouble(value);
         }
@@ -28,6 +29,7 @@ public class TestSearchEvaluation {
 
     class MockObjectiveFunction extends ObjectiveFunction<DuplicableDouble> {
 
+        @Override
         public ObjectiveValue evaluate(DuplicableDouble duplicableDouble) {
             ObjectiveValue objVal = new ObjectiveValue();
             objVal.setValue(duplicableDouble.value);
@@ -41,9 +43,11 @@ public class TestSearchEvaluation {
             super();
         }
 
+        @Override
         public void search(DuplicableDouble d) {
         }
 
+        @Override
         public ObjectiveValue evaluate(DuplicableDouble d) {
             return super.evaluate(d);
         }

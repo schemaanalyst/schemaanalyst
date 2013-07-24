@@ -14,14 +14,17 @@ public class CharDataType extends DataType
         this.length = length;
     }
 
+    @Override
     public Integer getLength() {
         return length;
     }
 
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
 
+    @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((LengthLimited) this);
     }

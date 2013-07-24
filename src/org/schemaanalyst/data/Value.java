@@ -19,14 +19,17 @@ public abstract class Value implements Comparable<Value>,
     public void decrement() {
     }
 
+    @Override
     public void accept(OperandVisitor visitor) {
         visitor.visit(this);
     }
 
     public abstract void accept(ValueVisitor visitor);
 
+    @Override
     public abstract Value duplicate();
 
+    @Override
     public abstract int compareTo(Value v);
 
     public static Integer compareTo3VL(Value v1, Value v2) {

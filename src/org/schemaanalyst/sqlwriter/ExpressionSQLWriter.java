@@ -37,42 +37,52 @@ public class ExpressionSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(AndExpression expression) {
                 sql = writeAndExpression(expression);
             }
 
+            @Override
             public void visit(BetweenExpression expression) {
                 sql = writeBetweenExpression(expression);
             }
 
+            @Override
             public void visit(ColumnExpression expression) {
                 sql = writeColumn(expression.getColumn());
             }
 
+            @Override
             public void visit(ConstantExpression expression) {
                 sql = writeValue(expression.getValue());
             }
 
+            @Override
             public void visit(InExpression expression) {
                 sql = writeInExpression(expression);
             }
 
+            @Override
             public void visit(ListExpression expression) {
                 sql = writeListExpression(expression);
             }
 
+            @Override
             public void visit(NullExpression expression) {
                 sql = writeNullExpression(expression);
             }
 
+            @Override
             public void visit(OrExpression expression) {
                 sql = writeOrExpression(expression);
             }
 
+            @Override
             public void visit(ParenthesisedExpression expression) {
                 sql = writeParenthesisedExpression(expression);
             }
 
+            @Override
             public void visit(RelationalExpression expression) {
                 sql = writeRelationalExpression(expression);
             }

@@ -31,6 +31,7 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
         this.allowNull = allowNull;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);

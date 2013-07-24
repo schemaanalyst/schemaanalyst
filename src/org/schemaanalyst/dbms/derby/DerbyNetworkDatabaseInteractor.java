@@ -16,6 +16,7 @@ public class DerbyNetworkDatabaseInteractor extends DerbyDatabaseInteractor {
     /**
      * Initialize the connection to the Derby database.
      */
+    @Override
     public void initializeDatabaseConnection() {
         // the connection is initially null
         connection = null;

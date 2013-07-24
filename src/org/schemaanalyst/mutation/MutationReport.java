@@ -393,6 +393,7 @@ public class MutationReport {
         return mutationTypeStatusSummary;
     }
 
+    @Override
     public String toString() {
         return "ORIGINAL REPORT: \n" + originalReport + "\n"
                 + "SCORES: \n" + mutationReportScores + "\n\n"

@@ -39,6 +39,7 @@ public class SearchConstraintGoalReport extends ConstraintGoalReport {
         return bestObjectiveValue;
     }
 
+    @Override
     public void appendToStringBuilder(StringBuilder sb) {
         super.appendToStringBuilder(sb);
 

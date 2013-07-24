@@ -36,6 +36,7 @@ public class RelationalCheckConditionObjectiveFunction extends ObjectiveFunction
         this.allowNull = allowNull;
     }
 
+    @Override
     public ObjectiveValue evaluate(Data data) {
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 

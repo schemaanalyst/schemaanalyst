@@ -24,6 +24,7 @@ public class CounterTerminationCriterion implements TerminationCriterion {
         this.op = op;
     }
 
+    @Override
     public boolean satisfied() {
         int value = counter.getValue();
         if (op == RelationalOperator.EQUALS) {

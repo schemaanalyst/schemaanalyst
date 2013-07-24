@@ -43,6 +43,7 @@ public class DomainSpecificConstraintCoverer extends DataGenerator {
         this.random = random;
     }
 
+    @Override
     public ConstraintCoverageReport generate() {
         ConstraintCoverageReport report = new ConstraintCoverageReport(schema);
 

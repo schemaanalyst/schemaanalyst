@@ -36,6 +36,7 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
         constraintEvaluator = new ConstraintEvaluator();
     }
 
+    @Override
     public SimpleConstraintCoverageReport generate() {
         constraintEvaluator.initialize(schema);
         int totalNumTries = 0;

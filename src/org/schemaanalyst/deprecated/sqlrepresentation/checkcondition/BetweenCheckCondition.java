@@ -37,10 +37,12 @@ public class BetweenCheckCondition implements CheckCondition {
         return upper;
     }
 
+    @Override
     public void accept(CheckConditionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -82,6 +84,7 @@ public class BetweenCheckCondition implements CheckCondition {
         return true;
     }
 
+    @Override
     public String toString() {
         return column + " BETWEEN " + lower + " AND " + upper;
     }

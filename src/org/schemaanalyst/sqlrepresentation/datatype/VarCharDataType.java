@@ -12,6 +12,7 @@ public class VarCharDataType extends CharDataType {
         super(length);
     }
 
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }

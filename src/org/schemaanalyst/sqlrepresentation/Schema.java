@@ -148,6 +148,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
      *
      * @return A deep copy of the schema.
      */
+    @Override
     public Schema duplicate() {
         Schema duplicate = new Schema(name);
 

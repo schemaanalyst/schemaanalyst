@@ -44,6 +44,7 @@ public class StringValue extends Value
         return sb.toString();
     }
 
+    @Override
     public List<Value> getElements() {
         List<Value> elements = new ArrayList<>();
         elements.addAll(characters);
@@ -118,10 +119,12 @@ public class StringValue extends Value
         return characterValue;
     }
 
+    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }
 
+    @Override
     public StringValue duplicate() {
         StringValue duplicate = new StringValue();
         duplicate.maxLength = maxLength;
@@ -136,6 +139,7 @@ public class StringValue extends Value
         return duplicate;
     }
 
+    @Override
     public int compareTo(Value v) {
         if (getClass() != v.getClass()) {
             throw new DataException(
@@ -145,6 +149,7 @@ public class StringValue extends Value
         return get().compareTo(((StringValue) v).get());
     }
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -170,6 +175,7 @@ public class StringValue extends Value
         return true;
     }
 
+    @Override
     public String toString() {
         return "'" + get() + "'";
     }

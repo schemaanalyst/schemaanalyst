@@ -27,14 +27,17 @@ public class CheckConditionSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(BetweenCheckCondition expression) {
                 sql = writeBetweenCheckCondition(expression);
             }
 
+            @Override
             public void visit(InCheckCondition expression) {
                 sql = writeInCheckCondition(expression);
             }
 
+            @Override
             public void visit(RelationalCheckCondition expression) {
                 sql = writeRelationalCheckCondition(expression);
             }

@@ -21,6 +21,7 @@ public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         subexpressionEvaluator = new ExpressionEvaluator(expression.getSubexpression());
     }
 
+    @Override
     public ObjectiveValue evaluate(Row row) {
         System.out.println("here");
         return nullValueObjFun.evaluate(subexpressionEvaluator.evaluate(row));

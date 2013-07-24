@@ -41,6 +41,7 @@ public class GenerateData extends Runner {
     @Parameter("The identification string of the cell randomisation profile to be used")
     private String cellrandomisationprofile = "Small";
     
+    @Override
     protected void task() {
         try {
             // get a DBMS instance
@@ -78,6 +79,7 @@ public class GenerateData extends Runner {
         } 
     }
     
+    @Override
     protected void validateParameters() {
         // TODO: complete
     }

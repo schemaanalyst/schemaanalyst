@@ -12,6 +12,7 @@ public class NullValueObjectiveFunction extends ObjectiveFunction<Value> {
         this.shouldBeNull = shouldBeNull;
     }
 
+    @Override
     public ObjectiveValue evaluate(Value value) {
         ObjectiveValue objVal = new ObjectiveValue(value + ", shouldBeNull: " + shouldBeNull);
 

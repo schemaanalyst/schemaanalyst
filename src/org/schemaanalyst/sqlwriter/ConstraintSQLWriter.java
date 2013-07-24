@@ -36,22 +36,27 @@ public class ConstraintSQLWriter {
                 return sql;
             }
 
+            @Override
             public void visit(CheckConstraint constraint) {
                 sql = writeCheck(constraint);
             }
 
+            @Override
             public void visit(ForeignKeyConstraint constraint) {
                 sql = writeForeignKey(constraint);
             }
 
+            @Override
             public void visit(NotNullConstraint constraint) {
                 sql = writeNotNull(constraint);
             }
 
+            @Override
             public void visit(PrimaryKeyConstraint constraint) {
                 sql = writePrimaryKey(constraint);
             }
 
+            @Override
             public void visit(UniqueConstraint constraint) {
                 sql = writeUnique(constraint);
             }

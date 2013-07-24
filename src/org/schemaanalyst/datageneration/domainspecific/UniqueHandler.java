@@ -24,6 +24,7 @@ public class UniqueHandler extends ConstraintHandler<UniqueAnalyst> {
         this.random = random;
     }
 
+    @Override
     protected void attemptToSatisfy() {
         List<Row> nonUniqueRows = analyst.getNonUniqueRows();
 
@@ -32,6 +33,7 @@ public class UniqueHandler extends ConstraintHandler<UniqueAnalyst> {
         }
     }
 
+    @Override
     protected void attemptToFalsify() {
         List<Row> uniqueRows = analyst.getUniqueRows();
 

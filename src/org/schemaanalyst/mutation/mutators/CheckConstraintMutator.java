@@ -8,6 +8,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class CheckConstraintMutator extends Mutator {
 
+    @Override
     public void produceMutants(Table table, List<Schema> mutants) {
         for (CheckConstraint checkConstraint : table.getCheckConstraints()) {
             mutants.add(makeMutant(table, checkConstraint));
