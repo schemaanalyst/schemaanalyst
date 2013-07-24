@@ -62,12 +62,12 @@ public class JustInTimeSchemataTechnique extends Runner {
      * The folder to write the results.
      */
     @Parameter("The folder to write the results.")
-    protected String outputFolder; // Default in validate
+    protected String outputfolder; // Default in validate
     /**
      * Whether to submit drop statements prior to running.
      */
-    @Parameter("Whether to submit drop statements prior to running.")
-    protected boolean dropFirst = false;
+    @Parameter(value="Whether to submit drop statements prior to running.", valueAsSwitch = "true")
+    protected boolean dropfirst = false;
     /**
      * How many threads to use for parallel execution.
      */
@@ -119,7 +119,7 @@ public class JustInTimeSchemataTechnique extends Runner {
         int killed = 0;
         Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, schema, sqlWriter, databaseInteractor, originalReport, dropFirst);
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, schema, sqlWriter, databaseInteractor, originalReport, dropfirst);
             Future<Boolean> callResult = executor.submit(callable);
             callResults.add(callResult);
         }
@@ -142,7 +142,7 @@ public class JustInTimeSchemataTechnique extends Runner {
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
 
-        new CSVWriter(outputFolder + casestudy + ".dat").write(result);
+        new CSVWriter(outputfolder + casestudy + ".dat").write(result);
     }
     
     /**
@@ -164,8 +164,8 @@ public class JustInTimeSchemataTechnique extends Runner {
         if (inputfolder == null) {
             inputfolder = folderConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
         }
-        if (outputFolder == null) {
-            outputFolder = folderConfiguration.getResultsDir() + File.separator;
+        if (outputfolder == null) {
+            outputfolder = folderConfiguration.getResultsDir() + File.separator;
         }
     }
 

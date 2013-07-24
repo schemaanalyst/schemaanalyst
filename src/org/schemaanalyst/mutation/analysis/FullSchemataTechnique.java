@@ -55,12 +55,12 @@ public class FullSchemataTechnique extends Runner {
      * The folder to write the results.
      */
     @Parameter("The folder to write the results.")
-    protected String outputFolder; // Default in validate
+    protected String outputfolder; // Default in validate
     /**
      * Whether to submit drop statements prior to running.
      */
-    @Parameter("Whether to submit drop statements prior to running.")
-    protected boolean dropFirst = false;
+    @Parameter(value="Whether to submit drop statements prior to running.", valueAsSwitch = "true")
+    protected boolean dropfirst = false;
 
     @Override
     public void task() {
@@ -126,7 +126,7 @@ public class FullSchemataTechnique extends Runner {
         String createStmt = createBuilder.toString();
 
         // Schemata step: Drop existing tables before iterating mutants
-        if (dropFirst) {
+        if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
         }
 
@@ -169,7 +169,7 @@ public class FullSchemataTechnique extends Runner {
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
 
-        new CSVWriter(outputFolder + casestudy + ".dat").write(result);
+        new CSVWriter(outputfolder + casestudy + ".dat").write(result);
     }
 
     /**
@@ -191,8 +191,8 @@ public class FullSchemataTechnique extends Runner {
         if (inputfolder == null) {
             inputfolder = folderConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
         }
-        if (outputFolder == null) {
-            outputFolder = folderConfiguration.getResultsDir() + File.separator;
+        if (outputfolder == null) {
+            outputfolder = folderConfiguration.getResultsDir() + File.separator;
         }
     }
 
