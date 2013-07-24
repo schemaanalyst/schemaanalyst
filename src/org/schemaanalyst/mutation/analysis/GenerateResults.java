@@ -55,17 +55,17 @@ public class GenerateResults extends Runner {
      * The number of max evaluations.
      */
     @Parameter
-    protected int maxEvaluations = 100000;
+    protected int maxevaluations = 100000;
     /**
      * The number of satisfy rows.
      */
     @Parameter
-    protected int satisfyRows = 2;
+    protected int satisfyrows = 2;
     /**
      * The number of negate rows.
      */
     @Parameter
-    protected int negateRows = 1;
+    protected int negaterows = 1;
     /**
      * The random seed.
      */
@@ -158,7 +158,7 @@ public class GenerateResults extends Runner {
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(),
-                maxEvaluations),
+                maxevaluations),
                 new OptimumTerminationCriterion<>(search));
 
         search.setTerminationCriterion(terminationCriterion);
@@ -166,8 +166,8 @@ public class GenerateResults extends Runner {
         return new SearchConstraintCoverer(search,
                 schema,
                 dbms,
-                satisfyRows,
-                negateRows);
+                satisfyrows,
+                negaterows);
     }
 
     public static void main(String[] args) {
@@ -176,13 +176,13 @@ public class GenerateResults extends Runner {
 
     @Override
     protected void validateParameters() {
-        if (maxEvaluations <= 0) {
+        if (maxevaluations <= 0) {
             exitWithArgumentException("maxEvaluations must be > 0");
         }
-        if (satisfyRows < 0) {
+        if (satisfyrows < 0) {
             exitWithArgumentException("satisfyRows must be >= 0");
         }
-        if (negateRows < 0) {
+        if (negaterows < 0) {
             exitWithArgumentException("negateRows must be >= 0");
         }
         if (!randomprofile.equals("small") && !randomprofile.equals("large")) {
