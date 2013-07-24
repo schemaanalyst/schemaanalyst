@@ -12,7 +12,6 @@ import java.util.Set;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.FolderConfiguration;
-import org.schemaanalyst.configuration.LoggingConfiguration;
 import org.schemaanalyst.util.StringUtils;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
@@ -38,7 +37,6 @@ public abstract class Runner {
     // various configurations
     protected FolderConfiguration folderConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
-    protected LoggingConfiguration loggingConfiguration;
     
     /**
      * Constructor.  Instantiates the Runner and loads configuration files.
@@ -86,7 +84,6 @@ public abstract class Runner {
     protected void loadConfiguration() {
         folderConfiguration = new FolderConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
-        loggingConfiguration = new LoggingConfiguration();
     }
 
     /**
