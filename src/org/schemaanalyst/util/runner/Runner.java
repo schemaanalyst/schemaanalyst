@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.FolderConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.util.StringUtils;
 
 /**
@@ -54,7 +54,7 @@ public abstract class Runner {
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
     // configurations
-    protected FolderConfiguration folderConfiguration;
+    protected LocationsConfiguration folderConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
     // parameter/field/defaults introspection information
     protected List<String> requiredParameterNames;
@@ -161,7 +161,7 @@ public abstract class Runner {
      * Loads the properties files from their default locations.
      */
     protected void loadConfiguration() {
-        folderConfiguration = new FolderConfiguration();
+        folderConfiguration = new LocationsConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
         Properties prop = System.getProperties();
         if (!prop.contains("java.util.logging.config.file")) {

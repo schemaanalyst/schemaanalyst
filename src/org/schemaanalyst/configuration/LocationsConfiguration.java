@@ -9,9 +9,9 @@ import org.schemaanalyst.util.PropertiesParser;
  *
  * @author Chris J. Wright
  */
-public class FolderConfiguration {
+public class LocationsConfiguration {
 
-    private final static String PROPERTIES_LOCATION = "config/folders.properties";
+    private final static String PROPERTIES_LOCATION = "config/locations.properties";
     /**
      * The libraries folder.
      */
@@ -64,7 +64,7 @@ public class FolderConfiguration {
     /**
      * Construct using the default Properties file location.
      */
-    public FolderConfiguration() {
+    public LocationsConfiguration() {
         PropertiesParser.parse(PROPERTIES_LOCATION, this);
     }
     
@@ -72,7 +72,7 @@ public class FolderConfiguration {
      * Construct using the provided Properties file location.
      * @param path The path to Properties file.
      */
-    public FolderConfiguration(String path) {
+    public LocationsConfiguration(String path) {
         PropertiesParser.parse(path, this);
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.FolderConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.util.StringUtils;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
@@ -35,7 +35,7 @@ public abstract class Runner {
     protected HashMap<String, Object> overwrittenDefaults;
     
     // various configurations
-    protected FolderConfiguration folderConfiguration;
+    protected LocationsConfiguration folderConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
     
     /**
@@ -82,7 +82,7 @@ public abstract class Runner {
      * Loads the properties files from their default locations.
      */
     protected void loadConfiguration() {
-        folderConfiguration = new FolderConfiguration();
+        folderConfiguration = new LocationsConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
     }
 
