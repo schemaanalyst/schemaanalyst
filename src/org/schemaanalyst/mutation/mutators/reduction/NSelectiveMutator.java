@@ -13,7 +13,6 @@ import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import originalcasestudy.Cloc;
 
 /**
  * Similar to Offut1993 style of selective mutation, when the n most productive

@@ -12,7 +12,6 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 import org.schemaanalyst.sqlwriter.SQLWriter;
-import originalcasestudy.NistDML181;
 
 /**
  * Produces mutants where each local column in a foreign key constraint is

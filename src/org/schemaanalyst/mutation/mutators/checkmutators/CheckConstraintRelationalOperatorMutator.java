@@ -14,7 +14,6 @@ import org.schemaanalyst.mutation.mutators.Mutator;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /**
  * Mutates the relational operators in relational check constraints. Makes use

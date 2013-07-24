@@ -1,7 +1,6 @@
 package org.schemaanalyst.datageneration.search.objective.expression;
 
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;

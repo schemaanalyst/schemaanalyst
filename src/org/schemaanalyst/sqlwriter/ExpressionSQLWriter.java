@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;

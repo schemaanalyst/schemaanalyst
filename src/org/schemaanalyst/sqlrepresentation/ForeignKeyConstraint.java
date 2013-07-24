@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**
  * Represents foreign key constraints.

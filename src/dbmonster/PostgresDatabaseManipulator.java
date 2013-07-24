@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 

@@ -1,7 +1,6 @@
 package experiment;
 
 import java.lang.Class;
-import java.util.List;
 import java.io.File;
 import java.io.PrintStream;
 import org.apache.tools.ant.BuildException;
@@ -14,7 +13,6 @@ import org.apache.tools.ant.types.Path;
 import org.apache.tools.ant.types.Commandline.Argument;
 
 import java.util.List;
-import java.util.Arrays;
 
 public class RunExperiment {
 

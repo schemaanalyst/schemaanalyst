@@ -2,8 +2,6 @@
  */
 package experiment;
 
-import java.io.File;
-import java.io.FileFilter;
 import org.javarunner.PropertiesRunner;
 
 /**

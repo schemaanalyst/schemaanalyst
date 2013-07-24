@@ -4,7 +4,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 
 import originalcasestudy.BankAccount;
 import originalcasestudy.BookTown;
-import originalcasestudy.BooleanExample;
 import originalcasestudy.Cloc;
 import originalcasestudy.CoffeeOrders;
 import originalcasestudy.CustomerOrder;
@@ -13,7 +12,6 @@ import originalcasestudy.Employee;
 import originalcasestudy.Examination;
 import originalcasestudy.Flights;
 import originalcasestudy.FrenchTowns;
-import originalcasestudy.ITrust;
 import originalcasestudy.Inventory;
 import originalcasestudy.Iso3166;
 import originalcasestudy.JWhoisServer;
@@ -29,7 +27,6 @@ import originalcasestudy.RiskIt;
 import originalcasestudy.StudentResidence;
 import originalcasestudy.UnixUsage;
 import originalcasestudy.Usda;
-import originalcasestudy.World;
 import paper.util.SchemaStatsTable;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {
