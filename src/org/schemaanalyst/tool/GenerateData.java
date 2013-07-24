@@ -1,8 +1,6 @@
 package org.schemaanalyst.tool;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
@@ -51,12 +49,10 @@ public class GenerateData extends Runner {
             Parser parser = new Parser(dbmsObject);
 
             // instantiate a mapper
-            Logger logger = Logger.getLogger("Schema Mapping");
-            logger.setLevel(Level.parse(loggingConfiguration.getLogLevel()));
             SchemaMapper mapper = new SchemaMapper(logger);
 
             // get the file 
-            File sqlFile = new File(folderConfiguration.getSchemaSrcDir() + "/" + schema + ".sql");
+            File sqlFile = new File(folderConfiguration.getSchemaSrcDir() + File.separator + schema + ".sql");
 
             // get the schema
             Schema schemaObject = mapper.getSchema(schema, parser.parse(sqlFile));    

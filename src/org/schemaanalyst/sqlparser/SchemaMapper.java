@@ -12,6 +12,7 @@ import gudusoft.gsqlparser.nodes.TColumnDefinition;
 import gudusoft.gsqlparser.nodes.TColumnDefinitionList;
 import gudusoft.gsqlparser.stmt.TAlterTableStatement;
 import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
+import java.util.logging.Level;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -54,7 +55,7 @@ public class SchemaMapper {
                 break;
             default:
                 // only CREATE TABLE and ALTER TABLE are handled
-                logger.warning("Ignored statmeent " + " \"" + node + "\" on line " + node.getLineNo());
+                logger.log(Level.WARNING, "Ignored statement \"{0}\" on line {1}", new Object[]{node, node.getLineNo()});
         }
     }
 
@@ -64,7 +65,7 @@ public class SchemaMapper {
         Table table = schema.createTable(tableName);
 
         // log this event
-        logger.info("Parsing table \"" + tableName + "\" one line " + node.getLineNo());
+        logger.log(Level.INFO, "Parsing table \"{0}\" one line {1}", new Object[]{tableName, node.getLineNo()});
 
         // parse columns
         TColumnDefinitionList columnList = node.getColumnList();
@@ -81,7 +82,7 @@ public class SchemaMapper {
         String columnName = stripQuotes(node.getColumnName());
 
         // log this event
-        logger.info("Parsing column \"" + columnName + "\" one line " + node.getLineNo());
+        logger.log(Level.INFO, "Parsing column \"{0}\" one line {1}", new Object[]{columnName, node.getLineNo()});
 
         // get data type and add column to table
         DataType type = dataTypeMapper.getDataType(node.getDatatype(), node);
@@ -92,14 +93,14 @@ public class SchemaMapper {
     }
 
     protected void analyseAlterTableStatement(TAlterTableStatement node) {
-        logger.warning("Parsing alter table statement \"" + node + "\", which has an incomplete GSP implementation at line: " + node.getLineNo());
+        logger.log(Level.WARNING, "Parsing alter table statement \"{0}\", which has an incomplete GSP implementation at line: {1}", new Object[]{node, node.getLineNo()});
 
         String tableName = stripQuotes(node.getTableName());
         Table table = schema.getTable(tableName);
 
         TAlterTableOptionList optionList = node.getAlterTableOptionList();
         if (optionList == null) {
-            logger.severe("Option list for alter table statement for \"" + table + "\" is null -- giving up at line: " + node.getLineNo());
+            logger.log(Level.SEVERE, "Option list for alter table statement for \"{0}\" is null -- giving up at line: {1}", new Object[]{table, node.getLineNo()});
         } else {
             for (int i = 0; i < optionList.size(); i++) {
                 analyseAlterTableOption(table, optionList.getAlterTableOption(i));
@@ -108,7 +109,7 @@ public class SchemaMapper {
     }
 
     protected void analyseAlterTableOption(Table currentTable, TAlterTableOption node) {
-        logger.warning("Parsing alter table option statement, which has a buggy/incomplete implementation on line " + node.getLineNo());
+        logger.log(Level.WARNING, "Parsing alter table option statement, which has a buggy/incomplete implementation on line {0}", node.getLineNo());
 
         switch (node.getOptionType()) {
             case AddConstraint:

@@ -1,8 +1,6 @@
 package org.schemaanalyst.tool;
 
 import java.io.File;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -35,8 +33,8 @@ public class SchemaSQLParser extends Runner {
             if (dbmsObject == null) {
                 dbmsObject = DBMSFactory.instantiate(dbms);
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
+            throw new RuntimeException(ex);
         }  
     }
     
@@ -45,12 +43,10 @@ public class SchemaSQLParser extends Runner {
         Parser parser = new Parser(dbmsObject);
 
         // instantiate a mapper
-        Logger logger = Logger.getLogger("Schema Mapping");
-        logger.setLevel(Level.parse(loggingConfiguration.getLogLevel())); 
         SchemaMapper mapper = new SchemaMapper(logger);
 
         // get the file 
-        File sqlFile = new File(folderConfiguration.getSchemaSrcDir() + "/" + schema + ".sql");
+        File sqlFile = new File(folderConfiguration.getSchemaSrcDir() + File.separator + schema + ".sql");
         
         // get the schema
         schemaObject = mapper.getSchema(schema, parser.parse(sqlFile));                    
