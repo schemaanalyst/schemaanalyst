@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -173,7 +174,7 @@ public class JustInTimeSchemataTechnique extends Runner {
         new JustInTimeSchemataTechnique().run(args);
     }
     
-    private static class MutationAnalysisCallable implements Callable<Boolean> {
+    private class MutationAnalysisCallable implements Callable<Boolean> {
 
         int id;
         Schema schema;
@@ -195,7 +196,7 @@ public class JustInTimeSchemataTechnique extends Runner {
         public Boolean call() throws Exception {
             boolean killed = false;
             
-            System.out.println("Mutant " + id);
+            logger.log(Level.INFO, "Mutant {0}", id);
             
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";

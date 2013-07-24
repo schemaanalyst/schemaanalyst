@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -206,7 +207,7 @@ public class UpFrontSchemataTechnique extends Runner {
         new UpFrontSchemataTechnique().run(args);
     }
 
-    private static class MutationAnalysisCallable implements Callable<Boolean> {
+    private class MutationAnalysisCallable implements Callable<Boolean> {
 
         int id;
         DatabaseInteractor databaseInteractor;
@@ -221,7 +222,7 @@ public class UpFrontSchemataTechnique extends Runner {
         @Override
         public Boolean call() throws Exception {
             boolean killed = false;
-            System.out.println("Mutant " + id);
+            logger.log(Level.INFO, "Mutant {0}", id);
 
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";

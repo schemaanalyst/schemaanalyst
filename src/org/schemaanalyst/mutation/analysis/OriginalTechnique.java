@@ -6,6 +6,7 @@ import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 
 import java.io.File;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -103,7 +104,7 @@ public class OriginalTechnique extends Runner {
         for (int id = 0; id < mutants.size(); id++) {
             Schema mutant = mutants.get(id);
 
-            System.out.println("Mutant " + id);
+            logger.log(Level.INFO, "Mutant {0}", id);
 
             // Drop existing tables
             List<String> dropStmts = sqlWriter.writeDropTableStatements(mutant, true);
