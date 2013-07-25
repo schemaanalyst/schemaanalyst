@@ -50,7 +50,7 @@ public class GenerateResults extends Runner {
      * The folder to store the generated results.
      */
     @Parameter
-    protected String outputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
+    protected String outputfolder;
     /**
      * The number of max evaluations.
      */
@@ -84,6 +84,11 @@ public class GenerateResults extends Runner {
 
     @Override
     public void task() {
+        // Setup
+        if (outputfolder == null) {
+            outputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
+        }
+        
         // Instantiate the DBMS and related objects
         DBMS dbms;
         try {
