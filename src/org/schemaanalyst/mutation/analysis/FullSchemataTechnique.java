@@ -190,10 +190,10 @@ public class FullSchemataTechnique extends Runner {
     protected void validateParameters() {
         //TODO: Validate parameters
         if (inputfolder == null) {
-            inputfolder = folderConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
+            inputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
         }
         if (outputfolder == null) {
-            outputfolder = folderConfiguration.getResultsDir() + File.separator;
+            outputfolder = locationsConfiguration.getResultsDir() + File.separator;
         }
     }
 

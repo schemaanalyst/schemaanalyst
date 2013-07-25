@@ -46,7 +46,7 @@ public class SchemaSQLParser extends Runner {
         SchemaMapper mapper = new SchemaMapper(logger);
 
         // get the file 
-        File sqlFile = new File(folderConfiguration.getSchemaSrcDir() + File.separator + schema + ".sql");
+        File sqlFile = new File(locationsConfiguration.getSchemaSrcDir() + File.separator + schema + ".sql");
         
         // get the schema
         schemaObject = mapper.getSchema(schema, parser.parse(sqlFile));                    

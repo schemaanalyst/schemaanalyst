@@ -12,8 +12,8 @@ public class SchemaSQLToJava extends SchemaSQLParser {
     
     @Override
     protected void task() {
-        String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema(folderConfiguration.getCaseStudyPackage());            
-        File javaFile = new File(folderConfiguration.getCaseStudySrcDir() + "/" + schema + ".java");
+        String javaCode = (new SchemaJavaWriter(schemaObject)).writeSchema(locationsConfiguration.getCaseStudyPackage());            
+        File javaFile = new File(locationsConfiguration.getCaseStudySrcDir() + "/" + schema + ".java");
         try (PrintWriter fileOut = new PrintWriter(javaFile)) {
             fileOut.println(javaCode);
         } catch (FileNotFoundException e) {

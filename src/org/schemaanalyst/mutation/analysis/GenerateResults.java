@@ -50,7 +50,7 @@ public class GenerateResults extends Runner {
      * The folder to store the generated results.
      */
     @Parameter
-    protected String outputfolder = folderConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
+    protected String outputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
     /**
      * The number of max evaluations.
      */

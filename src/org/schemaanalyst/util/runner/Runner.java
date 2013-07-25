@@ -54,7 +54,7 @@ public abstract class Runner {
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
     // configurations
-    protected LocationsConfiguration folderConfiguration;
+    protected LocationsConfiguration locationsConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
     // parameter/field/defaults introspection information
     protected List<String> requiredParameterNames;
@@ -161,12 +161,12 @@ public abstract class Runner {
      * Loads the properties files from their default locations.
      */
     protected void loadConfiguration() {
-        folderConfiguration = new LocationsConfiguration();
+        locationsConfiguration = new LocationsConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
         Properties prop = System.getProperties();
         if (!prop.contains("java.util.logging.config.file")) {
             prop.setProperty("java.util.logging.config.file", 
-                    folderConfiguration.getConfigDir() + File.separator + "logging.properties");
+                    locationsConfiguration.getConfigDir() + File.separator + "logging.properties");
         }
     }
 
