@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.mutation;
+package org.schemaanalyst.deprecated.test.mutation;
 
 import java.io.File;
 

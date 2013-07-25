@@ -23,7 +23,6 @@ public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-        System.out.println("here");
         return nullValueObjFun.evaluate(subexpressionEvaluator.evaluate(row));
     }
 }

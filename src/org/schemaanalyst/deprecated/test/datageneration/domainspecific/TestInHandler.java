@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.domainspecific;
+package org.schemaanalyst.deprecated.test.datageneration.domainspecific;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

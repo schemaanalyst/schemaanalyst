@@ -18,4 +18,8 @@ public class ConstantExpression extends ExpressionLeaf {
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
+    
+    public String toString() {
+        return value.toString();
+    }
 }
