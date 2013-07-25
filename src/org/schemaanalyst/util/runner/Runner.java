@@ -518,8 +518,11 @@ public abstract class Runner {
      * Prints the description and usage and quits.
      */
     protected void exitWithHelp() {
-        out.println(getDescription());
-        out.println();
+        String description = getDescription();
+        if (description != null) {
+            out.println(getDescription());
+            out.println();
+        }
         out.println(getUsage());
         throw new ExitException(1);
     }
@@ -639,7 +642,7 @@ public abstract class Runner {
         boolean required = isRequiredParameter(name);
 
         String formattedName = name;
-        if (required) {
+        if (!required) {
             formattedName = LONG_OPTION_PREFIX + name;
         }
 
