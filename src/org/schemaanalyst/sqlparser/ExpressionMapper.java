@@ -2,7 +2,6 @@ package org.schemaanalyst.sqlparser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 import gudusoft.gsqlparser.EExpressionType;
 import gudusoft.gsqlparser.nodes.TConstant;
@@ -28,11 +27,9 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class ExpressionMapper {
 
-    protected Logger logger;
     protected Table currentTable;
 
-    public ExpressionMapper(Logger logger) {
-        this.logger = logger;
+    public ExpressionMapper() {
     }
 
     public Expression getExpression(Table currentTable, TExpression node) {

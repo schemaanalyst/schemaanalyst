@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Logger;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -46,33 +45,38 @@ import org.schemaanalyst.util.StringUtils;
  *
  * @author phil
  */
-public abstract class Runner {
-
+public abstract class Runner {  
+    
     public static final String LONG_OPTION_PREFIX = "--";
     public static final String HELP_OPTION = LONG_OPTION_PREFIX + "help";
+  
     // must be spaces, not tabs to work properly:
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
+    
     // configurations
     protected LocationsConfiguration locationsConfiguration;
     protected DatabaseConfiguration databaseConfiguration;
+    
     // parameter/field/defaults introspection information
     protected List<String> requiredParameterNames;
     protected Map<String, Field> parameterFields;
     protected Map<String, Parameter> parameters;
     protected Map<String, Object> optionalParameterDefaults;
+    
     // set of parameters parsed in from args
     protected Set<String> parsedParameters;
+    
     // store the command line output stream as an instance variable so that it
     // can be mocked or redirected
     protected PrintStream out = System.out;
+    
     // ensures the process does not abnormally terminate by catching all exceptions
     protected boolean catchExceptions;
+    
     // sets whether the configuration is to be loaded on initialisation or not.
     protected boolean loadConfiguration;
-    // logger
-    protected Logger logger;
-
+    
     /**
      * Constructor.
      */
@@ -154,15 +158,17 @@ public abstract class Runner {
         if (loadConfiguration) {
             loadConfiguration();
         }
-        logger = Logger.getLogger(Runner.class.getName());
     }
 
     /**
      * Loads the properties files from their default locations.
      */
     protected void loadConfiguration() {
+        // load configurations wrt locations and databases
         locationsConfiguration = new LocationsConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
+        
+        // load logging properties
         Properties prop = System.getProperties();
         if (!prop.contains("java.util.logging.config.file")) {
             prop.setProperty("java.util.logging.config.file", 

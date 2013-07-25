@@ -1,7 +1,5 @@
 package org.schemaanalyst.sqlparser;
 
-import java.util.logging.Logger;
-
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TParseTreeNode;
 import gudusoft.gsqlparser.nodes.TTypeName;
@@ -24,10 +22,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 class DataTypeMapper {
 
-    protected Logger logger;
-
-    public DataTypeMapper(Logger logger) {
-        this.logger = logger;
+    public DataTypeMapper() {
     }
 
     // REFER TO the JavaDocs for TTypeName

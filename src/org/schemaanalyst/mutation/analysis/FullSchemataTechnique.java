@@ -7,6 +7,7 @@ import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -37,6 +38,8 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 @RequiredParameters("casestudy trial")
 public class FullSchemataTechnique extends Runner {
 
+    private final static Logger LOGGER = Logger.getLogger(FullSchemataTechnique.class.getName());    
+    
     /**
      * The name of the schema to use.
      */
@@ -139,7 +142,7 @@ public class FullSchemataTechnique extends Runner {
         for (int id = 0; id < mutants.size(); id++) {
             Schema mutant = mutants.get(id);
 
-            logger.log(Level.INFO, "Mutant {0}", id);
+            LOGGER.log(Level.INFO, "Mutant {0}", id);
 
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";

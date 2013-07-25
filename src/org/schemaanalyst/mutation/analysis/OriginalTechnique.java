@@ -7,6 +7,7 @@ import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 import java.io.File;
 import java.util.List;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -36,6 +37,8 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 @RequiredParameters("casestudy trial")
 public class OriginalTechnique extends Runner {
 
+    private final static Logger LOGGER = Logger.getLogger(OriginalTechnique.class.getName());    
+    
     /**
      * The name of the schema to use.
      */
@@ -104,7 +107,7 @@ public class OriginalTechnique extends Runner {
         for (int id = 0; id < mutants.size(); id++) {
             Schema mutant = mutants.get(id);
 
-            logger.log(Level.INFO, "Mutant {0}", id);
+            LOGGER.log(Level.INFO, "Mutant {0}", id);
 
             // Drop existing tables
             List<String> dropStmts = sqlWriter.writeDropTableStatements(mutant, true);

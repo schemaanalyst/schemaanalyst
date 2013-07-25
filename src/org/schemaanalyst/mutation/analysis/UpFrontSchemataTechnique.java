@@ -14,6 +14,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -44,6 +45,8 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 @RequiredParameters("casestudy trial")
 public class UpFrontSchemataTechnique extends Runner {
 
+    private final static Logger LOGGER = Logger.getLogger(UpFrontSchemataTechnique.class.getName());   
+    
     /**
      * The name of the schema to use.
      */
@@ -222,7 +225,7 @@ public class UpFrontSchemataTechnique extends Runner {
         @Override
         public Boolean call() throws Exception {
             boolean killed = false;
-            logger.log(Level.INFO, "Mutant {0}", id);
+            LOGGER.log(Level.INFO, "Mutant {0}", id);
 
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";

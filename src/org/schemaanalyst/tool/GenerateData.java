@@ -49,7 +49,7 @@ public class GenerateData extends Runner {
             Parser parser = new Parser(dbmsObject);
 
             // instantiate a mapper
-            SchemaMapper mapper = new SchemaMapper(logger);
+            SchemaMapper mapper = new SchemaMapper();
 
             // get the file 
             File sqlFile = new File(locationsConfiguration.getSchemaSrcDir() + File.separator + schema + ".sql");

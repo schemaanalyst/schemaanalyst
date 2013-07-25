@@ -17,13 +17,13 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
 public class ConstraintMapper {
-
-    protected Logger logger;
+    
+    private final static Logger LOGGER = Logger.getLogger(ConstraintMapper.class.getName());
+    
     protected ExpressionMapper expressionMapper;
 
-    public ConstraintMapper(Logger logger, ExpressionMapper expressionMapper) {
-        this.logger = logger;
-        this.expressionMapper = expressionMapper;
+    public ConstraintMapper(ExpressionMapper expressionMapper) {
+        this.expressionMapper = expressionMapper;        
     }
 
     public void analyseConstraintList(Table currentTable, Column currentColumn, TConstraintList node) {
@@ -71,13 +71,13 @@ public class ConstraintMapper {
                         node.getColumnList());
                 break;
             case fake_auto_increment:
-                logger.warning("Ignoring AUTO_INCREMENT -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.warning("Ignoring AUTO_INCREMENT -- \"" + node + "\" " + node.getLineNo());
                 break;
             case default_value:
-                logger.warning("Ignoring DEFAULT -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.warning("Ignoring DEFAULT -- \"" + node + "\" " + node.getLineNo());
                 break;
             case key:
-                logger.warning("Ignoring KEY -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.warning("Ignoring KEY -- \"" + node + "\" " + node.getLineNo());
                 break;
             default:
                 throw new UnsupportedSQLException(node);
