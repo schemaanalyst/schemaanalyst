@@ -82,14 +82,14 @@ public class JustInTimeSchemata extends Runner {
     public void task() {
         // Start results file
         CSVResult result = new CSVResult();
-        result.addValue("dbms", databaseConfiguration.getDbDbms());
+        result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);
 
         // Instantiate the DBMS and related objects
         DBMS dbms;
         try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbDbms());
+            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new RuntimeException(ex);
         }

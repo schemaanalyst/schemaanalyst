@@ -87,7 +87,7 @@ public class GenerateResults extends Runner {
         // Instantiate the DBMS and related objects
         DBMS dbms;
         try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbDbms());
+            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new RuntimeException(ex);
         }

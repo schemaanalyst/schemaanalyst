@@ -13,26 +13,53 @@ public class DatabaseConfiguration {
 
     private final static String PROPERTIES_LOCATION = "config/database.properties";
     /**
-     * The host address of the DBMS that hosts the database.
+     * The DBMS to use.
      */
-    private String db_host;
+    private String dbms;
     /**
-     * The port of the DBMS that hosts the database.
+     * The Postgres port.
      */
-    private String db_port;
+    private String postgres_port;
     /**
-     * The name of the DBMS hosting the database. Supported values are
-     * 'Postgres', 'SQLite' and 'Hsqldb', and are case sensitive.
+     * The Postgres username.
      */
-    private String db_dbms;
+    private String postgres_username;
     /**
-     * The username to connect to the DBMS hosting the database.
+     * The Postgres password.
      */
-    private String db_username;
+    private String postgres_password;
     /**
-     * The password to connect to the DBMS hosting the database.
+     * The Postgres host.
      */
-    private String db_password;
+    private String postgres_host;
+    /**
+     * The Postgres driver class name.
+     */
+    private String postgres_driver;
+    /**
+     * The SQLite database path.
+     */
+    private String sqlite_path;
+    /**
+     * The SQLite driver class name.
+     */
+    private String sqlite_driver;
+    /**
+     * The HSQLDB database path.
+     */
+    private String hsqldb_path;
+    /**
+     * The HSQLDB driver class name.
+     */
+    private String hsqldb_driver;
+    /**
+     * The Derby database path.
+     */
+    private String derby_path;
+    /**
+     * The Derby driver class name.
+     */
+    private String derby_driver;
 
     /**
      * Construct using the default Properties file location.
@@ -43,6 +70,7 @@ public class DatabaseConfiguration {
 
     /**
      * Construct using the provided Properties file location.
+     *
      * @param path The path to Properties file.
      */
     public DatabaseConfiguration(String path) {
@@ -50,43 +78,98 @@ public class DatabaseConfiguration {
     }
 
     /**
-     * The host address of the DBMS that hosts the database.
-     * @return the db_host
+     * The DBMS to use.
+     * @return the dbms
      */
-    public String getDbHost() {
-        return db_host;
+    public String getDbms() {
+        return dbms;
     }
 
     /**
-     * The port of the DBMS that hosts the database.
-     * @return the db_port
+     * The Postgres port.
+     * @return the postgres_port
      */
-    public String getDbPort() {
-        return db_port;
+    public String getPostgresPort() {
+        return postgres_port;
     }
 
     /**
-     * The name of the DBMS hosting the database. Supported values are
-     * 'Postgres', 'SQLite' and 'Hsqldb', and are case sensitive.
-     * @return the db_dbms
+     * The Postgres username.
+     * @return the postgres_username
      */
-    public String getDbDbms() {
-        return db_dbms;
+    public String getPostgresUsername() {
+        return postgres_username;
     }
 
     /**
-     * The username to connect to the DBMS hosting the database.
-     * @return the db_username
+     * The Postgres password.
+     * @return the postgres_password
      */
-    public String getDbUsername() {
-        return db_username;
+    public String getPostgresPassword() {
+        return postgres_password;
     }
 
     /**
-     * The password to connect to the DBMS hosting the database.
-     * @return the db_password
+     * The Postgres host.
+     * @return the postgres_host
      */
-    public String getDbPassword() {
-        return db_password;
+    public String getPostgresHost() {
+        return postgres_host;
+    }
+
+    /**
+     * The Postgres driver class name.
+     * @return the postgres_driver
+     */
+    public String getPostgresDriver() {
+        return postgres_driver;
+    }
+
+    /**
+     * The SQLite database path.
+     * @return the sqlite_path
+     */
+    public String getSqlitePath() {
+        return sqlite_path;
+    }
+
+    /**
+     * The SQLite driver class name.
+     * @return the sqlite_driver
+     */
+    public String getSqliteDriver() {
+        return sqlite_driver;
+    }
+
+    /**
+     * The HSQLDB database path.
+     * @return the hsqldb_path
+     */
+    public String getHsqldbPath() {
+        return hsqldb_path;
+    }
+
+    /**
+     * The HSQLDB driver class name.
+     * @return the hsqldb_driver
+     */
+    public String getHsqldbDriver() {
+        return hsqldb_driver;
+    }
+
+    /**
+     * The Derby database path.
+     * @return the derby_path
+     */
+    public String getDerbyPath() {
+        return derby_path;
+    }
+
+    /**
+     * The Derby driver class name.
+     * @return the derby_driver
+     */
+    public String getDerbyDriver() {
+        return derby_driver;
     }
 }
