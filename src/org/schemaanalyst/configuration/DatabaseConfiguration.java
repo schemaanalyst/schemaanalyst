@@ -33,6 +33,10 @@ public class DatabaseConfiguration {
      */
     private String postgres_host;
     /**
+     * The Postgres database.
+     */
+    private String postgres_database;
+    /**
      * The Postgres driver class name.
      */
     private String postgres_driver;
@@ -115,6 +119,14 @@ public class DatabaseConfiguration {
      */
     public String getPostgresHost() {
         return postgres_host;
+    }
+    
+    /**
+     * The Postgres database.
+     * @return the postgres_database
+     */
+    public String getPostgresDatabase() {
+        return postgres_database;
     }
 
     /**
