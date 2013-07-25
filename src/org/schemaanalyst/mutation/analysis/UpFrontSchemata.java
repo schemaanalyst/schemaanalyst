@@ -5,7 +5,14 @@ package org.schemaanalyst.mutation.analysis;
 import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,19 +33,19 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * Runs the 'Full Schemata' style of mutation analysis. This requires that the
- * result generation tool has been run, as it bases the mutation analysis on the
- * results produced by it.
+ * Runs the 'Up-Front Schemata' style of mutation analysis. This requires that
+ * the result generation tool has been run, as it bases the mutation analysis on
+ * the results produced by it.
  *
  * @author Chris J. Wright
  */
-@Description("Runs the 'Full Schemata' style of mutation analysis. This requires"
+@Description("Runs the 'Up-Front Schemata' style of mutation analysis. This requires"
         + " that the result generation tool has been run, as it bases the "
         + "mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class FullSchemataTechnique extends Runner {
+public class UpFrontSchemata extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(FullSchemataTechnique.class.getName());    
+    private final static Logger LOGGER = Logger.getLogger(UpFrontSchemata.class.getName());   
     
     /**
      * The name of the schema to use.
@@ -65,6 +72,11 @@ public class FullSchemataTechnique extends Runner {
      */
     @Parameter(value="Whether to submit drop statements prior to running.", valueAsSwitch = "true")
     protected boolean dropfirst = false;
+    /**
+     * How many threads to use for parallel execution.
+     */
+    @Parameter("How many threads to use for parallel execution.")
+    protected int threads = 8;
 
     @Override
     public void task() {
@@ -138,30 +150,24 @@ public class FullSchemataTechnique extends Runner {
         databaseInteractor.executeUpdate(createStmt);
 
         // Begin mutation analysis
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
         int killed = 0;
+        Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            Schema mutant = mutants.get(id);
-
-            LOGGER.log(Level.INFO, "Mutant {0}", id);
-
-            // Schemata step: Generate insert prefix string
-            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
-
-            // Insert the test data
-            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
-            for (SQLInsertRecord insertRecord : insertStmts) {
-
-                // Schemata step: Rewrite insert for mutant ID
-                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
-
-                int returnCount = databaseInteractor.executeUpdate(insertStmt);
-                if (returnCount != insertRecord.getReturnCode()) {
-                    killed++;
-                    break; // Stop once killed
-                }
-            }
-
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, databaseInteractor, originalReport);
+            Future<Boolean> callResult = executor.submit(callable);
+            callResults.add(callResult);
         }
+        for (Future<Boolean> future : callResults) {
+            try {
+                if (future.get()) {
+                    killed++;
+                }
+            } catch (ExecutionException | InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        executor.shutdown();
 
         // Schemata step: Drop tables after iterating mutants
         databaseInteractor.executeUpdate(dropStmt);
@@ -201,6 +207,44 @@ public class FullSchemataTechnique extends Runner {
     }
 
     public static void main(String[] args) {
-        new FullSchemataTechnique().run(args);
+        new UpFrontSchemata().run(args);
+    }
+
+    private class MutationAnalysisCallable implements Callable<Boolean> {
+
+        int id;
+        DatabaseInteractor databaseInteractor;
+        SQLExecutionReport originalReport;
+
+        public MutationAnalysisCallable(int id, DatabaseInteractor databaseInteractor, SQLExecutionReport originalReport) {
+            this.id = id;
+            this.databaseInteractor = databaseInteractor;
+            this.originalReport = originalReport;
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            boolean killed = false;
+            LOGGER.log(Level.INFO, "Mutant {0}", id);
+
+            // Schemata step: Generate insert prefix string
+            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
+
+            // Insert the test data
+            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
+            for (SQLInsertRecord insertRecord : insertStmts) {
+
+                // Schemata step: Rewrite insert for mutant ID
+                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
+
+                int returnCount = databaseInteractor.executeUpdate(insertStmt);
+                if (returnCount != insertRecord.getReturnCode()) {
+                    killed = true;
+                    break; // Stop once killed
+                }
+            }
+
+            return killed;
+        }
     }
 }

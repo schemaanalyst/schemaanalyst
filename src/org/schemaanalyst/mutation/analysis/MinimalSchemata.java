@@ -37,7 +37,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
         + "requires that the result generation tool has been run, as it bases "
         + "the mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class MinimalSchemataTechnique extends Runner {
+public class MinimalSchemata extends Runner {
 
     /**
      * The name of the schema to use.
@@ -183,7 +183,7 @@ public class MinimalSchemataTechnique extends Runner {
     }
 
     public static void main(String[] args) {
-        new MinimalSchemataTechnique().run(args);
+        new MinimalSchemata().run(args);
     }
 
     /**
