@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.analyst;
+package org.schemaanalyst.deprecated.test.datageneration.analyst;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

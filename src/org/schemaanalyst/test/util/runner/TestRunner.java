@@ -20,20 +20,28 @@ import org.schemaanalyst.util.runner.RunnerException;
 
 public class TestRunner {
 
-    class TestableRunner extends Runner {
+    /*
+     * A runner with some "holes" poked into it so that we can
+     * observe its state for testing.
+     * 
+     */         
+    private class TestableRunner extends Runner {
         
         public TestableRunner() {
             super(false, false); 
             out = new PrintStream(new OutputStream() {
                 @Override
                 public void write(int b) throws IOException {
-                    // stop usage output
+                    // stop output being written to the
+                    // console for cleaner testing...
                 }
             });             
         }
         
-        // get all raw exceptions
-        public void Run(String... args) {
+        // we want all raw exceptions for testing, so just
+        // setup and run the task, don't catch the exceptions
+        // on our behalf
+        public void run(String... args) {
             doRun(args);
         }
         
@@ -41,7 +49,7 @@ public class TestRunner {
         public void task() {}
         @Override
         public void validateParameters() {}
-        
+                
         public List<String> getRequiredParameterNames() {
             return requiredParameterNames;
         }   
@@ -60,39 +68,70 @@ public class TestRunner {
         }
     }
     
-    class R1 extends TestableRunner {}
+    /*
+     * Various runners in different states of configuration for testing purposes
+     */    
+    private class R1 extends TestableRunner {}
         
     @RequiredParameters("   test1 test2  test3 ")
-    class R2 extends TestableRunner {
+    private class R2 extends TestableRunner {
         @Parameter String test1;
         @Parameter String test2;
         @Parameter String test3;
     }
     
-    class R3 extends R2 {}
+    private class R3 extends R2 {}
     
-    class R4 extends R2 {
+    private class R4 extends R2 {
         @Parameter String test4 = "default";        
     }    
 
-    class R4a extends R2 {
+    private class R4a extends R2 {
         @Parameter String test4;        
     }
     
-    class R4b extends TestableRunner {
+    private class R4b extends TestableRunner {
         @Parameter String test;        
     }     
     
-    class R5 extends TestableRunner {
+    private class R5 extends TestableRunner {
         @Parameter(value="test param", valueAsSwitch="true")
         boolean test = false;
     }
     
     @RequiredParameters("testing")
-    class R6 extends TestableRunner {
+    private class R6 extends TestableRunner {
         @Parameter String test;
-    }   
+    }
     
+    private class R7 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="org.schemaanalyst.test.util.runner.TestRunner.choices")   
+        String test;
+    }    
+
+    private class R8 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="org.schemaanalyst.test.util.runner.TestRunner.choicesWrongReturnType")   
+        String test;
+    }  
+    
+    private class R9 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="org.schemaanalyst.test.util.runner.TestRunner.noSuchMethod")   
+        String test;
+    }
+    
+    private class R10 extends TestableRunner {
+        @Parameter(value="test", 
+                   choicesMethod="NoSuchClass.noSuchMethod")   
+        String test;
+    }         
+    
+    /*
+     * methods for testing the returning of different choices
+     * 
+     */    
     public static List<String> choices() {
         List<String> choices = new ArrayList<>();
         choices.add("one");
@@ -101,7 +140,7 @@ public class TestRunner {
         return choices;
     }
     
-    static String choicesWrongReturnType() {
+    public static String choicesWrongReturnType() {
         return "hello";
     }
     
@@ -174,11 +213,23 @@ public class TestRunner {
                      "c", r.test3);           
     }
     
+    // an exception should be thrown if a parameter value is passed without
+    // a key but there are no required parameters
     @Test(expected=RunnerException.class)
     public void testNonExistantRequiredParameter() {
         String[] args1 = {"a"};
-        R6 r = new R6(); r.run(args1); 
+        R6 r = new R6(); 
+        r.run(args1); 
     }
+    
+    // an exception should be thrown if a parameter value is passed without
+    // a key but there are no required parameters (there are required parameters
+    // however, making this different from the previous test)
+    @Test(expected=ArgumentException.class)
+    public void testOptionalParameterNoDefaultNoRequiredParametersPresent() {
+        String[] args = {"hello"};
+        R4b r = new R4b(); r.run(args);              
+    }       
     
     @Test
     public void testOptionalParameter() {
@@ -228,31 +279,21 @@ public class TestRunner {
                    r.test4);    
     }    
     
-    @Test(expected=ArgumentException.class)
-    public void testOptionalParameterNoDefaultNoRequiredParametersPresent() {
-        String[] args = {"hello"};
-        R4b r = new R4b(); r.run(args);              
-
-        // check param is not set
-        assertFalse("R4b optional param should not have been passed",
-                    r.wasParameterPassed("test"));        
-        
-        assertNull("R4 optional param was not set and there is no default",
-                   r.test);    
-    }    
-    
+    // ArgumentException should be thrown if too few parameters passed at the command line 
     @Test(expected=ArgumentException.class)
     public void testTooFewRequiredParametersPassed() {
         String[] args1 = {"a", "b"};
         R4 r = new R4(); r.run(args1);        
     }    
     
+    // ArgumentException thrown if too many parameters passed at the command line
     @Test(expected=ArgumentException.class)
     public void testTooManyRequiredParametersPassed() {
         String[] args1 = {"a", "b", "c", "d"};
         R4 r = new R4(); r.run(args1);        
     }        
     
+    // ArgumentException thrown if an unknown optional parameter is passed at the command line
     @Test(expected=ArgumentException.class)
     public void testUnknownParameterPassed() {
         String[] args1 = {"a", "b", "c", "--test2000=hello"};
@@ -282,6 +323,7 @@ public class TestRunner {
                    r.test);        
     }
     
+    // ArgumentException thrown if a value is passed for a switch    
     @Test(expected=ArgumentException.class)
     public void testPassedValueForSwitch() {
         String[] args1 = {"--test=hello"};
@@ -301,31 +343,40 @@ public class TestRunner {
         
         assertEquals("R4 optional param 4 was passed but not set so should be null",
                      null, r.test4);        
-    }    
-    
-    class R7 extends TestableRunner {
-        @Parameter(value="test")   
-        String test;
-    }
-    
-    class R8 extends TestableRunner {
-        @Parameter(value="test", 
-                   choicesMethod="org.schemaanalyst.test.util.runner.TestRunner.choicesWrongReturnType")   
-        String test;
-    }    
-
-    class R9 extends TestableRunner {
-        @Parameter(value="test", 
-                   choicesMethod="WrongClass.wrongMethod")   
-        String test;
-    }  
+    }   
     
     @Test
     public void testChoicesCorrectChoice() {
         String[] args = {"--test=two"};
         R7 r = new R7(); r.run(args);
         
-        assertEquals("R7 passed allowable choice",
-                     "two", r.test);
+        assertEquals("R8 passed allowable choice",
+                     "two", r.test);     
     }
+    
+    // ArgumentException thrown if an illegal value is passed for a choice
+    @Test(expected=ArgumentException.class)
+    public void testChoicesIncorrectChoice() {
+        String[] args = {"--test=tenthousand"};
+        R7 r = new R7(); r.run(args);    
+    }
+    
+    // RunnerException is expected since R8 specifies a method with the wrong return type
+    @Test(expected=RunnerException.class)
+    public void testChoicesWrongChoicesMethodReturnType() {
+        String[] args = {"--test=two"};
+        R8 r = new R8(); r.run(args);    
+    }    
+    
+    @Test(expected=RunnerException.class)
+    public void testChoicesUnknownChoicesMethod() {
+        String[] args = {"--test=two"};
+        R9 r = new R9(); r.run(args);    
+    }
+
+    @Test(expected=RunnerException.class)
+    public void testChoicesUnknownClassForChoicesMethod() {
+        String[] args = {"--test=two"};
+        R10 r = new R10(); r.run(args);    
+    }    
 }

@@ -1,6 +1,6 @@
 package org.schemaanalyst.util.runner;
 
-public class RunnerException extends RuntimeException {
+public class RunnerException extends Error {
 
     private static final long serialVersionUID = 4336258771607525426L;
 

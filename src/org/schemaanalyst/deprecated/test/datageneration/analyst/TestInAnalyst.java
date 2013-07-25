@@ -1,8 +1,4 @@
-package org.schemaanalyst.test.datageneration.analyst;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+package org.schemaanalyst.deprecated.test.datageneration.analyst;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,15 +10,16 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.logic.RelationalPredicate;
+import org.schemaanalyst.datageneration.analyst.InAnalyst;
+import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
-public class TestRelationalPredicateAnalyst {
+import static org.junit.Assert.*;
+
+public class TestInAnalyst {
 
     Data data;
     Table table;
@@ -60,20 +57,20 @@ public class TestRelationalPredicateAnalyst {
         row2Cell.setValue(new NumericValue(20));
         row3Cell.setValue(new NumericValue(30));
 
-        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, "<", new NumericValue(20));
+        InCheckCondition in = new InCheckCondition(column, 30, 40, 50);
 
-        RelationalPredicateAnalyst rpa = new RelationalPredicateAnalyst(rp, table, true);
+        InAnalyst ia = new InAnalyst(in, table, true);
 
-        assertFalse("Only one row satisfies the predicate",
-                rpa.isSatisfied(null, data));
+        assertFalse("One cell equal to a member of the in values",
+                ia.isSatisfied(null, data));
 
-        List<Integer> nonSatisfyingRows = rpa.getFalsifyingEntries();
-        assertEquals("Should be 2 non-satisfying rows",
-                2, nonSatisfyingRows.size());
+        List<Cell> nonSatisfyingCells = ia.getNotInCells();
+        assertEquals("Should be 2 non-satisfying cells",
+                2, nonSatisfyingCells.size());
 
-        List<Integer> satisfyingRows = rpa.getSatisfyingEntries();
-        assertEquals("Should be 1 satisfying row",
-                1, satisfyingRows.size());
+        List<Cell> satisfyingCells = ia.getInCells();
+        assertEquals("Should be 1 satisfying cell",
+                1, satisfyingCells.size());
     }
 
     @Test
@@ -82,19 +79,19 @@ public class TestRelationalPredicateAnalyst {
         row2Cell.setValue(new NumericValue(20));
         row3Cell.setValue(new NumericValue(30));
 
-        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, ">", new NumericValue(5));
+        InCheckCondition in = new InCheckCondition(column, 30, 20, 10);
 
-        RelationalPredicateAnalyst rpa = new RelationalPredicateAnalyst(rp, table, true);
+        InAnalyst ia = new InAnalyst(in, table, true);
 
-        assertTrue("All rows satisfy the predicate",
-                rpa.isSatisfied(null, data));
+        assertTrue("All cells equal to a member of the in values",
+                ia.isSatisfied(null, data));
 
-        List<Integer> satisfyingEntries = rpa.getSatisfyingEntries();
-        assertEquals("Should be 3 satisfying entries",
-                3, satisfyingEntries.size());
+        List<Cell> satisfyingCells = ia.getInCells();
+        assertEquals("Should be 3 satisfying cell",
+                3, satisfyingCells.size());
 
-        List<Integer> nonSatisfyingEntries = rpa.getFalsifyingEntries();
-        assertEquals("Should be 0 non-satisfying entries",
-                0, nonSatisfyingEntries.size());
+        List<Cell> nonSatisfyingCells = ia.getNotInCells();
+        assertEquals("Should be 0 non-satisfying cells",
+                0, nonSatisfyingCells.size());
     }
 }

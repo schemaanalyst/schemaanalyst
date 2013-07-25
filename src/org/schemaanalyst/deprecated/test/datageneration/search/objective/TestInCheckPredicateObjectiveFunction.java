@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Data;
@@ -8,8 +8,8 @@ import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveVal
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.InCheckConditionObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
+import org.schemaanalyst.deprecated.datageneration.objective.constraint.checkcondition.InCheckConditionObjectiveFunction;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
