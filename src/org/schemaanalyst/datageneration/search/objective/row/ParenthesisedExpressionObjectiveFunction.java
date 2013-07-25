@@ -1,10 +1,10 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
-public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
+public class ParenthesisedExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
     @Override
     public ObjectiveValue evaluate(Row row) {

@@ -1,14 +1,14 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
+import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 
 public class AndExpressionObjectiveFunction extends ComposedExpressionObjectiveFunction {
 
-    public AndExpressionObjectiveFunction(OrExpression expression,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+    public AndExpressionObjectiveFunction(AndExpression expression,
+                                          boolean goalIsToSatisfy,
+                                          boolean allowNull) {
         super(expression, goalIsToSatisfy, allowNull);
     }
 

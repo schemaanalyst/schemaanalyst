@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
@@ -7,7 +7,7 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;

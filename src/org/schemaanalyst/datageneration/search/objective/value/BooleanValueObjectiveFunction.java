@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.relationalpredicate;
+package org.schemaanalyst.datageneration.search.objective.value;
 
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
@@ -7,7 +7,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 
-public class BooleanValueObjectiveFunction extends ObjectiveFunction<RelationalPredicate<BooleanValue>> {
+public class BooleanValueObjectiveFunction extends
+        ObjectiveFunction<RelationalPredicate<BooleanValue>> {
 
     @Override
     public ObjectiveValue evaluate(RelationalPredicate<BooleanValue> predicate) {
@@ -18,30 +19,32 @@ public class BooleanValueObjectiveFunction extends ObjectiveFunction<RelationalP
         ObjectiveValue objVal = new ObjectiveValue(lhs + " " + op + " " + rhs);
 
         switch (op) {
-            case EQUALS:
-                if (lhs.get() == rhs.get()) {
-                    objVal.setValueToBest();
-                } else {
-                    objVal.setValueToWorst();
-                }
-                break;
+        case EQUALS:
+            if (lhs.get() == rhs.get()) {
+                objVal.setValueToBest();
+            } else {
+                objVal.setValueToWorst();
+            }
+            break;
 
-            case NOT_EQUALS:
-                if (lhs.get() != rhs.get()) {
-                    objVal.setValueToBest();
-                } else {
-                    objVal.setValueToWorst();
-                }
-                break;
+        case NOT_EQUALS:
+            if (lhs.get() != rhs.get()) {
+                objVal.setValueToBest();
+            } else {
+                objVal.setValueToWorst();
+            }
+            break;
 
-            default:
-                throw new ObjectiveFunctionException("Attempt to use " + op + " with two boolean values");
+        default:
+            throw new ObjectiveFunctionException("Cannot use " + op
+                    + " with two boolean values");
         }
 
         return objVal;
     }
 
-    public static ObjectiveValue compute(BooleanValue lhs, RelationalOperator op, BooleanValue rhs) {
+    public static ObjectiveValue compute(BooleanValue lhs,
+            RelationalOperator op, BooleanValue rhs) {
         BooleanValueObjectiveFunction objFun = new BooleanValueObjectiveFunction();
         return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }

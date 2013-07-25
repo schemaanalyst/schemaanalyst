@@ -1,9 +1,9 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NullValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 
 public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {

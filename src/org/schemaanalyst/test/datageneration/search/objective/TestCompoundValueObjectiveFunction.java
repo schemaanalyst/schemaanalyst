@@ -9,7 +9,7 @@ import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveVal
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.CompoundValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.CompoundValueObjectiveFunction;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
@@ -19,7 +19,7 @@ import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.datageneration.search.objective.relationalpredicate.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction.K;
 
 public class TestCompoundValueObjectiveFunction {
 

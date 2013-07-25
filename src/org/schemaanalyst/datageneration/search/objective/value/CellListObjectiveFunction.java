@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.relationalpredicate;
+package org.schemaanalyst.datageneration.search.objective.value;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,7 +14,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 
-public class ListOfCellsObjectiveFunction extends ObjectiveFunction<RelationalPredicate<List<Cell>>> {
+public class CellListObjectiveFunction extends ObjectiveFunction<RelationalPredicate<List<Cell>>> {
 
     @Override
     public ObjectiveValue evaluate(RelationalPredicate<List<Cell>> predicate) {
@@ -62,7 +62,7 @@ public class ListOfCellsObjectiveFunction extends ObjectiveFunction<RelationalPr
     }
 
     public static ObjectiveValue compute(List<Cell> lhs, RelationalOperator op, List<Cell> rhs) {
-        ListOfCellsObjectiveFunction objFun = new ListOfCellsObjectiveFunction();
+        CellListObjectiveFunction objFun = new CellListObjectiveFunction();
         return objFun.evaluate(new RelationalPredicate<>(lhs, op, rhs));
     }
 }

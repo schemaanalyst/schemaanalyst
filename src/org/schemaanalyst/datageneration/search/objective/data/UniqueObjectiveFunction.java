@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,8 +11,8 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NullValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.ListOfCellsObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.CellListObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 
@@ -101,7 +101,7 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
             return rowObjVal;
 
         } else {
-            return ListOfCellsObjectiveFunction.compute(row, op, otherRow);
+            return CellListObjectiveFunction.compute(row, op, otherRow);
         }
     }
 }

@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.constraint.NullColumnObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
