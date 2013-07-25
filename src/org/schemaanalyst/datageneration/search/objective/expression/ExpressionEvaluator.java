@@ -18,7 +18,6 @@ public class ExpressionEvaluator {
     public Value evaluate(Row row) {
 
         class ExpressionDispatcher extends ExpressionAdapter {
-
             Row row;
             Value value;
 

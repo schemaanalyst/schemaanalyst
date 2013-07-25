@@ -20,8 +20,8 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     protected boolean goalIsToSatisfy;
 
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+                                              boolean goalIsToSatisfy,
+                                              boolean allowNull) {
         this.goalIsToSatisfy = goalIsToSatisfy;
 
         subjectExpression = new ExpressionEvaluator(expression.getSubject());

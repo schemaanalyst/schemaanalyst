@@ -16,8 +16,8 @@ public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
     protected boolean goalIsToSatisfy;
 
     public NullColumnObjectiveFunction(Column column,
-            String description,
-            boolean goalIsToSatisfy) {
+                                       String description,
+                                       boolean goalIsToSatisfy) {
         this.column = column;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
