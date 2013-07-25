@@ -460,6 +460,10 @@ public abstract class Runner {
                 throw new RunnerException(
                         "Could not invoke \"" + choicesMethod
                         + "\" to get choices for option \"" + name + "\"", e);
+            } catch (ClassCastException e) {
+                throw new RunnerException(
+                        "Incorrect return type for choices method \"" + choicesMethod
+                        + "\" for \"" + name + "\" (should be List<String>)", e);                
             }
         }
 
