@@ -15,9 +15,11 @@ public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     public NullExpressionObjectiveFunction(NullExpression expression, boolean goalIsToSatisfy) {
         this.expression = expression;
 
-        //boolean shouldBeNull = goalIsToSatisfy && !expression.isNotNull();
+        boolean shouldBeNull = 
+                (goalIsToSatisfy && !expression.isNotNull()) || 
+                (!goalIsToSatisfy && expression.isNotNull());
 
-        nullValueObjFun = new NullValueObjectiveFunction(!expression.isNotNull());
+        nullValueObjFun = new NullValueObjectiveFunction(shouldBeNull);
         subexpressionEvaluator = new ExpressionEvaluator(expression.getSubexpression());
     }
 

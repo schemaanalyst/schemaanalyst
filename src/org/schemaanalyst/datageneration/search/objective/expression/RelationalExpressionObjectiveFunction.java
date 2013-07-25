@@ -15,8 +15,8 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
     protected ValueObjectiveFunction valObjFun;
 
     public RelationalExpressionObjectiveFunction(RelationalExpression expression,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+                                                 boolean goalIsToSatisfy,
+                                                 boolean allowNull) {
         lhs = new ExpressionEvaluator(expression.getLHS());
         rhs = new ExpressionEvaluator(expression.getRHS());
 
