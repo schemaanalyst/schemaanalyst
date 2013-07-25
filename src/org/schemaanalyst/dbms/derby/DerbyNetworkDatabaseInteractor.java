@@ -1,16 +1,19 @@
 package org.schemaanalyst.dbms.derby;
 
 import java.sql.DriverManager;
-
-import org.schemaanalyst.deprecated.configuration.Configuration;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 
 public class DerbyNetworkDatabaseInteractor extends DerbyDatabaseInteractor {
 
-    /**
-     * Constructor.
-     */
-    public DerbyNetworkDatabaseInteractor() {
-        connection = null;
+    private static final Logger LOGGER = Logger.getLogger(DerbyNetworkDatabaseInteractor.class.getName());
+    private static final String URL_SUFFIX = ";create=true";
+
+    DerbyNetworkDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
+        super(databaseName, databaseConfiguration, locationConfiguration);
     }
 
     /**
@@ -18,48 +21,29 @@ public class DerbyNetworkDatabaseInteractor extends DerbyDatabaseInteractor {
      */
     @Override
     public void initializeDatabaseConnection() {
-        // the connection is initially null
-        connection = null;
-
         try {
-            // load the Derby driver using reflection
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-
-            if (Configuration.debug) {
-                System.out.println();
-                System.out.println("JDBC Driver Registered.");
-            }
-
+            Class.forName(databaseConfiguration.getDerbyDriver());
+            LOGGER.log(Level.INFO, "Loading HSQLDB driver: {0}", databaseConfiguration.getDerbyDriver());
 
             // create a database url, this time making a connection
             // to the network interface for Derby
-            String database = "jdbc:derby://" + Configuration.host
-                    + ":" + Configuration.port + "/" + Configuration.database
-                    + ";create=true";
-
-            if (Configuration.debug) {
-                System.out.println("JDBC Resource.");
-                System.out.println(database);
-            }
+            String databaseUrl = "jdbc:derby://" + databaseConfiguration.getDerbyHost()
+                    + ":" + databaseConfiguration.getDerbyPort()
+                    + "/" + databaseName + URL_SUFFIX;
+            LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
             // create the connection to the database; do not use
             // a user name or a password so that Derby will always
             // create the schema called "APP" which can be accessed
             // even if a CREATE SCHEMA statement has not been issued
-            connection = DriverManager.getConnection(database);
+            connection = DriverManager.getConnection(databaseUrl);
 
             // tell Derby to always persist the data right away
             connection.setAutoCommit(true);
 
-            if (Configuration.debug) {
-                if (connection != null) {
-                    System.out.println("JDBC Connection Okay.");
-                } else {
-                    System.out.println("Connection is Null.");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            initialized = true;
+        } catch (ClassNotFoundException | SQLException ex) {
+            throw new RuntimeException(ex);
         }
 
     }

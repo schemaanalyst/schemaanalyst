@@ -101,7 +101,10 @@ public class DBMonster {
         SQLWriter sqlWriter = database.getSQLWriter();
 
         // initialize the connection to the real relational database
-        DatabaseInteractor databaseInteraction = database.getDatabaseInteractor();
+        //TODO: Fix DBMonster to use Runner, so this will not fail
+        if (true) // Hack to avoid the simple 'unreachable' checks in Javac
+            throw new RuntimeException("SchemaAnalyst class cannot construct DatabaseInteractor since refactor");
+        DatabaseInteractor databaseInteraction = database.getDatabaseInteractor(null, null, null);
 
         // create the schema using reflection; this is based on the
         // name of the database provided in the configuration

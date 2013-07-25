@@ -94,7 +94,7 @@ public class UpFrontSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         SQLWriter sqlWriter = dbms.getSQLWriter();
-        DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor();
+        DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         // Get the required schema class
         Schema schema;

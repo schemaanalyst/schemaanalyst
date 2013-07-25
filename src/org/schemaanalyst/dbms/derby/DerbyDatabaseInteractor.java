@@ -1,35 +1,33 @@
 package org.schemaanalyst.dbms.derby;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.DriverManager;
-import java.sql.Connection;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.deprecated.configuration.Configuration;
 
 public class DerbyDatabaseInteractor extends DatabaseInteractor {
 
+    private static final Logger LOGGER = Logger.getLogger(DerbyDatabaseInteractor.class.getName());
     /**
-     * The shared connection to the database
-     */
-    protected Connection connection;
-    /**
-     * The Derby error code for DROP TABLES
+     * The Derby error code for DROP TABLES.
      */
     private static final String DERBY_ERROR_CODE = "42Y55";
     /**
-     * This variable indicates whether or not the database connection has
-     * already been initialized
+     * The name for the database.
      */
-    private boolean initialize;
+    protected String databaseName;
 
-    /**
-     * Constructor.
-     */
-    public DerbyDatabaseInteractor() {
-        connection = null;
-        initialize = false;
+    DerbyDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
+        super(databaseConfiguration, locationConfiguration);
+        this.databaseName = databaseName;
     }
 
     /**
@@ -37,61 +35,37 @@ public class DerbyDatabaseInteractor extends DatabaseInteractor {
      */
     @Override
     public void initializeDatabaseConnection() {
-        // the connection is initially null
-        connection = null;
-
         try {
-            // load the Derby driver using reflection
-            //Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Class.forName(databaseConfiguration.getDerbyDriver());
+            LOGGER.log(Level.INFO, "Loading HSQLDB driver: {0}", databaseConfiguration.getDerbyDriver());
 
-            // load the Derby driver using reflection 
-            // spy using the P6spy interception driver
-            if (Configuration.spy) {
-                Class.forName("com.p6spy.engine.spy.P6SpyDriver");
-            } // do not spy using the P6spy interception drier
-            else {
-                Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            File derbyDirectory = new File(locationConfiguration.getDatabaseDir()
+                    + File.separator + databaseConfiguration.getDerbyPath()
+                    + File.separator + databaseName);
+            if (derbyDirectory.exists()) {
+                LOGGER.log(Level.WARNING, "Database folder already exists: {0}", derbyDirectory.getPath());
             }
-
-            if (Configuration.debug) {
-                System.out.println();
-                System.out.println("JDBC Driver Registered.");
-            }
+            Files.createDirectories(derbyDirectory.toPath());
 
             // create a database url; note that in this case for
             // Derby, you are connecting to a file on the file
             // system, thus the use of Configuration.project.  
-            String database = "jdbc:derby:" + Configuration.project
-                    + "Databases/" + Configuration.type + "/"
-                    + Configuration.database + ";";
-
-            if (Configuration.debug) {
-                System.out.println("JDBC Resource.");
-                System.out.println(database);
-            }
+            String databaseUrl = "jdbc:derby:" + derbyDirectory + ";";
+            LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
             // create the connection to the database; do not use
             // a user name or a password so that Derby will always
             // create the schema called "APP" which can be accessed
             // even if a CREATE SCHEMA statement has not been issued
-            connection = DriverManager.getConnection(database);
+            connection = DriverManager.getConnection(databaseUrl);
 
             // tell Derby to always persist the data right away
             connection.setAutoCommit(true);
 
-            if (Configuration.debug) {
-                if (connection != null) {
-                    System.out.println("JDBC Connection Okay.");
-                } else {
-                    System.out.println("Connection is Null.");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            initialized = true;
+        } catch (ClassNotFoundException | SQLException | IOException ex) {
+            throw new RuntimeException(ex);
         }
-
-        // show that we have already initialized the database
-        initialize = true;
     }
 
     /**
@@ -102,63 +76,34 @@ public class DerbyDatabaseInteractor extends DatabaseInteractor {
      */
     @Override
     public Integer executeUpdate(String command) {
-        // create a List for storing the return counts that
-        // tell us how many records were modified in the database
-        Integer returnCounts = new Integer(START);
-
+        Integer returnCount = START;
         try {
-            // initialize the connection to Derby only if it 
-            // has not already been initialized 
-            if (!initialize) {
+            if (!initialized) {
                 initializeDatabaseConnection();
             }
-
-            if (Configuration.debug) {
-                System.out.println();
-                System.out.println("command = " + command);
-            }
-
-            // create the statement that we use for the commands
+            LOGGER.log(Level.FINE, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
-
-            // run the command and capture the number of modified
-            // values or any other type of status return code
-            int count = statement.executeUpdate(command);
-            returnCounts = new Integer(count);
-
-        } // display information about the error message.  Note that for Derby we
-        // are currently checking an error code to determine if the problem 
-        // was related to the fact that this database does not support the IF
-        // EXISTS part of a DROP TABLE.  So, we have to blindly execute the 
-        // DROP TABLE, let it fail, and then catch the error code to know that 
-        // a real error did not, in fact, take place.  This will only happen
-        // in a situation when there is no table already in exists (first run).
-        catch (SQLException e) {
-
-            if (!e.getSQLState().equals(DERBY_ERROR_CODE)) {
-                System.out.println("Error Code: " + e.getErrorCode());
-                System.out.println("Message: " + e.getMessage());
-                if (!e.getMessage().equals("not an error")) {
-                    e.printStackTrace();
-                }
+            returnCount = statement.executeUpdate(command);
+            LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
+        } catch (SQLException e) {
+            // if this command is a create table statement and it through 
+            // an exception, then set the return code to -1 to indicate 
+            // that there was a special failure in creating the schema
+            if (e.getSQLState().equals(DERBY_ERROR_CODE)) {
+                LOGGER.log(Level.INFO, "Derby DROP TABLE failed (was expected): {0}", command);
+            } else if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
+                LOGGER.log(Level.FINE, "Create table failed: {0}", command);
+                returnCount = CREATE_TABLE_ERROR;
             } else {
-                if (Configuration.debug) {
-                    System.out.println("Derby DROP TABLE failed as expected. Okay.");
-                }
-            }
-        } finally {
-            try {
-                //connection.close();
-            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Statement failed: " + command, e);
             }
         }
-
-        return returnCounts;
+        return returnCount;
     }
 
     /**
-     * Execute a command against a Postgres database. Most useful for commands
-     * that return a code, such as whether or not a command worked or how many
+     * Execute a command against a Derby database. Most useful for commands that
+     * return a code, such as whether or not a command worked or how many
      * records were changed inside of a table. So, this is designed for a
      * statement that we do not know -- for U,I,D we still return the count and
      * for S we ignore result sets.
@@ -167,69 +112,35 @@ public class DerbyDatabaseInteractor extends DatabaseInteractor {
      */
     @Override
     public Integer execute(String command) {
-        // create a List for storing the return counts that
-        // tell us how many records were modified in the database
-        Integer returnCounts = new Integer(START);
-
+        Integer returnCount = START;
         try {
-            // initialize the connection to Derby only if it 
-            // has not already been initialized 
-            if (!initialize) {
+            if (!initialized) {
                 initializeDatabaseConnection();
             }
-
-            if (Configuration.debug) {
-                System.out.println();
-                System.out.println("command = " + command);
-            }
-
-            // create the statement that we use for the commands
+            LOGGER.log(Level.FINE, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
 
             // run the command and capture the number of modified
             // values or any other type of status return code
             boolean result = statement.execute(command);
-            int count = START;
 
             // this is a U,I,D that has an update count
             if (result == UPDATE_COUNT) {
-                count = statement.getUpdateCount();
-            } // this is a sql select that returned a result set; ignore
-            else if (result == RESULT_SET) {
+                returnCount = statement.getUpdateCount();
             }
-
-            returnCounts = new Integer(count);
-
-            // run the command and capture the number of modified
-            // values or any other type of status return code
-            //int count = statement.executeUpdate(command);
-            //returnCounts = new Integer(count);
-        } // display information about the error message.  Note that for Derby we
-        // are currently checking an error code to determine if the problem 
-        // was related to the fact that this database does not support the IF
-        // EXISTS part of a DROP TABLE.  So, we have to blindly execute the 
-        // DROP TABLE, let it fail, and then catch the error code to know that 
-        // a real error did not, in fact, take place.  This will only happen
-        // in a situation when there is no table already in exists (first run).
-        catch (SQLException e) {
-
-            if (!e.getSQLState().equals(DERBY_ERROR_CODE)) {
-                System.out.println("Error Code: " + e.getErrorCode());
-                System.out.println("Message: " + e.getMessage());
-                if (!e.getMessage().equals("not an error")) {
-                    e.printStackTrace();
-                }
+        } catch (SQLException e) {
+            // if this command is a create table statement and it through 
+            // an exception, then set the return code to -1 to indicate 
+            // that there was a special failure in creating the schema
+            if (e.getSQLState().equals(DERBY_ERROR_CODE)) {
+                LOGGER.log(Level.INFO, "Derby DROP TABLE failed (was expected): {0}", command);
+            } else if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
+                LOGGER.log(Level.FINE, "Create table failed: {0}", command);
+                returnCount = CREATE_TABLE_ERROR;
             } else {
-                if (Configuration.debug) {
-                    System.out.println("Derby DROP TABLE failed as expected. Okay.");
-                }
-            }
-        } finally {
-            try {
-                //connection.close();
-            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, "Statement failed: " + command, e);
             }
         }
-        return returnCounts;
+        return returnCount;
     }
 }

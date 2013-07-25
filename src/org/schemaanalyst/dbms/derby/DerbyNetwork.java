@@ -1,5 +1,7 @@
 package org.schemaanalyst.dbms.derby;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
@@ -8,7 +10,7 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 public class DerbyNetwork extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
-    private DerbyDatabaseInteractor databaseInteraction = new DerbyNetworkDatabaseInteractor();
+    private DerbyDatabaseInteractor databaseInteractor;
 
     @Override
     public SQLWriter getSQLWriter() {
@@ -16,8 +18,11 @@ public class DerbyNetwork extends DBMS {
     }
 
     @Override
-    public DatabaseInteractor getDatabaseInteractor() {
-        return databaseInteraction;
+    public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
+        if (databaseInteractor == null) {
+            databaseInteractor = new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+        }
+        return databaseInteractor;
     }
 
     @Override

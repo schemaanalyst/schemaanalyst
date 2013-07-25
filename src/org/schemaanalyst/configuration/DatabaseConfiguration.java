@@ -49,6 +49,14 @@ public class DatabaseConfiguration {
      */
     private String sqlite_driver;
     /**
+     * The HSQLDB username.
+     */
+    private String hsqldb_username;
+    /**
+     * The HSQLDB password.
+     */
+    private String hsqldb_password;
+    /**
      * The HSQLDB database path.
      */
     private String hsqldb_path;
@@ -64,6 +72,14 @@ public class DatabaseConfiguration {
      * The Derby driver class name.
      */
     private String derby_driver;
+    /**
+     * The Derby host.
+     */
+    private String derby_host;
+    /**
+     * The Derby port.
+     */
+    private String derby_port;
 
     /**
      * Construct using the default Properties file location.
@@ -183,5 +199,37 @@ public class DatabaseConfiguration {
      */
     public String getDerbyDriver() {
         return derby_driver;
+    }
+
+    /**
+     * The HSQLDB username.
+     * @return the hsqldb_username
+     */
+    public String getHsqldbUsername() {
+        return hsqldb_username;
+    }
+
+    /**
+     * The HSQLDB password.
+     * @return the hsqldb_password
+     */
+    public String getHsqldbPassword() {
+        return hsqldb_password;
+    }
+
+    /**
+     * The Derby host.
+     * @return the derby_host
+     */
+    public String getDerbyHost() {
+        return derby_host;
+    }
+
+    /**
+     * The Derby port.
+     * @return the derby_port
+     */
+    public String getDerbyPort() {
+        return derby_port;
     }
 }

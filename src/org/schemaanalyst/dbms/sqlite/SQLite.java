@@ -1,20 +1,21 @@
 package org.schemaanalyst.dbms.sqlite;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
 
 public class SQLite extends DBMS {
 
-    private SQLiteDatabaseInteractor databaseInteraction = new SQLiteDatabaseInteractor();
-
-    public SQLite() {
-        sqlWriter = new SQLiteSQLWriter();
-    }
+    private SQLiteDatabaseInteractor databaseInteractor;
 
     @Override
-    public DatabaseInteractor getDatabaseInteractor() {
-        return databaseInteraction;
+    public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
+        if (databaseInteractor == null) {
+            databaseInteractor = new SQLiteDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+        }
+        return databaseInteractor;
     }
 
     @Override
