@@ -2,7 +2,7 @@ package org.schemaanalyst.datageneration.search.objective.constraint;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.constraint.checkcondition.CheckConditionObjectiveFunctionFactory;
+import org.schemaanalyst.deprecated.datageneration.objective.constraint.checkcondition.CheckConditionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;

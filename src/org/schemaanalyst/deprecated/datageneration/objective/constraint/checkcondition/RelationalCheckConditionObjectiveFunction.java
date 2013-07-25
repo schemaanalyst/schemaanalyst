@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint.checkcondition;
+package org.schemaanalyst.deprecated.datageneration.objective.constraint.checkcondition;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.OperandToValue;

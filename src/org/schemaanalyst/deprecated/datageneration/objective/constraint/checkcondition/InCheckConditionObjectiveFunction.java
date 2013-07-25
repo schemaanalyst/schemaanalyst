@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint.checkcondition;
+package org.schemaanalyst.deprecated.datageneration.objective.constraint.checkcondition;
 
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
