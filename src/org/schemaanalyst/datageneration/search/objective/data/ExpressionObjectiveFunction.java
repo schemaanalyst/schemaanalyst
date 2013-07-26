@@ -40,7 +40,7 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
                 goalIsToSatisfy,
                 allowNull);
         ObjectiveFunction<Row> objFun = factory.create();
-
+        
         List<Row> rows = data.getRows(table);
         for (Row row : rows) {
             objVal.add(objFun.evaluate(row));
