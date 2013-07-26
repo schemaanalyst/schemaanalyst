@@ -3,3 +3,4 @@ dist/*.*
 .classpath
 .project
 .settings
+config/*.local

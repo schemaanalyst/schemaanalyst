@@ -2,14 +2,12 @@
  */
 package org.schemaanalyst.configuration;
 
-import org.schemaanalyst.util.PropertiesParser;
-
 /**
  * Contains the parameters for connecting to a database.
  *
  * @author Chris J. Wright
  */
-public class DatabaseConfiguration {
+public class DatabaseConfiguration extends Configuration {
 
     private final static String PROPERTIES_LOCATION = "config/database.properties";
     /**
@@ -85,7 +83,7 @@ public class DatabaseConfiguration {
      * Construct using the default Properties file location.
      */
     public DatabaseConfiguration() {
-        PropertiesParser.parse(PROPERTIES_LOCATION, this);
+        load(PROPERTIES_LOCATION, this);
     }
 
     /**
@@ -94,11 +92,12 @@ public class DatabaseConfiguration {
      * @param path The path to Properties file.
      */
     public DatabaseConfiguration(String path) {
-        PropertiesParser.parse(path, this);
+        load(path, this);
     }
 
     /**
      * The DBMS to use.
+     *
      * @return the dbms
      */
     public String getDbms() {
@@ -107,6 +106,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Postgres port.
+     *
      * @return the postgres_port
      */
     public String getPostgresPort() {
@@ -115,6 +115,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Postgres username.
+     *
      * @return the postgres_username
      */
     public String getPostgresUsername() {
@@ -123,6 +124,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Postgres password.
+     *
      * @return the postgres_password
      */
     public String getPostgresPassword() {
@@ -131,14 +133,16 @@ public class DatabaseConfiguration {
 
     /**
      * The Postgres host.
+     *
      * @return the postgres_host
      */
     public String getPostgresHost() {
         return postgres_host;
     }
-    
+
     /**
      * The Postgres database.
+     *
      * @return the postgres_database
      */
     public String getPostgresDatabase() {
@@ -147,6 +151,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Postgres driver class name.
+     *
      * @return the postgres_driver
      */
     public String getPostgresDriver() {
@@ -155,6 +160,7 @@ public class DatabaseConfiguration {
 
     /**
      * The SQLite database path.
+     *
      * @return the sqlite_path
      */
     public String getSqlitePath() {
@@ -163,6 +169,7 @@ public class DatabaseConfiguration {
 
     /**
      * The SQLite driver class name.
+     *
      * @return the sqlite_driver
      */
     public String getSqliteDriver() {
@@ -171,6 +178,7 @@ public class DatabaseConfiguration {
 
     /**
      * The HSQLDB database path.
+     *
      * @return the hsqldb_path
      */
     public String getHsqldbPath() {
@@ -179,6 +187,7 @@ public class DatabaseConfiguration {
 
     /**
      * The HSQLDB driver class name.
+     *
      * @return the hsqldb_driver
      */
     public String getHsqldbDriver() {
@@ -187,6 +196,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Derby database path.
+     *
      * @return the derby_path
      */
     public String getDerbyPath() {
@@ -195,6 +205,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Derby driver class name.
+     *
      * @return the derby_driver
      */
     public String getDerbyDriver() {
@@ -203,6 +214,7 @@ public class DatabaseConfiguration {
 
     /**
      * The HSQLDB username.
+     *
      * @return the hsqldb_username
      */
     public String getHsqldbUsername() {
@@ -211,6 +223,7 @@ public class DatabaseConfiguration {
 
     /**
      * The HSQLDB password.
+     *
      * @return the hsqldb_password
      */
     public String getHsqldbPassword() {
@@ -219,6 +232,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Derby host.
+     *
      * @return the derby_host
      */
     public String getDerbyHost() {
@@ -227,6 +241,7 @@ public class DatabaseConfiguration {
 
     /**
      * The Derby port.
+     *
      * @return the derby_port
      */
     public String getDerbyPort() {
