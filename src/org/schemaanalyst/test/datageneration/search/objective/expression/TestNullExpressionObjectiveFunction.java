@@ -22,7 +22,7 @@ public class TestNullExpressionObjectiveFunction {
     @Test
     public void expIsNull_isNotNullIsTrue_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(null, true, true);        
-        assertOptimal(objVal);
+        assertNonOptimal(objVal);
     }
     
     @Test

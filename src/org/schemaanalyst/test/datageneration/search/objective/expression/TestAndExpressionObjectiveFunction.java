@@ -3,7 +3,6 @@ package org.schemaanalyst.test.datageneration.search.objective.expression;
 import org.junit.Test;
 
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.AndExpressionObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
@@ -16,7 +15,7 @@ import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.*;
 public class TestAndExpressionObjectiveFunction {
     
     @Test
-    public void expTrue_satisfyTrue_allowNullFalse() {
+    public void expTrue_allowNullFalse() {
         
         RelationalExpression relExp 
             = new RelationalExpression(
@@ -26,16 +25,18 @@ public class TestAndExpressionObjectiveFunction {
         
         AndExpression andExp = new AndExpression(relExp, relExp);
         
-        AndExpressionObjectiveFunction objFun =
+        AndExpressionObjectiveFunction objFunTrue =
                 new AndExpressionObjectiveFunction(andExp, true, false);
         
-        ObjectiveValue objVal = objFun.evaluate(new MockRow());
+        AndExpressionObjectiveFunction objFunFalse =
+                new AndExpressionObjectiveFunction(andExp, false, false);
         
-        assertOptimal(objVal);
+        assertOptimal(objFunTrue.evaluate(new MockRow()));
+        assertNonOptimal(objFunFalse.evaluate(new MockRow()));
     }
     
     @Test
-    public void expFalse_satisfyTrue_allowNullFalse() {
+    public void expFalse_allowNullFalse() {
 
         RelationalExpression relExp1 
             = new RelationalExpression(
@@ -51,16 +52,18 @@ public class TestAndExpressionObjectiveFunction {
         
         AndExpression andExp = new AndExpression(relExp1, relExp2);
         
-        AndExpressionObjectiveFunction objFun =
+        AndExpressionObjectiveFunction objFunTrue =
                 new AndExpressionObjectiveFunction(andExp, true, false);
         
-        ObjectiveValue objVal = objFun.evaluate(new MockRow());
+        AndExpressionObjectiveFunction objFunFalse =
+                new AndExpressionObjectiveFunction(andExp, false, false);        
         
-        assertNonOptimal(objVal);
+        assertNonOptimal(objFunTrue.evaluate(new MockRow()));
+        assertOptimal(objFunFalse.evaluate(new MockRow()));        
     } 
     
     @Test
-    public void expMultiNulls_satisfyTrue_allowNullTrue() {
+    public void expMultiNulls_allowNullTrue() {
         
         RelationalExpression relExp 
             = new RelationalExpression(
@@ -70,16 +73,19 @@ public class TestAndExpressionObjectiveFunction {
         
         AndExpression andExp = new AndExpression(relExp, relExp);
         
-        AndExpressionObjectiveFunction objFun =
+        AndExpressionObjectiveFunction objFunTrue =
                 new AndExpressionObjectiveFunction(andExp, true, true);
+
+        AndExpressionObjectiveFunction objFunFalse =
+                new AndExpressionObjectiveFunction(andExp, false, true);
         
-        ObjectiveValue objVal = objFun.evaluate(new MockRow());
-        
-        assertOptimal(objVal);
+        // both true and false are optimal, since NULL is allowed ...
+        assertOptimal(objFunTrue.evaluate(new MockRow()));
+        assertOptimal(objFunFalse.evaluate(new MockRow()));        
     }
     
     @Test
-    public void expNull_satisfyTrue_allowNullTrue() {
+    public void expNull_allowNullTrue() {
 
         RelationalExpression relExp1 
             = new RelationalExpression(
@@ -95,11 +101,14 @@ public class TestAndExpressionObjectiveFunction {
         
         AndExpression andExp = new AndExpression(relExp1, relExp2);
         
-        AndExpressionObjectiveFunction objFun =
+        AndExpressionObjectiveFunction objFunTrue =
                 new AndExpressionObjectiveFunction(andExp, true, true);
         
-        ObjectiveValue objVal = objFun.evaluate(new MockRow());
+        AndExpressionObjectiveFunction objFunFalse =
+                new AndExpressionObjectiveFunction(andExp, false, true);
+
         
-        assertOptimal(objVal);
+        assertOptimal(objFunTrue.evaluate(new MockRow()));
+        assertOptimal(objFunFalse.evaluate(new MockRow()));
     }      
 }

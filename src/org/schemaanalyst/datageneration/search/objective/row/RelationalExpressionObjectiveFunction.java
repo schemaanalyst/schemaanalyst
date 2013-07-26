@@ -38,10 +38,12 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
         Value lhsValue = lhs.evaluate(row);
         Value rhsValue = rhs.evaluate(row);
         
-        ObjectiveValue relObjVal = valObjFun.evaluate(new RelationalPredicate<>(lhsValue, op, rhsValue));
+        ObjectiveValue relObjVal = 
+                valObjFun.evaluate(new RelationalPredicate<>(lhsValue, op, rhsValue));
         
         if (allowNull) {
-            MultiObjectiveValue multiObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
+            MultiObjectiveValue multiObjVal =
+                    new BestOfMultiObjectiveValue("Allowing for nulls");
 
             multiObjVal.add(relObjVal);
             multiObjVal.add(NullValueObjectiveFunction.compute(lhsValue, true));

@@ -8,17 +8,12 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 
 public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-    protected NullExpression expression;
     protected NullValueObjectiveFunction nullValueObjFun;
     protected ExpressionEvaluator subexpressionEvaluator;
 
     public NullExpressionObjectiveFunction(NullExpression expression, boolean goalIsToSatisfy) {
-        this.expression = expression;
 
-        boolean shouldBeNull = 
-                (goalIsToSatisfy && !expression.isNotNull()) || 
-                (!goalIsToSatisfy && expression.isNotNull());
-
+        boolean shouldBeNull = goalIsToSatisfy != expression.isNotNull();        
         nullValueObjFun = new NullValueObjectiveFunction(shouldBeNull);
         subexpressionEvaluator = new ExpressionEvaluator(expression.getSubexpression());
     }
