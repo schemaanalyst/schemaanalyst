@@ -1,4 +1,4 @@
-package org.schemaanalyst.deprecated.test.mutation;
+package org.schemaanalyst.test.mutation;
 
 import java.util.ArrayList;
 
