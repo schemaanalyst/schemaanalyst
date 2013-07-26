@@ -3,9 +3,9 @@ package org.schemaanalyst.sqlrepresentation.expression;
 public class BetweenExpression extends ExpressionTree {
 
     public static final int NUM_SUBEXPRESSIONS = 3,
-            SUBJECT = 0,
-            LHS = 1,
-            RHS = 2;
+                            SUBJECT = 0,
+                            LHS = 1,
+                            RHS = 2;
     protected Expression subject, lhs, rhs;
     protected boolean notBetween;
 

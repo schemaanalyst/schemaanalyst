@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.relationalpredicate;
+package org.schemaanalyst.datageneration.search.objective.value;
 
 import java.math.BigDecimal;
 

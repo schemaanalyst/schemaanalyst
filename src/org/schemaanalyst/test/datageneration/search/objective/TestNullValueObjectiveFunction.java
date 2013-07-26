@@ -6,7 +6,7 @@ import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.relationalpredicate.NullValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 
 public class TestNullValueObjectiveFunction {
 

@@ -1,15 +1,15 @@
 package org.schemaanalyst.test.datageneration.search.objective.expression;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.expression.NullExpressionObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.row.NullExpressionObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.test.testutil.mock.MockRow;
+
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.*;
 
 public class TestNullExpressionObjectiveFunction {
 
@@ -20,50 +20,50 @@ public class TestNullExpressionObjectiveFunction {
     }    
     
     @Test
-    public void test_ValueIsNull_ExpIsNotNull_GoalIsToSatify() {
+    public void expIsNull_isNotNullIsTrue_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(null, true, true);        
-        assertFalse(objVal.isOptimal());
+        assertNonOptimal(objVal);
     }
     
     @Test
-    public void test_ValueIsNull_ExpIsNull_GoalIsToSatify() {
+    public void expIsNull_isNotNullIsFalse_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(null, false, true);        
-        assertTrue(objVal.isOptimal());
+        assertOptimal(objVal);
     }    
 
     @Test
-    public void test_ValueIsNull_ExpIsNotNull_GoalIsToFalsify() {
+    public void expIsNull_isNotNullIsTrue_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(null, true, false);        
-        assertTrue(objVal.isOptimal());
+        assertOptimal(objVal);
     }
     
     @Test
-    public void test_ValueIsNull_ExpIsNull_GoalIsToFalsify() {
+    public void expIsNull_isNotNullIsFalse_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(null, false, false);        
-        assertFalse(objVal.isOptimal());
+        assertNonOptimal(objVal);
     }    
     
     @Test
-    public void test_ValueIsNotNull_ExpIsNotNull_GoalIsToSatify() {
+    public void expIsNotNull_isNotNullIsTrue_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), true, true);        
-        assertTrue(objVal.isOptimal());
+        assertOptimal(objVal);
     }
     
     @Test
-    public void test_ValueIsNotNull_ExpIsNull_GoalIsToSatify() {
+    public void expIsNotNull_isNotNullIsFalse_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), false, true);        
-        assertFalse(objVal.isOptimal());
+        assertNonOptimal(objVal);
     }    
 
     @Test
-    public void test_ValueIsNotNull_ExpIsNotNull_GoalIsToFalsify() {
+    public void expIsNotNull_isNotNullIsTrue_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), true, false);        
-        assertFalse(objVal.isOptimal());
+        assertNonOptimal(objVal);
     }
     
     @Test
-    public void test_ValueIsNotNull_ExpIsNull_GoalIsToFalsify() {
+    public void expIsNotNull_isNotNullIsFalse_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), false, false);        
-        assertTrue(objVal.isOptimal());
+        assertOptimal(objVal);
     }     
 }

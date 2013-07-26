@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.ArrayList;
 import java.util.List;

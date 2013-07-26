@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.constraint;
+package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.expression.RowExpressionObjectiveFunctionFactory;
+import org.schemaanalyst.datageneration.search.objective.row.ExpressionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
@@ -35,8 +35,8 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
     public ObjectiveValue evaluate(Data data) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-        RowExpressionObjectiveFunctionFactory factory =
-                new RowExpressionObjectiveFunctionFactory(expression,
+        ExpressionObjectiveFunctionFactory factory =
+                new ExpressionObjectiveFunctionFactory(expression,
                 goalIsToSatisfy,
                 allowNull);
         ObjectiveFunction<Row> objFun = factory.create();

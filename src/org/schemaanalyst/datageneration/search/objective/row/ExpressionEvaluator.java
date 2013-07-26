@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;

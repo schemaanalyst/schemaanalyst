@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.expression;
+package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
@@ -8,12 +8,12 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
-public class RowExpressionObjectiveFunctionFactory {
+public class ExpressionObjectiveFunctionFactory {
 
     protected Expression expression;
     protected boolean goalIsToSatisfy, allowNull;
 
-    public RowExpressionObjectiveFunctionFactory(Expression expression,
+    public ExpressionObjectiveFunctionFactory(Expression expression,
             boolean goalIsToSatisfy,
             boolean allowNull) {
         this.expression = expression;

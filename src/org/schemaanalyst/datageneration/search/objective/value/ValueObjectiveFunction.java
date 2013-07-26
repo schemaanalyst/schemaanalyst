@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.relationalpredicate;
+package org.schemaanalyst.datageneration.search.objective.value;
 
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.data.CompoundValue;
