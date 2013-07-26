@@ -28,22 +28,15 @@ CREATE TABLE country (
     headofstate varchar(100),
     capital integer,
     code2 varchar(2) NOT NULL,
-    CONSTRAINT country_continent_check CHECK ((((((((continent = 'Asia') OR (continent = 'Europe')) OR (continent = 'North America')) OR (continent = 'Africa')) OR (continent = 'Oceania')) OR (continent = 'Antarctica')) OR (continent = 'South America')))
+    CONSTRAINT country_continent_check CHECK ((((((((continent = 'Asia') OR (continent = 'Europe')) OR (continent = 'North America')) OR (continent = 'Africa')) OR (continent = 'Oceania')) OR (continent = 'Antarctica')) OR (continent = 'South America'))),
+	CONSTRAINT country_capital_fkey FOREIGN KEY (capital) REFERENCES city(id)
 );
 
 CREATE TABLE countrylanguage (
     countrycode character(3) NOT NULL,
     "language" varchar(100) NOT NULL,
     isofficial boolean NOT NULL,
-    percentage real NOT NULL
+    percentage real NOT NULL,
+	CONSTRAINT countrylanguage_pkey PRIMARY KEY (countrycode, "language"),
+	CONSTRAINT countrylanguage_countrycode_fkey FOREIGN KEY (countrycode) REFERENCES country(code)	
 );
-
-ALTER TABLE ONLY countrylanguage
-    ADD CONSTRAINT countrylanguage_pkey PRIMARY KEY (countrycode, "language");
-
-ALTER TABLE ONLY country
-    ADD CONSTRAINT country_capital_fkey FOREIGN KEY (capital) REFERENCES city(id);
-
-ALTER TABLE ONLY countrylanguage
-    ADD CONSTRAINT countrylanguage_countrycode_fkey FOREIGN KEY (countrycode) REFERENCES country(code);
-

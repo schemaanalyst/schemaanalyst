@@ -48,8 +48,8 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     @Override
     public ObjectiveValue evaluate(Row row) {
         MultiObjectiveValue objVal = evaluateToTrue
-                ? new SumOfMultiObjectiveValue()
-                : new BestOfMultiObjectiveValue();        
+                ? new BestOfMultiObjectiveValue()
+                : new SumOfMultiObjectiveValue();        
         
         Value lhsValue = lhsExpEvaluator.evaluate(row);
         List<Value> rhsValues = new ArrayList<>();
