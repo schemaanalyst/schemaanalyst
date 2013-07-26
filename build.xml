@@ -39,15 +39,11 @@
 		</javac>
 	</target>
 
-	<!-- JAR TASK - "ant jar" -->
-	<target name="jar" depends="compile">
-		<mkdir dir="${dist_dir}"/>
-		<jar destfile="${dist_dir}/${dist_name}.jar" basedir="${build_dir}"/>
-	</target>
-
-	<!-- SETUP TASK - "ant setup" -->
-	<target name="setup">
-		<mkdir dir="${databases_dir}"/>
+	<!-- BUNDLE TASK - "ant bundle" -->
+	<target name="bundle" depends="compile">
+		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, scripts/**, results/**, dist/**">
+			<exclude name="${dist_dir}/${dist_name}Bundle.zip"/>
+		</zip>
 	</target>
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
