@@ -8,18 +8,16 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 
 public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-    protected NullValueObjectiveFunction nullValueObjFun;
-    protected ExpressionEvaluator subexpressionEvaluator;
-
+    private ExpressionEvaluator subexpressionEvaluator;
+    private boolean shouldBeNull;
+    
     public NullExpressionObjectiveFunction(NullExpression expression, boolean goalIsToSatisfy) {
-
-        boolean shouldBeNull = goalIsToSatisfy != expression.isNotNull();        
-        nullValueObjFun = new NullValueObjectiveFunction(shouldBeNull);
+        shouldBeNull = goalIsToSatisfy != expression.isNotNull();            
         subexpressionEvaluator = new ExpressionEvaluator(expression.getSubexpression());
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-        return nullValueObjFun.evaluate(subexpressionEvaluator.evaluate(row));
+        return NullValueObjectiveFunction.compute(subexpressionEvaluator.evaluate(row), shouldBeNull);
     }
 }

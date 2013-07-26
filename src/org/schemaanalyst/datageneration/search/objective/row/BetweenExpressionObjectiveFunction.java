@@ -10,71 +10,119 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 
+/**
+ *  Evaluates a BetweenExpression by considering:  
+ *  - X BETWEEN Y AND Z as the raw predicate ((X >= Y) AND (X <= Z)) -- the so-called "True Form"
+ *  - X NOT BETWEEN Y AND Z as the raw predicate ((X < Y) OR (X > Z)) -- the so-called "False Form".
+ *  
+ *  where:
+ *  - X is the result of the BetweenExpression's subjectExpression
+ *  - Y is the result of the BetweenExpression's lhsExpression
+ *  - Z is the result of the BetweenExpression's rhsExpression
+ *  
+ *  In each case, the X/Y and X/Z comparisons are referred to as the LHS and RHS comparisons respectively.
+ *  
+ */
 public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-    protected ExpressionEvaluator subjectExpression, lhsExpression, rhsExpression;
-    protected ValueObjectiveFunction lhsObjFun, rhsObjFun;
-    protected RelationalOperator lhsOp, rhsOp;
-    protected boolean evaluateToTrue, allowNull;
-
+    // evaluators for different parts of the expression 
+    private ExpressionEvaluator subjectEvaluator, lhsEvaluator, rhsEvaluator;
+    
+    // the relational operators for the LHS and RHS comparisons (i.e. >= or < for lhsOp)
+    private RelationalOperator lhsOp, rhsOp;
+    
+    // "evaluateTrueForm" is true when the satisfaction goal is the raw predicate ((X >= Y) AND (X <= Z))
+    // else false for its counterpart ((X < Y) OR (X > Z))
+    private boolean evaluateTrueForm;
+    
+    // whether the involvement of NULL results in trivial satisfaction of the expression
+    private boolean allowNull;   
+    
+    // a string descriptor for this objective function
+    private String description;
+    
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
                                               boolean goalIsToSatisfy,
                                               boolean allowNull) {
-        this.evaluateToTrue = (goalIsToSatisfy != expression.isNotBetween());
+        // which form to evaluate?
+        this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
+        
+        // is NULL allowed to satisfy the expression
         this.allowNull = allowNull;
         
-        subjectExpression = new ExpressionEvaluator(expression.getSubject());
-        lhsExpression = new ExpressionEvaluator(expression.getLHS());
-        rhsExpression = new ExpressionEvaluator(expression.getRHS());
+        // get evaluators for each of the three sub-expressions involved 
+        subjectEvaluator = new ExpressionEvaluator(expression.getSubject());
+        lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
+        rhsEvaluator = new ExpressionEvaluator(expression.getRHS());
 
-        lhsOp = RelationalOperator.GREATER_OR_EQUALS;
-        rhsOp = RelationalOperator.LESS_OR_EQUALS;
-
-        if (!evaluateToTrue) {
-            lhsOp = lhsOp.inverse();
-            rhsOp = rhsOp.inverse();
+        // find out which operators of needed for the LHS and RHS comparisons
+        if (evaluateTrueForm) {
+            lhsOp = RelationalOperator.GREATER_OR_EQUALS;
+            rhsOp = RelationalOperator.LESS_OR_EQUALS;
+        } else {
+            lhsOp = RelationalOperator.LESS;
+            rhsOp = RelationalOperator.GREATER;
         }
-
-        lhsObjFun = new ValueObjectiveFunction();
-        rhsObjFun = new ValueObjectiveFunction();
+        
+        // make a descriptor string
+        description = expression.toString() 
+                + " goalIsToSatisfy: " + goalIsToSatisfy
+                + " allowNull: " + allowNull;
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-        MultiObjectiveValue objVal = evaluateToTrue
+
+        // "SumOf" for AND ("True Form"), "Best Of" for OR ("False Form").
+        MultiObjectiveValue objVal = evaluateTrueForm
                 ? new SumOfMultiObjectiveValue()
                 : new BestOfMultiObjectiveValue();
 
-        Value subjectValue = subjectExpression.evaluate(row);
-        Value lhsExpValue = lhsExpression.evaluate(row);
-        Value rhsExpValue = rhsExpression.evaluate(row);
+        // evaluate each subexpression to a value
+        Value subjectValue = subjectEvaluator.evaluate(row);
+        Value lhsValue = lhsEvaluator.evaluate(row);
+        Value rhsValue = rhsEvaluator.evaluate(row);
         
-        objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<>(subjectValue, lhsOp, lhsExpValue)));
-
-        objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<>(subjectValue, rhsOp, rhsExpValue)));        
+        // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
+        if (lhsValue.compareTo(rhsValue) > 0) {
+            Value temp = lhsValue;
+            lhsValue = rhsValue;
+            rhsValue = temp;
+        }
         
+        // add objective values for the two comparisons
+        objVal.add(ValueObjectiveFunction.compute(subjectValue, lhsOp, lhsValue));
+        objVal.add(ValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue));                
+        
+        // if NULL is allowed, there are extra considerations to make ...
         if (allowNull) {
+            // compute objective values for NULL for each expression value
             ObjectiveValue subjectNullObjVal = 
                     NullValueObjectiveFunction.compute(subjectValue, true);
             ObjectiveValue lhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(lhsExpValue, true);
+                    NullValueObjectiveFunction.compute(lhsValue, true);
             ObjectiveValue rhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(rhsExpValue, true);
+                    NullValueObjectiveFunction.compute(rhsValue, true);
             
-            BestOfMultiObjectiveValue allowNullObjVal = 
-                    new BestOfMultiObjectiveValue("Allowing for nulls");
+            // compile everything into a "BestOf" 
+            BestOfMultiObjectiveValue allowNullObjVal = new BestOfMultiObjectiveValue();            
             allowNullObjVal.add(subjectNullObjVal);
             allowNullObjVal.add(lhsNullObjVal);
             allowNullObjVal.add(rhsNullObjVal);
             allowNullObjVal.add(objVal);
-            return allowNullObjVal;
-        } else {
-            return objVal;
-        }
+            
+            // swap out the overall objective value with this one
+            objVal = allowNullObjVal;
+        } 
+        
+        objVal.setDescripton(description);
+        return objVal;
+    }
+    
+    @Override
+    public String toString() {
+        return description;
     }
 }

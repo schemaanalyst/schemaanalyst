@@ -5,11 +5,11 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 
-public class AndExpressionObjectiveFunction extends
-        ComposedExpressionObjectiveFunction {
+public class AndExpressionObjectiveFunction extends ComposedExpressionObjectiveFunction {
 
     public AndExpressionObjectiveFunction(AndExpression expression,
-            boolean goalIsToSatisfy, boolean allowNull) {
+                                          boolean goalIsToSatisfy, 
+                                          boolean allowNull) {
         super(expression, goalIsToSatisfy, allowNull);
     }
 

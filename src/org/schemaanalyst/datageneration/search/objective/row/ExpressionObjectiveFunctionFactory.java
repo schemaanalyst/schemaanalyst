@@ -2,6 +2,7 @@ package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
@@ -18,8 +19,8 @@ public class ExpressionObjectiveFunctionFactory {
     protected boolean goalIsToSatisfy, allowNull;
 
     public ExpressionObjectiveFunctionFactory(Expression expression,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+                                              boolean goalIsToSatisfy,
+                                              boolean allowNull) {
         this.expression = expression;
         this.goalIsToSatisfy = goalIsToSatisfy;
         this.allowNull = allowNull;
@@ -36,8 +37,9 @@ public class ExpressionObjectiveFunctionFactory {
                 expression.accept(this);
                 
                 if (objFun == null) {
-                    System.out.println("OBJ FUN is NULL!!!");
-                    System.out.println("Expression is " + expression.getClass());                    
+                    throw new ObjectiveFunctionException("Expression type " 
+                            + expression.getClass().getSimpleName() 
+                            + " not supported for creating objective functions");                    
                 }
                 
                 return objFun;

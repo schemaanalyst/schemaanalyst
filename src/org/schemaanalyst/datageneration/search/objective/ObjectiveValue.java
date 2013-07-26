@@ -69,7 +69,7 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         return compareTo(other) < 0;
     }
 
-    protected void setDescripton(String description) {
+    public void setDescripton(String description) {
         this.description = description;
     }
 
