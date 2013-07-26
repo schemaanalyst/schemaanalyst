@@ -68,7 +68,7 @@ public abstract class DatabaseInteractor {
             if (!initialized) {
                 initializeDatabaseConnection();
             }
-            LOGGER.log(Level.FINE, "Executing statement: {0}", command);
+            LOGGER.log(Level.FINER, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
             returnCount = statement.executeUpdate(command);
             LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});

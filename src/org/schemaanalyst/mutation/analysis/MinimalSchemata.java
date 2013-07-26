@@ -69,6 +69,14 @@ public class MinimalSchemata extends Runner {
 
     @Override
     public void task() {
+        // Setup
+        if (inputfolder == null) {
+            inputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
+        }
+        if (outputfolder == null) {
+            outputfolder = locationsConfiguration.getResultsDir() + File.separator;
+        }
+        
         // Start results file
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
@@ -174,12 +182,6 @@ public class MinimalSchemata extends Runner {
     @Override
     protected void validateParameters() {
         //TODO: Validate parameters
-        if (inputfolder == null) {
-            inputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
-        }
-        if (outputfolder == null) {
-            outputfolder = locationsConfiguration.getResultsDir() + File.separator;
-        }
     }
 
     public static void main(String[] args) {

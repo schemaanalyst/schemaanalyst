@@ -6,6 +6,7 @@ import java.io.File;
 import java.util.List;
 
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
@@ -130,8 +131,12 @@ public class GenerateResults extends Runner {
         // Insert the test data
         for (GoalReport goalReport : covReport.getSuccessfulGoalReports()) {
             List<String> insertStmts = sqlWriter.writeInsertStatements(goalReport.getData());
+            boolean isSatisfying = true;
+            if (goalReport instanceof ConstraintGoalReport) {
+                isSatisfying = ((ConstraintGoalReport) goalReport).getConstraint() == null;
+            }
             for (String stmt : insertStmts) {
-                SQLInsertRecord record = new SQLInsertRecord(stmt, databaseInteractor.executeUpdate(stmt));
+                SQLInsertRecord record = new SQLInsertRecord(stmt, databaseInteractor.executeUpdate(stmt), isSatisfying);
                 sqlReport.addInsertStatement(record);
             }
         }

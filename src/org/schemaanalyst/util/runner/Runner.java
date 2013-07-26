@@ -1,6 +1,7 @@
 package org.schemaanalyst.util.runner;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -13,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -173,6 +177,11 @@ public abstract class Runner {
         if (!prop.contains("java.util.logging.config.file")) {
             prop.setProperty("java.util.logging.config.file", 
                     locationsConfiguration.getConfigDir() + File.separator + "logging.properties");
+        }
+        try {
+            LogManager.getLogManager().readConfiguration();
+        } catch (IOException | SecurityException ex) {
+            throw new RunnerException("Failed to load logging configuration.", ex);
         }
     }
 
