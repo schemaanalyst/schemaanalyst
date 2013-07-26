@@ -77,6 +77,7 @@ public class Original extends Runner {
         
         // Start results file
         CSVResult result = new CSVResult();
+        result.addValue("technique", this.getClass().getName());
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);

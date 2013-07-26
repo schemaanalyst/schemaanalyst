@@ -80,7 +80,7 @@ public abstract class DatabaseInteractor {
                 LOGGER.log(Level.FINE, "Create table failed: {0}", command);
                 returnCount = CREATE_TABLE_ERROR;
             } else {
-                LOGGER.log(Level.SEVERE, "Statement failed: " + command, e);
+                LOGGER.log(Level.FINE, "Statement failed: " + command, e);
             }
         }
         return returnCount;

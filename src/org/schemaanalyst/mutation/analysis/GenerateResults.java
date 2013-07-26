@@ -15,6 +15,7 @@ import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
+import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
 import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
 import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
@@ -163,7 +164,7 @@ public class GenerateResults extends Runner {
         // return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
         CellRandomiser cellRandomiser = CellRandomisationFactory.instantiate(randomprofile, random);
         Search<Data> search = new AlternatingValueSearch(random,
-                new RandomDataInitializer(cellRandomiser),
+                new NoDataInitialization(),
                 new RandomDataInitializer(cellRandomiser));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(

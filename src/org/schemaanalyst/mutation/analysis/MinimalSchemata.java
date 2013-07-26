@@ -79,6 +79,7 @@ public class MinimalSchemata extends Runner {
         
         // Start results file
         CSVResult result = new CSVResult();
+        result.addValue("technique", this.getClass().getName());
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);
@@ -173,7 +174,7 @@ public class MinimalSchemata extends Runner {
         long totalTime = endTime - startTime;
 
         result.addValue("mutationtime", totalTime);
-        result.addValue("mutationscore_numerator", killed);
+        result.addValue("mutationscore_numerator", killed.size());
         result.addValue("mutationscore_denominator", mutants.size());
 
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
