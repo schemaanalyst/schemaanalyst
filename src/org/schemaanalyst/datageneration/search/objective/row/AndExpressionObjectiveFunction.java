@@ -9,8 +9,8 @@ public class AndExpressionObjectiveFunction extends ComposedExpressionObjectiveF
 
     public AndExpressionObjectiveFunction(AndExpression expression,
                                           boolean goalIsToSatisfy, 
-                                          boolean allowNull) {
-        super(expression, goalIsToSatisfy, allowNull);
+                                          boolean nullIsTrue) {
+        super(expression, goalIsToSatisfy, nullIsTrue);
     }
 
     @Override

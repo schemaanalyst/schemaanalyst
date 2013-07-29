@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.value;
+package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.Iterator;
 import java.util.List;
@@ -11,6 +11,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.deprecated.datageneration.objective.value.ValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 

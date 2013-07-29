@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.value;
+package org.schemaanalyst.deprecated.datageneration.objective.value;
 
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
@@ -21,7 +21,7 @@ public class BooleanValueObjectiveFunction extends
         switch (op) {
         case EQUALS:
             if (lhs.get() == rhs.get()) {
-                objVal.setValueToBest();
+                objVal.setValueToOptimal();
             } else {
                 objVal.setValueToWorst();
             }
@@ -29,7 +29,7 @@ public class BooleanValueObjectiveFunction extends
 
         case NOT_EQUALS:
             if (lhs.get() != rhs.get()) {
-                objVal.setValueToBest();
+                objVal.setValueToOptimal();
             } else {
                 objVal.setValueToWorst();
             }

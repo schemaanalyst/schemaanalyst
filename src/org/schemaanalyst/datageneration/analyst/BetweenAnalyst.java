@@ -9,6 +9,7 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
 import org.schemaanalyst.logic.EvaluableRelationalPredicate;
+import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -61,9 +62,9 @@ public class BetweenAnalyst extends ConstraintAnalyst {
     }
 
     protected boolean rowSatisfies(Value lowerValue, Value upperValue, Value columnValue) {
-        Boolean lowerBoundSatisfied = new EvaluableRelationalPredicate<>(lowerValue, "<=", columnValue).isSatisfied3VL();
+        Boolean lowerBoundSatisfied = new EvaluableRelationalPredicate<>(lowerValue, RelationalOperator.GREATER_OR_EQUALS, columnValue).isSatisfied3VL();
 
-        Boolean upperBoundSatisfied = new EvaluableRelationalPredicate<>(columnValue, "<=", upperValue).isSatisfied3VL();
+        Boolean upperBoundSatisfied = new EvaluableRelationalPredicate<>(columnValue, RelationalOperator.LESS_OR_EQUALS, upperValue).isSatisfied3VL();
 
         if (lowerBoundSatisfied == null || upperBoundSatisfied == null) {
             return satisfyOnNull;

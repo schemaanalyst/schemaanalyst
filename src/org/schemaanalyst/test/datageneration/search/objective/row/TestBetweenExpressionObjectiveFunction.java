@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective.expression;
+package org.schemaanalyst.test.datageneration.search.objective.row;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
@@ -155,14 +155,14 @@ public class TestBetweenExpressionObjectiveFunction {
                 $(lhsOperandNullNotBetweenExp, false, true, true),                
 
                 $(rhsOperandNullBetweenExp, true, false, false),
-                $(rhsOperandNullBetweenExp, false, false, false),
-                $(rhsOperandNullBetweenExp, true, true, true),
+                $(rhsOperandNullBetweenExp, false, false, true),
+                $(rhsOperandNullBetweenExp, true, true, false),
                 $(rhsOperandNullBetweenExp, false, true, true),                
 
-                $(rhsOperandNullNotBetweenExp, true, false, false),
+                $(rhsOperandNullNotBetweenExp, true, false, true),
                 $(rhsOperandNullNotBetweenExp, false, false, false),
                 $(rhsOperandNullNotBetweenExp, true, true, true),
-                $(rhsOperandNullNotBetweenExp, false, true, true),                
+                $(rhsOperandNullNotBetweenExp, false, true, false),                
                 
                 $(trueBetweenInverseOperandsExp, true, false, false),
                 $(trueBetweenInverseOperandsExp, false, false, true),
@@ -188,9 +188,9 @@ public class TestBetweenExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(BetweenExpression exp, boolean goalIsToSatisfy, boolean allowNull, boolean optimal) {
+    public void testExpression(BetweenExpression exp, boolean goalIsToSatisfy, boolean nullIsTrue, boolean optimal) {
         ObjectiveFunction<Row> objFun = new BetweenExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, allowNull);
+                exp, goalIsToSatisfy, nullIsTrue);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

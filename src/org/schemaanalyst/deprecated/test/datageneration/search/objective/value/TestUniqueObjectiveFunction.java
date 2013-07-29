@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.value;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Data;
@@ -7,7 +7,7 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
+import org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.MockDatabase;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;

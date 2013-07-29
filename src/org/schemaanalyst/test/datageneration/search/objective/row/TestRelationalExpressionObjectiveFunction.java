@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective.expression;
+package org.schemaanalyst.test.datageneration.search.objective.row;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
@@ -59,10 +59,10 @@ public class TestRelationalExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(RelationalExpression exp, boolean goalIsToSatisfy, boolean allowNull, boolean optimal) {
+    public void testExpression(RelationalExpression exp, boolean goalIsToSatisfy, boolean nullIsTrue, boolean optimal) {
         ObjectiveFunction<Row> objFun = 
                 new RelationalExpressionObjectiveFunction(
-                        exp, goalIsToSatisfy, allowNull);
+                        exp, goalIsToSatisfy, nullIsTrue);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.value;
+package org.schemaanalyst.deprecated.datageneration.objective.value;
 
 import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.data.CompoundValue;
@@ -16,6 +16,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 
+@Deprecated
 public class ValueObjectiveFunction extends ObjectiveFunction<RelationalPredicate<Value>> {
 
     @Override

@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective;
+package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;

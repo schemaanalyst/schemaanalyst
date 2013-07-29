@@ -21,6 +21,6 @@ public class ListExpression extends CompoundExpression {
 
     @Override
     public String toString() {
-        return StringUtils.implode(subexpressions, ", ");        
+        return "(" + StringUtils.implode(subexpressions, ", ") + ")";        
     }
 }

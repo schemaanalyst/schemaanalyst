@@ -11,10 +11,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.ValueRelationalObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
@@ -49,20 +47,20 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     private boolean evaluateTrueForm;
     
     // whether the expression is trivially satisfied if NULL is involved in the evaluation
-    private boolean allowNull;
+    private boolean nullIsTrue;
     
     // a descriptor for the objective function
     private String description;
     
     public InExpressionObjectiveFunction(InExpression expression,
                                          boolean goalIsToSatisfy,
-                                         boolean allowNull) {
+                                         boolean nullIsTrue) {
 
         // whether to evaluate the true form or not
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotIn());
         
         // is NULL allowed for the predicate to be trivially true?
-        this.allowNull = allowNull;
+        this.nullIsTrue = nullIsTrue;
         
         // set up the subexpression evaluators...
         lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
@@ -82,7 +80,7 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         // make a descriptor string
         description = expression.toString() 
                 + " goalIsToSatisfy: " + goalIsToSatisfy
-                + " allowNull: " + allowNull;
+                + " nullIsTrue: " + nullIsTrue;
     }
     
     @Override
@@ -90,8 +88,8 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         
         // "Best Of" for OR ("True Form"), "SumOf" for AND ("False Form").
         MultiObjectiveValue objVal = evaluateTrueForm
-                ? new BestOfMultiObjectiveValue()
-                : new SumOfMultiObjectiveValue();        
+                ? new BestOfMultiObjectiveValue(description)
+                : new SumOfMultiObjectiveValue(description);        
         
         // evaluate all of the subexpressions with respect to the row
         Value lhsValue = lhsEvaluator.evaluate(row);
@@ -102,27 +100,10 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         
         // get objective values for all of the rhs sub-expressions
         for (Value rhsValue : rhsValues) {
-            ValueObjectiveFunction objFun = new ValueObjectiveFunction();
-            objVal.add(objFun.evaluate(new RelationalPredicate<>(lhsValue, op, rhsValue)));            
+            objVal.add(ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullIsTrue));            
         }
-        
-        // if NULL is allowed, the objective value computation changes... 
-        if (allowNull) {
-            BestOfMultiObjectiveValue allowNullObjVal = new BestOfMultiObjectiveValue();            
-            allowNullObjVal.add(NullValueObjectiveFunction.compute(lhsValue, true));
-            for (Value rhsValue : rhsValues) {
-                allowNullObjVal.add(NullValueObjectiveFunction.compute(rhsValue, true));
-            }
-            allowNullObjVal.add(objVal);
-            objVal = allowNullObjVal;
-        } 
         
         objVal.setDescripton(description);
         return objVal;               
-    }
-    
-    @Override
-    public String toString() {
-        return description;
     }
 }

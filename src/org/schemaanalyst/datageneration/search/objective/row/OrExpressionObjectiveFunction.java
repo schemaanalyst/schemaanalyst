@@ -9,8 +9,8 @@ public class OrExpressionObjectiveFunction extends
         ComposedExpressionObjectiveFunction {
 
     public OrExpressionObjectiveFunction(OrExpression expression,
-            boolean goalIsToSatisfy, boolean allowNull) {
-        super(expression, goalIsToSatisfy, allowNull);
+            boolean goalIsToSatisfy, boolean nullIsTrue) {
+        super(expression, goalIsToSatisfy, nullIsTrue);
     }
 
     @Override

@@ -16,6 +16,7 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
+import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -60,7 +61,7 @@ public class TestRelationalPredicateAnalyst {
         row2Cell.setValue(new NumericValue(20));
         row3Cell.setValue(new NumericValue(30));
 
-        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, "<", new NumericValue(20));
+        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, RelationalOperator.LESS, new NumericValue(20));
 
         RelationalPredicateAnalyst rpa = new RelationalPredicateAnalyst(rp, table, true);
 
@@ -82,7 +83,7 @@ public class TestRelationalPredicateAnalyst {
         row2Cell.setValue(new NumericValue(20));
         row3Cell.setValue(new NumericValue(30));
 
-        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, ">", new NumericValue(5));
+        RelationalPredicate<Operand> rp = new RelationalPredicate<>(column, RelationalOperator.GREATER, new NumericValue(5));
 
         RelationalPredicateAnalyst rpa = new RelationalPredicateAnalyst(rp, table, true);
 

@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.value;
 
 import org.junit.Test;
 
@@ -10,13 +10,13 @@ public class TestObjectiveValue {
     @Test
     public void bestOptimal() {
         ObjectiveValue objVal = new ObjectiveValue("");
-        objVal.setValueToBest();
+        objVal.setValueToOptimal();
         assertTrue(objVal.isOptimal());
     }
 
     @Test
     public void bestOptimalFactoryMethod() {
-        ObjectiveValue objVal = ObjectiveValue.bestObjectiveValue("");
+        ObjectiveValue objVal = ObjectiveValue.optimalObjectiveValue("");
         assertTrue(objVal.isOptimal());
     }
 
@@ -51,7 +51,7 @@ public class TestObjectiveValue {
     public void bestBetterThanWorst() {
         ObjectiveValue objVal1 = new ObjectiveValue("Best");
         ObjectiveValue objVal2 = new ObjectiveValue("Worst");
-        objVal1.setValueToBest();
+        objVal1.setValueToOptimal();
         objVal2.setValueToWorst();
         assertTrue(objVal1.betterThan(objVal2));
         assertTrue(objVal2.worseThan(objVal1));

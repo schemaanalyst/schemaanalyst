@@ -11,7 +11,6 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.CellListObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;

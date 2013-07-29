@@ -9,12 +9,8 @@ public class RelationalPredicate<T> {
         this.lhs = lhs;
         this.operator = operator;
         this.rhs = rhs;
-    }
-
-    public RelationalPredicate(T lhs, String operator, T rhs) {
-        this(lhs, RelationalOperator.getRelationalOperator(operator), rhs);
-    }
-
+    }    
+    
     public T getLHS() {
         return lhs;
     }

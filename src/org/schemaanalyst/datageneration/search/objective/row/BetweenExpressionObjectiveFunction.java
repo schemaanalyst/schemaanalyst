@@ -7,8 +7,7 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.ValueRelationalObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 
@@ -38,19 +37,19 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     private boolean evaluateTrueForm;
     
     // whether the involvement of NULL results in trivial satisfaction of the expression
-    private boolean allowNull;   
+    private boolean nullIsTrue;   
     
     // a string descriptor for this objective function
     private String description;
     
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
                                               boolean goalIsToSatisfy,
-                                              boolean allowNull) {
+                                              boolean nullIsTrue) {
         // which form to evaluate?
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
-        System.out.println(goalIsToSatisfy + " " + expression.isNotBetween());        
+                
         // is NULL allowed to satisfy the expression
-        this.allowNull = allowNull;
+        this.nullIsTrue = nullIsTrue;
         
         // get evaluators for each of the three sub-expressions involved 
         subjectEvaluator = new ExpressionEvaluator(expression.getSubject());
@@ -69,15 +68,15 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         // make a descriptor string
         description = expression.toString() 
                 + " goalIsToSatisfy: " + goalIsToSatisfy
-                + " allowNull: " + allowNull;
+                + " nullIsTrue: " + nullIsTrue;
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
         // "SumOf" for AND ("True Form"), "Best Of" for OR ("False Form").
-        MultiObjectiveValue betweenObjVal = evaluateTrueForm
-                ? new SumOfMultiObjectiveValue()
-                : new BestOfMultiObjectiveValue();
+        MultiObjectiveValue objVal = evaluateTrueForm
+                ? new SumOfMultiObjectiveValue(description)
+                : new BestOfMultiObjectiveValue(description);
 
         // evaluate each subexpression to a value
         Value subjectValue = subjectEvaluator.evaluate(row);
@@ -96,30 +95,9 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         */
         
         // add objective values for the two comparisons
-        betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, lhsOp, lhsValue));
-        betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue));                
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, lhsOp, lhsValue, nullIsTrue));
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, rhsOp, rhsValue, nullIsTrue));                
 
-        // BETWEEN is peculiar when it comes to NULL ...
-        // If one of the terms is NULL the whole expression is NULL, which is 
-        // different to just using AND/OR on the LHS/RHS
-        //
-        // "BestOf" if allowNull (a NULL will trigger an optimal objective value), 
-        // "SumOf" if !allowNull (all operands must be NOT NULL).
-        MultiObjectiveValue objVal = allowNull
-                ? new BestOfMultiObjectiveValue()
-                : new SumOfMultiObjectiveValue();        
-        
-        objVal.add(betweenObjVal);
-        objVal.add(NullValueObjectiveFunction.compute(subjectValue, allowNull));
-        objVal.add(NullValueObjectiveFunction.compute(lhsValue, allowNull));
-        objVal.add(NullValueObjectiveFunction.compute(rhsValue, allowNull));
-            
-        objVal.setDescripton(description);
-        return objVal;
-    }
-    
-    @Override
-    public String toString() {
-        return description;
+        return objVal;        
     }
 }
