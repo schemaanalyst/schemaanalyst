@@ -86,24 +86,34 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     @Override
     public ObjectiveValue evaluate(Row row) {
         
-        // "Best Of" for OR ("True Form"), "SumOf" for AND ("False Form").
-        MultiObjectiveValue objVal = evaluateTrueForm
-                ? new BestOfMultiObjectiveValue(description)
-                : new SumOfMultiObjectiveValue(description);        
-        
-        // evaluate all of the subexpressions with respect to the row
-        Value lhsValue = lhsEvaluator.evaluate(row);
-        List<Value> rhsValues = new ArrayList<>();        
-        for (ExpressionEvaluator expEvaluator : rhsEvaluators) {
-            rhsValues.add(expEvaluator.evaluate(row));
+        if (rhsEvaluators.size() > 0) {
+            // there are elements in the list expression
+            
+            // "Best Of" for OR ("True Form"), "SumOf" for AND ("False Form").
+            MultiObjectiveValue objVal = evaluateTrueForm
+                    ? new BestOfMultiObjectiveValue(description)
+                    : new SumOfMultiObjectiveValue(description);        
+            
+            // evaluate all of the subexpressions with respect to the row
+            Value lhsValue = lhsEvaluator.evaluate(row);
+                
+            List<Value> rhsValues = new ArrayList<>();        
+            for (ExpressionEvaluator expEvaluator : rhsEvaluators) {
+                rhsValues.add(expEvaluator.evaluate(row));
+            }
+            
+            // get objective values for all of the rhs sub-expressions
+            for (Value rhsValue : rhsValues) {
+                objVal.add(ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullIsTrue));            
+            }
+            
+            objVal.setDescripton(description);
+            return objVal;
+        } else {
+            // empty list expression            
+            return evaluateTrueForm 
+                    ? ObjectiveValue.worstObjectiveValue(description)
+                    : ObjectiveValue.optimalObjectiveValue(description);
         }
-        
-        // get objective values for all of the rhs sub-expressions
-        for (Value rhsValue : rhsValues) {
-            objVal.add(ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullIsTrue));            
-        }
-        
-        objVal.setDescripton(description);
-        return objVal;               
     }
 }

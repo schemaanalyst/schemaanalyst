@@ -91,6 +91,12 @@ public class TestInExpressionObjectiveFunction {
                                        new ConstantExpression(new NumericValue(1))),
                     true);     
     
+    InExpression emptyInExp = 
+            new InExpression(new ConstantExpression(new NumericValue()), new ListExpression(), false);    
+    
+    InExpression emptyNotInExp = 
+            new InExpression(new ConstantExpression(new NumericValue()), new ListExpression(), true);    
+    
     Object[] testValues() {
         return $(
                 $(trueInExp, true, false, true),
@@ -141,7 +147,17 @@ public class TestInExpressionObjectiveFunction {
                 $(subjectNullNotInExp, true, false, false),
                 $(subjectNullNotInExp, true, true, true),
                 $(subjectNullNotInExp, false, false, false),
-                $(subjectNullNotInExp, false, true, true)                
+                $(subjectNullNotInExp, false, true, true),
+                
+                $(emptyInExp, true, true, false),
+                $(emptyInExp, false, true, true),
+                $(emptyInExp, true, false, false),
+                $(emptyInExp, false, false, true),
+
+                $(emptyNotInExp, true, true, true),
+                $(emptyNotInExp, false, true, false),
+                $(emptyNotInExp, true, false, true),
+                $(emptyNotInExp, false, false, false)                
                 );
     }
     
