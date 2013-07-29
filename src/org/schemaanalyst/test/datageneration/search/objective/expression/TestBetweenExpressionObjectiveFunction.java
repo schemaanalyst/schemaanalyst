@@ -93,22 +93,22 @@ public class TestBetweenExpressionObjectiveFunction {
 
     BetweenExpression falseBetweenInverseOperandsExp = 
             new BetweenExpression(
-                    new ConstantExpression(new NumericValue(2)),
-                    new ConstantExpression(new NumericValue(1)), 
+                    new ConstantExpression(new NumericValue(1)),
+                    new ConstantExpression(new NumericValue(2)), 
                     new ConstantExpression(new NumericValue(0)),
                     false);     
 
     BetweenExpression trueNotBetweenInverseOperandsExp = 
             new BetweenExpression(
-                    new ConstantExpression(new NumericValue(2)),
-                    new ConstantExpression(new NumericValue(1)), 
+                    new ConstantExpression(new NumericValue(1)),
+                    new ConstantExpression(new NumericValue(2)), 
                     new ConstantExpression(new NumericValue(0)),
                     true);       
     
     BetweenExpression falseNotBetweenInverseOperandsExp = 
             new BetweenExpression(
-                    new ConstantExpression(new NumericValue(1)),
-                    new ConstantExpression(new NumericValue(2)), 
+                    new ConstantExpression(new NumericValue(2)),
+                    new ConstantExpression(new NumericValue(1)), 
                     new ConstantExpression(new NumericValue(0)),
                     true);
     
@@ -164,10 +164,10 @@ public class TestBetweenExpressionObjectiveFunction {
                 $(rhsOperandNullNotBetweenExp, true, true, true),
                 $(rhsOperandNullNotBetweenExp, false, true, true),                
                 
-                $(trueBetweenInverseOperandsExp, true, false, true),
-                $(trueBetweenInverseOperandsExp, false, false, false),
-                $(trueBetweenInverseOperandsExp, true, true, true),
-                $(trueBetweenInverseOperandsExp, false, true, false),
+                $(trueBetweenInverseOperandsExp, true, false, false),
+                $(trueBetweenInverseOperandsExp, false, false, true),
+                $(trueBetweenInverseOperandsExp, true, true, false),
+                $(trueBetweenInverseOperandsExp, false, true, true),
                
                 $(falseBetweenInverseOperandsExp, true, false, false),
                 $(falseBetweenInverseOperandsExp, false, false, true),                
@@ -179,10 +179,10 @@ public class TestBetweenExpressionObjectiveFunction {
                 $(trueNotBetweenInverseOperandsExp, true, true, true),
                 $(trueNotBetweenInverseOperandsExp, false, true, false),
                
-                $(falseNotBetweenInverseOperandsExp, true, false, false),
-                $(falseNotBetweenInverseOperandsExp, false, false, true),                
-                $(falseNotBetweenInverseOperandsExp, true, true, false),
-                $(falseNotBetweenInverseOperandsExp, false, true, true)           
+                $(falseNotBetweenInverseOperandsExp, true, false, true),
+                $(falseNotBetweenInverseOperandsExp, false, false, false),                
+                $(falseNotBetweenInverseOperandsExp, true, true, true),
+                $(falseNotBetweenInverseOperandsExp, false, true, false)           
          );
     }    
         

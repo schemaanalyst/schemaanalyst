@@ -84,19 +84,25 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         Value lhsValue = lhsEvaluator.evaluate(row);
         Value rhsValue = rhsEvaluator.evaluate(row);
         
+        // NOTE: the following should not be implemented unless the BETWEEN expression is SYMMETRIC
+        // (it's ASYMMETRIC by default), and we do not support SYMMETRIC in BetweenExpression yet. 
+        /*
         // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
         if (lhsValue != null && rhsValue != null && lhsValue.compareTo(rhsValue) > 0) {
             Value temp = lhsValue;
             lhsValue = rhsValue;
             rhsValue = temp;
         }
+        */
         
         // add objective values for the two comparisons
         betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, lhsOp, lhsValue));
         betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue));                
 
-        
-        // extra considerations for NULL ...        
+        // BETWEEN is peculiar when it comes to NULL ...
+        // If one of the terms is NULL the whole expression is NULL, which is 
+        // different to just using AND/OR on the LHS/RHS
+        //
         // "BestOf" if allowNull (a NULL will trigger an optimal objective value), 
         // "SumOf" if !allowNull (all operands must be NOT NULL).
         MultiObjectiveValue objVal = allowNull
