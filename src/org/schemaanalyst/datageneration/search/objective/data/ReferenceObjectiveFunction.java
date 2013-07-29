@@ -9,36 +9,29 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
-
-import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 
 public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
     protected List<Column> columns;
     protected List<Column> referenceColumns;
-    protected RelationalOperator op;
     protected Data state;
     protected String description;
-    protected boolean goalIsToSatisfy, allowNull;
+    protected boolean goalIsToSatisfy, nullIsTrue;
 
     public ReferenceObjectiveFunction(List<Column> columns,
-            List<Column> referenceColumns,
-            Data state,
-            String description,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+                                      List<Column> referenceColumns,
+                                      Data state,
+                                      String description,
+                                      boolean goalIsToSatisfy,
+                                      boolean nullIsTrue) {
         this.columns = columns;
         this.referenceColumns = referenceColumns;
         this.state = state;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.allowNull = allowNull;
-
-        this.op = goalIsToSatisfy ? EQUALS : NOT_EQUALS;
+        this.nullIsTrue = nullIsTrue;
     }
 
     @Override
@@ -52,7 +45,7 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
         referenceRows.addAll(state.getCells(referenceColumns));
 
         for (List<Cell> row : rows) {
-            objVal.add(evaluateRow(row, referenceRows, allowNull));
+            objVal.add(evaluateRow(row, referenceRows, nullIsTrue));
         }
 
         return objVal;
@@ -60,27 +53,17 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
     protected ObjectiveValue evaluateRow(List<Cell> row, List<List<Cell>> referenceRows, boolean allowNull) {
 
-        MultiObjectiveValue rowObjVal;
-
-        if (allowNull) {
-            rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
-            rowObjVal.add(evaluateRow(row, referenceRows, false));
-
-            for (Cell cell : row) {
-                rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
-            }
-        } else {
-            String description = "Evaluating row with reference rows";
-
-            rowObjVal = goalIsToSatisfy
+        String description = "Evaluating row with reference rows";        
+        
+        MultiObjectiveValue rowObjVal = goalIsToSatisfy
                     ? new BestOfMultiObjectiveValue(description)
                     : new SumOfMultiObjectiveValue(description);
 
-            for (List<Cell> referenceRow : referenceRows) {
-                rowObjVal.add(CellListObjectiveFunction.compute(row, op, referenceRow));
-            }
+        for (List<Cell> referenceRow : referenceRows) {
+            rowObjVal.add(MultiValueObjectiveFunction.computeUsingCells(
+                    row, goalIsToSatisfy, referenceRow, nullIsTrue));
         }
-
+        
         return rowObjVal;
     }
 }

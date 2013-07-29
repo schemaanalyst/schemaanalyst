@@ -13,7 +13,7 @@ import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.CellListObjectiveFunction;
+import org.schemaanalyst.deprecated.datageneration.objective.CellListObjectiveFunction;
 import org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.MockCell;
 

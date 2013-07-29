@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.data;
+package org.schemaanalyst.deprecated.datageneration.objective;
 
 import java.util.Iterator;
 import java.util.List;
