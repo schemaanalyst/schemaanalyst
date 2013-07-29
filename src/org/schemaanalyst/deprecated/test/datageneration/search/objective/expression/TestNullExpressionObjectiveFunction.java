@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective.expression;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.expression;
 
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;

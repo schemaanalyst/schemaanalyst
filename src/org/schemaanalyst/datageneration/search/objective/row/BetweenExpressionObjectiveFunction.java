@@ -48,7 +48,7 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
                                               boolean allowNull) {
         // which form to evaluate?
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
-        
+        System.out.println(goalIsToSatisfy + " " + expression.isNotBetween());        
         // is NULL allowed to satisfy the expression
         this.allowNull = allowNull;
         
@@ -74,9 +74,8 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-
         // "SumOf" for AND ("True Form"), "Best Of" for OR ("False Form").
-        MultiObjectiveValue objVal = evaluateTrueForm
+        MultiObjectiveValue betweenObjVal = evaluateTrueForm
                 ? new SumOfMultiObjectiveValue()
                 : new BestOfMultiObjectiveValue();
 
@@ -86,37 +85,29 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         Value rhsValue = rhsEvaluator.evaluate(row);
         
         // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
-        if (lhsValue.compareTo(rhsValue) > 0) {
+        if (lhsValue != null && rhsValue != null && lhsValue.compareTo(rhsValue) > 0) {
             Value temp = lhsValue;
             lhsValue = rhsValue;
             rhsValue = temp;
         }
         
         // add objective values for the two comparisons
-        objVal.add(ValueObjectiveFunction.compute(subjectValue, lhsOp, lhsValue));
-        objVal.add(ValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue));                
+        betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, lhsOp, lhsValue));
+        betweenObjVal.add(ValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue));                
+
         
-        // if NULL is allowed, there are extra considerations to make ...
-        if (allowNull) {
-            // compute objective values for NULL for each expression value
-            ObjectiveValue subjectNullObjVal = 
-                    NullValueObjectiveFunction.compute(subjectValue, true);
-            ObjectiveValue lhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(lhsValue, true);
-            ObjectiveValue rhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(rhsValue, true);
-            
-            // compile everything into a "BestOf" 
-            BestOfMultiObjectiveValue allowNullObjVal = new BestOfMultiObjectiveValue();            
-            allowNullObjVal.add(subjectNullObjVal);
-            allowNullObjVal.add(lhsNullObjVal);
-            allowNullObjVal.add(rhsNullObjVal);
-            allowNullObjVal.add(objVal);
-            
-            // swap out the overall objective value with this one
-            objVal = allowNullObjVal;
-        } 
+        // extra considerations for NULL ...        
+        // "BestOf" if allowNull (a NULL will trigger an optimal objective value), 
+        // "SumOf" if !allowNull (all operands must be NOT NULL).
+        MultiObjectiveValue objVal = allowNull
+                ? new BestOfMultiObjectiveValue()
+                : new SumOfMultiObjectiveValue();        
         
+        objVal.add(betweenObjVal);
+        objVal.add(NullValueObjectiveFunction.compute(subjectValue, allowNull));
+        objVal.add(NullValueObjectiveFunction.compute(lhsValue, allowNull));
+        objVal.add(NullValueObjectiveFunction.compute(rhsValue, allowNull));
+            
         objVal.setDescripton(description);
         return objVal;
     }

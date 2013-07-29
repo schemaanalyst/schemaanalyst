@@ -21,33 +21,34 @@ import org.schemaanalyst.test.testutil.mock.MockRow;
 @RunWith(JUnitParamsRunner.class)
 public class TestRelationalExpressionObjectiveFunction {
 
-    RelationalExpression trueExp = new RelationalExpression(
-            new ConstantExpression(new NumericValue(1)),
-            RelationalOperator.EQUALS, 
-            new ConstantExpression(new NumericValue(1)));
+    RelationalExpression trueExp = 
+            new RelationalExpression(
+                    new ConstantExpression(new NumericValue(1)),
+                    RelationalOperator.EQUALS, 
+                    new ConstantExpression(new NumericValue(1)));
 
-    RelationalExpression falseExp = new RelationalExpression(
-            new ConstantExpression(new NumericValue(2)),
-            RelationalOperator.EQUALS, 
-            new ConstantExpression(new NumericValue(1)));
+    RelationalExpression falseExp = 
+            new RelationalExpression(
+                    new ConstantExpression(new NumericValue(2)),
+                    RelationalOperator.EQUALS, 
+                    new ConstantExpression(new NumericValue(1)));
 
-    RelationalExpression nullExp = new RelationalExpression(
-            new ConstantExpression(null), RelationalOperator.EQUALS,
-            new ConstantExpression(new NumericValue(1)));
-
+    RelationalExpression nullExp = 
+            new RelationalExpression(
+                    new ConstantExpression(null), RelationalOperator.EQUALS,
+                    new ConstantExpression(new NumericValue(1)));
     
-    @SuppressWarnings("unused")
-    private Object[] testValues() {
+    Object[] testValues() {
         return $(
                 $(trueExp, true, false, true),
                 $(trueExp, false, false, false),
                 $(trueExp, true, true, true),
                 $(trueExp, false, true, false),
-               
+
+                $(falseExp, true, false, false),                
                 $(falseExp, false, false, true),
-                $(falseExp, true, false, false),
-                $(falseExp, false, true, true),
                 $(falseExp, true, true, false),
+                $(falseExp, false, true, true),
                 
                 $(nullExp, true, true, true),
                 $(nullExp, false, true, true),                
@@ -59,8 +60,9 @@ public class TestRelationalExpressionObjectiveFunction {
     @Test
     @Parameters(method = "testValues")    
     public void testExpression(RelationalExpression exp, boolean goalIsToSatisfy, boolean allowNull, boolean optimal) {
-        ObjectiveFunction<Row> objFun = new RelationalExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, allowNull);
+        ObjectiveFunction<Row> objFun = 
+                new RelationalExpressionObjectiveFunction(
+                        exp, goalIsToSatisfy, allowNull);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

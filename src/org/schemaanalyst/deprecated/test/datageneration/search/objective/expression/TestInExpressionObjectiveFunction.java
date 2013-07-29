@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective.expression;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.expression;
 
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
