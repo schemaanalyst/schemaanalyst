@@ -31,7 +31,7 @@ public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
         // NOTE: The database state (encapsulated by the state instance
         // variable can be ignored for the purposes of this objective 
         // function evaluation.  All the values in the state will obey 
-        // the constraint and so do need to be checked.
+        // the constraint and so do not need to be checked.
 
         for (Cell cell : data.getCells(column)) {
             objVal.add(NullValueObjectiveFunction.compute(cell.getValue(), goalIsToSatisfy));
