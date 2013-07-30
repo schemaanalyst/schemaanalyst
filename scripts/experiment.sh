@@ -20,5 +20,5 @@ fi
 java -cp $CLASSPATH org.schemaanalyst.mutation.analysis.GenerateResults $CASESTUDY
 
 for (( t=1; t<=$TRIALS; t++ )) do
-	java -cp $CLASSPATH $APPROACH $CASESTUDY $t
+	java -Xmx3G -cp $CLASSPATH $APPROACH $CASESTUDY $t
 done

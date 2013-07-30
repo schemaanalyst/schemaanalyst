@@ -41,7 +41,7 @@
 
 	<!-- BUNDLE TASK - "ant bundle" -->
 	<target name="bundle" depends="compile">
-		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, scripts/**, results/**, dist/**">
+		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, results/**, dist/**, config/*.local">
 			<exclude name="${dist_dir}/${dist_name}Bundle.zip"/>
 		</zip>
 	</target>
