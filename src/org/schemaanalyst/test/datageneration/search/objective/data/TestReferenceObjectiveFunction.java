@@ -147,5 +147,88 @@ public class TestReferenceObjectiveFunction {
         	assertNonOptimal(objVal);
         }
     }
+    
+	Integer[] twoColOneRowUniform = {1, 2, 1, 2};
+  
+	Integer[] twoColTwoRowsMatch = {1, 2, 1, 2,
+								   2, 3, 2, 3};
+
+	Integer[] twoColTwoRowsNoMatch = {1, 2, 4, 5,
+			   						 2, 3, 6, 7};	
+
+	Integer[] twoColTwoRowsPartialMatch = {1, 2, 2, 3,
+				 						   2, 3, 6, 7};	
+	
+	Integer[] twoColOneRowNoMatch = {1, 2, 1, 3};
+
+	Integer[] twoColOneRowNullMatch = {1, null, 1, null};	
+	
+    Object[] twoColumnTestValues() {
+        return $(
+                $(twoColOneRowUniform, empty, true, false, true),
+                $(twoColOneRowUniform, empty, true, true, true),
+                $(twoColOneRowUniform, empty, false, false, false),
+                $(twoColOneRowUniform, empty, false, true, false),
+                
+                $(twoColTwoRowsMatch, empty, true, false, true),
+                $(twoColTwoRowsMatch, empty, true, true, true),
+                $(twoColTwoRowsMatch, empty, false, false, false),
+                $(twoColTwoRowsMatch, empty, false, true, false),      
+                
+                $(twoColTwoRowsNoMatch, empty, true, false, false),
+                $(twoColTwoRowsNoMatch, empty, true, true, false),
+                $(twoColTwoRowsNoMatch, empty, false, false, true),
+                $(twoColTwoRowsNoMatch, empty, false, true, true),
+                
+                $(twoColTwoRowsPartialMatch, empty, true, false, false),
+                $(twoColTwoRowsPartialMatch, empty, true, true, false),
+                $(twoColTwoRowsPartialMatch, empty, false, false, false),
+                $(twoColTwoRowsPartialMatch, empty, false, true, false),
+                
+                $(twoColOneRowNoMatch, empty, true, false, false),
+                $(twoColOneRowNoMatch, empty, true, true, false),
+                $(twoColOneRowNoMatch, empty, false, false, true),
+                $(twoColOneRowNoMatch, empty, false, true, true),
+                
+                $(twoColOneRowNullMatch, empty, true, false, false),
+                $(twoColOneRowNullMatch, empty, true, true, true),
+                $(twoColOneRowNullMatch, empty, false, false, false),
+                $(twoColOneRowNullMatch, empty, false, true, true)                  
+        		);
+    }
+    
+    @Test
+    @Parameters(method = "twoColumnTestValues")     
+    public void twoColumnTests(Integer[] dataValues, 
+    						   Integer[] stateValues, 
+    						   boolean goalIsToSatisfy, 
+    						   boolean nullAccepted, 
+    						   boolean optimal) {
+    	
+    	FourColumnMockDatabase database = new FourColumnMockDatabase();
+    	
+        Data data = database.createData(dataValues.length / 4);
+        Data state = database.createState(stateValues.length / 4);    	
+        database.setDataValues(dataValues);
+        database.setStateValues(stateValues);
+    	
+        List<Column> columns = new ArrayList<>();
+        columns.add(database.column1);
+        columns.add(database.column2);
+        
+        List<Column> referenceColumns = new ArrayList<>();
+        referenceColumns.add(database.column3);
+        referenceColumns.add(database.column4);
+        
+        ReferenceObjectiveFunction objFun = new ReferenceObjectiveFunction(
+        		columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
+        ObjectiveValue objVal = objFun.evaluate(data);
+        
+        if (optimal) {
+        	assertOptimal(objVal);
+        } else {
+        	assertNonOptimal(objVal);
+        }
+    }    
  
 }

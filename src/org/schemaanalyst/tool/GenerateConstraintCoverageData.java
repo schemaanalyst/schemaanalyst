@@ -4,40 +4,44 @@ import java.io.File;
 
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.DataGeneratorFactory;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.ConstraintCovererFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlparser.Parser;
 import org.schemaanalyst.sqlparser.SchemaMapper;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.random.Random;
-import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 
 @Description("Generates constraint covering data for a schema, printing the INSERTs to the screen.")
 @RequiredParameters("schema dbms datagenerator")
-public class GenerateData extends Runner {
+public class GenerateConstraintCoverageData extends Runner {
 
     @Parameter("The name of the schema to be processed. " + 
                "The SQL must be placed in the schemas subdirectory of casestudies")
     private String schema;
     
-    @Parameter(value="The identification string of the DBMS to be used",
-               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
+    @Parameter(value = "The identification string of the DBMS to be used",
+               choicesMethod = "org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     private String dbms;
     
-    @Parameter("The identification string of the data generator to be used")
+    @Parameter(value = "The identification string of the data generator to be used",
+    		   choicesMethod = "org.schemaanalyst.datageneration.ConstraintCovererFactory.getConstraintCovererChoices")
+    
     private String datagenerator;
+    
+    @Parameter(value = "The identification string of the cell randomisation profile to be used",
+    		   choicesMethod = "org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory.getCellRandomiserChoices")
+    private String cellrandomisationprofile = "Small";
     
     @Parameter("The random seed to start the search algorithm")
     private long seed = 0;
-    
-    @Parameter("The identification string of the cell randomisation profile to be used")
-    private String cellrandomisationprofile = "Small";
+        
+    @Parameter("The maximum number of evaluations for each step of the search algorithm "
+    		+ "(where the definition of 'step' is specific to each algorithm)")
+    private int maxevaluations = 10000;
     
     @Override
     protected void task() {
@@ -57,14 +61,14 @@ public class GenerateData extends Runner {
             // get the schema
             Schema schemaObject = mapper.getSchema(schema, parser.parse(sqlFile));    
             
-            Random random = new SimpleRandom(seed);    
-            
-            DataGenerator generator = DataGeneratorFactory.instantiate(
+            // invocate factory method
+            DataGenerator generator = ConstraintCovererFactory.instantiate(
                     datagenerator,
                     schemaObject,
                     dbmsObject,
-                    random,
-                    CellRandomisationFactory.instantiate(cellrandomisationprofile, random));
+                    cellrandomisationprofile,
+                    seed,
+                    maxevaluations);
             
             // generate data
             CoverageReport report = generator.generate();
@@ -77,11 +81,10 @@ public class GenerateData extends Runner {
     
     @Override
     protected void validateParameters() {
-        // TODO: complete
+    	check(maxevaluations > 0, "maxevaluations should be greater than 0");
     }
     
     public static void main(String... args) {
-        new GenerateData().run(args);
+        new GenerateConstraintCoverageData().run(args);
     }    
-
 }

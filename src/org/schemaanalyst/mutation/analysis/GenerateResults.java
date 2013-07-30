@@ -10,7 +10,7 @@ import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
 import org.schemaanalyst.datageneration.search.Search;
@@ -162,7 +162,7 @@ public class GenerateResults extends Runner {
         Random random = new SimpleRandom(randomseed);
         // TODO: Use DataGeneratorFactory
         // return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
-        CellRandomiser cellRandomiser = CellRandomisationFactory.instantiate(randomprofile, random);
+        CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(randomprofile, random);
         Search<Data> search = new AlternatingValueSearch(random,
                 new NoDataInitialization(),
                 new RandomDataInitializer(cellRandomiser));

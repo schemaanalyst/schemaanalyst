@@ -2,15 +2,17 @@ package org.schemaanalyst.datageneration.cellrandomisation;
 
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.schemaanalyst.util.random.Random;
 
-public class CellRandomisationFactory {
+public class CellRandomiserFactory {
 
     public static CellRandomiser instantiate(String name, Random random) {
 
         // get hold of the method objects of this class 
-        Class<CellRandomisationFactory> clazz = CellRandomisationFactory.class;
+        Class<CellRandomiserFactory> clazz = CellRandomiserFactory.class;
         Method methods[] = clazz.getMethods();
 
         // get the name to match a method name by lowercasing the first letter
@@ -30,7 +32,14 @@ public class CellRandomisationFactory {
             }
         }
 
-        throw new RuntimeException("Unknown cell randomiser \"" + name + "\"");
+        throw new UnknownCellRandomiserException("Unknown cell randomiser \"" + name + "\"");
+    }
+    
+    public static List<String> getCellRandomiserChoices() {
+        List<String> choices = new ArrayList<>();
+        choices.add("Small");
+        choices.add("Large");
+        return choices;
     }
 
     public static CellRandomiser small(Random random) {

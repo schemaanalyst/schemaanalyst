@@ -21,6 +21,7 @@ public class DBMSFactory {
         return dbms;
     }
     
+    // TODO: automatically generate this list!
     public static List<String> getDBMSChoices() {
         List<String> choices = new ArrayList<>();
         choices.add("Postgres");

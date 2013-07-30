@@ -14,7 +14,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.domainspecific.UniqueHandler;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -84,7 +84,7 @@ public class TestUniqueHandler {
                 ua.isSatisfied(null, data));
 
         UniqueHandler uh = new UniqueHandler(ua, true, true,
-                CellRandomisationFactory.small(new SimpleRandom(0)),
+                CellRandomiserFactory.small(new SimpleRandom(0)),
                 new SimpleRandom(0));
         uh.attempt(null, data);
 

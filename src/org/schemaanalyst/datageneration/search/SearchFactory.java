@@ -3,7 +3,7 @@ package org.schemaanalyst.datageneration.search;
 import java.lang.reflect.Method;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
 import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
@@ -37,7 +37,7 @@ public class SearchFactory {
 
     public static Search<Data> regularAlternatingValue(long randomSeed, int maxEvaluations) {
         Random random = new SimpleRandom(randomSeed);
-        CellRandomiser randomizer = CellRandomisationFactory.small(random);
+        CellRandomiser randomizer = CellRandomiserFactory.small(random);
 
         Search<Data> search = new AlternatingValueSearch(
                 random,
@@ -56,7 +56,7 @@ public class SearchFactory {
 
     public static Search<Data> regularRandom(long randomSeed, int maxEvaluations) {
         Random random = new SimpleRandom(randomSeed);
-        CellRandomiser profile = CellRandomisationFactory.small(random);
+        CellRandomiser profile = CellRandomiserFactory.small(random);
         RandomSearch search = new RandomSearch(profile);
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(

@@ -15,7 +15,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.domainspecific.ReferenceHandler;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -104,7 +104,7 @@ public class TestReferenceHandler {
                 ra.isSatisfied(null, data));
 
         ReferenceHandler rh = new ReferenceHandler(ra, false, true,
-                CellRandomisationFactory.small(new SimpleRandom(0)),
+                CellRandomiserFactory.small(new SimpleRandom(0)),
                 new SimpleRandom(0));
         rh.attempt(null, data);
 
@@ -138,7 +138,7 @@ public class TestReferenceHandler {
                 ra.isSatisfied(null, data));
 
         ReferenceHandler rh = new ReferenceHandler(ra, true, true,
-                CellRandomisationFactory.small(new SimpleRandom(0)),
+                CellRandomiserFactory.small(new SimpleRandom(0)),
                 new SimpleRandom(0));
         rh.attempt(null, data);
 

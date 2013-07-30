@@ -13,7 +13,7 @@ import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -974,11 +974,11 @@ public class SchemaAnalyst {
         String name = Configuration.randomprofile;
 
         if (name.equals("small")) {
-            return CellRandomisationFactory.small(random);
+            return CellRandomiserFactory.small(random);
         }
 
         if (name.equals("large")) {
-            return CellRandomisationFactory.large(random);
+            return CellRandomiserFactory.large(random);
         }
 
         throw new RuntimeException("Unknown random profile \"" + name + "\"");

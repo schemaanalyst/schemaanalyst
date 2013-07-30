@@ -54,21 +54,21 @@ public class TestMutationReport {
     @Test
     public void testMutantReportInitialCreateTableState() {
         MutantReport report = new MutantReport();
-        ArrayList<SQLExecutionRecord> list = new ArrayList();
+        ArrayList<SQLExecutionRecord> list = new ArrayList<>();
         assertEquals(report.getCreateTableStatements(), list);
     }
 
     @Test
     public void testMutantReportInitialMutantRecordState() {
         MutantReport report = new MutantReport();
-        ArrayList<MutantRecord> list = new ArrayList();
+        ArrayList<MutantRecord> list = new ArrayList<>();
         assertEquals(report.getMutantStatements(), list);
     }
 
     @Test
     public void testSQLExecutionReportInitialStateWithEmptyLists() {
         SQLExecutionReport report = new SQLExecutionReport();
-        ArrayList<SQLExecutionRecord> list = new ArrayList();
+        ArrayList<SQLExecutionRecord> list = new ArrayList<>();
         assertEquals(report.getCreateTableStatements(), list);
         assertEquals(report.getInsertStatements(), list);
     }
@@ -76,7 +76,7 @@ public class TestMutationReport {
     @Test
     public void testDBMonsertSQLExecutionReportInitialStateWithEmptyLists() {
         DBMonsterSQLExecutionReport report = new DBMonsterSQLExecutionReport();
-        ArrayList<SQLExecutionRecord> list = new ArrayList();
+        ArrayList<SQLExecutionRecord> list = new ArrayList<>();
         assertEquals(report.getCreateTableStatements(), list);
         assertEquals(report.getInsertStatements(), list);
         assertEquals(report.getSelectStatements(), list);

@@ -20,8 +20,8 @@ public class RunnerExample extends Runner {
     // This annotation specifies a parameter along with a method that returns a String array
     // of possible values.  Runner checks that the value passed at the command line is a 
     // member of this array.  
-    @Parameter(value="The name of the DBMS", 
-               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
+    @Parameter(value = "The name of the DBMS", 
+               choicesMethod = "org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     private String dbms;
     
     // A further parameter
@@ -45,7 +45,7 @@ public class RunnerExample extends Runner {
     
     // A boolean flag parameter, showing the use of the valueAsSwitch annotation field 
     // (see documentation for the Parameter annotation)
-    @Parameter(value="Set debug messages on", valueAsSwitch="true")
+    @Parameter(value = "Set debug messages on", valueAsSwitch = "true")
     private boolean debug = false;
     
     // This method contains the actual high-level steps of the task to be executed.

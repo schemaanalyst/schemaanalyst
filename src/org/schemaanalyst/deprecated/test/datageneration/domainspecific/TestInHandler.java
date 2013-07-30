@@ -15,7 +15,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.analyst.InAnalyst;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomisationFactory;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.domainspecific.InHandler;
 import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -70,7 +70,7 @@ public class TestInHandler {
                 ia.isSatisfied(null, data));
 
         InHandler ih = new InHandler(ia, true, true,
-                CellRandomisationFactory.small(new SimpleRandom(0)),
+                CellRandomiserFactory.small(new SimpleRandom(0)),
                 new SimpleRandom(0));
         ih.attempt(null, data);
 
@@ -101,7 +101,7 @@ public class TestInHandler {
                 ia.isSatisfied(null, data));
 
         InHandler ih = new InHandler(ia, false, true,
-                CellRandomisationFactory.small(new SimpleRandom(0)),
+                CellRandomiserFactory.small(new SimpleRandom(0)),
                 new SimpleRandom(0));
 
         ih.attempt(null, data);

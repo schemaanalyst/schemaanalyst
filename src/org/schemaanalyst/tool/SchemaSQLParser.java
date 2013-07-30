@@ -21,8 +21,8 @@ public class SchemaSQLParser extends Runner {
                "in the schemas subdirectory of casestudies")
     protected String schema;
 
-    @Parameter(value="The ID string of the DBMS whose dialect of SQL is to be used",
-               choicesMethod="org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
+    @Parameter(value = "The ID string of the DBMS whose dialect of SQL is to be used",
+               choicesMethod = "org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
     protected String dbms;
     
     protected Schema schemaObject;
@@ -33,8 +33,8 @@ public class SchemaSQLParser extends Runner {
             if (dbmsObject == null) {
                 dbmsObject = DBMSFactory.instantiate(dbms);
             }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException ex) {
-            throw new RuntimeException(ex);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }  
     }
     
