@@ -27,8 +27,8 @@ public class TestNullValueObjectiveFunction {
     
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(Value value, boolean nullIsTrue, boolean optimal) {
-        ObjectiveValue objVal = NullValueObjectiveFunction.compute(value, nullIsTrue);
+    public void testExpression(Value value, boolean nullIsSatisfy, boolean optimal) {
+        ObjectiveValue objVal = NullValueObjectiveFunction.compute(value, nullIsSatisfy);
 
         if (optimal) {
             assertOptimal(objVal);            

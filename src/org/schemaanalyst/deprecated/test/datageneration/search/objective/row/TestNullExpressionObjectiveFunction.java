@@ -20,7 +20,7 @@ public class TestNullExpressionObjectiveFunction {
     }    
     
     @Test
-    public void expIsNull_isNotNullIsTrue_SatisfyTrue() {
+    public void expIsNull_isNotnullIsSatisfy_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(null, true, true);        
         assertNonOptimal(objVal);
     }
@@ -32,7 +32,7 @@ public class TestNullExpressionObjectiveFunction {
     }    
 
     @Test
-    public void expIsNull_isNotNullIsTrue_SatisfyFalse() {
+    public void expIsNull_isNotnullIsSatisfy_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(null, true, false);        
         assertOptimal(objVal);
     }
@@ -44,7 +44,7 @@ public class TestNullExpressionObjectiveFunction {
     }    
     
     @Test
-    public void expIsNotNull_isNotNullIsTrue_SatisfyTrue() {
+    public void expIsNotNull_isNotnullIsSatisfy_SatisfyTrue() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), true, true);        
         assertOptimal(objVal);
     }
@@ -56,7 +56,7 @@ public class TestNullExpressionObjectiveFunction {
     }    
 
     @Test
-    public void expIsNotNull_isNotNullIsTrue_SatisfyFalse() {
+    public void expIsNotNull_isNotnullIsSatisfy_SatisfyFalse() {
         ObjectiveValue objVal = getObjectiveValue(new NumericValue(1), true, false);        
         assertNonOptimal(objVal);
     }

@@ -18,18 +18,18 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
     protected List<Column> columns;
     protected Data state;
     protected String description;
-    protected boolean goalIsToSatisfy, nullIsTrue;
+    protected boolean goalIsToSatisfy, nullIsSatisfy;
 
     public UniqueObjectiveFunction(List<Column> columns, 
                                    Data state, 
                                    String description,
                                    boolean goalIsToSatisfy, 
-                                   boolean nullIsTrue) {
+                                   boolean nullIsSatisfy) {
         this.columns = columns;
         this.state = state;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.nullIsTrue = nullIsTrue;
+        this.nullIsSatisfy = nullIsSatisfy;
     }
 
     @Override
@@ -74,7 +74,7 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
         while (rowsIterator.hasNext()) {
             List<Cell> compareRow = rowsIterator.next();
             objVal.add(MultiValueObjectiveFunction.computeUsingCells(
-                    row, !goalIsToSatisfy, compareRow, nullIsTrue));
+                    row, !goalIsToSatisfy, compareRow, nullIsSatisfy));
         }
     }
 }

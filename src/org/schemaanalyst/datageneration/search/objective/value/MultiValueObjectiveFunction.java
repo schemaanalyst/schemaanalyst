@@ -17,11 +17,11 @@ import org.schemaanalyst.util.Pair;
 
 public class MultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
 
-    private boolean equals, nullIsTrue;
+    private boolean equals, nullIsSatisfy;
     
-    public MultiValueObjectiveFunction(boolean equals, boolean nullIsTrue) {
+    public MultiValueObjectiveFunction(boolean equals, boolean nullIsSatisfy) {
         this.equals = equals;
-        this.nullIsTrue = nullIsTrue;        
+        this.nullIsSatisfy = nullIsSatisfy;        
     }
     
     @Override
@@ -55,21 +55,21 @@ public class MultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Val
             Value rhsValue = row2Iterator.next();
             
             objVal.add(ValueRelationalObjectiveFunction.compute(
-                    lhsValue, op, rhsValue, nullIsTrue));
+                    lhsValue, op, rhsValue, nullIsSatisfy));
         }
 
         return objVal;        
     }
     
     public static ObjectiveValue compute(
-            List<Value> lhs, boolean equals, List<Value> rhs, boolean nullIsTrue) {
-        MultiValueObjectiveFunction objFun = new MultiValueObjectiveFunction(equals, nullIsTrue);
+            List<Value> lhs, boolean equals, List<Value> rhs, boolean nullIsSatisfy) {
+        MultiValueObjectiveFunction objFun = new MultiValueObjectiveFunction(equals, nullIsSatisfy);
         return objFun.evaluate(new Pair<List<Value>>(lhs, rhs));        
     }
     
     public static ObjectiveValue computeUsingCells(
-            List<Cell> lhs, boolean equals, List<Cell> rhs, boolean nullIsTrue) {
-        return compute(extractValues(lhs), equals, extractValues(rhs), nullIsTrue);        
+            List<Cell> lhs, boolean equals, List<Cell> rhs, boolean nullIsSatisfy) {
+        return compute(extractValues(lhs), equals, extractValues(rhs), nullIsSatisfy);        
     }    
     
     private static List<Value> extractValues(List<Cell> cells) {

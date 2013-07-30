@@ -7,8 +7,8 @@ import org.schemaanalyst.logic.RelationalOperator;
 
 public class BooleanValueRelationalObjectiveFunction extends ValueRelationalObjectiveFunction<BooleanValue> {
 
-    public BooleanValueRelationalObjectiveFunction(RelationalOperator op, boolean nullIsTrue) {
-        super(op, nullIsTrue);
+    public BooleanValueRelationalObjectiveFunction(RelationalOperator op, boolean nullIsSatisfy) {
+        super(op, nullIsSatisfy);
         
         if (op != RelationalOperator.EQUALS && op != RelationalOperator.NOT_EQUALS) {
             throw new ObjectiveFunctionException("Cannot use " + op + " with two boolean values");

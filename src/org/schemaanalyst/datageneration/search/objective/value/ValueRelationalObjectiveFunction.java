@@ -18,12 +18,12 @@ import org.schemaanalyst.util.Pair;
 public abstract class ValueRelationalObjectiveFunction<T> extends ObjectiveFunction<Pair<T>> {
 
     protected RelationalOperator op;
-    protected boolean nullIsTrue;
+    protected boolean nullIsSatisfy;
     protected String description;
     
-    public ValueRelationalObjectiveFunction(RelationalOperator op, boolean nullIsTrue) {
+    public ValueRelationalObjectiveFunction(RelationalOperator op, boolean nullIsSatisfy) {
         this.op = op;
-        this.nullIsTrue = nullIsTrue;
+        this.nullIsSatisfy = nullIsSatisfy;
     }
         
     @Override
@@ -34,7 +34,7 @@ public abstract class ValueRelationalObjectiveFunction<T> extends ObjectiveFunct
         description = lhs + " " + op + " " + rhs;
         
         if (lhs == null || rhs == null) {
-            if (nullIsTrue) {
+            if (nullIsSatisfy) {
                 return ObjectiveValue.optimalObjectiveValue(description);
             } else {
                 return ObjectiveValue.worstObjectiveValue(description);
@@ -46,20 +46,20 @@ public abstract class ValueRelationalObjectiveFunction<T> extends ObjectiveFunct
 
     protected abstract ObjectiveValue computeObjectiveValue(T lhs, T rhs);
     
-    public static ObjectiveValue compute(Value lhs, RelationalOperator op, Value rhs, boolean nullIsTrue) {
+    public static ObjectiveValue compute(Value lhs, RelationalOperator op, Value rhs, boolean nullIsSatisfy) {
 
         class RelationalObjectiveFunctionDispatcher implements ValueVisitor {
 
             Value lhs, rhs;
             RelationalOperator op;
-            boolean nullIsTrue;
+            boolean nullIsSatisfy;
             ObjectiveValue objVal;
             
-            ObjectiveValue dispatch(Value lhs, RelationalOperator op, Value rhs, boolean nullIsTrue) {
+            ObjectiveValue dispatch(Value lhs, RelationalOperator op, Value rhs, boolean nullIsSatisfy) {
                 this.lhs = lhs;
                 this.op = op;
                 this.rhs = rhs;
-                this.nullIsTrue = nullIsTrue;
+                this.nullIsSatisfy = nullIsSatisfy;
                 
                 if (lhs != null) {
                     lhs.accept(this);
@@ -107,21 +107,21 @@ public abstract class ValueRelationalObjectiveFunction<T> extends ObjectiveFunct
             }
             
             protected void booleanValue() {
-                BooleanValueRelationalObjectiveFunction objFun = new BooleanValueRelationalObjectiveFunction(op, nullIsTrue);
+                BooleanValueRelationalObjectiveFunction objFun = new BooleanValueRelationalObjectiveFunction(op, nullIsSatisfy);
                 objVal = objFun.evaluate(new Pair<BooleanValue>((BooleanValue) lhs, (BooleanValue) rhs));
             }
             
             protected void numericValue() {
-                NumericValueRelationalObjectiveFunction objFun = new NumericValueRelationalObjectiveFunction(op, nullIsTrue);
+                NumericValueRelationalObjectiveFunction objFun = new NumericValueRelationalObjectiveFunction(op, nullIsSatisfy);
                 objVal = objFun.evaluate(new Pair<NumericValue>((NumericValue) lhs, (NumericValue) rhs));  
             }
             
             protected void compoundValue() {
-                CompoundValueRelationalObjectiveFunction objFun = new CompoundValueRelationalObjectiveFunction(op, nullIsTrue);
+                CompoundValueRelationalObjectiveFunction objFun = new CompoundValueRelationalObjectiveFunction(op, nullIsSatisfy);
                 objVal = objFun.evaluate(new Pair<CompoundValue>((CompoundValue) lhs, (CompoundValue) rhs));
             }
         }      
 
-        return (new RelationalObjectiveFunctionDispatcher()).dispatch(lhs, op, rhs, nullIsTrue);
+        return (new RelationalObjectiveFunctionDispatcher()).dispatch(lhs, op, rhs, nullIsSatisfy);
     }
 }

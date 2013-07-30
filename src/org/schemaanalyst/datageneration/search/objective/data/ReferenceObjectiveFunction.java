@@ -18,24 +18,27 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
     protected List<Column> referenceColumns;
     protected Data state;
     protected String description;
-    protected boolean goalIsToSatisfy, nullIsTrue;
+    protected boolean goalIsToSatisfy, nullIsSatisfy;
 
     public ReferenceObjectiveFunction(List<Column> columns,
                                       List<Column> referenceColumns,
                                       Data state,
                                       String description,
                                       boolean goalIsToSatisfy,
-                                      boolean nullIsTrue) {
+                                      boolean nullIsSatisfy) {
         this.columns = columns;
         this.referenceColumns = referenceColumns;
         this.state = state;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.nullIsTrue = nullIsTrue;
+        this.nullIsSatisfy = nullIsSatisfy;
     }
 
     @Override
     public ObjectiveValue evaluate(Data data) {
+    	// The optimum corresponds to
+    	// -- a success (goalIsToSatisfy) on EVERY row, or 
+    	// -- a fail (!goalIsToSatisfy) on EVERY row.    	
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
         List<List<Cell>> rows = data.getCells(columns);
@@ -45,14 +48,14 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
         referenceRows.addAll(state.getCells(referenceColumns));
 
         for (List<Cell> row : rows) {
-            objVal.add(evaluateRow(row, referenceRows, nullIsTrue));
+            objVal.add(evaluateRow(row, referenceRows, nullIsSatisfy));
         }
 
         return objVal;
     }
 
     protected ObjectiveValue evaluateRow(List<Cell> row, List<List<Cell>> referenceRows, boolean allowNull) {
-
+    	
         String description = "Evaluating row with reference rows";        
         
         MultiObjectiveValue rowObjVal = goalIsToSatisfy
@@ -61,7 +64,7 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
         for (List<Cell> referenceRow : referenceRows) {
             rowObjVal.add(MultiValueObjectiveFunction.computeUsingCells(
-                    row, goalIsToSatisfy, referenceRow, nullIsTrue));
+                    row, goalIsToSatisfy, referenceRow, nullIsSatisfy));
         }
         
         return rowObjVal;
