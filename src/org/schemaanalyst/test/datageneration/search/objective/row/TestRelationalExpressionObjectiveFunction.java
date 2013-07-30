@@ -59,10 +59,10 @@ public class TestRelationalExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(RelationalExpression exp, boolean goalIsToSatisfy, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(RelationalExpression exp, boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal) {
         ObjectiveFunction<Row> objFun = 
                 new RelationalExpressionObjectiveFunction(
-                        exp, goalIsToSatisfy, nullIsSatisfy);
+                        exp, goalIsToSatisfy, nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

@@ -36,10 +36,10 @@ public class TestNullExpressionObjectiveFunction {
     
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(Value value, boolean isNotNull, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(Value value, boolean isNotNull, boolean nullAccepted, boolean optimal) {
 
         ObjectiveFunction<Row> objFun = new NullExpressionObjectiveFunction(
-                new NullExpression(new ConstantExpression(value), isNotNull), nullIsSatisfy);
+                new NullExpression(new ConstantExpression(value), isNotNull), nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

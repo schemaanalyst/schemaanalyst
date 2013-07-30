@@ -6,24 +6,24 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 public class NullValueObjectiveFunction extends ObjectiveFunction<Value> {
 
-    protected boolean nullIsSatisfy;
+    protected boolean nullAccepted;
 
-    public NullValueObjectiveFunction(boolean nullIsSatisfy) {
-        this.nullIsSatisfy = nullIsSatisfy;
+    public NullValueObjectiveFunction(boolean nullAccepted) {
+        this.nullAccepted = nullAccepted;
     }
 
     @Override
     public ObjectiveValue evaluate(Value value) {
-        String description = value + ", nullIsSatisfy: " + nullIsSatisfy;
+        String description = value + ", nullAccepted: " + nullAccepted;
 
-        if ((nullIsSatisfy && value == null) || (!nullIsSatisfy && value != null)) {
+        if ((nullAccepted && value == null) || (!nullAccepted && value != null)) {
             return ObjectiveValue.optimalObjectiveValue(description);
         } else {
             return ObjectiveValue.worstObjectiveValue(description);
         }
     }
 
-    public static ObjectiveValue compute(Value value, boolean nullIsSatisfy) {
-        return (new NullValueObjectiveFunction(nullIsSatisfy)).evaluate(value);
+    public static ObjectiveValue compute(Value value, boolean nullAccepted) {
+        return (new NullValueObjectiveFunction(nullAccepted)).evaluate(value);
     }
 }

@@ -16,14 +16,14 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class ExpressionObjectiveFunctionFactory {
 
     protected Expression expression;
-    protected boolean goalIsToSatisfy, nullIsSatisfy;
+    protected boolean goalIsToSatisfy, nullAccepted;
 
     public ExpressionObjectiveFunctionFactory(Expression expression,
                                               boolean goalIsToSatisfy,
-                                              boolean nullIsSatisfy) {
+                                              boolean nullAccepted) {
         this.expression = expression;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.nullIsSatisfy = nullIsSatisfy;
+        this.nullAccepted = nullAccepted;
     }
 
     public ObjectiveFunction<Row> create() {
@@ -48,19 +48,19 @@ public class ExpressionObjectiveFunctionFactory {
             @Override
             public void visit(AndExpression expression) {
                 objFun = new AndExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
             
             @Override
             public void visit(BetweenExpression expression) {
                 objFun = new BetweenExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
             public void visit(InExpression expression) {                
                 objFun = new InExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
@@ -72,19 +72,19 @@ public class ExpressionObjectiveFunctionFactory {
             @Override
             public void visit(OrExpression expression) {
                 objFun = new OrExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
 
             @Override
             public void visit(ParenthesisedExpression expression) {
                 objFun = new ParenthesisedExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
             public void visit(RelationalExpression expression) {
                 objFun = new RelationalExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, nullIsSatisfy);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
         }
 

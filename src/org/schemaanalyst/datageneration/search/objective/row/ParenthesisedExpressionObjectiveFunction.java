@@ -11,10 +11,10 @@ public class ParenthesisedExpressionObjectiveFunction extends ObjectiveFunction<
 
     public ParenthesisedExpressionObjectiveFunction(ParenthesisedExpression expression, 
                                                     boolean goalIsToSatisfy,
-                                                    boolean nullIsSatisfy) {
+                                                    boolean nullAccepted) {
         
         subObjFun = (new ExpressionObjectiveFunctionFactory(
-                expression.getSubexpression(), goalIsToSatisfy, nullIsSatisfy)).create();
+                expression.getSubexpression(), goalIsToSatisfy, nullAccepted)).create();
     }
 
     @Override

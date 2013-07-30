@@ -100,9 +100,9 @@ public class TestOrExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")     
-    public void testExpression(OrExpression exp, boolean goalIsToSatisfy, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(OrExpression exp, boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal) {
         ObjectiveFunction<Row> objFun = new OrExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, nullIsSatisfy);
+                exp, goalIsToSatisfy, nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

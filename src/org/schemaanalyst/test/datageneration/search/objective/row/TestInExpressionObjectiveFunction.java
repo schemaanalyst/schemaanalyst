@@ -163,9 +163,9 @@ public class TestInExpressionObjectiveFunction {
     
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(InExpression exp, boolean goalIsToSatisfy, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(InExpression exp, boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal) {
         ObjectiveFunction<Row> objFun = new InExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, nullIsSatisfy);
+                exp, goalIsToSatisfy, nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

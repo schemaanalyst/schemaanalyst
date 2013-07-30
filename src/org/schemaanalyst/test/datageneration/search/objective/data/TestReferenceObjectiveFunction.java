@@ -39,7 +39,19 @@ public class TestReferenceObjectiveFunction {
 	Integer[] twoRowsOneColNoMatch = {1, 5, 0, 0,
 		   	   						  2, 3, 0, 0};		
 	
-	Integer[] oneRowNulls = {null, null, 0, 0};		
+	Integer[] twoRowsMatchWithOne = {2, 1, 0, 0,
+			  					     2, 2, 0, 0};	
+	
+	Integer[] oneRowNulls = {null, null, 0, 0};
+	
+	Integer[] twoRowsNullMatch1 = {null, 1, 0, 0,
+								  null, null, 0, 0};
+
+	Integer[] twoRowsNullMatch2 = {null, 1, 0, 0,
+			  					  1, null, 0, 0};	
+	
+	Integer[] oneRowMatchWithOther1 = {1, 2, 0, 0};	
+	Integer[] oneRowMatchWithOther2 = {2, 1, 0, 0};
 	
     Object[] oneColumnTestValues() {
         return $(
@@ -75,11 +87,32 @@ public class TestReferenceObjectiveFunction {
                 $(twoRowsOneColNoMatch, empty, false, false, true),
                 $(twoRowsOneColNoMatch, empty, false, true, true),
                 
+                $(twoRowsMatchWithOne, empty, true, false, true),
+                $(twoRowsMatchWithOne, empty, true, true, true),
+                $(twoRowsMatchWithOne, empty, false, false, false),
+                $(twoRowsMatchWithOne, empty, false, true, false),                
+                
                 $(oneRowNulls, empty, true, false, false),
                 $(oneRowNulls, empty, true, true, true),
                 $(oneRowNulls, empty, false, false, false),
-                $(oneRowNulls, empty, false, true, true)                  
-                );
+                $(oneRowNulls, empty, false, true, true),                  
+
+                $(twoRowsNullMatch1, empty, true, false, false),
+                $(twoRowsNullMatch1, empty, true, true, true),
+                $(twoRowsNullMatch1, empty, false, false, false),
+                $(twoRowsNullMatch1, empty, false, true, true),                        
+                
+                $(twoRowsNullMatch2, empty, true, false, false),
+                $(twoRowsNullMatch2, empty, true, true, true),
+                $(twoRowsNullMatch2, empty, false, false, false),                
+                // partial match on 1 == 1, so this test actually fails
+                $(twoRowsNullMatch2, empty, false, true, false),
+                
+                $(oneRowMatchWithOther1, oneRowMatchWithOther2, true, false, true),
+                $(oneRowMatchWithOther1, oneRowMatchWithOther2, true, true, true),
+                $(oneRowMatchWithOther1, oneRowMatchWithOther2, false, false, false),
+                $(oneRowMatchWithOther1, oneRowMatchWithOther2, false, true, false)                
+        		);
     }    
         
     
@@ -88,7 +121,7 @@ public class TestReferenceObjectiveFunction {
     public void oneColumnTests(Integer[] dataValues, 
     						   Integer[] stateValues, 
     						   boolean goalIsToSatisfy, 
-    						   boolean nullIsSatisfy, 
+    						   boolean nullAccepted, 
     						   boolean optimal) {
     	
     	FourColumnMockDatabase database = new FourColumnMockDatabase();
@@ -105,7 +138,7 @@ public class TestReferenceObjectiveFunction {
         referenceColumns.add(database.column2);
         
         ReferenceObjectiveFunction objFun = new ReferenceObjectiveFunction(
-        		columns, referenceColumns, state, "", goalIsToSatisfy, nullIsSatisfy);
+        		columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
         ObjectiveValue objVal = objFun.evaluate(data);
         
         if (optimal) {

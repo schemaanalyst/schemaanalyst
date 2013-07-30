@@ -92,9 +92,9 @@ public class TestMultiValueObjectiveFunction {
     @Test
     @Parameters(method = "testValues")       
     public void test(List<Value> lhs, boolean equals, List<Value> rhs, 
-                     boolean nullIsSatisfy, boolean optimal) {
+                     boolean nullAccepted, boolean optimal) {
         
-        ObjectiveValue objVal = MultiValueObjectiveFunction.compute(lhs, equals, rhs, nullIsSatisfy);
+        ObjectiveValue objVal = MultiValueObjectiveFunction.compute(lhs, equals, rhs, nullAccepted);
         
         if (optimal) {
             assertOptimal(objVal);            
@@ -119,7 +119,7 @@ public class TestMultiValueObjectiveFunction {
     @Test
     @Parameters(method = "exceptionValues")   
     public void testNonEqualSizedLists(List<Value> lhs, boolean equals, List<Value> rhs, 
-                                       boolean nullIsSatisfy) {
+                                       boolean nullAccepted) {
         boolean exceptionThrown = false;
         try {
             MultiValueObjectiveFunction.compute(lhs, equals, rhs, false);

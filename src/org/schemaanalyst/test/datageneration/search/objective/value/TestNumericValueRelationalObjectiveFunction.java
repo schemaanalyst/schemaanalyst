@@ -57,7 +57,7 @@ public class TestNumericValueRelationalObjectiveFunction {
     @Test
     @Parameters(method = "distanceValues")    
     public void testDistance(String lhs, RelationalOperator op, String rhs, BigDecimal expectedDistance) {
-        DistanceObjectiveValue objValnullIsSatisfy = 
+        DistanceObjectiveValue objValnullAccepted = 
                 (DistanceObjectiveValue) (new NumericValueRelationalObjectiveFunction(op, true)).evaluate(
                         new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
 
@@ -66,8 +66,8 @@ public class TestNumericValueRelationalObjectiveFunction {
                         new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
         
         
-        assertEquals("Distance should be " + expectedDistance + " for " + objValnullIsSatisfy, 
-                     expectedDistance, objValnullIsSatisfy.getDistance());
+        assertEquals("Distance should be " + expectedDistance + " for " + objValnullAccepted, 
+                     expectedDistance, objValnullAccepted.getDistance());
         
         assertEquals("Distance should be " + expectedDistance + " for " + objValNullIsFalse, 
                      expectedDistance, objValNullIsFalse.getDistance());

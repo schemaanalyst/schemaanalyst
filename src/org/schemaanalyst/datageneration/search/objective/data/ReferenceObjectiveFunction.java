@@ -18,20 +18,20 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
     protected List<Column> referenceColumns;
     protected Data state;
     protected String description;
-    protected boolean goalIsToSatisfy, nullIsSatisfy;
+    protected boolean goalIsToSatisfy, nullAccepted;
 
     public ReferenceObjectiveFunction(List<Column> columns,
                                       List<Column> referenceColumns,
                                       Data state,
                                       String description,
                                       boolean goalIsToSatisfy,
-                                      boolean nullIsSatisfy) {
+                                      boolean nullAccepted) {
         this.columns = columns;
         this.referenceColumns = referenceColumns;
         this.state = state;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.nullIsSatisfy = nullIsSatisfy;
+        this.nullAccepted = nullAccepted;
     }
 
     @Override
@@ -48,7 +48,7 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
         referenceRows.addAll(state.getCells(referenceColumns));
 
         for (List<Cell> row : rows) {
-            objVal.add(evaluateRow(row, referenceRows, nullIsSatisfy));
+            objVal.add(evaluateRow(row, referenceRows, nullAccepted));
         }
 
         return objVal;
@@ -64,7 +64,7 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
         for (List<Cell> referenceRow : referenceRows) {
             rowObjVal.add(MultiValueObjectiveFunction.computeUsingCells(
-                    row, goalIsToSatisfy, referenceRow, nullIsSatisfy));
+                    row, goalIsToSatisfy, referenceRow, nullAccepted));
         }
         
         return rowObjVal;

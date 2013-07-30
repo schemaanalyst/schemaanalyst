@@ -100,9 +100,9 @@ public class TestAndExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")     
-    public void testExpression(AndExpression exp, boolean goalIsToSatisfy, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(AndExpression exp, boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal) {
         ObjectiveFunction<Row> objFun = new AndExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, nullIsSatisfy);
+                exp, goalIsToSatisfy, nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

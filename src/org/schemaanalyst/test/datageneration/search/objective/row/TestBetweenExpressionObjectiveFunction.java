@@ -188,9 +188,9 @@ public class TestBetweenExpressionObjectiveFunction {
         
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(BetweenExpression exp, boolean goalIsToSatisfy, boolean nullIsSatisfy, boolean optimal) {
+    public void testExpression(BetweenExpression exp, boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal) {
         ObjectiveFunction<Row> objFun = new BetweenExpressionObjectiveFunction(
-                exp, goalIsToSatisfy, nullIsSatisfy);
+                exp, goalIsToSatisfy, nullAccepted);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

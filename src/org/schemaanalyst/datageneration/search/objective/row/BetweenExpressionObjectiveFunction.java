@@ -37,19 +37,19 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     private boolean evaluateTrueForm;
     
     // whether the involvement of NULL results in trivial satisfaction of the expression
-    private boolean nullIsSatisfy;   
+    private boolean nullAccepted;   
     
     // a string descriptor for this objective function
     private String description;
     
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
                                               boolean goalIsToSatisfy,
-                                              boolean nullIsSatisfy) {
+                                              boolean nullAccepted) {
         // which form to evaluate?
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
                 
         // is NULL allowed to satisfy the expression
-        this.nullIsSatisfy = nullIsSatisfy;
+        this.nullAccepted = nullAccepted;
         
         // get evaluators for each of the three sub-expressions involved 
         subjectEvaluator = new ExpressionEvaluator(expression.getSubject());
@@ -68,7 +68,7 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         // make a descriptor string
         description = expression.toString() 
                 + " goalIsToSatisfy: " + goalIsToSatisfy
-                + " nullIsSatisfy: " + nullIsSatisfy;
+                + " nullAccepted: " + nullAccepted;
     }
 
     @Override
@@ -95,8 +95,8 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         */
         
         // add objective values for the two comparisons
-        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, lhsOp, lhsValue, nullIsSatisfy));
-        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, rhsOp, rhsValue, nullIsSatisfy));                
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, lhsOp, lhsValue, nullAccepted));
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, rhsOp, rhsValue, nullAccepted));                
 
         return objVal;        
     }

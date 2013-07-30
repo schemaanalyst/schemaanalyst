@@ -12,11 +12,11 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
 
     private ExpressionEvaluator lhsEvaluator, rhsEvaluator;
     private RelationalOperator op;
-    private boolean nullIsSatisfy;
+    private boolean nullAccepted;
     
     public RelationalExpressionObjectiveFunction(RelationalExpression expression,
                                                  boolean goalIsToSatisfy,
-                                                 boolean nullIsSatisfy) {        
+                                                 boolean nullAccepted) {        
         // set up evaluators for the LHS and RHS
         lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
         rhsEvaluator = new ExpressionEvaluator(expression.getRHS());
@@ -25,14 +25,14 @@ public class RelationalExpressionObjectiveFunction extends ObjectiveFunction<Row
         RelationalOperator op = expression.getRelationalOperator();
         this.op = goalIsToSatisfy ? op : op.inverse();
 
-        // set nullIsSatisfy
-        this.nullIsSatisfy = nullIsSatisfy;       
+        // set nullAccepted
+        this.nullAccepted = nullAccepted;       
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
         Value lhsValue = lhsEvaluator.evaluate(row);
         Value rhsValue = rhsEvaluator.evaluate(row);         
-        return ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullIsSatisfy);
+        return ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullAccepted);
     }
 }

@@ -9,15 +9,15 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 public class NullExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
     private ExpressionEvaluator subexpressionEvaluator;
-    private boolean nullIsSatisfy;
+    private boolean nullAccepted;
     
     public NullExpressionObjectiveFunction(NullExpression expression, boolean goalIsToSatisfy) {
-        nullIsSatisfy = goalIsToSatisfy != expression.isNotNull();            
+        nullAccepted = goalIsToSatisfy != expression.isNotNull();            
         subexpressionEvaluator = new ExpressionEvaluator(expression.getSubexpression());
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-        return NullValueObjectiveFunction.compute(subexpressionEvaluator.evaluate(row), nullIsSatisfy);
+        return NullValueObjectiveFunction.compute(subexpressionEvaluator.evaluate(row), nullAccepted);
     }
 }
