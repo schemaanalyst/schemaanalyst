@@ -1,162 +1,166 @@
 package org.schemaanalyst.test.datageneration.search.objective.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
+
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueObjectiveFunction;
-import org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction;
-import org.schemaanalyst.test.testutil.mock.MockDatabase;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static junitparams.JUnitParamsRunner.$;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
+@RunWith(JUnitParamsRunner.class)
 public class TestUniqueObjectiveFunction {
 
-    MockDatabase database;
-    UniqueObjectiveFunction objFun;
-    Data data;
+	Integer[] empty = {};
+	
+	Integer[] oneColTwoRowsTwoDiffValues = {2, 
+			                                3};	
+	
+	Integer[] oneColTwoRowsTwoSameValues = {2, 
+            								2};
+	
+	Integer[] oneColTwoRowsAllNulls = {null, 
+							   		   null};
+	
+	Integer[] oneColTwoRowsOneNull = {1, 
+			                          null};	
 
-    void setup(boolean satisfy, boolean allowNull, int dataRows, int stateRows) {
-        data = database.createData(dataRows);
-        Data state = database.createState(stateRows);
-        objFun = new UniqueObjectiveFunction(
-                database.table.getColumns(),
-                state, "Configurable Unique column constraint",
-                satisfy,
-                allowNull);
-    }
+	
+    Object[] oneColumnTestValues() {
+        return $(
+                $(oneColTwoRowsTwoDiffValues, empty, true, false, true),
+                $(oneColTwoRowsTwoDiffValues, empty, true, true, true),
+                $(oneColTwoRowsTwoDiffValues, empty, false, false, false),
+                $(oneColTwoRowsTwoDiffValues, empty, false, true, false),           		
 
+                $(oneColTwoRowsTwoSameValues, empty, true, false, false),
+                $(oneColTwoRowsTwoSameValues, empty, true, true, false),
+                $(oneColTwoRowsTwoSameValues, empty, false, false, true),
+                $(oneColTwoRowsTwoSameValues, empty, false, true, true),                 
+                
+                $(oneColTwoRowsAllNulls, empty, true, false, false),
+                $(oneColTwoRowsAllNulls, empty, true, true, true),
+                $(oneColTwoRowsAllNulls, empty, false, false, false),
+                $(oneColTwoRowsAllNulls, empty, false, true, true),
+                
+                $(oneColTwoRowsOneNull, oneColTwoRowsTwoDiffValues, true, false, false),
+                $(oneColTwoRowsOneNull, oneColTwoRowsTwoDiffValues, true, true, true),
+                $(oneColTwoRowsOneNull, oneColTwoRowsTwoDiffValues, false, false, false),
+                $(oneColTwoRowsOneNull, oneColTwoRowsTwoDiffValues, false, true, true)                
+                );
+    }              
+                
+	
     @Test
-    public void satisfyNoNulls_2Columns2RowsUnique() {
-        database = new TwoColumnMockDatabase();
-        setup(true, false, 2, 0);
-        database.setDataValues(
-                1, 1,
-                2, 2);
-        assertOptimal(objFun.evaluate(data));
-    }
+    @Parameters(method = "oneColumnTestValues")     
+    public void oneColumnTests(Integer[] dataValues, 
+    						   Integer[] stateValues, 
+    						   boolean goalIsToSatisfy, 
+    						   boolean nullAccepted, 
+    						   boolean optimal) {
+    	
+    	OneColumnMockDatabase database = new OneColumnMockDatabase();
+    	
+        Data data = database.createData(dataValues.length);
+        Data state = database.createState(stateValues.length);    	
+        database.setDataValues(dataValues);
+        database.setStateValues(stateValues);
+    	
+        List<Column> columns = new ArrayList<>();
+        columns.add(database.column);
+                
+        UniqueObjectiveFunction objFun = new UniqueObjectiveFunction(
+        		columns, state, "", goalIsToSatisfy, nullAccepted);
+        ObjectiveValue objVal = objFun.evaluate(data);
+        
+        if (optimal) {
+        	assertOptimal(objVal);
+        } else {
+        	assertNonOptimal(objVal);
+        }
+    }	
+    
+    Integer[] twoColsTwoRowsUnique = {1, 1,
+            						  2, 2};	
 
+    Integer[] twoColsOneRow1 = {1, 1};
+    
+    Integer[] twoColsOneRow2 = {2, 2};
+    
+    Integer[] twoColsTwoRowsNonUnique = {1, 1,
+			  							 1, 1};    
+
+    Integer[] twoColsTwoRowsOneNull = {1, null,
+    		                           1, 1};
+    
+	Object[] twoColumnTestValues() {
+		return $(
+			$(twoColsTwoRowsUnique, empty, true, false, true),
+			$(twoColsTwoRowsUnique, empty, true, true, true),
+			$(twoColsTwoRowsUnique, empty, false, false, false),
+			$(twoColsTwoRowsUnique, empty, false, true, false),
+			
+			$(twoColsOneRow1, twoColsOneRow2, true, false, true),
+			$(twoColsOneRow1, twoColsOneRow2, true, true, true),
+			$(twoColsOneRow1, twoColsOneRow2, false, false, false),
+			$(twoColsOneRow1, twoColsOneRow2, false, true, false),
+			
+			$(twoColsTwoRowsNonUnique, empty, true, false, false),
+			$(twoColsTwoRowsNonUnique, empty, true, true, false),
+			$(twoColsTwoRowsNonUnique, empty, false, false, true),
+			$(twoColsTwoRowsNonUnique, empty, false, true, true),
+			
+			$(twoColsOneRow1, twoColsOneRow1, true, false, false),
+			$(twoColsOneRow1, twoColsOneRow1, true, true, false),
+			$(twoColsOneRow1, twoColsOneRow1, false, false, true),
+			$(twoColsOneRow1, twoColsOneRow1, false, true, true),
+			
+			$(twoColsTwoRowsOneNull, empty, true, false, false),
+			$(twoColsTwoRowsOneNull, empty, true, true, true),
+			$(twoColsTwoRowsOneNull, empty, false, false, false),
+			$(twoColsTwoRowsOneNull, empty, false, true, true)
+			);
+	}      
+    
+    
     @Test
-    public void satisfyNoNulls_2Columns1RowData1RowStateUnique() {
-        database = new TwoColumnMockDatabase();
-        setup(true, false, 1, 1);
-        database.setDataValues(1, 1);
-        database.setStateValues(2, 2);
-        assertOptimal(objFun.evaluate(data));
-    }
-
-    @Test
-    public void satisfyNoNulls_2Columns2RowsNotUnique() {
-        database = new TwoColumnMockDatabase();
-        setup(true, false, 2, 0);
-        database.setDataValues(
-                1, 1,
-                1, 1);
-
-        MultiObjectiveValue expected = new SumOfMultiObjectiveValue("top level");
-        SumOfMultiObjectiveValue row = new SumOfMultiObjectiveValue("row");
-        DistanceObjectiveValue value = new DistanceObjectiveValue("value");
-        value.setValueUsingDistance(NumericValueObjectiveFunction.K);
-        row.add(value);
-        expected.add(row);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertEquivalent(expected, actual);
-    }
-
-    @Test
-    public void satisfyNoNulls_2Columns1RowData1RowStateNotUnique() {
-        database = new TwoColumnMockDatabase();
-        setup(true, false, 1, 1);
-        database.setDataValues(1, 1);
-        database.setStateValues(1, 1);
-
-        MultiObjectiveValue expected = new SumOfMultiObjectiveValue("top level");
-        SumOfMultiObjectiveValue row = new SumOfMultiObjectiveValue("row");
-        DistanceObjectiveValue value = new DistanceObjectiveValue("value");
-        value.setValueUsingDistance(NumericValueObjectiveFunction.K);
-        row.add(value);
-        expected.add(row);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertEquivalent(expected, actual);
-    }
-
-    @Test
-    public void satisfyNoNulls_1ColumnNulls() {
-        database = new OneColumnMockDatabase();
-        setup(true, false, 2, 0);
-        database.setDataValues(null, null);
-
-        MultiObjectiveValue expected = new SumOfMultiObjectiveValue("top level");
-        SumOfMultiObjectiveValue row = new SumOfMultiObjectiveValue("row");
-        row.add(ObjectiveValue.worstObjectiveValue("null value"));
-        expected.add(row);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertEquivalent(expected, actual);
-    }
-
-    @Test
-    public void satisfyNulls_1ColumnNulls() {
-        database = new OneColumnMockDatabase();
-        setup(true, true, 2, 2);
-        database.setDataValues(1, null);
-        database.setStateValues(2, 3);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertOptimal(actual);
-    }
-
-    @Test
-    public void satisfyNulls_2ColumnNulls() {
-        database = new TwoColumnMockDatabase();
-        setup(true, true, 2, 0);
-        database.setDataValues(1, null,
-                1, 1);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertOptimal(actual);
-    }
-
-    @Test
-    public void negateNoNulls_2Columns2RowsNotUnique() {
-        database = new TwoColumnMockDatabase();
-        setup(false, false, 2, 0);
-        database.setDataValues(
-                1, 1,
-                1, 1);
-        assertOptimal(objFun.evaluate(data));
-    }
-
-    @Test
-    public void negateNoNulls_1ColumnsNulls() {
-        database = new OneColumnMockDatabase();
-        setup(false, false, 2, 0);
-        database.setDataValues(null, null);
-
-        MultiObjectiveValue expected = new SumOfMultiObjectiveValue("top level");
-        MultiObjectiveValue row = new SumOfMultiObjectiveValue("row");
-        row.add(ObjectiveValue.worstObjectiveValue("null value"));
-        expected.add(row);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertEquivalent(expected, actual);
-    }
-
-    @Test
-    public void negateNulls_1ColumnNulls() {
-        database = new OneColumnMockDatabase();
-        setup(false, true, 2, 2);
-        database.setDataValues(1, null);
-        database.setStateValues(1, 1);
-
-        ObjectiveValue actual = objFun.evaluate(data);
-        assertOptimal(actual);
-    }
+    @Parameters(method = "twoColumnTestValues")     
+    public void twoColumnTests(Integer[] dataValues, 
+    						   Integer[] stateValues, 
+    						   boolean goalIsToSatisfy, 
+    						   boolean nullAccepted, 
+    						   boolean optimal) {
+    	
+    	TwoColumnMockDatabase database = new TwoColumnMockDatabase();
+    	
+        Data data = database.createData(dataValues.length / 2);
+        Data state = database.createState(stateValues.length / 2);    	
+        database.setDataValues(dataValues);
+        database.setStateValues(stateValues);
+    	
+        List<Column> columns = new ArrayList<>();
+        columns.add(database.column1);
+        columns.add(database.column2);
+                
+        UniqueObjectiveFunction objFun = new UniqueObjectiveFunction(
+        		columns, state, "", goalIsToSatisfy, nullAccepted);
+        ObjectiveValue objVal = objFun.evaluate(data);
+        
+        if (optimal) {
+        	assertOptimal(objVal);
+        } else {
+        	assertNonOptimal(objVal);
+        }
+    }	    
 }
