@@ -1,6 +1,5 @@
 package org.schemaanalyst.datageneration.search.objective.data;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -11,33 +10,26 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.CellListObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
-
-import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 
 public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
 
     protected List<Column> columns;
-    protected RelationalOperator op;
     protected Data state;
     protected String description;
-    protected boolean goalIsToSatisfy, allowNull;
+    protected boolean goalIsToSatisfy, nullAccepted;
 
-    public UniqueObjectiveFunction(List<Column> columns,
-            Data state,
-            String description,
-            boolean goalIsToSatisfy, boolean allowNull) {
+    public UniqueObjectiveFunction(List<Column> columns, 
+                                   Data state, 
+                                   String description,
+                                   boolean goalIsToSatisfy, 
+                                   boolean nullAccepted) {
         this.columns = columns;
         this.state = state;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.allowNull = allowNull;
-
-        this.op = goalIsToSatisfy ? NOT_EQUALS : EQUALS;
+        this.nullAccepted = nullAccepted;
     }
 
     @Override
@@ -81,27 +73,8 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
 
         while (rowsIterator.hasNext()) {
             List<Cell> compareRow = rowsIterator.next();
-            objVal.add(evaluateRow(row, compareRow, allowNull));
-        }
-    }
-
-    protected ObjectiveValue evaluateRow(List<Cell> row, List<Cell> otherRow, boolean allowNull) {
-
-        if (allowNull) {
-
-            MultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue("Allowing for nulls");
-            rowObjVal.add(evaluateRow(row, otherRow, false));
-
-            List<Cell> allCells = new ArrayList<>(row);
-            allCells.addAll(otherRow);
-            for (Cell cell : allCells) {
-                rowObjVal.add(NullValueObjectiveFunction.compute(cell.getValue(), true));
-            }
-
-            return rowObjVal;
-
-        } else {
-            return CellListObjectiveFunction.compute(row, op, otherRow);
+            objVal.add(MultiValueObjectiveFunction.computeUsingCells(
+                    row, !goalIsToSatisfy, compareRow, nullAccepted));
         }
     }
 }

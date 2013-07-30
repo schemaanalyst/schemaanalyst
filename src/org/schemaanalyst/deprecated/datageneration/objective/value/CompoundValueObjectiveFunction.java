@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.value;
+package org.schemaanalyst.deprecated.datageneration.objective.value;
 
 import java.util.List;
 
@@ -73,7 +73,7 @@ public class CompoundValueObjectiveFunction extends ObjectiveFunction<Relational
 
             case NOT_EQUALS:
                 if (sizeDiff > 0) {
-                    objVal.add(ObjectiveValue.bestObjectiveValue("Compound values are of different sizes"));
+                    objVal.add(ObjectiveValue.optimalObjectiveValue("Compound values are of different sizes"));
                 } else {
                     // value lists are of equal length
                     for (int i = 0; i < smallestSize; i++) {

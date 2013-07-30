@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective.expression;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.row;
 
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
@@ -22,8 +22,8 @@ public class TestRelationalExpressionObjectiveFunction {
                     RelationalOperator.EQUALS, 
                     new ConstantExpression(new NumericValue(1)));
         
-        setupObjFuns(exp, false);        
-        assertOptimality(true);
+        setupObjFuns(exp, false);        // allowNull
+        assertOptimality(true);         // goalIsToSatisfy
     }
 
     @Test

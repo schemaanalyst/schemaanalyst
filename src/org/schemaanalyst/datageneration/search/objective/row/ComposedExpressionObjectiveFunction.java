@@ -14,19 +14,19 @@ public abstract class ComposedExpressionObjectiveFunction extends ObjectiveFunct
 
     protected CompoundExpression expression;
     protected List<ObjectiveFunction<Row>> subObjFuns;
-    protected boolean goalIsToSatisfy, allowNull;
+    protected boolean goalIsToSatisfy, nullAccepted;
     
     public ComposedExpressionObjectiveFunction(CompoundExpression expression,
                                                boolean goalIsToSatisfy,
-                                               boolean allowNull) {
+                                               boolean nullAccepted) {
         this.expression = expression;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.allowNull = allowNull;
+        this.nullAccepted = nullAccepted;
         
         subObjFuns = new ArrayList<>();
         for (Expression subexpression : expression.getSubexpressions()) {
             subObjFuns.add((new ExpressionObjectiveFunctionFactory(
-                    subexpression, goalIsToSatisfy, allowNull)).create());
+                    subexpression, goalIsToSatisfy, nullAccepted)).create());
         }
     }
 

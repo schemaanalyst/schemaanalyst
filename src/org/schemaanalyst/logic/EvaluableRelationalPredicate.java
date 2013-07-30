@@ -6,11 +6,7 @@ public class EvaluableRelationalPredicate<T extends Comparable<T>> extends Relat
         super(lhs, operator, rhs);
     }
 
-    public EvaluableRelationalPredicate(T lhs, String operator, T rhs) {
-        super(lhs, operator, rhs);
-    }
-
-    public Boolean isSatisfied3VL() {
+   public Boolean isSatisfied3VL() {
         if (lhs == null || rhs == null) {
             return null;
         }

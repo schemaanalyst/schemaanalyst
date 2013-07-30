@@ -7,74 +7,97 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.ValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.ValueRelationalObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 
+/**
+ *  Evaluates a BetweenExpression by considering:  
+ *  - X BETWEEN Y AND Z as the raw predicate ((X >= Y) AND (X <= Z)) -- the so-called "True Form"
+ *  - X NOT BETWEEN Y AND Z as the raw predicate ((X < Y) OR (X > Z)) -- the so-called "False Form".
+ *  
+ *  where:
+ *  - X is the result of the BetweenExpression's subjectExpression
+ *  - Y is the result of the BetweenExpression's lhsExpression
+ *  - Z is the result of the BetweenExpression's rhsExpression
+ *  
+ *  In each case, the X/Y and X/Z comparisons are referred to as the LHS and RHS comparisons respectively.
+ *  
+ */
 public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-    protected ExpressionEvaluator subjectExpression, lhsExpression, rhsExpression;
-    protected ValueObjectiveFunction lhsObjFun, rhsObjFun;
-    protected RelationalOperator lhsOp, rhsOp;
-    protected boolean evaluateToTrue, allowNull;
-
+    // evaluators for different parts of the expression 
+    private ExpressionEvaluator subjectEvaluator, lhsEvaluator, rhsEvaluator;
+    
+    // the relational operators for the LHS and RHS comparisons (i.e. >= or < for lhsOp)
+    private RelationalOperator lhsOp, rhsOp;
+    
+    // "evaluateTrueForm" is true when the satisfaction goal is the raw predicate ((X >= Y) AND (X <= Z))
+    // else false for its counterpart ((X < Y) OR (X > Z))
+    private boolean evaluateTrueForm;
+    
+    // whether the involvement of NULL results in trivial satisfaction of the expression
+    private boolean nullAccepted;   
+    
+    // a string descriptor for this objective function
+    private String description;
+    
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
                                               boolean goalIsToSatisfy,
-                                              boolean allowNull) {
-        this.evaluateToTrue = (goalIsToSatisfy != expression.isNotBetween());
-        this.allowNull = allowNull;
+                                              boolean nullAccepted) {
+        // which form to evaluate?
+        this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
+                
+        // is NULL allowed to satisfy the expression
+        this.nullAccepted = nullAccepted;
         
-        subjectExpression = new ExpressionEvaluator(expression.getSubject());
-        lhsExpression = new ExpressionEvaluator(expression.getLHS());
-        rhsExpression = new ExpressionEvaluator(expression.getRHS());
+        // get evaluators for each of the three sub-expressions involved 
+        subjectEvaluator = new ExpressionEvaluator(expression.getSubject());
+        lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
+        rhsEvaluator = new ExpressionEvaluator(expression.getRHS());
 
-        lhsOp = RelationalOperator.GREATER_OR_EQUALS;
-        rhsOp = RelationalOperator.LESS_OR_EQUALS;
-
-        if (!evaluateToTrue) {
-            lhsOp = lhsOp.inverse();
-            rhsOp = rhsOp.inverse();
+        // find out which operators of needed for the LHS and RHS comparisons
+        if (evaluateTrueForm) {
+            lhsOp = RelationalOperator.GREATER_OR_EQUALS;
+            rhsOp = RelationalOperator.LESS_OR_EQUALS;
+        } else {
+            lhsOp = RelationalOperator.LESS;
+            rhsOp = RelationalOperator.GREATER;
         }
-
-        lhsObjFun = new ValueObjectiveFunction();
-        rhsObjFun = new ValueObjectiveFunction();
+        
+        // make a descriptor string
+        description = expression.toString() 
+                + " goalIsToSatisfy: " + goalIsToSatisfy
+                + " nullAccepted: " + nullAccepted;
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
-        MultiObjectiveValue objVal = evaluateToTrue
-                ? new SumOfMultiObjectiveValue()
-                : new BestOfMultiObjectiveValue();
+        // "SumOf" for AND ("True Form"), "Best Of" for OR ("False Form").
+        MultiObjectiveValue objVal = evaluateTrueForm
+                ? new SumOfMultiObjectiveValue(description)
+                : new BestOfMultiObjectiveValue(description);
 
-        Value subjectValue = subjectExpression.evaluate(row);
-        Value lhsExpValue = lhsExpression.evaluate(row);
-        Value rhsExpValue = rhsExpression.evaluate(row);
+        // evaluate each subexpression to a value
+        Value subjectValue = subjectEvaluator.evaluate(row);
+        Value lhsValue = lhsEvaluator.evaluate(row);
+        Value rhsValue = rhsEvaluator.evaluate(row);
         
-        objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<>(subjectValue, lhsOp, lhsExpValue)));
-
-        objVal.add(lhsObjFun.evaluate(
-                new RelationalPredicate<>(subjectValue, rhsOp, rhsExpValue)));        
-        
-        if (allowNull) {
-            ObjectiveValue subjectNullObjVal = 
-                    NullValueObjectiveFunction.compute(subjectValue, true);
-            ObjectiveValue lhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(lhsExpValue, true);
-            ObjectiveValue rhsNullObjVal = 
-                    NullValueObjectiveFunction.compute(rhsExpValue, true);
-            
-            BestOfMultiObjectiveValue allowNullObjVal = 
-                    new BestOfMultiObjectiveValue("Allowing for nulls");
-            allowNullObjVal.add(subjectNullObjVal);
-            allowNullObjVal.add(lhsNullObjVal);
-            allowNullObjVal.add(rhsNullObjVal);
-            allowNullObjVal.add(objVal);
-            return allowNullObjVal;
-        } else {
-            return objVal;
+        // NOTE: the following should not be implemented unless the BETWEEN expression is SYMMETRIC
+        // (it's ASYMMETRIC by default), and we do not support SYMMETRIC in BetweenExpression yet. 
+        /*
+        // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
+        if (lhsValue != null && rhsValue != null && lhsValue.compareTo(rhsValue) > 0) {
+            Value temp = lhsValue;
+            lhsValue = rhsValue;
+            rhsValue = temp;
         }
+        */
+        
+        // add objective values for the two comparisons
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, lhsOp, lhsValue, nullAccepted));
+        objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, rhsOp, rhsValue, nullAccepted));                
+
+        return objVal;        
     }
 }

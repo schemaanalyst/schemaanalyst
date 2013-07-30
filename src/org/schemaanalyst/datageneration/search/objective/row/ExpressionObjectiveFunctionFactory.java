@@ -2,6 +2,7 @@ package org.schemaanalyst.datageneration.search.objective.row;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
@@ -15,14 +16,14 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class ExpressionObjectiveFunctionFactory {
 
     protected Expression expression;
-    protected boolean goalIsToSatisfy, allowNull;
+    protected boolean goalIsToSatisfy, nullAccepted;
 
     public ExpressionObjectiveFunctionFactory(Expression expression,
-            boolean goalIsToSatisfy,
-            boolean allowNull) {
+                                              boolean goalIsToSatisfy,
+                                              boolean nullAccepted) {
         this.expression = expression;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.allowNull = allowNull;
+        this.nullAccepted = nullAccepted;
     }
 
     public ObjectiveFunction<Row> create() {
@@ -36,8 +37,9 @@ public class ExpressionObjectiveFunctionFactory {
                 expression.accept(this);
                 
                 if (objFun == null) {
-                    System.out.println("OBJ FUN is NULL!!!");
-                    System.out.println("Expression is " + expression.getClass());                    
+                    throw new ObjectiveFunctionException("Expression type " 
+                            + expression.getClass().getSimpleName() 
+                            + " not supported for creating objective functions");                    
                 }
                 
                 return objFun;
@@ -46,19 +48,19 @@ public class ExpressionObjectiveFunctionFactory {
             @Override
             public void visit(AndExpression expression) {
                 objFun = new AndExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
             
             @Override
             public void visit(BetweenExpression expression) {
                 objFun = new BetweenExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
             public void visit(InExpression expression) {                
                 objFun = new InExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
@@ -70,19 +72,19 @@ public class ExpressionObjectiveFunctionFactory {
             @Override
             public void visit(OrExpression expression) {
                 objFun = new OrExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
 
             @Override
             public void visit(ParenthesisedExpression expression) {
                 objFun = new ParenthesisedExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }            
             
             @Override
             public void visit(RelationalExpression expression) {
                 objFun = new RelationalExpressionObjectiveFunction(
-                        expression, goalIsToSatisfy, allowNull);
+                        expression, goalIsToSatisfy, nullAccepted);
             }
         }
 

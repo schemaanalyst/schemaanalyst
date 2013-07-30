@@ -20,6 +20,6 @@ public class ConstantExpression extends ExpressionLeaf {
     }
     
     public String toString() {
-        return value.toString();
+        return (value == null) ? "NULL" : value.toString();
     }
 }

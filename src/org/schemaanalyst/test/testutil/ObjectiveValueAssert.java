@@ -13,9 +13,13 @@ public class ObjectiveValueAssert {
     public static void assertNonOptimal(ObjectiveValue actual) {
         assertTrue("Objective value should not be optimal, but was:\n" + actual + "\n", !actual.isOptimal());
     }
-
+    
+    public static void assertWorst(ObjectiveValue actual) {
+        assertTrue("Objective value should be worst, but was:\n" + actual + "\n", actual.isWorst());
+    }
+    
     public static void assertEquivalent(ObjectiveValue expected, ObjectiveValue actual) {
         assertTrue("Objective values should be equivalent:\n" + expected + "\nwas\n" + actual + "\n",
-                actual.getValue().compareTo(expected.getValue()) == 0);
+                   actual.getValue().compareTo(expected.getValue()) == 0);
     }
 }

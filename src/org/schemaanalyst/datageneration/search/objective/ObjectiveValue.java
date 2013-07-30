@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 public class ObjectiveValue implements Comparable<ObjectiveValue> {
 
-    public static final BigDecimal BEST = ZERO, WORST = ONE;
+    public static final BigDecimal OPTIMAL = ZERO, WORST = ONE;
     protected static final BigDecimal A = WORST, B = ONE;
     protected static final int PRECISION = 20;
     protected BigDecimal value = WORST;
@@ -40,8 +40,8 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         setValue(A.subtract(A.divide(B.add(value), PRECISION, BigDecimal.ROUND_FLOOR)));
     }
 
-    public void setValueToBest() {
-        setValue(BEST);
+    public void setValueToOptimal() {
+        setValue(OPTIMAL);
     }
 
     public void setValueToWorst() {
@@ -53,7 +53,11 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
     }
 
     public boolean isOptimal() {
-        return getValue().compareTo(BEST) == 0;
+        return getValue().compareTo(OPTIMAL) == 0;
+    }
+    
+    public boolean isWorst() {
+        return getValue().compareTo(WORST) == 0;
     }
 
     @Override
@@ -69,7 +73,7 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         return compareTo(other) < 0;
     }
 
-    protected void setDescripton(String description) {
+    public void setDescripton(String description) {
         this.description = description;
     }
 
@@ -101,13 +105,13 @@ public class ObjectiveValue implements Comparable<ObjectiveValue> {
         return objVal;
     }
 
-    public static ObjectiveValue bestObjectiveValue() {
-        return bestObjectiveValue(null);
+    public static ObjectiveValue optimalObjectiveValue() {
+        return optimalObjectiveValue(null);
     }
 
-    public static ObjectiveValue bestObjectiveValue(String description) {
+    public static ObjectiveValue optimalObjectiveValue(String description) {
         ObjectiveValue objVal = new ObjectiveValue(description);
-        objVal.setValueToBest();
+        objVal.setValueToOptimal();
         return objVal;
     }
 }

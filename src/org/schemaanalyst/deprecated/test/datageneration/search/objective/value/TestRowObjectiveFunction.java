@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.search.objective;
+package org.schemaanalyst.deprecated.test.datageneration.search.objective.value;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,11 +13,11 @@ import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.CellListObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction;
+import org.schemaanalyst.deprecated.datageneration.objective.CellListObjectiveFunction;
+import org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.MockCell;
 
-import static org.schemaanalyst.datageneration.search.objective.value.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.GREATER;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;

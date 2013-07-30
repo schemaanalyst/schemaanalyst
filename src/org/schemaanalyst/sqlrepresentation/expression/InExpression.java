@@ -2,9 +2,7 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 public class InExpression extends ExpressionTree {
 
-    public static final int NUM_SUBEXPRESSIONS = 2,
-            LHS = 0,
-            RHS = 1;
+    public static final int NUM_SUBEXPRESSIONS = 2, LHS = 0, RHS = 1;
     protected Expression lhs, rhs;
     protected boolean notIn;
 
@@ -49,6 +47,6 @@ public class InExpression extends ExpressionTree {
 
     @Override
     public String toString() {
-        return lhs + (notIn ? "NOT " : "") + "IN " + rhs;
+        return lhs + (notIn ? " NOT" : "") + " IN " + rhs;
     }
 }

@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.objective.value;
+package org.schemaanalyst.deprecated.datageneration.objective.value;
 
 import java.math.BigDecimal;
 

@@ -18,9 +18,9 @@ public class ConstraintObjectiveFunctionFactory {
     protected boolean goalIsToSatisfy, considerNull;
 
     public ConstraintObjectiveFunctionFactory(Constraint constraint,
-            Data state,
-            boolean goalIsToSatisfy,
-            boolean considerNull) {
+                                              Data state,
+                                              boolean goalIsToSatisfy,
+                                              boolean considerNull) {
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
