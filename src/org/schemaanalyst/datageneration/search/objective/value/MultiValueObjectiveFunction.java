@@ -1,10 +1,8 @@
 package org.schemaanalyst.datageneration.search.objective.value;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
@@ -67,16 +65,5 @@ public class MultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Val
         return objFun.evaluate(new Pair<List<Value>>(lhs, rhs));        
     }
     
-    public static ObjectiveValue computeUsingCells(
-            List<Cell> lhs, boolean equals, List<Cell> rhs, boolean nullAccepted) {
-        return compute(extractValues(lhs), equals, extractValues(rhs), nullAccepted);        
-    }    
-    
-    private static List<Value> extractValues(List<Cell> cells) {
-        List<Value> values = new ArrayList<>();
-        for (Cell cell : cells) {
-            values.add(cell.getValue());
-        }
-        return values;        
-    }
+   
 }

@@ -2,24 +2,23 @@ package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.List;
 
-import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.row.RowRelationalObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
+public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
 
-    protected List<Column> columns;
-    protected List<Column> referenceColumns;
-    protected Data state;
-    protected String description;
-    protected boolean goalIsToSatisfy, nullAccepted;
-
+    private List<Column> columns;
+    private List<Column> referenceColumns;
+    private Data state;
+    private String description;
+    private boolean goalIsToSatisfy, nullAccepted;
+    
     public ReferenceObjectiveFunction(List<Column> columns,
                                       List<Column> referenceColumns,
                                       Data state,
@@ -35,8 +34,8 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Data data) {
-        List<List<Cell>> dataRows = data.getCells(columns);
+    protected ObjectiveValue performEvaluation(Data data) {        
+        List<Row> dataRows = data.getRows(columns);
         
         // special case for negating and there being one or fewer rows in the data
         // note that we're only interested in the data and its evaluation against
@@ -51,17 +50,17 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
         // add all reference rows from data and the state
-        List<List<Cell>> referenceRows = data.getCells(referenceColumns);
-        referenceRows.addAll(state.getCells(referenceColumns));
+        List<Row> referenceRows = data.getRows(referenceColumns);
+        referenceRows.addAll(state.getRows(referenceColumns));
 
-        for (List<Cell> dataRow : dataRows) {
+        for (Row dataRow : dataRows) {
             objVal.add(evaluateRow(dataRow, referenceRows, nullAccepted));
         }
 
         return objVal;
     }
 
-    protected ObjectiveValue evaluateRow(List<Cell> row, List<List<Cell>> referenceRows, boolean allowNull) {
+    protected ObjectiveValue evaluateRow(Row row, List<Row> referenceRows, boolean allowNull) {
     	
         String description = "Evaluating row with reference rows";        
         
@@ -69,9 +68,15 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
                     ? new BestOfMultiObjectiveValue(description)
                     : new SumOfMultiObjectiveValue(description);
 
-        for (List<Cell> referenceRow : referenceRows) {
-            rowObjVal.add(MultiValueObjectiveFunction.computeUsingCells(
+        for (Row referenceRow : referenceRows) {
+            rowObjVal.add(RowRelationalObjectiveFunction.compute(
                     row, goalIsToSatisfy, referenceRow, nullAccepted));
+        }
+        
+        if (rowObjVal.isOptimal()) {
+            acceptedRows.add(row);
+        } else {
+            rejectedRows.add(row);
         }
         
         return rowObjVal;

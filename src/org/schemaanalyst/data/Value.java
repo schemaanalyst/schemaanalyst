@@ -2,13 +2,10 @@ package org.schemaanalyst.data;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.OperandVisitor;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Value implements Comparable<Value>,
         Duplicable<Value>,
-        Operand,
         Serializable {
 
     private static final long serialVersionUID = -5756271284942346822L;
@@ -17,11 +14,6 @@ public abstract class Value implements Comparable<Value>,
     }
 
     public void decrement() {
-    }
-
-    @Override
-    public void accept(OperandVisitor visitor) {
-        visitor.visit(this);
     }
 
     public abstract void accept(ValueVisitor visitor);

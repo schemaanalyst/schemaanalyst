@@ -26,8 +26,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import originalcasestudy.NistDML182;
-
 public class ConstraintCoverageCalculator extends ConstraintEvaluator {
 
     protected static final String LINE_START = "INSERT INTO ",
@@ -247,7 +245,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
 
     public static void main(String[] args) throws IOException {
         Schema[] schemas = {
-            new NistDML182()
+                // deleted as these schemas no longer exist!
         };
 
         for (Schema schema : schemas) {

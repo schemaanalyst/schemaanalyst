@@ -1,24 +1,16 @@
 package org.schemaanalyst.datageneration.domainspecific;
 
-import org.schemaanalyst.datageneration.analyst.BetweenAnalyst;
 import org.schemaanalyst.datageneration.analyst.ConstraintAnalyst;
-import org.schemaanalyst.datageneration.analyst.InAnalyst;
 import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
 import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
-import org.schemaanalyst.datageneration.analyst.RelationalPredicateAnalyst;
 import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.BetweenCheckCondition;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckConditionVisitor;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.InCheckCondition;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.RelationalCheckCondition;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
 import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 import org.schemaanalyst.util.random.Random;
 
@@ -80,67 +72,7 @@ public class ConstraintHandlerFactory {
     }
 
     protected ConstraintHandler<?> create(CheckConstraint checkConstraint) {
-
-        class PredicateDispatcher implements CheckConditionVisitor {
-
-            Table table;
-            ConstraintHandler<?> constraintHandler;
-
-            ConstraintHandler<?> dispatch(CheckConstraint checkConstraint) {
-                table = checkConstraint.getTable();
-                checkConstraint.getCheckCondition().accept(this);
-                return constraintHandler;
-            }
-
-            @Override
-            public void visit(BetweenCheckCondition predicate) {
-                constraintHandler = create(predicate, table);
-            }
-
-            @Override
-            public void visit(InCheckCondition predicate) {
-                constraintHandler = create(predicate, table);
-            }
-
-            @Override
-            public void visit(RelationalCheckCondition predicate) {
-                constraintHandler = create(predicate, table);
-            }
-        }
-
-        return new PredicateDispatcher().dispatch(checkConstraint);
-    }
-
-    protected ConstraintHandler<?> create(BetweenCheckCondition betweenCheckPredicate, Table table) {
-        boolean allowNull = goalIsToSatisfy;
-
-        return new BetweenHandler(new BetweenAnalyst(betweenCheckPredicate, table, allowNull),
-                goalIsToSatisfy,
-                allowNull,
-                cellRandomizer,
-                random);
-    }
-
-    protected ConstraintHandler<?> create(InCheckCondition inCheckPredicate, Table table) {
-        boolean allowNull = goalIsToSatisfy;
-
-        return new InHandler(new InAnalyst(inCheckPredicate, table, allowNull),
-                goalIsToSatisfy,
-                allowNull,
-                cellRandomizer,
-                random);
-    }
-
-    protected ConstraintHandler<?> create(RelationalCheckCondition relationalCheckPredicate, Table table) {
-        boolean allowNull = goalIsToSatisfy;
-
-        return new RelationalPredicateHandler(new RelationalPredicateAnalyst(relationalCheckPredicate,
-                table,
-                allowNull),
-                goalIsToSatisfy,
-                allowNull,
-                cellRandomizer,
-                random);
+        return null;
     }
 
     protected ConstraintHandler<?> create(ForeignKeyConstraint foreignKeyConstraint) {

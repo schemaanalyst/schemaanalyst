@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
@@ -160,28 +159,6 @@ public class Table implements Serializable {
      */
     public CheckConstraint addCheckConstraint(Expression expression) {
         return addCheckConstraint(null, expression);
-    }
-
-    /**
-     * Adds a check constraint to the table.
-     *
-     * @param name A name for the check constraint (optional -- a version of
-     * this method exists without the requirement to specify a name).
-     * @param checkCondition The check constraint's condition.
-     * @return A reference to the Check object created as a result of the add
-     */
-    public CheckConstraint addCheckConstraint(String name, CheckCondition checkCondition) {
-        return addCheckConstraint(new CheckConstraint(name, this, checkCondition));
-    }
-
-    /**
-     * Adds a check constraint to the table.
-     *
-     * @param checkCondition The check constraint's condition.
-     * @return A reference to the Check object created as a result of the add
-     */
-    public CheckConstraint addCheckConstraint(CheckCondition checkCondition) {
-        return addCheckConstraint(null, checkCondition);
     }
 
     /**

@@ -19,7 +19,7 @@ import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.deprecated.datageneration.objective.value.NumericValueObjectiveFunction.K;
+import static org.schemaanalyst.datageneration.search.objective.value.NumericValueRelationalObjectiveFunction.K;
 
 public class TestCompoundValueRelationalObjectiveFunction {
 

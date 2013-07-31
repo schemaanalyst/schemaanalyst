@@ -2,7 +2,6 @@ package org.schemaanalyst.datageneration.search.objective.data;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.deprecated.datageneration.objective.constraint.checkcondition.CheckConditionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
@@ -70,22 +69,13 @@ public class ConstraintObjectiveFunctionFactory {
     protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 
         boolean allowNull = considerNull && goalIsToSatisfy;
-
-        if (checkConstraint.getCheckCondition() != null) {
-            return (new CheckConditionObjectiveFunctionFactory(
-                    checkConstraint,
-                    state,
-                    goalIsToSatisfy,
-                    allowNull,
-                    makeDescription())).create();
-        } else {
-            return new ExpressionObjectiveFunction(
+        
+        return new ExpressionObjectiveFunction(
                     checkConstraint.getExpression(),
                     checkConstraint.getTable(),
                     makeDescription(),
                     goalIsToSatisfy,
                     allowNull);
-        }
     }
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {

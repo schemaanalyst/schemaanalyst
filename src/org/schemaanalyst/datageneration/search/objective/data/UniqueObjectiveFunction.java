@@ -3,23 +3,22 @@ package org.schemaanalyst.datageneration.search.objective.data;
 import java.util.List;
 import java.util.ListIterator;
 
-import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.row.RowRelationalObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
+public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
 
-    protected List<Column> columns;
-    protected Data state;
-    protected String description;
-    protected boolean goalIsToSatisfy, nullAccepted;
-
+    private List<Column> columns;
+    private Data state;
+    private String description;
+    private boolean goalIsToSatisfy, nullAccepted;
+    
     public UniqueObjectiveFunction(List<Column> columns, 
                                    Data state, 
                                    String description,
@@ -33,9 +32,10 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Data data) {
-        List<List<Cell>> dataRows = data.getCells(columns);
-        List<List<Cell>> stateRows = state.getCells(columns);
+    protected ObjectiveValue performEvaluation(Data data) {
+        
+        List<Row> dataRows = data.getRows(columns);
+        List<Row> stateRows = state.getRows(columns);
 
         // special case for negating and there being one or fewer rows in the data
         // note that we're only interested in the data and its evaluation against
@@ -45,10 +45,10 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
         }
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-        ListIterator<List<Cell>> dataRowsIterator = dataRows.listIterator();
+        ListIterator<Row> dataRowsIterator = dataRows.listIterator();
 
         while (dataRowsIterator.hasNext()) {
-            List<Cell> dataRow = dataRowsIterator.next();
+            Row dataRow = dataRowsIterator.next();
 
             if (dataRowsIterator.hasNext() || stateRows.size() > 0) {
                 String description = "Row " + dataRow;
@@ -60,6 +60,12 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
                 evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
                 evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, 0);
 
+                if (rowObjVal.isOptimal()) {
+                    acceptedRows.add(dataRow);
+                } else {
+                    rejectedRows.add(dataRow);
+                }
+                
                 objVal.add(rowObjVal);
             }
         }
@@ -67,16 +73,16 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
         return objVal;
     }
 
-    protected void evaluateRowAgainstOtherRows(
+    private void evaluateRowAgainstOtherRows(
             MultiObjectiveValue objVal,
-            List<Cell> row, List<List<Cell>> otherRows, int fromIndex) {
+            Row row, List<Row> otherRows, int fromIndex) {
 
-        ListIterator<List<Cell>> rowsIterator = otherRows.listIterator(fromIndex);
+        ListIterator<Row> rowsIterator = otherRows.listIterator(fromIndex);
 
         while (rowsIterator.hasNext()) {
-            List<Cell> compareRow = rowsIterator.next();
-            objVal.add(MultiValueObjectiveFunction.computeUsingCells(
+            Row compareRow = rowsIterator.next();
+            objVal.add(RowRelationalObjectiveFunction.compute(
                     row, !goalIsToSatisfy, compareRow, nullAccepted));
         }
-    }
+    }    
 }

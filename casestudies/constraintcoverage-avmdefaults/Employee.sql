@@ -15,11 +15,11 @@ CREATE TABLE Employee (
 	CHECK (age <= 150)
 );
 -- Coverage: 8/8 (100.00000%) 
--- Time to generate: 206ms 
+-- Time to generate: 204ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 39ms 
+-- * Time: 40ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(1, '', '', 1, '', '', '');
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(0, '', '', 1, '', '', '');
 -- * Number of objective function evaluations: 32
@@ -41,7 +41,7 @@ INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(-1, '', 
 
 -- Negating "CHECK[age > 0]" on table "Employee"
 -- * Success: true
--- * Time: 41ms 
+-- * Time: 38ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(46, 'phctgpyae', 'ddanycpk', -8, '', 'mssuu', 'synehq');
 -- * Number of objective function evaluations: 69
 -- * Number of restarts: 1

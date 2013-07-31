@@ -20,9 +20,7 @@ public class SQLWriter {
 
     protected DataTypeSQLWriter dataTypeSQLWriter;
     protected ConstraintSQLWriter constraintSQLWriter;
-    protected OperandSQLWriter operandSQLWriter;
     protected ExpressionSQLWriter expressionSQLWriter;
-    protected CheckConditionSQLWriter checkConditionSQLWriter;
     protected CellSQLWriter cellSQLWriter;
     protected ValueSQLWriter valueSQLWriter;
 
@@ -34,9 +32,7 @@ public class SQLWriter {
     protected void instanitateSubWriters() {
         dataTypeSQLWriter = new DataTypeSQLWriter();
         constraintSQLWriter = new ConstraintSQLWriter();
-        operandSQLWriter = new OperandSQLWriter();
         expressionSQLWriter = new ExpressionSQLWriter();
-        checkConditionSQLWriter = new CheckConditionSQLWriter();
         cellSQLWriter = new CellSQLWriter();
         valueSQLWriter = new ValueSQLWriter();
     }
@@ -44,13 +40,8 @@ public class SQLWriter {
     protected void setupSubWriters() {
         cellSQLWriter.setValueSQLWriter(valueSQLWriter);
 
-        constraintSQLWriter.setCheckConditionSQLWriter(checkConditionSQLWriter);
-
         constraintSQLWriter.setExpressionSQLWriter(expressionSQLWriter);
         expressionSQLWriter.setValueSQLWriter(valueSQLWriter);
-
-        checkConditionSQLWriter.setOperandSQLWriter(operandSQLWriter);
-        operandSQLWriter.setValueSQLWriter(valueSQLWriter);
     }
 
     public List<String> writeComments(List<String> comments) {

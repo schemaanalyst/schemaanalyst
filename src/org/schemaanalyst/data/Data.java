@@ -246,41 +246,6 @@ public class Data implements Duplicable<Data> {
     }
 
     /**
-     * Please use getRows(List<Column> columns) instead.
-     */
-    public List<List<Cell>> getCells(List<Column> columns) {
-        Table table = null;
-
-        // Get the table, checking that all the columns are from the same table.
-        for (Column column : columns) {
-            Table columnTable = column.getTable();
-            if (table == null) {
-                table = columnTable;
-            } else if (!table.equals(columnTable)) {
-                throw new DataException("Cannot invoke getValues() with columns from multiple tables (\""
-                        + table + "\" and \"" + columnTable + "\")");
-            }
-        }
-
-        // Construct the "slice"
-        List<List<Cell>> cells = new ArrayList<>();
-        if (columns.size() > 0) {
-            List<Row> rows = getRows(table);
-            if (rows != null) {
-                for (Row row : getRows(table)) {
-                    List<Cell> rowValues = new ArrayList<>();
-                    for (Column column : columns) {
-                        rowValues.add(row.getCell(column));
-                    }
-                    cells.add(rowValues);
-                }
-            }
-        }
-
-        return cells;
-    }
-
-    /**
      * Copies this data instance.
      */
     @Override

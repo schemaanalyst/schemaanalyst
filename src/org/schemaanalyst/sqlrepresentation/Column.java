@@ -2,8 +2,6 @@ package org.schemaanalyst.sqlrepresentation;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.Operand;
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.OperandVisitor;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 
 /**
@@ -13,7 +11,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.DataType;
  * @author Phil McMinn
  *
  */
-public class Column implements Operand, Serializable {
+public class Column implements Serializable {
 
     private static final long serialVersionUID = -2680046452756410766L;
     protected Table table;
@@ -109,15 +107,6 @@ public class Column implements Operand, Serializable {
      */
     public void setForeignKey(Table referenceTable, Column referenceColumn) {
         table.addForeignKeyConstraint(this, referenceTable, referenceColumn);
-    }
-
-    /**
-     * @deprecated Accepts an operand visitor on this column.
-     * @param operandVisitor The operand visitor to accept.
-     */
-    @Override
-    public void accept(OperandVisitor operandVisitor) {
-        operandVisitor.visit(this);
     }
 
     /**

@@ -37,11 +37,11 @@ CREATE TABLE countrylanguage (
 	CONSTRAINT countrylanguage_pkey PRIMARY KEY (countrycode, language)
 );
 -- Coverage: 48/48 (100.00000%) 
--- Time to generate: 2285ms 
+-- Time to generate: 2669ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 582ms 
+-- * Time: 589ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(1, '', '', '', 0);
 INSERT INTO city(id, name, countrycode, district, population) VALUES(0, '', '', '', 0);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('a', '', 'Asia', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, '');
@@ -53,14 +53,14 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "PRIMARY KEY[id]" on table "city"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(0, '', '', '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(id)" on table "city"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(NULL, '', '', '', 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
@@ -95,7 +95,7 @@ INSERT INTO city(id, name, countrycode, district, population) VALUES(-1, '', '',
 
 -- Negating "PRIMARY KEY[code]" on table "country"
 -- * Success: true
--- * Time: 61ms 
+-- * Time: 58ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-1, '', '', '', 0);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('', '', 'Asia', '', 0, 0, 0, 0, 0, 0, '', '', '', 0, '');
 -- * Number of objective function evaluations: 78
@@ -103,7 +103,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "FOREIGN KEY[capital]" on table "country"
 -- * Success: true
--- * Time: 178ms 
+-- * Time: 180ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(46, 'phctgpyae', 'dda', 'ao', -50);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('kt', '', 'Asia', 'synehq', -88, -29, -46, 33, 37, 63, 'vy', 'nbhfckg', 'rf', 56, 'tp');
 -- * Number of objective function evaluations: 262
@@ -111,7 +111,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(code)" on table "country"
 -- * Success: true
--- * Time: 219ms 
+-- * Time: 289ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(22, 'tywey', '', 'qullv', 0);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES(NULL, 'bam', 'Africa', 'baicvahnw', -45, 74, 21, 81, -92, 29, 'fmf', 'lr', '', NULL, 'rs');
 -- * Number of objective function evaluations: 328
@@ -119,7 +119,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(name)" on table "country"
 -- * Success: true
--- * Time: 167ms 
+-- * Time: 202ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(21, 'ocioobsfj', 'kiq', 'vuabq', 22);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('par', NULL, 'Asia', 'qoanhtubg', -92, 24, 3, -61, -36, -55, 'ehsbcwnc', '', 'b', NULL, 'vx');
 -- * Number of objective function evaluations: 353
@@ -127,7 +127,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(continent)" on table "country"
 -- * Success: true
--- * Time: 70ms 
+-- * Time: 98ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-99, 'pgmxfwagq', 'wix', 'psh', 25);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('fga', 'kupqligs', NULL, 'waeoyid', -81, 63, 33, -15, -5, 65, 'pvd', 'a', 'ydyuvxnqt', NULL, 'xr');
 -- * Number of objective function evaluations: 224
@@ -135,7 +135,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(region)" on table "country"
 -- * Success: true
--- * Time: 128ms 
+-- * Time: 193ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-76, 'apfodfc', 'keh', 'jhwu', 18);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('huq', 'dlb', 'Oceania', NULL, -26, 80, 28, 17, 39, 62, '', 'fwlemtq', 'ks', NULL, '');
 -- * Number of objective function evaluations: 370
@@ -143,7 +143,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(surfacearea)" on table "country"
 -- * Success: true
--- * Time: 60ms 
+-- * Time: 89ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(45, '', 'stv', 'gga', -47);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('tqn', 'fxbykmad', 'Oceania', 'mnjdfjwov', NULL, -1, -17, 33, -97, -68, 'lw', 'jbdnxa', 'u', NULL, '');
 -- * Number of objective function evaluations: 370
@@ -151,7 +151,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(population)" on table "country"
 -- * Success: true
--- * Time: 56ms 
+-- * Time: 82ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-92, 'k', 'njq', 'gqhhorm', -66);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('vmn', 'gqddc', 'Africa', 'gqpeer', 33, 42, NULL, 92, 56, 99, 'qk', 'jrlctu', 'tnnogp', NULL, 'hf');
 -- * Number of objective function evaluations: 424
@@ -159,7 +159,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(localname)" on table "country"
 -- * Success: true
--- * Time: 79ms 
+-- * Time: 65ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-4, 'symslk', 'rbu', 'sl', 94);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('irk', 'pap', 'Africa', 'jbbf', -22, -82, -7, 44, -68, 94, NULL, '', 'pgxpx', NULL, 'eb');
 -- * Number of objective function evaluations: 368
@@ -167,7 +167,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(governmentform)" on table "country"
 -- * Success: true
--- * Time: 57ms 
+-- * Time: 83ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(72, 'cgvmhmgx', 'o', 'ce', 35);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('gvm', 'xt', 'Africa', 'klea', 83, 1, -88, 52, -90, -17, 'jpba', NULL, 'r', 72, 'v');
 -- * Number of objective function evaluations: 387
@@ -175,7 +175,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "NOT NULL(code2)" on table "country"
 -- * Success: true
--- * Time: 55ms 
+-- * Time: 96ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-65, 'wppwujg', 't', 'aekwc', 89);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('crs', 'c', 'Asia', 'fngk', -36, -84, -16, -16, -26, -67, 'poqgtby', 'ucdpakk', 'oikq', NULL, NULL);
 -- * Number of objective function evaluations: 405
@@ -183,7 +183,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "CHECK[(((((((continent = 'Asia') OR (continent = 'Europe')) OR (continent = 'NorthAAmerica')) OR (continent = 'Africa')) OR (continent = 'Oceania')) OR (continent = 'Antarctica')) OR (continent = 'SouthAAmerica'))]" on table "country"
 -- * Success: true
--- * Time: 26ms 
+-- * Time: 24ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-2, 'eum', 'ori', 'nwqx', -85);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('b', 'obdoy', 'o', 'vuba', 19, 35, 79, -94, 56, 65, 'd', 'kug', 'cha', NULL, 'oe');
 -- * Number of objective function evaluations: 197
@@ -191,7 +191,7 @@ INSERT INTO country(code, name, continent, region, surfacearea, indepyear, popul
 
 -- Negating "PRIMARY KEY[countrycode, language]" on table "countrylanguage"
 -- * Success: true
--- * Time: 87ms 
+-- * Time: 90ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-72, 'jj', 'tgo', 'rhahdswc', -72);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('tjo', 'vgbmujvho', 'Asia', 'ewesulpky', -1, 45, -56, -78, -24, -69, 'k', 'abqpvuh', '', NULL, 'nk');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES('', '', TRUE, 15);
@@ -200,7 +200,7 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "FOREIGN KEY[countrycode]" on table "countrylanguage"
 -- * Success: true
--- * Time: 77ms 
+-- * Time: 65ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-19, 't', 'yc', 'iqsbbrm', -75);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('fpw', 'b', 'Asia', 'bg', 39, 59, -41, 58, -46, -38, 'nsijxwq', '', 'cbpudodd', NULL, 'nc');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES('oqn', 'uocty', TRUE, 68);
@@ -209,7 +209,7 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "NOT NULL(countrycode)" on table "countrylanguage"
 -- * Success: true
--- * Time: 132ms 
+-- * Time: 156ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(26, 'mailnot', 'aut', 'whuyj', 75);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('y', 'jdvchxxj', 'Asia', '', 13, -95, 45, -59, 67, -85, 'rvctehrd', 'banndyfgt', 'mhia', NULL, 'md');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES(NULL, 'drug', TRUE, -89);
@@ -218,7 +218,7 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "NOT NULL(language)" on table "countrylanguage"
 -- * Success: true
--- * Time: 71ms 
+-- * Time: 129ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-40, 'jjkuvypv', 'vjg', 'rmblg', -83);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('b', 'd', 'Asia', 'wut', -45, 43, 93, -74, 95, -87, 'mrk', 'kjrbfebkv', 'shdrcu', NULL, 'hs');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES('y', NULL, TRUE, 99);
@@ -227,7 +227,7 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "NOT NULL(isofficial)" on table "countrylanguage"
 -- * Success: true
--- * Time: 81ms 
+-- * Time: 80ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(51, 'r', 'lld', 'uibpt', 68);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('`', 'licrul', 'Asia', 'vmi', 66, -68, 93, -22, -26, 2, 'tqir', 'rtoxmgl', '', NULL, 'dg');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES('b', 'e', NULL, 86);
@@ -236,7 +236,7 @@ INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUE
 
 -- Negating "NOT NULL(percentage)" on table "countrylanguage"
 -- * Success: true
--- * Time: 84ms 
+-- * Time: 86ms 
 INSERT INTO city(id, name, countrycode, district, population) VALUES(-33, 'ttmi', 'dng', 'fd', -24);
 INSERT INTO country(code, name, continent, region, surfacearea, indepyear, population, lifeexpectancy, gnp, gnpold, localname, governmentform, headofstate, capital, code2) VALUES('u', 'qhb', 'Asia', 'rumpwy', -35, 81, -75, 98, 66, -88, 'qy', 'asetuf', 'ttvluab', NULL, 'xk');
 INSERT INTO countrylanguage(countrycode, language, isofficial, percentage) VALUES('u', 'eglwkb', TRUE, NULL);

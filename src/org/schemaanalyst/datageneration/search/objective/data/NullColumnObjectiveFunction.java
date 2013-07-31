@@ -3,13 +3,12 @@ package org.schemaanalyst.datageneration.search.objective.data;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
+public class NullColumnObjectiveFunction extends ConstraintObjectiveFunction {
 
     protected Column column;
     protected String description;
@@ -24,7 +23,7 @@ public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Data data) {
+    protected ObjectiveValue performEvaluation(Data data) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
@@ -34,7 +33,9 @@ public class NullColumnObjectiveFunction extends ObjectiveFunction<Data> {
         // the constraint and so do not need to be checked.
 
         for (Cell cell : data.getCells(column)) {
-            objVal.add(NullValueObjectiveFunction.compute(cell.getValue(), goalIsToSatisfy));
+            ObjectiveValue rowObjVal =
+                    NullValueObjectiveFunction.compute(cell.getValue(), goalIsToSatisfy);
+            objVal.add(rowObjVal);
         }
 
         return objVal;

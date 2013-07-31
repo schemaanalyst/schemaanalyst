@@ -1,25 +1,14 @@
 package paper.mutation2013;
 
-
 import org.schemaanalyst.sqlrepresentation.Schema;
 
-import originalcasestudy.Cloc;
-import originalcasestudy.JWhoisServer;
-import originalcasestudy.NistDML182;
-import originalcasestudy.NistDML183;
-import originalcasestudy.RiskIt;
-import originalcasestudy.UnixUsage;
 import paper.util.SchemaStatsTable;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {
 
     public static Schema[] schemas = {
-        new Cloc(),
-        new JWhoisServer(),
-        new NistDML182(),
-        new NistDML183(),
-        new RiskIt(),
-        new UnixUsage(),};
+        // schemas removed as original case studies deleted!        
+    };
 
     public LatexSchemaStatsTable() {
         super(" & ", " \\\\\n");

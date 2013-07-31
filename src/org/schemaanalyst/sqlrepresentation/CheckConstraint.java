@@ -3,7 +3,6 @@ package org.schemaanalyst.sqlrepresentation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.deprecated.sqlrepresentation.checkcondition.CheckCondition;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
@@ -27,29 +26,11 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class CheckConstraint extends Constraint {
 
     private static final long serialVersionUID = 1112035994865637833L;
-    /**
-     * @deprecated The condition of the check constraint -- use expression
-     * instead
-     *
-     */
-    protected CheckCondition checkCondition;
+
     /**
      * The expression of the check constraint
      */
     protected Expression expression;
-
-    /**
-     * Constructor.
-     *
-     * @deprecated
-     * @param name An identifying name for the constraint (can be null).
-     * @param table The table on which the check constraint should hold.
-     * @param checkCondition The condition associated with the check constraint.
-     */
-    protected CheckConstraint(String name, Table table, CheckCondition checkCondition) {
-        super(name, table);
-        this.checkCondition = checkCondition;
-    }
 
     /**
      * Constructor.
@@ -61,14 +42,6 @@ public class CheckConstraint extends Constraint {
     protected CheckConstraint(String name, Table table, Expression expression) {
         super(name, table);
         this.expression = expression;
-    }
-
-    /**
-     * @deprecated Returns the condition associated with this check constraint.
-     * @return The condition associated with this check constraint.
-     */
-    public CheckCondition getCheckCondition() {
-        return checkCondition;
     }
 
     /**
@@ -98,14 +71,6 @@ public class CheckConstraint extends Constraint {
      * @return The copied Check object.
      */
     public CheckConstraint copyTo(Table targetTable) {
-
-        // Allow for backwards compatibility with old check constraint format.
-        // NB: columns appearing in conditions are not remapped. 
-        if (checkCondition != null) {
-            CheckConstraint copy = new CheckConstraint(this.name, targetTable, this.checkCondition);
-            targetTable.addCheckConstraint(copy);
-            return copy;
-        }
 
         class ExpressionRemapper implements ExpressionVisitor {
 
@@ -231,16 +196,7 @@ public class CheckConstraint extends Constraint {
         }
 
         CheckConstraint other = (CheckConstraint) obj;
-
-        // allow for backwards compatibility with old check constraint format
-        if (checkCondition == null) {
-            if (other.checkCondition != null) {
-                return false;
-            }
-        } else if (!checkCondition.equals(other.checkCondition)) {
-            return false;
-        }
-
+        
         if (expression == null) {
             if (other.expression != null) {
                 return false;
@@ -259,16 +215,6 @@ public class CheckConstraint extends Constraint {
      */
     @Override
     public String toString() {
-        String str = "CHECK[";
-
-        // allow for backwards compatibility with old check constraint format
-        if (checkCondition != null) {
-            str += checkCondition;
-        } else {
-            str += expression;
-        }
-
-        str += "]";
-        return str;
+        return "CHECK[" + expression + "]";
     }
 }

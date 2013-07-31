@@ -12,12 +12,12 @@ import org.schemaanalyst.datageneration.search.objective.row.ExpressionObjective
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
+public class ExpressionObjectiveFunction extends ConstraintObjectiveFunction {
 
-    protected Expression expression;
-    protected Table table;
-    protected String description;
-    protected boolean goalIsToSatisfy, allowNull;
+    private Expression expression;
+    private Table table;
+    private String description;
+    private boolean goalIsToSatisfy, allowNull;
 
     public ExpressionObjectiveFunction(Expression expression,
             Table table,
@@ -32,7 +32,7 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Data data) {
+    protected ObjectiveValue performEvaluation(Data data) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
         ExpressionObjectiveFunctionFactory factory =
