@@ -19,9 +19,6 @@ public class MutationUtilities {
         int indexOfLastPeriod = name.lastIndexOf(".");
         int indexOfFirstPeriod = name.indexOf(".");
 
-        System.out.println(name.charAt(indexOfFirstPeriod));
-        System.out.println(name.charAt(indexOfLastPeriod));
-
         return name.substring(indexOfFirstPeriod + 1, indexOfLastPeriod);
     }
 }

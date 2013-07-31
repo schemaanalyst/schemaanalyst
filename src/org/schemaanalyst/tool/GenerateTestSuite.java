@@ -25,6 +25,9 @@ public class GenerateTestSuite extends Runner {
     
     @Override
     protected void task() {
+        System.out.println(classname);
+        System.exit(1);
+        
         String testSrcDir = locationsConfiguration.getTestSrcDir();
         String testPackage = locationsConfiguration.getTestPackage();
         List<File> classFiles = new ArrayList<File>();

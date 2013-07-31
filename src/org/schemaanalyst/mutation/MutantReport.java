@@ -45,8 +45,8 @@ public class MutantReport {
     private List<MutantRecord> mutantStatements;
 
     public MutantReport() {
-        createTableStatements = new ArrayList();
-        mutantStatements = new ArrayList();
+        createTableStatements = new ArrayList<>();
+        mutantStatements = new ArrayList<>();
         numericalIdentifier = nextNumericalIdentifier;
         nextNumericalIdentifier++;
         killed = false;
