@@ -61,7 +61,6 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
     }
 
     protected ObjectiveValue evaluateRow(Row row, List<Row> referenceRows, boolean allowNull) {
-    	
         String description = "Evaluating row with reference rows";        
         
         MultiObjectiveValue rowObjVal = goalIsToSatisfy
@@ -73,12 +72,7 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
                     row, goalIsToSatisfy, referenceRow, nullAccepted));
         }
         
-        if (rowObjVal.isOptimal()) {
-            acceptedRows.add(row);
-        } else {
-            rejectedRows.add(row);
-        }
-        
+        classifyRow(rowObjVal, row);        
         return rowObjVal;
     }
 }

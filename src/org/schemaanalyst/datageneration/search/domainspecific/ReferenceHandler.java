@@ -1,10 +1,10 @@
-package org.schemaanalyst.datageneration.domainspecific;
+package org.schemaanalyst.datageneration.search.domainspecific;
 
 import java.util.List;
 
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+import org.schemaanalyst.deprecated.datageneration.analyst.ReferenceAnalyst;
 import org.schemaanalyst.util.random.Random;
 
 public class ReferenceHandler extends ConstraintHandler<ReferenceAnalyst> {

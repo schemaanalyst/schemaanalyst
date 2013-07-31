@@ -1,10 +1,10 @@
-package org.schemaanalyst.datageneration.domainspecific;
+package org.schemaanalyst.datageneration.search.domainspecific;
 
-import org.schemaanalyst.datageneration.analyst.ConstraintAnalyst;
-import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
-import org.schemaanalyst.datageneration.analyst.ReferenceAnalyst;
-import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+import org.schemaanalyst.deprecated.datageneration.analyst.ConstraintAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.NotNullAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.ReferenceAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;

@@ -59,14 +59,9 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
 
                 evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
                 evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, 0);
-
-                if (rowObjVal.isOptimal()) {
-                    acceptedRows.add(dataRow);
-                } else {
-                    rejectedRows.add(dataRow);
-                }
                 
                 objVal.add(rowObjVal);
+                classifyRow(rowObjVal, dataRow);
             }
         }
 

@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import static org.schemaanalyst.logic.RelationalOperator.*;
 
 import org.junit.Test;
-import org.schemaanalyst.logic.LogicException;
+import org.schemaanalyst.logic.RelationalOperatorException;
 
 public class TestRelationalOperator {
 
@@ -40,7 +40,7 @@ public class TestRelationalOperator {
         assertEquals(LESS_OR_EQUALS, getRelationalOperator("<="));
     }
 
-    @Test(expected = LogicException.class)
+    @Test(expected = RelationalOperatorException.class)
     public void testGetRelationalOperatorException() {
         getRelationalOperator("==");
     }

@@ -21,6 +21,14 @@ public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data
     
     protected abstract ObjectiveValue performEvaluation(Data data);
     
+    protected void classifyRow(ObjectiveValue objVal, Row row) {
+        if (objVal.isOptimal()) {
+            acceptedRows.add(row);
+        } else {
+            rejectedRows.add(row);
+        }
+    }
+    
     public List<Row> getAcceptedRows() {
         return acceptedRows;
     }

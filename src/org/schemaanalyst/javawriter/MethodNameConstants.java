@@ -13,6 +13,5 @@ public class MethodNameConstants {
     static final String TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD = "addNotNullConstraint";
     static final String TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD = "setPrimaryKeyConstraint";
     static final String TABLE_ADD_UNIQUE_CONSTRAINT_METHOD = "addUniqueConstraint";
-    // Table class -- helper methods
-    static final String TABLE_MAKE_COLUMN_LIST_METHOD = "makeColumnList";
+
 }

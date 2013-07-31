@@ -2,6 +2,8 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+
 public interface Expression {
 
     public Expression getSubexpression(List<Integer> indexes);
@@ -15,4 +17,6 @@ public interface Expression {
     public List<Expression> getSubexpressions();
 
     public void accept(ExpressionVisitor visitor);
+    
+    public List<Column> getColumnsInvolved();
 }

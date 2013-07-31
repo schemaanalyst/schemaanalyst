@@ -24,7 +24,7 @@ public enum RelationalOperator {
         } else if (this == LESS_OR_EQUALS) {
             return "<=";
         } else {
-            throw new LogicException("Unknown relational operator " + this);
+            throw new RelationalOperatorException("Unknown relational operator " + this);
         }
     }
 
@@ -42,7 +42,7 @@ public enum RelationalOperator {
         } else if (string.equals("<=")) {
             return LESS_OR_EQUALS;
         } else {
-            throw new LogicException("\"" + string + "\" is not a valid relational operator");
+            throw new RelationalOperatorException("\"" + string + "\" is not a valid relational operator");
         }
     }
 
@@ -60,7 +60,7 @@ public enum RelationalOperator {
         } else if (this == LESS_OR_EQUALS) {
             return GREATER;
         } else {
-            throw new LogicException("Unknown relational operator " + this);
+            throw new RelationalOperatorException("Unknown relational operator " + this);
         }
     }
 }

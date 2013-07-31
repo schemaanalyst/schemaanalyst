@@ -2,6 +2,7 @@ package org.schemaanalyst.sqlrepresentation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -130,13 +131,11 @@ public class Table implements Serializable {
      * @param remainingColumns An array of columns to add to the list.
      * @return A list of columns containing first column and remaining columns
      */
-    public static List<Column> makeColumnList(Column firstColumn, Column... remainingColumns) {
-        List<Column> allColumns = new ArrayList<>();
-        allColumns.add(firstColumn);
-        for (Column column : remainingColumns) {
-            allColumns.add(column);    
-        }
-        return allColumns;
+    private List<Column> makeColumnList(Column firstColumn, Column... remainingColumns) {
+        List<Column> columns = new ArrayList<>();
+        columns.add(firstColumn);
+        Collections.addAll(columns, remainingColumns);
+        return columns;
     }
 
     /**
@@ -208,7 +207,7 @@ public class Table implements Serializable {
      * add
      */
     public ForeignKeyConstraint addForeignKeyConstraint(String name, Column column, Table referenceTable, Column referenceColumn) {
-        return addForeignKeyConstraint(name, makeColumnList(column), referenceTable, makeColumnList(referenceColumn));
+        return addForeignKeyConstraint(name, Arrays.asList(column), referenceTable, Arrays.asList(referenceColumn));
     }
 
     /**
@@ -245,7 +244,7 @@ public class Table implements Serializable {
             Column column1, Column column2,
             Table referenceTable, Column referenceColumn1, Column referenceColumn2) {
         return addForeignKeyConstraint(name,
-                makeColumnList(column1, column2),
+                Arrays.asList(column1, column2),
                 referenceTable, makeColumnList(referenceColumn1, referenceColumn2));
     }
 

@@ -1,17 +1,16 @@
-package org.schemaanalyst.test.datageneration.analyst;
+package org.schemaanalyst.deprecated.test.datageneration.analyst;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.NotNullAnalyst;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

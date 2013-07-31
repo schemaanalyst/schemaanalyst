@@ -1,6 +1,7 @@
 package org.schemaanalyst.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -243,6 +244,19 @@ public class Data implements Duplicable<Data> {
         }
 
         return rows;
+    }
+    
+    /**
+     * Returns a "vertical slice" of a table -- a list of rows where each row
+     * contains a subset of cells for specifically-required columns.
+     *
+     * @param columns The columns for which cell values are sought. The columns
+     * must be from the same table, otherwise a <tt>DataAccessException</tt> is
+     * thrown.
+     * @return A list of rows containing only cells for each specified column.
+     */
+    public List<Row> getRows(Column... columns) {
+        return getRows(Arrays.asList(columns));
     }
 
     /**

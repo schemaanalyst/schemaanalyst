@@ -1,4 +1,7 @@
-package org.schemaanalyst.logic;
+package org.schemaanalyst.deprecated.logic;
+
+import org.schemaanalyst.logic.RelationalOperatorException;
+import org.schemaanalyst.logic.RelationalOperator;
 
 public class RelationalPredicate<T extends Comparable<T>> {
 
@@ -86,7 +89,7 @@ public class RelationalPredicate<T extends Comparable<T>> {
             case NOT_EQUALS:
                 return (result != 0);
             default:
-                throw new LogicException("Unknown relational operator " + this);
+                throw new RelationalOperatorException("Unknown relational operator " + this);
         }
     }
     

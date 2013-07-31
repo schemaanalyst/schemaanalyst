@@ -72,7 +72,6 @@ public class ConstraintObjectiveFunctionFactory {
         
         return new ExpressionObjectiveFunction(
                     checkConstraint.getExpression(),
-                    checkConstraint.getTable(),
                     makeDescription(),
                     goalIsToSatisfy,
                     allowNull);

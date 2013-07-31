@@ -1,6 +1,7 @@
 package org.schemaanalyst.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -58,18 +59,7 @@ public class StringUtils {
      * @return The String representation created
      */
     public static <T> String implode(T[] items, String sep) {
-        if (items == null) {
-            return "";
-        }
-
-        StringBuilder sb = new StringBuilder();        
-        for (int i=0; i < items.length; i++) {
-            if (i > 0) {
-                sb.append(sep);
-            }
-            sb.append(items[i].toString());
-        }
-        return sb.toString();
+        return implode(Arrays.asList(items), sep);
     }
     
     /**

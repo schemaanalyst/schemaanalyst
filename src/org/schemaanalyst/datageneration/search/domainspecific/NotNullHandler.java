@@ -1,9 +1,9 @@
-package org.schemaanalyst.datageneration.domainspecific;
+package org.schemaanalyst.datageneration.search.domainspecific;
 
 import java.util.List;
 
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.NotNullAnalyst;
 
 public class NotNullHandler extends ConstraintHandler<NotNullAnalyst> {
 

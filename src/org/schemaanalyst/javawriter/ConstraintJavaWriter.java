@@ -1,6 +1,7 @@
 package org.schemaanalyst.javawriter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
@@ -92,9 +93,10 @@ public class ConstraintJavaWriter {
             String wrapColumnArgsString(Table table, List<Column> columns) {
                 String columnArgsString = makeColumnArgsString(table, columns);
                 if (columns.size() > 2) {
+                    javaWriter.addImportFor(Arrays.class);
                     return javaWriter.writeMethodCall(
-                            Table.class.getSimpleName(),
-                            TABLE_MAKE_COLUMN_LIST_METHOD,
+                            Arrays.class.getSimpleName(),
+                            "asList",
                             columnArgsString);
                 } else {
                     return columnArgsString;

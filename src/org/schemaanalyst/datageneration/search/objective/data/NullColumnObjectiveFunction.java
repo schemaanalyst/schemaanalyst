@@ -1,7 +1,8 @@
 package org.schemaanalyst.datageneration.search.objective.data;
 
-import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
@@ -32,10 +33,12 @@ public class NullColumnObjectiveFunction extends ConstraintObjectiveFunction {
         // function evaluation.  All the values in the state will obey 
         // the constraint and so do not need to be checked.
 
-        for (Cell cell : data.getCells(column)) {
+        for (Row row : data.getRows(column)) {
+            Value value = row.getCell(column).getValue();
             ObjectiveValue rowObjVal =
-                    NullValueObjectiveFunction.compute(cell.getValue(), goalIsToSatisfy);
+                    NullValueObjectiveFunction.compute(value, goalIsToSatisfy);
             objVal.add(rowObjVal);
+            classifyRow(objVal, row);
         }
 
         return objVal;

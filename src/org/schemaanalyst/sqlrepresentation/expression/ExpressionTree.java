@@ -3,6 +3,8 @@ package org.schemaanalyst.sqlrepresentation.expression;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+
 public abstract class ExpressionTree implements Expression {
 
     @Override
@@ -40,5 +42,14 @@ public abstract class ExpressionTree implements Expression {
             subexpressions.add(getSubexpression(i));
         }
         return subexpressions;
+    }
+    
+    @Override
+    public List<Column> getColumnsInvolved() {
+        List<Column> columns = new ArrayList<>();
+        for (Expression expression : getSubexpressions()) {
+            columns.addAll(expression.getColumnsInvolved());
+        }
+        return columns;
     }
 }

@@ -1,6 +1,7 @@
 package org.schemaanalyst.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,11 @@ public class Row implements Duplicable<Row> {
             this.cells.add(cell);
         }
     }
-
+    
+    public Row(Cell... cells) {
+        this(Arrays.asList(cells));
+    }
+    
     public Table getTable() {
         return table;
     }

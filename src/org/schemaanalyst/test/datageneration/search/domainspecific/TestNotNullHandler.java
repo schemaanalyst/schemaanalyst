@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.domainspecific;
+package org.schemaanalyst.test.datageneration.search.domainspecific;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -14,8 +14,8 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.datageneration.analyst.NotNullAnalyst;
-import org.schemaanalyst.datageneration.domainspecific.NotNullHandler;
+import org.schemaanalyst.datageneration.search.domainspecific.NotNullHandler;
+import org.schemaanalyst.deprecated.datageneration.analyst.NotNullAnalyst;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

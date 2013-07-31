@@ -1,7 +1,7 @@
-package org.schemaanalyst.datageneration.domainspecific;
+package org.schemaanalyst.datageneration.search.domainspecific;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.analyst.ConstraintAnalyst;
+import org.schemaanalyst.deprecated.datageneration.analyst.ConstraintAnalyst;
 
 public abstract class ConstraintHandler<A extends ConstraintAnalyst> {
 

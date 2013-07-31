@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.analyst;
+package org.schemaanalyst.deprecated.datageneration.analyst;
 
 import org.schemaanalyst.data.Data;
 

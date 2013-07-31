@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.datageneration.domainspecific;
+package org.schemaanalyst.test.datageneration.search.domainspecific;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
@@ -13,9 +13,9 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
-import org.schemaanalyst.datageneration.domainspecific.UniqueHandler;
+import org.schemaanalyst.datageneration.search.domainspecific.UniqueHandler;
+import org.schemaanalyst.deprecated.datageneration.analyst.UniqueAnalyst;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
