@@ -27,7 +27,7 @@ public class TestReferenceObjectiveFunction {
 		
 	Integer[] oneRowDifferent = {1, 2, 3, 4};
 	
-	Integer[] twoRowsDiffernet = {1, 2, 3, 4,
+	Integer[] twoRowsDifferent = {1, 2, 3, 4,
 								  5, 6, 7, 8};	
 	
 	Integer[] twoRowsOneFullMatch = {1, 5, 0, 0,
@@ -55,6 +55,11 @@ public class TestReferenceObjectiveFunction {
 	
     Object[] oneColumnTestValues() {
         return $(
+                $(empty, empty, true, false, true),
+                $(empty, empty, true, true, true),
+                $(empty, empty, false, false, false),
+                $(empty, empty, false, true, false),                
+                
                 $(oneRowUniform, empty, true, false, true),
                 $(oneRowUniform, empty, true, true, true),
                 $(oneRowUniform, empty, false, false, false),
@@ -65,10 +70,10 @@ public class TestReferenceObjectiveFunction {
                 $(oneRowDifferent, empty, false, false, true),
                 $(oneRowDifferent, empty, false, true, true),
                 
-                $(twoRowsDiffernet, empty, true, false, false),
-                $(twoRowsDiffernet, empty, true, true, false),
-                $(twoRowsDiffernet, empty, false, false, true),
-                $(twoRowsDiffernet, empty, false, true, true),
+                $(twoRowsDifferent, empty, true, false, false),
+                $(twoRowsDifferent, empty, true, true, false),
+                $(twoRowsDifferent, empty, false, false, true),
+                $(twoRowsDifferent, empty, false, true, true),
                 
                 $(twoRowsOneFullMatch, empty, true, false, true),
                 $(twoRowsOneFullMatch, empty, true, true, true),
@@ -86,6 +91,20 @@ public class TestReferenceObjectiveFunction {
                 $(twoRowsOneColNoMatch, empty, true, true, false),
                 $(twoRowsOneColNoMatch, empty, false, false, true),
                 $(twoRowsOneColNoMatch, empty, false, true, true),
+               
+                // there's no match in the state, but the objective
+                // function is concerned with the data only, and 
+                // the data is empty
+                $(empty, twoRowsOneColNoMatch, true, false, true),
+                $(empty, twoRowsOneColNoMatch, true, true, true),
+                $(empty, twoRowsOneColNoMatch, false, false, false),
+                $(empty, twoRowsOneColNoMatch, false, true, false),                
+                
+                // ditto for above - we do not care about the state
+                $(oneRowUniform, twoRowsOneColNoMatch, true, false, true),
+                $(oneRowUniform, twoRowsOneColNoMatch, true, true, true),
+                $(oneRowUniform, twoRowsOneColNoMatch, false, false, false),
+                $(oneRowUniform, twoRowsOneColNoMatch, false, true, false),                
                 
                 $(twoRowsMatchWithOne, empty, true, false, true),
                 $(twoRowsMatchWithOne, empty, true, true, true),

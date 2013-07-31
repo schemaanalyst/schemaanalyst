@@ -12,8 +12,8 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionExcept
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.deprecated.datageneration.objective.value.ValueObjectiveFunction;
+import org.schemaanalyst.deprecated.logic.RelationalPredicate;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 
 public class CellListObjectiveFunction extends ObjectiveFunction<RelationalPredicate<List<Cell>>> {
 

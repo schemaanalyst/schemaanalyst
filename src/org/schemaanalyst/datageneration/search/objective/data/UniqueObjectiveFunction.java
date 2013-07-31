@@ -37,8 +37,10 @@ public class UniqueObjectiveFunction extends ObjectiveFunction<Data> {
         List<List<Cell>> dataRows = data.getCells(columns);
         List<List<Cell>> stateRows = state.getCells(columns);
 
-        // special case for negating and there being one or fewer rows
-        if (!goalIsToSatisfy && dataRows.size() + stateRows.size() <= 1) {
+        // special case for negating and there being one or fewer rows in the data
+        // note that we're only interested in the data and its evaluation against
+        // itself and the state, values for non-unique issues in the state are ignored
+        if (!goalIsToSatisfy && dataRows.size() <= 0) {
             return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
         }
 

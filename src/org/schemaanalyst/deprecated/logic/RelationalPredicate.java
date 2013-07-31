@@ -1,16 +1,19 @@
-package org.schemaanalyst.logic;
+package org.schemaanalyst.deprecated.logic;
 
-public class RelationalPredicate<T extends Comparable<T>> {
+import org.schemaanalyst.logic.RelationalOperator;
+
+@Deprecated
+public class RelationalPredicate<T> {
 
     protected T lhs, rhs;
-    protected RelationalOperator operator;    
-    
+    protected RelationalOperator operator;
+
     public RelationalPredicate(T lhs, RelationalOperator operator, T rhs) {
         this.lhs = lhs;
         this.operator = operator;
         this.rhs = rhs;
-    }
-
+    }    
+    
     public T getLHS() {
         return lhs;
     }
@@ -60,39 +63,10 @@ public class RelationalPredicate<T extends Comparable<T>> {
         }
 
         return true;
-    }    
-    
-   public Boolean isSatisfied3VL() {
-        if (lhs == null || rhs == null) {
-            return null;
-        }
-        return isSatisfied();
     }
-
-    public boolean isSatisfied() {
-        int result = lhs.compareTo(rhs);
-
-        switch (operator) {
-            case EQUALS:
-                return (result == 0);
-            case GREATER:
-                return (result > 0);
-            case GREATER_OR_EQUALS:
-                return (result >= 0);
-            case LESS:
-                return (result < 0);
-            case LESS_OR_EQUALS:
-                return (result <= 0);
-            case NOT_EQUALS:
-                return (result != 0);
-            default:
-                throw new LogicException("Unknown relational operator " + this);
-        }
-    }
-    
 
     @Override
     public String toString() {
         return lhs + " " + operator + " " + rhs;
-    }    
+    }
 }

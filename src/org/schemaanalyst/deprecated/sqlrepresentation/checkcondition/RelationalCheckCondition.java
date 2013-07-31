@@ -1,8 +1,8 @@
 package org.schemaanalyst.deprecated.sqlrepresentation.checkcondition;
 
 import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.deprecated.logic.RelationalPredicate;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 
 /**
  * @deprecated

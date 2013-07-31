@@ -36,19 +36,26 @@ public class ReferenceObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
+        List<List<Cell>> dataRows = data.getCells(columns);
+        
+        // special case for negating and there being one or fewer rows in the data
+        // note that we're only interested in the data and its evaluation against
+        // itself and the state, values for non-unique issues in the state are ignored
+        if (!goalIsToSatisfy && dataRows.size() <= 0) {
+            return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
+        }        
+        
     	// The optimum corresponds to
     	// -- a success (goalIsToSatisfy) on EVERY row, or 
     	// -- a fail (!goalIsToSatisfy) on EVERY row.    	
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
-        List<List<Cell>> rows = data.getCells(columns);
-
         // add all reference rows from data and the state
         List<List<Cell>> referenceRows = data.getCells(referenceColumns);
         referenceRows.addAll(state.getCells(referenceColumns));
 
-        for (List<Cell> row : rows) {
-            objVal.add(evaluateRow(row, referenceRows, nullAccepted));
+        for (List<Cell> dataRow : dataRows) {
+            objVal.add(evaluateRow(dataRow, referenceRows, nullAccepted));
         }
 
         return objVal;

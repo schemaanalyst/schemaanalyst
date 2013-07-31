@@ -13,8 +13,8 @@ import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.deprecated.logic.RelationalPredicate;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.RelationalPredicate;
 
 @Deprecated
 public class ValueObjectiveFunction extends ObjectiveFunction<RelationalPredicate<Value>> {

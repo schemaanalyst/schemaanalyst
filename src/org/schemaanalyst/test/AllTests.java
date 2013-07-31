@@ -32,6 +32,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestMultiValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestNullValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestNumericValueRelationalObjectiveFunction.class,
+	org.schemaanalyst.test.logic.TestRelationalOperator.class,
 	org.schemaanalyst.test.mutation.TestMutationReport.class,
 	org.schemaanalyst.test.mutation.TestMutationScoreCalculation.class,
 	org.schemaanalyst.test.mutation.TestSQLInsertRecord.class,
