@@ -26,6 +26,8 @@ public interface DataTypeVisitor {
 
     public void visit(RealDataType type);
 
+    public void visit(SingleCharDataType type);    
+    
     public void visit(SmallIntDataType type);
 
     public void visit(TextDataType type);

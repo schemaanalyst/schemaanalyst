@@ -18,6 +18,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.PrecisionedAndScaled;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.Signed;
+import org.schemaanalyst.sqlrepresentation.datatype.SingleCharDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
@@ -100,6 +101,11 @@ public class DataTypeSQLWriter {
             }
 
             @Override
+            public void visit(SingleCharDataType type) {
+                sql = writeSingleCharDataType(type);
+            }            
+            
+            @Override
             public void visit(SmallIntDataType type) {
                 sql = writeSmallIntDataType(type);
             }
@@ -181,6 +187,10 @@ public class DataTypeSQLWriter {
         return "REAL";
     }
 
+    public String writeSingleCharDataType(SingleCharDataType type) {
+        return "CHAR";
+    }    
+    
     public String writeSmallIntDataType(SmallIntDataType type) {
         return "SMALLINT" + writeSigned(type);
     }

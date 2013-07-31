@@ -14,6 +14,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.MediumIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.SingleCharDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
@@ -104,6 +105,11 @@ public class CellSQLWriter {
             }
 
             @Override
+            public void visit(SingleCharDataType type) {
+                sql = writeSingleCharCell(cell, type);
+            }            
+            
+            @Override
             public void visit(SmallIntDataType type) {
                 sql = writeSmallIntCell(cell, type);
             }
@@ -185,6 +191,10 @@ public class CellSQLWriter {
         return valueSQLWriter.writeValue(cell.getValue());
     }
 
+    public String writeSingleCharCell(Cell cell, SingleCharDataType type) {
+        return valueSQLWriter.writeValue(cell.getValue());
+    }    
+    
     public String writeSmallIntCell(Cell cell, SmallIntDataType type) {
         return valueSQLWriter.writeValue(cell.getValue());
     }

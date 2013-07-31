@@ -13,6 +13,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.SingleCharDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
@@ -41,8 +42,10 @@ class DataTypeMapper {
 
             // *** CHARACTER STRING *** 
             case char_t:
-                // [GSP BUG 49, DBMS Postgres] "character/char" parsed as VARCHAR 				
-                return new CharDataType(getLength(dataType));
+                Integer length = getLength(dataType);
+                return (length == null)
+                        ? new SingleCharDataType()
+                        : new CharDataType(length);
 
             case varchar_t:
                 return new VarCharDataType(getLength(dataType));
