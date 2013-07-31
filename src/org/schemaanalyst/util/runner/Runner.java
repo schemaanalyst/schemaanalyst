@@ -298,7 +298,6 @@ public abstract class Runner {
     protected void parseArgs(String... args) {
         parsedParameters = new HashSet<>();
         int numReqProcessed = 0;
-
         for (String arg : args) {
             // if the user wants help, give it to them
             if (arg.equals(HELP_OPTION)) {

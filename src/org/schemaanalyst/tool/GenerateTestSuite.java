@@ -14,53 +14,49 @@ import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 
+import static org.schemaanalyst.util.JavaUtils.*;
+
 @Description("Generates a complete test suite from individual test classes")
 public class GenerateTestSuite extends Runner {
 
-    private static final String JAVA_FILE_SUFFIX = ".java";
-    private static final String CLASS_SUFFIX = ".class";
-    
     @Parameter("The name of the class name to put the test suite")
     private String classname = "AllTests";
-    
+
     @Override
     protected void task() {
-        System.out.println(classname);
-        System.exit(1);
-        
         String testSrcDir = locationsConfiguration.getTestSrcDir();
         String testPackage = locationsConfiguration.getTestPackage();
         List<File> classFiles = new ArrayList<File>();
-        
-        Deque<File> dirs = new ArrayDeque<File>();         
+
+        Deque<File> dirs = new ArrayDeque<File>();
         dirs.push(new File(testSrcDir));
-        
+
         while (dirs.size() > 0) {
             File dir = dirs.pop();
             String[] entries = dir.list();
             for (String entry : entries) {
-                File entryFile = new File(dir.getPath() + File.separator + entry);
+                File entryFile = new File(dir.getPath() + File.separator
+                        + entry);
                 if (entryFile.isDirectory()) {
                     dirs.push(entryFile);
                 } else {
                     String fileOnly = entryFile.getName();
-                    if (fileOnly.startsWith("Test") && fileOnly.endsWith(JAVA_FILE_SUFFIX)) {
+                    if (fileOnly.startsWith("Test")
+                            && fileOnly.endsWith(JAVA_FILE_SUFFIX)) {
                         classFiles.add(entryFile);
                     }
-                }                
+                }
             }
         }
-        
+
         List<String> classNames = new ArrayList<String>();
         for (File classFile : classFiles) {
             String path = classFile.getPath().substring(testSrcDir.length());
-            String className = testPackage + path.replace("/", ".");
-            className = className.substring(0, className.length() - JAVA_FILE_SUFFIX.length());
-            className += CLASS_SUFFIX;
+            String className = testPackage + fileNameToClassName(path, true);
             classNames.add(className);
         }
         Collections.sort(classNames);
-        
+
         IndentableStringBuilder javaCode = new IndentableStringBuilder();
         javaCode.appendln("package " + testPackage + ";");
         javaCode.appendln();
@@ -82,21 +78,25 @@ public class GenerateTestSuite extends Runner {
         javaCode.appendln("})");
         javaCode.appendln();
         javaCode.appendln("public class " + classname + " {}");
-        
-        String testSuiteFile = testSrcDir + File.separator + classname + JAVA_FILE_SUFFIX;
+
+        File testSuiteFile = new File(testSrcDir + File.separator + classname
+                + JAVA_FILE_SUFFIX);
         try (PrintWriter fileOut = new PrintWriter(testSuiteFile)) {
             fileOut.println(javaCode);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        }                
+        }
+
+        out.println("Written test suite to " + testSuiteFile.getAbsolutePath());
     }
 
     @Override
     protected void validateParameters() {
-        check(classname.length() > 0, "The test suite class name cannot be empty");        
+        check(classname.length() > 0,
+                "The test suite class name cannot be empty");
     }
 
     public static void main(String[] args) {
-        new GenerateTestSuite().run();
+        new GenerateTestSuite().run(args);
     }
 }
