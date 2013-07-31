@@ -58,7 +58,14 @@ public class LocationsConfiguration extends Configuration {
      * The package where we write Java code corresponding to each parsed schema.
      */
     private String case_study_package;
-
+    /**
+     * The folder where we write Java code corresponding to the complete test suite.
+     */
+    private String test_src_dir;
+    /**
+     * The package where we write Java code corresponding to the complete test suite.
+     */
+    private String test_package;
     /**
      * Construct using the default Properties file location.
      */
@@ -168,7 +175,7 @@ public class LocationsConfiguration extends Configuration {
     /**
      * The folder where we write Java code corresponding to each parsed schema.
      *
-     * @return the casestudy_src_dir
+     * @return the case_study_src_dir
      */
     public String getCaseStudySrcDir() {
         return case_study_src_dir;
@@ -177,9 +184,27 @@ public class LocationsConfiguration extends Configuration {
     /**
      * The package where we write Java code corresponding to each parsed schema.
      *
-     * @return the casestudy_src_dir
+     * @return the case_study_package
      */
     public String getCaseStudyPackage() {
         return case_study_package;
     }
+    
+    /**
+     * The folder where we write Java code corresponding to each parsed schema.
+     *
+     * @return the test_src_dir
+     */
+    public String getTestSrcDir() {
+        return test_src_dir;
+    }
+
+    /**
+     * The package where we write Java code corresponding to each parsed schema.
+     *
+     * @return the test_package
+     */
+    public String getTestPackage() {
+        return test_package;
+    }    
 }
