@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.mutators;
 
-import org.schemaanalyst.mutation.mutators.*;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Schema;

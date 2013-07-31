@@ -21,11 +21,11 @@ public class RelationalCheckCondition extends RelationalPredicate<Operand>
     }
 
     public RelationalCheckCondition(Operand lhs, String operator, Operand rhs) {
-        super(lhs, RelationalOperator.valueOf(operator), rhs);
+        super(lhs, RelationalOperator.getRelationalOperator(operator), rhs);
     }
 
     public RelationalCheckCondition(Operand lhs, String operator, int rhs) {
-        super(lhs, RelationalOperator.valueOf(operator), new NumericValue(rhs));
+        super(lhs, RelationalOperator.getRelationalOperator(operator), new NumericValue(rhs));
     }
 
     @Override

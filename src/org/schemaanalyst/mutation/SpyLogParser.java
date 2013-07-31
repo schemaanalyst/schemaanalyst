@@ -20,6 +20,7 @@ public class SpyLogParser {
             String line = s.nextLine();
             lines.add(line);
         }
+        s.close();
         return lines;
     }
 

@@ -66,7 +66,7 @@ public abstract class ValueRelationalObjectiveFunction<T> extends ObjectiveFunct
                 } else if (rhs != null) {
                     rhs.accept(this);
                 } else {
-                    booleanValue();
+                    numericValue();
                 }
                 return objVal;
             }

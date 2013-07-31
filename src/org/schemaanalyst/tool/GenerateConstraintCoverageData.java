@@ -41,7 +41,7 @@ public class GenerateConstraintCoverageData extends Runner {
         
     @Parameter("The maximum number of evaluations for each step of the search algorithm "
     		+ "(where the definition of 'step' is specific to each algorithm)")
-    private int maxevaluations = 10000;
+    private int maxevaluations = 100000;
     
     @Override
     protected void task() {

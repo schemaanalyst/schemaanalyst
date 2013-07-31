@@ -153,7 +153,7 @@ public class SQLWriter {
         }
 
         sql.appendln(0);
-        sql.appendln(")");
+        sql.append(")");
         return sql.toString();
     }
 
