@@ -16,7 +16,7 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 4/4 (100.00000%) 
--- Time to generate: 23ms 
+-- Time to generate: 21ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -30,14 +30,14 @@ INSERT INTO S(X, Y, Z) VALUES('', '', '');
 
 -- Negating "UNIQUE[A, B]" on table "T"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO T(A, B, C) VALUES('', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[X, Y]" on table "S"
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 13ms 
 INSERT INTO T(A, B, C) VALUES(NULL, 'a', '');
 INSERT INTO S(X, Y, Z) VALUES('b', '', '');
 -- * Number of objective function evaluations: 14

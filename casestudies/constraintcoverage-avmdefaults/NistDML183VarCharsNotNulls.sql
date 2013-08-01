@@ -16,11 +16,11 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 142ms 
+-- Time to generate: 145ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 11ms 
 INSERT INTO T(A, B, C) VALUES('a', '', '');
 INSERT INTO T(A, B, C) VALUES('', '', '');
 INSERT INTO S(X, Y, Z) VALUES('', '', '');
@@ -37,28 +37,28 @@ INSERT INTO T(A, B, C) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(B)" on table "T"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 11ms 
 INSERT INTO T(A, B, C) VALUES('b', NULL, '');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(C)" on table "T"
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 8ms 
 INSERT INTO T(A, B, C) VALUES('b', '', NULL);
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
 
 -- Negating "UNIQUE[A, B]" on table "T"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO T(A, B, C) VALUES('', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[X, Y]" on table "S"
 -- * Success: true
--- * Time: 18ms 
+-- * Time: 22ms 
 INSERT INTO T(A, B, C) VALUES('b', '', '');
 INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 -- * Number of objective function evaluations: 22
@@ -66,7 +66,7 @@ INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 
 -- Negating "NOT NULL(X)" on table "S"
 -- * Success: true
--- * Time: 23ms 
+-- * Time: 26ms 
 INSERT INTO T(A, B, C) VALUES('`', '', '');
 INSERT INTO S(X, Y, Z) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 19
@@ -74,7 +74,7 @@ INSERT INTO S(X, Y, Z) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(Y)" on table "S"
 -- * Success: true
--- * Time: 26ms 
+-- * Time: 30ms 
 INSERT INTO T(A, B, C) VALUES('aa', '', '');
 INSERT INTO S(X, Y, Z) VALUES('', NULL, '');
 -- * Number of objective function evaluations: 24
@@ -82,7 +82,7 @@ INSERT INTO S(X, Y, Z) VALUES('', NULL, '');
 
 -- Negating "NOT NULL(Z)" on table "S"
 -- * Success: true
--- * Time: 30ms 
+-- * Time: 35ms 
 INSERT INTO T(A, B, C) VALUES('a', 'a', '');
 INSERT INTO S(X, Y, Z) VALUES('', '', NULL);
 -- * Number of objective function evaluations: 24

@@ -17,11 +17,11 @@ CREATE TABLE ORDERS (
 	FOREIGN KEY (FIRSTNAME, LASTNAME) REFERENCES LONG_NAMED_PEOPLE (FIRSTNAME, LASTNAME)
 );
 -- Coverage: 4/4 (100.00000%) 
--- Time to generate: 28ms 
+-- Time to generate: 30ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 8ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('a', '', 0);
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('', '', 0);
 INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES('', '', '', 0);
@@ -38,7 +38,7 @@ INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('', '', 0);
 
 -- Negating "FOREIGN KEY[FIRSTNAME, LASTNAME]" on table "ORDERS"
 -- * Success: true
--- * Time: 20ms 
+-- * Time: 21ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('b', '', 0);
 INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES('`', '', '', 0);
 -- * Number of objective function evaluations: 23

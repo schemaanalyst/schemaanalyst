@@ -69,11 +69,11 @@ CREATE TABLE country (
 	country	VARCHAR(255)	NOT NULL
 );
 -- Coverage: 100/100 (100.00000%) 
--- Time to generate: 909ms 
+-- Time to generate: 948ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 735ms 
+-- * Time: 810ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(0, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, 0);
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(1, '', '', '', '', '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0);
@@ -98,21 +98,21 @@ INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, cha
 
 -- Negating "NOT NULL(domain_key)" on table "domain"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(NULL, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(domain)" on table "domain"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(registered_date)" on table "domain"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', NULL, '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
@@ -126,56 +126,56 @@ INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, cha
 
 -- Negating "NOT NULL(changed)" on table "domain"
 -- * Success: true
--- * Time: 6ms 
+-- * Time: 4ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', NULL, '', 0, 0, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(holder)" on table "domain"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 5ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', NULL, 0, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 21
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(admin_c)" on table "domain"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 6ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, NULL, 0, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 24
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(tech_c)" on table "domain"
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 6ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, NULL, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 27
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(zone_c)" on table "domain"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 7ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, NULL, 0, 0, 0);
 -- * Number of objective function evaluations: 30
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(mntnr_fkey)" on table "domain"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 9ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, NULL, 0, 0);
 -- * Number of objective function evaluations: 33
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(publicviewabledata)" on table "domain"
 -- * Success: true
--- * Time: 15ms 
+-- * Time: 10ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, NULL, 0);
 -- * Number of objective function evaluations: 36
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(disabled)" on table "domain"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 10ms 
 INSERT INTO domain(domain_key, domain, registered_date, registerexpire_date, changed, remarks, holder, admin_c, tech_c, zone_c, mntnr_fkey, publicviewabledata, disabled) VALUES(-1, '', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '1970-01-01 00:00:00', '', 0, 0, 0, 0, 0, 0, NULL);
 -- * Number of objective function evaluations: 39
 -- * Number of restarts: 0
@@ -203,7 +203,7 @@ INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, countr
 
 -- Negating "NOT NULL(password)" on table "mntnr"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 2ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', NULL, '', '', '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
@@ -217,21 +217,21 @@ INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, countr
 
 -- Negating "NOT NULL(address)" on table "mntnr"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', NULL, '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(pcode)" on table "mntnr"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 2ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', NULL, '', 0, '', '', '', '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(city)" on table "mntnr"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 4ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', '', NULL, 0, '', '', '', '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 18
 -- * Number of restarts: 0
@@ -245,28 +245,28 @@ INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, countr
 
 -- Negating "NOT NULL(phone)" on table "mntnr"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 4ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', '', '', 0, NULL, '', '', '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 23
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(email)" on table "mntnr"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 5ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', '', '', 0, '', '', NULL, '', '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 27
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(changed)" on table "mntnr"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 5ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', '', '', 0, '', '', '', '', NULL, 0);
 -- * Number of objective function evaluations: 31
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(disabled)" on table "mntnr"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 5ms 
 INSERT INTO mntnr(mntnr_key, login, password, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, disabled) VALUES(-1, '', '', '', '', '', '', 0, '', '', '', '', '1970-01-01 00:00:00', NULL);
 -- * Number of objective function evaluations: 34
 -- * Number of restarts: 0
@@ -294,14 +294,14 @@ INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fk
 
 -- Negating "NOT NULL(name)" on table "person"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, NULL, '', '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0, 0);
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(address)" on table "person"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', NULL, '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0, 0);
 -- * Number of objective function evaluations: 13
 -- * Number of restarts: 0
@@ -315,21 +315,21 @@ INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fk
 
 -- Negating "NOT NULL(city)" on table "person"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 3ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', '', '', NULL, 0, '', '', '', '', '1970-01-01 00:00:00', 0, 0);
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(country_fkey)" on table "person"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 5ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', '', '', '', NULL, '', '', '', '', '1970-01-01 00:00:00', 0, 0);
 -- * Number of objective function evaluations: 19
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(phone)" on table "person"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 3ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', '', '', '', 0, NULL, '', '', '', '1970-01-01 00:00:00', 0, 0);
 -- * Number of objective function evaluations: 22
 -- * Number of restarts: 0
@@ -343,7 +343,7 @@ INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fk
 
 -- Negating "NOT NULL(changed)" on table "person"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', '', '', '', 0, '', '', '', '', NULL, 0, 0);
 -- * Number of objective function evaluations: 30
 -- * Number of restarts: 0
@@ -357,7 +357,7 @@ INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fk
 
 -- Negating "NOT NULL(disabled)" on table "person"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 4ms 
 INSERT INTO person(person_key, type_fkey, name, address, pcode, city, country_fkey, phone, fax, email, remarks, changed, mntnr_fkey, disabled) VALUES(-1, 0, '', '', '', '', 0, '', '', '', '', '1970-01-01 00:00:00', 0, NULL);
 -- * Number of objective function evaluations: 36
 -- * Number of restarts: 0
@@ -378,14 +378,14 @@ INSERT INTO type(type_key, type) VALUES(NULL, '');
 
 -- Negating "NOT NULL(type)" on table "type"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO type(type_key, type) VALUES(-1, NULL);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[nameserver_key]" on table "nameserver"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO nameserver(nameserver_key, nameserver, domain_fkey) VALUES(0, '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -399,7 +399,7 @@ INSERT INTO nameserver(nameserver_key, nameserver, domain_fkey) VALUES(NULL, '',
 
 -- Negating "NOT NULL(nameserver)" on table "nameserver"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO nameserver(nameserver_key, nameserver, domain_fkey) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0

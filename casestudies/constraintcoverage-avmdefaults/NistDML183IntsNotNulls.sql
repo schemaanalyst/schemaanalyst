@@ -16,7 +16,7 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 109ms 
+-- Time to generate: 107ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -30,14 +30,14 @@ INSERT INTO S(X, Y, Z) VALUES(0, 0, 0);
 
 -- Negating "NOT NULL(A)" on table "T"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO T(A, B, C) VALUES(NULL, 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(B)" on table "T"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 5ms 
 INSERT INTO T(A, B, C) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -51,7 +51,7 @@ INSERT INTO T(A, B, C) VALUES(-1, 0, NULL);
 
 -- Negating "UNIQUE[A, B]" on table "T"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO T(A, B, C) VALUES(0, 0, 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -66,7 +66,7 @@ INSERT INTO S(X, Y, Z) VALUES(-1, 0, 0);
 
 -- Negating "NOT NULL(X)" on table "S"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 17ms 
 INSERT INTO T(A, B, C) VALUES(-1, 0, 0);
 INSERT INTO S(X, Y, Z) VALUES(NULL, 0, 0);
 -- * Number of objective function evaluations: 14
@@ -74,7 +74,7 @@ INSERT INTO S(X, Y, Z) VALUES(NULL, 0, 0);
 
 -- Negating "NOT NULL(Y)" on table "S"
 -- * Success: true
--- * Time: 23ms 
+-- * Time: 24ms 
 INSERT INTO T(A, B, C) VALUES(0, 1, 0);
 INSERT INTO S(X, Y, Z) VALUES(0, NULL, 0);
 -- * Number of objective function evaluations: 17

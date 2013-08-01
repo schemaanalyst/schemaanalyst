@@ -37,11 +37,11 @@ CREATE TABLE order_items (
 	product_quantity	INT
 );
 -- Coverage: 38/38 (100.00000%) 
--- Time to generate: 935ms 
+-- Time to generate: 848ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 244ms 
+-- * Time: 250ms 
 INSERT INTO coffees(id, coffee_name, price) VALUES(1, '', 0);
 INSERT INTO coffees(id, coffee_name, price) VALUES(0, '', 0);
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(1, '', '', 0);
@@ -64,21 +64,21 @@ INSERT INTO coffees(id, coffee_name, price) VALUES(0, '', 0);
 
 -- Negating "NOT NULL(coffee_name)" on table "coffees"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 3ms 
 INSERT INTO coffees(id, coffee_name, price) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(price)" on table "coffees"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 3ms 
 INSERT INTO coffees(id, coffee_name, price) VALUES(-1, '', NULL);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "salespeople"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(0, '', '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -92,14 +92,14 @@ INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-1, N
 
 -- Negating "NOT NULL(last_name)" on table "salespeople"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 3ms 
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-1, '', NULL, 0);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(commission_rate)" on table "salespeople"
 -- * Success: true
--- * Time: 6ms 
+-- * Time: 4ms 
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-1, '', '', NULL);
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0
@@ -113,42 +113,42 @@ INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES
 
 -- Negating "NOT NULL(company_name)" on table "customers"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, NULL, '', '', '', '');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(street_address)" on table "customers"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, '', NULL, '', '', '');
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(city)" on table "customers"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 4ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, '', '', NULL, '', '');
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(state)" on table "customers"
 -- * Success: true
--- * Time: 10ms 
+-- * Time: 4ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, '', '', '', NULL, '');
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(zip)" on table "customers"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 5ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, '', '', '', '', NULL);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "orders"
 -- * Success: true
--- * Time: 21ms 
+-- * Time: 20ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-1, '', '', '', '', '');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-1, '', '', 0);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(0, 0, 0);
@@ -157,7 +157,7 @@ INSERT INTO orders(id, customer_id, salesperson_id) VALUES(0, 0, 0);
 
 -- Negating "FOREIGN KEY[customer_id]" on table "orders"
 -- * Success: true
--- * Time: 189ms 
+-- * Time: 183ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(46, 'phctgpyae', 'ddanycpk', 'yrvyoaks', 'dcysrd', 'gqrupxsn');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-92, 'fva', 'gxrbjt', 23);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(22, -96, NULL);
@@ -166,7 +166,7 @@ INSERT INTO orders(id, customer_id, salesperson_id) VALUES(22, -96, NULL);
 
 -- Negating "FOREIGN KEY[salesperson_id]" on table "orders"
 -- * Success: true
--- * Time: 38ms 
+-- * Time: 42ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-100, 'e', 'e', 'qullv', 'r', 'yi');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-91, 'acamirp', 'hvbai', -83);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(70, -100, -39);
@@ -175,7 +175,7 @@ INSERT INTO orders(id, customer_id, salesperson_id) VALUES(70, -100, -39);
 
 -- Negating "PRIMARY KEY[id]" on table "order_items"
 -- * Success: true
--- * Time: 129ms 
+-- * Time: 161ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-45, 'rs', 'mocioobsf', 'rkiqs', 'uabqpakvq', 'usphsedrx');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-38, 'anhtu', 'xnfi', -50);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(6, NULL, NULL);
@@ -186,7 +186,7 @@ INSERT INTO order_items(id, order_id, product_id, product_quantity) VALUES(1, NU
 
 -- Negating "FOREIGN KEY[order_id]" on table "order_items"
 -- * Success: true
--- * Time: 142ms 
+-- * Time: 81ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(74, 'yopgmx', 'ij', 'gqhb', '', 'dpshpa');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-5, '', 'rku', 20);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(-41, NULL, -91);
@@ -197,7 +197,7 @@ INSERT INTO order_items(id, order_id, product_id, product_quantity) VALUES(34, -
 
 -- Negating "FOREIGN KEY[product_id]" on table "order_items"
 -- * Success: true
--- * Time: 112ms 
+-- * Time: 75ms 
 INSERT INTO customers(id, company_name, street_address, city, state, zip) VALUES(-91, 'q', 'gke', 'oojar', 'dyuv', 'si');
 INSERT INTO salespeople(id, first_name, last_name, commission_rate) VALUES(-88, 'huhjyapf', 'raglk', -63);
 INSERT INTO orders(id, customer_id, salesperson_id) VALUES(49, NULL, NULL);

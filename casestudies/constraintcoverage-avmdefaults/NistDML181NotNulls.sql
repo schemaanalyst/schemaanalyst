@@ -17,11 +17,11 @@ CREATE TABLE ORDERS (
 	FOREIGN KEY (FIRSTNAME, LASTNAME) REFERENCES LONG_NAMED_PEOPLE (FIRSTNAME, LASTNAME)
 );
 -- Coverage: 12/12 (100.00000%) 
--- Time to generate: 82ms 
+-- Time to generate: 88ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 9ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('a', '', 0);
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('', '', 0);
 INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES('', '', '', 0);
@@ -45,14 +45,14 @@ INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES(NULL, '', 0);
 
 -- Negating "NOT NULL(LASTNAME)" on table "LONG_NAMED_PEOPLE"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('', NULL, 0);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[FIRSTNAME, LASTNAME]" on table "ORDERS"
 -- * Success: true
--- * Time: 22ms 
+-- * Time: 24ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('b', '', 0);
 INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES('`', '', '', 0);
 -- * Number of objective function evaluations: 23
@@ -68,7 +68,7 @@ INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES(NULL, '', '', 0);
 
 -- Negating "NOT NULL(LASTNAME)" on table "ORDERS"
 -- * Success: true
--- * Time: 27ms 
+-- * Time: 32ms 
 INSERT INTO LONG_NAMED_PEOPLE(FIRSTNAME, LASTNAME, AGE) VALUES('aa', '', 0);
 INSERT INTO ORDERS(FIRSTNAME, LASTNAME, TITLE, COST) VALUES('', NULL, '', 0);
 -- * Number of objective function evaluations: 25

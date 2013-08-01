@@ -16,11 +16,11 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 202ms 
+-- Time to generate: 194ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 12ms 
 INSERT INTO T(A, B, C) VALUES('a', '', '');
 INSERT INTO T(A, B, C) VALUES('', '', '');
 INSERT INTO S(X, Y, Z) VALUES('', '', '');
@@ -37,28 +37,28 @@ INSERT INTO T(A, B, C) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(B)" on table "T"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 10ms 
 INSERT INTO T(A, B, C) VALUES('b', NULL, '');
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(C)" on table "T"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 7ms 
 INSERT INTO T(A, B, C) VALUES('b', '', NULL);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
 
 -- Negating "UNIQUE[A, B]" on table "T"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO T(A, B, C) VALUES('', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[X, Y]" on table "S"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 18ms 
 INSERT INTO T(A, B, C) VALUES('b', '', '');
 INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 -- * Number of objective function evaluations: 21
@@ -66,7 +66,7 @@ INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 
 -- Negating "NOT NULL(X)" on table "S"
 -- * Success: true
--- * Time: 21ms 
+-- * Time: 20ms 
 INSERT INTO T(A, B, C) VALUES('`', '', '');
 INSERT INTO S(X, Y, Z) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 18

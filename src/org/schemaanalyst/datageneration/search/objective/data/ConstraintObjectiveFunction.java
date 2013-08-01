@@ -5,68 +5,90 @@ import java.util.List;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.sqlrepresentation.Column;
 
 public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data> {
     
+    protected List<Column> columns;
     protected String description;
     protected boolean goalIsToSatisfy;
-    protected List<Row> acceptedRows, rejectedRows; 
-    protected Data data;
     
-    public ConstraintObjectiveFunction(String description, boolean goalIsToSatisfy) {
+    protected List<Row> dataRows;
+    protected MultiObjectiveValue objVal;
+    protected List<Row> satisfyingRows, falsifyingRows;
+    
+    public ConstraintObjectiveFunction(List<Column> columns, String description, boolean goalIsToSatisfy) {
+        this.columns = columns;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        acceptedRows = new ArrayList<Row>();
-        rejectedRows = new ArrayList<Row>();
-    }
+        satisfyingRows = new ArrayList<Row>();
+        falsifyingRows = new ArrayList<Row>();
+    }    
     
     public boolean goalIsToSatisfy() {
         return goalIsToSatisfy;
     }
-     
+    
     @Override
     public ObjectiveValue evaluate(Data data) {
-        // set the data
-        this.data = data;
+        satisfyingRows.clear();
+        falsifyingRows.clear();
         
-        // clear the rejected rows list
-        acceptedRows.clear();
-        rejectedRows.clear();
+        loadRows(data);
         
-        // get the rows relevant for this constraint
-        List<Row> dataRows = getDataRows(data);
-        
-        // anything to evaluate?
-        if (dataRows.size() <= 0) {
+        if (dataRows.size() == 0) {
             description +=  "(no data rows)";
-            return goalIsToSatisfy 
+            return zeroRowsOptimalityCondition() 
                     ? ObjectiveValue.optimalObjectiveValue(description)
                     : ObjectiveValue.worstObjectiveValue(description);
-        }        
-        
-        // do the evaluation
-        return performEvaluation(dataRows);
-    }    
-    
-    protected abstract List<Row> getDataRows(Data data);
-    
-    protected abstract ObjectiveValue performEvaluation(List<Row> dataRows);
-    
-    protected void classifyRow(ObjectiveValue objVal, Row row) {
-        if (objVal.isOptimal()) {
-            acceptedRows.add(row);
-        } else {
-            rejectedRows.add(row);
         }
+        
+        // The optimum corresponds to
+        // -- a success (goalIsToSatisfy) on EVERY row, or 
+        // -- a fail (!goalIsToSatisfy) on EVERY row.   
+        // (Partially succeeding or failing rows could leave the database in an
+        // inconsistent state unless knowledge about succeeding an failing rows
+        // is taken into account.  It is assumed it won't be.)          
+        objVal = new SumOfMultiObjectiveValue(description);
+        
+        for (Row row : dataRows) {
+            ObjectiveValue rowObjVal = evaluateRow(row); 
+            
+            objVal.add(rowObjVal);
+            
+            boolean satisfying = 
+                    (goalIsToSatisfy && rowObjVal.isOptimal()) ||
+                    (!goalIsToSatisfy && !rowObjVal.isOptimal());
+            
+            if (satisfying) {
+                satisfyingRows.add(row);
+            } else {
+                falsifyingRows.add(row);
+            }                           
+        }
+
+        return objVal;        
     }
     
-    public List<Row> getAcceptedRows() {
-        return acceptedRows;
+    protected void loadRows(Data data) {
+        dataRows = data.getRows(columns);
+    }
+    
+    protected abstract ObjectiveValue evaluateRow(Row row);
+    
+    protected boolean zeroRowsOptimalityCondition() {
+        return goalIsToSatisfy;
+    }
+    
+    public List<Row> getSatisfyingRows() {
+        return satisfyingRows;
     }   
     
-    public List<Row> getRejectedRows() {
-        return rejectedRows;
+    public List<Row> getFalsifyingRows() {
+        return falsifyingRows;
     }    
 }

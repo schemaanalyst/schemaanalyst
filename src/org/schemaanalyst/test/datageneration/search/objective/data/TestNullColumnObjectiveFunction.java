@@ -13,7 +13,9 @@ import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static org.junit.Assert.assertEquals;
 import static junitparams.JUnitParamsRunner.$;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestNullColumnObjectiveFunction {
@@ -36,25 +38,55 @@ public class TestNullColumnObjectiveFunction {
     
     Object[] testValues() {
         return $(
-                $(null, null, true, optimal, 0),
-                $(null, 1, true, oneOff, 1),
-                $(1, 1, true, twoOff, 2),
-                $(null, null, false, twoOff, 2),
-                $(null, 1, false, oneOff, 1),
-                $(1, 1, false, optimal, 0)
+                $(null, null, true, optimal, 2, 0),
+                $(null, 1, true, oneOff, 1, 1),
+                $(1, 1, true, twoOff, 0, 2),
+                $(null, null, false, twoOff, 2, 0),
+                $(null, 1, false, oneOff, 1, 1),
+                $(1, 1, false, optimal, 0, 2)
                 );
     }
     
     @Test
     @Parameters(method = "testValues")     
-    public void test(Integer val1, Integer val2, boolean goalIsToSatisfy, ObjectiveValue expected, int numRejectedRows) {
+    public void test(Integer val1, Integer val2, 
+                     boolean goalIsToSatisfy, ObjectiveValue expected, 
+                     int numAcceptedRows, int numRejectedRows) {
         NullColumnObjectiveFunction objFun = 
                 new NullColumnObjectiveFunction(database.column, "", goalIsToSatisfy);
         
         database.setDataValues(val1, val2);
         assertEquivalent(expected, objFun.evaluate(data));                   
+
+        assertEquals("Number of accepted rows should be " + numAcceptedRows, 
+                numAcceptedRows, objFun.getSatisfyingRows().size());        
         
         assertEquals("Number of rejected rows should be " + numRejectedRows, 
-                     numRejectedRows, objFun.getRejectedRows().size());
+                numRejectedRows, objFun.getFalsifyingRows().size());
+    }
+    
+    @Test
+    public void testNoRows() {
+        NullColumnObjectiveFunction objFunTrue = 
+                new NullColumnObjectiveFunction(database.column, "", true);
+        
+        assertNonOptimal(objFunTrue.evaluate(new Data()));  
+        
+        assertEquals("Number of accepted rows should be zero", 
+                0, objFunTrue.getSatisfyingRows().size());        
+        
+        assertEquals("Number of rejected rows should be zero", 
+                0, objFunTrue.getFalsifyingRows().size());  
+        
+        NullColumnObjectiveFunction objFunFalse = 
+                new NullColumnObjectiveFunction(database.column, "", false);
+        
+        assertOptimal(objFunFalse.evaluate(new Data()));  
+        
+        assertEquals("Number of accepted rows should be zero", 
+                0, objFunFalse.getSatisfyingRows().size());        
+        
+        assertEquals("Number of rejected rows should be zero", 
+                0, objFunFalse.getFalsifyingRows().size());             
     }
 }

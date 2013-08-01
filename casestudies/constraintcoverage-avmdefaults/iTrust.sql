@@ -452,11 +452,11 @@ CREATE TABLE ReferralMessage (
 	PRIMARY KEY (messageID, referralID)
 );
 -- Coverage: 268/268 (100.00000%) 
--- Time to generate: 6599ms 
+-- Time to generate: 5943ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 6202ms 
+-- * Time: 5766ms 
 INSERT INTO Users(MID, Password, Role, sQuestion, sAnswer) VALUES(1, '', 'er', '', '');
 INSERT INTO Users(MID, Password, Role, sQuestion, sAnswer) VALUES(0, '', 'er', '', '');
 INSERT INTO Hospitals(HospitalID, HospitalName) VALUES('a', '');
@@ -546,7 +546,7 @@ INSERT INTO ReferralMessage(messageID, referralID) VALUES(0, 0);
 
 -- Negating "PRIMARY KEY[MID]" on table "Users"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 1ms 
 INSERT INTO Users(MID, Password, Role, sQuestion, sAnswer) VALUES(0, '', 'er', '', '');
 -- * Number of objective function evaluations: 33
 -- * Number of restarts: 0
@@ -560,161 +560,161 @@ INSERT INTO Users(MID, Password, Role, sQuestion, sAnswer) VALUES(-1, '', NULL, 
 
 -- Negating "CHECK[Role IN ('patient', 'admin', 'hcp', 'uap', 'er', 'tester', 'pha', 'lt')]" on table "Users"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Users(MID, Password, Role, sQuestion, sAnswer) VALUES(-1, '', '', '', '');
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[HospitalID]" on table "Hospitals"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Hospitals(HospitalID, HospitalName) VALUES('', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(HospitalName)" on table "Hospitals"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO Hospitals(HospitalID, HospitalName) VALUES('b', NULL);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[MID]" on table "Personnel"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 4ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(0, 0, 'er', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 34
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(role)" on table "Personnel"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, NULL, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(enabled)" on table "Personnel"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 11ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 52
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(lastName)" on table "Personnel"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 10ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 55
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(firstName)" on table "Personnel"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 8ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 57
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(address1)" on table "Personnel"
 -- * Success: true
--- * Time: 18ms 
+-- * Time: 11ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 59
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(address2)" on table "Personnel"
 -- * Success: true
--- * Time: 19ms 
+-- * Time: 13ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 61
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(city)" on table "Personnel"
 -- * Success: true
--- * Time: 19ms 
+-- * Time: 14ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 63
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(state)" on table "Personnel"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 11ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 65
 -- * Number of restarts: 0
 
 -- Negating "CHECK[role IN ('admin', 'hcp', 'uap', 'er', 'tester', 'pha', 'lt')]" on table "Personnel"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, '', 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "CHECK[state IN ('', 'AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY')]" on table "Personnel"
 -- * Success: true
--- * Time: 15ms 
+-- * Time: 8ms 
 INSERT INTO Personnel(MID, AMID, role, enabled, lastName, firstName, address1, address2, city, state, zip, zip1, zip2, phone, phone1, phone2, phone3, specialty, email, MessageFilter) VALUES(-1, 0, 'er', 0, '', '', '', '', '', 'a', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 66
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[MID]" on table "Patients"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 6ms 
 INSERT INTO Patients(MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(0, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 44
 -- * Number of restarts: 0
 
 -- Negating "CHECK[state IN ('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY')]" on table "Patients"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 5ms 
 INSERT INTO Patients(MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 48
 -- * Number of restarts: 0
 
 -- Negating "CHECK[ICState IN ('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY')]" on table "Patients"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO Patients(MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 20
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[ID]" on table "HistoryPatients"
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 6ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(0, '1000-01-01', 0, 0, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 57
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(changeDate)" on table "HistoryPatients"
 -- * Success: true
--- * Time: 10ms 
+-- * Time: 5ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, NULL, 0, 0, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 54
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(changeMID)" on table "HistoryPatients"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 6ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '1000-01-01', NULL, 0, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 58
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(MID)" on table "HistoryPatients"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 6ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '1000-01-01', 0, NULL, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 58
 -- * Number of restarts: 0
 
 -- Negating "CHECK[state IN ('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY')]" on table "HistoryPatients"
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 8ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '1000-01-01', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', NULL, '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 61
 -- * Number of restarts: 0
 
 -- Negating "CHECK[ICState IN ('AK', 'AL', 'AR', 'AZ', 'CA', 'CO', 'CT', 'DE', 'DC', 'FL', 'GA', 'HI', 'IA', 'ID', 'IL', 'IN', 'KS', 'KY', 'LA', 'MA', 'MD', 'ME', 'MI', 'MN', 'MO', 'MS', 'MT', 'NC', 'ND', 'NE', 'NH', 'NJ', 'NM', 'NV', 'NY', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VA', 'VT', 'WA', 'WI', 'WV', 'WY')]" on table "HistoryPatients"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 4ms 
 INSERT INTO HistoryPatients(ID, changeDate, changeMID, MID, lastName, firstName, email, address1, address2, city, state, zip1, zip2, phone1, phone2, phone3, eName, ePhone1, ePhone2, ePhone3, iCName, iCAddress1, iCAddress2, iCCity, ICState, iCZip1, iCZip2, iCPhone1, iCPhone2, iCPhone3, iCID, DateOfBirth, DateOfDeath, CauseOfDeath, MotherMID, FatherMID, BloodType, Ethnicity, Gender, TopicalNotes, CreditCardType, CreditCardNumber, MessageFilter, DirectionsToHome, Religion, Language, SpiritualPractices, AlternateName) VALUES(-1, '1000-01-01', 0, 0, '', '', '', '', '', '', NULL, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '1000-01-01', '1000-01-01', '', 0, 0, '', '', '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 33
 -- * Number of restarts: 0
@@ -735,14 +735,14 @@ INSERT INTO LoginFailures(ipaddress, failureCount, lastFailure) VALUES(NULL, 0, 
 
 -- Negating "NOT NULL(failureCount)" on table "LoginFailures"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 1ms 
 INSERT INTO LoginFailures(ipaddress, failureCount, lastFailure) VALUES('b', NULL, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(lastFailure)" on table "LoginFailures"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO LoginFailures(ipaddress, failureCount, lastFailure) VALUES('b', 0, NULL);
 -- * Number of objective function evaluations: 18
 -- * Number of restarts: 0
@@ -763,42 +763,42 @@ INSERT INTO ResetPasswordFailures(ipaddress, failureCount, lastFailure) VALUES(N
 
 -- Negating "NOT NULL(failureCount)" on table "ResetPasswordFailures"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO ResetPasswordFailures(ipaddress, failureCount, lastFailure) VALUES('b', NULL, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(lastFailure)" on table "ResetPasswordFailures"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO ResetPasswordFailures(ipaddress, failureCount, lastFailure) VALUES('b', 0, NULL);
 -- * Number of objective function evaluations: 18
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[Code]" on table "icdcodes"
 -- * Success: true
--- * Time: 6ms 
+-- * Time: 1ms 
 INSERT INTO icdcodes(Code, Description, Chronic) VALUES(0, '', 'no');
 -- * Number of objective function evaluations: 32
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Code)" on table "icdcodes"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 1ms 
 INSERT INTO icdcodes(Code, Description, Chronic) VALUES(NULL, '', 'no');
 -- * Number of objective function evaluations: 30
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Description)" on table "icdcodes"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 1ms 
 INSERT INTO icdcodes(Code, Description, Chronic) VALUES(-1, NULL, 'no');
 -- * Number of objective function evaluations: 34
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Chronic)" on table "icdcodes"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO icdcodes(Code, Description, Chronic) VALUES(-1, '', NULL);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
@@ -812,21 +812,21 @@ INSERT INTO icdcodes(Code, Description, Chronic) VALUES(-1, '', '');
 
 -- Negating "PRIMARY KEY[Code]" on table "CPTCodes"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO CPTCodes(Code, Description, Attribute) VALUES('', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Code)" on table "CPTCodes"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO CPTCodes(Code, Description, Attribute) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Description)" on table "CPTCodes"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO CPTCodes(Code, Description, Attribute) VALUES('b', NULL, '');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
@@ -847,7 +847,7 @@ INSERT INTO DrugReactionOverrideCodes(Code, Description) VALUES(NULL, '');
 
 -- Negating "NOT NULL(Description)" on table "DrugReactionOverrideCodes"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO DrugReactionOverrideCodes(Code, Description) VALUES('b', NULL);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
@@ -861,14 +861,14 @@ INSERT INTO NDCodes(Code, Description) VALUES('', '');
 
 -- Negating "NOT NULL(Code)" on table "NDCodes"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO NDCodes(Code, Description) VALUES(NULL, '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Description)" on table "NDCodes"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO NDCodes(Code, Description) VALUES('b', NULL);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
@@ -889,42 +889,42 @@ INSERT INTO DrugInteractions(FirstDrug, SecondDrug, Description) VALUES(NULL, ''
 
 -- Negating "NOT NULL(SecondDrug)" on table "DrugInteractions"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO DrugInteractions(FirstDrug, SecondDrug, Description) VALUES('', NULL, '');
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Description)" on table "DrugInteractions"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO DrugInteractions(FirstDrug, SecondDrug, Description) VALUES('b', '', NULL);
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[transactionID]" on table "TransactionLog"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transactionCode, timeLogged, addedInfo) VALUES(0, 0, 0, 0, '1970-01-01 00:00:00', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(transactionID)" on table "TransactionLog"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transactionCode, timeLogged, addedInfo) VALUES(NULL, 0, 0, 0, '1970-01-01 00:00:00', '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(loggedInMID)" on table "TransactionLog"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transactionCode, timeLogged, addedInfo) VALUES(-1, NULL, 0, 0, '1970-01-01 00:00:00', '');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(secondaryMID)" on table "TransactionLog"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transactionCode, timeLogged, addedInfo) VALUES(-1, 0, NULL, 0, '1970-01-01 00:00:00', '');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
@@ -938,14 +938,14 @@ INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transaction
 
 -- Negating "NOT NULL(timeLogged)" on table "TransactionLog"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO TransactionLog(transactionID, loggedInMID, secondaryMID, transactionCode, timeLogged, addedInfo) VALUES(-1, 0, 0, 0, NULL, '');
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[HCP, UAP]" on table "HCPRelations"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO HCPRelations(HCP, UAP) VALUES(0, 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -973,21 +973,21 @@ INSERT INTO PersonalRelations(PatientID, RelativeID, RelativeType) VALUES(NULL, 
 
 -- Negating "NOT NULL(RelativeID)" on table "PersonalRelations"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PersonalRelations(PatientID, RelativeID, RelativeType) VALUES(0, NULL, '');
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(RelativeType)" on table "PersonalRelations"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PersonalRelations(PatientID, RelativeID, RelativeType) VALUES(0, 0, NULL);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[representerMID, representeeMID]" on table "Representatives"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Representatives(representerMID, representeeMID) VALUES(0, 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -1008,7 +1008,7 @@ INSERT INTO HCPAssignedHos(hosID, HCPID) VALUES(NULL, 0);
 
 -- Negating "NOT NULL(HCPID)" on table "HCPAssignedHos"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO HCPAssignedHos(hosID, HCPID) VALUES('', NULL);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
@@ -1029,7 +1029,7 @@ INSERT INTO DeclaredHCP(PatientID, HCPID) VALUES(NULL, 0);
 
 -- Negating "NOT NULL(HCPID)" on table "DeclaredHCP"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO DeclaredHCP(PatientID, HCPID) VALUES(0, NULL);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
@@ -1050,35 +1050,35 @@ INSERT INTO PersonalHealthInformation(PatientID, Height, Weight, Smoker, Smoking
 
 -- Negating "NOT NULL(Smoker)" on table "PersonalHealthInformation"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO PersonalHealthInformation(PatientID, Height, Weight, Smoker, SmokingStatus, BloodPressureN, BloodPressureD, CholesterolHDL, CholesterolLDL, CholesterolTri, HCPID, AsOfDate) VALUES(0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, 0, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(SmokingStatus)" on table "PersonalHealthInformation"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 0ms 
 INSERT INTO PersonalHealthInformation(PatientID, Height, Weight, Smoker, SmokingStatus, BloodPressureN, BloodPressureD, CholesterolHDL, CholesterolLDL, CholesterolTri, HCPID, AsOfDate) VALUES(0, 0, 0, 0, NULL, 0, 0, 0, 0, 0, 0, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(AsOfDate)" on table "PersonalHealthInformation"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 1ms 
 INSERT INTO PersonalHealthInformation(PatientID, Height, Weight, Smoker, SmokingStatus, BloodPressureN, BloodPressureD, CholesterolHDL, CholesterolLDL, CholesterolTri, HCPID, AsOfDate) VALUES(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL);
 -- * Number of objective function evaluations: 35
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(PatientID)" on table "PersonalAllergies"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PersonalAllergies(PatientID, Allergy) VALUES(NULL, '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Allergy)" on table "PersonalAllergies"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PersonalAllergies(PatientID, Allergy) VALUES(0, NULL);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
@@ -1092,7 +1092,7 @@ INSERT INTO Allergies(ID, PatientID, Description, FirstFound) VALUES(0, 0, '', '
 
 -- Negating "NOT NULL(PatientID)" on table "Allergies"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Allergies(ID, PatientID, Description, FirstFound) VALUES(-1, NULL, '', '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -1106,7 +1106,7 @@ INSERT INTO Allergies(ID, PatientID, Description, FirstFound) VALUES(-1, 0, NULL
 
 -- Negating "NOT NULL(FirstFound)" on table "Allergies"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Allergies(ID, PatientID, Description, FirstFound) VALUES(-1, 0, '', NULL);
 -- * Number of objective function evaluations: 13
 -- * Number of restarts: 0
@@ -1120,7 +1120,7 @@ INSERT INTO OVProcedure(ID, VisitID, CPTCode, HCPID) VALUES(0, 0, '', '');
 
 -- Negating "NOT NULL(VisitID)" on table "OVProcedure"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVProcedure(ID, VisitID, CPTCode, HCPID) VALUES(-1, NULL, '', '');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -1134,7 +1134,7 @@ INSERT INTO OVProcedure(ID, VisitID, CPTCode, HCPID) VALUES(-1, 0, NULL, '');
 
 -- Negating "NOT NULL(HCPID)" on table "OVProcedure"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO OVProcedure(ID, VisitID, CPTCode, HCPID) VALUES(-1, 0, '', NULL);
 -- * Number of objective function evaluations: 13
 -- * Number of restarts: 0
@@ -1148,14 +1148,14 @@ INSERT INTO OVMedication(ID, VisitID, NDCode, StartDate, EndDate, Dosage, Instru
 
 -- Negating "NOT NULL(VisitID)" on table "OVMedication"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVMedication(ID, VisitID, NDCode, StartDate, EndDate, Dosage, Instructions) VALUES(-1, NULL, '', '1000-01-01', '1000-01-01', 0, '');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(NDCode)" on table "OVMedication"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVMedication(ID, VisitID, NDCode, StartDate, EndDate, Dosage, Instructions) VALUES(-1, 0, NULL, '1000-01-01', '1000-01-01', 0, '');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
@@ -1170,7 +1170,7 @@ INSERT INTO OVReactionOverride(ID, OVMedicationID, OverrideCode, OverrideComment
 
 -- Negating "FOREIGN KEY[OVMedicationID]" on table "OVReactionOverride"
 -- * Success: true
--- * Time: 10ms 
+-- * Time: 3ms 
 INSERT INTO OVMedication(ID, VisitID, NDCode, StartDate, EndDate, Dosage, Instructions) VALUES(46, -52, 'hctgp', '2019-01-06', '1999-05-22', -100, 'ycp');
 INSERT INTO OVReactionOverride(ID, OVMedicationID, OverrideCode, OverrideComment) VALUES(-18, 55, '', 'mssuu');
 -- * Number of objective function evaluations: 76
@@ -1178,7 +1178,7 @@ INSERT INTO OVReactionOverride(ID, OVMedicationID, OverrideCode, OverrideComment
 
 -- Negating "NOT NULL(OVMedicationID)" on table "OVReactionOverride"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 5ms 
 INSERT INTO OVMedication(ID, VisitID, NDCode, StartDate, EndDate, Dosage, Instructions) VALUES(5, 79, 'nehqbigq', '2010-09-19', '2017-09-17', -92, 'fva');
 INSERT INTO OVReactionOverride(ID, OVMedicationID, OverrideCode, OverrideComment) VALUES(38, NULL, 'rbjtp', 'vty');
 -- * Number of objective function evaluations: 126
@@ -1193,14 +1193,14 @@ INSERT INTO OVDiagnosis(ID, VisitID, ICDCode) VALUES(0, 0, 0);
 
 -- Negating "NOT NULL(VisitID)" on table "OVDiagnosis"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVDiagnosis(ID, VisitID, ICDCode) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(ICDCode)" on table "OVDiagnosis"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO OVDiagnosis(ID, VisitID, ICDCode) VALUES(-1, 0, NULL);
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
@@ -1221,7 +1221,7 @@ INSERT INTO FakeEmail(ID, ToAddr, FromAddr, Subject, Body, AddedDate) VALUES(0, 
 
 -- Negating "NOT NULL(AddedDate)" on table "FakeEmail"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO FakeEmail(ID, ToAddr, FromAddr, Subject, Body, AddedDate) VALUES(-1, '', '', '', '', NULL);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
@@ -1235,77 +1235,77 @@ INSERT INTO ReportRequests(ID, RequesterMID, PatientMID, ApproverMID, RequestedD
 
 -- Negating "PRIMARY KEY[VisitID]" on table "OVSurvey"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVSurvey(VisitID, SurveyDate, WaitingRoomMinutes, ExamRoomMinutes, VisitSatisfaction, TreatmentSatisfaction) VALUES(0, '1970-01-01 00:00:00', 0, 0, 0, 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(SurveyDate)" on table "OVSurvey"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO OVSurvey(VisitID, SurveyDate, WaitingRoomMinutes, ExamRoomMinutes, VisitSatisfaction, TreatmentSatisfaction) VALUES(-1, NULL, 0, 0, 0, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[LaboratoryProcedureID]" on table "LabProcedure"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO LabProcedure(LaboratoryProcedureID, PatientMID, LaboratoryProcedureCode, Rights, Status, Commentary, Results, NumericalResults, NumericalResultsUnit, UpperBound, LowerBound, OfficeVisitID, LabTechID, PriorityCode, ViewedByPatient, UpdatedDate) VALUES(0, 0, '', '', '', '', '', '', '', '', '', 0, 0, 0, FALSE, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(ViewedByPatient)" on table "LabProcedure"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 2ms 
 INSERT INTO LabProcedure(LaboratoryProcedureID, PatientMID, LaboratoryProcedureCode, Rights, Status, Commentary, Results, NumericalResults, NumericalResultsUnit, UpperBound, LowerBound, OfficeVisitID, LabTechID, PriorityCode, ViewedByPatient, UpdatedDate) VALUES(-1, 0, '', '', '', '', '', '', '', '', '', 0, 0, 0, NULL, '1970-01-01 00:00:00');
 -- * Number of objective function evaluations: 38
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(UpdatedDate)" on table "LabProcedure"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 1ms 
 INSERT INTO LabProcedure(LaboratoryProcedureID, PatientMID, LaboratoryProcedureCode, Rights, Status, Commentary, Results, NumericalResults, NumericalResultsUnit, UpperBound, LowerBound, OfficeVisitID, LabTechID, PriorityCode, ViewedByPatient, UpdatedDate) VALUES(-1, 0, '', '', '', '', '', '', '', '', '', 0, 0, 0, FALSE, NULL);
 -- * Number of objective function evaluations: 40
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(from_id)" on table "message"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO message(message_id, parent_msg_id, from_id, to_id, sent_date, message, subject, been_read) VALUES(0, 0, NULL, 0, '1970-01-01 00:00:00', '', '', 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(to_id)" on table "message"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO message(message_id, parent_msg_id, from_id, to_id, sent_date, message, subject, been_read) VALUES(0, 0, 0, NULL, '1970-01-01 00:00:00', '', '', 0);
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(sent_date)" on table "message"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO message(message_id, parent_msg_id, from_id, to_id, sent_date, message, subject, been_read) VALUES(0, 0, 0, 0, NULL, '', '', 0);
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[appt_id]" on table "Appointment"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO Appointment(appt_id, doctor_id, patient_id, sched_date, appt_type, comment) VALUES(0, 0, 0, '1970-01-01 00:00:00', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(doctor_id)" on table "Appointment"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Appointment(appt_id, doctor_id, patient_id, sched_date, appt_type, comment) VALUES(-1, NULL, 0, '1970-01-01 00:00:00', '', '');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(patient_id)" on table "Appointment"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO Appointment(appt_id, doctor_id, patient_id, sched_date, appt_type, comment) VALUES(-1, 0, NULL, '1970-01-01 00:00:00', '', '');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
@@ -1319,7 +1319,7 @@ INSERT INTO Appointment(appt_id, doctor_id, patient_id, sched_date, appt_type, c
 
 -- Negating "NOT NULL(appt_type)" on table "Appointment"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO Appointment(appt_id, doctor_id, patient_id, sched_date, appt_type, comment) VALUES(-1, 0, 0, '1970-01-01 00:00:00', NULL, '');
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
@@ -1333,28 +1333,28 @@ INSERT INTO AppointmentType(apptType_id, appt_type, duration) VALUES(0, '', 0);
 
 -- Negating "NOT NULL(appt_type)" on table "AppointmentType"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO AppointmentType(apptType_id, appt_type, duration) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(duration)" on table "AppointmentType"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO AppointmentType(apptType_id, appt_type, duration) VALUES(-1, '', NULL);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "referrals"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(0, 0, 0, 0, '', 0, FALSE, FALSE, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(PatientID)" on table "referrals"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 0ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, NULL, 0, 0, '', 0, FALSE, FALSE, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -1368,42 +1368,42 @@ INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID
 
 -- Negating "NOT NULL(ReceiverID)" on table "referrals"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, 0, 0, NULL, '', 0, FALSE, FALSE, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(OVID)" on table "referrals"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, 0, 0, 0, '', NULL, FALSE, FALSE, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 19
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(viewed_by_patient)" on table "referrals"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 1ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, 0, 0, 0, '', 0, NULL, FALSE, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 22
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(viewed_by_HCP)" on table "referrals"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 1ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, 0, 0, 0, '', 0, FALSE, NULL, '1970-01-01 00:00:00', 0);
 -- * Number of objective function evaluations: 24
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(TimeStamp)" on table "referrals"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 1ms 
 INSERT INTO referrals(id, PatientID, SenderID, ReceiverID, ReferralDetails, OVID, viewed_by_patient, viewed_by_HCP, TimeStamp, PriorityCode) VALUES(-1, 0, 0, 0, '', 0, FALSE, FALSE, NULL, 0);
 -- * Number of objective function evaluations: 26
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "RemoteMonitoringData"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO RemoteMonitoringData(id, PatientID, systolicBloodPressure, diastolicBloodPressure, glucoseLevel, height, weight, pedometerReading, timeLogged, ReporterRole, ReporterID) VALUES(0, 0, 0, 0, 0, 0, 0, 0, '1970-01-01 00:00:00', '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -1417,7 +1417,7 @@ INSERT INTO RemoteMonitoringData(id, PatientID, systolicBloodPressure, diastolic
 
 -- Negating "NOT NULL(timeLogged)" on table "RemoteMonitoringData"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 1ms 
 INSERT INTO RemoteMonitoringData(id, PatientID, systolicBloodPressure, diastolicBloodPressure, glucoseLevel, height, weight, pedometerReading, timeLogged, ReporterRole, ReporterID) VALUES(-1, 0, 0, 0, 0, 0, 0, 0, NULL, '', 0);
 -- * Number of objective function evaluations: 29
 -- * Number of restarts: 0
@@ -1445,21 +1445,21 @@ INSERT INTO ProfilePhotos(MID, Photo, UpdatedDate) VALUES(0, '', '1970-01-01 00:
 
 -- Negating "NOT NULL(UpdatedDate)" on table "ProfilePhotos"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO ProfilePhotos(MID, Photo, UpdatedDate) VALUES(-1, '', NULL);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "PatientSpecificInstructions"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PatientSpecificInstructions(id, VisitID, Modified, Name, URL, Comment) VALUES(0, 0, '1970-01-01 00:00:00', '', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(Modified)" on table "PatientSpecificInstructions"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO PatientSpecificInstructions(id, VisitID, Modified, Name, URL, Comment) VALUES(-1, 0, NULL, '', '', '');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0

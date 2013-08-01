@@ -25,11 +25,11 @@ CREATE TABLE order_items (
 	CHECK (quantity > 0)
 );
 -- Coverage: 27/28 (96.42857%) 
--- Time to generate: 7369ms 
+-- Time to generate: 7333ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 433ms 
+-- * Time: 451ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(71, 'phctgpyae', 25, 4);
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(-86, 'ny', 47, 25);
 INSERT INTO orders(order_id, shipping_address) VALUES(-31, 'yrvyoaks');
@@ -41,14 +41,14 @@ INSERT INTO order_items(product_no, order_id, quantity) VALUES(71, 94, 73);
 
 -- Negating "PRIMARY KEY[product_no]" on table "products"
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 13ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(71, 'hfckgxrbj', 53, 23);
 -- * Number of objective function evaluations: 53
 -- * Number of restarts: 1
 
 -- Negating "NOT NULL(product_no)" on table "products"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(NULL, 'tywey', 44, 35);
 -- * Number of objective function evaluations: 20
 -- * Number of restarts: 1
@@ -62,28 +62,28 @@ INSERT INTO products(product_no, name, price, discounted_price) VALUES(69, NULL,
 
 -- Negating "NOT NULL(price)" on table "products"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(0, '', NULL, 1);
 -- * Number of objective function evaluations: 9
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(discounted_price)" on table "products"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(0, '', 1, NULL);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "CHECK[price > 0]" on table "products"
 -- * Success: false
--- * Time: 2535ms 
+-- * Time: 2222ms 
 -- INSERT INTO products(product_no, name, price, discounted_price) VALUES(81, 'yi', 0, -1);
 -- * Number of objective function evaluations: 100000
 -- * Number of restarts: 1578
 /* Objective value:
  * Satisfy all except CHECK[price > 0]. Value: 0.28571428571428571430 [Sum: 0.40000000000000000001]
  	 	* Satisfy PRIMARY KEY[product_no]. Value: 0E-20 [Sum: 0E-20]
- 		 		* Row [product_no(81)]. Value: 0E-20 [Sum: 0E-20]
+ 		 		* No rows to compare with - evaluating NULL. Value: 0E-20 [Sum: 0E-20]
  			 			* [81] != [71]. Value: 0E-20 [Best: 0E-20]
  				 				* 81 != 71. Value: 0E-20 [Distance: 0]
  			 			* [81] != [-86]. Value: 0E-20 [Best: 0E-20]
@@ -101,13 +101,7 @@ INSERT INTO products(product_no, name, price, discounted_price) VALUES(0, '', 1,
  	 	* Satisfy CHECK[discounted_price > 0]. Value: 0.40000000000000000001 [Sum: 0.66666666666666666667]
  		 		* -1 > 0. Value: 0.66666666666666666667 [Distance: 2]
  	 	* Satisfy CHECK[price > discounted_price]. Value: 0E-20 [Sum: 0E-20]
- 		 		* 0 > -1. Value: 0E-20 [Distance: 0]
- 	 	* Satisfy PRIMARY KEY[order_id]. Value: 0E-20 [Sum: 0]
- 	 	* Satisfy PRIMARY KEY[product_no, order_id]. Value: 0E-20 [Sum: 0]
- 	 	* Satisfy FOREIGN KEY[product_no]. Value: 0E-20 [Sum: 0]
- 	 	* Satisfy FOREIGN KEY[order_id]. Value: 0E-20 [Sum: 0]
- 	 	* Satisfy NOT NULL(quantity). Value: 0E-20 [Sum: 0]
- 	 	* Satisfy CHECK[quantity > 0]. Value: 0E-20 [Sum: 0]*/ 
+ 		 		* 0 > -1. Value: 0E-20 [Distance: 0]*/ 
 
 -- Negating "CHECK[discounted_price > 0]" on table "products"
 -- * Success: true
@@ -118,7 +112,7 @@ INSERT INTO products(product_no, name, price, discounted_price) VALUES(-4, 'rokg
 
 -- Negating "CHECK[price > discounted_price]" on table "products"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(0, '', 1, 1);
 -- * Number of objective function evaluations: 22
 -- * Number of restarts: 0
@@ -132,7 +126,7 @@ INSERT INTO orders(order_id, shipping_address) VALUES(-31, '');
 
 -- Negating "PRIMARY KEY[product_no, order_id]" on table "order_items"
 -- * Success: true
--- * Time: 4307ms 
+-- * Time: 4556ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(72, 'uecopiv', 26, 15);
 INSERT INTO orders(order_id, shipping_address) VALUES(81, 'd');
 INSERT INTO order_items(product_no, order_id, quantity) VALUES(71, 94, 63);
@@ -159,7 +153,7 @@ INSERT INTO order_items(product_no, order_id, quantity) VALUES(NULL, 88, 93);
 
 -- Negating "NOT NULL(quantity)" on table "order_items"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 14ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(-19, 'atjmfjd', 38, 37);
 INSERT INTO orders(order_id, shipping_address) VALUES(-11, 'numngod');
 INSERT INTO order_items(product_no, order_id, quantity) VALUES(-19, NULL, NULL);
@@ -168,7 +162,7 @@ INSERT INTO order_items(product_no, order_id, quantity) VALUES(-19, NULL, NULL);
 
 -- Negating "CHECK[quantity > 0]" on table "order_items"
 -- * Success: true
--- * Time: 32ms 
+-- * Time: 44ms 
 INSERT INTO products(product_no, name, price, discounted_price) VALUES(52, 'jt', 6, 2);
 INSERT INTO orders(order_id, shipping_address) VALUES(36, 'wpj');
 INSERT INTO order_items(product_no, order_id, quantity) VALUES(NULL, -1, -8);

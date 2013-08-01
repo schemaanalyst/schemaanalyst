@@ -1,8 +1,8 @@
 package org.schemaanalyst.datageneration.search.objective.data;
 
 import java.util.List;
-import java.util.ListIterator;
 
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
@@ -14,89 +14,100 @@ import org.schemaanalyst.sqlrepresentation.Column;
 
 public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
 
-    private List<Column> columns;
     private Data state;
-    private boolean nullAccepted;
-    
-    public UniqueObjectiveFunction(List<Column> columns, 
-                                   Data state, 
-                                   String description,
-                                   boolean goalIsToSatisfy, 
-                                   boolean nullAccepted) {
-        super(description, goalIsToSatisfy);
-        this.columns = columns;
+    private boolean nullAdmissableForSatisfy;
+
+    private List<Row> stateRows;
+
+    /**
+     * Objective function for a set of unique columns (typically embedded in a
+     * PRIMARY KEY or UNIQUE constraint).
+     * 
+     * @param columns
+     *            The columns of the constraint.
+     * @param state
+     *            A data object corresponding to the current state of the
+     *            database (i.e., data already committed).
+     * @param description
+     *            Some descriptive text to describe the objective function.
+     * @param goalIsToSatisfy
+     *            If set to true, the goal of the objective function will be to
+     *            produce rows that all satisfy the constraint, else the goal is
+     *            to produce rows that all falsify the constraint.
+     * @param nullAdmissableForSatisfy
+     *            If set to true, NULL values are permissible to satisfy the
+     *            constraint, else NULL is permissible to falsify the
+     *            constraint.
+     */
+    public UniqueObjectiveFunction(List<Column> columns, Data state,
+            String description, boolean goalIsToSatisfy,
+            boolean nullAdmissableForSatisfy) {
+        super(columns, description, goalIsToSatisfy);
         this.state = state;
-        this.nullAccepted = nullAccepted;
-    }
-    
-    @Override
-    protected List<Row> getDataRows(Data data) {
-        return data.getRows(columns);
+        this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
     }
 
     @Override
-    protected ObjectiveValue performEvaluation(List<Row> dataRows) {
-        
-        List<Row> stateRows = state.getRows(columns);
+    protected void loadRows(Data data) {
+        super.loadRows(data);
+        stateRows = state.getRows(columns);
+    }
 
-        // The optimum corresponds to
-        // -- a success (goalIsToSatisfy) on EVERY row, or 
-        // -- a fail (!goalIsToSatisfy) on EVERY row.   
-        // (Partially succeeding or failing rows could leave the database in an
-        // inconsistent state unless knowledge about succeeding an failing rows
-        // is taken into account.  It is assumed it won't be.)        
-        MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-                
-        ListIterator<Row> dataRowsIterator = dataRows.listIterator(dataRows.size());
-        boolean haveStateRows = stateRows.size() > 0;
-        
-        // we work backwards up the list of rows in the data to see if it
-        // clashes with an earlier row (order matters with uniqueness of INSERTs).
-        while (dataRowsIterator.hasPrevious()) {
-            Row dataRow = dataRowsIterator.previous();
-            boolean haveDataRows = dataRowsIterator.hasPrevious();
-            
-            if (haveDataRows || haveStateRows) {
-                String description = "Row " + dataRow;
+    @Override
+    protected ObjectiveValue evaluateRow(Row row) {
 
-                MultiObjectiveValue rowObjVal = goalIsToSatisfy
-                        ? new SumOfMultiObjectiveValue(description)
-                        : new BestOfMultiObjectiveValue(description);
+        boolean haveRowsToCompareWith = (satisfyingRows.size() > 0 || stateRows
+                .size() > 0);
 
-                // evaluate against previous data rows
-                evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
+        return haveRowsToCompareWith ? evaluateUniqueness(row)
+                : evaluateDefaultSatisfaction(row);
+    }
 
-                // evaluate against state rows
-                evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, stateRows.size());
-                
-                objVal.add(rowObjVal);
-                classifyRow(rowObjVal, dataRow);
+    private ObjectiveValue evaluateDefaultSatisfaction(Row row) {
+        // This is the only row -- no accepted rows (so far) and no state.
+        // All we need to do is check for null values ...
+
+        boolean involvesNull = false;
+        for (Cell cell : row.getCells()) {
+            if (cell.getValue() == null) {
+                involvesNull = true;
             }
         }
 
-        return objVal;
+        boolean accepted = !involvesNull
+                || (involvesNull && nullAdmissableForSatisfy);
+
+        ObjectiveValue rowObjVal = (accepted && goalIsToSatisfy)
+                || (!accepted && !goalIsToSatisfy) ? ObjectiveValue
+                .optimalObjectiveValue(description) : ObjectiveValue
+                .worstObjectiveValue(description);
+
+        return rowObjVal;
     }
 
-    private void evaluateRowAgainstOtherRows(
-            MultiObjectiveValue objVal,
-            Row row, List<Row> otherRows, int fromIndex) {
-        
-        ListIterator<Row> rowsIterator = otherRows.listIterator(fromIndex);
+    private ObjectiveValue evaluateUniqueness(Row row) {
+        String description = "No rows to compare with - evaluating NULL";
 
-        while (rowsIterator.hasPrevious()) {
-            Row compareRow = rowsIterator.previous();
-            objVal.add(RowRelationalObjectiveFunction.compute(
-                    row, !goalIsToSatisfy, compareRow, nullAccepted));
+        MultiObjectiveValue rowObjVal = goalIsToSatisfy ? new SumOfMultiObjectiveValue(
+                description) : new BestOfMultiObjectiveValue(description);
+
+        // evaluate against previously accepted data rows
+        evaluateRowAgainstOtherRows(rowObjVal, row, satisfyingRows);
+
+        // evaluate against state rows
+        evaluateRowAgainstOtherRows(rowObjVal, row, stateRows);
+
+        return rowObjVal;
+    }
+
+    private void evaluateRowAgainstOtherRows(MultiObjectiveValue objVal,
+            Row row, List<Row> compareRows) {
+
+        for (Row compareRow : compareRows) {
+            objVal.add(RowRelationalObjectiveFunction.compute(row,
+                    !goalIsToSatisfy, compareRow,
+                    goalIsToSatisfy ? nullAdmissableForSatisfy
+                            : !nullAdmissableForSatisfy));
         }
-    }    
-    
-    protected void classifyRow(ObjectiveValue objVal, Row row) {
-        // always add rows at the beginning of the respective 
-        // list, since we're traversing the data rows in reverse order
-        if (objVal.isOptimal()) {
-            acceptedRows.add(0, row);
-        } else {
-            rejectedRows.add(0, row);
-        }
-    }    
+    }
 }

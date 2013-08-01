@@ -11,6 +11,7 @@ import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 
@@ -26,29 +27,43 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
         this.state = state;
         objFuns = new ArrayList<>();
 
-        boolean considerNull = constraintToInvalidate != null;
+        // NULL is only allowed for row acceptance when we are not trying to 
+        // invalidate one constraint, i.e. when constraintToInvalidate != null
+        boolean nullAdmissableForSatisfy = constraintToInvalidate != null;
 
-        for (Constraint constraint : schema.getConstraints()) {
-            boolean satisfyConstraint = !constraint.equals(constraintToInvalidate);
-
-            // sticking plaster
-            if ((constraintToInvalidate instanceof NotNullConstraint)
-                    && (constraint instanceof PrimaryKeyConstraint)) {
-
-                PrimaryKeyConstraint primaryKey = (PrimaryKeyConstraint) constraint;
-                NotNullConstraint notNull = (NotNullConstraint) constraintToInvalidate;
-
-                if (primaryKey.getColumns().contains(notNull.getColumn())) {
-                    continue;
-                }
-            }
-
-            ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
-                    constraint, state, satisfyConstraint, considerNull);
-
-            objFuns.add(factory.create());
+        List<Table> tables;
+        if (constraintToInvalidate == null) {
+            tables = schema.getTables();
+        } else {
+            Table constraintTable = constraintToInvalidate.getTable();
+            tables = constraintTable.getConnectedTables();
+            tables.add(constraintTable);
         }
-
+        
+        for (Table table : tables) {
+            for (Constraint constraint : table.getConstraints()) {
+                boolean satisfyConstraint = !constraint.equals(constraintToInvalidate);
+    
+                // You cannot make a valid PK NULL, so the objective function for the primary key 
+                // is not included 
+                if ((constraintToInvalidate instanceof NotNullConstraint)
+                        && (constraint instanceof PrimaryKeyConstraint)) {
+    
+                    PrimaryKeyConstraint primaryKey = (PrimaryKeyConstraint) constraint;
+                    NotNullConstraint notNull = (NotNullConstraint) constraintToInvalidate;
+    
+                    if (primaryKey.getColumns().contains(notNull.getColumn())) {
+                        continue;
+                    }
+                }
+    
+                ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
+                        constraint, state, satisfyConstraint, nullAdmissableForSatisfy);
+    
+                objFuns.add(factory.create());
+            }
+        }
+        
         description = constraintToInvalidate == null
                 ? "Satisfy all constraints"
                 : "Satisfy all except " + constraintToInvalidate;

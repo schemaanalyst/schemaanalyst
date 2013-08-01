@@ -68,7 +68,7 @@ public class GenerateConstraintCoverageData extends Runner {
                     dbmsObject,
                     cellrandomisationprofile,
                     seed,
-                    maxevaluations);
+                    maxevaluations);          
             
             // generate data
             CoverageReport report = generator.generate();

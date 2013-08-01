@@ -99,11 +99,11 @@ CREATE TABLE ziptable (
 	COUNTY	CHAR(20)
 );
 -- Coverage: 72/72 (100.00000%) 
--- Time to generate: 3483ms 
+-- Time to generate: 2736ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 737ms 
+-- * Time: 707ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', 1, 0, '', '', '', '', '', '', '', '', '', '');
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', 0, 0, '', '', '', '', '', '', '', '', '', '');
 INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(1, '', '');
@@ -135,21 +135,21 @@ INSERT INTO ziptable(ZIP, CITY, STATENAME, COUNTY) VALUES('', '', '', '');
 
 -- Negating "PRIMARY KEY[SSN]" on table "userrecord"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', 0, 0, '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(SSN)" on table "userrecord"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', NULL, 0, '', '', '', '', '', '', '', '', '', '');
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[SSN]" on table "education"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 2ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', -1, 0, '', '', '', '', '', '', '', '', '', '');
 INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(0, '', '');
 -- * Number of objective function evaluations: 8
@@ -157,7 +157,7 @@ INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(0, '', '');
 
 -- Negating "FOREIGN KEY[SSN]" on table "education"
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 8ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', 3, 0, '', '', '', '', '', '', '', '', '', '');
 INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(-3, '', '');
 -- * Number of objective function evaluations: 39
@@ -165,7 +165,7 @@ INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(-3, '', '');
 
 -- Negating "NOT NULL(SSN)" on table "education"
 -- * Success: true
--- * Time: 92ms 
+-- * Time: 55ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', 'gpnoi', -23, 96, 'aehj', '', 'aao', 'pktymss', 'ak', 'wdcysr', 'i', 'abiivyvp', 'hfckgxrbj', 'ajvtywe');
 INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(NULL, '', 'qullv');
 -- * Number of objective function evaluations: 212
@@ -173,7 +173,7 @@ INSERT INTO education(SSN, EDUCATION, EDUENROLL) VALUES(NULL, '', 'qullv');
 
 -- Negating "PRIMARY KEY[SSN]" on table "employmentstat"
 -- * Success: true
--- * Time: 373ms 
+-- * Time: 263ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('pmeif', 'ehsbc', 78, 6, 's', 'b', 'yvxabof', 'xfwagq', 'wix', 'psh', 'dfgawcou', 'ligsf', 'rfglffu', 'i');
 INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(0, 'b', 'q');
 -- * Number of objective function evaluations: 569
@@ -181,7 +181,7 @@ INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(0, 'b
 
 -- Negating "FOREIGN KEY[SSN]" on table "employmentstat"
 -- * Success: true
--- * Time: 23ms 
+-- * Time: 14ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', '', 2, 0, '', '', '', '', '', '', '', '', '', '');
 INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(-3, '', '');
 -- * Number of objective function evaluations: 41
@@ -189,7 +189,7 @@ INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(-3, '
 
 -- Negating "NOT NULL(SSN)" on table "employmentstat"
 -- * Success: true
--- * Time: 67ms 
+-- * Time: 90ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('gke', 'oojar', 42, -87, '', 'rusibin', '', 'rdmweir', 'fcu', '', 'smjhwuo', 'huqcx', 'bjitphsvo', 'khgd');
 INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(NULL, 'oruof', 'kvub');
 -- * Number of objective function evaluations: 207
@@ -197,21 +197,21 @@ INSERT INTO employmentstat(SSN, UNEMPLOYMENTREASON, EMPLOYMENTSTAT) VALUES(NULL,
 
 -- Negating "PRIMARY KEY[RESSTATE]" on table "geo"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO geo(REGION, RESSTATE) VALUES('', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(REGION)" on table "geo"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO geo(REGION, RESSTATE) VALUES(NULL, 'b');
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(RESSTATE)" on table "geo"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO geo(REGION, RESSTATE) VALUES('', NULL);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
@@ -232,7 +232,7 @@ INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(NULL, '', 0);
 
 -- Negating "PRIMARY KEY[SSN]" on table "investment"
 -- * Success: true
--- * Time: 43ms 
+-- * Time: 88ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('qidfos', '', 65, 54, 'v', 'gga', 'ttqnape', 'ykmadvg', 'eon', 'nmnjdf', 'tgn', 'qmkqa', 'plw', 'jbdnxa');
 INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(0, 16, -28, -92);
 -- * Number of objective function evaluations: 198
@@ -240,7 +240,7 @@ INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(
 
 -- Negating "FOREIGN KEY[SSN]" on table "investment"
 -- * Success: true
--- * Time: 18ms 
+-- * Time: 23ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('k', 'njqpg', -22, 98, 'ormei', 'mnroxjbe', 'jorebf', 'a', 'mgq', 'exafpt', '', 'd', 'yxrmjrlc', 'u');
 INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(-84, 53, 9, 5);
 -- * Number of objective function evaluations: 84
@@ -248,7 +248,7 @@ INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(
 
 -- Negating "NOT NULL(SSN)" on table "investment"
 -- * Success: true
--- * Time: 38ms 
+-- * Time: 31ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('l', 'pcvuh', -12, 48, 'ovbttr', 'rcslyhfu', 'pl', '', 'rv', 'hnjey', 'ajseqrgae', 'nnng', 'xp', 'dreby');
 INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(NULL, 71, -12, -38);
 -- * Number of objective function evaluations: 212
@@ -256,7 +256,7 @@ INSERT INTO investment(SSN, CAPITALGAINS, CAPITALLOSSES, STOCKDIVIDENDS) VALUES(
 
 -- Negating "PRIMARY KEY[OCCUPATIONCODE]" on table "occupation"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(0, '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -270,7 +270,7 @@ INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(NULL, '', 0
 
 -- Negating "PRIMARY KEY[SSN]" on table "job"
 -- * Success: true
--- * Time: 187ms 
+-- * Time: 189ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-93, 'co', -64);
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('tjokhvi', 'ujvho', -30, 70, 'ohq', 'ewesulpky', 'qhsht', '', 'k', 'abqpvuh', '', 'q', 'gebjjf', 'gowgvban');
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(83, 'cdropte', 87);
@@ -280,7 +280,7 @@ INSERT INTO job(SSN, WORKCLASS, INDUSTRYCODE, OCCUPATIONCODE, UNIONMEMBER, EMPLO
 
 -- Negating "FOREIGN KEY[OCCUPATIONCODE]" on table "job"
 -- * Success: true
--- * Time: 75ms 
+-- * Time: 33ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-86, 'svubqp', -14);
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('xfdf', 'w', 28, 80, 'lefcxth', 'rnto', 'w', 'g', 'cjqr', 'bbrmdy', 'qnnrhl', 'yr', 'wxcck', '');
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-66, 'woayn', -24);
@@ -290,7 +290,7 @@ INSERT INTO job(SSN, WORKCLASS, INDUSTRYCODE, OCCUPATIONCODE, UNIONMEMBER, EMPLO
 
 -- Negating "FOREIGN KEY[SSN]" on table "job"
 -- * Success: true
--- * Time: 63ms 
+-- * Time: 30ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(2, 't', 93);
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('cnvttt', 'cqilu', 41, -77, 'eqriwh', 'gn', 'qit', '', '', 'u', 'qe', 'rohddwyv', 'luu', 'ayvs');
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-80, '', -79);
@@ -300,7 +300,7 @@ INSERT INTO job(SSN, WORKCLASS, INDUSTRYCODE, OCCUPATIONCODE, UNIONMEMBER, EMPLO
 
 -- Negating "FOREIGN KEY[INDUSTRYCODE]" on table "job"
 -- * Success: true
--- * Time: 50ms 
+-- * Time: 36ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(43, 'ct', -65);
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('t', 'diwl', 52, 64, 'yfg', 'dmh', '', 'acemaymai', '', 'notpemwwh', 'qinshla', 'drug', '', 'bgdobylsm');
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(76, '', 26);
@@ -310,7 +310,7 @@ INSERT INTO job(SSN, WORKCLASS, INDUSTRYCODE, OCCUPATIONCODE, UNIONMEMBER, EMPLO
 
 -- Negating "NOT NULL(SSN)" on table "job"
 -- * Success: true
--- * Time: 56ms 
+-- * Time: 45ms 
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-17, 'jrbfebk', 71);
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('shdrcu', 'jh', 45, -40, 'jjkuvypv', 'vjgkuiva', 'c', 'qdv', 'mqdrmem', 'ksrsl', 'ru', 'onj', 'iuey', 'myl');
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(41, 'fvprtoxmg', -12);
@@ -320,7 +320,7 @@ INSERT INTO job(SSN, WORKCLASS, INDUSTRYCODE, OCCUPATIONCODE, UNIONMEMBER, EMPLO
 
 -- Negating "PRIMARY KEY[SSN]" on table "migration"
 -- * Success: true
--- * Time: 345ms 
+-- * Time: 298ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', 'tvitf', 88, 15, 'ismj', 'pcmad', 'aefosoh', 'rcdwakasb', 'bicmbx', 'wdswsgnsi', 'gf', 'tcwxwjr', 'ykjpid', 'hpjt');
 INSERT INTO migration(SSN, MIGRATIONCODE, MIGRATIONDISTANCE, MIGRATIONMOVE, MIGRATIONFROMSUNBELT) VALUES(1, 'wyje', 'lv', '', 'kvaobnmj');
 -- * Number of objective function evaluations: 2484
@@ -328,7 +328,7 @@ INSERT INTO migration(SSN, MIGRATIONCODE, MIGRATIONDISTANCE, MIGRATIONMOVE, MIGR
 
 -- Negating "FOREIGN KEY[SSN]" on table "migration"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 8ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('ji', 'cxgfe', -94, 79, 'mihc', 'qitu', 'snnoe', 'huaoapfl', 'yxvnmpgbc', 'plovjwitc', 'xvmnuy', 'ddkgpqk', 'soji', 'dlfx');
 INSERT INTO migration(SSN, MIGRATIONCODE, MIGRATIONDISTANCE, MIGRATIONMOVE, MIGRATIONFROMSUNBELT) VALUES(76, 'g', 'sa', 'gcg', 'mbssasqyb');
 -- * Number of objective function evaluations: 83
@@ -336,7 +336,7 @@ INSERT INTO migration(SSN, MIGRATIONCODE, MIGRATIONDISTANCE, MIGRATIONMOVE, MIGR
 
 -- Negating "NOT NULL(SSN)" on table "migration"
 -- * Success: true
--- * Time: 30ms 
+-- * Time: 18ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('mdaq', 'ct', 84, -100, 'yutibni', '', 'k', 'qemjcwgeo', 'muvmip', 'we', 'qbov', 'eyk', 'vjkkumwco', 'rksvgtif');
 INSERT INTO migration(SSN, MIGRATIONCODE, MIGRATIONDISTANCE, MIGRATIONMOVE, MIGRATIONFROMSUNBELT) VALUES(NULL, 'n', 'omdcqh', 'jjgnfpl', 'ubu');
 -- * Number of objective function evaluations: 224
@@ -351,14 +351,14 @@ INSERT INTO stateabbv(ABBV, NAME) VALUES(NULL, '');
 
 -- Negating "NOT NULL(NAME)" on table "stateabbv"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO stateabbv(ABBV, NAME) VALUES('', NULL);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[INDUSTRYCODE, OCCUPATIONCODE]" on table "wage"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-1, '', 0);
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-1, '', 0);
 INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(0, 0, 0);
@@ -367,7 +367,7 @@ INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(0, 0, 0);
 
 -- Negating "FOREIGN KEY[INDUSTRYCODE]" on table "wage"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 7ms 
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-17, 'hlwfsuqr', -57);
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(74, 'cs', -25);
 INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(3, 43, 35);
@@ -376,7 +376,7 @@ INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(3, 43, 35);
 
 -- Negating "FOREIGN KEY[OCCUPATIONCODE]" on table "wage"
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 7ms 
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-56, 'vxtaj', 2);
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(63, 'xptnp', 76);
 INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(1, -42, -73);
@@ -385,7 +385,7 @@ INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(1, -42, -73)
 
 -- Negating "NOT NULL(INDUSTRYCODE)" on table "wage"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 6ms 
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(29, 'a', 35);
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-81, 'dhj', 44);
 INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(NULL, -17, 23);
@@ -394,7 +394,7 @@ INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(NULL, -17, 2
 
 -- Negating "NOT NULL(OCCUPATIONCODE)" on table "wage"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 8ms 
 INSERT INTO industry(INDUSTRYCODE, INDUSTRY, STABILITY) VALUES(-9, 'bflxnutwa', -34);
 INSERT INTO occupation(OCCUPATIONCODE, OCCUPATION, STABILITY) VALUES(-83, 'olijclxq', 12);
 INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(29, NULL, 13);
@@ -403,7 +403,7 @@ INSERT INTO wage(INDUSTRYCODE, OCCUPATIONCODE, MEANWEEKWAGE) VALUES(29, NULL, 13
 
 -- Negating "PRIMARY KEY[SSN]" on table "youth"
 -- * Success: true
--- * Time: 1148ms 
+-- * Time: 743ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('ymqetcln', 'hyxg', 98, 85, '', 'mu', 'csggc', 'prlsctlso', 'fpbr', 'vjunupib', 'njhknjyp', 'f', 'w', 'fpqiyxgv');
 INSERT INTO youth(SSN, PARENTS) VALUES(1, 'oc');
 -- * Number of objective function evaluations: 7389
@@ -411,7 +411,7 @@ INSERT INTO youth(SSN, PARENTS) VALUES(1, 'oc');
 
 -- Negating "FOREIGN KEY[SSN]" on table "youth"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 6ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('gfb', 'tydfh', -52, -82, 'vnonjtdfv', 'rex', 'bnofqv', 'maxrmwc', 'lfioykg', 'lawtyuqms', 'rvybk', 'bv', 'ytin', 'glhvh');
 INSERT INTO youth(SSN, PARENTS) VALUES(-79, 'm');
 -- * Number of objective function evaluations: 77
@@ -419,7 +419,7 @@ INSERT INTO youth(SSN, PARENTS) VALUES(-79, 'm');
 
 -- Negating "NOT NULL(SSN)" on table "youth"
 -- * Success: true
--- * Time: 32ms 
+-- * Time: 18ms 
 INSERT INTO userrecord(NAME, ZIP, SSN, AGE, SEX, MARITAL, RACE, TAXSTAT, DETAIL, HOUSEHOLDDETAIL, FATHERORIGIN, MOTHERORIGIN, BIRTHCOUNTRY, CITIZENSHIP) VALUES('', 'jkaog', 37, 92, 'ptmrrqo', 'ghhuvt', 'e', 'skontvaq', 'vxjsqcyv', '', 'hmpodat', '', 'efx', 'jqqhcyx');
 INSERT INTO youth(SSN, PARENTS) VALUES(NULL, 'pf');
 -- * Number of objective function evaluations: 209

@@ -14,16 +14,16 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected Constraint constraint;
     protected Data state;
-    protected boolean goalIsToSatisfy, considerNull;
+    protected boolean goalIsToSatisfy, nullAdmissableForSatisfy;
 
     public ConstraintObjectiveFunctionFactory(Constraint constraint,
                                               Data state,
                                               boolean goalIsToSatisfy,
-                                              boolean considerNull) {
+                                              boolean nullAdmissableForSatisfy) {
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.considerNull = considerNull;
+        this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
     }
 
     public ObjectiveFunction<Data> create() {
@@ -68,30 +68,24 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 
-        boolean allowNull = considerNull && goalIsToSatisfy;
-        
         return new ExpressionObjectiveFunction(
                     checkConstraint.getExpression(),
                     makeDescription(),
                     goalIsToSatisfy,
-                    allowNull);
+                    nullAdmissableForSatisfy);
     }
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
-
-        boolean allowNull = false; //considerNull && !goalIsToSatisfy;
-
+        
         return new UniqueObjectiveFunction(
                 primaryKeyConstraint.getColumns(),
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                allowNull);
+                !goalIsToSatisfy); // make it impossible for the constraint to satisfied or negated using NULLs 
     }
 
     protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
-
-        boolean allowNull = considerNull && goalIsToSatisfy;
 
         return new ReferenceObjectiveFunction(
                 foreignKeyConstraint.getColumns(),
@@ -99,7 +93,7 @@ public class ConstraintObjectiveFunctionFactory {
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                allowNull);
+                nullAdmissableForSatisfy);
     }
 
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
@@ -112,14 +106,12 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
 
-        boolean allowNull = considerNull && goalIsToSatisfy;
-
         return new UniqueObjectiveFunction(
                 uniqueConstraint.getColumns(),
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                allowNull);
+                nullAdmissableForSatisfy);
     }
 
     protected String makeDescription() {

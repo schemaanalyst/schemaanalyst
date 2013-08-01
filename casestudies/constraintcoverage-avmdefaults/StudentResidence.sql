@@ -17,11 +17,11 @@ CREATE TABLE Student (
 	CHECK (id >= 0)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 238ms 
+-- Time to generate: 253ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 57ms 
+-- * Time: 51ms 
 INSERT INTO Residence(name, capacity) VALUES('a', 3);
 INSERT INTO Residence(name, capacity) VALUES('', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(1, '', '', '');
@@ -45,21 +45,21 @@ INSERT INTO Residence(name, capacity) VALUES(NULL, 3);
 
 -- Negating "NOT NULL(capacity)" on table "Residence"
 -- * Success: true
--- * Time: 10ms 
+-- * Time: 7ms 
 INSERT INTO Residence(name, capacity) VALUES('b', NULL);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "CHECK[capacity > 1]" on table "Residence"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 2ms 
 INSERT INTO Residence(name, capacity) VALUES('b', 0);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "CHECK[capacity <= 10]" on table "Residence"
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 13ms 
 INSERT INTO Residence(name, capacity) VALUES('b', 15);
 -- * Number of objective function evaluations: 19
 -- * Number of restarts: 0
@@ -74,7 +74,7 @@ INSERT INTO Student(id, firstName, lastName, residence) VALUES(0, '', '', '');
 
 -- Negating "FOREIGN KEY[residence]" on table "Student"
 -- * Success: true
--- * Time: 108ms 
+-- * Time: 109ms 
 INSERT INTO Residence(name, capacity) VALUES('`', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(21, 'noi', 'pya', 'aa');
 -- * Number of objective function evaluations: 118
@@ -82,7 +82,7 @@ INSERT INTO Student(id, firstName, lastName, residence) VALUES(21, 'noi', 'pya',
 
 -- Negating "CHECK[id >= 0]" on table "Student"
 -- * Success: true
--- * Time: 26ms 
+-- * Time: 49ms 
 INSERT INTO Residence(name, capacity) VALUES('aa', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(-1, '', '', '');
 -- * Number of objective function evaluations: 27

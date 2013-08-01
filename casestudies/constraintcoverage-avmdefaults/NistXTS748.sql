@@ -9,11 +9,11 @@ CREATE TABLE TEST12549 (
 	CONSTRAINT CND12549C CHECK (TNUM3 > 0)
 );
 -- Coverage: 6/6 (100.00000%) 
--- Time to generate: 35ms 
+-- Time to generate: 26ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 26ms 
+-- * Time: 18ms 
 INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 1, 1);
 INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 0, 1);
 -- * Number of objective function evaluations: 24
@@ -28,7 +28,7 @@ INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(NULL, NULL, NULL);
 
 -- Negating "UNIQUE[TNUM2]" on table "TEST12549"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 4ms 
 INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 0, NULL);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0

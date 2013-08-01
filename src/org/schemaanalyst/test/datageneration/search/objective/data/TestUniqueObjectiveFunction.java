@@ -17,7 +17,6 @@ import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
@@ -62,43 +61,41 @@ public class TestUniqueObjectiveFunction {
                 // non-uniqueness of the state should be ignored
                 $(one, two_two, true, false, true, 1, 0),
                 $(one, two_two, true, true, true, 1, 0),
-                $(one, two_two, false, false, false, 0, 1),
-                $(one, two_two, false, true, false, 0, 1),                  
+                $(one, two_two, false, false, false, 1, 0),
+                $(one, two_two, false, true, false, 1, 0),                  
                 
-                $(two_three, empty, true, false, true, 0),
-                $(two_three, empty, true, true, true, 0),
-                $(two_three, empty, false, false, false, 1),
-                $(two_three, empty, false, true, false, 1),
+                $(two_three, empty, true, false, true, 2, 0),
+                $(two_three, empty, true, true, true, 2, 0),
+                $(two_three, empty, false, false, false, 2, 0),
+                $(two_three, empty, false, true, false, 2, 0),
 
                 // one row in data clashes with one row in the state
-                $(one_two, two_three, true, false, false, 1),
-                $(one_two, two_three, true, true, false, 1),
-                $(one_two, two_three, false, false, false, 1),
-                $(one_two, two_three, false, true, false, 1),                
+                $(one_two, two_three, true, false, false, 1, 1),
+                $(one_two, two_three, true, true, false, 1, 1),
+                $(one_two, two_three, false, false, false, 1, 1),
+                $(one_two, two_three, false, true, false, 1, 1),                
                 
-                $(two_two, empty, true, false, false, 1),
-                $(two_two, empty, true, true, false, 1),
-                $(two_two, empty, false, false, true, 0),
-                $(two_two, empty, false, true, true, 0),
+                $(two_two, empty, true, false, false, 1, 1),
+                $(two_two, empty, true, true, false, 1, 1),
+                $(two_two, empty, false, false, false, 1, 1),
+                $(two_two, empty, false, true, false, 1, 1),
 
-                $(null_null, empty, true, false, false, 1),
-                $(null_null, empty, true, true, true, 0),
-                $(null_null, empty, false, false, false, 1),
-                $(null_null, empty, false, true, true, 0),
+                $(null_null, empty, true, false, false, 0, 2),
+                $(null_null, empty, true, true, true, 2, 0),
+                $(null_null, empty, false, false, true, 0, 2),
+                $(null_null, empty, false, true, false, 2, 0),
 
-                $(one_null, two_three, true, false, false, 1),
-                $(one_null, two_three, true, true, true, 0),
-                $(one_null, two_three, false, false, false, 2),
-                // a quasi-case in which one row is accepted but one
-                // is rejected -- this is still non-optimal for the
-                // rejection case as all rows must be rejected                
-                $(one_null, two_three, false, true, false, 1),
+                $(one_null, two_three, true, false, false, 1, 1),
+                $(one_null, two_three, true, true, true, 2, 0),
+                $(one_null, two_three, false, false, false, 1, 1),           
+                $(one_null, two_three, false, true, false, 2, 0),
                 
-                $(null_one, two_three, true, false, false, 2),
-                $(null_one, two_three, true, true, true, 0),
-                $(null_one, two_three, false, false, false, 2),
+                $(null_one, two_three, true, false, false, 1, 1),
+                $(null_one, two_three, true, true, true, 2, 0),
+                $(null_one, two_three, false, false, false, 1, 1),
                 // due to null-acceptance for the goal (not to satisfy), all rows here are rejected
-                $(null_one, two_three, false, true, true, 0)
+                $(null_one, two_three, false, true, false, 2, 0)
+               
                 ); 
     }
 
@@ -140,35 +137,35 @@ public class TestUniqueObjectiveFunction {
 
     Object[] twoColumnTestValues() {
         return $(
-                $(empty, empty, true, false, true, 0),
-                $(empty, empty, true, true, true, 0),
-                $(empty, empty, false, false, false, 0),
-                $(empty, empty, false, true, false, 0),
+                $(empty, empty, true, false, true, 0, 0),
+                $(empty, empty, true, true, true, 0, 0),
+                $(empty, empty, false, false, false, 0, 0),
+                $(empty, empty, false, true, false, 0, 0),
 
-                $(oneOne_twoTwo, empty, true, false, true, 0),
-                $(oneOne_twoTwo, empty, true, true, true, 0),
-                $(oneOne_twoTwo, empty, false, false, false, 1),
-                $(oneOne_twoTwo, empty, false, true, false, 1),
+                $(oneOne_twoTwo, empty, true, false, true, 2, 0),
+                $(oneOne_twoTwo, empty, true, true, true, 2, 0),
+                $(oneOne_twoTwo, empty, false, false, false, 2, 0),
+                $(oneOne_twoTwo, empty, false, true, false, 2, 0),
 
-                $(oneOne, twoTwo, true, false, true, 0),
-                $(oneOne, twoTwo, true, true, true, 0),
-                $(oneOne, twoTwo, false, false, false, 1),
-                $(oneOne, twoTwo, false, true, false, 1),
+                $(oneOne, twoTwo, true, false, true, 1, 0),
+                $(oneOne, twoTwo, true, true, true, 1, 0),
+                $(oneOne, twoTwo, false, false, false, 1, 0),
+                $(oneOne, twoTwo, false, true, false, 1, 0),
 
-                $(oneOne_oneOne, empty, true, false, false, 1),
-                $(oneOne_oneOne, empty, true, true, false, 1),
-                $(oneOne_oneOne, empty, false, false, true, 0),
-                $(oneOne_oneOne, empty, false, true, true, 0),
+                $(oneOne_oneOne, empty, true, false, false, 1, 1),
+                $(oneOne_oneOne, empty, true, true, false, 1, 1),
+                $(oneOne_oneOne, empty, false, false, false, 1, 1),
+                $(oneOne_oneOne, empty, false, true, false, 1, 1),
 
-                $(oneOne, oneOne, true, false, false, 1),
-                $(oneOne, oneOne, true, true, false, 1),
-                $(oneOne, oneOne, false, false, true, 0),
-                $(oneOne, oneOne, false, true, true, 0),
+                $(oneOne, oneOne, true, false, false, 0, 1),
+                $(oneOne, oneOne, true, true, false, 0, 1),
+                $(oneOne, oneOne, false, false, true, 0, 1),
+                $(oneOne, oneOne, false, true, true, 0, 1),
 
-                $(oneNull_oneOne, empty, true, false, false, 1),
-                $(oneNull_oneOne, empty, true, true, true, 0),
-                $(oneNull_oneOne, empty, false, false, false, 1),
-                $(oneNull_oneOne, empty, false, true, true, 0));
+                $(oneNull_oneOne, empty, true, false, false, 1, 1),
+                $(oneNull_oneOne, empty, true, true, true, 2, 0),
+                $(oneNull_oneOne, empty, false, false, false, 1, 1),
+                $(oneNull_oneOne, empty, false, true, false, 2, 0));
     }
 
     @Test
@@ -205,20 +202,25 @@ public class TestUniqueObjectiveFunction {
         if (optimal) {
             assertOptimal(objVal);
             
-            assertTrue("No. of rejected rows should be zero"
-                    + " (but list is " + objFun.getRejectedRows() + ")",
-                    objFun.getRejectedRows().size() == 0);
-            
+            if (goalIsToSatisfy) {
+                assertEquals(
+                        "No. of rejected rows should be zero", 
+                        0, objFun.getFalsifyingRows().size());
+            } else {
+                assertEquals(
+                        "No. of accepted rows should be zero", 
+                        0, objFun.getSatisfyingRows().size());
+            }
         } else {
             assertNonOptimal(objVal);
         }
         
         assertEquals("No. of accepted rows should be " + numAcceptedRows 
-                + " (list is " + objFun.getAcceptedRows() + ")",
-                numAcceptedRows, objFun.getAcceptedRows().size());        
+                + " (list is " + objFun.getSatisfyingRows() + ")",
+                numAcceptedRows, objFun.getSatisfyingRows().size());        
         
         assertEquals("No. of rejected rows should be " + numRejectedRows 
-                + " (list is " + objFun.getRejectedRows() + ")",
-                numRejectedRows, objFun.getRejectedRows().size());
-    }    
+                + " (list is " + objFun.getFalsifyingRows() + ")",
+                numRejectedRows, objFun.getFalsifyingRows().size());
+    }   
 }
