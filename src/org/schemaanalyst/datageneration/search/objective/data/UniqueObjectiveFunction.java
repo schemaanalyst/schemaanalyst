@@ -16,49 +16,58 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
 
     private List<Column> columns;
     private Data state;
-    private String description;
-    private boolean goalIsToSatisfy, nullAccepted;
+    private boolean nullAccepted;
     
     public UniqueObjectiveFunction(List<Column> columns, 
                                    Data state, 
                                    String description,
                                    boolean goalIsToSatisfy, 
                                    boolean nullAccepted) {
+        super(description, goalIsToSatisfy);
         this.columns = columns;
         this.state = state;
-        this.description = description;
-        this.goalIsToSatisfy = goalIsToSatisfy;
         this.nullAccepted = nullAccepted;
+    }
+    
+    @Override
+    protected List<Row> getDataRows(Data data) {
+        return data.getRows(columns);
     }
 
     @Override
-    protected ObjectiveValue performEvaluation(Data data) {
+    protected ObjectiveValue performEvaluation(List<Row> dataRows) {
         
-        List<Row> dataRows = data.getRows(columns);
         List<Row> stateRows = state.getRows(columns);
 
-        // special case for negating and there being one or fewer rows in the data
-        // note that we're only interested in the data and its evaluation against
-        // itself and the state, values for non-unique issues in the state are ignored
-        if (!goalIsToSatisfy && dataRows.size() <= 0) {
-            return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
-        }
-
+        // The optimum corresponds to
+        // -- a success (goalIsToSatisfy) on EVERY row, or 
+        // -- a fail (!goalIsToSatisfy) on EVERY row.   
+        // (Partially succeeding or failing rows could leave the database in an
+        // inconsistent state unless knowledge about succeeding an failing rows
+        // is taken into account.  It is assumed it won't be.)        
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
-        ListIterator<Row> dataRowsIterator = dataRows.listIterator();
-
-        while (dataRowsIterator.hasNext()) {
-            Row dataRow = dataRowsIterator.next();
-
-            if (dataRowsIterator.hasNext() || stateRows.size() > 0) {
+                
+        ListIterator<Row> dataRowsIterator = dataRows.listIterator(dataRows.size());
+        boolean haveStateRows = stateRows.size() > 0;
+        
+        // we work backwards up the list of rows in the data to see if it
+        // clashes with an earlier row (order matters with uniqueness of INSERTs).
+        while (dataRowsIterator.hasPrevious()) {
+            Row dataRow = dataRowsIterator.previous();
+            boolean haveDataRows = dataRowsIterator.hasPrevious();
+            
+            if (haveDataRows || haveStateRows) {
                 String description = "Row " + dataRow;
 
                 MultiObjectiveValue rowObjVal = goalIsToSatisfy
                         ? new SumOfMultiObjectiveValue(description)
                         : new BestOfMultiObjectiveValue(description);
 
+                // evaluate against previous data rows
                 evaluateRowAgainstOtherRows(rowObjVal, dataRow, dataRows, dataRowsIterator.nextIndex());
-                evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, 0);
+
+                // evaluate against state rows
+                evaluateRowAgainstOtherRows(rowObjVal, dataRow, stateRows, stateRows.size());
                 
                 objVal.add(rowObjVal);
                 classifyRow(rowObjVal, dataRow);
@@ -71,13 +80,21 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
     private void evaluateRowAgainstOtherRows(
             MultiObjectiveValue objVal,
             Row row, List<Row> otherRows, int fromIndex) {
-
+        
         ListIterator<Row> rowsIterator = otherRows.listIterator(fromIndex);
 
-        while (rowsIterator.hasNext()) {
-            Row compareRow = rowsIterator.next();
+        while (rowsIterator.hasPrevious()) {
+            Row compareRow = rowsIterator.previous();
             objVal.add(RowRelationalObjectiveFunction.compute(
                     row, !goalIsToSatisfy, compareRow, nullAccepted));
+        }
+    }    
+    
+    protected void classifyRow(ObjectiveValue objVal, Row row) {
+        if (!objVal.isOptimal()) {
+            // always add rejected rows at the beginning of the 
+            // list since we're traversing in reverse order
+            rejectedRows.add(0, row);
         }
     }    
 }

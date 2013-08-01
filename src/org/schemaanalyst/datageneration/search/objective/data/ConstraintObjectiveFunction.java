@@ -10,27 +10,48 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data> {
     
-    protected List<Row> acceptedRows, rejectedRows; 
+    protected String description;
+    protected boolean goalIsToSatisfy;
+    protected List<Row> rejectedRows; 
+    protected Data data;
+    
+    public ConstraintObjectiveFunction(String description, boolean goalIsToSatisfy) {
+        this.description = description;
+        this.goalIsToSatisfy = goalIsToSatisfy;
+        rejectedRows = new ArrayList<Row>();
+    }
     
     @Override
     public ObjectiveValue evaluate(Data data) {
-        acceptedRows = new ArrayList<Row>();
-        rejectedRows = new ArrayList<Row>();
-        return performEvaluation(data);
+        // set the data
+        this.data = data;
+        
+        // clear the rejected rows list
+        rejectedRows.clear();
+        
+        // get the rows relevant for this constraint
+        List<Row> dataRows = getDataRows(data);
+        
+        // anything to evaluate?
+        if (dataRows.size() <= 0) {
+            description +=  "(no data rows)";
+            return goalIsToSatisfy 
+                    ? ObjectiveValue.optimalObjectiveValue(description)
+                    : ObjectiveValue.worstObjectiveValue(description);
+        }        
+        
+        // do the evaluation
+        return performEvaluation(dataRows);
     }    
     
-    protected abstract ObjectiveValue performEvaluation(Data data);
+    protected abstract List<Row> getDataRows(Data data);
+    
+    protected abstract ObjectiveValue performEvaluation(List<Row> dataRows);
     
     protected void classifyRow(ObjectiveValue objVal, Row row) {
-        if (objVal.isOptimal()) {
-            acceptedRows.add(row);
-        } else {
+        if (!objVal.isOptimal()) {
             rejectedRows.add(row);
         }
-    }
-    
-    public List<Row> getAcceptedRows() {
-        return acceptedRows;
     }
     
     public List<Row> getRejectedRows() {

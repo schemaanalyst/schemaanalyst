@@ -16,8 +16,7 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
     private List<Column> columns;
     private List<Column> referenceColumns;
     private Data state;
-    private String description;
-    private boolean goalIsToSatisfy, nullAccepted;
+    private boolean nullAccepted;
     
     public ReferenceObjectiveFunction(List<Column> columns,
                                       List<Column> referenceColumns,
@@ -25,25 +24,20 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
                                       String description,
                                       boolean goalIsToSatisfy,
                                       boolean nullAccepted) {
+        super(description, goalIsToSatisfy);        
         this.columns = columns;
         this.referenceColumns = referenceColumns;
         this.state = state;
-        this.description = description;
-        this.goalIsToSatisfy = goalIsToSatisfy;
         this.nullAccepted = nullAccepted;
     }
-
+    
     @Override
-    protected ObjectiveValue performEvaluation(Data data) {        
-        List<Row> dataRows = data.getRows(columns);
-        
-        // special case for negating and there being one or fewer rows in the data
-        // note that we're only interested in the data and its evaluation against
-        // itself and the state, values for non-unique issues in the state are ignored
-        if (!goalIsToSatisfy && dataRows.size() <= 0) {
-            return ObjectiveValue.worstObjectiveValue(description + "(nothing to negate row against)");
-        }        
-        
+    protected List<Row> getDataRows(Data data) {
+        return data.getRows(columns);
+    }    
+    
+    @Override
+    protected ObjectiveValue performEvaluation(List<Row> dataRows) {        
     	// The optimum corresponds to
     	// -- a success (goalIsToSatisfy) on EVERY row, or 
     	// -- a fail (!goalIsToSatisfy) on EVERY row.    	

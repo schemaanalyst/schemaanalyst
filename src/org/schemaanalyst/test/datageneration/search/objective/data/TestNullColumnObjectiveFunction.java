@@ -11,6 +11,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
+import static org.junit.Assert.assertEquals;
 import static junitparams.JUnitParamsRunner.$;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
 
@@ -35,22 +36,25 @@ public class TestNullColumnObjectiveFunction {
     
     Object[] testValues() {
         return $(
-                $(null, null, true, optimal),
-                $(null, 1, true, oneOff),
-                $(1, 1, true, twoOff),
-                $(null, null, false, twoOff),
-                $(null, 1, false, oneOff),
-                $(1, 1, false, optimal)
+                $(null, null, true, optimal, 0),
+                $(null, 1, true, oneOff, 1),
+                $(1, 1, true, twoOff, 2),
+                $(null, null, false, twoOff, 2),
+                $(null, 1, false, oneOff, 1),
+                $(1, 1, false, optimal, 0)
                 );
     }
     
     @Test
     @Parameters(method = "testValues")     
-    public void test(Integer val1, Integer val2, boolean goalIsToSatisfy, ObjectiveValue expected) {
+    public void test(Integer val1, Integer val2, boolean goalIsToSatisfy, ObjectiveValue expected, int numRejectedRows) {
         NullColumnObjectiveFunction objFun = 
                 new NullColumnObjectiveFunction(database.column, "", goalIsToSatisfy);
         
         database.setDataValues(val1, val2);
         assertEquivalent(expected, objFun.evaluate(data));                   
+        
+        assertEquals("Number of rejected rows should be " + numRejectedRows, 
+                     numRejectedRows, objFun.getRejectedRows().size());
     }
 }

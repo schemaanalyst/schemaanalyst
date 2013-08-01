@@ -14,21 +14,24 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 public class ExpressionObjectiveFunction extends ConstraintObjectiveFunction {
 
     private Expression expression;
-    private String description;
-    private boolean goalIsToSatisfy, allowNull;
+    private boolean allowNull;
 
     public ExpressionObjectiveFunction(Expression expression,
             String description,
             boolean goalIsToSatisfy,
             boolean allowNull) {
+        super(description, goalIsToSatisfy);
         this.expression = expression;
-        this.description = description;
-        this.goalIsToSatisfy = goalIsToSatisfy;
         this.allowNull = allowNull;
     }
 
     @Override
-    protected ObjectiveValue performEvaluation(Data data) {
+    protected List<Row> getDataRows(Data data) {
+        return data.getRows(expression.getColumnsInvolved());
+    }
+    
+    @Override
+    protected ObjectiveValue performEvaluation(List<Row> dataRows) {
 
         MultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
         ExpressionObjectiveFunctionFactory factory =
@@ -37,8 +40,7 @@ public class ExpressionObjectiveFunction extends ConstraintObjectiveFunction {
                 allowNull);
         ObjectiveFunction<Row> objFun = factory.create();
         
-        List<Row> rows = data.getRows(expression.getColumnsInvolved());
-        for (Row row : rows) {
+        for (Row row : dataRows) {
             ObjectiveValue rowObjVal = objFun.evaluate(row); 
             objVal.add(rowObjVal);
             classifyRow(rowObjVal, row);
