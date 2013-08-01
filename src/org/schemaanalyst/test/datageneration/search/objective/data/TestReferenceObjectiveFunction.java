@@ -1,6 +1,8 @@
 package org.schemaanalyst.test.datageneration.search.objective.data;
 
 import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
@@ -17,120 +19,120 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.test.testutil.mock.FourColumnMockDatabase;
+import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestReferenceObjectiveFunction {
 
 	Integer[] empty = {};
 	
-	Integer[] oneRowUniform = {1, 1, 1, 1};
+	Integer[] oneOne = {1, 1};
 		
-	Integer[] oneRowDifferent = {1, 2, 3, 4};
+	Integer[] oneTwo = {1, 2};
 	
-	Integer[] twoRowsDifferent = {1, 2, 3, 4,
-								  5, 6, 7, 8};	
+	Integer[] oneTwo_fiveSix = {1, 2,
+								5, 6};	
 	
-	Integer[] twoRowsOneFullMatch = {1, 5, 0, 0,
-			  						 5, 1, 0, 0};
+	Integer[] oneFive_fiveOne = {1, 5,
+			  				     5, 1};
 
-	Integer[] twoRowsOneColPartialMatch = {1, 5, 0, 0,
-									   	   5, 3, 0, 0};	
+	Integer[] oneFive_fiveThree = {1, 5,
+								   5, 3};	
 
-	Integer[] twoRowsOneColNoMatch = {1, 5, 0, 0,
-		   	   						  2, 3, 0, 0};		
+	Integer[] oneFive_twoThree = {1, 5,
+		   	   				      2, 3};		
 	
-	Integer[] twoRowsMatchWithOne = {2, 1, 0, 0,
-			  					     2, 2, 0, 0};	
+	Integer[] twoOne_twoTwo = {2, 1,
+			  				   2, 2};	
 	
-	Integer[] oneRowNulls = {null, null, 0, 0};
+	Integer[] nullNull = {null, null};
 	
-	Integer[] twoRowsNullMatch1 = {null, 1, 0, 0,
-								  null, null, 0, 0};
+	Integer[] nullOne_nullNull = {null, 1,
+								  null, null};
 
-	Integer[] twoRowsNullMatch2 = {null, 1, 0, 0,
-			  					  1, null, 0, 0};	
+	Integer[] nullOne_oneNull = {null, 1,
+			  					 1, null};	
 	
-	Integer[] oneRowMatchWithOther1 = {1, 2, 0, 0};	
-	Integer[] oneRowMatchWithOther2 = {2, 1, 0, 0};
+	Integer[] twoOne = {2, 1};
 	
     Object[] oneColumnTestValues() {
         return $(
-                $(empty, empty, true, false, true),
-                $(empty, empty, true, true, true),
-                $(empty, empty, false, false, false),
-                $(empty, empty, false, true, false),                
+                $(empty, empty, true, false, true, 0),
+                $(empty, empty, true, true, true, 0),
+                $(empty, empty, false, false, false, 0),
+                $(empty, empty, false, true, false, 0),                
                 
-                $(oneRowUniform, empty, true, false, true),
-                $(oneRowUniform, empty, true, true, true),
-                $(oneRowUniform, empty, false, false, false),
-                $(oneRowUniform, empty, false, true, false),
+                $(oneOne, empty, true, false, true, 0),
+                $(oneOne, empty, true, true, true, 0),
+                $(oneOne, empty, false, false, false, 1),
+                $(oneOne, empty, false, true, false, 1),
                 
-                $(oneRowDifferent, empty, true, false, false),
-                $(oneRowDifferent, empty, true, true, false),
-                $(oneRowDifferent, empty, false, false, true),
-                $(oneRowDifferent, empty, false, true, true),
+                $(oneTwo, empty, true, false, false, 1),
+                $(oneTwo, empty, true, true, false, 1),
+                $(oneTwo, empty, false, false, true, 0),
+                $(oneTwo, empty, false, true, true, 0),
                 
-                $(twoRowsDifferent, empty, true, false, false),
-                $(twoRowsDifferent, empty, true, true, false),
-                $(twoRowsDifferent, empty, false, false, true),
-                $(twoRowsDifferent, empty, false, true, true),
+                $(oneTwo_fiveSix, empty, true, false, false, 2),
+                $(oneTwo_fiveSix, empty, true, true, false, 2),
+                $(oneTwo_fiveSix, empty, false, false, true, 0),
+                $(oneTwo_fiveSix, empty, false, true, true, 0),
                 
-                $(twoRowsOneFullMatch, empty, true, false, true),
-                $(twoRowsOneFullMatch, empty, true, true, true),
-                $(twoRowsOneFullMatch, empty, false, false, false),
-                $(twoRowsOneFullMatch, empty, false, true, false),
+                $(oneFive_fiveOne, empty, true, false, true, 0),
+                $(oneFive_fiveOne, empty, true, true, true, 0),
+                $(oneFive_fiveOne, empty, false, false, false, 2),
+                $(oneFive_fiveOne, empty, false, true, false, 2),
                 
-                // since we didn't pass or fail BOTH, the optimum is never reached
+                // since we didn't pass or fail BOTH rows, the optimum is never reached
                 // for any of these test cases
-                $(twoRowsOneColPartialMatch, empty, true, false, false),
-                $(twoRowsOneColPartialMatch, empty, true, true, false),
-                $(twoRowsOneColPartialMatch, empty, false, false, false),
-                $(twoRowsOneColPartialMatch, empty, false, true, false),
+                $(oneFive_fiveThree, empty, true, false, false, 1),
+                $(oneFive_fiveThree, empty, true, true, false, 1),
+                $(oneFive_fiveThree, empty, false, false, false, 1),
+                $(oneFive_fiveThree, empty, false, true, false, 1),
                 
-                $(twoRowsOneColNoMatch, empty, true, false, false),
-                $(twoRowsOneColNoMatch, empty, true, true, false),
-                $(twoRowsOneColNoMatch, empty, false, false, true),
-                $(twoRowsOneColNoMatch, empty, false, true, true),
+                $(oneFive_twoThree, empty, true, false, false, 2),
+                $(oneFive_twoThree, empty, true, true, false, 2),
+                $(oneFive_twoThree, empty, false, false, true, 0),
+                $(oneFive_twoThree, empty, false, true, true, 0),
                
                 // there's no match in the state, but the objective
                 // function is concerned with the data only, and 
                 // the data is empty
-                $(empty, twoRowsOneColNoMatch, true, false, true),
-                $(empty, twoRowsOneColNoMatch, true, true, true),
-                $(empty, twoRowsOneColNoMatch, false, false, false),
-                $(empty, twoRowsOneColNoMatch, false, true, false),                
+                $(empty, oneFive_twoThree, true, false, true, 0),
+                $(empty, oneFive_twoThree, true, true, true, 0),
+                $(empty, oneFive_twoThree, false, false, false, 0),
+                $(empty, oneFive_twoThree, false, true, false, 0),                
                 
                 // ditto for above - we do not care about the state
-                $(oneRowUniform, twoRowsOneColNoMatch, true, false, true),
-                $(oneRowUniform, twoRowsOneColNoMatch, true, true, true),
-                $(oneRowUniform, twoRowsOneColNoMatch, false, false, false),
-                $(oneRowUniform, twoRowsOneColNoMatch, false, true, false),                
+                $(oneOne, oneFive_twoThree, true, false, true, 0),
+                $(oneOne, oneFive_twoThree, true, true, true, 0),
+                $(oneOne, oneFive_twoThree, false, false, false, 1),
+                $(oneOne, oneFive_twoThree, false, true, false, 1),                
                 
-                $(twoRowsMatchWithOne, empty, true, false, true),
-                $(twoRowsMatchWithOne, empty, true, true, true),
-                $(twoRowsMatchWithOne, empty, false, false, false),
-                $(twoRowsMatchWithOne, empty, false, true, false),                
+                $(twoOne_twoTwo, empty, true, false, true, 0),
+                $(twoOne_twoTwo, empty, true, true, true, 0),
+                $(twoOne_twoTwo, empty, false, false, false, 2),
+                $(twoOne_twoTwo, empty, false, true, false, 2),                
                 
-                $(oneRowNulls, empty, true, false, false),
-                $(oneRowNulls, empty, true, true, true),
-                $(oneRowNulls, empty, false, false, false),
-                $(oneRowNulls, empty, false, true, true),                  
+                $(nullNull, empty, true, false, false, 1),
+                $(nullNull, empty, true, true, true, 0),
+                $(nullNull, empty, false, false, false, 1),
+                $(nullNull, empty, false, true, true, 0),                  
 
-                $(twoRowsNullMatch1, empty, true, false, false),
-                $(twoRowsNullMatch1, empty, true, true, true),
-                $(twoRowsNullMatch1, empty, false, false, false),
-                $(twoRowsNullMatch1, empty, false, true, true),                        
+                $(nullOne_nullNull, empty, true, false, false, 2),
+                $(nullOne_nullNull, empty, true, true, true, 0),
+                $(nullOne_nullNull, empty, false, false, false, 2),
+                $(nullOne_nullNull, empty, false, true, true, 0),                        
                 
-                $(twoRowsNullMatch2, empty, true, false, false),
-                $(twoRowsNullMatch2, empty, true, true, true),
-                $(twoRowsNullMatch2, empty, false, false, false),                
+                $(nullOne_oneNull, empty, true, false, false, 1),
+                $(nullOne_oneNull, empty, true, true, true, 0),
+                $(nullOne_oneNull, empty, false, false, false, 2),                
                 // partial match on 1 == 1, so this test actually fails
-                $(twoRowsNullMatch2, empty, false, true, false),
+                $(nullOne_oneNull, empty, false, true, false, 1),
                 
-                $(oneRowMatchWithOther1, oneRowMatchWithOther2, true, false, true),
-                $(oneRowMatchWithOther1, oneRowMatchWithOther2, true, true, true),
-                $(oneRowMatchWithOther1, oneRowMatchWithOther2, false, false, false),
-                $(oneRowMatchWithOther1, oneRowMatchWithOther2, false, true, false)                
+                $(oneTwo, twoOne, true, false, true, 0),
+                $(oneTwo, twoOne, true, true, true, 0),
+                $(oneTwo, twoOne, false, false, false, 1),
+                $(oneTwo, twoOne, false, true, false, 1)                
         		);
     }    
         
@@ -141,12 +143,13 @@ public class TestReferenceObjectiveFunction {
     						   Integer[] stateValues, 
     						   boolean goalIsToSatisfy, 
     						   boolean nullAccepted, 
-    						   boolean optimal) {
+    						   boolean optimal,
+    						   int numRejectedRows) {
     	
-    	FourColumnMockDatabase database = new FourColumnMockDatabase();
+    	TwoColumnMockDatabase database = new TwoColumnMockDatabase();
     	
-        Data data = database.createData(dataValues.length / 4);
-        Data state = database.createState(stateValues.length / 4);    	
+        Data data = database.createData(dataValues.length / 2);
+        Data state = database.createState(stateValues.length / 2);    	
         database.setDataValues(dataValues);
         database.setStateValues(stateValues);
     	
@@ -156,73 +159,70 @@ public class TestReferenceObjectiveFunction {
         List<Column> referenceColumns = new ArrayList<>();
         referenceColumns.add(database.column2);
         
-        ReferenceObjectiveFunction objFun = new ReferenceObjectiveFunction(
-        		columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
-        ObjectiveValue objVal = objFun.evaluate(data);
-        
-        if (optimal) {
-        	assertOptimal(objVal);
-        } else {
-        	assertNonOptimal(objVal);
-        }
+        evaluate(goalIsToSatisfy, nullAccepted, optimal, numRejectedRows, data,
+                state, columns, referenceColumns);
     }
     
-	Integer[] twoColOneRowUniform = {1, 2, 1, 2};
+	Integer[] oneTwoOneTwo = {1, 2, 1, 2};
   
-	Integer[] twoColTwoRowsMatch = {1, 2, 1, 2,
-								   2, 3, 2, 3};
+	Integer[] oneTwoOneTwo_twoThreeTwoThree 
+	    = {1, 2, 1, 2,
+		  2, 3, 2, 3};
 
-	Integer[] twoColTwoRowsNoMatch = {1, 2, 4, 5,
-			   						 2, 3, 6, 7};	
+	Integer[] oneTwoFourFive_twoThreeSixSeven 
+	    = {1, 2, 4, 5,
+	       2, 3, 6, 7};	
 
-	Integer[] twoColTwoRowsPartialMatch = {1, 2, 2, 3,
-				 						   2, 3, 6, 7};	
+	Integer[] oneTwoTwoThree_twoThreeSixSeven 
+	    = {1, 2, 2, 3,
+		   2, 3, 6, 7};	
 	
-	Integer[] twoColOneRowNoMatch = {1, 2, 1, 3};
+	Integer[] oneTwoOneThree = {1, 2, 1, 3};
 
-	Integer[] twoColOneRowNullMatch = {1, null, 1, null};	
+	Integer[] oneNullOneNull = {1, null, 1, null};	
 	
     Object[] twoColumnTestValues() {
         return $(
-                $(twoColOneRowUniform, empty, true, false, true),
-                $(twoColOneRowUniform, empty, true, true, true),
-                $(twoColOneRowUniform, empty, false, false, false),
-                $(twoColOneRowUniform, empty, false, true, false),
+                $(oneTwoOneTwo, empty, true, false, true, 0),
+                $(oneTwoOneTwo, empty, true, true, true, 0),
+                $(oneTwoOneTwo, empty, false, false, false, 1),
+                $(oneTwoOneTwo, empty, false, true, false, 1),
                 
-                $(twoColTwoRowsMatch, empty, true, false, true),
-                $(twoColTwoRowsMatch, empty, true, true, true),
-                $(twoColTwoRowsMatch, empty, false, false, false),
-                $(twoColTwoRowsMatch, empty, false, true, false),      
+                $(oneTwoOneTwo_twoThreeTwoThree, empty, true, false, true, 0),
+                $(oneTwoOneTwo_twoThreeTwoThree, empty, true, true, true, 0),
+                $(oneTwoOneTwo_twoThreeTwoThree, empty, false, false, false, 1),
+                $(oneTwoOneTwo_twoThreeTwoThree, empty, false, true, false, 1),      
                 
-                $(twoColTwoRowsNoMatch, empty, true, false, false),
-                $(twoColTwoRowsNoMatch, empty, true, true, false),
-                $(twoColTwoRowsNoMatch, empty, false, false, true),
-                $(twoColTwoRowsNoMatch, empty, false, true, true),
+                $(oneTwoFourFive_twoThreeSixSeven, empty, true, false, false, 1),
+                $(oneTwoFourFive_twoThreeSixSeven, empty, true, true, false, 1),
+                $(oneTwoFourFive_twoThreeSixSeven, empty, false, false, true, 0),
+                $(oneTwoFourFive_twoThreeSixSeven, empty, false, true, true, 0),
                 
-                $(twoColTwoRowsPartialMatch, empty, true, false, false),
-                $(twoColTwoRowsPartialMatch, empty, true, true, false),
-                $(twoColTwoRowsPartialMatch, empty, false, false, false),
-                $(twoColTwoRowsPartialMatch, empty, false, true, false),
+                $(oneTwoTwoThree_twoThreeSixSeven, empty, true, false, false, 1),
+                $(oneTwoTwoThree_twoThreeSixSeven, empty, true, true, false, 1),
+                $(oneTwoTwoThree_twoThreeSixSeven, empty, false, false, false, 1),
+                $(oneTwoTwoThree_twoThreeSixSeven, empty, false, true, false, 1),
                 
-                $(twoColOneRowNoMatch, empty, true, false, false),
-                $(twoColOneRowNoMatch, empty, true, true, false),
-                $(twoColOneRowNoMatch, empty, false, false, true),
-                $(twoColOneRowNoMatch, empty, false, true, true),
+                $(oneTwoOneThree, empty, true, false, false, 1),
+                $(oneTwoOneThree, empty, true, true, false, 1),
+                $(oneTwoOneThree, empty, false, false, true, 0),
+                $(oneTwoOneThree, empty, false, true, true, 0),
                 
-                $(twoColOneRowNullMatch, empty, true, false, false),
-                $(twoColOneRowNullMatch, empty, true, true, true),
-                $(twoColOneRowNullMatch, empty, false, false, false),
-                $(twoColOneRowNullMatch, empty, false, true, true)                  
+                $(oneNullOneNull, empty, true, false, false, 1),
+                $(oneNullOneNull, empty, true, true, true, 0),
+                $(oneNullOneNull, empty, false, false, false, 1),
+                $(oneNullOneNull, empty, false, true, true, 0)                  
         		);
     }
     
-    @Test
+    //@Test
     @Parameters(method = "twoColumnTestValues")     
     public void twoColumnTests(Integer[] dataValues, 
     						   Integer[] stateValues, 
     						   boolean goalIsToSatisfy, 
     						   boolean nullAccepted, 
-    						   boolean optimal) {
+    						   boolean optimal,
+    						   int numRejectedRows) {
     	
     	FourColumnMockDatabase database = new FourColumnMockDatabase();
     	
@@ -239,15 +239,33 @@ public class TestReferenceObjectiveFunction {
         referenceColumns.add(database.column3);
         referenceColumns.add(database.column4);
         
+        evaluate(goalIsToSatisfy, nullAccepted, optimal, numRejectedRows, data,
+                state, columns, referenceColumns);
+    }
+
+
+    private void evaluate(boolean goalIsToSatisfy, boolean nullAccepted,
+            boolean optimal, int numRejectedRows, Data data, Data state,
+            List<Column> columns, List<Column> referenceColumns) {
         ReferenceObjectiveFunction objFun = new ReferenceObjectiveFunction(
-        		columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
+                columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
         ObjectiveValue objVal = objFun.evaluate(data);
         
         if (optimal) {
-        	assertOptimal(objVal);
+            assertOptimal(objVal);
+            
+            assertTrue("No. of rejected rows should be zero"
+                    + " (but list is " + objFun.getRejectedRows() + ")",
+                    objFun.getRejectedRows().size() == 0);
+            
         } else {
-        	assertNonOptimal(objVal);
+            assertNonOptimal(objVal);
         }
-    }    
+        
+        if (numRejectedRows != -1) 
+            assertEquals("No. of rejected rows should be " + numRejectedRows 
+                    + " (list is " + objFun.getRejectedRows() + ")",
+                    numRejectedRows, objFun.getRejectedRows().size());
+    }  
  
 }

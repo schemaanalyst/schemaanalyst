@@ -207,10 +207,9 @@ public class TestUniqueObjectiveFunction {
         } else {
             assertNonOptimal(objVal);
         }
-        
-        if (numRejectedRows != -1) 
-            assertEquals("No. of rejected rows should be " + numRejectedRows 
-                    + " (list is " + objFun.getRejectedRows() + ")",
-                    numRejectedRows, objFun.getRejectedRows().size());
+         
+        assertEquals("No. of rejected rows should be " + numRejectedRows 
+                + " (list is " + objFun.getRejectedRows() + ")",
+                numRejectedRows, objFun.getRejectedRows().size());
     }    
 }

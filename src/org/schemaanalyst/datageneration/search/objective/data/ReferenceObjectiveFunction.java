@@ -66,6 +66,7 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
                     row, goalIsToSatisfy, referenceRow, nullAccepted));
         }
         
+        System.out.println("checking " + row + " is " + rowObjVal.isOptimal());
         classifyRow(rowObjVal, row);        
         return rowObjVal;
     }
