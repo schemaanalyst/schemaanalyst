@@ -1,7 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 
@@ -46,10 +48,10 @@ public abstract class ExpressionTree implements Expression {
     
     @Override
     public List<Column> getColumnsInvolved() {
-        List<Column> columns = new ArrayList<>();
+        Set<Column> columns = new HashSet<>();
         for (Expression expression : getSubexpressions()) {
             columns.addAll(expression.getColumnsInvolved());
         }
-        return columns;
+        return new ArrayList<Column>(columns);
     }
 }
