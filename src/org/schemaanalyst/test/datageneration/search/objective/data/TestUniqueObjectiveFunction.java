@@ -49,21 +49,21 @@ public class TestUniqueObjectiveFunction {
     Object[] oneColumnTestValues() {
         return $(
                 
-                $(empty, empty, true, false, true, 0),
-                $(empty, empty, true, true, true, 0),
-                $(empty, empty, false, false, false, 0),
-                $(empty, empty, false, true, false, 0),                
+                $(empty, empty, true, false, true, 0, 0),
+                $(empty, empty, true, true, true, 0, 0),
+                $(empty, empty, false, false, false, 0, 0),
+                $(empty, empty, false, true, false, 0, 0),                
 
-                $(empty, one, true, false, true, 0),
-                $(empty, one, true, true, true, 0),
-                $(empty, one, false, false, false, 0),
-                $(empty, one, false, true, false, 0),         
+                $(empty, one, true, false, true, 0, 0),
+                $(empty, one, true, true, true, 0, 0),
+                $(empty, one, false, false, false, 0, 0),
+                $(empty, one, false, true, false, 0, 0),         
                 
                 // non-uniqueness of the state should be ignored
-                $(one, two_two, true, false, true, 0),
-                $(one, two_two, true, true, true, 0),
-                $(one, two_two, false, false, false, 1),
-                $(one, two_two, false, true, false, 1),                  
+                $(one, two_two, true, false, true, 1, 0),
+                $(one, two_two, true, true, true, 1, 0),
+                $(one, two_two, false, false, false, 0, 1),
+                $(one, two_two, false, true, false, 0, 1),                  
                 
                 $(two_three, empty, true, false, true, 0),
                 $(two_three, empty, true, true, true, 0),
@@ -107,7 +107,7 @@ public class TestUniqueObjectiveFunction {
     public void oneColumnTests(
             Integer[] dataValues, Integer[] stateValues,
             boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal,
-            int numRejectedRows) {
+            int numAcceptedRows, int numRejectedRows) {
 
         OneColumnMockDatabase database = new OneColumnMockDatabase();
         
@@ -120,8 +120,9 @@ public class TestUniqueObjectiveFunction {
         List<Column> columns = new ArrayList<>();
         columns.add(database.column);        
         
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, numRejectedRows,
-                columns, data, state);    
+        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+                 numAcceptedRows, numRejectedRows,
+                 columns, data, state);    
     }
 
     Integer[] oneOne_twoTwo = { 1, 1, 
@@ -173,7 +174,8 @@ public class TestUniqueObjectiveFunction {
     @Test
     @Parameters(method = "twoColumnTestValues")
     public void twoColumnTests(Integer[] dataValues, Integer[] stateValues,
-            boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal, int numRejectedRows) {
+            boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal, 
+            int numAcceptedRows, int numRejectedRows) {
 
         TwoColumnMockDatabase database = new TwoColumnMockDatabase();
 
@@ -186,12 +188,15 @@ public class TestUniqueObjectiveFunction {
         columns.add(database.column1);
         columns.add(database.column2);
 
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, numRejectedRows,
+        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+                numAcceptedRows, numRejectedRows,
                 columns, data, state); 
     }
     
-    private void evaluate(boolean goalIsToSatisfy, boolean nullAccepted,
-            boolean optimal, int numRejectedRows, List<Column> columns,
+    private void evaluate(
+            boolean goalIsToSatisfy, boolean nullAccepted,
+            boolean optimal, int numAcceptedRows, int numRejectedRows, 
+            List<Column> columns,
             Data data, Data state) {
         UniqueObjectiveFunction objFun = new UniqueObjectiveFunction(columns,
                 state, "", goalIsToSatisfy, nullAccepted);
@@ -207,7 +212,11 @@ public class TestUniqueObjectiveFunction {
         } else {
             assertNonOptimal(objVal);
         }
-         
+        
+        assertEquals("No. of accepted rows should be " + numAcceptedRows 
+                + " (list is " + objFun.getAcceptedRows() + ")",
+                numAcceptedRows, objFun.getAcceptedRows().size());        
+        
         assertEquals("No. of rejected rows should be " + numRejectedRows 
                 + " (list is " + objFun.getRejectedRows() + ")",
                 numRejectedRows, objFun.getRejectedRows().size());

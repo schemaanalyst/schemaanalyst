@@ -38,10 +38,6 @@ public abstract class ExpressionLeaf implements Expression {
     
     @Override
     public List<Column> getColumnsInvolved() {
-        List<Column> columns = new ArrayList<>();
-        if (this instanceof ColumnExpression) {
-            columns.add(((ColumnExpression) this).getColumn());
-        }
-        return columns;
+        return new ArrayList<>();
     }
 }

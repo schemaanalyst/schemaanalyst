@@ -4,13 +4,12 @@ import org.schemaanalyst.logic.RelationalOperator;
 
 public class RelationalExpression extends ExpressionTree {
 
-    public static final int NUM_SUBEXPRESSIONS = 2,
-            LHS = 0,
-            RHS = 1;
+    public static final int NUM_SUBEXPRESSIONS = 2, LHS = 0, RHS = 1;
     protected Expression lhs, rhs;
     protected RelationalOperator op;
 
-    public RelationalExpression(Expression lhs, RelationalOperator op, Expression rhs) {
+    public RelationalExpression(Expression lhs, RelationalOperator op,
+            Expression rhs) {
         this.lhs = lhs;
         this.op = op;
         this.rhs = rhs;
@@ -36,10 +35,10 @@ public class RelationalExpression extends ExpressionTree {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-            case LHS:
-                return lhs;
-            case RHS:
-                return rhs;
+        case LHS:
+            return lhs;
+        case RHS:
+            return rhs;
         }
         throw new NonExistentSubexpressionException(this, index);
     }

@@ -12,21 +12,27 @@ public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data
     
     protected String description;
     protected boolean goalIsToSatisfy;
-    protected List<Row> rejectedRows; 
+    protected List<Row> acceptedRows, rejectedRows; 
     protected Data data;
     
     public ConstraintObjectiveFunction(String description, boolean goalIsToSatisfy) {
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
+        acceptedRows = new ArrayList<Row>();
         rejectedRows = new ArrayList<Row>();
     }
     
+    public boolean goalIsToSatisfy() {
+        return goalIsToSatisfy;
+    }
+     
     @Override
     public ObjectiveValue evaluate(Data data) {
         // set the data
         this.data = data;
         
         // clear the rejected rows list
+        acceptedRows.clear();
         rejectedRows.clear();
         
         // get the rows relevant for this constraint
@@ -49,10 +55,16 @@ public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data
     protected abstract ObjectiveValue performEvaluation(List<Row> dataRows);
     
     protected void classifyRow(ObjectiveValue objVal, Row row) {
-        if (!objVal.isOptimal()) {
+        if (objVal.isOptimal()) {
+            acceptedRows.add(row);
+        } else {
             rejectedRows.add(row);
         }
     }
+    
+    public List<Row> getAcceptedRows() {
+        return acceptedRows;
+    }   
     
     public List<Row> getRejectedRows() {
         return rejectedRows;

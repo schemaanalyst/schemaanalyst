@@ -10,10 +10,7 @@ public abstract class CompoundExpression extends ExpressionTree {
     protected List<Expression> subexpressions;
 
     public CompoundExpression(List<Expression> subexpressions) {
-        this.subexpressions = new ArrayList<>();
-        for (Expression expression : subexpressions) {
-            this.subexpressions.add(expression);
-        }
+        this.subexpressions = new ArrayList<>(subexpressions);
     }
 
     public CompoundExpression(Expression... subexpressions) {

@@ -91,9 +91,11 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
     }    
     
     protected void classifyRow(ObjectiveValue objVal, Row row) {
-        if (!objVal.isOptimal()) {
-            // always add rejected rows at the beginning of the 
-            // list since we're traversing in reverse order
+        // always add rows at the beginning of the respective 
+        // list, since we're traversing the data rows in reverse order
+        if (objVal.isOptimal()) {
+            acceptedRows.add(0, row);
+        } else {
             rejectedRows.add(0, row);
         }
     }    
