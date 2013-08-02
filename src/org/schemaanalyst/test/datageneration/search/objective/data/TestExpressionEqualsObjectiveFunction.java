@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.ExpressionObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.ExpressionConstraintObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
@@ -25,7 +25,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestExpressionObjectiveFunction {
+public class TestExpressionEqualsObjectiveFunction {
 
     Integer[] one_one_one_one = {1, 1, 1, 1};
     Integer[] one_two_three_four = {1, 2, 3, 4};
@@ -82,7 +82,7 @@ public class TestExpressionObjectiveFunction {
         List<Column> columns = new ArrayList<>();
         columns.add(database.column);        
 
-        ExpressionObjectiveFunction objFun = new ExpressionObjectiveFunction(
+        ExpressionConstraintObjectiveFunction objFun = new ExpressionConstraintObjectiveFunction(
                 expression, "", goalIsToSatisfy, nullAccepted);
         ObjectiveValue objVal = objFun.evaluate(data);
 
@@ -113,7 +113,7 @@ public class TestExpressionObjectiveFunction {
     
     @Test
     public void testNoRows() {
-        ExpressionObjectiveFunction objFunTrue = new ExpressionObjectiveFunction(
+        ExpressionConstraintObjectiveFunction objFunTrue = new ExpressionConstraintObjectiveFunction(
                 expression, "", true, true);        
         
         assertOptimal(objFunTrue.evaluate(new Data()));  
@@ -124,7 +124,7 @@ public class TestExpressionObjectiveFunction {
         assertEquals("Number of rejected rows should be zero", 
                 0, objFunTrue.getFalsifyingRows().size());  
         
-        ExpressionObjectiveFunction objFunFalse = new ExpressionObjectiveFunction(
+        ExpressionConstraintObjectiveFunction objFunFalse = new ExpressionConstraintObjectiveFunction(
                 expression, "", false, true);  
         
         assertNonOptimal(objFunFalse.evaluate(new Data()));  

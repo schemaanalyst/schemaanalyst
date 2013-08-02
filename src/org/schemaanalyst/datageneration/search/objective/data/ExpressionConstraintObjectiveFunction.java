@@ -6,7 +6,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.ExpressionObjectiveFunctionFactory;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-public class ExpressionObjectiveFunction extends ConstraintObjectiveFunction {
+public class ExpressionConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private ObjectiveFunction<Row> rowObjFun;
 
@@ -27,7 +27,7 @@ public class ExpressionObjectiveFunction extends ConstraintObjectiveFunction {
      *            constraint, else NULL is permissible to falsify the
      *            constraint.
      */
-    public ExpressionObjectiveFunction(Expression expression,
+    public ExpressionConstraintObjectiveFunction(Expression expression,
             String description, boolean goalIsToSatisfy,
             boolean nullAdmissableForSatisfy) {
 

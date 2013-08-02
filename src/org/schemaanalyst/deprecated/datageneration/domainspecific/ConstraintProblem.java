@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.domainspecific;
+package org.schemaanalyst.deprecated.datageneration.domainspecific;
 
 import java.util.ArrayList;
 import java.util.LinkedHashSet;

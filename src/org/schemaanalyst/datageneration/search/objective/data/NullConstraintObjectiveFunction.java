@@ -8,7 +8,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class NullColumnObjectiveFunction extends ConstraintObjectiveFunction {
+public class NullConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private Column column;
 
@@ -25,12 +25,16 @@ public class NullColumnObjectiveFunction extends ConstraintObjectiveFunction {
      *            produce rows that all satisfy the constraint, else the goal is
      *            to produce rows that all falsify the constraint.
      */
-    public NullColumnObjectiveFunction(Column column, String description,
+    public NullConstraintObjectiveFunction(Column column, String description,
             boolean goalIsToSatisfy) {
         super(Collections.singletonList(column), description, goalIsToSatisfy);
         this.column = column;
     }
 
+    public Column getColumn() {
+        return column;
+    }
+    
     @Override
     protected boolean zeroRowsOptimalityCondition() {
         return !goalIsToSatisfy;

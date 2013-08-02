@@ -68,7 +68,7 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 
-        return new ExpressionObjectiveFunction(
+        return new ExpressionConstraintObjectiveFunction(
                     checkConstraint.getExpression(),
                     makeDescription(),
                     goalIsToSatisfy,
@@ -77,7 +77,7 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
         
-        return new UniqueObjectiveFunction(
+        return new UniqueConstraintObjectiveFunction(
                 primaryKeyConstraint.getColumns(),
                 state,
                 makeDescription(),
@@ -87,7 +87,7 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
 
-        return new ReferenceObjectiveFunction(
+        return new ReferenceConstraintObjectiveFunction(
                 foreignKeyConstraint.getColumns(),
                 foreignKeyConstraint.getReferenceColumns(),
                 state,
@@ -98,7 +98,7 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
 
-        return new NullColumnObjectiveFunction(
+        return new NullConstraintObjectiveFunction(
                 notNullConstraint.getColumn(),
                 makeDescription(),
                 !goalIsToSatisfy);
@@ -106,7 +106,7 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
 
-        return new UniqueObjectiveFunction(
+        return new UniqueConstraintObjectiveFunction(
                 uniqueConstraint.getColumns(),
                 state,
                 makeDescription(),

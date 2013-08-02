@@ -18,14 +18,14 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.MultiValueEqualsObjectiveFunction;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestMultiValueObjectiveFunction {
+public class TestMultiValueEqualsObjectiveFunction {
 
     List<Value> atomicList1, atomicList2, multiList1, multiList2, containsNullList, allNullList;
     
-    public TestMultiValueObjectiveFunction() {
+    public TestMultiValueEqualsObjectiveFunction() {
         atomicList1 = new ArrayList<>();
         atomicList1.add(new NumericValue(1));
         
@@ -94,7 +94,7 @@ public class TestMultiValueObjectiveFunction {
     public void test(List<Value> lhs, boolean equals, List<Value> rhs, 
                      boolean nullAccepted, boolean optimal) {
         
-        ObjectiveValue objVal = MultiValueObjectiveFunction.compute(lhs, equals, rhs, nullAccepted);
+        ObjectiveValue objVal = MultiValueEqualsObjectiveFunction.compute(lhs, equals, rhs, nullAccepted);
         
         if (optimal) {
             assertOptimal(objVal);            
@@ -122,7 +122,7 @@ public class TestMultiValueObjectiveFunction {
                                        boolean nullAccepted) {
         boolean exceptionThrown = false;
         try {
-            MultiValueObjectiveFunction.compute(lhs, equals, rhs, false);
+            MultiValueEqualsObjectiveFunction.compute(lhs, equals, rhs, false);
         } catch (ObjectiveFunctionException e) {
             exceptionThrown = true;
         }

@@ -5,37 +5,34 @@ import java.util.Random;
 
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.datageneration.search.objective.data.UniqueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.UniqueConstraintObjectiveFunction;
 
-public class UniqueHandler {
+public class UniqueConstraintHandler extends ConstraintHandler<UniqueConstraintObjectiveFunction>{
     
-    UniqueObjectiveFunction objFun;
-    Random random;
-    CellRandomiser randomiser;
+    private Random random;
+    private CellRandomiser cellRandomiser;
+
     
-    public UniqueHandler(UniqueObjectiveFunction objFun, Random random, CellRandomiser randomiser) {
-        this.objFun = objFun;
+    public UniqueConstraintHandler(UniqueConstraintObjectiveFunction objFun, Random random, CellRandomiser cellRandomiser) {
+        super(objFun);        
         this.random = random;
-        this.randomiser = randomiser;
+        this.cellRandomiser = cellRandomiser;
     }
-
-    protected void attemptToSatisfy() {
-        List<Row> nonUniqueRows = objFun.getFalsifyingRows();
-
-        for (Row row : nonUniqueRows) {
-            randomiser.randomiseCells(row, objFun.isNullAdmissableForSatisfy());
+    
+    protected void attemptToSatisfy(List<Row> rows) {
+        // try to generate unique values by trying random values        
+        for (Row row : rows) {
+            cellRandomiser.randomiseCells(row); //objFun.isNullAdmissableForSatisfy()); ??
         }        
     }
-
-    protected void attemptToFalsify() {
-        List<Row> uniqueRows = objFun.getSatisfyingRows();
-
+    
+    protected void attemptToFalsify(List<Row> rows) {
         // the other rows we can pick a non-unique set of values from
-        List<Row> otherRows = objFun.getFalsifyingRows();
+        List<Row> otherRows = objFun.getSatisfyingRows();
         otherRows.addAll(objFun.getStateRows());
 
         // cycle through the unique rows, making them non-unique
-        for (Row row : uniqueRows) {
+        for (Row row : rows) {
             int numOtherRows = otherRows.size();
 
             if (numOtherRows > 0) {

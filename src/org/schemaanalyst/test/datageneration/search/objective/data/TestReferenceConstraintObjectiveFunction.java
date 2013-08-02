@@ -15,14 +15,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.ReferenceObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.ReferenceConstraintObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.test.testutil.mock.FourColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestReferenceObjectiveFunction {
+public class TestReferenceConstraintObjectiveFunction {
 
 	Integer[] empty = {};
 	
@@ -298,7 +298,7 @@ public class TestReferenceObjectiveFunction {
             boolean optimal, int numAcceptedRows, int numRejectedRows, Data data, Data state,
             List<Column> columns, List<Column> referenceColumns) {
         
-        ReferenceObjectiveFunction objFun = new ReferenceObjectiveFunction(
+        ReferenceConstraintObjectiveFunction objFun = new ReferenceConstraintObjectiveFunction(
                 columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
         
         ObjectiveValue objVal = objFun.evaluate(data);

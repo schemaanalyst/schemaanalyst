@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.NullConstraintObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static org.junit.Assert.assertEquals;
@@ -18,7 +18,7 @@ import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquival
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestNullColumnObjectiveFunction {
+public class TestNullConstraintObjectiveFunction {
 
     OneColumnMockDatabase database = new OneColumnMockDatabase();
     Data data = database.createData(2);
@@ -27,7 +27,7 @@ public class TestNullColumnObjectiveFunction {
     SumOfMultiObjectiveValue oneOff = new SumOfMultiObjectiveValue();
     SumOfMultiObjectiveValue twoOff = new SumOfMultiObjectiveValue();
     
-    public TestNullColumnObjectiveFunction() {
+    public TestNullConstraintObjectiveFunction() {
         database = new OneColumnMockDatabase();
         data = database.createData(2);
         
@@ -52,8 +52,8 @@ public class TestNullColumnObjectiveFunction {
     public void test(Integer val1, Integer val2, 
                      boolean goalIsToSatisfy, ObjectiveValue expected, 
                      int numAcceptedRows, int numRejectedRows) {
-        NullColumnObjectiveFunction objFun = 
-                new NullColumnObjectiveFunction(database.column, "", goalIsToSatisfy);
+        NullConstraintObjectiveFunction objFun = 
+                new NullConstraintObjectiveFunction(database.column, "", goalIsToSatisfy);
         
         database.setDataValues(val1, val2);
         assertEquivalent(expected, objFun.evaluate(data));                   
@@ -67,8 +67,8 @@ public class TestNullColumnObjectiveFunction {
     
     @Test
     public void testNoRows() {
-        NullColumnObjectiveFunction objFunTrue = 
-                new NullColumnObjectiveFunction(database.column, "", true);
+        NullConstraintObjectiveFunction objFunTrue = 
+                new NullConstraintObjectiveFunction(database.column, "", true);
         
         assertNonOptimal(objFunTrue.evaluate(new Data()));  
         
@@ -78,8 +78,8 @@ public class TestNullColumnObjectiveFunction {
         assertEquals("Number of rejected rows should be zero", 
                 0, objFunTrue.getFalsifyingRows().size());  
         
-        NullColumnObjectiveFunction objFunFalse = 
-                new NullColumnObjectiveFunction(database.column, "", false);
+        NullConstraintObjectiveFunction objFunFalse = 
+                new NullConstraintObjectiveFunction(database.column, "", false);
         
         assertOptimal(objFunFalse.evaluate(new Data()));  
         

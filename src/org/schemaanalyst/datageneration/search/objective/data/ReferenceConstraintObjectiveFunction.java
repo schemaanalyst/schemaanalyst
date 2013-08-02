@@ -12,7 +12,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.row.RowRelationalObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
+public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private List<Column> referenceColumns;
     private Data state;
@@ -42,7 +42,7 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
      *            constraint, else NULL is permissible to falsify the
      *            constraint.
      */
-    public ReferenceObjectiveFunction(List<Column> columns,
+    public ReferenceConstraintObjectiveFunction(List<Column> columns,
             List<Column> referenceColumns, Data state, String description,
             boolean goalIsToSatisfy, boolean nullAdmissableForSatisfy) {
 
@@ -52,6 +52,10 @@ public class ReferenceObjectiveFunction extends ConstraintObjectiveFunction {
         this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
     }
 
+    public List<Row> getReferenceRows() {
+        return referenceRows;
+    }
+    
     @Override
     protected void loadRows(Data data) {
         super.loadRows(data);

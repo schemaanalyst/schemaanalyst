@@ -7,12 +7,12 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.value.MultiValueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.value.MultiValueEqualsObjectiveFunction;
 
 public class RowRelationalObjectiveFunction {
 
     public static ObjectiveValue compute(Row lhs, boolean equals, Row rhs, boolean nullAccepted) {
-        return MultiValueObjectiveFunction.compute(
+        return MultiValueEqualsObjectiveFunction.compute(
                 extractValues(lhs), equals, extractValues(rhs), nullAccepted);        
     }           
     

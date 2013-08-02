@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.domainspecific;
+package org.schemaanalyst.deprecated.datageneration.domainspecific;
 
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.deprecated.datageneration.analyst.ConstraintAnalyst;

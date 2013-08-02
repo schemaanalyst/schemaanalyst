@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.data.UniqueObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.data.UniqueConstraintObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
@@ -21,7 +21,7 @@ import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOpti
 import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestUniqueObjectiveFunction {
+public class TestUniqueConstraintObjectiveFunction {
 
     Integer[] empty = {};
 
@@ -195,7 +195,7 @@ public class TestUniqueObjectiveFunction {
             boolean optimal, int numAcceptedRows, int numRejectedRows, 
             List<Column> columns,
             Data data, Data state) {
-        UniqueObjectiveFunction objFun = new UniqueObjectiveFunction(columns,
+        UniqueConstraintObjectiveFunction objFun = new UniqueConstraintObjectiveFunction(columns,
                 state, "", goalIsToSatisfy, nullAccepted);
         ObjectiveValue objVal = objFun.evaluate(data);
 

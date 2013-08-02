@@ -12,7 +12,7 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.row.RowRelationalObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
+public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private Data state;
     private boolean nullAdmissableForSatisfy;
@@ -39,16 +39,12 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
      *            constraint, else NULL is permissible to falsify the
      *            constraint.
      */
-    public UniqueObjectiveFunction(List<Column> columns, Data state,
+    public UniqueConstraintObjectiveFunction(List<Column> columns, Data state,
             String description, boolean goalIsToSatisfy,
             boolean nullAdmissableForSatisfy) {
         super(columns, description, goalIsToSatisfy);
         this.state = state;
         this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
-    }
-
-    public boolean isNullAdmissableForSatisfy() {
-        return nullAdmissableForSatisfy;
     }
     
     public List<Row> getStateRows() {

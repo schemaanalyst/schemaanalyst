@@ -13,11 +13,11 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.Pair;
 
-public class MultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
+public class MultiValueEqualsObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
 
     private boolean equals, nullAccepted;
     
-    public MultiValueObjectiveFunction(boolean equals, boolean nullAccepted) {
+    public MultiValueEqualsObjectiveFunction(boolean equals, boolean nullAccepted) {
         this.equals = equals;
         this.nullAccepted = nullAccepted;        
     }
@@ -61,7 +61,7 @@ public class MultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Val
     
     public static ObjectiveValue compute(
             List<Value> lhs, boolean equals, List<Value> rhs, boolean nullAccepted) {
-        MultiValueObjectiveFunction objFun = new MultiValueObjectiveFunction(equals, nullAccepted);
+        MultiValueEqualsObjectiveFunction objFun = new MultiValueEqualsObjectiveFunction(equals, nullAccepted);
         return objFun.evaluate(new Pair<List<Value>>(lhs, rhs));        
     }
     
