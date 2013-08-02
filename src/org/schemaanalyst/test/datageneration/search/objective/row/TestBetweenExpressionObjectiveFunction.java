@@ -112,6 +112,27 @@ public class TestBetweenExpressionObjectiveFunction {
                     new ConstantExpression(new NumericValue(0)),
                     true, false);
     
+    BetweenExpression trueSymmetricBetween = 
+            new BetweenExpression(
+                    new ConstantExpression(new NumericValue(1)),
+                    new ConstantExpression(new NumericValue(2)), 
+                    new ConstantExpression(new NumericValue(0)),
+                    false, true); 
+    
+    BetweenExpression trueSymmetricNotBetween = 
+            new BetweenExpression(
+                    new ConstantExpression(new NumericValue(3)),
+                    new ConstantExpression(new NumericValue(2)), 
+                    new ConstantExpression(new NumericValue(0)),
+                    true, true);    
+    
+    BetweenExpression falseSymmetricNotBetween = 
+            new BetweenExpression(
+                    new ConstantExpression(new NumericValue(1)),
+                    new ConstantExpression(new NumericValue(2)), 
+                    new ConstantExpression(new NumericValue(0)),
+                    true, true);      
+    
     Object[] testValues() {
         return $(
                 $(trueBetweenExp, true, false, true),
@@ -182,7 +203,22 @@ public class TestBetweenExpressionObjectiveFunction {
                 $(falseNotBetweenInverseOperandsExp, true, false, true),
                 $(falseNotBetweenInverseOperandsExp, false, false, false),                
                 $(falseNotBetweenInverseOperandsExp, true, true, true),
-                $(falseNotBetweenInverseOperandsExp, false, true, false)           
+                $(falseNotBetweenInverseOperandsExp, false, true, false),
+                
+                $(trueSymmetricBetween, true, false, true),
+                $(trueSymmetricBetween, false, false, false),                
+                $(trueSymmetricBetween, true, true, true),
+                $(trueSymmetricBetween, false, true, false),
+                
+                $(trueSymmetricNotBetween, true, false, true),
+                $(trueSymmetricNotBetween, false, false, false),                
+                $(trueSymmetricNotBetween, true, true, true),
+                $(trueSymmetricNotBetween, false, true, false),
+                
+                $(falseSymmetricNotBetween, true, false, false),
+                $(falseSymmetricNotBetween, false, false, true),                
+                $(falseSymmetricNotBetween, true, true, false),
+                $(falseSymmetricNotBetween, false, true, true)                 
          );
     }    
         
