@@ -36,18 +36,25 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     // else false for its counterpart ((X < Y) OR (X > Z))
     private boolean evaluateTrueForm;
     
+    // whether the BetweenExpression is symmetric (in which case we swap LHS and RHS if LHS > RHS)
+    private boolean symmetric;
+    
     // whether the involvement of NULL results in trivial satisfaction of the expression
     private boolean nullAccepted;   
     
     // a string descriptor for this objective function
     private String description;
     
+    
     public BetweenExpressionObjectiveFunction(BetweenExpression expression,
                                               boolean goalIsToSatisfy,
                                               boolean nullAccepted) {
         // which form to evaluate?
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotBetween());
-                
+
+        // set whether the BETWEEN is symmetric
+        symmetric = expression.isSymmetric();        
+        
         // is NULL allowed to satisfy the expression
         this.nullAccepted = nullAccepted;
         
@@ -55,7 +62,7 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         subjectEvaluator = new ExpressionEvaluator(expression.getSubject());
         lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
         rhsEvaluator = new ExpressionEvaluator(expression.getRHS());
-
+        
         // find out which operators of needed for the LHS and RHS comparisons
         if (evaluateTrueForm) {
             lhsOp = RelationalOperator.GREATER_OR_EQUALS;
@@ -83,16 +90,14 @@ public class BetweenExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         Value lhsValue = lhsEvaluator.evaluate(row);
         Value rhsValue = rhsEvaluator.evaluate(row);
         
-        // NOTE: the following should not be implemented unless the BETWEEN expression is SYMMETRIC
-        // (it's ASYMMETRIC by default), and we do not support SYMMETRIC in BetweenExpression yet. 
-        /*
-        // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
-        if (lhsValue != null && rhsValue != null && lhsValue.compareTo(rhsValue) > 0) {
-            Value temp = lhsValue;
-            lhsValue = rhsValue;
-            rhsValue = temp;
+        if (symmetric) {
+            // swap the values for Y and Z (LHS and RHS) if they're in the wrong order
+            if (lhsValue != null && rhsValue != null && lhsValue.compareTo(rhsValue) > 0) {
+                Value temp = lhsValue;
+                lhsValue = rhsValue;
+                rhsValue = temp;
+            }
         }
-        */
         
         // add objective values for the two comparisons
         objVal.add(ValueRelationalObjectiveFunction.compute(subjectValue, lhsOp, lhsValue, nullAccepted));

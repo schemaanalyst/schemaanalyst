@@ -100,11 +100,13 @@ public class ExpressionSQLWriter {
             sql += " NOT";
         }
         sql += " BETWEEN ";
+        if (expression.isSymmetric()) {
+            sql += "SYMMETRIC ";
+        }        
         sql += writeExpression(expression.getLHS());
         sql += " AND ";
         sql += writeExpression(expression.getRHS());
         return sql;
-
     }
 
     public String writeColumn(Column column) {

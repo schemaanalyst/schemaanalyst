@@ -52,7 +52,8 @@ public class ExpressionJavaWriter {
                         writeExpression(expression.getSubject()),
                         writeExpression(expression.getLHS()),
                         writeExpression(expression.getRHS()),
-                        javaWriter.writeBoolean(expression.isNotBetween()));
+                        javaWriter.writeBoolean(expression.isNotBetween()),
+                        javaWriter.writeBoolean(expression.isSymmetric()));
             }
 
             @Override

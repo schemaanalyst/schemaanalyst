@@ -112,7 +112,8 @@ public class CheckConstraint extends Constraint {
                         remap(expression.getSubject()),
                         remap(expression.getLHS()),
                         remap(expression.getRHS()),
-                        expression.isNotBetween());
+                        expression.isNotBetween(),
+                        expression.isSymmetric());
             }
 
             @Override

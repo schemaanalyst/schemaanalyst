@@ -124,10 +124,13 @@ public class ExpressionMapper {
             // *** BETWEEN ***
             case between_t:
                 boolean notBetween = node.getNotToken() != null;
+                boolean symmetric = node.isSymmetric();
+                
                 return new BetweenExpression(getExpression(node.getBetweenOperand()),
                         getExpression(node.getLeftOperand()),
                         getExpression(node.getRightOperand()),
-                        notBetween);
+                        notBetween,
+                        symmetric);
 
             default:
                 throw new UnsupportedSQLException(node);

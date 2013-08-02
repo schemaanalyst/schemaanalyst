@@ -25,92 +25,92 @@ public class TestBetweenExpressionObjectiveFunction {
                     new ConstantExpression(new NumericValue(1)),
                     new ConstantExpression(new NumericValue(0)), 
                     new ConstantExpression(new NumericValue(2)),
-                    false);
+                    false, false);
 
     BetweenExpression falseBetweenExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(2)),
                     new ConstantExpression(new NumericValue(0)), 
                     new ConstantExpression(new NumericValue(1)),
-                    false);    
+                    false, false);    
 
     BetweenExpression trueNotBetweenExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(2)),
                     new ConstantExpression(new NumericValue(0)), 
                     new ConstantExpression(new NumericValue(1)),
-                    true);        
+                    true, false);        
     
     BetweenExpression falseNotBetweenExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(1)),
                     new ConstantExpression(new NumericValue(0)), 
                     new ConstantExpression(new NumericValue(2)),
-                    true);
+                    true, false);
     
     BetweenExpression subjectNullBetweenExp = new BetweenExpression(
                     new ConstantExpression(null),
                     new ConstantExpression(new NumericValue(0)), 
                     new ConstantExpression(new NumericValue(2)),
-                    false);    
+                    false, false);    
 
     BetweenExpression subjectNullNotBetweenExp = new BetweenExpression(
             new ConstantExpression(null),
             new ConstantExpression(new NumericValue(0)), 
             new ConstantExpression(new NumericValue(2)),
-            true);        
+            true, false);        
     
     BetweenExpression lhsOperandNullBetweenExp = new BetweenExpression(
             new ConstantExpression(new NumericValue(1)),
             new ConstantExpression(null), 
             new ConstantExpression(new NumericValue(2)),
-            false);       
+            false, false);       
     
     BetweenExpression lhsOperandNullNotBetweenExp = new BetweenExpression(
             new ConstantExpression(new NumericValue(1)),
             new ConstantExpression(null), 
             new ConstantExpression(new NumericValue(2)),
-            true);         
+            true, false);         
     
     BetweenExpression rhsOperandNullBetweenExp = new BetweenExpression(
             new ConstantExpression(new NumericValue(1)),
             new ConstantExpression(new NumericValue(2)),
             new ConstantExpression(null),             
-            false);       
+            false, false);       
     
     BetweenExpression rhsOperandNullNotBetweenExp = new BetweenExpression(
             new ConstantExpression(new NumericValue(1)),
             new ConstantExpression(new NumericValue(2)),
             new ConstantExpression(null),             
-            true);     
+            true, false);     
     
     BetweenExpression trueBetweenInverseOperandsExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(1)),
                     new ConstantExpression(new NumericValue(2)), 
                     new ConstantExpression(new NumericValue(0)),
-                    false);
+                    false, false);
 
     BetweenExpression falseBetweenInverseOperandsExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(1)),
                     new ConstantExpression(new NumericValue(2)), 
                     new ConstantExpression(new NumericValue(0)),
-                    false);     
+                    false, false);     
 
     BetweenExpression trueNotBetweenInverseOperandsExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(1)),
                     new ConstantExpression(new NumericValue(2)), 
                     new ConstantExpression(new NumericValue(0)),
-                    true);       
+                    true, false);       
     
     BetweenExpression falseNotBetweenInverseOperandsExp = 
             new BetweenExpression(
                     new ConstantExpression(new NumericValue(2)),
                     new ConstantExpression(new NumericValue(1)), 
                     new ConstantExpression(new NumericValue(0)),
-                    true);
+                    true, false);
     
     Object[] testValues() {
         return $(
