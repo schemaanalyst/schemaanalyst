@@ -47,6 +47,14 @@ public class UniqueObjectiveFunction extends ConstraintObjectiveFunction {
         this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
     }
 
+    public boolean isNullAdmissableForSatisfy() {
+        return nullAdmissableForSatisfy;
+    }
+    
+    public List<Row> getStateRows() {
+        return stateRows;
+    }
+    
     @Override
     protected void loadRows(Data data) {
         super.loadRows(data);

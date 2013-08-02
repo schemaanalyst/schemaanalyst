@@ -29,7 +29,7 @@ public class UniqueHandler extends ConstraintHandler<UniqueAnalyst> {
         List<Row> nonUniqueRows = analyst.getNonUniqueRows();
 
         for (Row row : nonUniqueRows) {
-            randomizer.randomizeCells(row, allowNull);
+            randomizer.randomiseCells(row, allowNull);
         }
     }
 

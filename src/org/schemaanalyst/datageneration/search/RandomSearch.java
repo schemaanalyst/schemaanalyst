@@ -19,7 +19,7 @@ public class RandomSearch extends Search<Data> {
         List<Cell> cells = candidateSolution.getCells();
         do {
             for (Cell cell : cells) {
-                profile.randomizeCell(cell);
+                profile.randomiseCell(cell);
             }
             evaluate(candidateSolution);
         } while (!terminationCriterion.satisfied());

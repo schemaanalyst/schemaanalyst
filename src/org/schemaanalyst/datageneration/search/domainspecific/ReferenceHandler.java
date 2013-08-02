@@ -43,7 +43,7 @@ public class ReferenceHandler extends ConstraintHandler<ReferenceAnalyst> {
 
         // cycle through the referencing rows, mucking them up
         for (Row row : referencingRows) {
-            cellRandomizer.randomizeCells(row);
+            cellRandomizer.randomiseCells(row);
         }
     }
 }

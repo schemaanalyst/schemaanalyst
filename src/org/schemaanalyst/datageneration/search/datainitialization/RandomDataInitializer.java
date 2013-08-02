@@ -18,7 +18,7 @@ public class RandomDataInitializer extends DataInitializer {
     public void initialize(Data data) {
         List<Cell> cells = data.getCells();
         for (Cell cell : cells) {
-            cellRandomizer.randomizeCell(cell);
+            cellRandomizer.randomiseCell(cell);
         }
     }
 }

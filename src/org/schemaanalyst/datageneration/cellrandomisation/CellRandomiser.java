@@ -75,52 +75,52 @@ public class CellRandomiser {
         this.timestampMax = timestampMax;
     }
 
-    public void randomizeCell(Cell cell) {
-        randomizeCell(cell, true);
+    public void randomiseCell(Cell cell) {
+        randomiseCell(cell, true);
     }
 
-    public void randomizeCell(Cell cell, boolean allowNull) {
+    public void randomiseCell(Cell cell, boolean allowNull) {
 
         class ValueDispatcher implements ValueVisitor {
 
             @Override
             public void visit(BooleanValue value) {
-                randomizeBooleanValue(value);
+                randomiseBooleanValue(value);
             }
 
             @Override
             public void visit(DateValue value) {
-                randomizeDateValue(value);
+                randomiseDateValue(value);
             }
 
             @Override
             public void visit(DateTimeValue value) {
-                randomizeDateTimeValue(value);
+                randomiseDateTimeValue(value);
             }
 
             @Override
             public void visit(NumericValue value) {
-                randomizeNumericValue(value);
+                randomiseNumericValue(value);
             }
 
             @Override
             public void visit(StringValue value) {
-                randomizeStringValue(value);
+                randomiseStringValue(value);
             }
 
             @Override
             public void visit(TimeValue value) {
-                randomizeTimeValue(value);
+                randomiseTimeValue(value);
             }
 
             @Override
             public void visit(TimestampValue value) {
-                randomizeTimestampValue(value);
+                randomiseTimestampValue(value);
             }
         }
 
         if (!allowNull) {
-            randomizeNull(cell);
+            randomiseNull(cell);
         } else {
             cell.setNull(false);
         }
@@ -131,59 +131,59 @@ public class CellRandomiser {
         }
     }
 
-    public void randomizeCells(List<Cell> cells) {
-        randomizeCells(cells, true);
+    public void randomiseCells(List<Cell> cells) {
+        randomiseCells(cells, true);
     }
 
-    public void randomizeCells(List<Cell> cells, boolean allowNull) {
+    public void randomiseCells(List<Cell> cells, boolean allowNull) {
         for (Cell cell : cells) {
-            randomizeCell(cell, allowNull);
+            randomiseCell(cell, allowNull);
         }
     }
 
-    public void randomizeCells(Row row) {
-        randomizeCells(row.getCells());
+    public void randomiseCells(Row row) {
+        randomiseCells(row.getCells());
     }
 
-    public void randomizeCells(Row row, boolean allowNull) {
-        randomizeCells(row.getCells(), allowNull);
+    public void randomiseCells(Row row, boolean allowNull) {
+        randomiseCells(row.getCells(), allowNull);
     }
 
-    protected void randomizeNull(Cell cell) {
+    protected void randomiseNull(Cell cell) {
         boolean setToNull = random.nextDouble() <= nullProbability;
         if (setToNull) {
             cell.setValue(null);
         }
     }
 
-    protected void randomizeBooleanValue(BooleanValue booleanValue) {
+    protected void randomiseBooleanValue(BooleanValue booleanValue) {
         booleanValue.set(random.nextBoolean());
     }
 
-    protected void randomizeDateValue(DateValue dateValue) {
-        randomizeNumericValue(dateValue.getYear(), yearMin, yearMax);
-        randomizeNumericValue(dateValue.getMonth(), monthMin, monthMax);
-        randomizeNumericValue(dateValue.getDay(), dayMin, dayMax);
+    protected void randomiseDateValue(DateValue dateValue) {
+        randomiseNumericValue(dateValue.getYear(), yearMin, yearMax);
+        randomiseNumericValue(dateValue.getMonth(), monthMin, monthMax);
+        randomiseNumericValue(dateValue.getDay(), dayMin, dayMax);
     }
 
-    protected void randomizeDateTimeValue(DateTimeValue dateTimeValue) {
-        randomizeNumericValue(dateTimeValue.getYear(), yearMin, yearMax);
-        randomizeNumericValue(dateTimeValue.getMonth(), monthMin, monthMax);
-        randomizeNumericValue(dateTimeValue.getDay(), dayMin, dayMax);
-        randomizeNumericValue(dateTimeValue.getHour(), hourMin, hourMax);
-        randomizeNumericValue(dateTimeValue.getMinute(), minuteMin, minuteMax);
-        randomizeNumericValue(dateTimeValue.getSecond(), secondMin, secondMax);
+    protected void randomiseDateTimeValue(DateTimeValue dateTimeValue) {
+        randomiseNumericValue(dateTimeValue.getYear(), yearMin, yearMax);
+        randomiseNumericValue(dateTimeValue.getMonth(), monthMin, monthMax);
+        randomiseNumericValue(dateTimeValue.getDay(), dayMin, dayMax);
+        randomiseNumericValue(dateTimeValue.getHour(), hourMin, hourMax);
+        randomiseNumericValue(dateTimeValue.getMinute(), minuteMin, minuteMax);
+        randomiseNumericValue(dateTimeValue.getSecond(), secondMin, secondMax);
     }
 
-    protected void randomizeNumericValue(NumericValue numericValue) {
-        randomizeNumericValue(numericValue, numericMin, numericMax);
+    protected void randomiseNumericValue(NumericValue numericValue) {
+        randomiseNumericValue(numericValue, numericMin, numericMax);
     }
 
-    protected void randomizeNumericValue(NumericValue numericValue, int min, int max) {
-        randomizeNumericValue(numericValue, new BigDecimal(min), new BigDecimal(max));
+    protected void randomiseNumericValue(NumericValue numericValue, int min, int max) {
+        randomiseNumericValue(numericValue, new BigDecimal(min), new BigDecimal(max));
     }
 
-    protected void randomizeNumericValue(NumericValue numericValue, BigDecimal min, BigDecimal max) {
+    protected void randomiseNumericValue(NumericValue numericValue, BigDecimal min, BigDecimal max) {
         BigDecimal value = numericValue.get();
         BigDecimal range = max.subtract(min);
         BigDecimal randomInRange = range.multiply(new BigDecimal(random.nextDouble()));
@@ -195,7 +195,7 @@ public class CellRandomiser {
         numericValue.set(newValue);
     }
 
-    protected void randomizeStringValue(StringValue stringValue) {
+    protected void randomiseStringValue(StringValue stringValue) {
 
         stringValue.clearCharacters();
 
@@ -206,19 +206,19 @@ public class CellRandomiser {
                 boolean added = stringValue.addCharacter();
                 if (added) {
                     NumericValue character = stringValue.getCharacter(i);
-                    randomizeNumericValue(character, characterMin, characterMax);
+                    randomiseNumericValue(character, characterMin, characterMax);
                 }
             }
         }
     }
 
-    protected void randomizeTimeValue(TimeValue timeValue) {
-        randomizeNumericValue(timeValue.getHour(), hourMin, hourMax);
-        randomizeNumericValue(timeValue.getMinute(), minuteMin, minuteMax);
-        randomizeNumericValue(timeValue.getSecond(), secondMin, secondMax);
+    protected void randomiseTimeValue(TimeValue timeValue) {
+        randomiseNumericValue(timeValue.getHour(), hourMin, hourMax);
+        randomiseNumericValue(timeValue.getMinute(), minuteMin, minuteMax);
+        randomiseNumericValue(timeValue.getSecond(), secondMin, secondMax);
     }
 
-    protected void randomizeTimestampValue(TimestampValue timestampValue) {
-        randomizeNumericValue(timestampValue, timestampMin, timestampMax);
+    protected void randomiseTimestampValue(TimestampValue timestampValue) {
+        randomiseNumericValue(timestampValue, timestampMin, timestampMax);
     }
 }

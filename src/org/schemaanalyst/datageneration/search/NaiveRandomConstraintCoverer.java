@@ -49,7 +49,7 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
 
                 Data data = new Data();
                 Row row = data.addRow(table, dbms.getValueFactory());
-                randomizer.randomizeCells(row.getCells());
+                randomizer.randomiseCells(row.getCells());
 
                 boolean rowAdded = constraintEvaluator.evaluate(row, table);
 
