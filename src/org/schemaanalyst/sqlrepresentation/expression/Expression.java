@@ -11,6 +11,8 @@ public interface Expression {
     public Expression getSubexpression(int index, int... furtherIndexes);
 
     public Expression getSubexpression(int index);
+    
+    public void setSubexpressions(List<Expression> subExpressions);
 
     public int getNumSubexpressions();
 

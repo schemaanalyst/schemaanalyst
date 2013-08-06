@@ -11,7 +11,7 @@ public abstract class ExpressionTree implements Expression {
 
     @Override
     public Expression getSubexpression(List<Integer> indexes) {
-        if (indexes.size() == 0) {
+        if (indexes.isEmpty()) {
             return null;
         }
         int index = indexes.get(0);
@@ -33,6 +33,8 @@ public abstract class ExpressionTree implements Expression {
 
     @Override
     public abstract Expression getSubexpression(int index);
+    
+    public abstract void setSubexpressions(List<Expression> subExpressions);
 
     @Override
     public abstract int getNumSubexpressions();
@@ -52,6 +54,6 @@ public abstract class ExpressionTree implements Expression {
         for (Expression expression : getSubexpressions()) {
             columns.addAll(expression.getColumnsInvolved());
         }
-        return new ArrayList<Column>(columns);
+        return new ArrayList<>(columns);
     }
 }

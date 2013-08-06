@@ -52,6 +52,15 @@ public class CheckConstraint extends Constraint {
     public Expression getExpression() {
         return expression;
     }
+    
+    /**
+     * Set the expression in this check constraint.
+     * 
+     * @param expression The Expression for this check constraint.
+     */
+    public void setExpression(Expression expression) {
+        this.expression = expression;
+    }
 
     /**
      * Allows instances of IntegrityConstraintVisitor to visit this constraint.

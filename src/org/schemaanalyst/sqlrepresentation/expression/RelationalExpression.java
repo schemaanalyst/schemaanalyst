@@ -1,5 +1,6 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import java.util.List;
 import org.schemaanalyst.logic.RelationalOperator;
 
 public class RelationalExpression extends ExpressionTree {
@@ -41,6 +42,17 @@ public class RelationalExpression extends ExpressionTree {
             return rhs;
         }
         throw new NonExistentSubexpressionException(this, index);
+    }
+    
+    @Override
+    public void setSubexpressions(List<Expression> subExpressions) {
+        if (subExpressions.size() == 1) {
+            lhs = subExpressions.get(0);
+            rhs = subExpressions.get(1);
+        } else {
+            throw new UnsupportedOperationException("RelationalExpression requires "
+                    + "a list of 2 expressions (lhs, rhs).");
+        }
     }
 
     @Override

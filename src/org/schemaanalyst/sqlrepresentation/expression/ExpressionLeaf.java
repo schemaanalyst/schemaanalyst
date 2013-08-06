@@ -27,6 +27,11 @@ public abstract class ExpressionLeaf implements Expression {
     }
 
     @Override
+    public void setSubexpressions(List<Expression> subExpressions) {
+        throw new UnsupportedOperationException("Not supported.");
+    }
+
+    @Override
     public int getNumSubexpressions() {
         return 0;
     }

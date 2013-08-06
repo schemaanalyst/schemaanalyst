@@ -21,6 +21,11 @@ public abstract class CompoundExpression extends ExpressionTree {
     public List<Expression> getSubexpressions() {
         return Collections.unmodifiableList(subexpressions);
     }
+    
+    @Override
+    public void setSubexpressions(List<Expression> subExpressions) {
+        this.subexpressions = subExpressions;
+    }
 
     @Override
     public int getNumSubexpressions() {

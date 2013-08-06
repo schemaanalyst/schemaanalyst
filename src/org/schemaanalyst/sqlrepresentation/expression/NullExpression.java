@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import java.util.List;
+
 public class NullExpression extends ExpressionTree {
 
     public static final int NUM_SUBEXPRESSIONS = 1,
@@ -23,6 +25,16 @@ public class NullExpression extends ExpressionTree {
     @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;
+    }
+    
+    @Override
+    public void setSubexpressions(List<Expression> subExpressions) {
+        if (subExpressions.size() == 1) {
+            subexpression = subExpressions.get(0);
+        } else {
+            throw new UnsupportedOperationException("NullExpression requires "
+                    + "a list of 1 expression (subexpression).");
+        }
     }
 
     @Override

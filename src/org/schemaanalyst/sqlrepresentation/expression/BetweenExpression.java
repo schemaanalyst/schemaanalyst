@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import java.util.List;
+
 public class BetweenExpression extends ExpressionTree {
 
     public static final int NUM_SUBEXPRESSIONS = 3, SUBJECT = 0, LHS = 1,
@@ -31,7 +33,7 @@ public class BetweenExpression extends ExpressionTree {
     public boolean isNotBetween() {
         return notBetween;
     }
-    
+
     public boolean isSymmetric() {
         return symmetric;
     }
@@ -42,14 +44,26 @@ public class BetweenExpression extends ExpressionTree {
     }
 
     @Override
+    public void setSubexpressions(List<Expression> subExpressions) {
+        if (subExpressions.size() == 3) {
+            subject = subExpressions.get(0);
+            lhs = subExpressions.get(1);
+            rhs = subExpressions.get(2);
+        } else {
+            throw new UnsupportedOperationException("BetweenExpression requires "
+                    + "a list of 3 expressions (subject, lhs, rhs).");
+        }
+    }
+
+    @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-        case SUBJECT:
-            return subject;
-        case LHS:
-            return lhs;
-        case RHS:
-            return rhs;
+            case SUBJECT:
+                return subject;
+            case LHS:
+                return lhs;
+            case RHS:
+                return rhs;
         }
         throw new NonExistentSubexpressionException(this, index);
     }
