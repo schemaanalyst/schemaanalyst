@@ -36,7 +36,7 @@
 		<mkdir dir="${build_dir}"/>
 		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
 			<classpath refid="build_classpath"/>
-			<exclude name="org/schemaanalyst/mutation/mutators/checkmutators/Check*"/>
+			<!-- <exclude name="org/schemaanalyst/mutation/mutators/checkmutators/Check*"/> -->
 		</javac>
 	</target>
 
