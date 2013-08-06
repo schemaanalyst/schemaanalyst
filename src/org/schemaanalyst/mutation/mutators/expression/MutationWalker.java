@@ -72,13 +72,8 @@ public class MutationWalker extends ExpressionWalker {
             List<Expression> subExprs = new ArrayList<>(parentExpr.getSubexpressions());
             subExprs.set(lastIndex, mutantExpr);
             parentExpr.setSubexpressions(subExprs);
-            System.out.println("");
         }
         mutants.add(mSchema);
-    }
-
-    public List<Schema> getMutants() {
-        return mutants;
     }
 
     @Override
