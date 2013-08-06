@@ -13,6 +13,10 @@ public class ConstantExpression extends ExpressionLeaf {
     public Value getValue() {
         return value;
     }
+    
+    public void setValue(Value value) {
+        this.value = value;
+    }
 
     @Override
     public void accept(ExpressionVisitor visitor) {
