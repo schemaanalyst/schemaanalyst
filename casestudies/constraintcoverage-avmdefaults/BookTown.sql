@@ -137,11 +137,11 @@ CREATE TABLE schedules (
 	schedule	VARCHAR(100)
 );
 -- Coverage: 56/56 (100.00000%) 
--- Time to generate: 580ms 
+-- Time to generate: 522ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 572ms 
+-- * Time: 515ms 
 INSERT INTO books(id, title, author_id, subject_id) VALUES(1, '', 0, 0);
 INSERT INTO books(id, title, author_id, subject_id) VALUES(0, '', 0, 0);
 INSERT INTO publishers(id, name, address) VALUES(1, '', '');
@@ -212,7 +212,7 @@ INSERT INTO books(id, title, author_id, subject_id) VALUES(-1, NULL, 0, 0);
 
 -- Negating "PRIMARY KEY[id]" on table "publishers"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO publishers(id, name, address) VALUES(0, '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -282,7 +282,7 @@ INSERT INTO customers(id, last_name, first_name) VALUES(0, '', '');
 
 -- Negating "NOT NULL(id)" on table "customers"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO customers(id, last_name, first_name) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
@@ -296,21 +296,21 @@ INSERT INTO book_queue(title, author_id, subject_id, approved) VALUES(NULL, 0, 0
 
 -- Negating "PRIMARY KEY[id]" on table "employees"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO employees(id, last_name, first_name) VALUES(127, '', '');
 -- * Number of objective function evaluations: 9
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(id)" on table "employees"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO employees(id, last_name, first_name) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(last_name)" on table "employees"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO employees(id, last_name, first_name) VALUES(126, NULL, '');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
@@ -324,7 +324,7 @@ INSERT INTO employees(id, last_name, first_name) VALUES(0, '', '');
 
 -- Negating "PRIMARY KEY[isbn]" on table "editions"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO editions(isbn, book_id, edition, publisher_id, publication, type) VALUES('', 0, 0, 0, '1000-01-01', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -338,14 +338,14 @@ INSERT INTO editions(isbn, book_id, edition, publisher_id, publication, type) VA
 
 -- Negating "CHECK[((book_id IS NOT NULL) AND (edition IS NOT NULL))]" on table "editions"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO editions(isbn, book_id, edition, publisher_id, publication, type) VALUES('b', NULL, 0, 0, '1000-01-01', '');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "distinguished_authors"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO distinguished_authors(id, last_name, first_name, award) VALUES(0, '', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -366,7 +366,7 @@ INSERT INTO subjects(id, subject, location) VALUES(0, '', '');
 
 -- Negating "NOT NULL(id)" on table "subjects"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO subjects(id, subject, location) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0

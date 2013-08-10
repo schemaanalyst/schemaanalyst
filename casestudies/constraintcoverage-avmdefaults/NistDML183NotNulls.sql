@@ -16,11 +16,11 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 194ms 
+-- Time to generate: 222ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 21ms 
 INSERT INTO T(A, B, C) VALUES('a', '', '');
 INSERT INTO T(A, B, C) VALUES('', '', '');
 INSERT INTO S(X, Y, Z) VALUES('', '', '');
@@ -37,14 +37,14 @@ INSERT INTO T(A, B, C) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(B)" on table "T"
 -- * Success: true
--- * Time: 10ms 
+-- * Time: 12ms 
 INSERT INTO T(A, B, C) VALUES('b', NULL, '');
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(C)" on table "T"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 10ms 
 INSERT INTO T(A, B, C) VALUES('b', '', NULL);
 -- * Number of objective function evaluations: 16
 -- * Number of restarts: 0
@@ -58,7 +58,7 @@ INSERT INTO T(A, B, C) VALUES('', '', '');
 
 -- Negating "FOREIGN KEY[X, Y]" on table "S"
 -- * Success: true
--- * Time: 18ms 
+-- * Time: 25ms 
 INSERT INTO T(A, B, C) VALUES('b', '', '');
 INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 -- * Number of objective function evaluations: 21
@@ -66,7 +66,7 @@ INSERT INTO S(X, Y, Z) VALUES('`', '', '');
 
 -- Negating "NOT NULL(X)" on table "S"
 -- * Success: true
--- * Time: 20ms 
+-- * Time: 21ms 
 INSERT INTO T(A, B, C) VALUES('`', '', '');
 INSERT INTO S(X, Y, Z) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 18
@@ -74,7 +74,7 @@ INSERT INTO S(X, Y, Z) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(Y)" on table "S"
 -- * Success: true
--- * Time: 24ms 
+-- * Time: 27ms 
 INSERT INTO T(A, B, C) VALUES('a', 'a', '');
 INSERT INTO S(X, Y, Z) VALUES('', NULL, '');
 -- * Number of objective function evaluations: 20
@@ -82,7 +82,7 @@ INSERT INTO S(X, Y, Z) VALUES('', NULL, '');
 
 -- Negating "NOT NULL(Z)" on table "S"
 -- * Success: true
--- * Time: 101ms 
+-- * Time: 104ms 
 INSERT INTO T(A, B, C) VALUES('o', 'g', 'h');
 INSERT INTO S(X, Y, Z) VALUES('o', 'g', NULL);
 -- * Number of objective function evaluations: 64

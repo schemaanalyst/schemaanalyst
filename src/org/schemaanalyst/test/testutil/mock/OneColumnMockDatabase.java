@@ -9,6 +9,7 @@ public class OneColumnMockDatabase extends MockDatabase {
     public Column column;
 
     public OneColumnMockDatabase() {
+        super(1);
         Schema schema = new Schema("SingleColumnSchema");
 
         table = schema.createTable("table");

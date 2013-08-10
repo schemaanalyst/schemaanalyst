@@ -11,9 +11,9 @@ import org.schemaanalyst.datageneration.search.objective.value.MultiValueEqualsO
 
 public class RowRelationalObjectiveFunction {
 
-    public static ObjectiveValue compute(Row lhs, boolean equals, Row rhs, boolean nullAccepted) {
+    public static ObjectiveValue compute(Row lhs, boolean equals, Row rhs, boolean allowNull) {
         return MultiValueEqualsObjectiveFunction.compute(
-                extractValues(lhs), equals, extractValues(rhs), nullAccepted);        
+                extractValues(lhs), equals, extractValues(rhs), allowNull);        
     }           
     
     private static List<Value> extractValues(Row row) {

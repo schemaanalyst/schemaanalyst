@@ -2,8 +2,8 @@ package org.schemaanalyst.test.datageneration.search.objective.data;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,8 +57,8 @@ public class TestReferenceConstraintObjectiveFunction {
 	
     Object[] oneColumnTestValues() {
         return $(
-                $(empty, empty, true, false, true, 0, 0),
-                $(empty, empty, true, true, true, 0, 0),
+                $(empty, empty, true, false, false, 0, 0),
+                $(empty, empty, true, true, false, 0, 0),
                 $(empty, empty, false, false, false, 0, 0),
                 $(empty, empty, false, true, false, 0, 0),                
                 
@@ -97,8 +97,8 @@ public class TestReferenceConstraintObjectiveFunction {
                 // there's no match in the state, but the objective
                 // function is concerned with the data only, and 
                 // the data is empty
-                $(empty, oneFive_twoThree, true, false, true, 0, 0),
-                $(empty, oneFive_twoThree, true, true, true, 0, 0),
+                $(empty, oneFive_twoThree, true, false, false, 0, 0),
+                $(empty, oneFive_twoThree, true, true, false, 0, 0),
                 $(empty, oneFive_twoThree, false, false, false, 0, 0),
                 $(empty, oneFive_twoThree, false, true, false, 0, 0),                
                 
@@ -115,19 +115,19 @@ public class TestReferenceConstraintObjectiveFunction {
                 
                 $(nullNull, empty, true, false, false, 0, 1),
                 $(nullNull, empty, true, true, true, 1, 0),
-                $(nullNull, empty, false, false, true, 0, 1),
-                $(nullNull, empty, false, true, false, 1, 0),                  
-
+                $(nullNull, empty, false, false, false, 1, 0),
+                $(nullNull, empty, false, true, true, 0, 1),
+                                  
                 $(nullOne_nullNull, empty, true, false, false, 0, 2),
                 $(nullOne_nullNull, empty, true, true, true, 2, 0),
-                $(nullOne_nullNull, empty, false, false, true, 0, 2),
-                $(nullOne_nullNull, empty, false, true, false, 2, 0),                        
-                
+                $(nullOne_nullNull, empty, false, false, false, 2, 0),
+                $(nullOne_nullNull, empty, false, true, true, 0, 2),
+                                        
                 $(nullOne_oneNull, empty, true, false, false, 1, 1),
                 $(nullOne_oneNull, empty, true, true, true, 2, 0),
-                $(nullOne_oneNull, empty, false, false, false, 1, 1),                
-                // partial match on 1 == 1, so this test actually fails
-                $(nullOne_oneNull, empty, false, true, false, 2, 0),
+                // partial match on 1 == 1, so this test fails
+                $(nullOne_oneNull, empty, false, false, false, 2, 0),                
+                $(nullOne_oneNull, empty, false, true, false, 1, 1),                
                 
                 $(oneTwo, twoOne, true, false, true, 1, 0),
                 $(oneTwo, twoOne, true, true, true, 1, 0),
@@ -135,14 +135,13 @@ public class TestReferenceConstraintObjectiveFunction {
                 $(oneTwo, twoOne, false, true, false, 1, 0)                
         		);
     }    
-        
     
     @Test
     @Parameters(method = "oneColumnTestValues")     
     public void oneColumnTests(Integer[] dataValues, 
     						   Integer[] stateValues, 
     						   boolean goalIsToSatisfy, 
-    						   boolean nullAccepted, 
+    						   boolean allowNull, 
     						   boolean optimal,
     						   int numAcceptedRows,
     						   int numRejectedRows) {
@@ -160,7 +159,7 @@ public class TestReferenceConstraintObjectiveFunction {
         List<Column> referenceColumns = new ArrayList<>();
         referenceColumns.add(database.column2);
         
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+        evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows, data,
                 state, columns, referenceColumns);
     }
@@ -210,10 +209,10 @@ public class TestReferenceConstraintObjectiveFunction {
                 $(oneTwoOneThree, empty, false, false, true, 0, 1),
                 $(oneTwoOneThree, empty, false, true, true, 0, 1),
                 
-                $(oneNullOneNull, empty, true, false, false, 0, 1),
+                $(oneNullOneNull, empty, true, false, false, 0, 1), 
                 $(oneNullOneNull, empty, true, true, true, 1, 0),
-                $(oneNullOneNull, empty, false, false, true, 0, 1),
-                $(oneNullOneNull, empty, false, true, false, 1, 0)                  
+                $(oneNullOneNull, empty, false, false, false, 1, 0),
+                $(oneNullOneNull, empty, false, true, true, 0, 1)                
         		);
     }     
     
@@ -222,7 +221,7 @@ public class TestReferenceConstraintObjectiveFunction {
     public void twoColumnTests(Integer[] dataValues, 
     						   Integer[] stateValues, 
     						   boolean goalIsToSatisfy, 
-    						   boolean nullAccepted, 
+    						   boolean allowNull, 
     						   boolean optimal,
     						   int numAcceptedRows,
     						   int numRejectedRows) {
@@ -242,7 +241,7 @@ public class TestReferenceConstraintObjectiveFunction {
         referenceColumns.add(database.column3);
         referenceColumns.add(database.column4);
         
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+        evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows, data,
                 state, columns, referenceColumns);
     }
@@ -256,13 +255,15 @@ public class TestReferenceConstraintObjectiveFunction {
         return $(
                 $(nullValue, empty, true, false, false, 0, 1),
                 $(nullValue, empty, true, true, true, 1, 0),
-                $(nullValue, empty, false, false, true, 0, 1),
-                $(nullValue, empty, false, true, false, 1, 0),
+                $(nullValue, empty, false, false, false, 1, 0),
+                $(nullValue, empty, false, true, true, 0, 1),
+                
 
                 $(oneValue, empty, true, false, false, 0, 1),
                 $(oneValue, empty, true, true, false, 0, 1),
                 $(oneValue, empty, false, false, true, 0, 1),
-                $(oneValue, empty, false, true, true, 0, 1)                
+                $(oneValue, empty, false, true, true, 0, 1)
+                                
                 );
     }
     
@@ -272,7 +273,7 @@ public class TestReferenceConstraintObjectiveFunction {
             Integer[] dataValues, 
             Integer[] stateValues, 
             boolean goalIsToSatisfy, 
-            boolean nullAccepted, 
+            boolean allowNull, 
             boolean optimal,
             int numAcceptedRows,
             int numRejectedRows) {
@@ -289,17 +290,17 @@ public class TestReferenceConstraintObjectiveFunction {
         
         List<Column> referenceColumns = new ArrayList<>();
         
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+        evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows, data,
                 state, columns, referenceColumns);
     }    
     
-    private void evaluate(boolean goalIsToSatisfy, boolean nullAccepted,
+    private void evaluate(boolean goalIsToSatisfy, boolean allowNull,
             boolean optimal, int numAcceptedRows, int numRejectedRows, Data data, Data state,
             List<Column> columns, List<Column> referenceColumns) {
         
         ReferenceConstraintObjectiveFunction objFun = new ReferenceConstraintObjectiveFunction(
-                columns, referenceColumns, state, "", goalIsToSatisfy, nullAccepted);
+                columns, referenceColumns, state, "", goalIsToSatisfy, allowNull);
         
         ObjectiveValue objVal = objFun.evaluate(data);
         

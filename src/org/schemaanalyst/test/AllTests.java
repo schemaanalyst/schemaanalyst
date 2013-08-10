@@ -5,17 +5,15 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-	org.schemaanalyst.test.data.TestRow3VL.class,
 	org.schemaanalyst.test.data.TestStringValue.class,
 	org.schemaanalyst.test.data.TestValueEquality.class,
 	org.schemaanalyst.test.datageneration.search.TestAlternatingValueSearch.class,
 	org.schemaanalyst.test.datageneration.search.TestSearchEvaluation.class,
-	org.schemaanalyst.test.datageneration.search.domainspecific.TestNotNullHandler.class,
-	org.schemaanalyst.test.datageneration.search.domainspecific.TestReferenceHandler.class,
-	org.schemaanalyst.test.datageneration.search.domainspecific.TestUniqueHandler.class,
+	org.schemaanalyst.test.datageneration.search.directedrandom.TestExpressionConstraintHandler.class,
+	org.schemaanalyst.test.datageneration.search.directedrandom.TestNullConstraintHandler.class,
 	org.schemaanalyst.test.datageneration.search.objective.TestDistanceObjectiveValue.class,
 	org.schemaanalyst.test.datageneration.search.objective.TestObjectiveValue.class,
-	org.schemaanalyst.test.datageneration.search.objective.data.TestExpressionEqualsObjectiveFunction.class,
+	org.schemaanalyst.test.datageneration.search.objective.data.TestExpressionConstraintObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.data.TestNullConstraintObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.data.TestReferenceConstraintObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.data.TestUniqueConstraintObjectiveFunction.class,

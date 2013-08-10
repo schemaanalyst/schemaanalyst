@@ -42,9 +42,7 @@ public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data
         
         if (dataRows.size() == 0) {
             description +=  "(no data rows)";
-            return zeroRowsOptimalityCondition() 
-                    ? ObjectiveValue.optimalObjectiveValue(description)
-                    : ObjectiveValue.worstObjectiveValue(description);
+            return ObjectiveValue.worstObjectiveValue(description);
         }
         
         // The optimum corresponds to
@@ -79,10 +77,6 @@ public abstract class ConstraintObjectiveFunction extends ObjectiveFunction<Data
     }
     
     protected abstract ObjectiveValue evaluateRow(Row row);
-    
-    protected boolean zeroRowsOptimalityCondition() {
-        return goalIsToSatisfy;
-    }
     
     public List<Row> getSatisfyingRows() {
         return satisfyingRows;

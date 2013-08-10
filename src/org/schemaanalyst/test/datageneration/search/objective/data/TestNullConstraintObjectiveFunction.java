@@ -13,9 +13,8 @@ import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static org.junit.Assert.assertEquals;
 import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestNullConstraintObjectiveFunction {
@@ -81,7 +80,7 @@ public class TestNullConstraintObjectiveFunction {
         NullConstraintObjectiveFunction objFunFalse = 
                 new NullConstraintObjectiveFunction(database.column, "", false);
         
-        assertOptimal(objFunFalse.evaluate(new Data()));  
+        assertNonOptimal(objFunFalse.evaluate(new Data()));  
         
         assertEquals("Number of accepted rows should be zero", 
                 0, objFunFalse.getSatisfyingRows().size());        

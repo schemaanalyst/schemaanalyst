@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertWorst;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertWorst;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -27,8 +27,8 @@ public class TestNullValueObjectiveFunction {
     
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(Value value, boolean nullAccepted, boolean optimal) {
-        ObjectiveValue objVal = NullValueObjectiveFunction.compute(value, nullAccepted);
+    public void testExpression(Value value, boolean allowNull, boolean optimal) {
+        ObjectiveValue objVal = NullValueObjectiveFunction.compute(value, allowNull);
 
         if (optimal) {
             assertOptimal(objVal);            

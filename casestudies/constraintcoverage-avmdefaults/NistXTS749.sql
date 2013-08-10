@@ -17,11 +17,11 @@ CREATE TABLE TEST12649 (
 	CONSTRAINT CND12649B CHECK (TNUM2 > 0)
 );
 -- Coverage: 14/14 (100.00000%) 
--- Time to generate: 426ms 
+-- Time to generate: 436ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 80ms 
+-- * Time: 76ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, 'a');
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, '');
 INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(1, 1, '');
@@ -31,21 +31,21 @@ INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(0, 1, '');
 
 -- Negating "PRIMARY KEY[EMPNUM]" on table "STAFF"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(EMPNUM)" on table "STAFF"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, NULL);
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[TNUM1, TNUM2]" on table "TEST12649"
 -- * Success: true
--- * Time: 28ms 
+-- * Time: 27ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, 'b');
 INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(0, 1, '');
 -- * Number of objective function evaluations: 27
@@ -61,7 +61,7 @@ INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(0, 3, 'aa');
 
 -- Negating "NOT NULL(TNUM1)" on table "TEST12649"
 -- * Success: true
--- * Time: 22ms 
+-- * Time: 21ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(0, '', 0, 'aa');
 INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(NULL, 1, '');
 -- * Number of objective function evaluations: 28
@@ -69,7 +69,7 @@ INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(NULL, 1, '');
 
 -- Negating "NOT NULL(TNUM2)" on table "TEST12649"
 -- * Success: true
--- * Time: 133ms 
+-- * Time: 148ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(46, 'phctgpyae', -38, 'ha');
 INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(92, NULL, 'ha');
 -- * Number of objective function evaluations: 96
@@ -77,7 +77,7 @@ INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(92, NULL, 'ha');
 
 -- Negating "CHECK[TNUM2 > 0]" on table "TEST12649"
 -- * Success: true
--- * Time: 129ms 
+-- * Time: 130ms 
 INSERT INTO STAFF(SALARY, EMPNAME, GRADE, EMPNUM) VALUES(95, 'mssuu', 5, 'dla');
 INSERT INTO TEST12649(TNUM1, TNUM2, TCHAR) VALUES(-39, -29, 'dla');
 -- * Number of objective function evaluations: 117

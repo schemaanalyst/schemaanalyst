@@ -17,8 +17,8 @@ import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestUniqueConstraintObjectiveFunction {
@@ -48,13 +48,13 @@ public class TestUniqueConstraintObjectiveFunction {
     Object[] oneColumnTestValues() {
         return $(
                 
-                $(empty, empty, true, false, true, 0, 0),
-                $(empty, empty, true, true, true, 0, 0),
+                $(empty, empty, true, false, false, 0, 0),
+                $(empty, empty, true, true, false, 0, 0),
                 $(empty, empty, false, false, false, 0, 0),
                 $(empty, empty, false, true, false, 0, 0),                
 
-                $(empty, one, true, false, true, 0, 0),
-                $(empty, one, true, true, true, 0, 0),
+                $(empty, one, true, false, false, 0, 0),
+                $(empty, one, true, true, false, 0, 0),
                 $(empty, one, false, false, false, 0, 0),
                 $(empty, one, false, true, false, 0, 0),         
                 
@@ -82,20 +82,19 @@ public class TestUniqueConstraintObjectiveFunction {
 
                 $(null_null, empty, true, false, false, 0, 2),
                 $(null_null, empty, true, true, true, 2, 0),
-                $(null_null, empty, false, false, true, 0, 2),
-                $(null_null, empty, false, true, false, 2, 0),
-
+                $(null_null, empty, false, false, false, 2, 0),
+                $(null_null, empty, false, true, true, 0, 2),
+                
                 $(one_null, two_three, true, false, false, 1, 1),
                 $(one_null, two_three, true, true, true, 2, 0),
-                $(one_null, two_three, false, false, false, 1, 1),           
-                $(one_null, two_three, false, true, false, 2, 0),
+                $(one_null, two_three, false, false, false, 2, 0),
+                $(one_null, two_three, false, true, false, 1, 1),           
                 
                 $(null_one, two_three, true, false, false, 1, 1),
                 $(null_one, two_three, true, true, true, 2, 0),
-                $(null_one, two_three, false, false, false, 1, 1),
-                // due to null-acceptance for the goal (not to satisfy), all rows here are rejected
-                $(null_one, two_three, false, true, false, 2, 0)
-               
+                // due to not-accepting null for the goal (not to satisfy), all rows here are rejected
+                $(null_one, two_three, false, false, false, 2, 0),
+                $(null_one, two_three, false, true, false, 1, 1)
                 ); 
     }
 
@@ -103,7 +102,7 @@ public class TestUniqueConstraintObjectiveFunction {
     @Parameters(method = "oneColumnTestValues")
     public void oneColumnTests(
             Integer[] dataValues, Integer[] stateValues,
-            boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal,
+            boolean goalIsToSatisfy, boolean allowNull, boolean optimal,
             int numAcceptedRows, int numRejectedRows) {
 
         OneColumnMockDatabase database = new OneColumnMockDatabase();
@@ -117,7 +116,7 @@ public class TestUniqueConstraintObjectiveFunction {
         List<Column> columns = new ArrayList<>();
         columns.add(database.column);        
         
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+        evaluate(goalIsToSatisfy, allowNull, optimal, 
                  numAcceptedRows, numRejectedRows,
                  columns, data, state);    
     }
@@ -137,8 +136,8 @@ public class TestUniqueConstraintObjectiveFunction {
 
     Object[] twoColumnTestValues() {
         return $(
-                $(empty, empty, true, false, true, 0, 0),
-                $(empty, empty, true, true, true, 0, 0),
+                $(empty, empty, true, false, false, 0, 0),
+                $(empty, empty, true, true, false, 0, 0),
                 $(empty, empty, false, false, false, 0, 0),
                 $(empty, empty, false, true, false, 0, 0),
 
@@ -164,14 +163,15 @@ public class TestUniqueConstraintObjectiveFunction {
 
                 $(oneNull_oneOne, empty, true, false, false, 1, 1),
                 $(oneNull_oneOne, empty, true, true, true, 2, 0),
-                $(oneNull_oneOne, empty, false, false, false, 1, 1),
-                $(oneNull_oneOne, empty, false, true, false, 2, 0));
+                $(oneNull_oneOne, empty, false, false, false, 2, 0),
+                $(oneNull_oneOne, empty, false, true, false, 1, 1)
+                );
     }
 
     @Test
     @Parameters(method = "twoColumnTestValues")
     public void twoColumnTests(Integer[] dataValues, Integer[] stateValues,
-            boolean goalIsToSatisfy, boolean nullAccepted, boolean optimal, 
+            boolean goalIsToSatisfy, boolean allowNull, boolean optimal, 
             int numAcceptedRows, int numRejectedRows) {
 
         TwoColumnMockDatabase database = new TwoColumnMockDatabase();
@@ -185,18 +185,18 @@ public class TestUniqueConstraintObjectiveFunction {
         columns.add(database.column1);
         columns.add(database.column2);
 
-        evaluate(goalIsToSatisfy, nullAccepted, optimal, 
+        evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows,
                 columns, data, state); 
     }
     
     private void evaluate(
-            boolean goalIsToSatisfy, boolean nullAccepted,
+            boolean goalIsToSatisfy, boolean allowNull,
             boolean optimal, int numAcceptedRows, int numRejectedRows, 
             List<Column> columns,
             Data data, Data state) {
         UniqueConstraintObjectiveFunction objFun = new UniqueConstraintObjectiveFunction(columns,
-                state, "", goalIsToSatisfy, nullAccepted);
+                state, "", goalIsToSatisfy, allowNull);
         ObjectiveValue objVal = objFun.evaluate(data);
 
         if (optimal) {

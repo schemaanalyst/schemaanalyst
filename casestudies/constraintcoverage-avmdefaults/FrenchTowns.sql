@@ -26,11 +26,11 @@ CREATE TABLE Towns (
 	UNIQUE (code, department)
 );
 -- Coverage: 48/48 (100.00000%) 
--- Time to generate: 1849ms 
+-- Time to generate: 1679ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 270ms 
+-- * Time: 241ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(1, 'a', '', 'a');
 INSERT INTO Regions(id, code, capital, name) VALUES(0, '', '', '');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(1, 'a', 'a', '', 'a');
@@ -42,21 +42,21 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(0, '', '', '', '')
 
 -- Negating "NOT NULL(id)" on table "Regions"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 18ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(NULL, 'b', '', 'b');
 -- * Number of objective function evaluations: 20
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(code)" on table "Regions"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 11ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-1, NULL, '', 'b');
 -- * Number of objective function evaluations: 13
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(capital)" on table "Regions"
 -- * Success: true
--- * Time: 18ms 
+-- * Time: 20ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-1, 'b', NULL, 'b');
 -- * Number of objective function evaluations: 24
 -- * Number of restarts: 0
@@ -70,28 +70,28 @@ INSERT INTO Regions(id, code, capital, name) VALUES(-1, 'b', '', NULL);
 
 -- Negating "UNIQUE[id]" on table "Regions"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 16ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(0, 'b', '', 'b');
 -- * Number of objective function evaluations: 22
 -- * Number of restarts: 0
 
 -- Negating "UNIQUE[code]" on table "Regions"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 10ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-1, '', '', 'b');
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
 
 -- Negating "UNIQUE[name]" on table "Regions"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 8ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-1, 'b', '', '');
 -- * Number of objective function evaluations: 10
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[region]" on table "Departments"
 -- * Success: true
--- * Time: 62ms 
+-- * Time: 83ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-1, 'b', '', 'b');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-1, 'b', 'b', '`', 'b');
 -- * Number of objective function evaluations: 83
@@ -99,7 +99,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-1, 'b', 'b', '`
 
 -- Negating "NOT NULL(id)" on table "Departments"
 -- * Success: true
--- * Time: 147ms 
+-- * Time: 149ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(46, 'mssu', 'jyvxgdd', 'aao');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(NULL, 'kt', 'b', 'mssu', 'ksynehqbi');
 -- * Number of objective function evaluations: 203
@@ -107,7 +107,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(NULL, 'kt', 'b',
 
 -- Negating "NOT NULL(code)" on table "Departments"
 -- * Success: true
--- * Time: 58ms 
+-- * Time: 49ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-46, 'bi', 'pxsnbhf', '`');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-99, NULL, 'xaj', '', 'tywey');
 -- * Number of objective function evaluations: 143
@@ -115,7 +115,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-99, NULL, 'xaj'
 
 -- Negating "NOT NULL(capital)" on table "Departments"
 -- * Success: true
--- * Time: 52ms 
+-- * Time: 65ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(44, 'hqic', 'myyib', 'acamirp');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-33, 'vbai', NULL, 'a', 'ifm');
 -- * Number of objective function evaluations: 174
@@ -123,7 +123,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-33, 'vbai', NUL
 
 -- Negating "NOT NULL(region)" on table "Departments"
 -- * Success: true
--- * Time: 124ms 
+-- * Time: 81ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-60, 'uabq', '', 'arspfj');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(82, 'oobs', 'krkiqs', NULL, 'yparpusp');
 -- * Number of objective function evaluations: 244
@@ -131,7 +131,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(82, 'oobs', 'krk
 
 -- Negating "NOT NULL(name)" on table "Departments"
 -- * Success: true
--- * Time: 130ms 
+-- * Time: 111ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-38, 'scge', 'hn', 'n');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-40, 'j', 'bgbpm', 'scge', NULL);
 -- * Number of objective function evaluations: 219
@@ -139,7 +139,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-40, 'j', 'bgbpm
 
 -- Negating "UNIQUE[id]" on table "Departments"
 -- * Success: true
--- * Time: 91ms 
+-- * Time: 50ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-74, 'cwnc', '', 'ba');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(1, 'vxa', 'pgmxfwagq', 'bi', 'psh');
 -- * Number of objective function evaluations: 205
@@ -147,7 +147,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(1, 'vxa', 'pgmxf
 
 -- Negating "UNIQUE[code]" on table "Departments"
 -- * Success: true
--- * Time: 39ms 
+-- * Time: 25ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(25, 'fgaw', 'upqli', 'nxarfglf');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-53, '', 'w', 'bi', 'gke');
 -- * Number of objective function evaluations: 179
@@ -155,7 +155,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-53, '', 'w', 'b
 
 -- Negating "UNIQUE[capital]" on table "Departments"
 -- * Success: true
--- * Time: 70ms 
+-- * Time: 37ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(20, 'ojar', 'dyuv', 'si');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-88, 'huhj', 'a', 'cwnc', 'oejfn');
 -- * Number of objective function evaluations: 245
@@ -163,7 +163,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-88, 'huhj', 'a'
 
 -- Negating "UNIQUE[name]" on table "Departments"
 -- * Success: true
--- * Time: 47ms 
+-- * Time: 62ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-30, 'gnld', 'vvjjna', 'svose');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-71, 'd', 'qoruofwle', 'bi', 'a');
 -- * Number of objective function evaluations: 249
@@ -171,7 +171,7 @@ INSERT INTO Departments(id, code, capital, region, name) VALUES(-71, 'd', 'qoruo
 
 -- Negating "FOREIGN KEY[department]" on table "Towns"
 -- * Success: true
--- * Time: 40ms 
+-- * Time: 39ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(31, 'kmad', 'jfeont', 'mnjdfjwov');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(53, 'b', 'fewittqna', '', 'b');
 INSERT INTO Towns(id, code, article, name, department) VALUES(30, 'ikvnp', 'x', 'qdxhu', 'aioj');
@@ -180,7 +180,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(30, 'ikvnp', 'x', 
 
 -- Negating "NOT NULL(id)" on table "Towns"
 -- * Success: true
--- * Time: 73ms 
+-- * Time: 87ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-18, '`', 'rxxpsa', 'mgq');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(-92, 'jrlc', 'njqpgjyh', 'scge', 'mnroxjbe');
 INSERT INTO Towns(id, code, article, name, department) VALUES(NULL, 'xafptj', 'tyx', 'k', 'jrlc');
@@ -189,7 +189,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(NULL, 'xafptj', 't
 
 -- Negating "NOT NULL(code)" on table "Towns"
 -- * Success: true
--- * Time: 121ms 
+-- * Time: 116ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(64, 'y', 'vbttrbu', 'sl');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(57, 'clse', 'sql', 'hqic', 'fm');
 INSERT INTO Towns(id, code, article, name, department) VALUES(94, NULL, 'apughn', 'tkiajse', 'clse');
@@ -198,7 +198,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(94, NULL, 'apughn'
 
 -- Negating "NOT NULL(name)" on table "Towns"
 -- * Success: true
--- * Time: 76ms 
+-- * Time: 78ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-5, 'gvmh', 'hm', 'hlce');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(94, 'o', 'b', 'bi', 'dreby');
 INSERT INTO Towns(id, code, article, name, department) VALUES(35, 'gvmoboy', 'mvtql', NULL, 'o');
@@ -207,7 +207,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(35, 'gvmoboy', 'mv
 
 -- Negating "NOT NULL(department)" on table "Towns"
 -- * Success: true
--- * Time: 90ms 
+-- * Time: 74ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(18, 'vbx', '', 'wppwujg');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(2, 'lo', 'kf', 'bi', 'ld');
 INSERT INTO Towns(id, code, article, name, department) VALUES(48, 'etrcqdocr', 'lcsqmvvbu', 'gkuyhcumm', NULL);
@@ -216,7 +216,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(48, 'etrcqdocr', '
 
 -- Negating "UNIQUE[id]" on table "Towns"
 -- * Success: true
--- * Time: 153ms 
+-- * Time: 155ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(6, 'ikqo', 'cjmvnv', 'tdupnwq');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(56, 'sk', 'ykn', 'ikqo', 'kk');
 INSERT INTO Towns(id, code, article, name, department) VALUES(0, 'hoj', 'doyklv', 'habnvxebe', 'sk');
@@ -225,7 +225,7 @@ INSERT INTO Towns(id, code, article, name, department) VALUES(0, 'hoj', 'doyklv'
 
 -- Negating "UNIQUE[code, department]" on table "Towns"
 -- * Success: true
--- * Time: 129ms 
+-- * Time: 79ms 
 INSERT INTO Regions(id, code, capital, name) VALUES(-41, 'shvo', '', 'qepy');
 INSERT INTO Departments(id, code, capital, region, name) VALUES(64, 'sch', 'gcoef', '', 'cmvgbmujv');
 INSERT INTO Towns(id, code, article, name, department) VALUES(-53, 'a', 'dyqhsht', '', '');

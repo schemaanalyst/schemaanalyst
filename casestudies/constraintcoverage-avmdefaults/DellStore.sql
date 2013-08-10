@@ -78,11 +78,11 @@ CREATE TABLE reorder (
 	date_expected	DATE
 );
 -- Coverage: 78/78 (100.00000%) 
--- Time to generate: 271ms 
+-- Time to generate: 210ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 24ms 
+-- * Time: 18ms 
 INSERT INTO categories(category, categoryname) VALUES(0, '');
 INSERT INTO categories(category, categoryname) VALUES(0, '');
 INSERT INTO cust_hist(customerid, orderid, prod_id) VALUES(0, 0, 0);
@@ -132,7 +132,7 @@ INSERT INTO cust_hist(customerid, orderid, prod_id) VALUES(0, NULL, 0);
 
 -- Negating "NOT NULL(prod_id)" on table "cust_hist"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO cust_hist(customerid, orderid, prod_id) VALUES(0, 0, NULL);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -146,91 +146,91 @@ INSERT INTO customers(customerid, firstname, lastname, address1, address2, city,
 
 -- Negating "NOT NULL(firstname)" on table "customers"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 6ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, NULL, '', '', '', '', '', 0, '', 0, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(lastname)" on table "customers"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 6ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', NULL, '', '', '', '', 0, '', 0, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 7
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(address1)" on table "customers"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 7ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', NULL, '', '', '', 0, '', 0, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 9
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(city)" on table "customers"
 -- * Success: true
--- * Time: 12ms 
+-- * Time: 9ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', NULL, '', 0, '', 0, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 13
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(country)" on table "customers"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 14ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, NULL, 0, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 20
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(region)" on table "customers"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 14ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', NULL, '', '', 0, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 22
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(creditcardtype)" on table "customers"
 -- * Success: true
--- * Time: 24ms 
+-- * Time: 19ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', 0, '', '', NULL, '', '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 29
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(creditcard)" on table "customers"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 20ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', 0, '', '', 0, NULL, '', '', '', 0, 0, '');
 -- * Number of objective function evaluations: 32
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(creditcardexpiration)" on table "customers"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 14ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', 0, '', '', 0, '', NULL, '', '', 0, 0, '');
 -- * Number of objective function evaluations: 34
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(username)" on table "customers"
 -- * Success: true
--- * Time: 21ms 
+-- * Time: 17ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', 0, '', '', 0, '', '', NULL, '', 0, 0, '');
 -- * Number of objective function evaluations: 36
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(password)" on table "customers"
 -- * Success: true
--- * Time: 23ms 
+-- * Time: 19ms 
 INSERT INTO customers(customerid, firstname, lastname, address1, address2, city, state, zip, country, region, email, phone, creditcardtype, creditcard, creditcardexpiration, username, password, age, income, gender) VALUES(0, '', '', '', '', '', '', 0, '', 0, '', '', 0, '', '', '', NULL, 0, 0, '');
 -- * Number of objective function evaluations: 38
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(prod_id)" on table "inventory"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO inventory(prod_id, quan_in_stock, sales) VALUES(NULL, 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(quan_in_stock)" on table "inventory"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO inventory(prod_id, quan_in_stock, sales) VALUES(0, NULL, 0);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
@@ -251,28 +251,28 @@ INSERT INTO orderlines(orderlineid, orderid, prod_id, quantity, orderdate) VALUE
 
 -- Negating "NOT NULL(orderid)" on table "orderlines"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO orderlines(orderlineid, orderid, prod_id, quantity, orderdate) VALUES(0, NULL, 0, 0, '1000-01-01');
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(prod_id)" on table "orderlines"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 2ms 
 INSERT INTO orderlines(orderlineid, orderid, prod_id, quantity, orderdate) VALUES(0, 0, NULL, 0, '1000-01-01');
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(quantity)" on table "orderlines"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 3ms 
 INSERT INTO orderlines(orderlineid, orderid, prod_id, quantity, orderdate) VALUES(0, 0, 0, NULL, '1000-01-01');
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(orderdate)" on table "orderlines"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 3ms 
 INSERT INTO orderlines(orderlineid, orderid, prod_id, quantity, orderdate) VALUES(0, 0, 0, 0, NULL);
 -- * Number of objective function evaluations: 14
 -- * Number of restarts: 0
@@ -293,42 +293,42 @@ INSERT INTO orders(orderid, orderdate, customerid, netamount, tax, totalamount) 
 
 -- Negating "NOT NULL(netamount)" on table "orders"
 -- * Success: true
--- * Time: 6ms 
+-- * Time: 3ms 
 INSERT INTO orders(orderid, orderdate, customerid, netamount, tax, totalamount) VALUES(0, '1000-01-01', 0, NULL, 0, 0);
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(tax)" on table "orders"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 4ms 
 INSERT INTO orders(orderid, orderdate, customerid, netamount, tax, totalamount) VALUES(0, '1000-01-01', 0, 0, NULL, 0);
 -- * Number of objective function evaluations: 18
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(totalamount)" on table "orders"
 -- * Success: true
--- * Time: 8ms 
+-- * Time: 4ms 
 INSERT INTO orders(orderid, orderdate, customerid, netamount, tax, totalamount) VALUES(0, '1000-01-01', 0, 0, 0, NULL);
 -- * Number of objective function evaluations: 21
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(prod_id)" on table "products"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO products(prod_id, category, title, actor, price, special, common_prod_id) VALUES(NULL, 0, '', '', 0, 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(category)" on table "products"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO products(prod_id, category, title, actor, price, special, common_prod_id) VALUES(0, NULL, '', '', 0, 0, 0);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(title)" on table "products"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO products(prod_id, category, title, actor, price, special, common_prod_id) VALUES(0, 0, NULL, '', 0, 0, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
@@ -342,21 +342,21 @@ INSERT INTO products(prod_id, category, title, actor, price, special, common_pro
 
 -- Negating "NOT NULL(price)" on table "products"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO products(prod_id, category, title, actor, price, special, common_prod_id) VALUES(0, 0, '', '', NULL, 0, 0);
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(common_prod_id)" on table "products"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 2ms 
 INSERT INTO products(prod_id, category, title, actor, price, special, common_prod_id) VALUES(0, 0, '', '', 0, 0, NULL);
 -- * Number of objective function evaluations: 18
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(prod_id)" on table "reorder"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO reorder(prod_id, date_low, quan_low, date_reordered, quan_reordered, date_expected) VALUES(NULL, '1000-01-01', 0, '1000-01-01', 0, '1000-01-01');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
@@ -370,7 +370,7 @@ INSERT INTO reorder(prod_id, date_low, quan_low, date_reordered, quan_reordered,
 
 -- Negating "NOT NULL(quan_low)" on table "reorder"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO reorder(prod_id, date_low, quan_low, date_reordered, quan_reordered, date_expected) VALUES(0, '1000-01-01', NULL, '1000-01-01', 0, '1000-01-01');
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0

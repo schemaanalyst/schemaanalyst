@@ -99,7 +99,7 @@ CREATE TABLE weight (
 	std_dev	INT
 );
 -- Coverage: 62/62 (100.00000%) 
--- Time to generate: 46ms 
+-- Time to generate: 51ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -150,14 +150,14 @@ INSERT INTO datsrcln(ndb_no, nutr_no, datasrc_id) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(nutr_no)" on table "datsrcln"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO datsrcln(ndb_no, nutr_no, datasrc_id) VALUES('', NULL, '');
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(datasrc_id)" on table "datsrcln"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO datsrcln(ndb_no, nutr_no, datasrc_id) VALUES('', '', NULL);
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
@@ -192,7 +192,7 @@ INSERT INTO fd_group(fdgrp_cd, fddrp_desc) VALUES('', NULL);
 
 -- Negating "NOT NULL(ndb_no)" on table "food_des"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO food_des(ndb_no, fdgrp_cd, long_desc, shrt_desc, comname, manufacname, survey, ref_desc, refuse, sciname, n_factor, pro_factor, fat_factor, cho_factor) VALUES(NULL, '', '', '', '', '', '', '', 0, '', 0, 0, 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
@@ -206,7 +206,7 @@ INSERT INTO food_des(ndb_no, fdgrp_cd, long_desc, shrt_desc, comname, manufacnam
 
 -- Negating "NOT NULL(long_desc)" on table "food_des"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 2ms 
 INSERT INTO food_des(ndb_no, fdgrp_cd, long_desc, shrt_desc, comname, manufacname, survey, ref_desc, refuse, sciname, n_factor, pro_factor, fat_factor, cho_factor) VALUES('', '', NULL, '', '', '', '', '', 0, '', 0, 0, 0, 0);
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
@@ -234,7 +234,7 @@ INSERT INTO footnote(ndb_no, footnt_no, footnt_typ, nutr_no, footnt_txt) VALUES(
 
 -- Negating "NOT NULL(footnt_typ)" on table "footnote"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 2ms 
 INSERT INTO footnote(ndb_no, footnt_no, footnt_typ, nutr_no, footnt_txt) VALUES('', '', NULL, '', '');
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
@@ -255,7 +255,7 @@ INSERT INTO nut_data(ndb_no, nutr_no, nutr_val, num_data_pts, std_error, src_cd,
 
 -- Negating "NOT NULL(nutr_no)" on table "nut_data"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 2ms 
 INSERT INTO nut_data(ndb_no, nutr_no, nutr_val, num_data_pts, std_error, src_cd, deriv_cd, ref_ndb_no, add_nutr_mark, num_studies, min, max, df, low_eb, up_eb, stat_cmt, cc) VALUES('', NULL, 0, 0, 0, 0, '', '', '', 0, 0, 0, 0, 0, 0, '', '');
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
@@ -276,35 +276,35 @@ INSERT INTO nut_data(ndb_no, nutr_no, nutr_val, num_data_pts, std_error, src_cd,
 
 -- Negating "NOT NULL(src_cd)" on table "nut_data"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 5ms 
 INSERT INTO nut_data(ndb_no, nutr_no, nutr_val, num_data_pts, std_error, src_cd, deriv_cd, ref_ndb_no, add_nutr_mark, num_studies, min, max, df, low_eb, up_eb, stat_cmt, cc) VALUES('', '', 0, 0, 0, NULL, '', '', '', 0, 0, 0, 0, 0, 0, '', '');
 -- * Number of objective function evaluations: 15
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(nutr_no)" on table "nutr_def"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO nutr_def(nutr_no, units, tagname, nutrdesc, num_dec, sr_order) VALUES(NULL, '', '', '', 0, 0);
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(units)" on table "nutr_def"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO nutr_def(nutr_no, units, tagname, nutrdesc, num_dec, sr_order) VALUES('', NULL, '', '', 0, 0);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(src_cd)" on table "src_cd"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 0ms 
 INSERT INTO src_cd(src_cd, srccd_desc) VALUES(NULL, '');
 -- * Number of objective function evaluations: 2
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(srccd_desc)" on table "src_cd"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO src_cd(src_cd, srccd_desc) VALUES(0, NULL);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
@@ -325,14 +325,14 @@ INSERT INTO weight(ndb_no, seq, amount, msre_desc, gm_wgt, num_data_pts, std_dev
 
 -- Negating "NOT NULL(amount)" on table "weight"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO weight(ndb_no, seq, amount, msre_desc, gm_wgt, num_data_pts, std_dev) VALUES('', '', NULL, '', 0, 0, 0);
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(msre_desc)" on table "weight"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 4ms 
 INSERT INTO weight(ndb_no, seq, amount, msre_desc, gm_wgt, num_data_pts, std_dev) VALUES('', '', 0, NULL, 0, 0, 0);
 -- * Number of objective function evaluations: 9
 -- * Number of restarts: 0

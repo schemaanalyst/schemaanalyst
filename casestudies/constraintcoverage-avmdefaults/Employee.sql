@@ -15,11 +15,11 @@ CREATE TABLE Employee (
 	CHECK (age <= 150)
 );
 -- Coverage: 8/8 (100.00000%) 
--- Time to generate: 203ms 
+-- Time to generate: 221ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 31ms 
+-- * Time: 43ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(1, '', '', 1, '', '', '');
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(0, '', '', 1, '', '', '');
 -- * Number of objective function evaluations: 32
@@ -27,28 +27,28 @@ INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(0, '', '
 
 -- Negating "PRIMARY KEY[id]" on table "Employee"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 8ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(0, '', '', NULL, '', '', '');
 -- * Number of objective function evaluations: 9
 -- * Number of restarts: 0
 
 -- Negating "CHECK[id >= 0]" on table "Employee"
 -- * Success: true
--- * Time: 6ms 
+-- * Time: 11ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(-1, '', '', NULL, '', '', '');
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0
 
 -- Negating "CHECK[age > 0]" on table "Employee"
 -- * Success: true
--- * Time: 41ms 
+-- * Time: 39ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(46, 'phctgpyae', 'ddanycpk', -8, '', 'mssuu', 'synehq');
 -- * Number of objective function evaluations: 69
 -- * Number of restarts: 1
 
 -- Negating "CHECK[age <= 150]" on table "Employee"
 -- * Success: true
--- * Time: 121ms 
+-- * Time: 120ms 
 INSERT INTO Employee(id, first, last, age, address, city, state) VALUES(78, 'ab', 'nyparp', 190, 'hkt', 'edrxhn', 'n');
 -- * Number of objective function evaluations: 343
 -- * Number of restarts: 4

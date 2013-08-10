@@ -47,20 +47,20 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     private boolean evaluateTrueForm;
     
     // whether the expression is trivially satisfied if NULL is involved in the evaluation
-    private boolean nullAccepted;
+    private boolean allowNull;
     
     // a descriptor for the objective function
     private String description;
     
     public InExpressionObjectiveFunction(InExpression expression,
                                          boolean goalIsToSatisfy,
-                                         boolean nullAccepted) {
+                                         boolean allowNull) {
 
         // whether to evaluate the true form or not
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotIn());
         
         // is NULL allowed for the predicate to be trivially true?
-        this.nullAccepted = nullAccepted;
+        this.allowNull = allowNull;
         
         // set up the subexpression evaluators...
         lhsEvaluator = new ExpressionEvaluator(expression.getLHS());
@@ -80,7 +80,7 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
         // make a descriptor string
         description = expression.toString() 
                 + " goalIsToSatisfy: " + goalIsToSatisfy
-                + " nullAccepted: " + nullAccepted;
+                + " allowNull: " + allowNull;
     }
     
     @Override
@@ -104,7 +104,7 @@ public class InExpressionObjectiveFunction extends ObjectiveFunction<Row> {
             
             // get objective values for all of the rhs sub-expressions
             for (Value rhsValue : rhsValues) {
-                objVal.add(ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, nullAccepted));            
+                objVal.add(ValueRelationalObjectiveFunction.compute(lhsValue, op, rhsValue, allowNull));            
             }
             
             objVal.setDescripton(description);

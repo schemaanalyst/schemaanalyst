@@ -12,7 +12,12 @@ public abstract class MockDatabase {
 
     public Table table;
     public Data state, data;
-
+    protected int numColumns;
+    
+    public MockDatabase(int numColumns) {
+        this.numColumns = numColumns;
+    }
+    
     public Data createState(int rows) {
         state = instantiateDataObject(rows);
         return state;
@@ -33,10 +38,16 @@ public abstract class MockDatabase {
     }
 
     public void setStateValues(Integer... values) {
+        if (state == null) {
+            createState((int) Math.ceil((values.length / (double) numColumns)));
+        }
         setValues(state, values);
     }
 
-    public void setDataValues(Integer... values) {
+    public void setDataValues(Integer... values) {        
+        if (data == null) {
+            createData((int) Math.ceil((values.length / (double) numColumns)));
+        }
         setValues(data, values);
     }
 

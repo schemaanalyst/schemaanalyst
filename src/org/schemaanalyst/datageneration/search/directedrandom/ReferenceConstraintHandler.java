@@ -25,17 +25,19 @@ public class ReferenceConstraintHandler extends ConstraintHandler<ReferenceConst
         List<Row> referenceRows = objFun.getReferenceRows();
         int numReferenceRows = referenceRows.size();
 
-        for (Row row : rows) {
-            int referenceIndex = random.nextInt(numReferenceRows - 1);
-            Row referenceRow = referenceRows.get(referenceIndex);
-            row.copyValues(referenceRow);
+        if (numReferenceRows > 0) { 
+            for (Row row : rows) {                
+                int referenceIndex = random.nextInt(numReferenceRows - 1);
+                Row referenceRow = referenceRows.get(referenceIndex);
+                row.copyValues(referenceRow);
+            }
         }
     }
     
     @Override
     protected void attemptToFalsify(List<Row> rows) {
         for (Row row : rows) {
-            cellRandomizer.randomiseCells(row); // allow null ??
+            cellRandomizer.randomiseCells(row, objFun.isNullAllowed());
         }
     }
 }

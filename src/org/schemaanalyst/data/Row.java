@@ -83,36 +83,6 @@ public class Row implements Duplicable<Row> {
         return duplicate;
     }
 
-    public Boolean valuesEqual3VL(Row other) {
-        if (cells.size() != other.cells.size()) {
-            return Boolean.FALSE;
-        }
-
-        Iterator<Cell> thisIterator = this.cells.iterator();
-        Iterator<Cell> otherIterator = other.cells.iterator();
-
-        Boolean rowsEqual = Boolean.TRUE;
-
-        while (thisIterator.hasNext() && otherIterator.hasNext()) {
-            Cell thisRowCell = thisIterator.next();
-            Cell otherRowCell = otherIterator.next();
-
-            Boolean valuesEqual = thisRowCell.valuesEqual3VL(otherRowCell);
-
-            if (Boolean.FALSE.equals(valuesEqual)) {
-                rowsEqual = Boolean.FALSE;
-            }
-
-            // if there's a null cell the overall result
-            // is decided as unknown -- i.e. null
-            if (valuesEqual == null) {
-                return null;
-            }
-        }
-
-        return rowsEqual;
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

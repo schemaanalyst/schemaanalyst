@@ -19,11 +19,11 @@ CREATE TABLE Expanded_URLS (
 	PRIMARY KEY (tweet_id, expanded_url)
 );
 -- Coverage: 6/6 (100.00000%) 
--- Time to generate: 102ms 
+-- Time to generate: 144ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 68ms 
+-- * Time: 97ms 
 INSERT INTO Tweets(tweet_id, in_reply_to_status_id, in_reply_to_user_id, retweeted_status_id, retweeted_status_user_id, timestamp, source, text) VALUES(1, 0, 0, 0, 0, '1000-01-01 00:00:00', '', '');
 INSERT INTO Tweets(tweet_id, in_reply_to_status_id, in_reply_to_user_id, retweeted_status_id, retweeted_status_user_id, timestamp, source, text) VALUES(0, 0, 0, 0, 0, '1000-01-01 00:00:00', '', '');
 INSERT INTO Expanded_URLS(tweet_id, expanded_url) VALUES(1, '');
@@ -33,14 +33,14 @@ INSERT INTO Expanded_URLS(tweet_id, expanded_url) VALUES(0, '');
 
 -- Negating "PRIMARY KEY[tweet_id]" on table "Tweets"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO Tweets(tweet_id, in_reply_to_status_id, in_reply_to_user_id, retweeted_status_id, retweeted_status_user_id, timestamp, source, text) VALUES(0, 0, 0, 0, 0, '1000-01-01 00:00:00', '', '');
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[tweet_id, expanded_url]" on table "Expanded_URLS"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 5ms 
 INSERT INTO Tweets(tweet_id, in_reply_to_status_id, in_reply_to_user_id, retweeted_status_id, retweeted_status_user_id, timestamp, source, text) VALUES(-1, 0, 0, 0, 0, '1000-01-01 00:00:00', '', '');
 INSERT INTO Expanded_URLS(tweet_id, expanded_url) VALUES(0, '');
 -- * Number of objective function evaluations: 4
@@ -48,7 +48,7 @@ INSERT INTO Expanded_URLS(tweet_id, expanded_url) VALUES(0, '');
 
 -- Negating "FOREIGN KEY[tweet_id]" on table "Expanded_URLS"
 -- * Success: true
--- * Time: 31ms 
+-- * Time: 41ms 
 INSERT INTO Tweets(tweet_id, in_reply_to_status_id, in_reply_to_user_id, retweeted_status_id, retweeted_status_user_id, timestamp, source, text) VALUES(3, 0, 0, 0, 0, '1000-01-01 00:00:00', '', '');
 INSERT INTO Expanded_URLS(tweet_id, expanded_url) VALUES(-3, '');
 -- * Number of objective function evaluations: 41

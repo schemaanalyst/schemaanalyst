@@ -2,11 +2,9 @@ package org.schemaanalyst.test.datageneration.search.objective.data;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.assertEquals;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-
-import java.util.ArrayList;
-import java.util.List;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.Params.*;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -18,47 +16,41 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.ExpressionConstraintObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 @RunWith(JUnitParamsRunner.class)
-public class TestExpressionEqualsObjectiveFunction {
+public class TestExpressionConstraintObjectiveFunction {
 
-    Integer[] one_one_one_one = {1, 1, 1, 1};
-    Integer[] one_two_three_four = {1, 2, 3, 4};
-    Integer[] two_three_four_five = {2, 3, 4, 5};
-    Integer[] one_null = {1, null};
-    Integer[] two_null = {2, null};
-    
     Object[] testValues() {
         return $(
-                $(one_one_one_one, true, false, true, 4, 0),
-                $(one_one_one_one, true, true, true, 4, 0),
-                $(one_one_one_one, false, false, false, 4, 0),
-                $(one_one_one_one, false, true, false, 4, 0),
+                $(d(r(1), r(1), r(1), r(1)), true, false, true, 4, 0),
+                $(d(r(1), r(1), r(1), r(1)), true, true, true, 4, 0),
+                $(d(r(1), r(1), r(1), r(1)), false, false, false, 4, 0),
+                $(d(r(1), r(1), r(1), r(1)), false, true, false, 4, 0),
                 
-                $(one_two_three_four, true, false, false, 1, 3),
-                $(one_two_three_four, true, true, false, 1, 3),
-                $(one_two_three_four, false, false, false, 1, 3),
-                $(one_two_three_four, false, true, false, 1, 3),
+                $(d(r(1), r(2), r(3), r(4)), true, false, false, 1, 3),
+                $(d(r(1), r(2), r(3), r(4)), true, true, false, 1, 3),
+                $(d(r(1), r(2), r(3), r(4)), false, false, false, 1, 3),
+                $(d(r(1), r(2), r(3), r(4)), false, true, false, 1, 3),
                 
-                $(two_three_four_five, true, false, false, 0, 4),
-                $(two_three_four_five, true, true, false, 0, 4),
-                $(two_three_four_five, false, false, true, 0, 4),
-                $(two_three_four_five, false, true, true, 0, 4),      
+                $(d(r(2), r(3), r(4), r(5)), true, false, false, 0, 4),
+                $(d(r(2), r(3), r(4), r(5)), true, true, false, 0, 4),
+                $(d(r(2), r(3), r(4), r(5)), false, false, true, 0, 4),
+                $(d(r(2), r(3), r(4), r(5)), false, true, true, 0, 4),      
                 
-                $(one_null, true, false, false, 1, 1),
-                $(one_null, true, true, true, 2, 0),
-                $(one_null, false, false, false, 1, 1),
-                $(one_null, false, true, false, 2, 0),
+                $(d(r(1), r((Integer) null)), true, false, false, 1, 1),
+                $(d(r(1), r((Integer) null)), true, true, true, 2, 0),
+                $(d(r(1), r((Integer) null)), false, false, false, 2, 0),
+                $(d(r(1), r((Integer) null)), false, true, false, 1, 1),
                 
-                $(two_null, true, false, false, 0, 2),
-                $(two_null, true, true, false, 1, 1),
-                $(two_null, false, false, true, 0, 2),
-                $(two_null, false, true, false, 1, 1)                 
+                $(d(r(2), r((Integer) null)), true, false, false, 0, 2),
+                $(d(r(2), r((Integer) null)), true, true, false, 1, 1),
+                $(d(r(2), r((Integer) null)), false, false, false, 1, 1),     
+                $(d(r(2), r((Integer) null)), false, true, true, 0, 2)
+                            
                 );
     }
     
@@ -74,17 +66,14 @@ public class TestExpressionEqualsObjectiveFunction {
     @Parameters(method = "testValues")
     public void oneColumnTests(
             Integer[] dataValues, boolean goalIsToSatisfy, 
-            boolean nullAccepted, boolean optimal, 
+            boolean allowNull, boolean optimal, 
             int numAcceptedRows, int numRejectedRows) {
 
-        Data data = database.createData(dataValues.length);        
         database.setDataValues(dataValues);
-        List<Column> columns = new ArrayList<>();
-        columns.add(database.column);        
 
         ExpressionConstraintObjectiveFunction objFun = new ExpressionConstraintObjectiveFunction(
-                expression, "", goalIsToSatisfy, nullAccepted);
-        ObjectiveValue objVal = objFun.evaluate(data);
+                expression, "", goalIsToSatisfy, allowNull);
+        ObjectiveValue objVal = objFun.evaluate(database.data);
 
         if (optimal) {
             assertOptimal(objVal);
@@ -116,7 +105,7 @@ public class TestExpressionEqualsObjectiveFunction {
         ExpressionConstraintObjectiveFunction objFunTrue = new ExpressionConstraintObjectiveFunction(
                 expression, "", true, true);        
         
-        assertOptimal(objFunTrue.evaluate(new Data()));  
+        assertNonOptimal(objFunTrue.evaluate(new Data()));  
         
         assertEquals("Number of accepted rows should be zero", 
                 0, objFunTrue.getSatisfyingRows().size());        

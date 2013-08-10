@@ -15,7 +15,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private Data state;
-    private boolean nullAdmissableForSatisfy;
+    private boolean allowNull;
 
     private List<Row> stateRows;
 
@@ -34,19 +34,22 @@ public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFuncti
      *            If set to true, the goal of the objective function will be to
      *            produce rows that all satisfy the constraint, else the goal is
      *            to produce rows that all falsify the constraint.
-     * @param nullAdmissableForSatisfy
-     *            If set to true, NULL values are permissible to satisfy the
-     *            constraint, else NULL is permissible to falsify the
-     *            constraint.
+     * @param allowNull
+     *            If set to true, NULL values are permissible as part or all of
+     *            a solution.
      */
     public UniqueConstraintObjectiveFunction(List<Column> columns, Data state,
             String description, boolean goalIsToSatisfy,
-            boolean nullAdmissableForSatisfy) {
+            boolean allowNull) {
         super(columns, description, goalIsToSatisfy);
         this.state = state;
-        this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
+        this.allowNull = allowNull;
     }
-    
+
+    public boolean isNullAllowed() {
+        return allowNull;
+    }
+        
     public List<Row> getStateRows() {
         return stateRows;
     }
@@ -60,10 +63,11 @@ public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFuncti
     @Override
     protected ObjectiveValue evaluateRow(Row row) {
 
-        boolean haveRowsToCompareWith = (satisfyingRows.size() > 0 || stateRows
-                .size() > 0);
+        boolean haveRowsToCompareWith = 
+                (satisfyingRows.size() > 0 || stateRows.size() > 0);
 
-        return haveRowsToCompareWith ? evaluateUniqueness(row)
+        return haveRowsToCompareWith 
+                ? evaluateUniqueness(row)
                 : evaluateDefaultSatisfaction(row);
     }
 
@@ -78,13 +82,19 @@ public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFuncti
             }
         }
 
-        boolean accepted = !involvesNull
-                || (involvesNull && nullAdmissableForSatisfy);
-
-        ObjectiveValue rowObjVal = (accepted && goalIsToSatisfy)
-                || (!accepted && !goalIsToSatisfy) ? ObjectiveValue
-                .optimalObjectiveValue(description) : ObjectiveValue
-                .worstObjectiveValue(description);
+        boolean validSolution 
+        = involvesNull
+            // if NULL is involved, it's only a valid solution
+            // if NULL is allowed.
+            ? allowNull
+            // NULL is not involved, it's a valid solution
+            // if the goal is to satisfy the constraint since it's
+            // the only row.
+            : goalIsToSatisfy;
+    
+    ObjectiveValue rowObjVal = validSolution 
+            ? ObjectiveValue.optimalObjectiveValue(description) 
+            : ObjectiveValue.worstObjectiveValue(description);
 
         return rowObjVal;
     }
@@ -109,9 +119,7 @@ public class UniqueConstraintObjectiveFunction extends ConstraintObjectiveFuncti
 
         for (Row compareRow : compareRows) {
             objVal.add(RowRelationalObjectiveFunction.compute(row,
-                    !goalIsToSatisfy, compareRow,
-                    goalIsToSatisfy ? nullAdmissableForSatisfy
-                            : !nullAdmissableForSatisfy));
+                    !goalIsToSatisfy, compareRow, allowNull));
         }
     }
 }

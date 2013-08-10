@@ -17,8 +17,8 @@ import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertEquivalent;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertEquivalent;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 import static org.schemaanalyst.datageneration.search.objective.value.NumericValueRelationalObjectiveFunction.K;
 
 public class TestCompoundValueRelationalObjectiveFunction {

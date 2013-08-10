@@ -11,11 +11,11 @@ CREATE TABLE person (
 	CHECK (gender IN ('Male', 'Female', 'Uknown'))
 );
 -- Coverage: 14/14 (100.00000%) 
--- Time to generate: 504ms 
+-- Time to generate: 543ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 284ms 
+-- * Time: 295ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(1, '', '', 'Male', '1000-01-01');
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(0, '', '', 'Male', '1000-01-01');
 -- * Number of objective function evaluations: 181
@@ -23,42 +23,42 @@ INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(0, '
 
 -- Negating "PRIMARY KEY[id]" on table "person"
 -- * Success: true
--- * Time: 60ms 
+-- * Time: 67ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(0, '', '', 'Male', '1000-01-01');
 -- * Number of objective function evaluations: 75
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(id)" on table "person"
 -- * Success: true
--- * Time: 37ms 
+-- * Time: 40ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(NULL, '', '', 'Male', '1000-01-01');
 -- * Number of objective function evaluations: 73
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(last_name)" on table "person"
 -- * Success: true
--- * Time: 37ms 
+-- * Time: 48ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, NULL, '', 'Male', '1000-01-01');
 -- * Number of objective function evaluations: 77
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(first_name)" on table "person"
 -- * Success: true
--- * Time: 38ms 
+-- * Time: 41ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', NULL, 'Male', '1000-01-01');
 -- * Number of objective function evaluations: 77
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(gender)" on table "person"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 5ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', '', NULL, '1000-01-01');
 -- * Number of objective function evaluations: 12
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(date_of_birth)" on table "person"
 -- * Success: true
--- * Time: 44ms 
+-- * Time: 46ms 
 INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', '', 'Male', NULL);
 -- * Number of objective function evaluations: 101
 -- * Number of restarts: 0

@@ -16,11 +16,11 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 4/4 (100.00000%) 
--- Time to generate: 22ms 
+-- Time to generate: 23ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 8ms 
 INSERT INTO T(A, B, C) VALUES(1, 0, 0);
 INSERT INTO T(A, B, C) VALUES(0, 0, 0);
 INSERT INTO S(X, Y, Z) VALUES(0, 0, 0);

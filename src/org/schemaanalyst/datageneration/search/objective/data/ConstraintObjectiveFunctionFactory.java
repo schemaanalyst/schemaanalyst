@@ -14,16 +14,16 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected Constraint constraint;
     protected Data state;
-    protected boolean goalIsToSatisfy, nullAdmissableForSatisfy;
+    protected boolean goalIsToSatisfy, allowNull;
 
     public ConstraintObjectiveFunctionFactory(Constraint constraint,
                                               Data state,
                                               boolean goalIsToSatisfy,
-                                              boolean nullAdmissableForSatisfy) {
+                                              boolean allowNull) {
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
+        this.allowNull = allowNull;
     }
 
     public ObjectiveFunction<Data> create() {
@@ -68,32 +68,41 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForCheckConstraint(CheckConstraint checkConstraint) {
 
+        boolean constraintAllowNull = allowNull && goalIsToSatisfy;
+        
         return new ExpressionConstraintObjectiveFunction(
                     checkConstraint.getExpression(),
                     makeDescription(),
                     goalIsToSatisfy,
-                    nullAdmissableForSatisfy);
+                    constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
+        
+        // make it impossible for the constraint to satisfied or negated using NULLs
+        // normally NULLs are not allowed only when PKs are to be satisfied, 
+        // but SQLite allows NULLs for PK values while other DBMSs do not.
+        boolean constraintAllowNull = false;
         
         return new UniqueConstraintObjectiveFunction(
                 primaryKeyConstraint.getColumns(),
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                !goalIsToSatisfy); // make it impossible for the constraint to satisfied or negated using NULLs 
+                constraintAllowNull);  
     }
 
     protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
 
+        boolean constraintAllowNull = allowNull && goalIsToSatisfy;
+        
         return new ReferenceConstraintObjectiveFunction(
                 foreignKeyConstraint.getColumns(),
                 foreignKeyConstraint.getReferenceColumns(),
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                nullAdmissableForSatisfy);
+                constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
@@ -106,12 +115,14 @@ public class ConstraintObjectiveFunctionFactory {
 
     protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
 
+        boolean constraintAllowNull = allowNull && goalIsToSatisfy;
+        
         return new UniqueConstraintObjectiveFunction(
                 uniqueConstraint.getColumns(),
                 state,
                 makeDescription(),
                 goalIsToSatisfy,
-                nullAdmissableForSatisfy);
+                constraintAllowNull);
     }
 
     protected String makeDescription() {

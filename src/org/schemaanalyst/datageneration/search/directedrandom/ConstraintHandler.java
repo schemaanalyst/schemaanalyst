@@ -2,6 +2,7 @@ package org.schemaanalyst.datageneration.search.directedrandom;
 
 import java.util.List;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.data.ConstraintObjectiveFunction;
 
@@ -13,11 +14,13 @@ public abstract class ConstraintHandler<T extends ConstraintObjectiveFunction> {
         this.objFun = objFun;
     }
     
-    public void attemptToFindSolution() {
-        if (objFun.goalIsToSatisfy()) {
-            attemptToSatisfy(objFun.getFalsifyingRows());
-        } else {
-            attemptToFalsify(objFun.getSatisfyingRows());
+    public void attemptToFindSolution(Data data) {
+        if (!objFun.evaluate(data).isOptimal()) {       
+            if (objFun.goalIsToSatisfy()) {
+                attemptToSatisfy(objFun.getFalsifyingRows());
+            } else {
+                attemptToFalsify(objFun.getSatisfyingRows());
+            }
         }
     }
 

@@ -15,11 +15,11 @@ import org.schemaanalyst.util.Pair;
 
 public class MultiValueEqualsObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
 
-    private boolean equals, nullAccepted;
+    private boolean equals, allowNull;
     
-    public MultiValueEqualsObjectiveFunction(boolean equals, boolean nullAccepted) {
+    public MultiValueEqualsObjectiveFunction(boolean equals, boolean allowNull) {
         this.equals = equals;
-        this.nullAccepted = nullAccepted;        
+        this.allowNull = allowNull;        
     }
     
     @Override
@@ -53,15 +53,15 @@ public class MultiValueEqualsObjectiveFunction extends ObjectiveFunction<Pair<Li
             Value rhsValue = row2Iterator.next();
             
             objVal.add(ValueRelationalObjectiveFunction.compute(
-                    lhsValue, op, rhsValue, nullAccepted));
+                    lhsValue, op, rhsValue, allowNull));
         }
 
         return objVal;        
     }
     
     public static ObjectiveValue compute(
-            List<Value> lhs, boolean equals, List<Value> rhs, boolean nullAccepted) {
-        MultiValueEqualsObjectiveFunction objFun = new MultiValueEqualsObjectiveFunction(equals, nullAccepted);
+            List<Value> lhs, boolean equals, List<Value> rhs, boolean allowNull) {
+        MultiValueEqualsObjectiveFunction objFun = new MultiValueEqualsObjectiveFunction(equals, allowNull);
         return objFun.evaluate(new Pair<List<Value>>(lhs, rhs));        
     }
     

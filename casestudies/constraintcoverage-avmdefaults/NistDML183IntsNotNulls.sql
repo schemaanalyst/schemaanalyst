@@ -16,11 +16,11 @@ CREATE TABLE S (
 	CONSTRAINT RefToColsAandB FOREIGN KEY (X, Y) REFERENCES T (A, B)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 107ms 
+-- Time to generate: 134ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 11ms 
+-- * Time: 9ms 
 INSERT INTO T(A, B, C) VALUES(1, 0, 0);
 INSERT INTO T(A, B, C) VALUES(0, 0, 0);
 INSERT INTO S(X, Y, Z) VALUES(0, 0, 0);
@@ -37,28 +37,28 @@ INSERT INTO T(A, B, C) VALUES(NULL, 0, 0);
 
 -- Negating "NOT NULL(B)" on table "T"
 -- * Success: true
--- * Time: 5ms 
+-- * Time: 14ms 
 INSERT INTO T(A, B, C) VALUES(-1, NULL, 0);
 -- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(C)" on table "T"
 -- * Success: true
--- * Time: 7ms 
+-- * Time: 8ms 
 INSERT INTO T(A, B, C) VALUES(-1, 0, NULL);
 -- * Number of objective function evaluations: 11
 -- * Number of restarts: 0
 
 -- Negating "UNIQUE[A, B]" on table "T"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO T(A, B, C) VALUES(0, 0, 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 
 -- Negating "FOREIGN KEY[X, Y]" on table "S"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 19ms 
 INSERT INTO T(A, B, C) VALUES(3, 0, 0);
 INSERT INTO S(X, Y, Z) VALUES(-1, 0, 0);
 -- * Number of objective function evaluations: 17
@@ -66,7 +66,7 @@ INSERT INTO S(X, Y, Z) VALUES(-1, 0, 0);
 
 -- Negating "NOT NULL(X)" on table "S"
 -- * Success: true
--- * Time: 17ms 
+-- * Time: 22ms 
 INSERT INTO T(A, B, C) VALUES(-1, 0, 0);
 INSERT INTO S(X, Y, Z) VALUES(NULL, 0, 0);
 -- * Number of objective function evaluations: 14
@@ -74,7 +74,7 @@ INSERT INTO S(X, Y, Z) VALUES(NULL, 0, 0);
 
 -- Negating "NOT NULL(Y)" on table "S"
 -- * Success: true
--- * Time: 24ms 
+-- * Time: 30ms 
 INSERT INTO T(A, B, C) VALUES(0, 1, 0);
 INSERT INTO S(X, Y, Z) VALUES(0, NULL, 0);
 -- * Number of objective function evaluations: 17
@@ -82,7 +82,7 @@ INSERT INTO S(X, Y, Z) VALUES(0, NULL, 0);
 
 -- Negating "NOT NULL(Z)" on table "S"
 -- * Success: true
--- * Time: 26ms 
+-- * Time: 30ms 
 INSERT INTO T(A, B, C) VALUES(0, -1, 0);
 INSERT INTO S(X, Y, Z) VALUES(0, 0, NULL);
 -- * Number of objective function evaluations: 20

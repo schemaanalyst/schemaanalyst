@@ -2,9 +2,8 @@ package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import static junitparams.JUnitParamsRunner.$;
 import static org.junit.Assert.fail;
-
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,9 +91,9 @@ public class TestMultiValueEqualsObjectiveFunction {
     @Test
     @Parameters(method = "testValues")       
     public void test(List<Value> lhs, boolean equals, List<Value> rhs, 
-                     boolean nullAccepted, boolean optimal) {
+                     boolean allowNull, boolean optimal) {
         
-        ObjectiveValue objVal = MultiValueEqualsObjectiveFunction.compute(lhs, equals, rhs, nullAccepted);
+        ObjectiveValue objVal = MultiValueEqualsObjectiveFunction.compute(lhs, equals, rhs, allowNull);
         
         if (optimal) {
             assertOptimal(objVal);            
@@ -119,7 +118,7 @@ public class TestMultiValueEqualsObjectiveFunction {
     @Test
     @Parameters(method = "exceptionValues")   
     public void testNonEqualSizedLists(List<Value> lhs, boolean equals, List<Value> rhs, 
-                                       boolean nullAccepted) {
+                                       boolean allowNull) {
         boolean exceptionThrown = false;
         try {
             MultiValueEqualsObjectiveFunction.compute(lhs, equals, rhs, false);

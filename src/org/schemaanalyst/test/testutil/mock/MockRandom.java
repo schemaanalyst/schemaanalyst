@@ -2,17 +2,18 @@ package org.schemaanalyst.test.testutil.mock;
 
 import org.schemaanalyst.util.random.Random;
 
-public class NonRandomMock extends Random {
+public class MockRandom extends Random {
 
     protected int[] nextInts = {0};
     protected int nextIntsIndex = 0;
 
-    public NonRandomMock() {
+    public MockRandom() {
         super(0);
     }
 
-    public void setNextInt(int nextInt) {
-        setNextInts(nextInt);
+    public MockRandom(int... nextInts) {
+        super(0);
+        setNextInts(nextInts);
     }
 
     public void setNextInts(int... nextInts) {

@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.datageneration.search.objective.row;
 
 import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertWorst;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertWorst;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 
@@ -36,10 +36,10 @@ public class TestNullExpressionObjectiveFunction {
     
     @Test
     @Parameters(method = "testValues")    
-    public void testExpression(Value value, boolean isNotNull, boolean nullAccepted, boolean optimal) {
+    public void testExpression(Value value, boolean isNotNull, boolean allowNull, boolean optimal) {
 
         ObjectiveFunction<Row> objFun = new NullExpressionObjectiveFunction(
-                new NullExpression(new ConstantExpression(value), isNotNull), nullAccepted);
+                new NullExpression(new ConstantExpression(value), isNotNull), allowNull);
 
         ObjectiveValue objVal = objFun.evaluate(new MockRow()); 
         

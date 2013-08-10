@@ -15,8 +15,8 @@ public class NumericValueRelationalObjectiveFunction extends ValueRelationalObje
 
     public static final BigDecimal K = ONE;    
     
-    public NumericValueRelationalObjectiveFunction(RelationalOperator op, boolean nullAccepted) {
-        super(op, nullAccepted);
+    public NumericValueRelationalObjectiveFunction(RelationalOperator op, boolean allowNull) {
+        super(op, allowNull);
     }    
     
     @Override

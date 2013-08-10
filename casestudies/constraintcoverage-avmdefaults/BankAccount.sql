@@ -17,11 +17,11 @@ CREATE TABLE Account (
 	card_number	INT	 REFERENCES UserInfo (card_number)	NOT NULL
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 496ms 
+-- Time to generate: 434ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 38ms 
+-- * Time: 42ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(1, 0, '', 0);
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(0, 0, '', 0);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(1, '', '', 0, 0);
@@ -31,7 +31,7 @@ INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(0,
 
 -- Negating "PRIMARY KEY[card_number]" on table "UserInfo"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(0, 0, '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -52,7 +52,7 @@ INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(-1, 0
 
 -- Negating "PRIMARY KEY[id]" on table "Account"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 5ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(-1, 0, '', 0);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(0, '', '', 0, 0);
 -- * Number of objective function evaluations: 4
@@ -60,7 +60,7 @@ INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(0,
 
 -- Negating "FOREIGN KEY[card_number]" on table "Account"
 -- * Success: true
--- * Time: 45ms 
+-- * Time: 47ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(46, -52, 'hctgp', 96);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(-96, '', 'hjr', -100, -99);
 -- * Number of objective function evaluations: 47
@@ -68,7 +68,7 @@ INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(-9
 
 -- Negating "NOT NULL(account_name)" on table "Account"
 -- * Success: true
--- * Time: 136ms 
+-- * Time: 111ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(12, -50, 'kt', 98);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(-3, NULL, 'srdlabii', 71, 46);
 -- * Number of objective function evaluations: 98
@@ -76,7 +76,7 @@ INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(-3
 
 -- Negating "NOT NULL(user_name)" on table "Account"
 -- * Success: true
--- * Time: 141ms 
+-- * Time: 123ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(73, 22, 'hfckgxrbj', 53);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(23, 'vty', NULL, -36, 46);
 -- * Number of objective function evaluations: 99
@@ -84,7 +84,7 @@ INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(23
 
 -- Negating "NOT NULL(card_number)" on table "Account"
 -- * Success: true
--- * Time: 125ms 
+-- * Time: 98ms 
 INSERT INTO UserInfo(card_number, pin_number, user_name, acct_lock) VALUES(-6, 42, 'yi', -91);
 INSERT INTO Account(id, account_name, user_name, balance, card_number) VALUES(-86, 'camirp', 'hvbai', -83, NULL);
 -- * Number of objective function evaluations: 100

@@ -9,7 +9,8 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 public class ExpressionConstraintObjectiveFunction extends ConstraintObjectiveFunction {
 
     private ObjectiveFunction<Row> rowObjFun;
-
+    private boolean allowNull; 
+    
     /**
      * Objective function for an expression (typically embedded in a CHECK
      * constraint).
@@ -22,24 +23,27 @@ public class ExpressionConstraintObjectiveFunction extends ConstraintObjectiveFu
      *            If set to true, the goal of the objective function will be to
      *            produce rows that all satisfy the constraint, else the goal is
      *            to produce rows that all falsify the constraint.
-     * @param nullAdmissableForSatisfy
-     *            If set to true, NULL values are permissible to satisfy the
-     *            constraint, else NULL is permissible to falsify the
-     *            constraint.
+     * @param allowNull
+     *            If set to true, NULL values are permissible as part or all of
+     *            a solution.
      */
     public ExpressionConstraintObjectiveFunction(Expression expression,
             String description, boolean goalIsToSatisfy,
-            boolean nullAdmissableForSatisfy) {
+            boolean allowNull) {
 
         super(expression.getColumnsInvolved(), description, goalIsToSatisfy);
 
+        this.allowNull = allowNull;
+        
         ExpressionObjectiveFunctionFactory factory = new ExpressionObjectiveFunctionFactory(
-                expression, goalIsToSatisfy,
-                goalIsToSatisfy ? nullAdmissableForSatisfy
-                        : !nullAdmissableForSatisfy);
+                expression, goalIsToSatisfy, allowNull);
         rowObjFun = factory.create();
     }
 
+    public boolean isNullAllowed() {
+        return allowNull;
+    }
+    
     @Override
     protected ObjectiveValue evaluateRow(Row row) {
         return rowObjFun.evaluate(row);

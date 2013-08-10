@@ -16,17 +16,16 @@ public class ExpressionConstraintHandler extends ConstraintHandler<ExpressionCon
     }
     
     protected void attemptToSatisfy(List<Row> rows) {
-        randomiseRows(rows);
+        randomiseRowValues(rows);
     }
     
     protected void attemptToFalsify(List<Row> rows) {
-        randomiseRows(rows);
+        randomiseRowValues(rows);
     }
-    
-    private void randomiseRows(List<Row> rows) {
+
+    private void randomiseRowValues(List<Row> rows) {
         for (Row row : rows) {
-            cellRandomiser.randomiseCells(row); //objFun.isNullAdmissableForSatisfy());
+            cellRandomiser.randomiseCells(row, objFun.isNullAllowed());
         }
-    }        
-    
+    }
 }

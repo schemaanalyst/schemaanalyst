@@ -9,9 +9,9 @@ import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS;
 import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
 import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-import static org.schemaanalyst.test.testutil.BigDecimalAssert.assertEquals;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.assertWorst;
+import static org.schemaanalyst.test.testutil.assertion.BigDecimalAssert.assertEquals;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertWorst;
 
 import java.math.BigDecimal;
 
@@ -57,7 +57,7 @@ public class TestNumericValueRelationalObjectiveFunction {
     @Test
     @Parameters(method = "distanceValues")    
     public void testDistance(String lhs, RelationalOperator op, String rhs, BigDecimal expectedDistance) {
-        DistanceObjectiveValue objValnullAccepted = 
+        DistanceObjectiveValue objValallowNull = 
                 (DistanceObjectiveValue) (new NumericValueRelationalObjectiveFunction(op, true)).evaluate(
                         new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
 
@@ -66,8 +66,8 @@ public class TestNumericValueRelationalObjectiveFunction {
                         new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
         
         
-        assertEquals("Distance should be " + expectedDistance + " for " + objValnullAccepted, 
-                     expectedDistance, objValnullAccepted.getDistance());
+        assertEquals("Distance should be " + expectedDistance + " for " + objValallowNull, 
+                     expectedDistance, objValallowNull.getDistance());
         
         assertEquals("Distance should be " + expectedDistance + " for " + objValNullIsFalse, 
                      expectedDistance, objValNullIsFalse.getDistance());

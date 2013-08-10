@@ -12,11 +12,12 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.row.RowRelationalObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFunction {
+public class ReferenceConstraintObjectiveFunction extends
+        ConstraintObjectiveFunction {
 
     private List<Column> referenceColumns;
     private Data state;
-    private boolean nullAdmissableForSatisfy;
+    private boolean allowNull;
 
     private List<Row> referenceRows;
 
@@ -37,25 +38,28 @@ public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFun
      *            If set to true, the goal of the objective function will be to
      *            produce rows that all satisfy the constraint, else the goal is
      *            to produce rows that all falsify the constraint.
-     * @param nullAdmissableForSatisfy
-     *            If set to true, NULL values are permissible to satisfy the
-     *            constraint, else NULL is permissible to falsify the
-     *            constraint.
+     * @param allowNull
+     *            If set to true, NULL values are permissible as part or all of
+     *            a solution.
      */
     public ReferenceConstraintObjectiveFunction(List<Column> columns,
             List<Column> referenceColumns, Data state, String description,
-            boolean goalIsToSatisfy, boolean nullAdmissableForSatisfy) {
+            boolean goalIsToSatisfy, boolean allowNull) {
 
         super(columns, description, goalIsToSatisfy);
         this.referenceColumns = referenceColumns;
         this.state = state;
-        this.nullAdmissableForSatisfy = nullAdmissableForSatisfy;
+        this.allowNull = allowNull;
     }
 
+    public boolean isNullAllowed() {
+        return allowNull;
+    }
+    
     public List<Row> getReferenceRows() {
         return referenceRows;
     }
-    
+
     @Override
     protected void loadRows(Data data) {
         super.loadRows(data);
@@ -67,7 +71,8 @@ public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFun
 
     @Override
     protected ObjectiveValue evaluateRow(Row row) {
-        return (referenceRows.size() > 0) ? evaluateAgainstReferenceRows(row)
+        return (referenceRows.size() > 0) 
+                ? evaluateAgainstReferenceRows(row)
                 : evaluateDefaultSatisfaction(row);
     }
 
@@ -79,9 +84,7 @@ public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFun
 
         for (Row referenceRow : referenceRows) {
             rowObjVal.add(RowRelationalObjectiveFunction.compute(row,
-                    goalIsToSatisfy, referenceRow,
-                    goalIsToSatisfy ? nullAdmissableForSatisfy
-                            : !nullAdmissableForSatisfy));
+                    goalIsToSatisfy, referenceRow, allowNull));
         }
 
         return rowObjVal;
@@ -100,12 +103,18 @@ public class ReferenceConstraintObjectiveFunction extends ConstraintObjectiveFun
             }
         }
 
-        boolean accepted = involvesNull && nullAdmissableForSatisfy;
-
-        ObjectiveValue rowObjVal = (accepted && goalIsToSatisfy)
-                || (!accepted && !goalIsToSatisfy) ? ObjectiveValue
-                .optimalObjectiveValue(description) : ObjectiveValue
-                .worstObjectiveValue(description);
+        boolean validSolution 
+            = involvesNull
+                // if NULL is involved, it's only a valid solution
+                // if NULL is allowed.
+                ? allowNull
+                // NULL is not involved, it's only a valid solution
+                // if the goal is to violate the constraint.
+                : !goalIsToSatisfy;
+        
+        ObjectiveValue rowObjVal = validSolution 
+                ? ObjectiveValue.optimalObjectiveValue(description) 
+                : ObjectiveValue.worstObjectiveValue(description);
 
         return rowObjVal;
     }

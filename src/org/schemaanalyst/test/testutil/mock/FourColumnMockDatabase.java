@@ -9,6 +9,7 @@ public class FourColumnMockDatabase extends MockDatabase {
     public Column column1, column2, column3, column4;
 
     public FourColumnMockDatabase() {
+        super(4);
         Schema schema = new Schema("FourColumnSchema");
 
         table = schema.createTable("table");

@@ -23,8 +23,8 @@ public class CompoundValueRelationalObjectiveFunction extends ValueRelationalObj
     protected List<Value> lhsSubValues, rhsSubValues;
     protected int smallestSize, sizeDiff;    
     
-    public CompoundValueRelationalObjectiveFunction(RelationalOperator op, boolean nullAccepted) {
-        super(op, nullAccepted);        
+    public CompoundValueRelationalObjectiveFunction(RelationalOperator op, boolean allowNull) {
+        super(op, allowNull);        
     }    
     
     @Override
@@ -105,7 +105,7 @@ public class CompoundValueRelationalObjectiveFunction extends ValueRelationalObj
     protected ObjectiveValue subValueObjectiveValue(int index, RelationalOperator op) {
         Value lhs = lhsSubValues.get(index);
         Value rhs = rhsSubValues.get(index);
-        return ValueRelationalObjectiveFunction.compute(lhs, op, rhs, nullAccepted);
+        return ValueRelationalObjectiveFunction.compute(lhs, op, rhs, allowNull);
     }
 
     protected boolean addNoSubValuesPenalty() {

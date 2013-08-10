@@ -56,7 +56,7 @@ CREATE TABLE db_order_item (
 	total_price	DECIMAL(8, 2)	NOT NULL
 );
 -- Coverage: 84/84 (100.00000%) 
--- Time to generate: 18533ms 
+-- Time to generate: 18865ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -88,7 +88,7 @@ INSERT INTO db_category(id, name, parent_id) VALUES('', '', '');
 
 -- Negating "FOREIGN KEY[parent_id]" on table "db_category"
 -- * Success: true
--- * Time: 28ms 
+-- * Time: 25ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('b', '', '`');
 INSERT INTO db_category(id, name, parent_id) VALUES('^', '', '`');
 -- * Number of objective function evaluations: 49
@@ -96,7 +96,7 @@ INSERT INTO db_category(id, name, parent_id) VALUES('^', '', '`');
 
 -- Negating "NOT NULL(id)" on table "db_category"
 -- * Success: true
--- * Time: 1ms 
+-- * Time: 2ms 
 INSERT INTO db_category(id, name, parent_id) VALUES(NULL, '', '');
 INSERT INTO db_category(id, name, parent_id) VALUES(NULL, '', '');
 -- * Number of objective function evaluations: 7
@@ -104,7 +104,7 @@ INSERT INTO db_category(id, name, parent_id) VALUES(NULL, '', '');
 
 -- Negating "NOT NULL(name)" on table "db_category"
 -- * Success: true
--- * Time: 15ms 
+-- * Time: 16ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('b', NULL, '');
 INSERT INTO db_category(id, name, parent_id) VALUES('`', NULL, '');
 -- * Number of objective function evaluations: 31
@@ -120,7 +120,7 @@ INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, 
 
 -- Negating "FOREIGN KEY[category_id]" on table "db_product"
 -- * Success: true
--- * Time: 14ms 
+-- * Time: 15ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('`', '', '');
 INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, description) VALUES('b', '', 'aa', 0, '', '', '');
 -- * Number of objective function evaluations: 39
@@ -136,7 +136,7 @@ INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, 
 
 -- Negating "NOT NULL(name)" on table "db_product"
 -- * Success: true
--- * Time: 160ms 
+-- * Time: 166ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('jvtywey', '', NULL);
 INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, description) VALUES('r', NULL, '', -100, 'm', 'mirpis', 'baicvahnw');
 -- * Number of objective function evaluations: 292
@@ -144,7 +144,7 @@ INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, 
 
 -- Negating "NOT NULL(category_id)" on table "db_product"
 -- * Success: true
--- * Time: 270ms 
+-- * Time: 237ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('yparpusp', 'jlriarsp', NULL);
 INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, description) VALUES('kiq', 'vuabq', NULL, -38, 'akxfq', 'necrjoxn', 'pmeif');
 -- * Number of objective function evaluations: 215
@@ -152,7 +152,7 @@ INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, 
 
 -- Negating "NOT NULL(price)" on table "db_product"
 -- * Success: true
--- * Time: 115ms 
+-- * Time: 111ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('ehsbcwnc', '', 'b');
 INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, description) VALUES('yvxabof', 'xfwagq', 'aa', NULL, 'shpalcrku', 'uilsnx', 'dx');
 -- * Number of objective function evaluations: 152
@@ -160,7 +160,7 @@ INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, 
 
 -- Negating "NOT NULL(manufacturer)" on table "db_product"
 -- * Success: true
--- * Time: 58ms 
+-- * Time: 46ms 
 INSERT INTO db_category(id, name, parent_id) VALUES('glffudw', 'cuq', NULL);
 INSERT INTO db_product(ean_code, name, category_id, price, manufacturer, notes, description) VALUES('oojar', 'dyuv', 'a', -88, NULL, 'raglk', 'smjhwuo');
 -- * Number of objective function evaluations: 137
@@ -198,7 +198,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-1, '', '
 
 -- Negating "NOT NULL(id)" on table "db_user"
 -- * Success: true
--- * Time: 3ms 
+-- * Time: 2ms 
 INSERT INTO db_role(name) VALUES('aa');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(NULL, '', '', '', '', 0);
 -- * Number of objective function evaluations: 18
@@ -214,7 +214,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(75, NULL,
 
 -- Negating "NOT NULL(email)" on table "db_user"
 -- * Success: true
--- * Time: 69ms 
+-- * Time: 86ms 
 INSERT INTO db_role(name) VALUES('ttqnape');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(77, 'vubgv', NULL, 'gga', 'ttqnape', 0);
 -- * Number of objective function evaluations: 241
@@ -222,7 +222,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(77, 'vubg
 
 -- Negating "NOT NULL(password)" on table "db_user"
 -- * Success: true
--- * Time: 47ms 
+-- * Time: 46ms 
 INSERT INTO db_role(name) VALUES('qmkqa');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-57, 'ontfy', 'jdf', NULL, 'qmkqa', 1);
 -- * Number of objective function evaluations: 166
@@ -230,7 +230,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-57, 'ont
 
 -- Negating "NOT NULL(role_id)" on table "db_user"
 -- * Success: true
--- * Time: 23ms 
+-- * Time: 16ms 
 INSERT INTO db_role(name) VALUES('lw');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(34, 'bdnxa', 'u', 'jbtanj', NULL, 1);
 -- * Number of objective function evaluations: 88
@@ -238,7 +238,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(34, 'bdnx
 
 -- Negating "NOT NULL(active)" on table "db_user"
 -- * Success: true
--- * Time: 56ms 
+-- * Time: 22ms 
 INSERT INTO db_role(name) VALUES('cvmnroxjb');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-65, 'jorebf', 'a', 'mgq', 'huqcx', NULL);
 -- * Number of objective function evaluations: 160
@@ -246,7 +246,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-65, 'jor
 
 -- Negating "CHECK[active IN (0, 1)]" on table "db_user"
 -- * Success: true
--- * Time: 41ms 
+-- * Time: 18ms 
 INSERT INTO db_role(name) VALUES('tyx');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(37, 'kofxhuc', 'sql', 'gpcvuhl', 'aa', 37);
 -- * Number of objective function evaluations: 158
@@ -254,7 +254,7 @@ INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(37, 'kofx
 
 -- Negating "PRIMARY KEY[id]" on table "db_customer"
 -- * Success: true
--- * Time: 28ms 
+-- * Time: 15ms 
 INSERT INTO db_role(name) VALUES('jbbf');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-90, 'cslyhfuq', 'lervh', 'nj', '', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(0, 'r', 'seynnngk', 'pxqmsjtcg', 'hrbhmoob', '1996-07-30');
@@ -263,7 +263,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "FOREIGN KEY[id]" on table "db_customer"
 -- * Success: true
--- * Time: 35ms 
+-- * Time: 23ms 
 INSERT INTO db_role(name) VALUES('fymegl');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-49, 'nfxtnq', 'mryguh', 'leawm', 'lw', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-72, 'r', '', 'bxq', '', '2011-02-14');
@@ -272,7 +272,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "NOT NULL(id)" on table "db_customer"
 -- * Success: true
--- * Time: 61ms 
+-- * Time: 76ms 
 INSERT INTO db_role(name) VALUES('doyklv');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(66, 'lkohdrgoi', 'mtlcjmvnv', 'tdupnwq', 'aa', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(NULL, 'a', 'oqwat', 'ed', 'kug', '2011-06-17');
@@ -281,7 +281,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "NOT NULL(category)" on table "db_customer"
 -- * Success: true
--- * Time: 55ms 
+-- * Time: 52ms 
 INSERT INTO db_role(name) VALUES('tdyqhsh');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-45, 'chstjokh', 'b', 'abjpksh', 'ttqnape', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(66, NULL, 'k', 'abqpvuh', '', '2019-11-08');
@@ -290,7 +290,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "NOT NULL(first_name)" on table "db_customer"
 -- * Success: true
--- * Time: 176ms 
+-- * Time: 150ms 
 INSERT INTO db_role(name) VALUES('rlty');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(4, 'pkxn', 'filwu', 'n', '', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-49, 'n', 'wdxhcq', NULL, '', '1993-09-14');
@@ -299,7 +299,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "NOT NULL(last_name)" on table "db_customer"
 -- * Success: true
--- * Time: 77ms 
+-- * Time: 54ms 
 INSERT INTO db_role(name) VALUES('uunqoj');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-24, 'iwha', 'nhmywbu', 'qe', 'qmkqa', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-90, 'r', 'hxxjelwl', 'biiai', NULL, '2009-09-21');
@@ -308,7 +308,7 @@ INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_d
 
 -- Negating "PRIMARY KEY[id]" on table "db_order"
 -- * Success: true
--- * Time: 112ms 
+-- * Time: 126ms 
 INSERT INTO db_role(name) VALUES('ugjbgdob');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(67, 'ww', 'c', '', 'doyklv', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-49, '', 'anndy', 'eidmhiac', 'mdpyucvvp', '2014-11-01');
@@ -318,7 +318,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(1, 0, 49, 
 
 -- Negating "FOREIGN KEY[customer_id]" on table "db_order"
 -- * Success: true
--- * Time: 101ms 
+-- * Time: 128ms 
 INSERT INTO db_role(name) VALUES('jjkuvypv');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-17, '', 'rbfeb', 'cqshd', 'qmkqa', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(66, '', 'tgryd', 'n', 'h', '2014-10-14');
@@ -328,7 +328,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(-62, 95, 4
 
 -- Negating "NOT NULL(id)" on table "db_order"
 -- * Success: true
--- * Time: 70ms 
+-- * Time: 67ms 
 INSERT INTO db_role(name) VALUES('yltqi');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-36, '', 'ru', 'onj', 'lw', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(67, 'i', 'lgciogq', '', 'qdrmemn', '2019-08-14');
@@ -338,7 +338,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(NULL, 67, 
 
 -- Negating "NOT NULL(customer_id)" on table "db_order"
 -- * Success: true
--- * Time: 70ms 
+-- * Time: 71ms 
 INSERT INTO db_role(name) VALUES('qy');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-25, 'jfkvhk', 'xiprump', 'jmvys', '', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-36, 'm', 'hctneh', 'gklldkmh', 'ptvprup', '1995-04-28');
@@ -348,7 +348,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(8, NULL, -
 
 -- Negating "NOT NULL(total_price)" on table "db_order"
 -- * Success: true
--- * Time: 313ms 
+-- * Time: 248ms 
 INSERT INTO db_role(name) VALUES('olxox');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(-82, 'xkuqvvi', '', 'rx', 'yltqi', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-82, 'f', '', 'sexgf', 'rdg', '2004-07-02');
@@ -358,7 +358,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(47, 0, NUL
 
 -- Negating "NOT NULL(created_at)" on table "db_order"
 -- * Success: true
--- * Time: 426ms 
+-- * Time: 411ms 
 INSERT INTO db_role(name) VALUES('cesc');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(40, 'fi', 'olmtldatd', 'wnqosnbt', 'huqcx', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(40, 'd', 'ofpc', 'ajvmsupdd', 'twtdgd', '2002-02-08');
@@ -368,7 +368,7 @@ INSERT INTO db_order(id, customer_id, total_price, created_at) VALUES(4, -36, 20
 
 -- Negating "PRIMARY KEY[id]" on table "db_order_item"
 -- * Success: true
--- * Time: 1771ms 
+-- * Time: 1732ms 
 INSERT INTO db_role(name) VALUES('rrfuop');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(65, 'oxjdpdwso', 'ggysber', 'pnfkotlyk', 'uunqoj', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-45, '', '', 'uvvcxiq', 'u', '1996-08-29');
@@ -381,7 +381,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "FOREIGN KEY[order_id]" on table "db_order_item"
 -- * Success: true
--- * Time: 1120ms 
+-- * Time: 1178ms 
 INSERT INTO db_role(name) VALUES('awit');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(17, 'qdqq', 'a', 'wyidxp', 'yltqi', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(17, 'v', 'ggmh', 'eqxnkrc', 'qbq', '2018-05-15');
@@ -394,7 +394,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "FOREIGN KEY[product_ean_code]" on table "db_order_item"
 -- * Success: true
--- * Time: 1553ms 
+-- * Time: 1579ms 
 INSERT INTO db_role(name) VALUES('jrefyo');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(78, 'st', 'pcitffs', 'siip', 'tdyqhsh', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(78, 'g', 'idvxmxqgj', 'kbvyqepql', 'hshr', '2000-07-24');
@@ -407,7 +407,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "NOT NULL(id)" on table "db_order_item"
 -- * Success: true
--- * Time: 1326ms 
+-- * Time: 1275ms 
 INSERT INTO db_role(name) VALUES('dt');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(36, 'rtmdeoj', 'jhsygfsdu', 'nu', 'huqcx', 0);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(65, 'i', 'nuykse', 'vtiisxbvs', 'qijyxgjhv', '2002-11-21');
@@ -420,7 +420,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "NOT NULL(order_id)" on table "db_order_item"
 -- * Success: true
--- * Time: 3144ms 
+-- * Time: 3242ms 
 INSERT INTO db_role(name) VALUES('ioaolrvph');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(64, 'oxfm', 'vdnkm', 'jdm', 'awit', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-90, 'g', 'llcfrocfp', 'yrlvfujx', 'wnhcp', '2014-10-04');
@@ -433,7 +433,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "NOT NULL(number_of_items)" on table "db_order_item"
 -- * Success: true
--- * Time: 3139ms 
+-- * Time: 3516ms 
 INSERT INTO db_role(name) VALUES('doekgq');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(68, 'ewmre', 'wusohd', 'nqqtlo', '', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-24, 'k', 'oqyefe', 'jhyfmjo', 'xob', '1997-03-23');
@@ -459,7 +459,7 @@ INSERT INTO db_order_item(id, order_id, number_of_items, product_ean_code, total
 
 -- Negating "NOT NULL(total_price)" on table "db_order_item"
 -- * Success: true
--- * Time: 3221ms 
+-- * Time: 3279ms 
 INSERT INTO db_role(name) VALUES('elipnpwg');
 INSERT INTO db_user(id, name, email, password, role_id, active) VALUES(87, 'ao', 'abclttfs', 'svlu', '', 1);
 INSERT INTO db_customer(id, category, salutation, first_name, last_name, birth_date) VALUES(-98, 'r', 'druibaise', 'klpwdwwn', 'ldbngjiy', '2017-09-20');

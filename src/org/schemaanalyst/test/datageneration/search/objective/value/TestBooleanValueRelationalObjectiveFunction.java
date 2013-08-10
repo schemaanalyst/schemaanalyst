@@ -13,7 +13,7 @@ import org.schemaanalyst.datageneration.search.objective.value.BooleanValueRelat
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.Pair;
 
-import static org.schemaanalyst.test.testutil.ObjectiveValueAssert.*;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.*;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestBooleanValueRelationalObjectiveFunction {
@@ -25,7 +25,7 @@ public class TestBooleanValueRelationalObjectiveFunction {
                 $(new BooleanValue(false), RelationalOperator.NOT_EQUALS, new BooleanValue(true), false),
                 $(new BooleanValue(true), RelationalOperator.NOT_EQUALS, new BooleanValue(false), false),
                 
-                // same tests above should pass regardless of nullAccepted, as there are no nulls
+                // same tests above should pass regardless of allowNull, as there are no nulls
                 $(new BooleanValue(true), RelationalOperator.EQUALS, new BooleanValue(true), false),
                 $(new BooleanValue(false), RelationalOperator.EQUALS, new BooleanValue(false), false),
                 $(new BooleanValue(false), RelationalOperator.NOT_EQUALS, new BooleanValue(true), false),
@@ -42,9 +42,9 @@ public class TestBooleanValueRelationalObjectiveFunction {
     
     @Test
     @Parameters(method = "optimalValues")    
-    public void testOptimal(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean nullAccepted) {        
+    public void testOptimal(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean allowNull) {        
         BooleanValueRelationalObjectiveFunction objFun = 
-                new BooleanValueRelationalObjectiveFunction(op, nullAccepted);
+                new BooleanValueRelationalObjectiveFunction(op, allowNull);
         
         assertOptimal(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
     }
@@ -58,7 +58,7 @@ public class TestBooleanValueRelationalObjectiveFunction {
                 $(new BooleanValue(true), RelationalOperator.NOT_EQUALS, new BooleanValue(true), true),
                 $(new BooleanValue(false), RelationalOperator.NOT_EQUALS, new BooleanValue(false), true),
 
-                // same tests above should pass regardless of nullAccepted, as there are no nulls
+                // same tests above should pass regardless of allowNull, as there are no nulls
                 $(new BooleanValue(true), RelationalOperator.EQUALS, new BooleanValue(false), false),
                 $(new BooleanValue(false), RelationalOperator.EQUALS, new BooleanValue(true), false),
                 $(new BooleanValue(true), RelationalOperator.NOT_EQUALS, new BooleanValue(true), false),
@@ -75,9 +75,9 @@ public class TestBooleanValueRelationalObjectiveFunction {
             
     @Test
     @Parameters(method = "worstValues")    
-    public void testWorst(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean nullAccepted) {        
+    public void testWorst(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean allowNull) {        
         BooleanValueRelationalObjectiveFunction objFun = 
-                new BooleanValueRelationalObjectiveFunction(op, nullAccepted);
+                new BooleanValueRelationalObjectiveFunction(op, allowNull);
         
         assertWorst(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
     } 
@@ -96,11 +96,11 @@ public class TestBooleanValueRelationalObjectiveFunction {
     
     @Test
     @Parameters(method = "throwsExceptionValues")    
-    public void testThrowsException(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean nullAccepted) {        
+    public void testThrowsException(BooleanValue lhs, RelationalOperator op, BooleanValue rhs, boolean allowNull) {        
         boolean fail = true;
         try {        
             BooleanValueRelationalObjectiveFunction objFun = 
-                    new BooleanValueRelationalObjectiveFunction(op, nullAccepted);
+                    new BooleanValueRelationalObjectiveFunction(op, allowNull);
 
             assertWorst(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
         } catch (ObjectiveFunctionException e) {

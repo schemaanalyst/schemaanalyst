@@ -9,7 +9,7 @@ CREATE TABLE Inventory (
 	price	DECIMAL(18, 2)
 );
 -- Coverage: 4/4 (100.00000%) 
--- Time to generate: 14ms 
+-- Time to generate: 15ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -28,7 +28,7 @@ INSERT INTO Inventory(id, product, quantity, price) VALUES(0, NULL, 0, 0);
 
 -- Negating "UNIQUE[product]" on table "Inventory"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 3ms 
 INSERT INTO Inventory(id, product, quantity, price) VALUES(-1, '', 0, 0);
 -- * Number of objective function evaluations: 4
 -- * Number of restarts: 0

@@ -17,11 +17,11 @@ CREATE TABLE Student (
 	CHECK (id >= 0)
 );
 -- Coverage: 16/16 (100.00000%) 
--- Time to generate: 253ms 
+-- Time to generate: 250ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 51ms 
+-- * Time: 61ms 
 INSERT INTO Residence(name, capacity) VALUES('a', 3);
 INSERT INTO Residence(name, capacity) VALUES('', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(1, '', '', '');
@@ -31,14 +31,14 @@ INSERT INTO Student(id, firstName, lastName, residence) VALUES(0, '', '', '');
 
 -- Negating "PRIMARY KEY[name]" on table "Residence"
 -- * Success: true
--- * Time: 4ms 
+-- * Time: 3ms 
 INSERT INTO Residence(name, capacity) VALUES('', 3);
 -- * Number of objective function evaluations: 6
 -- * Number of restarts: 0
 
 -- Negating "NOT NULL(name)" on table "Residence"
 -- * Success: true
--- * Time: 2ms 
+-- * Time: 1ms 
 INSERT INTO Residence(name, capacity) VALUES(NULL, 3);
 -- * Number of objective function evaluations: 5
 -- * Number of restarts: 0
@@ -59,14 +59,14 @@ INSERT INTO Residence(name, capacity) VALUES('b', 0);
 
 -- Negating "CHECK[capacity <= 10]" on table "Residence"
 -- * Success: true
--- * Time: 13ms 
+-- * Time: 10ms 
 INSERT INTO Residence(name, capacity) VALUES('b', 15);
 -- * Number of objective function evaluations: 19
 -- * Number of restarts: 0
 
 -- Negating "PRIMARY KEY[id]" on table "Student"
 -- * Success: true
--- * Time: 16ms 
+-- * Time: 15ms 
 INSERT INTO Residence(name, capacity) VALUES('b', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(0, '', '', '');
 -- * Number of objective function evaluations: 17
@@ -74,7 +74,7 @@ INSERT INTO Student(id, firstName, lastName, residence) VALUES(0, '', '', '');
 
 -- Negating "FOREIGN KEY[residence]" on table "Student"
 -- * Success: true
--- * Time: 109ms 
+-- * Time: 117ms 
 INSERT INTO Residence(name, capacity) VALUES('`', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(21, 'noi', 'pya', 'aa');
 -- * Number of objective function evaluations: 118
@@ -82,7 +82,7 @@ INSERT INTO Student(id, firstName, lastName, residence) VALUES(21, 'noi', 'pya',
 
 -- Negating "CHECK[id >= 0]" on table "Student"
 -- * Success: true
--- * Time: 49ms 
+-- * Time: 34ms 
 INSERT INTO Residence(name, capacity) VALUES('aa', 3);
 INSERT INTO Student(id, firstName, lastName, residence) VALUES(-1, '', '', '');
 -- * Number of objective function evaluations: 27

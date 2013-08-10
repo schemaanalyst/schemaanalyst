@@ -9,7 +9,7 @@ import static org.junit.Assert.assertNull;
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
-import static org.schemaanalyst.test.testutil.BigDecimalAssert.assertEquals;
+import static org.schemaanalyst.test.testutil.assertion.BigDecimalAssert.assertEquals;
 
 public class TestDistanceObjectiveValue {
 

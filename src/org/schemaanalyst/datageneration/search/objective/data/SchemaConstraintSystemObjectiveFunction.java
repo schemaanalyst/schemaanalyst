@@ -29,7 +29,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
 
         // NULL is only allowed for row acceptance when we are not trying to 
         // invalidate one constraint, i.e. when constraintToInvalidate != null
-        boolean nullAdmissableForSatisfy = constraintToInvalidate != null;
+        boolean allowNull = constraintToInvalidate != null;
 
         List<Table> tables;
         if (constraintToInvalidate == null) {
@@ -58,7 +58,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
                 }
     
                 ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
-                        constraint, state, satisfyConstraint, nullAdmissableForSatisfy);
+                        constraint, state, satisfyConstraint, allowNull);
     
                 objFuns.add(factory.create());
             }

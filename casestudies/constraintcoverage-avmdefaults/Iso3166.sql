@@ -8,7 +8,7 @@ CREATE TABLE country (
 	country_id	INT	NOT NULL
 );
 -- Coverage: 6/6 (100.00000%) 
--- Time to generate: 20ms 
+-- Time to generate: 23ms 
 
 -- Satisfying all constraints
 -- * Success: true
@@ -20,7 +20,7 @@ INSERT INTO country(name, two_letter, country_id) VALUES('', '', 0);
 
 -- Negating "PRIMARY KEY[two_letter]" on table "country"
 -- * Success: true
--- * Time: 0ms 
+-- * Time: 1ms 
 INSERT INTO country(name, two_letter, country_id) VALUES('', '', 0);
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
@@ -34,7 +34,7 @@ INSERT INTO country(name, two_letter, country_id) VALUES(NULL, 'b', 0);
 
 -- Negating "NOT NULL(country_id)" on table "country"
 -- * Success: true
--- * Time: 9ms 
+-- * Time: 11ms 
 INSERT INTO country(name, two_letter, country_id) VALUES('', 'b', NULL);
 -- * Number of objective function evaluations: 17
 -- * Number of restarts: 0
