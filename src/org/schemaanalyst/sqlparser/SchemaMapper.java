@@ -1,4 +1,4 @@
-package org.schemaanalyst.sqlparser;
+    package org.schemaanalyst.sqlparser;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
@@ -65,7 +65,7 @@ public class SchemaMapper {
         Table table = schema.createTable(tableName);
 
         // log this event
-        LOGGER.log(Level.INFO, "Parsing table \"{0}\" one line {1}", new Object[]{tableName, node.getLineNo()});
+        LOGGER.log(Level.INFO, "Parsing table \"{0}\" at line {1}", new Object[]{tableName, node.getLineNo()});
 
         // parse columns
         TColumnDefinitionList columnList = node.getColumnList();
@@ -93,7 +93,7 @@ public class SchemaMapper {
     }
 
     protected void analyseAlterTableStatement(TAlterTableStatement node) {
-        LOGGER.log(Level.WARNING, "Parsing alter table statement \"{0}\", which has an incomplete GSP implementation at line: {1}", new Object[]{node, node.getLineNo()});
+        LOGGER.log(Level.INFO, "Parsing alter table statement \"{0}\" at line: {1}", new Object[]{node, node.getLineNo()});
 
         String tableName = stripQuotes(node.getTableName());
         Table table = schema.getTable(tableName);
@@ -109,23 +109,9 @@ public class SchemaMapper {
     }
 
     protected void analyseAlterTableOption(Table currentTable, TAlterTableOption node) {
-        LOGGER.log(Level.WARNING, "Parsing alter table option statement, which has a buggy/incomplete implementation on line {0}", node.getLineNo());
-
         switch (node.getOptionType()) {
-            case AddConstraint:
-                constraintMapper.analyseConstraintList(currentTable, null, node.getConstraintList());
-                break;
-            case AddConstraintPK:
-                constraintMapper.setPrimaryKeyConstraint(
-                        currentTable, null,
-                        node.getConstraintName(),
-                        node.getColumnNameList());
-                break;
-            case AddConstraintUnique:
-                constraintMapper.addUniqueConstraint(
-                        currentTable, null,
-                        node.getConstraintName(),
-                        node.getColumnNameList());
+            case AddTableConstraint: 
+                constraintMapper.mapConstraint(currentTable, null, node.getTableConstraint());
                 break;
             default:
                 throw new UnsupportedSQLException(node);
