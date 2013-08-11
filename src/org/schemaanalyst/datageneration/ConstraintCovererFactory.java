@@ -20,7 +20,6 @@ import org.schemaanalyst.datageneration.search.termination.CounterTerminationCri
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.deprecated.datageneration.domainspecific.DomainSpecificConstraintCoverer;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
@@ -180,23 +179,4 @@ public class ConstraintCovererFactory {
                                                 maxEvaluations);
     }
 
-    
-    /*****************************************************************************************************************************/    
-    /*                                                                                                                           */
-    /*   DOMAIN-SPECIFIC                                                                                                         */
-    /*                                                                                                                           */
-    /*****************************************************************************************************************************/
-    
-    public static DomainSpecificConstraintCoverer domainSpecific(Schema schema,
-                                                                 DBMS dbms,
-                                                                 String cellRandomisationProfile,
-                                                                 long seed,
-                                                                 int maxEvaluations) {
-    	Random random = new SimpleRandom(seed);    
-    	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
-
-    	return new DomainSpecificConstraintCoverer(schema, dbms,
-                                                   DEFAULT_NUM_SATISFY_ROWS, DEFAULT_NUM_NEGATE_ROWS,
-                                                   maxEvaluations, cellRandomiser, random);
-    }
 }

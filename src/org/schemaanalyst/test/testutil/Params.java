@@ -5,6 +5,10 @@ import java.util.List;
 
 public class Params {
 
+    public static final Integer[] EMPTY = d();
+    
+    public static final Integer NULL = null;
+    
     /**
      * For specifying values for a Data object easily with JUnitParams, using
      * nested calls to r() 

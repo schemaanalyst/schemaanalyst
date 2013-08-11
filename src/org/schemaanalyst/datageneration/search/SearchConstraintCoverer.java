@@ -5,7 +5,7 @@ import java.util.List;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.search.objective.data.SchemaConstraintSystemObjectiveFunction;
+import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
