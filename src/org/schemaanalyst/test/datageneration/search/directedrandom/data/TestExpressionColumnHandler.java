@@ -9,7 +9,7 @@ import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.datageneration.search.directedrandom.data.ExpressionColumnHandler;
+import org.schemaanalyst.datageneration.search.handler.ExpressionColumnHandler;
 import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;

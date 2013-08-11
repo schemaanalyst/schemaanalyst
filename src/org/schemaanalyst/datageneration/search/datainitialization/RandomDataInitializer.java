@@ -6,7 +6,7 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 
-public class RandomDataInitializer extends DataInitializer {
+public class RandomDataInitializer extends DataInitialiser {
 
     protected CellRandomiser cellRandomizer;
 

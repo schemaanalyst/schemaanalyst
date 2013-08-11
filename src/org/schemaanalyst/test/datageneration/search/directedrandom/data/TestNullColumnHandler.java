@@ -11,7 +11,7 @@ import static junitparams.JUnitParamsRunner.$;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.datageneration.search.directedrandom.data.NullColumnHandler;
+import org.schemaanalyst.datageneration.search.handler.NullColumnHandler;
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 

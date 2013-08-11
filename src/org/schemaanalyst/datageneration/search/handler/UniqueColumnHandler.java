@@ -1,4 +1,4 @@
-package org.schemaanalyst.datageneration.search.directedrandom.data;
+package org.schemaanalyst.datageneration.search.handler;
 
 import java.util.List;
 

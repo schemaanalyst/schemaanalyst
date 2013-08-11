@@ -16,7 +16,7 @@ import org.schemaanalyst.data.TimeValue;
 import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.ValueVisitor;
-import org.schemaanalyst.datageneration.search.datainitialization.DataInitializer;
+import org.schemaanalyst.datageneration.search.datainitialization.DataInitialiser;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
 
@@ -24,8 +24,8 @@ public class AlternatingValueSearch extends Search<Data> {
 
     protected static final int ACCELERATION_BASE = 2;
     protected Random random;
-    protected DataInitializer startInitializer;
-    protected DataInitializer restartInitializer;
+    protected DataInitialiser startInitialiser;
+    protected DataInitialiser restartInitialiser;
     protected Data data;
     protected List<Cell> cells;
     protected ObjectiveValue lastObjVal;
@@ -33,11 +33,11 @@ public class AlternatingValueSearch extends Search<Data> {
     protected int step;
 
     public AlternatingValueSearch(Random random,
-            DataInitializer startInitializer,
-            DataInitializer restartInitializer) {
+            DataInitialiser startInitializer,
+            DataInitialiser restartInitializer) {
         this.random = random;
-        this.startInitializer = startInitializer;
-        this.restartInitializer = restartInitializer;
+        this.startInitialiser = startInitializer;
+        this.restartInitialiser = restartInitializer;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AlternatingValueSearch extends Search<Data> {
         cells = data.getCells();
 
         // start
-        startInitializer.initialize(data);
+        startInitialiser.initialize(data);
         lastObjVal = null;
         evaluate();
 
@@ -61,7 +61,7 @@ public class AlternatingValueSearch extends Search<Data> {
             }
 
             if (!terminationCriterion.satisfied()) {
-                restartInitializer.initialize(data);
+                restartInitialiser.initialize(data);
                 lastObjVal = null;
                 evaluate();
             }

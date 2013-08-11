@@ -11,7 +11,7 @@ import junitparams.Parameters;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.schemaanalyst.datageneration.search.directedrandom.data.ReferenceColumnHandler;
+import org.schemaanalyst.datageneration.search.handler.ReferenceColumnHandler;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.MockCellRandomiser;
 import org.schemaanalyst.test.testutil.mock.MockRandom;

@@ -1,6 +1,7 @@
 package org.schemaanalyst.datageneration.search.objective.constraint;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.schemaanalyst.data.Data;
@@ -15,17 +16,15 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 
-    protected Data state, data;
-    protected String description;
-    protected List<ObjectiveFunction<Data>> objFuns;
+    private String description;
+    private List<ObjectiveFunction<Data>> subObjectiveFunctions;
 
     public SchemaConstraintSystemObjectiveFunction(Schema schema) {
         this(schema, null, null);
     }
 
     public SchemaConstraintSystemObjectiveFunction(Schema schema, Data state, Constraint constraintToInvalidate) {
-        this.state = state;
-        objFuns = new ArrayList<>();
+        subObjectiveFunctions = new ArrayList<>();
 
         // NULL is only allowed for row acceptance when we are not trying to 
         // invalidate one constraint, i.e. when constraintToInvalidate != null
@@ -60,7 +59,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
                 ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
                         constraint, state, satisfyConstraint, allowNull);
     
-                objFuns.add(factory.create());
+                subObjectiveFunctions.add(factory.create());
             }
         }
         
@@ -73,10 +72,14 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
     public ObjectiveValue evaluate(Data data) {
         SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
-        for (ObjectiveFunction<Data> objFun : objFuns) {
+        for (ObjectiveFunction<Data> objFun : subObjectiveFunctions) {
             objVal.add(objFun.evaluate(data));
         }
 
         return objVal;
+    }
+    
+    public List<ObjectiveFunction<Data>> getSubObjectiveFunctions() {
+        return Collections.unmodifiableList(subObjectiveFunctions);
     }
 }

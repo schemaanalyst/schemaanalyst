@@ -9,6 +9,7 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
+import org.schemaanalyst.datageneration.search.DirectedRandomSearch;
 import org.schemaanalyst.datageneration.search.NaiveRandomConstraintCoverer;
 import org.schemaanalyst.datageneration.search.RandomSearch;
 import org.schemaanalyst.datageneration.search.Search;
@@ -77,8 +78,8 @@ public class ConstraintCovererFactory {
         choices.add("AlternatingValue");
         choices.add("AlternatingValueDefaults");
         choices.add("Random");
-        choices.add("NaiveRandom");
-        choices.add("DomainSpecific");
+        choices.add("DirectedRandom");
+        choices.add("NaiveRandom");        
         return choices;
     }	
 	
@@ -165,6 +166,32 @@ public class ConstraintCovererFactory {
         								   DEFAULT_NUM_SATISFY_ROWS, 
         								   DEFAULT_NUM_NEGATE_ROWS);
     }
+    
+    public static SearchConstraintCoverer directedRandom(Schema schema,
+                                                         DBMS dbms,
+                                                         String cellRandomisationProfile,
+                                                         long seed,
+                                                         int maxEvaluations) {
+        Random random = new SimpleRandom(seed);    
+        CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
+
+        Search<Data> drs = new DirectedRandomSearch(
+                random,
+                new NoDataInitialization(),
+                cellRandomiser);
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(
+                        drs.getEvaluationsCounter(),
+                        maxEvaluations),
+                        new OptimumTerminationCriterion<>(drs));
+
+        drs.setTerminationCriterion(terminationCriterion);
+
+        return new SearchConstraintCoverer(drs, schema, dbms, 
+                                           DEFAULT_NUM_SATISFY_ROWS, 
+                                           DEFAULT_NUM_NEGATE_ROWS);
+}    
     
     public static NaiveRandomConstraintCoverer naiveRandom(Schema schema,
                                                            DBMS dbms,
