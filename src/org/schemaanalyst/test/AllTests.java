@@ -35,7 +35,8 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.TestMutationScoreCalculation.class,
 	org.schemaanalyst.test.mutation.TestSQLInsertRecord.class,
 	org.schemaanalyst.test.sqlrepresentation.expression.TestExpression.class,
-	org.schemaanalyst.test.util.runner.TestRunner.class
+	org.schemaanalyst.test.util.runner.TestRunner.class,
+	org.schemaanalyst.test.util.sql.TestSQLRepairer.class
 })
 
 public class AllTests {}
