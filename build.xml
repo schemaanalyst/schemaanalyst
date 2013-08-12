@@ -43,7 +43,7 @@
 
 	<!-- TESTING TASK - "ant test" -->
 	<target name="test" depends="compile">
-		<junit fork="yes">
+		<junit fork="false">
 			<test name="org.schemaanalyst.test.AllTests" />
 			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
