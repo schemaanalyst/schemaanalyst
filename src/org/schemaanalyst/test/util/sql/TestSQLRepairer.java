@@ -44,7 +44,17 @@ public class TestSQLRepairer {
 
 		String expectedExample = "CREATE TABLE 'NUTR_DEF' ('Nutrr_no' TEXT, 'Nutrient_name' TEXT, 'Flav_Class' TEXT, 'Unit' TEXT, 'Tagname' TEXT);";
 
-		System.out.println("Returned example: " + returnedExample);
+		assertEquals("Expected string should be " + expectedExample,
+				expectedExample, returnedExample);
+	}
+
+	@Test
+	public void spacesAreRemovedInsideOfSingleQuotesAndThenSingleQuotesAreRemovedRealExample() {
+		String example = "CREATE TABLE 'NUTR_DEF' ('Nutrr_no' TEXT, 'Nutrient name' TEXT, 'Flav_Class' TEXT, 'Unit' TEXT, 'Tagname' TEXT);";
+		String returnedExample = SQLRepairer.deleteSpacesInsideSingleQuotes(example); 
+		returnedExample = SQLRepairer.deleteSingleQuotes(returnedExample);
+
+		String expectedExample = "CREATE TABLE NUTR_DEF (Nutrr_no TEXT, Nutrient_name TEXT, Flav_Class TEXT, Unit TEXT, Tagname TEXT);";
 
 		assertEquals("Expected string should be " + expectedExample,
 				expectedExample, returnedExample);
