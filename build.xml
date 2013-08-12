@@ -40,6 +40,16 @@
 		</javac>
 	</target>
 
+
+	<!-- TESTING TASK - "ant test" -->
+	<target name="test" depends="compile">
+		<junit fork="yes">
+			<test name="org.schemaanalyst.test.AllTests" />
+			<classpath refid="run_classpath" />
+			<formatter type="brief" usefile="false" />
+		</junit>
+	</target>
+
 	<!-- BUNDLE TASK - "ant bundle" -->
 	<target name="bundle" depends="compile">
 		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, results/**, dist/**, config/*.local">
