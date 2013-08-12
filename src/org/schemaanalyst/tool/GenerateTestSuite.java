@@ -26,9 +26,9 @@ public class GenerateTestSuite extends Runner {
     protected void task() {
         String testSrcDir = locationsConfiguration.getTestSrcDir();
         String testPackage = locationsConfiguration.getTestPackage();
-        List<File> classFiles = new ArrayList<File>();
+        List<File> classFiles = new ArrayList<>();
 
-        Deque<File> dirs = new ArrayDeque<File>();
+        Deque<File> dirs = new ArrayDeque<>();
         dirs.push(new File(testSrcDir));
 
         while (dirs.size() > 0) {
@@ -49,7 +49,7 @@ public class GenerateTestSuite extends Runner {
             }
         }
 
-        List<String> classNames = new ArrayList<String>();
+        List<String> classNames = new ArrayList<>();
         for (File classFile : classFiles) {
             String path = classFile.getPath().substring(testSrcDir.length());
             String className = testPackage + fileNameToClassName(path, true);

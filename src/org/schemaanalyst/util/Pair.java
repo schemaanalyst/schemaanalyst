@@ -4,9 +4,9 @@ public class Pair<T> {
 
     protected T first, second;
     
-    public Pair(T lhs, T rhs) {
-        this.first = lhs;
-        this.second = rhs;
+    public Pair(T first, T second) {
+        this.first = first;
+        this.second = second;
     }
     
     public T getFirst() {
@@ -15,6 +15,5 @@ public class Pair<T> {
     
     public T getSecond() {
         return second;
-    }
-   
+    }  
 }
