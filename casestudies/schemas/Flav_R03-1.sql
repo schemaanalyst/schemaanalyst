@@ -1,3 +1,4 @@
+-- http://www.ars.usda.gov/Services/docs.htm?docid=6231
 CREATE TABLE 'DATA_SRC' ('DataSrc_ID' TEXT, 'Authors' TEXT, 'Title' TEXT, 'Jorunal' TEXT, 'Year' TEXT, 'Volume' TEXT, 'Issue' TEXT, 'Start_Page' TEXT, 'Emd_Page' TEXT);
 CREATE TABLE 'DATSRCLN' ('NDB_No' TEXT, 'Nutr_no' TEXT, 'DataSrc_ID' TEXT);
 CREATE TABLE 'FD_GROUP' ('FdGrp_CD' TEXT, 'FdGrp_Desc' TEXT);
