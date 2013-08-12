@@ -108,17 +108,17 @@ public abstract class RelationalValueObjectiveFunction<T> extends ObjectiveFunct
             
             protected void booleanValue() {
                 RelationalBooleanValueObjectiveFunction objFun = new RelationalBooleanValueObjectiveFunction(op, allowNull);
-                objVal = objFun.evaluate(new Pair<BooleanValue>((BooleanValue) lhs, (BooleanValue) rhs));
+                objVal = objFun.evaluate(new Pair<>((BooleanValue) lhs, (BooleanValue) rhs));
             }
             
             protected void numericValue() {
                 RelationalNumericValueObjectiveFunction objFun = new RelationalNumericValueObjectiveFunction(op, allowNull);
-                objVal = objFun.evaluate(new Pair<NumericValue>((NumericValue) lhs, (NumericValue) rhs));  
+                objVal = objFun.evaluate(new Pair<>((NumericValue) lhs, (NumericValue) rhs));  
             }
             
             protected void compoundValue() {
                 RelationalCompoundValueObjectiveFunction objFun = new RelationalCompoundValueObjectiveFunction(op, allowNull);
-                objVal = objFun.evaluate(new Pair<CompoundValue>((CompoundValue) lhs, (CompoundValue) rhs));
+                objVal = objFun.evaluate(new Pair<>((CompoundValue) lhs, (CompoundValue) rhs));
             }
         }      
 
