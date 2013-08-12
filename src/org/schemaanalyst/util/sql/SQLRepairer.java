@@ -36,15 +36,20 @@ public class SQLRepairer {
 		return sql.replaceAll("\\s", "");
 	}
 
+	/**
+	 * This method removes spaces from names between single quotes from a SQL string.
+	 *
+	 * @param sql The string that may have spaced names between single quotes.
+	 * @return The string that does not contain spacing between single quotes.
+	 */
 	public static String deleteSpacesInsideSingleQuotes(String sql) {
-		System.out.println("SQL: **" + sql + "**");
-		
+		// prepare the string buffer and regular expressions for removing white space between single quotes
 		StringBuffer sb = new StringBuffer();
 		Pattern p = Pattern.compile("\'([^\']*)\'");
 		Matcher matcher = p.matcher(sql);
 		
+		// iterate through all of the possible matches, replacing as we go
 		while(matcher.find()) { 
-			System.out.println("**" + matcher.group(1) + "**");	
 			matcher.appendReplacement(sb, matcher.group().replaceAll("\\s+", "_")); 
 		}
 		
@@ -52,9 +57,16 @@ public class SQLRepairer {
 		int lastIndexOfSingleQuote = sql.lastIndexOf("'");
 		sb.append(sql.substring(lastIndexOfSingleQuote+1));
 
+		// return the fully transformed string
 		return sb.toString();
 	}
 
+	/**
+	 * Read in an entire file into a List of strings.
+	 *
+	 * @param file The file that contains the list of strings.
+	 * @return The list of strings.
+	 */
 	public List<String> readLines(File file) {
 		ArrayList<String> list = new ArrayList<String>();
 		try {
