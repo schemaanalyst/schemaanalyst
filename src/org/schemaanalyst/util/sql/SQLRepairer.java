@@ -6,19 +6,25 @@ package org.schemaanalyst.util.sql;
  * @author Gregory M. Kapfhammer
  */
 public class SQLRepairer {
-	public static String repair(String sql) {
-		String repairedSql = "";
-		return repairedSql;
-	}
 
 	/**
 	 * This method removes the single quotes from an SQL string.
 	 *
 	 * @param sql The String potentially with single quote marks.
 	 * @return The String without the single quote marks.
-	 */
+	:*/
 	public static String deleteSingleQuotes(String sql) {
 		return sql.replaceAll("'", "");
+	}
+
+	/**
+	 * This method removes any spaces from an SQL string.
+	 *
+	 * @param sql The string that may have spaces.
+	 * @return The string without any spaces.
+	 */
+	public static String deleteSpaces(String sql) {
+		return sql.replaceAll("\\s", "");
 	}
 
 }
