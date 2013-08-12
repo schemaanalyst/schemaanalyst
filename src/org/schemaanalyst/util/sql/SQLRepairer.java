@@ -67,7 +67,7 @@ public class SQLRepairer {
 	 * @param file The file that contains the list of strings.
 	 * @return The list of strings.
 	 */
-	public List<String> readLines(File file) {
+	public static List<String> readLines(File file) {
 		ArrayList<String> list = new ArrayList<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
