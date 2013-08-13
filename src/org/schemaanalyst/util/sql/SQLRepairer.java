@@ -42,8 +42,8 @@ public class SQLRepairer {
 	 * @param sql The string that may have the unsupported DOUBLE.
 	 * @return The string that has been repaired correctly.
 	 */
-	public static String replaceDoubleWithDecimal(String sql) {
-		String noDoubleForCapitalizedWord = sql.replaceAll("DOUBLE", "DECIMAL");
+	public static String replaceDoubleWithReal(String sql) {
+		String noDoubleForCapitalizedWord = sql.replaceAll("DOUBLE", "REAL");
 		return noDoubleForCapitalizedWord;
 	}
 
