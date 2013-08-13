@@ -17,6 +17,16 @@ import java.util.regex.Pattern;
 public class SQLRepairer {
 
 	/**
+	 * This method transforms the single quotes into double quotes.
+	 *
+	 * @param sql The string that has single quotes in it.
+	 * @return The string that has no single quotes and only double quotes.
+	 */
+	public static String replaceSingleQuotesWithDoubleQuotes(String sql) {
+		return sql.replaceAll("'", "\"");
+	}
+
+	/**
 	 * This method removes the single quotes from an SQL string.
 	 *
 	 * @param sql The String potentially with single quote marks.
