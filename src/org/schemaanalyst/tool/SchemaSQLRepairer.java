@@ -40,7 +40,7 @@ public class SchemaSQLRepairer extends Runner {
     	for(String sqlLine : sqlLines) {
 			String sqlLineNoWhiteSpace = SQLRepairer.deleteSpacesInsideSingleQuotes(sqlLine);
 			String sqlLineNoWhiteSpaceNoSingleQuotes = SQLRepairer.deleteSingleQuotes(sqlLineNoWhiteSpace);
-			String sqlLineNoWhiteSpaceNoSingleQuotesNoDouble = SQLRepairer.replaceDoubleWithDecimal(sqlLineNoWhiteSpaceNoSingleQuotes); 
+			String sqlLineNoWhiteSpaceNoSingleQuotesNoDouble = SQLRepairer.replaceDoubleWithReal(sqlLineNoWhiteSpaceNoSingleQuotes); 
 			sqlLinesRepaired.add(sqlLineNoWhiteSpaceNoSingleQuotesNoDouble);
 		}
 
