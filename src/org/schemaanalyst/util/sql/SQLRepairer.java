@@ -37,6 +37,17 @@ public class SQLRepairer {
 	}
 
 	/**
+	 * This method removes the unsupported DOUBLE and replaces it with DECIMAL.
+	 *
+	 * @param sql The string that may have the unsupported DOUBLE.
+	 * @return The string that has been repaired correctly.
+	 */
+	public static String replaceDoubleWithDecimal(String sql) {
+		String noDoubleForCapitalizedWord = sql.replaceAll("DOUBLE", "DECIMAL");
+		return noDoubleForCapitalizedWord;
+	}
+
+	/**
 	 * This method removes spaces from names between single quotes from a SQL string.
 	 *
 	 * @param sql The string that may have spaced names between single quotes.
