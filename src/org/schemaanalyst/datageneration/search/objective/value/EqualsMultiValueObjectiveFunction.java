@@ -62,7 +62,7 @@ public class EqualsMultiValueObjectiveFunction extends ObjectiveFunction<Pair<Li
     public static ObjectiveValue compute(
             List<Value> lhs, boolean equals, List<Value> rhs, boolean allowNull) {
         EqualsMultiValueObjectiveFunction objFun = new EqualsMultiValueObjectiveFunction(equals, allowNull);
-        return objFun.evaluate(new Pair<List<Value>>(lhs, rhs));        
+        return objFun.evaluate(new Pair<>(lhs, rhs));        
     }
     
    

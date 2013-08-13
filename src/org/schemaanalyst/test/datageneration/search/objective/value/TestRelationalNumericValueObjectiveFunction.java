@@ -59,11 +59,11 @@ public class TestRelationalNumericValueObjectiveFunction {
     public void testDistance(String lhs, RelationalOperator op, String rhs, BigDecimal expectedDistance) {
         DistanceObjectiveValue objValallowNull = 
                 (DistanceObjectiveValue) (new RelationalNumericValueObjectiveFunction(op, true)).evaluate(
-                        new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
+                        new Pair<>(new NumericValue(lhs), new NumericValue(rhs)));        
 
         DistanceObjectiveValue objValNullIsFalse = 
                 (DistanceObjectiveValue) (new RelationalNumericValueObjectiveFunction(op, false)).evaluate(
-                        new Pair<NumericValue>(new NumericValue(lhs), new NumericValue(rhs)));        
+                        new Pair<>(new NumericValue(lhs), new NumericValue(rhs)));        
         
         
         assertEquals("Distance should be " + expectedDistance + " for " + objValallowNull, 
@@ -89,7 +89,7 @@ public class TestRelationalNumericValueObjectiveFunction {
         RelationalNumericValueObjectiveFunction objFun =
                 new RelationalNumericValueObjectiveFunction(op, true);         
 
-        assertOptimal(objFun.evaluate(new Pair<NumericValue>(lhs, rhs)));        
+        assertOptimal(objFun.evaluate(new Pair<>(lhs, rhs)));        
     }
     
     @Test
@@ -99,6 +99,6 @@ public class TestRelationalNumericValueObjectiveFunction {
         RelationalNumericValueObjectiveFunction objFun =
                 new RelationalNumericValueObjectiveFunction(op, false);         
 
-        assertWorst(objFun.evaluate(new Pair<NumericValue>(lhs, rhs)));        
+        assertWorst(objFun.evaluate(new Pair<>(lhs, rhs)));        
     }    
 }

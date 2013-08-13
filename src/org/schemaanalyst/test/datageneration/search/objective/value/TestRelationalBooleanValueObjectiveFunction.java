@@ -46,7 +46,7 @@ public class TestRelationalBooleanValueObjectiveFunction {
         RelationalBooleanValueObjectiveFunction objFun = 
                 new RelationalBooleanValueObjectiveFunction(op, allowNull);
         
-        assertOptimal(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
+        assertOptimal(objFun.evaluate(new Pair<>(lhs, rhs)));
     }
     
     // -----------------------------------------------------------------------------------------------------------------------        
@@ -79,7 +79,7 @@ public class TestRelationalBooleanValueObjectiveFunction {
         RelationalBooleanValueObjectiveFunction objFun = 
                 new RelationalBooleanValueObjectiveFunction(op, allowNull);
         
-        assertWorst(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
+        assertWorst(objFun.evaluate(new Pair<>(lhs, rhs)));
     } 
     
     // -----------------------------------------------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ public class TestRelationalBooleanValueObjectiveFunction {
             RelationalBooleanValueObjectiveFunction objFun = 
                     new RelationalBooleanValueObjectiveFunction(op, allowNull);
 
-            assertWorst(objFun.evaluate(new Pair<BooleanValue>(lhs, rhs)));
+            assertWorst(objFun.evaluate(new Pair<>(lhs, rhs)));
         } catch (ObjectiveFunctionException e) {
             fail = false;            
         }
