@@ -48,6 +48,28 @@ public class SQLRepairer {
 	}
 
 	/**
+	 * This method removes any dashes from the names of tables or attributes.
+	 *
+	 * @param sql The string that may have dashes.
+	 * @return The string that does not have any dashes.
+	 */
+	public static String removeDashes(String sql) {
+		return sql.replaceAll("-", "");
+	}
+
+	/**
+	 * This method removes any curly braces from the names of tables or attributes.
+	 *
+	 * @param sql The string that may have curly braces.
+	 * @return The string that does not curly braces.
+	 */
+	public static String removeCurlyBraces(String sql) {
+		String noLefts = sql.replaceAll("\\{", "");
+		String noLeftsAndRights = noLefts.replaceAll("\\}", "");
+		return noLeftsAndRights;
+	}
+
+	/**
 	 * This method removes spaces from names between single quotes from a SQL string.
 	 *
 	 * @param sql The string that may have spaced names between single quotes.
