@@ -38,12 +38,15 @@ public class SchemaSQLRepairer extends Runner {
 		// iterate through all of the lines of SQL and repair them so that they can be parsed correctly
 		ArrayList<String> sqlLinesRepaired = new ArrayList<String>();
     	for(String sqlLine : sqlLines) {
-			String sqlLineNoWhiteSpace = SQLRepairer.deleteSpacesInsideSingleQuotes(sqlLine);
-			String sqlLineNoWhiteSpaceNoSingleQuotes = SQLRepairer.deleteSingleQuotes(sqlLineNoWhiteSpace);
-			String sqlLineNoWhiteSpaceNoSingleQuotesNoDouble = SQLRepairer.replaceDoubleWithReal(sqlLineNoWhiteSpaceNoSingleQuotes); 
-			String sqlRemovedDashes = SQLRepairer.removeDashes(sqlLineNoWhiteSpaceNoSingleQuotesNoDouble);
-			String sqlRemovedCurlyBraces = SQLRepairer.removeCurlyBraces(sqlRemovedDashes);
-			sqlLinesRepaired.add(sqlRemovedCurlyBraces);
+			String sqlNoSingleQuotes = SQLRepairer.replaceSingleQuotesWithDoubleQuotes(sqlLine);
+			String sqlNoDouble = SQLRepairer.replaceDoubleWithReal(sqlNoSingleQuotes);
+			sqlLinesRepaired.add(sqlNoDouble);
+			/* String sqlLineNoWhiteSpace = SQLRepairer.deleteSpacesInsideSingleQuotes(sqlLine); */
+			/* String sqlLineNoWhiteSpaceNoSingleQuotes = SQLRepairer.deleteSingleQuotes(sqlLineNoWhiteSpace); */
+			/* String sqlLineNoWhiteSpaceNoSingleQuotesNoDouble = SQLRepairer.replaceDoubleWithReal(sqlLineNoWhiteSpaceNoSingleQuotes);  */
+			/* String sqlRemovedDashes = SQLRepairer.removeDashes(sqlLineNoWhiteSpaceNoSingleQuotesNoDouble); */
+			/* String sqlRemovedCurlyBraces = SQLRepairer.removeCurlyBraces(sqlRemovedDashes); */
+			/* sqlLinesRepaired.add(sqlRemovedCurlyBraces); */
 		}
 
 	  	// get the file; assuming that it will be stored in the casestudies directory
