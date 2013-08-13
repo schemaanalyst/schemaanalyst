@@ -54,7 +54,7 @@ public class DirectedRandomSearch extends Search<Data> {
     public void setObjectiveFunction(ObjectiveFunction<Data> objectiveFunction) {
         super.setObjectiveFunction(objectiveFunction);
         
-        handlers = new ArrayList<ColumnHandler<?>>();
+        handlers = new ArrayList<>();
         
         // TODO: refactor -- for obvious reasons ...
         SchemaConstraintSystemObjectiveFunction constraintSysObjFun = (SchemaConstraintSystemObjectiveFunction) objectiveFunction;

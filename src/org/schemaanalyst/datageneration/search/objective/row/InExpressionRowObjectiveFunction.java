@@ -69,7 +69,7 @@ public class InExpressionRowObjectiveFunction extends ObjectiveFunction<Row> {
             throw new ObjectiveFunctionException(
                     "Can only handle ListExpressions as the RHS of an InExpression");
         }        
-        rhsEvaluators = new ArrayList<ExpressionEvaluator>();
+        rhsEvaluators = new ArrayList<>();
         for (Expression subexpression : ((ListExpression) expression.getRHS()).getSubexpressions()) {
             rhsEvaluators.add(new ExpressionEvaluator(subexpression));
         }

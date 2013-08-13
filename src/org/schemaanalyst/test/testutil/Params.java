@@ -18,7 +18,7 @@ public class Params {
     public static Integer[] d(Integer[]... rows) {
         if (rows.length > 0) {
             int rowLength = rows[0].length;
-            List<Integer> dataValues = new ArrayList<Integer>();
+            List<Integer> dataValues = new ArrayList<>();
             
             for (Integer[] row : rows) {
                 if (row.length != rowLength) {

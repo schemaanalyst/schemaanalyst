@@ -25,8 +25,8 @@ public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
         this.columns = columns;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
-        satisfyingRows = new ArrayList<Row>();
-        falsifyingRows = new ArrayList<Row>();
+        satisfyingRows = new ArrayList<>();
+        falsifyingRows = new ArrayList<>();
     }    
     
     public boolean goalIsToSatisfy() {
