@@ -80,4 +80,25 @@ public class TestSQLRepairer {
 				expectedExample, returnedExample);
 	}
 
+	@Test
+	public void replaceDashes() {
+		String example = "CREATE TABLE table-fortune";
+		String returnedExample = SQLRepairer.removeDashes(example); 
+
+		String expectedExample = "CREATE TABLE tablefortune";
+		assertEquals("Expected string should be " + expectedExample,
+				expectedExample, returnedExample);
+	}
+
+	@Test
+	public void replaceCurlyBraces() {
+		String example = "CREATE TABLE table{fortune}";
+		String returnedExample = SQLRepairer.removeCurlyBraces(example); 
+
+		String expectedExample = "CREATE TABLE tablefortune";
+		assertEquals("Expected string should be " + expectedExample,
+				expectedExample, returnedExample);
+	}
+
+
 }
