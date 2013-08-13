@@ -79,7 +79,7 @@ public class SQLRepairer {
 	 * @return The list of strings.
 	 */
 	public static List<String> readLines(File file) {
-		ArrayList<String> list = new ArrayList<>();
+		ArrayList<String> list = new ArrayList<String>();
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line;
@@ -88,7 +88,7 @@ public class SQLRepairer {
 			}
 			br.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return list;
 	}
