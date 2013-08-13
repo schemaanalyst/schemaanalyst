@@ -36,7 +36,7 @@ public class SchemaSQLRepairer extends Runner {
     	List<String> sqlLines = SQLRepairer.readLines(sqlFileInput);
 
 		// iterate through all of the lines of SQL and repair them so that they can be parsed correctly
-		ArrayList<String> sqlLinesRepaired = new ArrayList<>();
+		ArrayList<String> sqlLinesRepaired = new ArrayList<String>();
     	for(String sqlLine : sqlLines) {
 			String sqlLineNoWhiteSpace = SQLRepairer.deleteSpacesInsideSingleQuotes(sqlLine);
 			String sqlLineNoWhiteSpaceNoSingleQuotes = SQLRepairer.deleteSingleQuotes(sqlLineNoWhiteSpace);
@@ -55,7 +55,7 @@ public class SchemaSQLRepairer extends Runner {
 			writer.close();
 		}
 		catch(IOException e) {
-		 	e.printStackTrace();
+		 	throw new RuntimeException(e);
 		}
     }
     
