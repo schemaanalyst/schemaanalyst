@@ -60,4 +60,24 @@ public class TestSQLRepairer {
 				expectedExample, returnedExample);
 	}
 
+	@Test
+	public void doubleReplacedWithDecimal() {
+		String example = "DOUBLE";
+		String returnedExample = SQLRepairer.replaceDoubleWithDecimal(example); 
+
+		String expectedExample = "DECIMAL";
+		assertEquals("Expected string should be " + expectedExample,
+				expectedExample, returnedExample);
+	}
+
+	@Test
+	public void doubleReplacedWithDecimalWhenExtraWordsPresent() {
+		String example = "DOUBLE CREATE table";
+		String returnedExample = SQLRepairer.replaceDoubleWithDecimal(example); 
+
+		String expectedExample = "DECIMAL CREATE table";
+		assertEquals("Expected string should be " + expectedExample,
+				expectedExample, returnedExample);
+	}
+
 }
