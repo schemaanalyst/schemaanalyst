@@ -41,7 +41,9 @@ public class SchemaSQLRepairer extends Runner {
 			String sqlLineNoWhiteSpace = SQLRepairer.deleteSpacesInsideSingleQuotes(sqlLine);
 			String sqlLineNoWhiteSpaceNoSingleQuotes = SQLRepairer.deleteSingleQuotes(sqlLineNoWhiteSpace);
 			String sqlLineNoWhiteSpaceNoSingleQuotesNoDouble = SQLRepairer.replaceDoubleWithReal(sqlLineNoWhiteSpaceNoSingleQuotes); 
-			sqlLinesRepaired.add(sqlLineNoWhiteSpaceNoSingleQuotesNoDouble);
+			String sqlRemovedDashes = SQLRepairer.removeDashes(sqlLineNoWhiteSpaceNoSingleQuotesNoDouble);
+			String sqlRemovedCurlyBraces = SQLRepairer.removeCurlyBraces(sqlRemovedDashes);
+			sqlLinesRepaired.add(sqlRemovedCurlyBraces);
 		}
 
 	  	// get the file; assuming that it will be stored in the casestudies directory
