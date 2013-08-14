@@ -25,6 +25,17 @@ public class StringUtils {
     }
     
     /**
+     * Implodes an Iterable object into a String, using ", " as a separator.
+     * 
+     * @param <T> The generic class
+     * @param items The iterable object to implode
+     * @return The String representation created
+     */
+    public static <T> String implode(Iterable<T> items) {
+    	return implode(items, ", ");
+    }
+    
+    /**
      * Implodes an Iterable object into a String, using a given separator.
      * 
      * @param <T> The generic class
@@ -51,6 +62,18 @@ public class StringUtils {
     }
     
     /**
+     * Implodes an Array into a String, using ", " as a separator.
+     * 
+     * @param <T> The generic class
+     * @param items The Array to implode
+     * @param sep The separator to use
+     * @return The String representation created
+     */
+    public static <T> String implode(T[] items) {
+        return implode(Arrays.asList(items), ", ");
+    }    
+    
+    /**
      * Implodes an Array into a String, using a given separator.
      * 
      * @param <T> The generic class
@@ -63,8 +86,20 @@ public class StringUtils {
     }
     
     /**
-     * Explodes a String into a List, based on a separator. Uses ArrayList as 
-     * the backing List implementation.
+     * Explodes a String into a List, using "," as a separator, with ArrayList as 
+     * the backing List implementation.  Each exploded string element is trimmed.
+     * 
+     * @param str The String to explode
+     * @param sep The separator delimiting values
+     * @return The List of values created
+     */
+    public static List<String> explode(String str) {
+        return explode(str, ",");
+    }    
+    
+    /**
+     * Explodes a String into a List, based on a separator, with ArrayList as 
+     * the backing List implementation.  Each exploded string element is trimmed.
      * 
      * @param str The String to explode
      * @param sep The separator delimiting values

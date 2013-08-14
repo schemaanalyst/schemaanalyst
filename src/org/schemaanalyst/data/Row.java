@@ -88,7 +88,7 @@ public class Row implements Duplicable<Row> {
         StringBuilder sb = new StringBuilder();
         sb.append(table);
         sb.append(": ");
-		sb.append(StringUtils.implode(cells, ", "));
+		sb.append(StringUtils.implode(cells));
         return sb.toString();
     }
 }

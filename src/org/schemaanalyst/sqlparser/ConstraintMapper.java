@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.StringUtils;
@@ -114,8 +113,8 @@ public class ConstraintMapper {
         }
 
         LOGGER.log(Level.INFO, "Attempting to create FOREIGN KEY on {0} ({1}) to {2} ({3})", 
-        		new Object[]{currentTable, StringUtils.implode(columns, ", "), 
-        					 referenceTable, StringUtils.implode(referenceColumns, ", ")});
+        		new Object[]{currentTable, StringUtils.implode(columns), 
+        					 referenceTable, StringUtils.implode(referenceColumns)});
         
         currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);
         

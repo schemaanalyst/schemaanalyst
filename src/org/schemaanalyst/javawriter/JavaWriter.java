@@ -79,7 +79,7 @@ public class JavaWriter {
     }
 
     public String writeArgsList(List<String> args) {
-        return StringUtils.implode(args, ", ");
+        return StringUtils.implode(args);
     }
 
     /**
