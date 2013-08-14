@@ -45,7 +45,7 @@ public class StringUtils {
             } else {
                 sb.append(sep);
             }
-            sb.append(item.toString());
+            sb.append((item == null) ? "null" : item.toString());
         }
         return sb.toString();
     }

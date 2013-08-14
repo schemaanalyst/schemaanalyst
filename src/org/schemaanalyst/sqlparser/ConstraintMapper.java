@@ -8,11 +8,14 @@ import gudusoft.gsqlparser.nodes.TObjectNameList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.util.StringUtils;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
@@ -97,22 +100,26 @@ public class ConstraintMapper {
             Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TObjectNameList columnNameObjectList,
             TObjectName referenceTableNameObject, TObjectNameList referenceColumnNameObjectList) {
-
-        String constraintName = stripQuotes(constraintNameObject);
+    	
+    	String constraintName = stripQuotes(constraintNameObject);
         String referenceTableName = stripQuotes(referenceTableNameObject);
         Table referenceTable = currentTable.getSchema().getTable(referenceTableName);
-
+        
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
         List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList);
 
         if (referenceColumns.size() == 0) {
-            // no reference columns we have to map those in the columns list
-            for (Column column : columns) {
-                referenceColumns.add(referenceTable.getColumn(column.getName()));
-            }
+            // no reference columns we have to map those of the primary key in the reference table by default
+        	referenceColumns = referenceTable.getPrimaryKeyConstraint().getColumns();
         }
 
+        LOGGER.log(Level.INFO, "Attempting to create FOREIGN KEY on {0} ({1}) to {2} ({3})", 
+        		new Object[]{currentTable, StringUtils.implode(columns, ", "), 
+        					 referenceTable, StringUtils.implode(referenceColumns, ", ")});
+        
         currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);
+        
+        LOGGER.log(Level.INFO, "-- success");
     }
 
     protected void addNotNullConstraint(
