@@ -12,31 +12,39 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.StringUtils;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
-public class ConstraintMapper {
+class ConstraintMapper {
     
     private final static Logger LOGGER = Logger.getLogger(ConstraintMapper.class.getName());
     
-    protected ExpressionMapper expressionMapper;
+    private ExpressionMapper expressionMapper;
 
-    public ConstraintMapper(ExpressionMapper expressionMapper) {
+    ConstraintMapper(ExpressionMapper expressionMapper) {
         this.expressionMapper = expressionMapper;        
     }
 
-    public void analyseConstraintList(Table currentTable, Column currentColumn, TConstraintList node) {
+    void analyseConstraintList(
+            Schema schema, Table currentTable, Column currentColumn, TConstraintList node) {
         if (node != null) {
             for (int i = 0; i < node.size(); i++) {
-                mapConstraint(currentTable, currentColumn, node.getConstraint(i));
+                mapConstraint(schema, currentTable, currentColumn, node.getConstraint(i));
             }
         }
     }
 
-    public void mapConstraint(Table currentTable, Column currentColumn, TConstraint node) {
+    void mapConstraint(
+            Schema schema, Table currentTable, Column currentColumn, TConstraint node) {
 
         switch (node.getConstraint_type()) {
             case check:
@@ -48,7 +56,7 @@ public class ConstraintMapper {
             case foreign_key:
             case reference:
                 addForeignKeyConstraint(
-                        currentTable, currentColumn,
+                        schema, currentTable, currentColumn,
                         node.getConstraintName(),
                         node.getColumnList(),
                         node.getReferencedObject(),
@@ -86,23 +94,23 @@ public class ConstraintMapper {
         }
     }
 
-    protected void addCheckConstraint(
+    private void addCheckConstraint(
             Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TExpression expressionNode) {
 
         String constraintName = stripQuotes(constraintNameObject);
         Expression expression = expressionMapper.getExpression(currentTable, expressionNode);
-        currentTable.addCheckConstraint(constraintName, expression);
+        currentTable.addCheckConstraint(new CheckConstraint(constraintName, expression));
     }
 
-    protected void addForeignKeyConstraint(
-            Table currentTable, Column currentColumn,
+    private void addForeignKeyConstraint(
+            Schema schema, Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TObjectNameList columnNameObjectList,
             TObjectName referenceTableNameObject, TObjectNameList referenceColumnNameObjectList) {
     	
     	String constraintName = stripQuotes(constraintNameObject);
         String referenceTableName = stripQuotes(referenceTableNameObject);
-        Table referenceTable = currentTable.getSchema().getTable(referenceTableName);
+        Table referenceTable = schema.getTable(referenceTableName);
         
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
         List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList);
@@ -116,39 +124,43 @@ public class ConstraintMapper {
         		new Object[]{currentTable, StringUtils.implode(columns), 
         					 referenceTable, StringUtils.implode(referenceColumns)});
         
-        currentTable.addForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns);
+        currentTable.addForeignKeyConstraint(
+                new ForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns));
         
         LOGGER.log(Level.INFO, "-- success");
     }
 
-    protected void addNotNullConstraint(
+    private void addNotNullConstraint(
             Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 
         String constraintName = stripQuotes(constraintNameObject);
         Column[] columns = mapColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
-        currentTable.addNotNullConstraint(constraintName, columns[0]);
+        currentTable.addNotNullConstraint(
+                new NotNullConstraint(constraintName, columns[0]));
     }
 
-    protected void setPrimaryKeyConstraint(
+    private void setPrimaryKeyConstraint(
             Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 
         String constraintName = stripQuotes(constraintNameObject);
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
-        currentTable.setPrimaryKeyConstraint(constraintName, columns);
+        currentTable.setPrimaryKeyConstraint(
+                new PrimaryKeyConstraint(constraintName, columns));
     }
 
-    protected void addUniqueConstraint(
+    private void addUniqueConstraint(
             Table currentTable, Column currentColumn,
             TObjectName constraintNameObject, TObjectNameList columnNameObjectList) {
 
         String constraintName = stripQuotes(constraintNameObject);
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
-        currentTable.addUniqueConstraint(constraintName, columns);
+        currentTable.addUniqueConstraint(
+                new UniqueConstraint(constraintName, columns));
     }
 
-    protected List<Column> mapColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {
+    private List<Column> mapColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {
         List<Column> columns = new ArrayList<>();
 
         if (currentColumn != null) {

@@ -9,7 +9,7 @@ import org.schemaanalyst.dbms.DBMS;
 
 public class Parser {
 
-    protected TGSqlParser sqlParser;
+    private TGSqlParser sqlParser;
 
     public Parser(DBMS dbms) {
         sqlParser = new TGSqlParser(VendorResolver.resolve(dbms));
@@ -25,7 +25,7 @@ public class Parser {
         return performParse();
     }
 
-    protected TStatementList performParse() {
+    private TStatementList performParse() {
         int result = sqlParser.parse();
         if (result != 0) {
             throw new SQLParseException(sqlParser.getErrormessage());

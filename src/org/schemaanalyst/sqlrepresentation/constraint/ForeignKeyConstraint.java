@@ -79,6 +79,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      * the foreign key relationship.
      */
     public void setReferenceColumns(List<Column> referenceColumns) {
+        System.out.println(columns);
+        System.out.println(referenceColumns);
         if (referenceColumns.size() != columns.size()) {
             throw new SQLRepresentationException("Foreign key constraints must have matching column numbers");
         }

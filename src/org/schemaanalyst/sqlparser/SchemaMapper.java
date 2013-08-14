@@ -1,4 +1,4 @@
-    package org.schemaanalyst.sqlparser;
+package org.schemaanalyst.sqlparser;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
@@ -24,11 +24,11 @@ public class SchemaMapper {
     
     private final static Logger LOGGER = Logger.getLogger(SchemaMapper.class.getName());    
 
-    protected Schema schema;        
+    private Schema schema;        
     
-    protected ConstraintMapper constraintMapper;
-    protected DataTypeMapper dataTypeMapper;
-    protected ExpressionMapper expressionMapper;
+    private ConstraintMapper constraintMapper;
+    private DataTypeMapper dataTypeMapper;
+    private ExpressionMapper expressionMapper;
 
     public SchemaMapper() {
         expressionMapper = new ExpressionMapper();
@@ -44,7 +44,7 @@ public class SchemaMapper {
         return schema;
     }
 
-    protected void analyseStatement(TCustomSqlStatement node) {
+    private void analyseStatement(TCustomSqlStatement node) {
 
         switch (node.sqlstatementtype) {
             case sstcreatetable:
@@ -59,10 +59,11 @@ public class SchemaMapper {
         }
     }
 
-    protected void mapTable(TCreateTableSqlStatement node) {
+    private void mapTable(TCreateTableSqlStatement node) {
         // create a Table object
         String tableName = stripQuotes(node.getTableName());
-        Table table = schema.createTable(tableName);
+        Table table = new Table(tableName);
+        schema.addTable(table);
 
         // log this event
         LOGGER.log(Level.INFO, "Parsing table \"{0}\" at line {1}", new Object[]{tableName, node.getLineNo()});
@@ -74,10 +75,10 @@ public class SchemaMapper {
         }
 
         // analyse table constraints
-        constraintMapper.analyseConstraintList(table, null, node.getTableConstraints());
+        constraintMapper.analyseConstraintList(schema, table, null, node.getTableConstraints());
     }
 
-    protected void mapColumn(Table table, TColumnDefinition node) {
+    private void mapColumn(Table table, TColumnDefinition node) {
         // get the column name		
         String columnName = stripQuotes(node.getColumnName());
 
@@ -86,13 +87,14 @@ public class SchemaMapper {
 
         // get data type and add column to table
         DataType type = dataTypeMapper.getDataType(node.getDatatype(), node);
-        Column column = table.addColumn(columnName, type);
+        Column column = new Column(columnName, type);
+        table.addColumn(column);
 
         // parse any inline column constraints
-        constraintMapper.analyseConstraintList(table, column, node.getConstraints());
+        constraintMapper.analyseConstraintList(schema, table, column, node.getConstraints());
     }
 
-    protected void analyseAlterTableStatement(TAlterTableStatement node) {
+    private void analyseAlterTableStatement(TAlterTableStatement node) {
         LOGGER.log(Level.INFO, "Parsing alter table statement \"{0}\" at line: {1}", new Object[]{node, node.getLineNo()});
 
         String tableName = stripQuotes(node.getTableName());
@@ -108,10 +110,10 @@ public class SchemaMapper {
         }
     }
 
-    protected void analyseAlterTableOption(Table currentTable, TAlterTableOption node) {
+    private void analyseAlterTableOption(Table currentTable, TAlterTableOption node) {
         switch (node.getOptionType()) {
             case AddTableConstraint: 
-                constraintMapper.mapConstraint(currentTable, null, node.getTableConstraint());
+                constraintMapper.mapConstraint(schema, currentTable, null, node.getTableConstraint());
                 break;
             default:
                 throw new UnsupportedSQLException(node);

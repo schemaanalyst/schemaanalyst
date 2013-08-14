@@ -23,12 +23,9 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 class DataTypeMapper {
 
-    public DataTypeMapper() {
-    }
-
     // REFER TO the JavaDocs for TTypeName
     // http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TTypeName.html	
-    public DataType getDataType(TTypeName dataType, TParseTreeNode node) {
+    DataType getDataType(TTypeName dataType, TParseTreeNode node) {
 
         // used in case of bugs with switch type
         // String typeString = dataType.toString();
@@ -97,19 +94,19 @@ class DataTypeMapper {
         }
     }
 
-    protected Integer getArgument(TConstant argument) {
+    private Integer getArgument(TConstant argument) {
         return argument == null ? null : Integer.valueOf(argument.toString());
     }
 
-    protected Integer getLength(TTypeName dataType) {
+    private Integer getLength(TTypeName dataType) {
         return getArgument(dataType.getLength());
     }
 
-    protected Integer getPrecision(TTypeName dataType) {
+    private Integer getPrecision(TTypeName dataType) {
         return getArgument(dataType.getPrecision());
     }
 
-    protected Integer getScale(TTypeName dataType) {
+    private Integer getScale(TTypeName dataType) {
         return getArgument(dataType.getScale());
     }
 }

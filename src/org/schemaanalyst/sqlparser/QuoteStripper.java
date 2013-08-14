@@ -2,7 +2,7 @@ package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.nodes.TObjectName;
 
-public class QuoteStripper {
+class QuoteStripper {
 
     static final String[] QUOTE_CHARS = {"\"", "'", "`"};
 

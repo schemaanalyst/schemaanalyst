@@ -27,19 +27,16 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 public class ExpressionMapper {
 
-    protected Table currentTable;
+    private Table currentTable;
 
-    public ExpressionMapper() {
-    }
-
-    public Expression getExpression(Table currentTable, TExpression node) {
+    Expression getExpression(Table currentTable, TExpression node) {
         this.currentTable = currentTable;
         return getExpression(node);
     }
 
     // REFER TO the JavaDocs for TExpression
     // http://sqlparser.com/kb/javadoc/gudusoft/gsqlparser/nodes/TExpression.html
-    protected Expression getExpression(TExpression node) {
+    private Expression getExpression(TExpression node) {
 
         switch (node.getExpressionType()) {
 
