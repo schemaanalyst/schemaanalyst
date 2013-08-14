@@ -10,6 +10,10 @@ public abstract class ArtefactSupplier<A extends Duplicable<A>, C> {
 		this.originalArtefact = originalArtefact;
 	}
 	
+	public A getArtefact() {
+		return originalArtefact;
+	}
+	
 	public abstract C getNextComponent();
 	
 	public A getArtefactCopy() {

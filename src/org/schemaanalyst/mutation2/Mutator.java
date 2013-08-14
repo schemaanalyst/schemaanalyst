@@ -12,5 +12,9 @@ public abstract class Mutator<A extends Duplicable<A>, C> {
 		this.artefactSupplier = artefactSupplier;
 	}
 	
-	public abstract List<A> mutate();
+	public abstract List<Mutant<A>> mutate();
+	
+	public String toString() {
+		return getClass().getSimpleName() + " with " + artefactSupplier;
+	}
 }
