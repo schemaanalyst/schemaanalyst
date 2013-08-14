@@ -2,9 +2,9 @@
  */
 package paper.mutation2013;
 
-import org.schemaanalyst.mutation.mutators.ConstraintMutatorWithoutFK;
-
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import deprecated.mutation.mutators.ConstraintMutatorWithoutFK;
 
 /**
  *
