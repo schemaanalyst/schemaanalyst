@@ -1,8 +1,8 @@
 package org.schemaanalyst.sqlrepresentation;
 
 /**
- * An Exception class thrown when SQL representation objects have been carelessly 
- * constructed (e.g.  number of foreign key columns in the original and reference table 
+ * An exception thrown when SQL representation objects have been carelessly 
+ * constructed (e.g. the number of foreign key columns in the original and reference table 
  * do not match).
  *
  * @author Phil McMinn

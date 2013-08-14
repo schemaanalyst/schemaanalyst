@@ -16,14 +16,26 @@ public class InExpression extends ExpressionTree {
         return lhs;
     }
 
-    public boolean isNotIn() {
-        return notIn;
+    public void setLHS(Expression lhs) {
+        this.lhs = lhs;
     }
-
+    
     public Expression getRHS() {
         return rhs;
     }
 
+    public void setRHS(Expression rhs) {
+        this.rhs = rhs;
+    }
+    
+    public boolean isNotIn() {
+        return notIn;
+    }
+    
+    public void setNotIn(boolean notIn) {
+        this.notIn = notIn;
+    }    
+    
     @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;

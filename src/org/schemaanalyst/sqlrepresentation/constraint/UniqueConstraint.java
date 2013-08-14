@@ -13,6 +13,23 @@ public class UniqueConstraint extends MultiColumnConstraint {
      * Constructor.
      * @param columns The columns involved in the unique constraint.
      */
+    public UniqueConstraint(Column... columns) {
+        super(null, columns);
+    }
+    
+    /**
+     * Constructor.
+     * @param name A name for the unique constraint (optional - can be null).
+     * @param columns The columns involved in the unique constraint.
+     */
+    public UniqueConstraint(String name, Column... columns) {
+        super(name, columns);
+    }    
+    
+    /**
+     * Constructor.
+     * @param columns The columns involved in the unique constraint.
+     */
     public UniqueConstraint(List<Column> columns) {
         super(null, columns);
     }
@@ -28,7 +45,6 @@ public class UniqueConstraint extends MultiColumnConstraint {
     
     /**
      * Method for accepting visitors of type IntegrityConstraintVisitor.
-     *
      * @param visitor The IntegrityConstraintVisitor instance visiting this
      * constraint.
      */
@@ -37,15 +53,17 @@ public class UniqueConstraint extends MultiColumnConstraint {
         visitor.visit(this);
     }
 
+    /**
+     * Makes a shallow copy of the current instance.
+     * @return A shallow copy of the current instance. 
+     */
     @Override
     public UniqueConstraint duplicate() {
         return new UniqueConstraint(new ArrayList<>(columns));
     }
     
-
     /**
-     * Returns an informative string about the foreign key instance.
-     *
+     * Returns an informative string about the unique constraint instance.
      * @return An informative string.
      */
     @Override

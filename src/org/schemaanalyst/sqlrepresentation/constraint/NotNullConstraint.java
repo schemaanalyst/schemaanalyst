@@ -66,7 +66,39 @@ public class NotNullConstraint extends Constraint {
     	return new NotNullConstraint(name, column);
     }
 
+    /**
+     * Generates a hash code for this instance.
+     * @return The hash code.
+     */      
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((column == null) ? 0 : column.hashCode());
+        return result;
+    }
 
+    /**
+     * Checks if this instance is equal to another.
+     * @param obj Another object.
+     * @return True if the objects are equal, else false.
+     */ 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        NotNullConstraint other = (NotNullConstraint) obj;
+        if (column == null) {
+            if (other.column != null)
+                return false;
+        } else if (!column.equals(other.column))
+            return false;
+        return true;
+    }
 
     /**
      * Returns an informative string about the foreign key instance.

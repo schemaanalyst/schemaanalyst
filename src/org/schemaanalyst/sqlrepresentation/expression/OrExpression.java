@@ -1,11 +1,16 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.schemaanalyst.util.StringUtils;
 
 public class OrExpression extends CompoundExpression {
 
+    public OrExpression(Expression... subexpressions) {
+        this(Arrays.asList(subexpressions));
+    }    
+    
     public OrExpression(List<Expression> subexpressions) {
         super(subexpressions);
     }

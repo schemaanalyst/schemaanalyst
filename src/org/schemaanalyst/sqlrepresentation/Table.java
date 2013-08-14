@@ -15,9 +15,7 @@ import org.schemaanalyst.util.Duplicable;
 
 /**
  * Represents a database table.
- *
  * @author Phil McMinn
- *
  */
 public class Table implements Duplicable<Table>, Serializable {
 
@@ -34,7 +32,6 @@ public class Table implements Duplicable<Table>, Serializable {
 
     /**
      * Constructs a Table.
-     *
      * @param name The name of the schema.
      * @param schema The schema to which this table belongs.
      */
@@ -52,13 +49,16 @@ public class Table implements Duplicable<Table>, Serializable {
         uniqueConstraints = new ArrayList<>();
     }
 
+    /**
+     * Sets the name of the table.
+     * @param The name of the table.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
      * Retrieves the name of the table.
-     *
      * @return The name of the table.
      */
     public String getName() {
@@ -72,14 +72,13 @@ public class Table implements Duplicable<Table>, Serializable {
     public void addColumn(Column column) {
         if (hasColumn(column)) {
             throw new SQLRepresentationException(
-            		"Table \"" + this.name + "\" already has a column named \"" + column + "\"");
+            		"Table \"" + name + "\" already has a column named \"" + column + "\"");
         }
         columns.add(column);
     }
 
     /**
      * Gets a reference to one of the table's columns by its name.
-     *
      * @param name The name of the column.
      * @return The column, or null if a column wasn't found for the name given.
      */
@@ -94,19 +93,17 @@ public class Table implements Duplicable<Table>, Serializable {
 
     /**
      * Returns whether a column is present in a table or not
-     *
-     * @param column The column
-     * @return True if the column is present in the table, else false
+     * @param column The column.
+     * @return True if the column is present in the table, else false.
      */
     public boolean hasColumn(Column column) {
     	return hasColumn(column.getName());
     }    
     
     /**
-     * Returns whether a column is present in a table or not
-     *
-     * @param columnName The column name
-     * @return True if the column is present in the table, else false
+     * Returns whether a column is present in a table or not.
+     * @param columnName The column name.
+     * @return True if the column is present in the table, else false.
      */
     public boolean hasColumn(String columnName) {
     	return getColumn(columnName) != null;
@@ -115,7 +112,6 @@ public class Table implements Duplicable<Table>, Serializable {
     /**
      * Retrieves the list of columns associated with this table, in the order
      * they were created.
-     *
      * @return A list of the table's columns.
      */
     public List<Column> getColumns() {
@@ -123,17 +119,39 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
+     * Checks that a constraint doesn't have the same name as another method in the supplied list
+     * @param constraint The constraint whose name is to be checked.
+     * @param constraints The list of constraints to be checked against.
+     * @return True if the list of constraints has a constraint with a matching name, else false.
+     */
+    private <E extends Constraint> boolean constraintNameClash(
+            Constraint constraint, List<E> constraints) {
+        String name = constraint.getName();
+        if (name != null) {
+            for (Constraint otherConstraint : constraints) {
+                if (name.equals(otherConstraint.getName())) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Adds a check constraint to the table.
      * @param checkConstriant The check constraint to be added.
      */
     public void addCheckConstraint(CheckConstraint checkConstraint) {
-    	// TODO check no name clash
+    	if (constraintNameClash(checkConstraint, checkConstraints)) {
+    	    throw new SQLRepresentationException(
+    	            "Table " + name + " already has a CHECK constraint named \"" + 
+    	                    checkConstraint.getName() + "\"");
+    	}
         checkConstraints.add(checkConstraint);
     }
 
     /**
      * Removes a check constraint from the table.
-     *
      * @param checkConstraint The check constraint to remove.
      * @return True if the check constraint was already on the table and was
      * successfully removed, else false.
@@ -155,15 +173,17 @@ public class Table implements Duplicable<Table>, Serializable {
      * Adds a foreign key to the table.
      * @param foreignKeyConstraint The foreign key to be added.
      */
-    protected void addForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
-    	// TODO check no name clash
-    	// TODO schema table ordering
+    public void addForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
+        if (constraintNameClash(foreignKeyConstraint, foreignKeyConstraints)) {
+            throw new SQLRepresentationException(
+                    "Table " + name + " already has a FOREIGN KEY constraint named \"" + 
+                            foreignKeyConstraint.getName() + "\"");
+        }
     	foreignKeyConstraints.add(foreignKeyConstraint);
     }
 
     /**
      * Removes a foreign key from the table.
-     *
      * @param foreignKeyConstraint The foreign key to remove.
      * @return True if the foreign key was defined for the table and was removed
      * successfully, else false.
@@ -175,7 +195,6 @@ public class Table implements Duplicable<Table>, Serializable {
     /**
      * Returns an unmodifiable list of the foreign keys on this table, in the
      * order they were created.
-     *
      * @return An unmodifiable list of the foreign keys on this table.
      */
     public List<ForeignKeyConstraint> getForeignKeyConstraints() {
@@ -187,13 +206,16 @@ public class Table implements Duplicable<Table>, Serializable {
      * @param notNullConstraint The NOT NULL constraint to add.
      */
     public void addNotNullConstraint(NotNullConstraint notNullConstraint) {
-    	// TODO check no name clash
+        if (constraintNameClash(notNullConstraint, notNullConstraints)) {
+            throw new SQLRepresentationException(
+                    "Table " + name + " already has a NOT NULL constraint named \"" + 
+                            notNullConstraint.getName() + "\"");
+        }
         notNullConstraints.add(notNullConstraint);
     }
     
     /**
      * Removes a NOT NULL constraint.
-     *
      * @param notNullConstraint The constraint to remove.
      * @return True if the not null constraint existed on the table and was
      * removed, else false.
@@ -239,7 +261,11 @@ public class Table implements Duplicable<Table>, Serializable {
      * @param uniqueConstraint The unique constraint to be added.
      */
     public void addUniqueConstraint(UniqueConstraint uniqueConstraint) {
-        // TODO: check no name clash
+        if (constraintNameClash(uniqueConstraint, uniqueConstraints)) {
+            throw new SQLRepresentationException(
+                    "Table " + name + " already has a UNIQUE constraint named \"" + 
+                            uniqueConstraint.getName() + "\"");
+        }
         uniqueConstraints.add(uniqueConstraint);
     }
 

@@ -97,4 +97,11 @@ public class Column implements Duplicable<Column>, Serializable {
 			return false;
 		return true;
 	}
+	
+	/**
+	 * Returns the column's name.
+	 */
+	public String toString() {
+	    return name;
+	}
 }

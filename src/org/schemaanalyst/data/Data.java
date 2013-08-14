@@ -24,7 +24,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Constructor.
-     *
      * @param valueFactory A ValueFactory instance that corresponds to the
      * database type.
      */
@@ -35,7 +34,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Creates a row of data values for a table. The data values are initialized
      * to defaults as dictated by the ValueFactory.
-     *
      * @param table The table for which to create the row for.
      * @return The Row instance created for the table.
      */
@@ -45,7 +43,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Adds a row of data values to a table.
-     *
      * @param table The table to add the row to.
      * @param row The row to be added.
      * @return The row that was added.
@@ -65,7 +62,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Creates a number of rows of data values for a table. The data values are
      * initialized to defaults as dictated by the ValueFactory.
-     *
      * @param table The table for which to create the row for.
      * @param i The number of rows to add for the table.
      * @return The Row instance created for the table.
@@ -82,7 +78,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Creates a number of rows of data values for different tables. The data
      * values are initialized to defaults as dictated by the ValueFactory.
-     *
      * @param table The table for which to create the row for.
      * @param i The number of rows to add for the table.
      * @return The Row instance created for the table.
@@ -98,7 +93,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Adds a list of rows to a given table.
-     *
      * @param table The table to add the rows to.
      * @param rows The rows to be added.
      * @return The rows added.
@@ -112,7 +106,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Gets the tables involved in this data instance.
-     *
      * @return A list of tables involved in this data instance.
      */
     public List<Table> getTables() {
@@ -123,7 +116,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Returns all the rows for a table in this data instance.
-     *
      * @param table The table to get rows for.
      * @return The list of rows for the table.
      */
@@ -137,7 +129,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Returns the number of rows for a table in this data instance.
-     *
      * @param table The table whose number of rows are sought.
      * @return The number of rows for <tt>table</tt>.
      */
@@ -152,7 +143,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Gets a specific data cell (a column value for a particular row of a
      * table).
-     *
      * @param table The table containing the cell.
      * @param column The column whose value is sought.
      * @param rowNo The row number of the table.
@@ -172,7 +162,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Returns all the cells in this data instance, regardless of table, column
      * etc.
-     *
      * @return A list of all the cells in this data instance.
      */
     public List<Cell> getCells() {
@@ -187,13 +176,13 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Returns all the cells in the data instance for a specific column.
-     *
+     * @param table The table of the column whose cells are sought.
      * @param column The column whose cells are sought.
      * @return A list of cells for the column.
      */
-    public List<Cell> getCells(Column column) {
+    public List<Cell> getCells(Table table, Column column) {
         List<Cell> cells = new ArrayList<>();
-        List<Row> rows = getRows(column.getTable());
+        List<Row> rows = getRows(table);
 
         if (rows != null) {
             for (Row row : rows) {
@@ -207,27 +196,11 @@ public class Data implements Duplicable<Data> {
     /**
      * Returns a "vertical slice" of a table -- a list of rows where each row
      * contains a subset of cells for specifically-required columns.
-     *
-     * @param columns The columns for which cell values are sought. The columns
-     * must be from the same table, otherwise a <tt>DataAccessException</tt> is
-     * thrown.
+     * @param table The table of the columns for which cell values are sought.
+     * @param columns The columns for which cell values are sought. 
      * @return A list of rows containing only cells for each specified column.
      */
-    public List<Row> getRows(List<Column> columns) {
-        Table table = null;
-
-        // Get the table, checking that all the columns are from the same table.
-        for (Column column : columns) {
-            Table columnTable = column.getTable();
-            if (table == null) {
-                table = columnTable;
-            } else if (!table.equals(columnTable)) {
-                throw new DataException(
-                        "Cannot invoke getRows() with columns from multiple tables (\""
-                        + table + "\" and \"" + columnTable + "\")");
-            }
-        }
-
+    public List<Row> getRows(Table table, List<Column> columns) {
         // Construct the "vertical slice"
         List<Row> rows = new ArrayList<>();
         if (columns.size() > 0) {
@@ -249,14 +222,12 @@ public class Data implements Duplicable<Data> {
     /**
      * Returns a "vertical slice" of a table -- a list of rows where each row
      * contains a subset of cells for specifically-required columns.
-     *
-     * @param columns The columns for which cell values are sought. The columns
-     * must be from the same table, otherwise a <tt>DataAccessException</tt> is
-     * thrown.
+     * @paam table The table of the column for which cell values are sought.
+     * @param columns The columns for which cell values are sought. 
      * @return A list of rows containing only cells for each specified column.
      */
-    public List<Row> getRows(Column... columns) {
-        return getRows(Arrays.asList(columns));
+    public List<Row> getRows(Table table, Column... columns) {
+        return getRows(table, Arrays.asList(columns));
     }
 
     /**

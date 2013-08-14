@@ -19,22 +19,42 @@ public class BetweenExpression extends ExpressionTree {
         return subject;
     }
 
+    public void setSubject(Expression subject) {
+        this.subject = subject;
+    }
+    
     public Expression getLHS() {
         return lhs;
     }
+    
+    public void setLHS(Expression lhs) {
+        this.lhs = lhs;
+    }    
 
     public Expression getRHS() {
         return rhs;
     }
+    
+    public void setRHS(Expression rhs) {
+        this.rhs = rhs;
+    }        
 
     public boolean isNotBetween() {
         return notBetween;
     }
 
+    public void setNotBetween(boolean notBetween) {
+        this.notBetween = notBetween;
+    }
+    
     public boolean isSymmetric() {
         return symmetric;
     }
 
+    public void setSymmetric(boolean symmetric) {
+        this.symmetric = symmetric;
+    }
+    
     @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;

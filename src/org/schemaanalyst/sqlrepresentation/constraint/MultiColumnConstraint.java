@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -20,7 +21,16 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Constructor.
-     *
+     * @param name A name for the constraint (optional - can be null).
+     * @param table The table on which the integrity constraint holds.
+     * @param columns The columns involved in the integrity constraint.
+     */
+    public MultiColumnConstraint(String name, Column... columns) {
+        this(name, Arrays.asList(columns));
+    }    
+    
+    /**
+     * Constructor.
      * @param name A name for the constraint (optional - can be null).
      * @param table The table on which the integrity constraint holds.
      * @param columns The columns involved in the integrity constraint.
@@ -32,7 +42,6 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Sets the columns involved in the integrity constraint.
-     *
      * @param columns The columns involved in the integrity constraint.
      */
     public void setColumns(List<Column> columns) {
@@ -44,7 +53,6 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Gets the columns involved in the integrity constraint.
-     *
      * @return A list of the columns involved in the integrity constraint.
      */
     public List<Column> getColumns() {
@@ -53,7 +61,6 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Checks if a column is involved in the integrity constraint or not.
-     *
      * @param column The column whose status is to be checked.
      * @return True if the column is involved, else false.
      */
@@ -63,7 +70,6 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Gets the number of columns involved in the integrity constraint.
-     *
      * @return The number of columns involved in the integrity constraint.
      */
     public int getNumColumns() {
@@ -79,6 +85,10 @@ public abstract class MultiColumnConstraint extends Constraint {
         return columns.size() > 1;
     }
 
+    /**
+     * Generates a hash code for this instance.
+     * @return The hash code.
+     */    
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,6 +97,11 @@ public abstract class MultiColumnConstraint extends Constraint {
 		return result;
 	}
 
+    /**
+     * Checks if this instance is equal to another.
+     * @param obj Another object.
+     * @return True if the objects are equal, else false.
+     */		
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

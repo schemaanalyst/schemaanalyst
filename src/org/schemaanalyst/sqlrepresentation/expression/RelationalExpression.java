@@ -18,13 +18,25 @@ public class RelationalExpression extends ExpressionTree {
     public Expression getLHS() {
         return lhs;
     }
+    
+    public void setLHS(Expression lhs) {
+        this.lhs = lhs;
+    }
 
     public RelationalOperator getRelationalOperator() {
         return op;
     }
+    
+    public void setRelationalOperator(RelationalOperator op) {
+        this.op = op;
+    }
 
     public Expression getRHS() {
         return rhs;
+    }
+    
+    public void setRHS(Expression rhs) {
+        this.rhs = rhs;
     }
 
     @Override

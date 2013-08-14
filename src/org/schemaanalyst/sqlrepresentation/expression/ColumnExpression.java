@@ -16,6 +16,10 @@ public class ColumnExpression extends ExpressionLeaf {
     public Column getColumn() {
         return column;
     }
+    
+    public void setColumn(Column column) {
+        this.column = column;
+    }
 
     @Override
     public List<Column> getColumnsInvolved() {

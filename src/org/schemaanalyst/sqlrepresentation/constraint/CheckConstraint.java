@@ -24,7 +24,6 @@ public class CheckConstraint extends Constraint {
     
     /**
      * Constructor.
-     *
      * @param name An identifying name for the constraint (can be null).
      * @param expressions The expression associated with the check constraint.
      */

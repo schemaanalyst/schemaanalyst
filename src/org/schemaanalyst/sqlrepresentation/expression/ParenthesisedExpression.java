@@ -13,6 +13,10 @@ public class ParenthesisedExpression extends ExpressionTree {
         return subexpression;
     }
 
+    public void setSubexpression(Expression subexpression) {
+        this.subexpression = subexpression;
+    }
+    
     @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;

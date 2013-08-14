@@ -19,6 +19,10 @@ public class NullExpression extends ExpressionTree {
         return notNull;
     }
 
+    public void setNotNull(boolean notNull) {
+        this.notNull = notNull;
+    }
+    
     @Override
     public int getNumSubexpressions() {
         return NUM_SUBEXPRESSIONS;

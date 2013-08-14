@@ -2,6 +2,7 @@ package org.schemaanalyst.test.testutil.mock;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 public class OneColumnMockDatabase extends MockDatabase {
@@ -12,7 +13,9 @@ public class OneColumnMockDatabase extends MockDatabase {
         super(1);
         Schema schema = new Schema("SingleColumnSchema");
 
-        table = schema.createTable("table");
-        column = table.addColumn("column", new IntDataType());
+        table = new Table("table");
+        schema.addTable(table);
+        column = new Column("column", new IntDataType());                 
+        table.addColumn(column);
     }
 }

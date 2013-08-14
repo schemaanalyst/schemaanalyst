@@ -1,16 +1,17 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.schemaanalyst.util.StringUtils;
 
 public class AndExpression extends CompoundExpression {
 
-    public AndExpression(List<Expression> subexpressions) {
-        super(subexpressions);
-    }
-
     public AndExpression(Expression... subexpressions) {
+        this(Arrays.asList(subexpressions));
+    }    
+    
+    public AndExpression(List<Expression> subexpressions) {
         super(subexpressions);
     }
 
