@@ -35,8 +35,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             LOGGER.log(Level.INFO, "Loading SQLite driver: {0}", databaseConfiguration.getSqliteDriver());
 
             File sqliteDirectory = new File(locationConfiguration.getDatabaseDir()
-                    + File.separator + databaseConfiguration.getSqlitePath()
-                    + File.separator + databaseName);
+                    + File.separator + databaseConfiguration.getSqlitePath());
             if (sqliteDirectory.exists()) {
                 LOGGER.log(Level.WARNING, "Database folder already exists: {0}", sqliteDirectory.getPath());
             }
@@ -45,7 +44,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             // create a database url; note that in this case for
             // SQLite, you are connecting to a file on the file
             // system, thus the used of Configuration.project
-            String databaseUrl = "jdbc:sqlite:/" + sqliteDirectory.getAbsolutePath();
+            String databaseUrl = "jdbc:sqlite:" + sqliteDirectory.getAbsolutePath() + File.separator + databaseName;
             LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
             // enforce the foreign keys that are specified in the
