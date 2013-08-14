@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
-import org.schemaanalyst.sqlrepresentation.Table;
 
 /**
  * Represents the primary key of a table.
@@ -19,36 +17,20 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 
     /**
      * Constructor.
-     *
-     * @param name A name for the primary key constraint (optional - can be
-     * null).
-     * @param table The table of this primary key.
      * @param columns The columns involved in the primary key.
      */
-    protected PrimaryKeyConstraint(String name, Table table, List<Column> columns) {
-        super(name, table, columns);
-    }
-
+    public PrimaryKeyConstraint(List<Column> columns) {
+        super(null, columns);
+    }    
+    
     /**
-     * Adds a column to the primary key. The column must be a column of the
-     * primary key's table.
-     *
-     * @param column The column to add.
+     * Constructor.
+     * @param name A name for the primary key constraint (optional - can be
+     * null).
+     * @param columns The columns involved in the primary key.
      */
-    public void addColumn(Column column) {
-        if (!table.hasColumn(column)) {
-            throw new SQLRepresentationException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
-        }
-        columns.add(column);
-    }
-
-    /**
-     * Removes a column from the primary key.
-     *
-     * @param column The column to remove.
-     */
-    public void removeColumn(Column column) {
-        columns.remove(column);
+    public PrimaryKeyConstraint(String name, List<Column> columns) {
+        super(name, columns);
     }
 
     /**
@@ -62,67 +44,9 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
         visitor.visit(this);
     }
 
-    /**
-     * Copies the primary key to another table, which must have columns of the
-     * same name.
-     *
-     * @param targetTable The table to copy the primary key to.
-     * @return The copy of the PrimaryKey instance created as a result of
-     * calling the method.
-     */
-    public PrimaryKeyConstraint copyTo(Table targetTable) {
-        List<Column> targetTableColumns = new ArrayList<>();
-
-        // copy columns, but mapped to those of the new table
-        for (Column column : this.columns) {
-            Column targetTableColumn = targetTable.getColumn(column.getName());
-
-            if (targetTableColumn == null) {
-                throw new SQLRepresentationException("Cannot copy PrimaryKey to table \"" + targetTable
-                        + "\" as it does not have the column \"" + column + "\"");
-            }
-
-            targetTableColumns.add(targetTableColumn);
-        }
-
-        PrimaryKeyConstraint copy = new PrimaryKeyConstraint(this.name, targetTable, targetTableColumns);
-        targetTable.setPrimaryKeyConstraint(copy);
-        return copy;
-    }
-
-    /**
-     * Checks whether this PrimaryKey instance is equal to another object. The
-     * comparison compares columns only and ignores the constraint's name.
-     *
-     * @param obj The object to compare this instance with.
-     * @return True if the other object is a PrimaryKey object with the same
-     * columns, else false.
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        PrimaryKeyConstraint other = (PrimaryKeyConstraint) obj;
-
-        if (columns == null) {
-            if (other.columns != null) {
-                return false;
-            }
-        } else if (!columns.equals(other.columns)) {
-            return false;
-        }
-
-        return true;
+    public PrimaryKeyConstraint duplicate() {
+        return new PrimaryKeyConstraint(new ArrayList<>(columns));
     }
 
     /**

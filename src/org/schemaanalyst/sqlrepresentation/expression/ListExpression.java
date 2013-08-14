@@ -18,6 +18,11 @@ public class ListExpression extends CompoundExpression {
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
+    
+    @Override
+    public ListExpression duplicate() {
+        return new ListExpression(duplicateSubexpressions());
+    }     
 
     @Override
     public String toString() {

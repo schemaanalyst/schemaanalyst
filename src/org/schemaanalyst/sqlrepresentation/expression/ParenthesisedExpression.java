@@ -1,12 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.List;
-
 public class ParenthesisedExpression extends ExpressionTree {
 
-    public static final int NUM_SUBEXPRESSIONS = 1,
-            SUBEXPRESSION = 0;
-    protected Expression subexpression;
+    public static final int NUM_SUBEXPRESSIONS = 1, SUBEXPRESSION = 0;    
+    private Expression subexpression;
 
     public ParenthesisedExpression(Expression subexpression) {
         this.subexpression = subexpression;
@@ -31,20 +28,15 @@ public class ParenthesisedExpression extends ExpressionTree {
     }
 
     @Override
-    public void setSubexpressions(List<Expression> subExpressions) {
-        if (subExpressions.size() == 1) {
-            subexpression = subExpressions.get(0);
-        } else {
-            throw new UnsupportedOperationException("ParenthesisedExpression requires "
-                    + "a list of 1 expression (subexpression).");
-        }
-    }
-
-    @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
+    public ParenthesisedExpression duplicate() {
+        return new ParenthesisedExpression(subexpression.duplicate());
+    }
+    
     @Override
     public String toString() {
         return "(" + subexpression + ")";

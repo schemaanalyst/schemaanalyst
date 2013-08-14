@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
-import org.schemaanalyst.sqlrepresentation.Table;
 
 public class UniqueConstraint extends MultiColumnConstraint {
 
@@ -13,37 +11,21 @@ public class UniqueConstraint extends MultiColumnConstraint {
 
     /**
      * Constructor.
-     *
-     * @param name A name for the unique constraint (optional - can be null).
-     * @param table The table of this unique constraint.
      * @param columns The columns involved in the unique constraint.
      */
-    protected UniqueConstraint(String name, Table table, List<Column> columns) {
-        super(name, table, columns);
+    public UniqueConstraint(List<Column> columns) {
+        super(null, columns);
     }
-
+    
     /**
-     * Adds a column to the unique constraint. The column must be a column of
-     * the primary key's table.
-     *
-     * @param column The column to add.
+     * Constructor.
+     * @param name A name for the unique constraint (optional - can be null).
+     * @param columns The columns involved in the unique constraint.
      */
-    public void addColumn(Column column) {
-        if (!table.hasColumn(column)) {
-            throw new SQLRepresentationException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
-        }
-        columns.add(column);
+    public UniqueConstraint(String name, List<Column> columns) {
+        super(name, columns);
     }
-
-    /**
-     * Removes a column from the unique constraint.
-     *
-     * @param column The column to remove.
-     */
-    public void removeColumn(Column column) {
-        columns.remove(column);
-    }
-
+    
     /**
      * Method for accepting visitors of type IntegrityConstraintVisitor.
      *
@@ -55,68 +37,11 @@ public class UniqueConstraint extends MultiColumnConstraint {
         visitor.visit(this);
     }
 
-    /**
-     * Copies the unique constraint to another table, which must have columns of
-     * the same name.
-     *
-     * @param targetTable The table to copy the unique constraint to.
-     * @return The copy of the Unique instance created as a result of calling
-     * the method.
-     */
-    public UniqueConstraint copyTo(Table targetTable) {
-        List<Column> targetTableColumns = new ArrayList<>();
-
-        // copy columns, but mapped to those of the new table
-        for (Column column : this.columns) {
-            Column tableColumn = targetTable.getColumn(column.getName());
-
-            if (tableColumn == null) {
-                throw new SQLRepresentationException(
-                        "Cannot copy Unique constraint to table " + targetTable
-                        + " as it does not hve the column " + column);
-            }
-            targetTableColumns.add(tableColumn);
-        }
-
-        UniqueConstraint copy = new UniqueConstraint(this.name, targetTable, targetTableColumns);
-        targetTable.addUniqueConstraint(copy);
-        return copy;
-    }
-
-    /**
-     * Checks whether this Unique instance is equal to another object. The
-     * comparison compares columns only and ignores the constraint's name.
-     *
-     * @param obj The object to compare this instance with
-     * @return True if the other object is a Unique object with the same
-     * columns, else false.
-     */
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-
-        if (!super.equals(obj)) {
-            return false;
-        }
-
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-
-        UniqueConstraint other = (UniqueConstraint) obj;
-
-        if (columns == null) {
-            if (other.columns != null) {
-                return false;
-            }
-        } else if (!columns.equals(other.columns)) {
-            return false;
-        }
-
-        return true;
+    public UniqueConstraint duplicate() {
+        return new UniqueConstraint(new ArrayList<>(columns));
     }
+    
 
     /**
      * Returns an informative string about the foreign key instance.

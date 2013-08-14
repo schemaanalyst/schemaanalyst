@@ -13,8 +13,6 @@ public interface Expression extends Duplicable<Expression> {
 
     public Expression getSubexpression(int index);
     
-    public void setSubexpressions(List<Expression> subExpressions);
-
     public int getNumSubexpressions();
 
     public List<Expression> getSubexpressions();

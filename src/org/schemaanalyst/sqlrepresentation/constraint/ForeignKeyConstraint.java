@@ -1,7 +1,6 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -105,6 +104,14 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
         visitor.visit(this);
     }
 
+    @Override
+    public ForeignKeyConstraint duplicate() {
+        return new ForeignKeyConstraint(
+                new ArrayList<>(columns),
+                referenceTable,
+                new ArrayList<>(referenceColumns));
+    }
+    
     /**
      * Returns an informative string about the foreign key instance.
      *

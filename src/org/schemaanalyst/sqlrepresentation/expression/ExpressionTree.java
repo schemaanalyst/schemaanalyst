@@ -34,8 +34,6 @@ public abstract class ExpressionTree implements Expression {
     @Override
     public abstract Expression getSubexpression(int index);
     
-    public abstract void setSubexpressions(List<Expression> subExpressions);
-
     @Override
     public abstract int getNumSubexpressions();
 

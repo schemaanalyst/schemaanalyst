@@ -10,15 +10,16 @@ public class OrExpression extends CompoundExpression {
         super(subexpressions);
     }
 
-    public OrExpression(Expression... subexpressions) {
-        super(subexpressions);
-    }
-
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
 
+    @Override
+    public OrExpression duplicate() {
+        return new OrExpression(duplicateSubexpressions());
+    }    
+    
     @Override
     public String toString() {
         return StringUtils.implode(subexpressions, " OR ");        

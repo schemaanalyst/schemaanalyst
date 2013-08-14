@@ -20,6 +20,11 @@ public class AndExpression extends CompoundExpression {
     }
 
     @Override
+    public AndExpression duplicate() {
+        return new AndExpression(duplicateSubexpressions());
+    }
+    
+    @Override
     public String toString() {
         return StringUtils.implode(subexpressions, " AND ");
     }

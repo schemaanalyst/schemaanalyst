@@ -1,13 +1,12 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.List;
 import org.schemaanalyst.logic.RelationalOperator;
 
 public class RelationalExpression extends ExpressionTree {
 
     public static final int NUM_SUBEXPRESSIONS = 2, LHS = 0, RHS = 1;
-    protected Expression lhs, rhs;
-    protected RelationalOperator op;
+    private Expression lhs, rhs;
+    private RelationalOperator op;
 
     public RelationalExpression(Expression lhs, RelationalOperator op,
             Expression rhs) {
@@ -43,21 +42,15 @@ public class RelationalExpression extends ExpressionTree {
         }
         throw new NonExistentSubexpressionException(this, index);
     }
-    
-    @Override
-    public void setSubexpressions(List<Expression> subExpressions) {
-        if (subExpressions.size() == 1) {
-            lhs = subExpressions.get(0);
-            rhs = subExpressions.get(1);
-        } else {
-            throw new UnsupportedOperationException("RelationalExpression requires "
-                    + "a list of 2 expressions (lhs, rhs).");
-        }
-    }
 
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
+    }
+    
+    @Override
+    public RelationalExpression duplicate() {
+        return new RelationalExpression(lhs.duplicate(), op, rhs.duplicate());
     }
 
     @Override

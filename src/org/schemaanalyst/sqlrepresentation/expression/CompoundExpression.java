@@ -23,11 +23,6 @@ public abstract class CompoundExpression extends ExpressionTree {
     }
     
     @Override
-    public void setSubexpressions(List<Expression> subExpressions) {
-        this.subexpressions = subExpressions;
-    }
-
-    @Override
     public int getNumSubexpressions() {
         return subexpressions.size();
     }
@@ -39,7 +34,12 @@ public abstract class CompoundExpression extends ExpressionTree {
         }
         throw new NonExistentSubexpressionException(this, index);
     }
-
-    @Override
-    public abstract void accept(ExpressionVisitor visitor);
+    
+    protected List<Expression> duplicateSubexpressions() {
+        List<Expression> duplicateSubexpressions = new ArrayList<>();
+        for (Expression expression : subexpressions) {
+            duplicateSubexpressions.add(expression.duplicate());
+        }
+        return duplicateSubexpressions;
+    }
 }

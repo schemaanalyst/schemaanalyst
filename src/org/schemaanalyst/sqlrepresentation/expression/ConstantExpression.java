@@ -4,7 +4,7 @@ import org.schemaanalyst.data.Value;
 
 public class ConstantExpression extends ExpressionLeaf {
 
-    protected Value value;
+    private Value value;
 
     public ConstantExpression(Value value) {
         this.value = value;
@@ -21,6 +21,11 @@ public class ConstantExpression extends ExpressionLeaf {
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
+    }
+    
+    @Override
+    public ConstantExpression duplicate() {
+        return new ConstantExpression(value.duplicate());
     }
     
     public String toString() {

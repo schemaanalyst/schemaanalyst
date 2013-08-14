@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 
 public class ColumnExpression extends ExpressionLeaf {
 
-    protected Column column;
+    private Column column;
 
     public ColumnExpression(Column column) {
         this.column = column;
@@ -27,6 +27,11 @@ public class ColumnExpression extends ExpressionLeaf {
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
+    }
+    
+    @Override
+    public ColumnExpression duplicate() {
+        return new ColumnExpression(column);
     }
     
     public String toString() {

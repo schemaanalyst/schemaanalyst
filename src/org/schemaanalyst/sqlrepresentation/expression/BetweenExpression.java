@@ -1,13 +1,10 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.List;
-
 public class BetweenExpression extends ExpressionTree {
 
-    public static final int NUM_SUBEXPRESSIONS = 3, SUBJECT = 0, LHS = 1,
-            RHS = 2;
-    protected Expression subject, lhs, rhs;
-    protected boolean notBetween, symmetric;
+    public static final int NUM_SUBEXPRESSIONS = 3, SUBJECT = 0, LHS = 1, RHS = 2;
+    private Expression subject, lhs, rhs;
+    private boolean notBetween, symmetric;
 
     public BetweenExpression(Expression subject, Expression lhs,
             Expression rhs, boolean notBetween, boolean symmetric) {
@@ -44,18 +41,6 @@ public class BetweenExpression extends ExpressionTree {
     }
 
     @Override
-    public void setSubexpressions(List<Expression> subExpressions) {
-        if (subExpressions.size() == 3) {
-            subject = subExpressions.get(0);
-            lhs = subExpressions.get(1);
-            rhs = subExpressions.get(2);
-        } else {
-            throw new UnsupportedOperationException("BetweenExpression requires "
-                    + "a list of 3 expressions (subject, lhs, rhs).");
-        }
-    }
-
-    @Override
     public Expression getSubexpression(int index) {
         switch (index) {
             case SUBJECT:
@@ -72,7 +57,14 @@ public class BetweenExpression extends ExpressionTree {
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);
     }
-
+    
+    @Override
+    public BetweenExpression duplicate() {
+        return new BetweenExpression(
+                subject.duplicate(), lhs.duplicate(), rhs.duplicate(), 
+                notBetween, symmetric);
+    }
+    
     @Override
     public String toString() {
         return subject + " " + (notBetween ? "NOT " : "") + "BETWEEN " + lhs
