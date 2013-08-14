@@ -13,4 +13,8 @@ public class FloatDataType extends DataType {
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit(this);
     }
+    
+    public FloatDataType duplicate() {
+    	return new FloatDataType();
+    }    
 }

@@ -16,24 +16,20 @@ import org.schemaanalyst.util.Duplicable;
 public class Schema implements Serializable, Duplicable<Schema> {
 
     private static final long serialVersionUID = 7338170433995168952L;
-    protected String name;
-    protected List<String> comments;
-    protected List<Table> tables;
+    private String name;
+    private List<Table> tables;
 
     /**
      * Constructs the schema.
-     *
      * @param name The name of the schema.
      */
     public Schema(String name) {
         this.name = name;
-        this.comments = new ArrayList<>();
         this.tables = new ArrayList<>();
     }
 
     /**
      * Returns the name of the schema.
-     *
      * @return The name of the schema.
      */
     public String getName() {
@@ -41,134 +37,109 @@ public class Schema implements Serializable, Duplicable<Schema> {
     }
 
     /**
-     * Sets the name of the schema.
-     *
-     * @param name The new schema name.
+     * Adds a table to the schema.
+     * @param table The table to be added.
      */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Adds a comment string for the schema (useful in mutation to denote what
-     * the mutation actually was).
-     *
-     * @param comment The comment to be added.
-     */
-    public void addComment(String comment) {
-        comments.add(comment);
-    }
-
-    /**
-     * Retrieves the description string for the schema
-     *
-     * @return A description string for the schema
-     */
-    public List<String> getComments() {
-        return Collections.unmodifiableList(comments);
-    }
-
-    /**
-     * Creates a table on the schema
-     *
-     * @param name The name of the table
-     * @return The table created
-     */
-    public Table createTable(String name) {
-        Table table = new Table(name, this);
-        if (tables.contains(table)) {
-            throw new SchemaConstructionException("Table " + table + " already exists in this schema");
-        }
-        tables.add(table);
-        orderTables();
-        return table;
-    }
-
-    /**
-     * Causes the table list to be ordered in terms of dependencies.
-     */
-    protected void orderTables() {
-        tables = orderByDependencies(tables);
+    public void addTable(Table table) {
+    	if (getTable(table.getName()) == null) {
+    		tables.add(table);
+    	} else {
+    		throw new SQLRepresentationException("Table " + table + " already exists in this schema");
+    	}    	
     }
 
     /**
      * Looks up a table by its name, returning null if the table was not found.
-     *
      * @param name The name of the table.
      * @return The table, or null if no table was found for the name.
      */
     public Table getTable(String name) {
         for (Table table : tables) {
-            if (table.getName().equalsIgnoreCase(name)) {
+            if (table.getName().equals(name)) {
                 return table;
             }
         }
         return null;
     }
-
+    
     /**
-     * Returns an unmodifiable list of tables that the schema contains. Tables
-     * referenced via foreign keys appear in the list before the tables that
-     * reference them.
-     *
+     * Returns an unmodifiable list of tables in the order they were added to the schema.
      * @return An unmodifiable list of tables that the schema contains.
      */
     public List<Table> getTables() {
         return Collections.unmodifiableList(tables);
+    }    
+
+    /**
+     * Returns a list of tables that the schema contains. Tables
+     * referenced via foreign keys appear in the list before the tables that
+     * reference them.
+     * @return A list of tables that the schema contains.
+     */
+    public List<Table> getTablesInOrder() {
+        return new TableDependencyOrderer().order(tables);
     }
 
     /**
-     * Returns a list of tables in the schema, in reverse order to getTables.
-     *
-     * @return An unmodifiable list of tables that the schema contains (in
-     * reverse order to getTables).
+     * Returns a list of tables in the schema, in reverse order to getTablesInOrder.
+     * @return A list of tables that the schema contains (in reverse order to getTablesInOrder).
      */
     public List<Table> getTablesInReverseOrder() {
-        List<Table> reverseOrder = new ArrayList<>(tables);
-        Collections.copy(reverseOrder, tables);
+        List<Table> reverseOrder = new ArrayList<>(new TableDependencyOrderer().order(tables));
         Collections.reverse(reverseOrder);
         return reverseOrder;
     }
 
     /**
-     * Returns a list of all the integrity constraints present in the schema
-     *
-     * @return A list of integrity constraints.
-     */
-    public List<Constraint> getConstraints() {
-        List<Constraint> constraints = new ArrayList<>();
-        for (Table table : getTables()) {
-            constraints.addAll(table.getConstraints());
-        }
-        return constraints;
-    }
-
-    /**
      * Deep copies the schema.
-     *
      * @return A deep copy of the schema.
      */
     @Override
     public Schema duplicate() {
-        Schema duplicate = new Schema(name);
-
-        // important -- must be done in this order so that 
-        // foreign keys are remapped correctly
+        Schema copy = new Schema(name);
         for (Table table : tables) {
-            table.copyTo(duplicate);
+        	copy.addTable(table.duplicate());
         }
-
-        return duplicate;
+        return copy;
     }
 
     /**
-     * Orders a list of tables such that each table's dependencies appear before
-     * it in the list.
-     *
-     * @param tables The list of tables to be put in order.
-     * @return The ordered list.
+     * Generates a hash code for the schema.
+     * @return the hash code generated.
      */
-    public static List<Table> orderByDependencies(List<Table> tables) {
-        return new TableDependencyOrderer().order(tables);
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((tables == null) ? 0 : tables.hashCode());
+		return result;
+	}
+
+	/**
+	 * Checks whether the schema equals another object.
+	 * @param obj The object to compare with.
+	 * @return true if the schema is equal to obj, else false.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Schema other = (Schema) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (tables == null) {
+			if (other.tables != null)
+				return false;
+		} else if (!tables.equals(other.tables))
+			return false;
+		return true;
+	}
 }

@@ -1,9 +1,11 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 /**
  * Abstract superclass for integrity constrains that potentially involve
  * multiple columns (PrimaryKey, ForeignKey and Unique).
@@ -23,8 +25,8 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param table The table on which the integrity constraint holds.
      * @param columns The columns involved in the integrity constraint.
      */
-    protected MultiColumnConstraint(String name, Table table, List<Column> columns) {
-        super(name, table);
+    public MultiColumnConstraint(String name, List<Column> columns) {
+        super(name);
         setColumns(columns);
     }
 
@@ -34,19 +36,10 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param columns The columns involved in the integrity constraint.
      */
     public void setColumns(List<Column> columns) {
-
         if (columns.size() < 1) {
-            throw new SchemaConstructionException("Constraints must be defined over one or more columns for table \"" + table + "\"");
+            throw new SQLRepresentationException("Constraints must be defined over one or more columns");
         }
-
         this.columns = new ArrayList<>();
-
-        for (Column column : columns) {
-            if (!table.hasColumn(column)) {
-                throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
-            }
-            this.columns.add(column);
-        }
     }
 
     /**
@@ -79,11 +72,35 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     /**
      * Returns true if more than one column involved in this constraint.
-     *
      * @return True if more than one column involved in this constraint, else
      * false.
      */
     public boolean hasMultipleColumns() {
         return columns.size() > 1;
     }
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = super.hashCode();
+		result = prime * result + ((columns == null) ? 0 : columns.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MultiColumnConstraint other = (MultiColumnConstraint) obj;
+		if (columns == null) {
+			if (other.columns != null)
+				return false;
+		} else if (!columns.equals(other.columns))
+			return false;
+		return true;
+	}
 }

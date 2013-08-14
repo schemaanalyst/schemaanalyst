@@ -38,4 +38,8 @@ public class DecimalDataType extends DataType
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((PrecisionedAndScaled) this);
     }
+    
+    public DecimalDataType duplicate() {
+    	return new DecimalDataType(precision, scale);
+    }    
 }

@@ -1,7 +1,11 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class UniqueConstraint extends MultiColumnConstraint {
 
@@ -26,7 +30,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      */
     public void addColumn(Column column) {
         if (!table.hasColumn(column)) {
-            throw new SchemaConstructionException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
+            throw new SQLRepresentationException("Column \"" + column + "\" does not exist in table \"" + table + "\"");
         }
         columns.add(column);
     }
@@ -67,7 +71,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
             Column tableColumn = targetTable.getColumn(column.getName());
 
             if (tableColumn == null) {
-                throw new SchemaConstructionException(
+                throw new SQLRepresentationException(
                         "Cannot copy Unique constraint to table " + targetTable
                         + " as it does not hve the column " + column);
             }

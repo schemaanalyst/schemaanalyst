@@ -38,4 +38,8 @@ public class NumericDataType extends DataType
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((PrecisionedAndScaled) this);
     }
+    
+    public NumericDataType duplicate() {
+    	return new NumericDataType(precision, scale);
+    }
 }

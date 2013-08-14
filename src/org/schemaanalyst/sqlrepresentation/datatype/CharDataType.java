@@ -28,4 +28,8 @@ public class CharDataType extends DataType
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((LengthLimited) this);
     }
+    
+    public CharDataType duplicate() {
+    	return new CharDataType(length);
+    }    
 }

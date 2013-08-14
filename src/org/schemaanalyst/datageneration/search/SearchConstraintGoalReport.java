@@ -2,7 +2,7 @@ package org.schemaanalyst.datageneration.search;
 
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class SearchConstraintGoalReport extends ConstraintGoalReport {
 

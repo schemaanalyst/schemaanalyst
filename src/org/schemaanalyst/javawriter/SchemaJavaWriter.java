@@ -5,9 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
@@ -79,7 +79,7 @@ public class SchemaJavaWriter {
         code.appendln(2, "super(\"" + schemaName + "\");");
 
         // write table statements
-        List<Table> tables = schema.getTables();
+        List<Table> tables = schema.getTablesInOrder();
         for (Table table : tables) {
             appendTableCode(table);
         }

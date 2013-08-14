@@ -16,4 +16,8 @@ public class VarCharDataType extends CharDataType {
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
+    
+    public VarCharDataType duplicate() {
+    	return new VarCharDataType();
+    }    
 }

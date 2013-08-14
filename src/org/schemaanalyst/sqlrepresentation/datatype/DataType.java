@@ -2,11 +2,15 @@ package org.schemaanalyst.sqlrepresentation.datatype;
 
 import java.io.Serializable;
 
-public abstract class DataType implements Serializable {
+import org.schemaanalyst.util.Duplicable;
+
+public abstract class DataType implements Duplicable<DataType>, Serializable {
 
     private static final long serialVersionUID = -7105047166176083429L;
 
     public abstract void accept(DataTypeVisitor typeVisitor);
 
     public abstract void accept(DataTypeCategoryVisitor categoryVisitor);
+    
+    public abstract DataType duplicate();
 }

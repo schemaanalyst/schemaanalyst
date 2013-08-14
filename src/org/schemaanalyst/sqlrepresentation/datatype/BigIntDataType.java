@@ -16,4 +16,8 @@ public class BigIntDataType extends IntDataType {
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
+    
+    public BigIntDataType duplicate() {
+    	return new BigIntDataType(isSigned());
+    }
 }

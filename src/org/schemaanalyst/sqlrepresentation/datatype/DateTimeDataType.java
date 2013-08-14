@@ -13,4 +13,8 @@ public class DateTimeDataType extends DataType {
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit(this);
     }
+    
+    public DateTimeDataType duplicate() {
+    	return new DateTimeDataType();
+    }      
 }

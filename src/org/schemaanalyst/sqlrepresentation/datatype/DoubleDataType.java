@@ -13,4 +13,8 @@ public class DoubleDataType extends DataType {
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit(this);
     }
+    
+    public DoubleDataType duplicate() {
+    	return new DoubleDataType();
+    }      
 }

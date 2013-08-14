@@ -16,7 +16,7 @@ public class SchemaStats {
 
     public SchemaStats(Schema schema) {
 
-        List<Table> tables = schema.getTables();
+        List<Table> tables = schema.getTablesInOrder();
         numTables = tables.size();
 
         for (Table table : tables) {

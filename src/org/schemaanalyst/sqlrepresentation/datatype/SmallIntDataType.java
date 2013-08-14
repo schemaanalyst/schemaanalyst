@@ -16,4 +16,8 @@ public class SmallIntDataType extends IntDataType {
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
+    
+    public SmallIntDataType duplicate() {
+    	return new SmallIntDataType(isSigned());
+    }      
 }

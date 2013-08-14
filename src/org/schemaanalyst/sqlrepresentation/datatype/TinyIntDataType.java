@@ -16,4 +16,8 @@ public class TinyIntDataType extends IntDataType {
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }
+    
+    public TinyIntDataType duplicate() {
+    	return new TinyIntDataType();
+    }
 }

@@ -16,4 +16,8 @@ public class SingleCharDataType extends DataType {
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit(this);
     }
+    
+    public SingleCharDataType duplicate() {
+    	return new SingleCharDataType();
+    }   
 }

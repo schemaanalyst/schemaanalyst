@@ -3,8 +3,9 @@ package org.schemaanalyst.sqlrepresentation.expression;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.util.Duplicable;
 
-public interface Expression {
+public interface Expression extends Duplicable<Expression> {
 
     public Expression getSubexpression(List<Integer> indexes);
 
@@ -21,4 +22,6 @@ public interface Expression {
     public void accept(ExpressionVisitor visitor);
     
     public List<Column> getColumnsInvolved();
+    
+    public Expression duplicate();
 }

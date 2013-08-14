@@ -6,14 +6,15 @@ import java.util.List;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.TableDependencyOrderer;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
 public class SQLWriter {
@@ -61,7 +62,7 @@ public class SQLWriter {
     public List<String> writeCreateTableStatements(Schema schema) {
         List<String> statements = new ArrayList<>();
 
-        List<Table> tables = schema.getTables();
+        List<Table> tables = schema.getTablesInOrder();
         for (Table table : tables) {
             statements.add(writeCreateTableStatement(table));
         }
@@ -170,8 +171,7 @@ public class SQLWriter {
     public List<String> writeInsertStatements(Data data) {
         List<String> statements = new ArrayList<>();
 
-        List<Table> tables = data.getTables();
-        tables = Schema.orderByDependencies(tables);
+        List<Table> tables = new TableDependencyOrderer().order(data.getTables());
 
         for (Table table : tables) {
             List<Row> rows = data.getRows(table);

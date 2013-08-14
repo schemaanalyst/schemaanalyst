@@ -8,11 +8,11 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.Constraint;
-import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 
@@ -32,7 +32,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
 
         List<Table> tables;
         if (constraintToInvalidate == null) {
-            tables = schema.getTables();
+            tables = schema.getTablesInOrder();
         } else {
             Table constraintTable = constraintToInvalidate.getTable();
             tables = constraintTable.getConnectedTables();
