@@ -33,7 +33,7 @@ public abstract class MultiColumnConstraint extends Constraint {
      *
      * @param columns The columns involved in the integrity constraint.
      */
-    protected void setColumns(List<Column> columns) {
+    public void setColumns(List<Column> columns) {
 
         if (columns.size() < 1) {
             throw new SchemaConstructionException("Constraints must be defined over one or more columns for table \"" + table + "\"");
