@@ -17,7 +17,7 @@ if [ -z $CASESTUDY ] || [ -z $TRIALS ] || [ -z $APPROACH ] ; then
 	exit 1
 fi
 
-java -cp $CLASSPATH org.schemaanalyst.mutation.analysis.GenerateResults $CASESTUDY
+java -Xmx3G -cp $CLASSPATH org.schemaanalyst.mutation.analysis.GenerateResultsFromGenerator $CASESTUDY
 
 for (( t=1; t<=$TRIALS; t++ )) do
 	java -Xmx3G -cp $CLASSPATH $APPROACH $CASESTUDY $t
