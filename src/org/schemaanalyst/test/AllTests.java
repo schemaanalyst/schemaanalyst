@@ -37,6 +37,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.sqlrepresentation.constraint.TestConstraints.class,
 	org.schemaanalyst.test.sqlrepresentation.datatype.TestDataTypes.class,
 	org.schemaanalyst.test.sqlrepresentation.expression.TestExpression.class,
+	org.schemaanalyst.test.sqlrepresentation.expression.TestExpressions.class,
 	org.schemaanalyst.test.util.runner.TestRunner.class,
 	org.schemaanalyst.test.util.sql.TestSQLRepairer.class
 })
