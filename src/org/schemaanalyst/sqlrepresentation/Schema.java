@@ -38,7 +38,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
     
     /**
      * Creates a table and adds it to the schema, returning the table created.
-     *  @param tableName The name of the table to be added.
+     *  @param name The name of the table to be added.
      */
     public Table createTable(String name) {
         Table table = new Table(name);

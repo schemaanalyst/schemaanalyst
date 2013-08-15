@@ -46,7 +46,7 @@ public class Column implements Duplicable<Column>, Serializable {
 
     /**
      * Changes the data type of the column.
-     * @param type The new data type of the column.
+     * @param dataType The new data type of the column.
      */
     public void setDataType(DataType dataType) {
         this.dataType = dataType;

@@ -48,6 +48,7 @@ public abstract class MultiColumnConstraint extends Constraint {
         if (columns.size() < 1) {
             throw new SQLRepresentationException("Constraints must be defined over one or more columns");
         }
+        
         this.columns = new ArrayList<>(columns);
     }
 

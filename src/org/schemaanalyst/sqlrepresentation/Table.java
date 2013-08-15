@@ -35,7 +35,6 @@ public class Table implements Duplicable<Table>, Serializable {
     /**
      * Constructs a Table.
      * @param name The name of the schema.
-     * @param schema The schema to which this table belongs.
      */
     public Table(String name) {
         this.name = name;
@@ -53,7 +52,7 @@ public class Table implements Duplicable<Table>, Serializable {
 
     /**
      * Sets the name of the table.
-     * @param The name of the table.
+     * @param name The name of the table.
      */
     public void setName(String name) {
         this.name = name;
@@ -69,8 +68,8 @@ public class Table implements Duplicable<Table>, Serializable {
 
     /** 
      * Creates a column and adds it to the table
-     * @columnName The name of the column.
-     * @dataType The data type of the column.
+     * @param name The name of the column.
+     * @param dataType The data type of the column.
      */
     public Column createColumn(String name, DataType dataType) {
         Column column = new Column(name, dataType);
@@ -92,7 +91,7 @@ public class Table implements Duplicable<Table>, Serializable {
 
     /**
      * Gets a reference to one of the table's columns by its name (ignoring case).
-     * @param name The name of the column.
+     * @param columnName The name of the column.
      * @return The column, or null if a column wasn't found for the name given.
      */
     public Column getColumn(String columnName) {
@@ -173,7 +172,7 @@ public class Table implements Duplicable<Table>, Serializable {
     
     /**
      * Adds a CHECK constraint to the table.
-     * @param checkConstriant The CHECK constraint to be added.
+     * @param checkConstraint The CHECK constraint to be added.
      */
     public void addCheckConstraint(CheckConstraint checkConstraint) {
     	if (constraintNameClash(checkConstraint, checkConstraints)) {
