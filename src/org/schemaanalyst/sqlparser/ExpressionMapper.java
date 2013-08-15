@@ -47,7 +47,7 @@ public class ExpressionMapper {
                 if (column == null) {
                     throw new SQLParseException("Unknown column \"" + column + "\" for \"" + node + "\"");
                 }
-                return new ColumnExpression(column);
+                return new ColumnExpression(currentTable, column);
 
             case simple_constant_t:
                 TConstant constant = node.getConstantOperand();

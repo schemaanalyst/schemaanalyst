@@ -22,7 +22,7 @@ public class TestExpression {
         
         RelationalExpression expression = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column),
+                        new ColumnExpression(database.table, database.column),
                         RelationalOperator.EQUALS, 
                         new ConstantExpression(new NumericValue(1)));
      
@@ -37,9 +37,9 @@ public class TestExpression {
         
         RelationalExpression expression = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column),
+                        new ColumnExpression(database.table, database.column),
                         RelationalOperator.EQUALS, 
-                        new ColumnExpression(database.column));
+                        new ColumnExpression(database.table, database.column));
         
         assertEquals(expression.getColumnsInvolved().size(), 1);
         assertEquals(expression.getColumnsInvolved().get(0), database.column);
@@ -52,15 +52,15 @@ public class TestExpression {
         
         RelationalExpression relationalExpression1 = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column1),
+                        new ColumnExpression(database.table, database.column1),
                         RelationalOperator.EQUALS, 
-                        new ColumnExpression(database.column2));
+                        new ColumnExpression(database.table, database.column2));
         
         RelationalExpression relationalExpression2 = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column3),
+                        new ColumnExpression(database.table, database.column3),
                         RelationalOperator.EQUALS, 
-                        new ColumnExpression(database.column4));
+                        new ColumnExpression(database.table, database.column4));
         
         AndExpression andExpression = 
                 new AndExpression(relationalExpression1, relationalExpression2);
@@ -79,15 +79,15 @@ public class TestExpression {
         
         RelationalExpression relationalExpression1 = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column1),
+                        new ColumnExpression(database.table, database.column1),
                         RelationalOperator.EQUALS, 
-                        new ColumnExpression(database.column2));
+                        new ColumnExpression(database.table, database.column2));
         
         RelationalExpression relationalExpression2 = 
                 new RelationalExpression(
-                        new ColumnExpression(database.column1),
+                        new ColumnExpression(database.table, database.column1),
                         RelationalOperator.EQUALS, 
-                        new ColumnExpression(database.column4));
+                        new ColumnExpression(database.table, database.column4));
         
         AndExpression andExpression = 
                 new AndExpression(relationalExpression1, relationalExpression2);

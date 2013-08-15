@@ -69,7 +69,7 @@ public class SchemaPrimaryKeySupplier extends ArtefactSupplier<Schema, Pair<List
 		Table table = tables.get(tableIndex);
 		PrimaryKeyConstraint pk = table.getPrimaryKeyConstraint();
 		if (pk == null) {
-			table.setPrimaryKeyConstraint(pkColumns);
+			table.setPrimaryKeyConstraint(new PrimaryKeyConstraint(pkColumns));
 		} else {
 			pk.setColumns(pkColumns);
 		}

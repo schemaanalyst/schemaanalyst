@@ -63,7 +63,7 @@ public class ConstraintJavaWriter {
             @Override
             public void visit(NotNullConstraint constraint) {
                 methodName = TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD;
-                args.add(javaWriter.writeGetColumn(constraint.getColumn()));
+                args.add(javaWriter.writeGetColumn(table, constraint.getColumn()));
             }
 
             @Override
@@ -85,7 +85,7 @@ public class ConstraintJavaWriter {
             List<String> makeColumnArgsList(Table table, List<Column> columns) {
                 List<String> columnArgs = new ArrayList<>();
                 for (Column column : columns) {
-                    columnArgs.add(javaWriter.writeGetColumn(column));
+                    columnArgs.add(javaWriter.writeGetColumn(table, column));
                 }
                 return columnArgs;
             }

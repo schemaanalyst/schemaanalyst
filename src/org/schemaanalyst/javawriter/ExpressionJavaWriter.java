@@ -60,7 +60,7 @@ public class ExpressionJavaWriter {
             public void visit(ColumnExpression expression) {
                 java += javaWriter.writeConstruction(
                         expression,
-                        javaWriter.writeGetColumn(expression.getColumn()));
+                        javaWriter.writeGetColumn(expression.getTable(), expression.getColumn()));
             }
 
             @Override

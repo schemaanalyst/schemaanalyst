@@ -4,15 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ColumnExpression extends ExpressionLeaf {
 
+    private Table table;
     private Column column;
 
-    public ColumnExpression(Column column) {
+    public ColumnExpression(Table table, Column column) {
+        this.table = table;
         this.column = column;
     }
 
+    public Table getTable() {
+        return table;
+    }
+    
+    public void setTable(Table table) {
+        this.table = table;
+    }
+    
     public Column getColumn() {
         return column;
     }
@@ -35,7 +46,7 @@ public class ColumnExpression extends ExpressionLeaf {
     
     @Override
     public ColumnExpression duplicate() {
-        return new ColumnExpression(column);
+        return new ColumnExpression(table, column);
     }
     
     public String toString() {

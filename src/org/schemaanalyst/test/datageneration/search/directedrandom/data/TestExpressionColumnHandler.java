@@ -25,7 +25,7 @@ public class TestExpressionColumnHandler {
     
     RelationalExpression expression = 
             new RelationalExpression(
-                    new ColumnExpression(database.column),
+                    new ColumnExpression(database.table, database.column),
                     RelationalOperator.EQUALS, 
                     new ConstantExpression(new NumericValue(1)));     
     

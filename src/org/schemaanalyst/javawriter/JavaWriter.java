@@ -104,8 +104,8 @@ public class JavaWriter {
         return writeMethodCall(getVariableName(table), methodName, args);
     }
 
-    public String writeGetColumn(Column column) {
-        return writeTableMethodCall(column.getTable(), TABLE_GET_COLUMN_METHOD, writeString(column));
+    public String writeGetColumn(Table table, Column column) {
+        return writeTableMethodCall(table, TABLE_GET_COLUMN_METHOD, writeString(column));
     }
 
     public String writeString(Column column) {
