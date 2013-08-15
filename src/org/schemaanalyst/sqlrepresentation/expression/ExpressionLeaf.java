@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public abstract class ExpressionLeaf implements Expression {
 
@@ -39,5 +40,9 @@ public abstract class ExpressionLeaf implements Expression {
     @Override
     public List<Column> getColumnsInvolved() {
         return new ArrayList<>();
+    }
+    
+    @Override
+    public void remap(Table table) {        
     }
 }

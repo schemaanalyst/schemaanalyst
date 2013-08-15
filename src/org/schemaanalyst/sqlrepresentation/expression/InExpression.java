@@ -63,6 +63,40 @@ public class InExpression extends ExpressionTree {
     }
     
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((lhs == null) ? 0 : lhs.hashCode());
+        result = prime * result + (notIn ? 1231 : 1237);
+        result = prime * result + ((rhs == null) ? 0 : rhs.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        InExpression other = (InExpression) obj;
+        if (lhs == null) {
+            if (other.lhs != null)
+                return false;
+        } else if (!lhs.equals(other.lhs))
+            return false;
+        if (notIn != other.notIn)
+            return false;
+        if (rhs == null) {
+            if (other.rhs != null)
+                return false;
+        } else if (!rhs.equals(other.rhs))
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return lhs + (notIn ? " NOT" : "") + " IN " + rhs;
     }
