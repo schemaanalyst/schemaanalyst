@@ -23,7 +23,7 @@ import org.schemaanalyst.util.StringUtils;
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key
  * configuration files and allows instance fields to take on values specified
- * from the command line with the help of the {@link Description},
+ * from the command line with the help of the {@link Description @Description},
  * {@link RequiredParameters} and {@link Parameter} annotations.</p>
  *
  * <p>Important nomenclature:
