@@ -3,9 +3,13 @@ package org.schemaanalyst.test.sqlrepresentation;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import parsedcasestudy.iTrust;
 
 public class TestSchema {
     
@@ -68,8 +72,12 @@ public class TestSchema {
     
     public void testDuplication() {
         Schema s1 = new Schema("schema");
-        s1.createTable("table1");
-        s1.createTable("table2");
+        Table t1 = s1.createTable("table1");
+        Column c1 = t1.createColumn("t1column", new IntDataType());
+        Table t2 = s1.createTable("table2");
+        Column c2 = t1.createColumn("t2column", new IntDataType());
+        t1.createForeignKeyConstraint(c1, t2, c2);
+        
         Schema s2 = s1.duplicate();
         
         assertNotSame(
@@ -90,9 +98,48 @@ public class TestSchema {
         
         assertNotNull(
                 "The duplicate of a schema should have the same tables",
-                s2.getTable("table2"));        
+                s2.getTable("table2"));   
+        
+        // test remapping of FK
+        assertNotSame(
+                "The FOREIGN KEY of s1.t1 and s2.t1 should not refer to the same object",
+                s1.getTable("table1").getForeignKeyConstraints().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0));
+        
+        assertEquals(
+                "The FOREIGN KEY of s1.t1 and s2.t1 should be equal",
+                s1.getTable("table1").getForeignKeyConstraints().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0));
+        
+        assertNotSame(
+                "The FOREIGN KEY column of s1.t1 and s2.t1 should not refer to the same object",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getColumns().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getColumns().get(0));                
+
+        assertEquals(
+                "The FOREIGN KEY column of s1.t1 and s2.t1 should be equal",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getColumns().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getColumns().get(0));    
+
+        assertNotSame(
+                "The FOREIGN KEY reference table of s1.t1 and s2.t1 should not refer to the same object",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getReferenceTable(), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceTable());                
+
+        assertEquals(
+                "The FOREIGN KEY reference table of s1.t1 and s2.t1 should not refer to the same object",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getReferenceTable(), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceTable());    
+        
+        
+        assertNotSame(
+                "The FOREIGN KEY reference column of s1.t1 and s2.t1 should not refer to the same object",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0));                
+
+        assertEquals(
+                "The FOREIGN KEY reference column of s1.t1 and s2.t1 should be equal",
+                s1.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0), 
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0));    
     }
-    
-    // TODO - test duplication with FKs
-    
 }

@@ -74,4 +74,179 @@ public class TestTable {
         t.createColumn("column", new IntDataType());
         t.createColumn("column", new DoubleDataType());
     }
+    
+    public void testDuplicateColumnsOnly() {
+        Table t1 = new Table("table");
+        t1.createColumn("column1", new IntDataType());
+        t1.createColumn("column2", new DoubleDataType());
+        
+        Table t2 = t1.duplicate();
+        
+        assertNotSame(
+                "t1 and t2 should not refer to the same table",
+                t1, t2);
+        
+        assertEquals(
+                "t1 and t2 should be equal",
+                t1, t2);
+
+        assertNotSame(
+                "Columns in t1 and t2 should not be the same",
+                t1.getColumn("column1"), t2.getColumn("column1"));        
+
+        assertNotSame(
+                "Columns in t1 and t2 should not be the same",
+                t1.getColumn("column2"), t2.getColumn("column2"));         
+
+        assertEquals(
+                "Columns in t1 and t2 should be equal",
+                t1.getColumn("column1"), t2.getColumn("column1"));        
+
+        assertEquals(
+                "Columns in t1 and t2 should be equal",
+                t1.getColumn("column2"), t2.getColumn("column2"));
+    }
+    
+    public void testDuplicatePrimaryKey() {
+        Table t1 = new Table("table");
+        Column column = t1.createColumn("column", new IntDataType());
+        t1.createPrimaryKeyConstraint(column);
+        
+        Table t2 = t1.duplicate();
+        
+        assertNotSame(
+                "t1 and t2 should not refer to the same table",
+                t1, t2);
+        
+        assertEquals(
+                "t1 and t2 should be equal",
+                t1, t2);        
+        
+        assertNotSame(
+                "The PRIMARY KEY of t1 and t2 should not refer to the same object",
+                t1.getPrimaryKeyConstraint(), t2.getPrimaryKeyConstraint());
+        
+        assertEquals(
+                "The PRIMARY KEY of t1 and t2 should be equal",
+                t1.getPrimaryKeyConstraint(), t2.getPrimaryKeyConstraint());
+        
+        assertNotSame(
+                "The PRIMARY KEY column of t1 and t2 should not refer to the same object",
+                t1.getPrimaryKeyConstraint().getColumns().get(0), 
+                t2.getPrimaryKeyConstraint().getColumns().get(0));
+        
+        assertEquals(
+                "The PRIMARY KEY column of t1 and t2 should be equal",
+                t1.getPrimaryKeyConstraint().getColumns().get(0), 
+                t2.getPrimaryKeyConstraint().getColumns().get(0));            
+    }
+    
+    public void testDuplicateForeignKey() {
+        Table t1 = new Table("table");
+        Column column1 = t1.createColumn("column1", new IntDataType());
+        Column column2 = t1.createColumn("column2", new IntDataType());
+        t1.createForeignKeyConstraint(column1, t1, column2);
+        
+        Table t2 = t1.duplicate();
+        
+        assertNotSame(
+                "t1 and t2 should not refer to the same table",
+                t1, t2);
+        
+        assertEquals(
+                "t1 and t2 should be equal",
+                t1, t2);        
+        
+        assertNotSame(
+                "The FOREIGN KEY of t1 and t2 should not refer to the same object",
+                t1.getForeignKeyConstraints().get(0), 
+                t2.getForeignKeyConstraints().get(0));
+        
+        assertEquals(
+                "The FOREIGN KEY of t1 and t2 should be equal",
+                t1.getForeignKeyConstraints().get(0), 
+                t2.getForeignKeyConstraints().get(0));
+        
+        assertNotSame(
+                "The FOREIGN KEY column of t1 and t2 should not refer to the same object",
+                t1.getForeignKeyConstraints().get(0).getColumns().get(0), 
+                t2.getForeignKeyConstraints().get(0).getColumns().get(0));
+        
+        assertEquals(
+                "The FOREIGN KEY column of t1 and t2 should be equal",
+                t1.getForeignKeyConstraints().get(0).getColumns().get(0), 
+                t2.getForeignKeyConstraints().get(0).getColumns().get(0));            
+    }    
+    
+    public void testDuplicateNotNull() {
+        Table t1 = new Table("table");
+        Column column = t1.createColumn("column", new IntDataType());
+        t1.createNotNullConstraint(column);
+        
+        Table t2 = t1.duplicate();
+        
+        assertNotSame(
+                "t1 and t2 should not refer to the same table",
+                t1, t2);
+        
+        assertEquals(
+                "t1 and t2 should be equal",
+                t1, t2);        
+        
+        assertNotSame(
+                "The NOT NULL constraint of t1 and t2 should not refer to the same object",
+                t1.getNotNullConstraints().get(0), 
+                t2.getNotNullConstraints().get(0));
+        
+        assertEquals(
+                "The NOT NULL constraint of t1 and t2 should be equal",
+                t1.getNotNullConstraints().get(0), 
+                t2.getNotNullConstraints().get(0));
+        
+        assertNotSame(
+                "The NOT NULL constraint column of t1 and t2 should not refer to the same object",
+                t1.getNotNullConstraints().get(0).getColumn(), 
+                t2.getNotNullConstraints().get(0).getColumn());
+        
+        assertEquals(
+                "The NOT NULL constraint column of t1 and t2 should be equal",
+                t1.getNotNullConstraints().get(0).getColumn(), 
+                t2.getNotNullConstraints().get(0).getColumn());            
+    }     
+    
+    public void testDuplicateUnique() {
+        Table t1 = new Table("table");
+        Column column = t1.createColumn("column", new IntDataType());
+        t1.createUniqueConstraint(column);
+        
+        Table t2 = t1.duplicate();
+        
+        assertNotSame(
+                "t1 and t2 should not refer to the same table",
+                t1, t2);
+        
+        assertEquals(
+                "t1 and t2 should be equal",
+                t1, t2);        
+        
+        assertNotSame(
+                "The UNIQUE constraint of t1 and t2 should not refer to the same object",
+                t1.getUniqueConstraints().get(0), 
+                t2.getUniqueConstraints().get(0));
+        
+        assertEquals(
+                "The UNIQUE constraint of t1 and t2 should be equal",
+                t1.getUniqueConstraints().get(0), 
+                t2.getUniqueConstraints().get(0));
+        
+        assertNotSame(
+                "The UNIQUE constraint column of t1 and t2 should not refer to the same object",
+                t1.getUniqueConstraints().get(0).getColumns().get(0), 
+                t2.getUniqueConstraints().get(0).getColumns().get(0));
+        
+        assertEquals(
+                "The UNIQUE constraint column of t1 and t2 should be equal",
+                t1.getUniqueConstraints().get(0).getColumns().get(0), 
+                t2.getUniqueConstraints().get(0).getColumns().get(0));            
+    }    
 }
