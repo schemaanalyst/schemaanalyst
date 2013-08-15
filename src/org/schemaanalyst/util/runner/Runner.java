@@ -23,29 +23,27 @@ import org.schemaanalyst.util.StringUtils;
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key
  * configuration files and allows instance fields to take on values specified
- * from the command line with the help of the
+ * from the command line with the help of the {@link Description},
+ * {@link RequiredParameters} and {@link Parameter} annotations.</p>
  *
- * @Description,
- * @RequiredParameters and
- * @Parameter annotations.</p>
- *
- * <p>Important nomenclature: <br />
- * <strong>Arguments (args) </strong> -- raw values passed to a main method at
- * the command line.
- * <strong>Parameters</strong> -- name/value pairs for which a value may be
+ * <p>Important nomenclature:
+ * <ul>
+ * <li><strong>Arguments (args) </strong> -- raw values passed to a main method at
+ * the command line.</li>
+ * <li><strong>Parameters</strong> -- name/value pairs for which a value may be
  * required or optional. For required parameters, only the value is passed at
  * the command line whereas for optional parameters, the name must be passed
  * with the value. (Furthermore, some optional parameters may be switches
  * (boolean flags) in which case no value is passed, just the name, in order to
  * set the switch.) Required parameters are specified in the space-delimited
- * value of a
- * @RequiredParameters annotation for a class. Every other parameter is assumed
- * to be optional.
- * <strong>Fields</strong> -- instance fields of a class which are mapped to
- * parameters through the
- * @Parameter annotation.
- *
- * @author phil
+ * value of a {@link RequiredParameters} annotation for a class. Every other parameter 
+ * is assumed to be optional.</li>
+ * <li><strong>Fields</strong> -- instance fields of a class which are mapped to
+ * parameters through the {@link Parameter} annotation.</li>
+ * </ul>
+ * </p>
+ * 
+ * @author Phil McMinn
  */
 public abstract class Runner {
 
@@ -81,7 +79,6 @@ public abstract class Runner {
 
     /**
      * Constructor.
-     *
      * @param loadConfiguration Set whether to load the configuration or not
      * during initialisation.
      * @param catchExceptions If set to true, the Runner handles all
@@ -108,7 +105,6 @@ public abstract class Runner {
     /**
      * Executes the runner. All exceptions thrown are caught, so that the Java
      * process remains unterminated.
-     *
      * @param args The arguments passed from the command line.
      */
     public void run(String... args) {
@@ -130,8 +126,7 @@ public abstract class Runner {
     }
 
     /**
-     * Initialises the runner and executes the Runner's task
-     *
+     * Initialises the runner and executes the Runner's task.
      * @param args The arguments passed from the command line.
      */
     protected void doRun(String... args) {
@@ -143,7 +138,6 @@ public abstract class Runner {
      * Initialises the Runner by performing introspection of parameters, parsing
      * args, validating parameters and loading general configuration
      * information.
-     *
      * @param args The arguments passed from the command line.
      */
     protected void initialise(String... args) {
@@ -187,7 +181,7 @@ public abstract class Runner {
     }
 
     /**
-     * Furnishes parameter/field information through reflection
+     * Furnishes parameter/field information through reflection.
      */
     protected void inspectParameters() {
         acquireRequiredParameterNames();
@@ -197,14 +191,14 @@ public abstract class Runner {
 
     /**
      * Goes through class and back through subclasses collecting parameter-field
-     * information
+     * information.
      */
     protected void acquireParametersAndFieldInformation() {
         parameters = new HashMap<>();
         parameterFields = new HashMap<>();
         optionalParameterDefaults = new HashMap<>();
 
-        // get all fields with @Parameter annotations
+        // get all fields with Parameter annotations
         // and put them in the appropriate data structure
         // (requiredParameters & requiredParameterFields or
         // (optionalParameters & optionalParameterFields)
@@ -253,8 +247,7 @@ public abstract class Runner {
 
     /**
      * Acquires the list of required parameter names from the
-     *
-     * @RequiredParameters annotation. If one does not exist for the current
+     * {@link RequiredParameters} annotation. If one does not exist for the current
      * class, parent classes are explored by moving back through the class's
      * inheritance hierarchy.
      */
@@ -276,9 +269,8 @@ public abstract class Runner {
     }
 
     /**
-     * Ensure each field name extracted from the
-     *
-     * @RequiredParameters annotation was found as an actual parameter.
+     * Ensure each field name extracted from the 
+     * {@link RequiredParameters} annotation was found as an actual parameter.
      */
     protected void crosscheckRequiredParameters() {
         for (String name : requiredParameterNames) {
@@ -292,7 +284,6 @@ public abstract class Runner {
 
     /**
      * Parses args passed in from the command line into field values.
-     *
      * @param args The arguments passed in from the command line.
      */
     protected void parseArgs(String... args) {
@@ -326,9 +317,8 @@ public abstract class Runner {
 
     /**
      * Parses a required parameter from the args list.
-     *
      * @param n The number of the required parameter as it appears in the
-     * @RequiredParameters declaration.
+     * {@link RequiredParameters} declaration.
      * @param arg The argument string passed in from args.
      */
     protected void parseRequiredParameter(int n, String arg) {
@@ -338,7 +328,6 @@ public abstract class Runner {
 
     /**
      * Parses an optional parameter from the args list.
-     *
      * @param arg The argument string passed in from args.
      */
     protected void parseOptionalParameter(String arg) {
@@ -447,7 +436,6 @@ public abstract class Runner {
      * Get the possible limited list of choices for a parameter, as a string
      * array. The string array is constructed from a method call. The method is
      * specified by the parameter annotation in the form "class.method".
-     *
      * @param name The name of the parameter.
      * @return A string list denoting the enumeration of possible choices for
      * values of the parameter.
@@ -480,8 +468,7 @@ public abstract class Runner {
     }
 
     /**
-     * Check whether a parameter is a required parameter
-     *
+     * Check whether a parameter is a required parameter.
      * @return True if the parameter is required, else false.
      */
     protected boolean isRequiredParameter(String name) {
@@ -489,8 +476,7 @@ public abstract class Runner {
     }
 
     /**
-     * Check whether a parameter is an optional parameter
-     *
+     * Check whether a parameter is an optional parameter.
      * @return True if the parameter is optional, else false.
      */
     protected boolean isOptionalParameter(String name) {
@@ -500,7 +486,6 @@ public abstract class Runner {
     /**
      * Check whether the value for a parameter was parsed at the command line or
      * not.
-     *
      * @param name The name of the parameter.
      * @return True if the parameter was set, else false.
      */
@@ -513,7 +498,6 @@ public abstract class Runner {
      * ("test"), and if the check fails, quits with an errorMessage. This method
      * can be used to help to validate parameters in the validateParameters
      * method, which must be overridden.
-     *
      * @param test The expression to test.
      * @param errorMessage The message to be printed if the check does not pass.
      */
@@ -538,7 +522,6 @@ public abstract class Runner {
 
     /**
      * Quits with a error message and usage.
-     *
      * @param message The error message to relay to the user.
      */
     protected void exitWithArgumentException(String message) {
@@ -550,9 +533,8 @@ public abstract class Runner {
     }
 
     /**
-     * Get the value of the
-     *
-     * @Description of this Runner class, if one exists.
+     * Get the value of the {@link Description} annotation of this 
+     * Runner class, if one exists.
      * @return The description of the Runner.
      */
     protected String getDescription() {
@@ -601,8 +583,7 @@ public abstract class Runner {
     }
 
     /**
-     * Builds the usage list for required parameters
-     *
+     * Builds the usage list for required parameters.
      * @return A string reflecting the usage requirements of required
      * parameters.
      */
@@ -618,8 +599,7 @@ public abstract class Runner {
     }
 
     /**
-     * Builds the usage list for optional parameters
-     *
+     * Builds the usage list for optional parameters.
      * @return A string reflecting the usage requirements of optional
      * parameters.
      */
@@ -642,7 +622,6 @@ public abstract class Runner {
 
     /**
      * Formats a parameter for the usage list.
-     *
      * @param name The name of the parameter.
      * @return A string denoting the usage of this parameter.
      */

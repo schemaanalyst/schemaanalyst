@@ -203,7 +203,6 @@ public class Data implements Duplicable<Data> {
      * @return A list of rows containing only cells for each specified column.
      */
     public List<Row> getRows(Table table, List<Column> columns) {
-        // Construct the "vertical slice"
         List<Row> rows = new ArrayList<>();
         if (columns.size() > 0) {
             List<Row> tableRows = getRows(table);
@@ -217,7 +216,6 @@ public class Data implements Duplicable<Data> {
                 }
             }
         }
-
         return rows;
     }
     
