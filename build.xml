@@ -36,7 +36,8 @@
 		<mkdir dir="${build_dir}"/>
 		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
 			<classpath refid="build_classpath"/>
-			<!-- <exclude name="org/schemaanalyst/mutation/mutators/checkmutators/Check*"/> -->
+			<exclude name="deprecated/**"/>
+			<exclude name="paper/**"/>
 		</javac>
 	</target>
 
@@ -55,6 +56,19 @@
 		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, results/**, dist/**, config/*.local">
 			<exclude name="${dist_dir}/${dist_name}Bundle.zip"/>
 		</zip>
+	</target>
+
+	<!-- JAVADOC TASK - "ant javadoc" -->
+	<target name="javadoc">
+		<javadoc packagenames="org.schemaanalyst.*"
+			sourcepath="src"
+			defaultexcludes="yes"
+			destdir="docs/api"
+			author="true"
+			version="true"
+			use="true"
+			windowtitle="SchemaAnalyst Documentation">
+		</javadoc>
 	</target>
 
 	<!-- RUNNING TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
