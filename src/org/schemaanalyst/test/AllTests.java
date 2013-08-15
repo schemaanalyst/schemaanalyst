@@ -31,6 +31,10 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalCompoundValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalNumericValueObjectiveFunction.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
+	org.schemaanalyst.test.sqlrepresentation.TestColumn.class,
+	org.schemaanalyst.test.sqlrepresentation.TestSchema.class,
+	org.schemaanalyst.test.sqlrepresentation.TestTable.class,
+	org.schemaanalyst.test.sqlrepresentation.datatype.TestDataTypes.class,
 	org.schemaanalyst.test.sqlrepresentation.expression.TestExpression.class,
 	org.schemaanalyst.test.util.runner.TestRunner.class,
 	org.schemaanalyst.test.util.sql.TestSQLRepairer.class

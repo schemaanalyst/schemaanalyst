@@ -4,6 +4,11 @@ import java.io.Serializable;
 
 import org.schemaanalyst.util.Duplicable;
 
+/**
+ * Root class for representing a data type in SQL
+ * @author Phil McMinn
+ *
+ */
 public abstract class DataType implements Duplicable<DataType>, Serializable {
 
     private static final long serialVersionUID = -7105047166176083429L;
@@ -13,4 +18,14 @@ public abstract class DataType implements Duplicable<DataType>, Serializable {
     public abstract void accept(DataTypeCategoryVisitor categoryVisitor);
     
     public abstract DataType duplicate();
+    
+    @Override
+    public int hashCode() {
+        return getClass().getCanonicalName().hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return getClass() == obj.getClass();
+    }
 }

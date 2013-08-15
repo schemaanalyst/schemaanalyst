@@ -22,4 +22,8 @@ public class JavaUtils {
         }
         return className;
     }
+    
+    public static String packageToFileName(String packageName) {
+        return packageName.replace(PACKAGE_SEPARATOR, File.separator);
+    }
 }

@@ -566,8 +566,8 @@ public class Table implements Duplicable<Table>, Serializable {
      * @return The duplicate.
      */
     public Table duplicate() {
-    	//TODO -- fix up references etc.
-    	return null;
+    	Table duplicate = new Table(name);
+    	return duplicate;
     }    
     
     /**

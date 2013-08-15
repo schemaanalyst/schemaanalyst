@@ -21,7 +21,7 @@ public class Column implements Duplicable<Column>, Serializable {
     /**
      * Constructor.
      * @param name The name of the column.
-     * @param dataType The type of the column (see the datatype subpackage).
+     * @param dataType The type of the column
      */
     public Column(String name, DataType dataType) {
         this.name = name;
@@ -37,7 +37,7 @@ public class Column implements Duplicable<Column>, Serializable {
     }
 
     /**
-     * Returns the data type of the column (for example VarChar).
+     * Returns the data type of the column.
      * @return The data type of the column.
      */
     public DataType getDataType() {

@@ -95,9 +95,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
      * @return A list of tables that the schema contains (in reverse order to getTablesInOrder).
      */
     public List<Table> getTablesInReverseOrder() {
-        List<Table> reverseOrder = new ArrayList<>(new TableDependencyOrderer().order(tables));
-        Collections.reverse(reverseOrder);
-        return reverseOrder;
+        return new TableDependencyOrderer().reverseOrder(tables);
     }
     
     /**
@@ -110,6 +108,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
         for (Table table : tables) {
         	copy.addTable(table.duplicate());
         }
+        // TODO - foreign keys ...
         return copy;
     }
 
