@@ -24,22 +24,23 @@ import org.schemaanalyst.util.StringUtils;
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key
  * configuration files and allows instance fields to take on values specified
  * from the command line with the help of the {@link Description @Description},
- * {@link RequiredParameters} and {@link Parameter} annotations.</p>
+ * {@link RequiredParameters @RequiredParameters} and {@link Parameter @Parameter} 
+ * annotations.</p>
  *
  * <p>Important nomenclature:
  * <ul>
- * <li><strong>Arguments (args) </strong> -- raw values passed to a main method at
+ * <li><strong>Arguments (args) </strong>&emdash;raw values passed to a main method at
  * the command line.</li>
- * <li><strong>Parameters</strong> -- name/value pairs for which a value may be
+ * <li><strong>Parameters</strong>&emdash;name/value pairs for which a value may be
  * required or optional. For required parameters, only the value is passed at
  * the command line whereas for optional parameters, the name must be passed
  * with the value. (Furthermore, some optional parameters may be switches
  * (boolean flags) in which case no value is passed, just the name, in order to
  * set the switch.) Required parameters are specified in the space-delimited
- * value of a {@link RequiredParameters} annotation for a class. Every other parameter 
- * is assumed to be optional.</li>
+ * value of a {@link RequiredParameters @RequiredParameters} annotation for a class. 
+ * Every other parameter is assumed to be optional.</li>
  * <li><strong>Fields</strong> -- instance fields of a class which are mapped to
- * parameters through the {@link Parameter} annotation.</li>
+ * parameters through the {@link Parameter @Parameter} annotation.</li>
  * </ul>
  * </p>
  * 
@@ -47,27 +48,49 @@ import org.schemaanalyst.util.StringUtils;
  */
 public abstract class Runner {
 
+    /** The prefix for long options on the command line. */
     public static final String LONG_OPTION_PREFIX = "--";
+    
+    /** The option string for help. */
     public static final String HELP_OPTION = LONG_OPTION_PREFIX + "help";
-    // must be spaces, not tabs to work properly:
+    
+    /** The string used as an indent for printed usage information. */    
     protected static final String USAGE_INDENT = StringUtils.repeat(" ", 4);
+    
+    /** The string used as a hanging indent for options in printed usage information. */
     protected static final String USAGE_HANGING_INDENT = StringUtils.repeat(USAGE_INDENT, 4);
-    // configurations
+    
+    /** The locations configuration field. */
     protected LocationsConfiguration locationsConfiguration;
+    
+    /** The databases configuration field. */
     protected DatabaseConfiguration databaseConfiguration;
-    // parameter/field/defaults introspection information
+    
+    /** Parameter/field/defaults introspection information. */    
     protected List<String> requiredParameterNames;
+    
+    /** Parameter/field/defaults introspection information. */
     protected Map<String, Field> parameterFields;
+    
+    /** Parameter/field/defaults introspection information. */
     protected Map<String, Parameter> parameters;
+    
+    /** Parameter/field/defaults introspection information. */
     protected Map<String, Object> optionalParameterDefaults;
-    // set of parameters parsed in from args
+
+    /** The set of parameters parsed in from {@code args}. */
     protected Set<String> parsedParameters;
-    // store the command line output stream as an instance variable so that it
-    // can be mocked or redirected
+    
+    /** 
+     * Stores the command line output stream as an instance variable so that it
+     * can be mocked or redirected.
+     */
     protected PrintStream out = System.out;
-    // ensures the process does not abnormally terminate by catching all exceptions
+
+    /** ensures the process does not abnormally terminate by catching all exceptions. */
     protected boolean catchExceptions;
-    // sets whether the configuration is to be loaded on initialisation or not.
+    
+    /** Sets whether the configuration is to be loaded on initialisation or not. **/
     protected boolean loadConfiguration;
 
     /**
@@ -247,8 +270,9 @@ public abstract class Runner {
 
     /**
      * Acquires the list of required parameter names from the
-     * {@link RequiredParameters} annotation. If one does not exist for the current
-     * class, parent classes are explored by moving back through the class's
+     * {@link RequiredParameters @RequiredParameters} annotation. 
+     * If one does not exist for the current class, parent classes 
+     * are explored by moving back through the class's
      * inheritance hierarchy.
      */
     protected void acquireRequiredParameterNames() {
@@ -270,7 +294,8 @@ public abstract class Runner {
 
     /**
      * Ensure each field name extracted from the 
-     * {@link RequiredParameters} annotation was found as an actual parameter.
+     * {@link RequiredParameters @RequiredParameters} annotation 
+     * was found as an actual parameter.
      */
     protected void crosscheckRequiredParameters() {
         for (String name : requiredParameterNames) {
@@ -318,7 +343,7 @@ public abstract class Runner {
     /**
      * Parses a required parameter from the args list.
      * @param n The number of the required parameter as it appears in the
-     * {@link RequiredParameters} declaration.
+     * {@link RequiredParameters @RequiredParameters} declaration.
      * @param arg The argument string passed in from args.
      */
     protected void parseRequiredParameter(int n, String arg) {
@@ -359,7 +384,6 @@ public abstract class Runner {
      * Sets a field specified by the string name with the value specified by the
      * string value. If the field is not a string (i.e., an int, double etc.),
      * the value is parsed.
-     *
      * @param name The name of the field to set.
      * @param value The value with which to set it.
      */
@@ -435,7 +459,7 @@ public abstract class Runner {
     /**
      * Get the possible limited list of choices for a parameter, as a string
      * array. The string array is constructed from a method call. The method is
-     * specified by the parameter annotation in the form "class.method".
+     * specified by the parameter annotation in the form "{@code class.method}".
      * @param name The name of the parameter.
      * @return A string list denoting the enumeration of possible choices for
      * values of the parameter.
