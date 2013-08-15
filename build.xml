@@ -60,7 +60,7 @@
 	</target>
 
 	<!-- JAVADOC TASK - "ant javadoc" -->
-	<target name="javadoc">
+	<target name="javadoc" depends="compile">
 		<javadoc packagenames="org.schemaanalyst.*"
 			sourcepath="src"
 			defaultexcludes="yes"
@@ -69,7 +69,7 @@
 			version="true"
 			use="true"
 			windowtitle="SchemaAnalyst Documentation">
-			<classpath refid="build_classpath"/>
+			<classpath refid="run_classpath"/>
 		</javadoc>
 	</target>
 
