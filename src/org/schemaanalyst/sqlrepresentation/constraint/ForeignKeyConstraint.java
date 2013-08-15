@@ -128,6 +128,14 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     }
 
     /**
+     * Remaps the reference table columns to another table
+     * @param table The table to remap reference columns to.  
+     */
+    public void remapReferenceColumns(Table table) {
+        setReferenceColumns(remapColumns(referenceColumns, table));
+    }
+    
+    /**
      * Method for accepting visitors of type IntegrityConstraintVisitor.
      * @param visitor The ConstraintVisitor instance visiting this constraint.
      */
@@ -143,6 +151,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     @Override
     public ForeignKeyConstraint duplicate() {
         return new ForeignKeyConstraint(
+                name,
                 new ArrayList<>(columns),
                 referenceTable,
                 new ArrayList<>(referenceColumns));

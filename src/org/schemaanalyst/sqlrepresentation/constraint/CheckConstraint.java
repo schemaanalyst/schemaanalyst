@@ -1,5 +1,6 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 /**
@@ -48,6 +49,14 @@ public class CheckConstraint extends Constraint {
         this.expression = expression;
     }
 
+    /**
+     * Remaps the column of the constraint to that of the counterpart in
+     * another table.
+     * @param table The table to remap the constraint's column to.
+     */
+    public void remap(Table table) {
+    }    
+    
     /**
      * Allows instances of IntegrityConstraintVisitor to visit this constraint.
      * @param visitor The visitor that wishes to visit the constraint.

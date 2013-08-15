@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 /**
  * Abstract superclass for integrity constrains that potentially involve
  * multiple columns (PrimaryKey, ForeignKey and Unique).
@@ -49,9 +51,35 @@ public abstract class MultiColumnConstraint extends Constraint {
             throw new SQLRepresentationException("Constraints must be defined over one or more columns");
         }
         
+        ListIterator<Column> outerListIterator = columns.listIterator();
+        while (outerListIterator.hasNext()) {
+            Column first = outerListIterator.next();
+            
+            ListIterator<Column> innerListIterator = 
+                    columns.listIterator(outerListIterator.nextIndex());
+            while (innerListIterator.hasNext()) {
+                Column second = innerListIterator.next();
+                
+                if (first.getName().equalsIgnoreCase(second.getName())) {
+                    throw new SQLRepresentationException(
+                            "Cannot involve a column with the same name (\"" 
+                                    + first.getName() + "\") twice in the constraint");
+                }
+            }
+        }
+        
         this.columns = new ArrayList<>(columns);
     }
-
+    
+    /**
+     * Remaps the columns of the constraint to that of another table.
+     * @param table The table to remap the columns to.
+     */
+    @Override
+    public void remap(Table table) {
+        setColumns(remapColumns(columns, table));
+    }
+    
     /**
      * Gets the columns involved in the integrity constraint.
      * @return A list of the columns involved in the integrity constraint.

@@ -11,6 +11,10 @@ public class ColumnExpression extends ExpressionLeaf {
     private Table table;
     private Column column;
 
+    public ColumnExpression(Column column) {
+        this(null, column);
+    }
+    
     public ColumnExpression(Table table, Column column) {
         this.table = table;
         this.column = column;

@@ -1,12 +1,13 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
+import java.util.Collections;
+
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 /**
  * Represents a NOT NULL integrity constraint.
- *
  * @author Phil McMinn
- *
  */
 public class NotNullConstraint extends Constraint {
 
@@ -15,7 +16,6 @@ public class NotNullConstraint extends Constraint {
 
     /**
      * Constructor.
-     *
      * @param table The table containing the column on which the NOT NULL
      * constraint holds.
      * @param column The column that is designated to be NOT NULL.
@@ -26,7 +26,6 @@ public class NotNullConstraint extends Constraint {
     
     /**
      * Constructor.
-     *
      * @param name A name for the constraint (optional - can be null).
      * @param table The table containing the column on which the NOT NULL
      * constraint holds.
@@ -39,17 +38,23 @@ public class NotNullConstraint extends Constraint {
 
     /**
      * Gets the column which is designated as NOT NULL.
-     *
      * @return The column that is the subject of the NOT NULL constraint.
      */
     public Column getColumn() {
         return column;
     }
+    
+    /**
+     * Sets the column to be designated NOT NULL.
+     * @param column The column that is the subject of the NOT NULL constraint.
+     */
+    public void setColumn(Column column) {
+        this.column = column;
+    }    
 
     /**
-     * Method for accepting visitors of type IntegrityConstraintVisitor.
-     *
-     * @param visitor The IntegrityConstraintVisitor instance visiting this
+     * Method for accepting visitors of type ConstraintVisitor.
+     * @param visitor The ConstraintVisitor instance visiting this
      * constraint.
      */
     @Override
@@ -58,8 +63,18 @@ public class NotNullConstraint extends Constraint {
     }
 
     /**
+     * Remaps the column of the constraint to that of the counterpart in
+     * another table.
+     * @param table The table to remap the constraint's column to.
+     */
+    public void remap(Table table) {
+        setColumn(remapColumns(Collections.singletonList(column), table).get(0));
+    }
+    
+    /**
      * Generates a shallow copy of the constraint (the column is not
      * deep-copied)
+     * @param A shallow copy of the constraint.
      */
     @Override
     public NotNullConstraint duplicate() {
@@ -102,7 +117,6 @@ public class NotNullConstraint extends Constraint {
 
     /**
      * Returns an informative string about the foreign key instance.
-     *
      * @return An informative string.
      */
     @Override

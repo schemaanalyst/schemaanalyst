@@ -1,7 +1,12 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
 
 /**
@@ -44,6 +49,12 @@ public abstract class Constraint implements Duplicable<Constraint>, Serializable
     }
     
     /**
+     * Remaps the columns of the constraint to that of another table.
+     * @param table The table to remap the columns to.
+     */
+    public abstract void remap(Table table);
+    
+    /**
      * Duplicates the constraint.
      */
     public abstract Constraint duplicate();
@@ -79,4 +90,20 @@ public abstract class Constraint implements Duplicable<Constraint>, Serializable
 			return false;
 		return true;
 	}
+	
+    protected static List<Column> remapColumns(
+            List<Column> originalColumns, Table tableToRemapTo) {
+        List<Column> remappedColumns = new ArrayList<>();
+        for (Column orignalColumn : originalColumns) {
+            Column counterpartColumn = tableToRemapTo.getColumn(orignalColumn.getName());
+            if (!orignalColumn.equals(counterpartColumn)) {
+                throw new SQLRepresentationException(
+                        "Cannot remap column \"" + orignalColumn 
+                        + "\" - an identical column does not exist in table \""
+                        + tableToRemapTo + "\"");
+            }
+            remappedColumns.add(counterpartColumn);
+        }
+        return remappedColumns;
+    }	
 }

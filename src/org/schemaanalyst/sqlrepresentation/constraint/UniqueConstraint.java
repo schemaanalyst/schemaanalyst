@@ -59,7 +59,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      */
     @Override
     public UniqueConstraint duplicate() {
-        return new UniqueConstraint(new ArrayList<>(columns));
+        return new UniqueConstraint(name, new ArrayList<>(columns));
     }
     
     /**
