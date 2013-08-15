@@ -96,7 +96,7 @@ public class PostgresPrimaryKeyConstraintMutator extends Mutator {
     }
 
     private boolean involvedInForeignKey(Table table) {
-        for (Constraint constraint : table.getSchema().getConstraints()) {
+        for (Constraint constraint : table.getSchema().getAllConstraints()) {
             if (constraint instanceof ForeignKeyConstraint) {
                 ForeignKeyConstraint key = (ForeignKeyConstraint) constraint;
                 if (table == key.getReferenceTable()) {

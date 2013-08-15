@@ -40,7 +40,7 @@ public class SearchConstraintCoverer extends DataGenerator {
         report.addGoalReport(goalReport);
 
         for (Table table : schema.getTables()) {
-            for (Constraint constraint : table.getConstraints()) {
+            for (Constraint constraint : table.getAllConstraints()) {
                 goalReport = negateConstraint(table, constraint);
                 report.addGoalReport(goalReport);
             }

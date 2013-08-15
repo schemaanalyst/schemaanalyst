@@ -17,7 +17,7 @@ public class ConstraintCoverageReport extends CoverageReport {
         
         numConstraints = 0;
         for (Table table : schema.getTables()) {
-            numConstraints += table.getConstraints().size();
+            numConstraints += table.getAllConstraints().size();
         }
     }
 

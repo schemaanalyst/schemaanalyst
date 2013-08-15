@@ -40,7 +40,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
         }
         
         for (Table table : tables) {
-            for (Constraint constraint : table.getConstraints()) {
+            for (Constraint constraint : table.getAllConstraints()) {
                 boolean satisfyConstraint = !constraint.equals(constraintToInvalidate);
     
                 // You cannot make a valid PK NULL, so the objective function for the primary key 

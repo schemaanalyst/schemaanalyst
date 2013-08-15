@@ -523,7 +523,7 @@ public class Table implements Duplicable<Table>, Serializable {
      * Returns a list of all constraints on the table.
      * @return A list containing all the constraints on the table.
      */
-    public List<Constraint> getConstraints() {
+    public List<Constraint> getAllConstraints() {
         List<Constraint> constraints = new ArrayList<>();
         if (primaryKeyConstraint != null) {
             constraints.add(primaryKeyConstraint);
@@ -566,6 +566,40 @@ public class Table implements Duplicable<Table>, Serializable {
      */
     public Table duplicate() {
     	Table duplicate = new Table(name);
+    	
+    	// columns
+    	for (Column column : columns) {
+    	    duplicate.addColumn(column.duplicate());
+    	}
+    	
+    	// PRIMARY KEY
+    	duplicate.setPrimaryKeyConstraint(primaryKeyConstraint.duplicate());
+    	
+    	// CHECK constraints
+    	for (CheckConstraint checkConstraint : checkConstraints) {
+    	    duplicate.addCheckConstraint(checkConstraint.duplicate());
+    	}
+    	
+    	// FOREIGN KEY constraints
+        for (ForeignKeyConstraint foreignKeyConstraint : foreignKeyConstraints) {
+            duplicate.addForeignKeyConstraint(foreignKeyConstraint.duplicate());
+        }    	
+        
+        // NOT NULL constraints
+        for (NotNullConstraint notNullConstraint : notNullConstraints) {
+            duplicate.addNotNullConstraint(notNullConstraint.duplicate());
+        }       
+        
+        // UNIQUE constraints
+        for (UniqueConstraint uniqueConstraint : uniqueConstraints) {
+            duplicate.addUniqueConstraint(uniqueConstraint.duplicate());
+        }        
+        
+        // remap the constraints
+        for (Constraint constraint : duplicate.getAllConstraints()) {
+            constraint.remap(duplicate);
+        }
+        
     	return duplicate;
     }    
     
