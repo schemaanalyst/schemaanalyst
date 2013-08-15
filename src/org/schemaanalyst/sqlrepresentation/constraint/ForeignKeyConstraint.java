@@ -23,11 +23,11 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 
     /**
      * Constructor.
-     * @param columns Columns over which the foreign key is defined
-     * @param referenceTable The table containing the columns that the foreign
-     * keys reference.
-     * @param referenceColumns Columns in the reference table paired with each
-     * column in columns
+     * @param column The column in the source table on which the foreign key is defined
+     * @param referenceTable The table containing the column that the foreign
+     * keys references.
+     * @param referenceColumn The column in the reference table paired with the column
+     * in the source table.
      */
     public ForeignKeyConstraint(
             Column column, Table referenceTable, Column referenceColumn) {
@@ -37,11 +37,11 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     /**
      * Constructor.
      * @param name The name of the constraint.
-     * @param columns Columns over which the foreign key is defined
-     * @param referenceTable The table containing the columns that the foreign
-     * keys reference.
-     * @param referenceColumns Columns in the reference table paired with each
-     * column in columns
+     * @param column The column in the source table on which the foreign key is defined
+     * @param referenceTable The table containing the column that the foreign
+     * keys references.
+     * @param referenceColumn The column in the reference table paired with the column
+     * in the source table.
      */
     public ForeignKeyConstraint(
             String name, Column column, Table referenceTable, Column referenceColumn) {
@@ -80,7 +80,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 
     /**
      * Sets the reference table for the foreign key.
-     * @param table The reference table.
+     * @param referenceTable The reference table.
      */
     public void setReferenceTable(Table referenceTable) {
     	this.referenceTable = referenceTable;

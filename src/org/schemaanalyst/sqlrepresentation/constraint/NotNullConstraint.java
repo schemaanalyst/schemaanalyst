@@ -16,8 +16,6 @@ public class NotNullConstraint extends Constraint {
 
     /**
      * Constructor.
-     * @param table The table containing the column on which the NOT NULL
-     * constraint holds.
      * @param column The column that is designated to be NOT NULL.
      */
     public NotNullConstraint(Column column) {
@@ -27,8 +25,6 @@ public class NotNullConstraint extends Constraint {
     /**
      * Constructor.
      * @param name A name for the constraint (optional - can be null).
-     * @param table The table containing the column on which the NOT NULL
-     * constraint holds.
      * @param column The column that is designated to be NOT NULL.
      */
     public NotNullConstraint(String name, Column column) {

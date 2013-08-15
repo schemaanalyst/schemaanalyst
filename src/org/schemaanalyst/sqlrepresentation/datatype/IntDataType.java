@@ -3,7 +3,7 @@ package org.schemaanalyst.sqlrepresentation.datatype;
 public class IntDataType extends DataType implements Signed {
 
     private static final long serialVersionUID = 748636310116552558L;
-    protected boolean signed;
+    private boolean signed;
 
     public IntDataType() {
         this(true);

@@ -24,7 +24,6 @@ public abstract class MultiColumnConstraint extends Constraint {
     /**
      * Constructor.
      * @param name A name for the constraint (optional - can be null).
-     * @param table The table on which the integrity constraint holds.
      * @param columns The columns involved in the integrity constraint.
      */
     public MultiColumnConstraint(String name, Column... columns) {
@@ -34,7 +33,6 @@ public abstract class MultiColumnConstraint extends Constraint {
     /**
      * Constructor.
      * @param name A name for the constraint (optional - can be null).
-     * @param table The table on which the integrity constraint holds.
      * @param columns The columns involved in the integrity constraint.
      */
     public MultiColumnConstraint(String name, List<Column> columns) {

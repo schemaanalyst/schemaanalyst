@@ -17,7 +17,7 @@ public class CheckConstraint extends Constraint {
 
     /**
      * Constructor.
-     * @param expressions The expression associated with the check constraint.
+     * @param expression The expression associated with the check constraint.
      */
     public CheckConstraint(Expression expression) {
         this(null, expression);
@@ -26,7 +26,7 @@ public class CheckConstraint extends Constraint {
     /**
      * Constructor.
      * @param name An identifying name for the constraint (can be null).
-     * @param expressions The expression associated with the check constraint.
+     * @param expression The expression associated with the check constraint.
      */
     public CheckConstraint(String name, Expression expression) {
         super(name);

@@ -26,7 +26,6 @@ public abstract class Constraint implements Duplicable<Constraint>, Serializable
      *
      * @param name An identifying name for the constraint (optional - can be
      * null).
-     * @param table The table on which the constraint holds.
      */
     public Constraint(String name) {
         this.name = name;
