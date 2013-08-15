@@ -24,8 +24,6 @@ public class Data implements Duplicable<Data> {
 
     /**
      * Constructor.
-     * @param valueFactory A ValueFactory instance that corresponds to the
-     * database type.
      */
     public Data() {
         data = new LinkedHashMap<>();
@@ -35,6 +33,7 @@ public class Data implements Duplicable<Data> {
      * Creates a row of data values for a table. The data values are initialized
      * to defaults as dictated by the ValueFactory.
      * @param table The table for which to create the row for.
+     * @param valueFactory A ValueFactory instance appropriate for the current DBMS.
      * @return The Row instance created for the table.
      */
     public Row addRow(Table table, ValueFactory valueFactory) {
@@ -63,7 +62,8 @@ public class Data implements Duplicable<Data> {
      * Creates a number of rows of data values for a table. The data values are
      * initialized to defaults as dictated by the ValueFactory.
      * @param table The table for which to create the row for.
-     * @param i The number of rows to add for the table.
+     * @param numRows The number of rows to add for the table.
+     * @param valueFactory A ValueFactory instance appropriate for the current DBMS.
      * @return The Row instance created for the table.
      */
     public List<Row> addRows(Table table, int numRows, ValueFactory valueFactory) {
@@ -78,11 +78,13 @@ public class Data implements Duplicable<Data> {
     /**
      * Creates a number of rows of data values for different tables. The data
      * values are initialized to defaults as dictated by the ValueFactory.
-     * @param table The table for which to create the row for.
-     * @param i The number of rows to add for the table.
+     * @param tables The tables for which to create rows for.
+     * @param numRows The number of rows to add for the table.
+     * @param valueFactory A ValueFactory instance appropriate for the current DBMS.     * 
      * @return The Row instance created for the table.
      */
-    public Map<Table, List<Row>> addRows(List<Table> tables, int numRows, ValueFactory valueFactory) {
+    public Map<Table, List<Row>> addRows(
+            List<Table> tables, int numRows, ValueFactory valueFactory) {
         Map<Table, List<Row>> tableRows = new LinkedHashMap<>();
         for (Table table : tables) {
             List<Row> rows = addRows(table, numRows, valueFactory);
@@ -222,7 +224,7 @@ public class Data implements Duplicable<Data> {
     /**
      * Returns a "vertical slice" of a table -- a list of rows where each row
      * contains a subset of cells for specifically-required columns.
-     * @paam table The table of the column for which cell values are sought.
+     * @param table The table of the column for which cell values are sought.
      * @param columns The columns for which cell values are sought. 
      * @return A list of rows containing only cells for each specified column.
      */
