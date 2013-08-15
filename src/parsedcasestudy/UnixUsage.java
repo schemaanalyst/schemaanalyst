@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * UnixUsage schema.
- * Java code originally generated: 2013/08/15 10:52:20
+ * Java code originally generated: 2013/08/15 23:00:44
  *
  */
 
@@ -31,7 +31,7 @@ public class UnixUsage extends Schema {
 		tableCourseInfo.createColumn("OFFERED_DEPT", new IntDataType());
 		tableCourseInfo.createColumn("GRADUATE_LEVEL", new SmallIntDataType());
 		tableCourseInfo.createPrimaryKeyConstraint(tableCourseInfo.getColumn("COURSE_ID"));
-		tableCourseInfo.createForeignKeyConstraint(tableCourseInfo.getColumn("OFFERED_DEPT"), tableDeptInfo, tableCourseInfo.getColumn("DEPT_ID"));
+		tableCourseInfo.createForeignKeyConstraint(tableCourseInfo.getColumn("OFFERED_DEPT"), tableDeptInfo, tableDeptInfo.getColumn("DEPT_ID"));
 		tableCourseInfo.createNotNullConstraint(tableCourseInfo.getColumn("COURSE_ID"));
 
 		Table tableOfficeInfo = this.createTable("OFFICE_INFO");
@@ -60,9 +60,9 @@ public class UnixUsage extends Schema {
 		tableUserInfo.createColumn("YEARS_USING_UNIX", new IntDataType());
 		tableUserInfo.createColumn("ENROLL_DATE", new DateDataType());
 		tableUserInfo.createPrimaryKeyConstraint(tableUserInfo.getColumn("USER_ID"));
-		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("DEPT_ID"), tableDeptInfo, tableUserInfo.getColumn("DEPT_ID"));
-		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("OFFICE_ID"), tableOfficeInfo, tableUserInfo.getColumn("OFFICE_ID"));
-		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("RACE"), tableRaceInfo, tableUserInfo.getColumn("RACE_CODE"));
+		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("DEPT_ID"), tableDeptInfo, tableDeptInfo.getColumn("DEPT_ID"));
+		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("OFFICE_ID"), tableOfficeInfo, tableOfficeInfo.getColumn("OFFICE_ID"));
+		tableUserInfo.createForeignKeyConstraint(tableUserInfo.getColumn("RACE"), tableRaceInfo, tableRaceInfo.getColumn("RACE_CODE"));
 		tableUserInfo.createNotNullConstraint(tableUserInfo.getColumn("USER_ID"));
 		tableUserInfo.createNotNullConstraint(tableUserInfo.getColumn("PASSWORD"));
 
@@ -71,8 +71,8 @@ public class UnixUsage extends Schema {
 		tableTranscript.createColumn("COURSE_ID", new IntDataType());
 		tableTranscript.createColumn("SCORE", new IntDataType());
 		tableTranscript.createPrimaryKeyConstraint(tableTranscript.getColumn("USER_ID"), tableTranscript.getColumn("COURSE_ID"));
-		tableTranscript.createForeignKeyConstraint(tableTranscript.getColumn("USER_ID"), tableUserInfo, tableTranscript.getColumn("USER_ID"));
-		tableTranscript.createForeignKeyConstraint(tableTranscript.getColumn("COURSE_ID"), tableCourseInfo, tableTranscript.getColumn("COURSE_ID"));
+		tableTranscript.createForeignKeyConstraint(tableTranscript.getColumn("USER_ID"), tableUserInfo, tableUserInfo.getColumn("USER_ID"));
+		tableTranscript.createForeignKeyConstraint(tableTranscript.getColumn("COURSE_ID"), tableCourseInfo, tableCourseInfo.getColumn("COURSE_ID"));
 		tableTranscript.createNotNullConstraint(tableTranscript.getColumn("USER_ID"));
 		tableTranscript.createNotNullConstraint(tableTranscript.getColumn("COURSE_ID"));
 
@@ -88,7 +88,7 @@ public class UnixUsage extends Schema {
 		tableUsageHistory.createColumn("LINE_NO", new IntDataType());
 		tableUsageHistory.createColumn("COMMAND_SEQ", new IntDataType());
 		tableUsageHistory.createColumn("COMMAND", new VarCharDataType(50));
-		tableUsageHistory.createForeignKeyConstraint(tableUsageHistory.getColumn("USER_ID"), tableUserInfo, tableUsageHistory.getColumn("USER_ID"));
+		tableUsageHistory.createForeignKeyConstraint(tableUsageHistory.getColumn("USER_ID"), tableUserInfo, tableUserInfo.getColumn("USER_ID"));
 		tableUsageHistory.createNotNullConstraint(tableUsageHistory.getColumn("USER_ID"));
 	}
 }

@@ -17,7 +17,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * CustomerOrder schema.
- * Java code originally generated: 2013/08/15 10:51:43
+ * Java code originally generated: 2013/08/15 23:00:06
  *
  */
 
@@ -45,7 +45,7 @@ public class CustomerOrder extends Schema {
 		tableDbProduct.createColumn("notes", new VarCharDataType(256));
 		tableDbProduct.createColumn("description", new VarCharDataType(256));
 		tableDbProduct.createPrimaryKeyConstraint(tableDbProduct.getColumn("ean_code"));
-		tableDbProduct.createForeignKeyConstraint("db_product_category_fk", tableDbProduct.getColumn("category_id"), tableDbCategory, tableDbProduct.getColumn("id"));
+		tableDbProduct.createForeignKeyConstraint("db_product_category_fk", tableDbProduct.getColumn("category_id"), tableDbCategory, tableDbCategory.getColumn("id"));
 		tableDbProduct.createNotNullConstraint(tableDbProduct.getColumn("ean_code"));
 		tableDbProduct.createNotNullConstraint(tableDbProduct.getColumn("name"));
 		tableDbProduct.createNotNullConstraint(tableDbProduct.getColumn("category_id"));
@@ -65,7 +65,7 @@ public class CustomerOrder extends Schema {
 		tableDbUser.createColumn("role_id", new VarCharDataType(16));
 		tableDbUser.createColumn("active", new SmallIntDataType());
 		tableDbUser.createPrimaryKeyConstraint(tableDbUser.getColumn("id"));
-		tableDbUser.createForeignKeyConstraint("db_user_role_fk", tableDbUser.getColumn("role_id"), tableDbRole, tableDbUser.getColumn("name"));
+		tableDbUser.createForeignKeyConstraint("db_user_role_fk", tableDbUser.getColumn("role_id"), tableDbRole, tableDbRole.getColumn("name"));
 		tableDbUser.createNotNullConstraint(tableDbUser.getColumn("id"));
 		tableDbUser.createNotNullConstraint(tableDbUser.getColumn("name"));
 		tableDbUser.createNotNullConstraint(tableDbUser.getColumn("email"));
@@ -82,7 +82,7 @@ public class CustomerOrder extends Schema {
 		tableDbCustomer.createColumn("last_name", new VarCharDataType(30));
 		tableDbCustomer.createColumn("birth_date", new DateDataType());
 		tableDbCustomer.createPrimaryKeyConstraint(tableDbCustomer.getColumn("id"));
-		tableDbCustomer.createForeignKeyConstraint("db_customer_user_fk", tableDbCustomer.getColumn("id"), tableDbUser, tableDbCustomer.getColumn("id"));
+		tableDbCustomer.createForeignKeyConstraint("db_customer_user_fk", tableDbCustomer.getColumn("id"), tableDbUser, tableDbUser.getColumn("id"));
 		tableDbCustomer.createNotNullConstraint(tableDbCustomer.getColumn("id"));
 		tableDbCustomer.createNotNullConstraint(tableDbCustomer.getColumn("category"));
 		tableDbCustomer.createNotNullConstraint(tableDbCustomer.getColumn("first_name"));
@@ -94,7 +94,7 @@ public class CustomerOrder extends Schema {
 		tableDbOrder.createColumn("total_price", new DecimalDataType(8, 2));
 		tableDbOrder.createColumn("created_at", new TimestampDataType());
 		tableDbOrder.createPrimaryKeyConstraint(tableDbOrder.getColumn("id"));
-		tableDbOrder.createForeignKeyConstraint("db_order_customer_fk", tableDbOrder.getColumn("customer_id"), tableDbCustomer, tableDbOrder.getColumn("id"));
+		tableDbOrder.createForeignKeyConstraint("db_order_customer_fk", tableDbOrder.getColumn("customer_id"), tableDbCustomer, tableDbCustomer.getColumn("id"));
 		tableDbOrder.createNotNullConstraint(tableDbOrder.getColumn("id"));
 		tableDbOrder.createNotNullConstraint(tableDbOrder.getColumn("customer_id"));
 		tableDbOrder.createNotNullConstraint(tableDbOrder.getColumn("total_price"));
@@ -107,8 +107,8 @@ public class CustomerOrder extends Schema {
 		tableDbOrderItem.createColumn("product_ean_code", new VarCharDataType(13));
 		tableDbOrderItem.createColumn("total_price", new DecimalDataType(8, 2));
 		tableDbOrderItem.createPrimaryKeyConstraint(tableDbOrderItem.getColumn("id"));
-		tableDbOrderItem.createForeignKeyConstraint("db_order_item_order_fk", tableDbOrderItem.getColumn("order_id"), tableDbOrder, tableDbOrderItem.getColumn("id"));
-		tableDbOrderItem.createForeignKeyConstraint("db_order_item_product_fk", tableDbOrderItem.getColumn("product_ean_code"), tableDbProduct, tableDbOrderItem.getColumn("ean_code"));
+		tableDbOrderItem.createForeignKeyConstraint("db_order_item_order_fk", tableDbOrderItem.getColumn("order_id"), tableDbOrder, tableDbOrder.getColumn("id"));
+		tableDbOrderItem.createForeignKeyConstraint("db_order_item_product_fk", tableDbOrderItem.getColumn("product_ean_code"), tableDbProduct, tableDbProduct.getColumn("ean_code"));
 		tableDbOrderItem.createNotNullConstraint(tableDbOrderItem.getColumn("id"));
 		tableDbOrderItem.createNotNullConstraint(tableDbOrderItem.getColumn("order_id"));
 		tableDbOrderItem.createNotNullConstraint(tableDbOrderItem.getColumn("number_of_items"));

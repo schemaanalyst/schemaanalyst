@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML181NotNulls schema.
- * Java code originally generated: 2013/08/15 10:51:57
+ * Java code originally generated: 2013/08/15 23:00:20
  *
  */
 
@@ -32,7 +32,7 @@ public class NistDML181NotNulls extends Schema {
 		tableOrders.createColumn("LASTNAME", new VarCharDataType(373));
 		tableOrders.createColumn("TITLE", new VarCharDataType(80));
 		tableOrders.createColumn("COST", new NumericDataType(5, 2));
-		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")));
+		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME")));
 		tableOrders.createNotNullConstraint(tableOrders.getColumn("FIRSTNAME"));
 		tableOrders.createNotNullConstraint(tableOrders.getColumn("LASTNAME"));
 	}

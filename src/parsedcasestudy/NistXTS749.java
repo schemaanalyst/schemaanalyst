@@ -14,7 +14,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * NistXTS749 schema.
- * Java code originally generated: 2013/08/15 10:52:12
+ * Java code originally generated: 2013/08/15 23:00:35
  *
  */
 
@@ -37,7 +37,7 @@ public class NistXTS749 extends Schema {
 		tableTest12649.createColumn("TNUM2", new NumericDataType(5));
 		tableTest12649.createColumn("TCHAR", new CharDataType(3));
 		tableTest12649.createPrimaryKeyConstraint("CND12649A", tableTest12649.getColumn("TNUM1"), tableTest12649.getColumn("TNUM2"));
-		tableTest12649.createForeignKeyConstraint("CND12649C", tableTest12649.getColumn("TCHAR"), tableStaff, tableTest12649.getColumn("EMPNUM"));
+		tableTest12649.createForeignKeyConstraint("CND12649C", tableTest12649.getColumn("TCHAR"), tableStaff, tableStaff.getColumn("EMPNUM"));
 		tableTest12649.createNotNullConstraint(tableTest12649.getColumn("TNUM1"));
 		tableTest12649.createNotNullConstraint(tableTest12649.getColumn("TNUM2"));
 		tableTest12649.createCheckConstraint("CND12649B", new RelationalExpression(new ColumnExpression(tableTest12649, tableTest12649.getColumn("TNUM2")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));

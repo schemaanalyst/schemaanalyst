@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * FrenchTowns schema.
- * Java code originally generated: 2013/08/15 10:51:50
+ * Java code originally generated: 2013/08/15 23:00:13
  *
  */
 
@@ -36,7 +36,7 @@ public class FrenchTowns extends Schema {
 		tableDepartments.createColumn("capital", new VarCharDataType(10));
 		tableDepartments.createColumn("region", new VarCharDataType(4));
 		tableDepartments.createColumn("name", new VarCharDataType(100));
-		tableDepartments.createForeignKeyConstraint(tableDepartments.getColumn("region"), tableRegions, tableDepartments.getColumn("code"));
+		tableDepartments.createForeignKeyConstraint(tableDepartments.getColumn("region"), tableRegions, tableRegions.getColumn("code"));
 		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("id"));
 		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("code"));
 		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("capital"));
@@ -53,7 +53,7 @@ public class FrenchTowns extends Schema {
 		tableTowns.createColumn("article", new VarCharDataType(100));
 		tableTowns.createColumn("name", new VarCharDataType(100));
 		tableTowns.createColumn("department", new VarCharDataType(4));
-		tableTowns.createForeignKeyConstraint(tableTowns.getColumn("department"), tableDepartments, tableTowns.getColumn("code"));
+		tableTowns.createForeignKeyConstraint(tableTowns.getColumn("department"), tableDepartments, tableDepartments.getColumn("code"));
 		tableTowns.createNotNullConstraint(tableTowns.getColumn("id"));
 		tableTowns.createNotNullConstraint(tableTowns.getColumn("code"));
 		tableTowns.createNotNullConstraint(tableTowns.getColumn("name"));

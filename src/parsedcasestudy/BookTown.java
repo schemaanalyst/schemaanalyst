@@ -20,7 +20,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * BookTown schema.
- * Java code originally generated: 2013/08/15 10:51:39
+ * Java code originally generated: 2013/08/15 23:00:02
  *
  */
 

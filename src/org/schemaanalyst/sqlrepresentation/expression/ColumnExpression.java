@@ -66,9 +66,6 @@ public class ColumnExpression extends ExpressionLeaf {
             // change the column
             Column counterpartColumn = table.getColumn(column.getName());
             if (!column.equals(counterpartColumn)) {
-                System.out.println(column);
-                System.out.println(counterpartColumn);
-                System.out.println(table.getColumns());
                 throw new SQLRepresentationException(
                         "Cannot remap column \"" + column 
                         + "\" - an identical column does not exist in table \""
@@ -104,7 +101,8 @@ public class ColumnExpression extends ExpressionLeaf {
         if (table == null) {
             if (other.table != null)
                 return false;
-        } else if (!table.equals(other.table))
+        // a full table comparison can lead to recursion and a stack overflow ....    
+        } else if (!table.getName().equalsIgnoreCase(other.table.getName()))
             return false;
         return true;
     }

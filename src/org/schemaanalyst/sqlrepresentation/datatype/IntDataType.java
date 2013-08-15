@@ -17,6 +17,11 @@ public class IntDataType extends DataType implements Signed {
     public boolean isSigned() {
         return signed;
     }
+    
+    @Override
+    public void setSigned(boolean signed) {
+        this.signed = signed;
+    }
 
     @Override
     public void accept(DataTypeVisitor typeVisitor) {

@@ -18,7 +18,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * iTrust schema.
- * Java code originally generated: 2013/08/15 10:52:25
+ * Java code originally generated: 2013/08/15 23:00:50
  *
  */
 
@@ -361,7 +361,7 @@ public class iTrust extends Schema {
 		tableOvreactionoverride.createColumn("OverrideCode", new VarCharDataType(5));
 		tableOvreactionoverride.createColumn("OverrideComment", new VarCharDataType(255));
 		tableOvreactionoverride.createPrimaryKeyConstraint(tableOvreactionoverride.getColumn("ID"));
-		tableOvreactionoverride.createForeignKeyConstraint(tableOvreactionoverride.getColumn("OVMedicationID"), tableOvmedication, tableOvreactionoverride.getColumn("ID"));
+		tableOvreactionoverride.createForeignKeyConstraint(tableOvreactionoverride.getColumn("OVMedicationID"), tableOvmedication, tableOvmedication.getColumn("ID"));
 		tableOvreactionoverride.createNotNullConstraint(tableOvreactionoverride.getColumn("OVMedicationID"));
 
 		Table tableOvdiagnosis = this.createTable("OVDiagnosis");

@@ -18,7 +18,7 @@ public class VarCharDataType extends CharDataType {
     }
     
     public VarCharDataType duplicate() {
-    	return new VarCharDataType();
+    	return new VarCharDataType(length);
     }
     
     @Override

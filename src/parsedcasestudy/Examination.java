@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * Examination schema.
- * Java code originally generated: 2013/08/15 10:51:47
+ * Java code originally generated: 2013/08/15 23:00:10
  *
  */
 
@@ -51,7 +51,7 @@ public class Examination extends Schema {
 		tableExamlog.createColumn("examtimeUpdate", new DateDataType());
 		tableExamlog.createColumn("timeEnter", new DateDataType());
 		tableExamlog.createPrimaryKeyConstraint(tableExamlog.getColumn("lkey"));
-		tableExamlog.createForeignKeyConstraint(tableExamlog.getColumn("ekey"), tableExam, tableExamlog.getColumn("ekey"));
+		tableExamlog.createForeignKeyConstraint(tableExamlog.getColumn("ekey"), tableExam, tableExam.getColumn("ekey"));
 		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreNEW")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
 		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreNEW")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
 		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreOLD")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));

@@ -11,7 +11,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 
 /*
  * NistWeather schema.
- * Java code originally generated: 2013/08/15 10:52:09
+ * Java code originally generated: 2013/08/15 23:00:32
  *
  */
 
@@ -39,7 +39,7 @@ public class NistWeather extends Schema {
 		tableStats.createColumn("TEMP_F", new IntDataType());
 		tableStats.createColumn("RAIN_I", new IntDataType());
 		tableStats.createPrimaryKeyConstraint(tableStats.getColumn("ID"), tableStats.getColumn("MONTH"));
-		tableStats.createForeignKeyConstraint(tableStats.getColumn("ID"), tableStation, tableStats.getColumn("ID"));
+		tableStats.createForeignKeyConstraint(tableStats.getColumn("ID"), tableStation, tableStation.getColumn("ID"));
 		tableStats.createNotNullConstraint(tableStats.getColumn("MONTH"));
 		tableStats.createNotNullConstraint(tableStats.getColumn("TEMP_F"));
 		tableStats.createNotNullConstraint(tableStats.getColumn("RAIN_I"));

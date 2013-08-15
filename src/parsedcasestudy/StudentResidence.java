@@ -12,7 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * StudentResidence schema.
- * Java code originally generated: 2013/08/15 10:52:18
+ * Java code originally generated: 2013/08/15 23:00:41
  *
  */
 
@@ -37,7 +37,7 @@ public class StudentResidence extends Schema {
 		tableStudent.createColumn("lastName", new VarCharDataType(50));
 		tableStudent.createColumn("residence", new VarCharDataType(50));
 		tableStudent.createPrimaryKeyConstraint(tableStudent.getColumn("id"));
-		tableStudent.createForeignKeyConstraint(tableStudent.getColumn("residence"), tableResidence, tableStudent.getColumn("name"));
+		tableStudent.createForeignKeyConstraint(tableStudent.getColumn("residence"), tableResidence, tableResidence.getColumn("name"));
 		tableStudent.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableStudent, tableStudent.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
 	}
 }

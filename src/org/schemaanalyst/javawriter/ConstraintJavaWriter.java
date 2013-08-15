@@ -57,7 +57,7 @@ public class ConstraintJavaWriter {
 
                 args.add(wrapColumnArgsString(table, constraint.getColumns()));
                 args.add(javaWriter.getVariableName(constraint.getReferenceTable()));
-                args.add(wrapColumnArgsString(table, constraint.getReferenceColumns()));
+                args.add(wrapColumnArgsString(constraint.getReferenceTable(), constraint.getReferenceColumns()));
             }
 
             @Override

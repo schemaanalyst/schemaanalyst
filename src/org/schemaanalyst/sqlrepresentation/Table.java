@@ -573,7 +573,9 @@ public class Table implements Duplicable<Table>, Serializable {
     	}
     	
     	// PRIMARY KEY
-    	duplicate.setPrimaryKeyConstraint(primaryKeyConstraint.duplicate());
+    	if (primaryKeyConstraint != null) {
+    	    duplicate.setPrimaryKeyConstraint(primaryKeyConstraint.duplicate());
+    	}
     	
     	// CHECK constraints
     	for (CheckConstraint checkConstraint : checkConstraints) {

@@ -25,8 +25,18 @@ public class DecimalDataType extends DataType
     }
 
     @Override
+    public void setPrecision(Integer precision) {
+        this.precision = precision;
+    }
+
+    @Override
     public Integer getScale() {
         return scale;
+    }
+    
+    @Override
+    public void setScale(Integer scale) {
+        this.scale = scale;
     }
 
     @Override

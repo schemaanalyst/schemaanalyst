@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML183VarcharsNotNulls schema.
- * Java code originally generated: 2013/08/15 10:53:44
+ * Java code originally generated: 2013/08/15 23:00:31
  *
  */
 
@@ -30,7 +30,7 @@ public class NistDML183VarcharsNotNulls extends Schema {
 		tableS.createColumn("X", new VarCharDataType(10));
 		tableS.createColumn("Y", new VarCharDataType(10));
 		tableS.createColumn("Z", new VarCharDataType(10));
-		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableS.getColumn("A"), tableS.getColumn("B")));
+		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
 		tableS.createNotNullConstraint(tableS.getColumn("X"));
 		tableS.createNotNullConstraint(tableS.getColumn("Y"));
 		tableS.createNotNullConstraint(tableS.getColumn("Z"));

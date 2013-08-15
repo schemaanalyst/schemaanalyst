@@ -20,6 +20,11 @@ public class CharDataType extends DataType
     }
 
     @Override
+    public void setLength(Integer length) {
+        this.length = length;
+    }    
+    
+    @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
     }

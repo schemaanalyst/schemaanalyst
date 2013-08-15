@@ -2,14 +2,18 @@ package org.schemaanalyst.test.sqlrepresentation;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-
-import parsedcasestudy.iTrust;
+import org.schemaanalyst.util.JavaUtils;
 
 public class TestSchema {
     
@@ -140,6 +144,31 @@ public class TestSchema {
         assertEquals(
                 "The FOREIGN KEY reference column of s1.t1 and s2.t1 should be equal",
                 s1.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0), 
-                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0));    
+                s2.getTable("table1").getForeignKeyConstraints().get(0).getReferenceColumns().get(0));        
+    }
+    
+    @Test 
+    public void testParsedCaseStudies() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+        LocationsConfiguration locationsConfiguration = new LocationsConfiguration();
+        File caseStudySrcDir = new File(locationsConfiguration.getCaseStudySrcDir());
+        String caseStudyPackage = locationsConfiguration.getCaseStudyPackage();
+
+        List<Schema> caseStudies = new ArrayList<>();
+        String[] entries = caseStudySrcDir.list();
+        for (String entry : entries) {
+            if (entry.endsWith(JavaUtils.JAVA_FILE_SUFFIX)) {
+                String className = caseStudyPackage 
+                        + JavaUtils.PACKAGE_SEPARATOR 
+                        + JavaUtils.fileNameToClassName(entry);  
+                caseStudies.add((Schema) Class.forName(className).newInstance());
+            }            
+        }
+        
+        for (Schema caseStudy : caseStudies) {
+            Schema duplicate = caseStudy.duplicate();            
+            assertEquals(
+                    "The tables of " + caseStudy.getName() + " should be equal to its duplicate",
+                    caseStudy.getTables(), duplicate.getTables());           
+        }
     }
 }

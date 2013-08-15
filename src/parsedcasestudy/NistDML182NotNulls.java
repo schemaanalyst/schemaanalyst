@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML182NotNulls schema.
- * Java code originally generated: 2013/08/15 10:52:00
+ * Java code originally generated: 2013/08/15 23:00:23
  *
  */
 
@@ -70,7 +70,7 @@ public class NistDML182NotNulls extends Schema {
 		tableOrders.createColumn("CODE15", new IntDataType());
 		tableOrders.createColumn("TITLE", new VarCharDataType(80));
 		tableOrders.createColumn("COST", new NumericDataType(5, 2));
-		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("CODE1"), tableOrders.getColumn("CODE2"), tableOrders.getColumn("CODE3"), tableOrders.getColumn("CODE4"), tableOrders.getColumn("CODE5"), tableOrders.getColumn("CODE6"), tableOrders.getColumn("CODE7"), tableOrders.getColumn("CODE8"), tableOrders.getColumn("CODE9"), tableOrders.getColumn("CODE10"), tableOrders.getColumn("CODE11"), tableOrders.getColumn("CODE12"), tableOrders.getColumn("CODE13"), tableOrders.getColumn("CODE14"), tableOrders.getColumn("CODE15")), tableIdCodes, Arrays.asList(tableOrders.getColumn("CODE1"), tableOrders.getColumn("CODE2"), tableOrders.getColumn("CODE3"), tableOrders.getColumn("CODE4"), tableOrders.getColumn("CODE5"), tableOrders.getColumn("CODE6"), tableOrders.getColumn("CODE7"), tableOrders.getColumn("CODE8"), tableOrders.getColumn("CODE9"), tableOrders.getColumn("CODE10"), tableOrders.getColumn("CODE11"), tableOrders.getColumn("CODE12"), tableOrders.getColumn("CODE13"), tableOrders.getColumn("CODE14"), tableOrders.getColumn("CODE15")));
+		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("CODE1"), tableOrders.getColumn("CODE2"), tableOrders.getColumn("CODE3"), tableOrders.getColumn("CODE4"), tableOrders.getColumn("CODE5"), tableOrders.getColumn("CODE6"), tableOrders.getColumn("CODE7"), tableOrders.getColumn("CODE8"), tableOrders.getColumn("CODE9"), tableOrders.getColumn("CODE10"), tableOrders.getColumn("CODE11"), tableOrders.getColumn("CODE12"), tableOrders.getColumn("CODE13"), tableOrders.getColumn("CODE14"), tableOrders.getColumn("CODE15")), tableIdCodes, Arrays.asList(tableIdCodes.getColumn("CODE1"), tableIdCodes.getColumn("CODE2"), tableIdCodes.getColumn("CODE3"), tableIdCodes.getColumn("CODE4"), tableIdCodes.getColumn("CODE5"), tableIdCodes.getColumn("CODE6"), tableIdCodes.getColumn("CODE7"), tableIdCodes.getColumn("CODE8"), tableIdCodes.getColumn("CODE9"), tableIdCodes.getColumn("CODE10"), tableIdCodes.getColumn("CODE11"), tableIdCodes.getColumn("CODE12"), tableIdCodes.getColumn("CODE13"), tableIdCodes.getColumn("CODE14"), tableIdCodes.getColumn("CODE15")));
 		tableOrders.createNotNullConstraint(tableOrders.getColumn("CODE1"));
 		tableOrders.createNotNullConstraint(tableOrders.getColumn("CODE2"));
 		tableOrders.createNotNullConstraint(tableOrders.getColumn("CODE3"));

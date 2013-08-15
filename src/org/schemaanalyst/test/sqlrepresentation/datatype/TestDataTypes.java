@@ -9,12 +9,40 @@ import java.util.List;
 import org.junit.Test;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
+import org.schemaanalyst.sqlrepresentation.datatype.DataTypeCategoryVisitor;
+import org.schemaanalyst.sqlrepresentation.datatype.LengthLimited;
+import org.schemaanalyst.sqlrepresentation.datatype.PrecisionedAndScaled;
+import org.schemaanalyst.sqlrepresentation.datatype.Signed;
 import org.schemaanalyst.util.JavaUtils;
 
 public class TestDataTypes {
     
     public static final String DATA_TYPE_CLASS_SUFFIX = "DataType";
 
+    // set some defaults that are different from the class-defined defaults
+    // so that we can check they are being successfully duplicated.
+    DataTypeCategoryVisitor attributeSetter = new DataTypeCategoryVisitor() {
+        @Override
+        public void visit(DataType type) {
+        }
+
+        @Override
+        public void visit(LengthLimited type) {
+            type.setLength(50);
+        }
+
+        @Override
+        public void visit(PrecisionedAndScaled type) {
+            type.setPrecision(10);
+            type.setScale(5);
+        }
+
+        @Override
+        public void visit(Signed type) {
+            type.setSigned(false);
+        }        
+    };
+    
     List<DataType> getDataTypes() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         // get the location of the source of the package on the file system
         String dataTypeClassName = DataType.class.getCanonicalName();
@@ -33,8 +61,10 @@ public class TestDataTypes {
         for (String entry : entries) {
             // if the file corresponds to a datatype, instantiate it and put it on the list
             if (!entry.equals(suffix) && entry.endsWith(suffix)) {
-                String className = dataTypePackage + JavaUtils.fileNameToClassName(entry);  
-                dataTypes.add((DataType) Class.forName(className).newInstance());
+                String className = dataTypePackage + JavaUtils.fileNameToClassName(entry);
+                DataType dataType = (DataType) Class.forName(className).newInstance();
+                dataType.accept(attributeSetter);
+                dataTypes.add(dataType);
             }
         }
         

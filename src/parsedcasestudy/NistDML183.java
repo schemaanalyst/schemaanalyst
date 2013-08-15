@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.SingleCharDataType;
 
 /*
  * NistDML183 schema.
- * Java code originally generated: 2013/08/15 10:52:01
+ * Java code originally generated: 2013/08/15 23:00:24
  *
  */
 
@@ -27,7 +27,7 @@ public class NistDML183 extends Schema {
 		tableS.createColumn("X", new SingleCharDataType());
 		tableS.createColumn("Y", new SingleCharDataType());
 		tableS.createColumn("Z", new SingleCharDataType());
-		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableS.getColumn("A"), tableS.getColumn("B")));
+		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
 	}
 }
 

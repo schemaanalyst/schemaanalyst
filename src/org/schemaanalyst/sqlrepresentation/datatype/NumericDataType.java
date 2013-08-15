@@ -23,10 +23,20 @@ public class NumericDataType extends DataType
     public Integer getPrecision() {
         return precision;
     }
+    
+    @Override
+    public void setPrecision(Integer precision) {
+        this.precision = precision;
+    }
 
     @Override
     public Integer getScale() {
         return scale;
+    }
+    
+    @Override
+    public void setScale(Integer scale) {
+        this.scale = scale;
     }
 
     @Override

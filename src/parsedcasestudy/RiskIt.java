@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
 
 /*
  * RiskIt schema.
- * Java code originally generated: 2013/08/15 10:52:16
+ * Java code originally generated: 2013/08/15 23:00:40
  *
  */
 
@@ -41,7 +41,7 @@ public class RiskIt extends Schema {
 		tableEducation.createColumn("EDUCATION", new CharDataType(50));
 		tableEducation.createColumn("EDUENROLL", new CharDataType(50));
 		tableEducation.createPrimaryKeyConstraint(tableEducation.getColumn("SSN"));
-		tableEducation.createForeignKeyConstraint(tableEducation.getColumn("SSN"), tableUserrecord, tableEducation.getColumn("SSN"));
+		tableEducation.createForeignKeyConstraint(tableEducation.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
 		tableEducation.createNotNullConstraint(tableEducation.getColumn("SSN"));
 
 		Table tableEmploymentstat = this.createTable("employmentstat");
@@ -49,7 +49,7 @@ public class RiskIt extends Schema {
 		tableEmploymentstat.createColumn("UNEMPLOYMENTREASON", new CharDataType(50));
 		tableEmploymentstat.createColumn("EMPLOYMENTSTAT", new CharDataType(50));
 		tableEmploymentstat.createPrimaryKeyConstraint(tableEmploymentstat.getColumn("SSN"));
-		tableEmploymentstat.createForeignKeyConstraint(tableEmploymentstat.getColumn("SSN"), tableUserrecord, tableEmploymentstat.getColumn("SSN"));
+		tableEmploymentstat.createForeignKeyConstraint(tableEmploymentstat.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
 		tableEmploymentstat.createNotNullConstraint(tableEmploymentstat.getColumn("SSN"));
 
 		Table tableGeo = this.createTable("geo");
@@ -72,7 +72,7 @@ public class RiskIt extends Schema {
 		tableInvestment.createColumn("CAPITALLOSSES", new IntDataType());
 		tableInvestment.createColumn("STOCKDIVIDENDS", new IntDataType());
 		tableInvestment.createPrimaryKeyConstraint(tableInvestment.getColumn("SSN"));
-		tableInvestment.createForeignKeyConstraint(tableInvestment.getColumn("SSN"), tableUserrecord, tableInvestment.getColumn("SSN"));
+		tableInvestment.createForeignKeyConstraint(tableInvestment.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
 		tableInvestment.createNotNullConstraint(tableInvestment.getColumn("SSN"));
 
 		Table tableOccupation = this.createTable("occupation");
@@ -93,9 +93,9 @@ public class RiskIt extends Schema {
 		tableJob.createColumn("SELFEMPLOYED", new SmallIntDataType());
 		tableJob.createColumn("WORKWEEKS", new IntDataType());
 		tableJob.createPrimaryKeyConstraint(tableJob.getColumn("SSN"));
-		tableJob.createForeignKeyConstraint(tableJob.getColumn("OCCUPATIONCODE"), tableOccupation, tableJob.getColumn("OCCUPATIONCODE"));
-		tableJob.createForeignKeyConstraint(tableJob.getColumn("SSN"), tableUserrecord, tableJob.getColumn("SSN"));
-		tableJob.createForeignKeyConstraint(tableJob.getColumn("INDUSTRYCODE"), tableIndustry, tableJob.getColumn("INDUSTRYCODE"));
+		tableJob.createForeignKeyConstraint(tableJob.getColumn("OCCUPATIONCODE"), tableOccupation, tableOccupation.getColumn("OCCUPATIONCODE"));
+		tableJob.createForeignKeyConstraint(tableJob.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
+		tableJob.createForeignKeyConstraint(tableJob.getColumn("INDUSTRYCODE"), tableIndustry, tableIndustry.getColumn("INDUSTRYCODE"));
 		tableJob.createNotNullConstraint(tableJob.getColumn("SSN"));
 
 		Table tableMigration = this.createTable("migration");
@@ -105,7 +105,7 @@ public class RiskIt extends Schema {
 		tableMigration.createColumn("MIGRATIONMOVE", new CharDataType(50));
 		tableMigration.createColumn("MIGRATIONFROMSUNBELT", new CharDataType(50));
 		tableMigration.createPrimaryKeyConstraint(tableMigration.getColumn("SSN"));
-		tableMigration.createForeignKeyConstraint(tableMigration.getColumn("SSN"), tableUserrecord, tableMigration.getColumn("SSN"));
+		tableMigration.createForeignKeyConstraint(tableMigration.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
 		tableMigration.createNotNullConstraint(tableMigration.getColumn("SSN"));
 
 		Table tableStateabbv = this.createTable("stateabbv");
@@ -119,8 +119,8 @@ public class RiskIt extends Schema {
 		tableWage.createColumn("OCCUPATIONCODE", new IntDataType());
 		tableWage.createColumn("MEANWEEKWAGE", new IntDataType());
 		tableWage.createPrimaryKeyConstraint(tableWage.getColumn("INDUSTRYCODE"), tableWage.getColumn("OCCUPATIONCODE"));
-		tableWage.createForeignKeyConstraint(tableWage.getColumn("INDUSTRYCODE"), tableIndustry, tableWage.getColumn("INDUSTRYCODE"));
-		tableWage.createForeignKeyConstraint(tableWage.getColumn("OCCUPATIONCODE"), tableOccupation, tableWage.getColumn("OCCUPATIONCODE"));
+		tableWage.createForeignKeyConstraint(tableWage.getColumn("INDUSTRYCODE"), tableIndustry, tableIndustry.getColumn("INDUSTRYCODE"));
+		tableWage.createForeignKeyConstraint(tableWage.getColumn("OCCUPATIONCODE"), tableOccupation, tableOccupation.getColumn("OCCUPATIONCODE"));
 		tableWage.createNotNullConstraint(tableWage.getColumn("INDUSTRYCODE"));
 		tableWage.createNotNullConstraint(tableWage.getColumn("OCCUPATIONCODE"));
 
@@ -128,7 +128,7 @@ public class RiskIt extends Schema {
 		tableYouth.createColumn("SSN", new IntDataType());
 		tableYouth.createColumn("PARENTS", new CharDataType(50));
 		tableYouth.createPrimaryKeyConstraint(tableYouth.getColumn("SSN"));
-		tableYouth.createForeignKeyConstraint(tableYouth.getColumn("SSN"), tableUserrecord, tableYouth.getColumn("SSN"));
+		tableYouth.createForeignKeyConstraint(tableYouth.getColumn("SSN"), tableUserrecord, tableUserrecord.getColumn("SSN"));
 		tableYouth.createNotNullConstraint(tableYouth.getColumn("SSN"));
 
 		Table tableZiptable = this.createTable("ziptable");

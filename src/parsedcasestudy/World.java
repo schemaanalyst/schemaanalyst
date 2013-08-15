@@ -17,7 +17,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * World schema.
- * Java code originally generated: 2013/08/15 10:52:23
+ * Java code originally generated: 2013/08/15 23:00:48
  *
  */
 
@@ -57,7 +57,7 @@ public class World extends Schema {
 		tableCountry.createColumn("capital", new IntDataType());
 		tableCountry.createColumn("code2", new VarCharDataType(2));
 		tableCountry.createPrimaryKeyConstraint(tableCountry.getColumn("code"));
-		tableCountry.createForeignKeyConstraint("country_capital_fkey", tableCountry.getColumn("capital"), tableCity, tableCountry.getColumn("id"));
+		tableCountry.createForeignKeyConstraint("country_capital_fkey", tableCountry.getColumn("capital"), tableCity, tableCity.getColumn("id"));
 		tableCountry.createNotNullConstraint(tableCountry.getColumn("code"));
 		tableCountry.createNotNullConstraint(tableCountry.getColumn("name"));
 		tableCountry.createNotNullConstraint(tableCountry.getColumn("continent"));
@@ -75,7 +75,7 @@ public class World extends Schema {
 		tableCountrylanguage.createColumn("isofficial", new BooleanDataType());
 		tableCountrylanguage.createColumn("percentage", new RealDataType());
 		tableCountrylanguage.createPrimaryKeyConstraint("countrylanguage_pkey", tableCountrylanguage.getColumn("countrycode"), tableCountrylanguage.getColumn("language"));
-		tableCountrylanguage.createForeignKeyConstraint("countrylanguage_countrycode_fkey", tableCountrylanguage.getColumn("countrycode"), tableCountry, tableCountrylanguage.getColumn("code"));
+		tableCountrylanguage.createForeignKeyConstraint("countrylanguage_countrycode_fkey", tableCountrylanguage.getColumn("countrycode"), tableCountry, tableCountry.getColumn("code"));
 		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("countrycode"));
 		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("language"));
 		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("isofficial"));

@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Inventory schema.
- * Java code originally generated: 2013/08/15 10:51:51
+ * Java code originally generated: 2013/08/15 23:00:14
  *
  */
 

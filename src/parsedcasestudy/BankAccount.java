@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * BankAccount schema.
- * Java code originally generated: 2013/08/15 10:51:37
+ * Java code originally generated: 2013/08/15 23:00:00
  *
  */
 
@@ -33,7 +33,7 @@ public class BankAccount extends Schema {
 		tableAccount.createColumn("balance", new IntDataType());
 		tableAccount.createColumn("card_number", new IntDataType());
 		tableAccount.createPrimaryKeyConstraint(tableAccount.getColumn("id"));
-		tableAccount.createForeignKeyConstraint(tableAccount.getColumn("card_number"), tableUserinfo, tableAccount.getColumn("card_number"));
+		tableAccount.createForeignKeyConstraint(tableAccount.getColumn("card_number"), tableUserinfo, tableUserinfo.getColumn("card_number"));
 		tableAccount.createNotNullConstraint(tableAccount.getColumn("account_name"));
 		tableAccount.createNotNullConstraint(tableAccount.getColumn("user_name"));
 		tableAccount.createNotNullConstraint(tableAccount.getColumn("card_number"));

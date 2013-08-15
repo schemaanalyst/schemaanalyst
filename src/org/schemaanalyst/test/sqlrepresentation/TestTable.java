@@ -75,6 +75,7 @@ public class TestTable {
         t.createColumn("column", new DoubleDataType());
     }
     
+    @Test    
     public void testDuplicateColumnsOnly() {
         Table t1 = new Table("table");
         t1.createColumn("column1", new IntDataType());
@@ -107,6 +108,7 @@ public class TestTable {
                 t1.getColumn("column2"), t2.getColumn("column2"));
     }
     
+    @Test    
     public void testDuplicatePrimaryKey() {
         Table t1 = new Table("table");
         Column column = t1.createColumn("column", new IntDataType());
@@ -141,43 +143,12 @@ public class TestTable {
                 t2.getPrimaryKeyConstraint().getColumns().get(0));            
     }
     
-    public void testDuplicateForeignKey() {
-        Table t1 = new Table("table");
-        Column column1 = t1.createColumn("column1", new IntDataType());
-        Column column2 = t1.createColumn("column2", new IntDataType());
-        t1.createForeignKeyConstraint(column1, t1, column2);
-        
-        Table t2 = t1.duplicate();
-        
-        assertNotSame(
-                "t1 and t2 should not refer to the same table",
-                t1, t2);
-        
-        assertEquals(
-                "t1 and t2 should be equal",
-                t1, t2);        
-        
-        assertNotSame(
-                "The FOREIGN KEY of t1 and t2 should not refer to the same object",
-                t1.getForeignKeyConstraints().get(0), 
-                t2.getForeignKeyConstraints().get(0));
-        
-        assertEquals(
-                "The FOREIGN KEY of t1 and t2 should be equal",
-                t1.getForeignKeyConstraints().get(0), 
-                t2.getForeignKeyConstraints().get(0));
-        
-        assertNotSame(
-                "The FOREIGN KEY column of t1 and t2 should not refer to the same object",
-                t1.getForeignKeyConstraints().get(0).getColumns().get(0), 
-                t2.getForeignKeyConstraints().get(0).getColumns().get(0));
-        
-        assertEquals(
-                "The FOREIGN KEY column of t1 and t2 should be equal",
-                t1.getForeignKeyConstraints().get(0).getColumns().get(0), 
-                t2.getForeignKeyConstraints().get(0).getColumns().get(0));            
+    @Test
+    public void testDuplicateNullPrimaryKey() {       
+        new Table("table").duplicate();          
     }    
-    
+
+    @Test
     public void testDuplicateNotNull() {
         Table t1 = new Table("table");
         Column column = t1.createColumn("column", new IntDataType());
@@ -214,6 +185,7 @@ public class TestTable {
                 t2.getNotNullConstraints().get(0).getColumn());            
     }     
     
+    @Test    
     public void testDuplicateUnique() {
         Table t1 = new Table("table");
         Column column = t1.createColumn("column", new IntDataType());

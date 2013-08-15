@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * CoffeeOrders schema.
- * Java code originally generated: 2013/08/15 10:51:41
+ * Java code originally generated: 2013/08/15 23:00:05
  *
  */
 
@@ -54,8 +54,8 @@ public class CoffeeOrders extends Schema {
 		tableOrders.createColumn("customer_id", new IntDataType());
 		tableOrders.createColumn("salesperson_id", new IntDataType());
 		tableOrders.createPrimaryKeyConstraint(tableOrders.getColumn("id"));
-		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("customer_id"), tableCustomers, tableOrders.getColumn("id"));
-		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("salesperson_id"), tableSalespeople, tableOrders.getColumn("id"));
+		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("customer_id"), tableCustomers, tableCustomers.getColumn("id"));
+		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("salesperson_id"), tableSalespeople, tableSalespeople.getColumn("id"));
 
 		Table tableOrderItems = this.createTable("order_items");
 		tableOrderItems.createColumn("id", new IntDataType());
@@ -63,8 +63,8 @@ public class CoffeeOrders extends Schema {
 		tableOrderItems.createColumn("product_id", new IntDataType());
 		tableOrderItems.createColumn("product_quantity", new IntDataType());
 		tableOrderItems.createPrimaryKeyConstraint(tableOrderItems.getColumn("id"));
-		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrderItems.getColumn("id"));
-		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("product_id"), tableCoffees, tableOrderItems.getColumn("id"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrders.getColumn("id"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("product_id"), tableCoffees, tableCoffees.getColumn("id"));
 	}
 }
 

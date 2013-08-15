@@ -15,7 +15,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * Flights schema.
- * Java code originally generated: 2013/08/15 10:51:49
+ * Java code originally generated: 2013/08/15 23:00:12
  *
  */
 
@@ -47,7 +47,7 @@ public class Flights extends Schema {
 		tableFlightavailable.createColumn("BUSINESS_SEATS_TAKEN", new IntDataType());
 		tableFlightavailable.createColumn("FIRSTCLASS_SEATS_TAKEN", new IntDataType());
 		tableFlightavailable.createPrimaryKeyConstraint("FLTAVAIL_PK", tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER"));
-		tableFlightavailable.createForeignKeyConstraint("FLTS_FK", Arrays.asList(tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER")), tableFlights, Arrays.asList(tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER")));
+		tableFlightavailable.createForeignKeyConstraint("FLTS_FK", Arrays.asList(tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER")), tableFlights, Arrays.asList(tableFlights.getColumn("FLIGHT_ID"), tableFlights.getColumn("SEGMENT_NUMBER")));
 		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_ID"));
 		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("SEGMENT_NUMBER"));
 		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_DATE"));

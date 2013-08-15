@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * Products schema.
- * Java code originally generated: 2013/08/15 10:52:15
+ * Java code originally generated: 2013/08/15 23:00:38
  *
  */
 
@@ -47,8 +47,8 @@ public class Products extends Schema {
 		tableOrderItems.createColumn("order_id", new IntDataType());
 		tableOrderItems.createColumn("quantity", new IntDataType());
 		tableOrderItems.createPrimaryKeyConstraint(tableOrderItems.getColumn("product_no"), tableOrderItems.getColumn("order_id"));
-		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("product_no"), tableProducts, tableOrderItems.getColumn("product_no"));
-		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrderItems.getColumn("order_id"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("product_no"), tableProducts, tableProducts.getColumn("product_no"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrders.getColumn("order_id"));
 		tableOrderItems.createNotNullConstraint(tableOrderItems.getColumn("quantity"));
 		tableOrderItems.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableOrderItems, tableOrderItems.getColumn("quantity")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
 	}
