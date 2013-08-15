@@ -29,6 +29,7 @@
 		<delete dir="${run_dir}"/>
 		<delete dir="${databases_dir}"/>
 		<delete dir="${results_dir}"/>
+		<delete dir="docs"/>
 	</target>
 
 	<!-- COMPILING TASK - "ant compile" -->  
@@ -68,6 +69,7 @@
 			version="true"
 			use="true"
 			windowtitle="SchemaAnalyst Documentation">
+			<classpath refid="build_classpath"/>
 		</javadoc>
 	</target>
 
