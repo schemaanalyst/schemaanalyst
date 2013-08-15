@@ -66,7 +66,6 @@ public class StringUtils {
      * 
      * @param <T> The generic class
      * @param items The Array to implode
-     * @param sep The separator to use
      * @return The String representation created
      */
     public static <T> String implode(T[] items) {
@@ -90,7 +89,6 @@ public class StringUtils {
      * the backing List implementation.  Each exploded string element is trimmed.
      * 
      * @param str The String to explode
-     * @param sep The separator delimiting values
      * @return The List of values created
      */
     public static List<String> explode(String str) {

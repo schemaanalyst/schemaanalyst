@@ -70,7 +70,7 @@ public class NotNullConstraint extends Constraint {
     /**
      * Generates a shallow copy of the constraint (the column is not
      * deep-copied)
-     * @param A shallow copy of the constraint.
+     * @return A shallow copy of the constraint.
      */
     @Override
     public NotNullConstraint duplicate() {
