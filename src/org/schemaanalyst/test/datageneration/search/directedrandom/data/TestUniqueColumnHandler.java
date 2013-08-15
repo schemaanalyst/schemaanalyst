@@ -64,10 +64,12 @@ public class TestUniqueColumnHandler {
         MockCellRandomiser cellRandomiser = new MockCellRandomiser(randomCellValues);
         MockRandom random = new MockRandom(randomInts);
 
-        UniqueColumnObjectiveFunction objFun = new UniqueColumnObjectiveFunction(
-                Collections.singletonList(database.column), 
-                database.state, 
-                "", goalIsToSatisfy, allowNull);
+        UniqueColumnObjectiveFunction objFun = 
+                new UniqueColumnObjectiveFunction(
+                        database.table,
+                        Collections.singletonList(database.column), 
+                        database.state, 
+                        "", goalIsToSatisfy, allowNull);
         
         UniqueColumnHandler uch = new UniqueColumnHandler(
                 objFun, random, cellRandomiser);

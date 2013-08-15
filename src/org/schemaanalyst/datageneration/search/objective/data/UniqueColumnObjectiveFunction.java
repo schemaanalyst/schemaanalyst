@@ -11,6 +11,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.RelationalRowObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class UniqueColumnObjectiveFunction extends ColumnObjectiveFunction {
 
@@ -23,8 +24,10 @@ public class UniqueColumnObjectiveFunction extends ColumnObjectiveFunction {
      * Objective function for a set of unique columns (typically embedded in a
      * PRIMARY KEY or UNIQUE constraint).
      * 
+     * @param table
+     *            The table involved.
      * @param columns
-     *            The columns of the constraint.
+     *            The columns of the table involved.
      * @param state
      *            A data object corresponding to the current state of the
      *            database (i.e., data already committed).
@@ -38,10 +41,10 @@ public class UniqueColumnObjectiveFunction extends ColumnObjectiveFunction {
      *            If set to true, NULL values are permissible as part or all of
      *            a solution.
      */
-    public UniqueColumnObjectiveFunction(List<Column> columns, Data state,
+    public UniqueColumnObjectiveFunction(Table table, List<Column> columns, Data state,
             String description, boolean goalIsToSatisfy,
             boolean allowNull) {
-        super(columns, description, goalIsToSatisfy);
+        super(table, columns, description, goalIsToSatisfy);
         this.state = state;
         this.allowNull = allowNull;
     }
@@ -57,7 +60,7 @@ public class UniqueColumnObjectiveFunction extends ColumnObjectiveFunction {
     @Override
     protected void loadRows(Data data) {
         super.loadRows(data);
-        stateRows = state.getRows(columns);
+        stateRows = state.getRows(table, columns);
     }
 
     @Override

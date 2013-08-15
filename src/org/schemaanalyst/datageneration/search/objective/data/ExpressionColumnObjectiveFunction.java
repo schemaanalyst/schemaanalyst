@@ -4,6 +4,7 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.ExpressionRowObjectiveFunctionFactory;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 public class ExpressionColumnObjectiveFunction extends ColumnObjectiveFunction {
@@ -15,6 +16,8 @@ public class ExpressionColumnObjectiveFunction extends ColumnObjectiveFunction {
      * Objective function for an expression (typically embedded in a CHECK
      * constraint).
      * 
+     * @param table
+     *            The table involved.
      * @param expression
      *            The expression on which the objective function is to be based.
      * @param description
@@ -27,11 +30,12 @@ public class ExpressionColumnObjectiveFunction extends ColumnObjectiveFunction {
      *            If set to true, NULL values are permissible as part or all of
      *            a solution.
      */
-    public ExpressionColumnObjectiveFunction(Expression expression,
+    public ExpressionColumnObjectiveFunction(
+            Table table, Expression expression,
             String description, boolean goalIsToSatisfy,
             boolean allowNull) {
 
-        super(expression.getColumnsInvolved(), description, goalIsToSatisfy);
+        super(table, expression.getColumnsInvolved(), description, goalIsToSatisfy);
 
         this.allowNull = allowNull;
         

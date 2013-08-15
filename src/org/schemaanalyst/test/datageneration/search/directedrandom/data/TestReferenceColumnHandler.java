@@ -58,10 +58,13 @@ public class TestReferenceColumnHandler {
         MockCellRandomiser cellRandomiser = new MockCellRandomiser(randomCellValues);
         MockRandom random = new MockRandom(randomInts);
         
-        ReferenceColumnObjectiveFunction objFun = new ReferenceColumnObjectiveFunction(
-                Collections.singletonList(database.column1),
-                Collections.singletonList(database.column2),
-                database.state, "", goalIsToSatisfy, allowNull);
+        ReferenceColumnObjectiveFunction objFun = 
+                new ReferenceColumnObjectiveFunction(
+                        database.table,
+                        Collections.singletonList(database.column1),
+                        database.table,
+                        Collections.singletonList(database.column2),
+                        database.state, "", goalIsToSatisfy, allowNull);
         
         ReferenceColumnHandler rch = new ReferenceColumnHandler(objFun, random, cellRandomiser);
         rch.attemptToFindSolution(database.data);

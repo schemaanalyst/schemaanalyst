@@ -99,7 +99,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
         Collections.reverse(reverseOrder);
         return reverseOrder;
     }
-
+    
     /**
      * Deep copies the schema.
      * @return A deep copy of the schema.

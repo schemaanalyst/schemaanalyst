@@ -36,7 +36,8 @@ public class TestNullColumnHandler {
     public void test(boolean val1IsNull, boolean val2IsNull, boolean val3IsNull, boolean goalIsToSatisfy) {
         
         NullColumnObjectiveFunction objFun = 
-                new NullColumnObjectiveFunction(database.column, "", goalIsToSatisfy);        
+                new NullColumnObjectiveFunction(
+                        database.table, database.column, "", goalIsToSatisfy);        
         
         database.createData(3);
         database.setDataValues(1, 2, 3);                

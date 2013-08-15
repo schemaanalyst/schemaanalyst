@@ -52,7 +52,8 @@ public class TestNullColumnObjectiveFunction {
                      boolean goalIsToSatisfy, ObjectiveValue expected, 
                      int numAcceptedRows, int numRejectedRows) {
         NullColumnObjectiveFunction objFun = 
-                new NullColumnObjectiveFunction(database.column, "", goalIsToSatisfy);
+                new NullColumnObjectiveFunction(
+                        database.table, database.column, "", goalIsToSatisfy);
         
         database.setDataValues(val1, val2);
         assertEquivalent(expected, objFun.evaluate(data));                   
@@ -67,7 +68,8 @@ public class TestNullColumnObjectiveFunction {
     @Test
     public void testNoRows() {
         NullColumnObjectiveFunction objFunTrue = 
-                new NullColumnObjectiveFunction(database.column, "", true);
+                new NullColumnObjectiveFunction(
+                        database.table, database.column, "", true);
         
         assertNonOptimal(objFunTrue.evaluate(new Data()));  
         
@@ -78,7 +80,8 @@ public class TestNullColumnObjectiveFunction {
                 0, objFunTrue.getFalsifyingRows().size());  
         
         NullColumnObjectiveFunction objFunFalse = 
-                new NullColumnObjectiveFunction(database.column, "", false);
+                new NullColumnObjectiveFunction(
+                        database.table, database.column, "", false);
         
         assertNonOptimal(objFunFalse.evaluate(new Data()));  
         

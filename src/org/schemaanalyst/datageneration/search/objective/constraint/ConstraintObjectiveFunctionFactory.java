@@ -6,6 +6,7 @@ import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnOb
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
@@ -16,14 +17,15 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 public class ConstraintObjectiveFunctionFactory {
 
-    protected Constraint constraint;
-    protected Data state;
-    protected boolean goalIsToSatisfy, allowNull;
+    private Table table;
+    private Constraint constraint;
+    private Data state;
+    private boolean goalIsToSatisfy, allowNull;
 
-    public ConstraintObjectiveFunctionFactory(Constraint constraint,
-                                              Data state,
-                                              boolean goalIsToSatisfy,
-                                              boolean allowNull) {
+    public ConstraintObjectiveFunctionFactory(
+            Table table, Constraint constraint, Data state,
+            boolean goalIsToSatisfy, boolean allowNull) {
+        this.table = table;
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
@@ -75,10 +77,8 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ExpressionColumnObjectiveFunction(
-                    checkConstraint.getExpression(),
-                    makeDescription(),
-                    goalIsToSatisfy,
-                    constraintAllowNull);
+                table, checkConstraint.getExpression(), 
+                makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
@@ -89,11 +89,8 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = false;
         
         return new UniqueColumnObjectiveFunction(
-                primaryKeyConstraint.getColumns(),
-                state,
-                makeDescription(),
-                goalIsToSatisfy,
-                constraintAllowNull);  
+                table, primaryKeyConstraint.getColumns(), state,
+                makeDescription(), goalIsToSatisfy, constraintAllowNull);  
     }
 
     protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
@@ -101,20 +98,16 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ReferenceColumnObjectiveFunction(
-                foreignKeyConstraint.getColumns(),
-                foreignKeyConstraint.getReferenceColumns(),
-                state,
-                makeDescription(),
-                goalIsToSatisfy,
-                constraintAllowNull);
+                table, foreignKeyConstraint.getColumns(), 
+                foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(),
+                state, makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
 
         return new NullColumnObjectiveFunction(
-                notNullConstraint.getColumn(),
-                makeDescription(),
-                !goalIsToSatisfy);
+                table, notNullConstraint.getColumn(),
+                makeDescription(), !goalIsToSatisfy);
     }
 
     protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
@@ -122,11 +115,8 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new UniqueColumnObjectiveFunction(
-                uniqueConstraint.getColumns(),
-                state,
-                makeDescription(),
-                goalIsToSatisfy,
-                constraintAllowNull);
+                table, uniqueConstraint.getColumns(), state,
+                makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
 
     protected String makeDescription() {

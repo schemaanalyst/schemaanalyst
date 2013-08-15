@@ -6,15 +6,13 @@ import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
-public class SimpleConstraintCoverageReport extends CoverageReport {
+public class SimpleConstraintCoverageReport extends ConstraintCoverageReport {
 
-    protected Schema schema;
     protected Set<Constraint> satisfiedConstraints, negatedConstraints;
     protected int numAttempts;
 
     public SimpleConstraintCoverageReport(Schema schema) {
-        super("Constraint coverage for " + schema.getName());
-        this.schema = schema;
+        super(schema);
         satisfiedConstraints = new HashSet<>();
         negatedConstraints = new HashSet<>();
     }
@@ -33,7 +31,7 @@ public class SimpleConstraintCoverageReport extends CoverageReport {
 
     @Override
     public int getNumGoals() {
-        return schema.getConstraints().size() * 2;
+        return numConstraints * 2;
     }
 
     public void setNumAttempts(int numAttempts) {

@@ -46,8 +46,9 @@ public class TestExpressionColumnHandler {
         
         MockCellRandomiser cellRandomiser = new MockCellRandomiser(finalValues);
         
-        ExpressionColumnObjectiveFunction objFun = new ExpressionColumnObjectiveFunction(
-                expression, "", goalIsToSatisfy, allowNull);
+        ExpressionColumnObjectiveFunction objFun = 
+                new ExpressionColumnObjectiveFunction(
+                        database.table, expression, "", goalIsToSatisfy, allowNull);
         
         ExpressionColumnHandler ech = new ExpressionColumnHandler(objFun, cellRandomiser);
         ech.attemptToFindSolution(database.data);

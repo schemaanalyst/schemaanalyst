@@ -39,39 +39,44 @@ public class SearchConstraintCoverer extends DataGenerator {
         SearchConstraintGoalReport goalReport = satisfyAllConstraints();
         report.addGoalReport(goalReport);
 
-        for (Constraint constraint : schema.getConstraints()) {
-            goalReport = negateConstraint(constraint);
-            report.addGoalReport(goalReport);
+        for (Table table : schema.getTables()) {
+            for (Constraint constraint : table.getConstraints()) {
+                goalReport = negateConstraint(table, constraint);
+                report.addGoalReport(goalReport);
+            }
         }
 
         return report;
     }
 
     protected SearchConstraintGoalReport satisfyAllConstraints() {
-        return generateData(null, schema.getTablesInOrder(), satisfyRows);
+        return generateData(null, null, schema.getTablesInOrder(), satisfyRows);
     }
 
-    protected SearchConstraintGoalReport negateConstraint(Constraint constraint) {
-        Table constraintTable = constraint.getTable();
+    protected SearchConstraintGoalReport negateConstraint(
+            Table constraintTable, Constraint constraint) {
         List<Table> tables = constraintTable.getConnectedTables();
         tables.add(constraintTable);
-
-        return generateData(constraint, tables, negateRows);
+        return generateData(constraintTable, constraint, tables, negateRows);
     }
 
-    protected SearchConstraintGoalReport generateData(Constraint constraint, List<Table> tables, int numRows) {
+    protected SearchConstraintGoalReport generateData(
+            Table constraintTable, Constraint constraint, List<Table> tables, int numRows) {
         // create the appropriate data object
         Data data = new Data();
         data.addRows(tables, numRows, dbms.getValueFactory());
 
         // initialise everything needed for the search and perform it
-        search.setObjectiveFunction(new SchemaConstraintSystemObjectiveFunction(schema, state, constraint));
-        SearchConstraintGoalReport goalReport = performSearch(constraint, data);
+        search.setObjectiveFunction(
+                new SchemaConstraintSystemObjectiveFunction(
+                        schema, state, constraintTable, constraint));
+        SearchConstraintGoalReport goalReport = performSearch(
+                constraintTable, constraint, data);
 
         // add rows to the state
         if (goalReport.wasSuccess()) {
             for (Table table : tables) {
-                if (constraint == null || !constraint.getTable().equals(table)) {
+                if (constraintTable == null || !constraintTable.equals(table)) {
                     state.addRows(table, data.getRows(table));
                 }
             }
@@ -80,10 +85,11 @@ public class SearchConstraintCoverer extends DataGenerator {
         return goalReport;
     }
 
-    protected SearchConstraintGoalReport performSearch(Constraint constraint,
-            Data data) {
+    protected SearchConstraintGoalReport performSearch(
+            Table table, Constraint constraint, Data data) {
         // create the report and start the clock ...
-        SearchConstraintGoalReport goalReport = new SearchConstraintGoalReport(constraint);
+        SearchConstraintGoalReport goalReport = 
+                new SearchConstraintGoalReport(table, constraint);
         goalReport.startTimer();
 
         // do the search

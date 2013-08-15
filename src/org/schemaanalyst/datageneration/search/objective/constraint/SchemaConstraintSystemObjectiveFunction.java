@@ -20,10 +20,11 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
     private List<ObjectiveFunction<Data>> subObjectiveFunctions;
 
     public SchemaConstraintSystemObjectiveFunction(Schema schema) {
-        this(schema, null, null);
+        this(schema, null, null, null);
     }
 
-    public SchemaConstraintSystemObjectiveFunction(Schema schema, Data state, Constraint constraintToInvalidate) {
+    public SchemaConstraintSystemObjectiveFunction(
+            Schema schema, Data state, Table constraintTable, Constraint constraintToInvalidate) {
         subObjectiveFunctions = new ArrayList<>();
 
         // NULL is only allowed for row acceptance when we are not trying to 
@@ -31,10 +32,9 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
         boolean allowNull = constraintToInvalidate != null;
 
         List<Table> tables;
-        if (constraintToInvalidate == null) {
+        if (constraintTable == null) {
             tables = schema.getTablesInOrder();
         } else {
-            Table constraintTable = constraintToInvalidate.getTable();
             tables = constraintTable.getConnectedTables();
             tables.add(constraintTable);
         }
@@ -56,8 +56,9 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
                     }
                 }
     
-                ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
-                        constraint, state, satisfyConstraint, allowNull);
+                ConstraintObjectiveFunctionFactory factory = 
+                        new ConstraintObjectiveFunctionFactory(
+                                table, constraint, state, satisfyConstraint, allowNull);
     
                 subObjectiveFunctions.add(factory.create());
             }

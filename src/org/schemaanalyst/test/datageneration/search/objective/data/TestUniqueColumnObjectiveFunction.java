@@ -12,6 +12,7 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
@@ -97,7 +98,7 @@ public class TestUniqueColumnObjectiveFunction {
         
         evaluate(goalIsToSatisfy, allowNull, optimal, 
                  numAcceptedRows, numRejectedRows,
-                 columns, data, state);    
+                 database.table, columns, data, state);    
     }
 
     Object[] twoColumnTestValues() {
@@ -153,16 +154,17 @@ public class TestUniqueColumnObjectiveFunction {
 
         evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows,
-                columns, data, state); 
+                database.table, columns, data, state); 
     }
     
     private void evaluate(
             boolean goalIsToSatisfy, boolean allowNull,
             boolean optimal, int numAcceptedRows, int numRejectedRows, 
-            List<Column> columns,
+            Table table, List<Column> columns,
             Data data, Data state) {
-        UniqueColumnObjectiveFunction objFun = new UniqueColumnObjectiveFunction(columns,
-                state, "", goalIsToSatisfy, allowNull);
+        UniqueColumnObjectiveFunction objFun = 
+                new UniqueColumnObjectiveFunction(
+                        table, columns, state, "", goalIsToSatisfy, allowNull);
         ObjectiveValue objVal = objFun.evaluate(data);
 
         if (optimal) {

@@ -11,10 +11,12 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.RelationalRowObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ReferenceColumnObjectiveFunction extends
         ColumnObjectiveFunction {
 
+    private Table referenceTable;
     private List<Column> referenceColumns;
     private Data state;
     private boolean allowNull;
@@ -25,10 +27,14 @@ public class ReferenceColumnObjectiveFunction extends
      * Objective function for a reference (typically embedded in a FOREIGN KEY
      * constraint).
      * 
+     * @param table
+     *            The table involved.
      * @param columns
-     *            The columns of the constraint.
+     *            The columns of the table involved.
+     * @param referenceTable
+     *            The reference table involved.           
      * @param referenceColumns
-     *            The reference columns of the constraint.
+     *            The reference columns of the reference table involved.
      * @param state
      *            A data object corresponding to the current state of the
      *            database (i.e., data already committed).
@@ -42,11 +48,13 @@ public class ReferenceColumnObjectiveFunction extends
      *            If set to true, NULL values are permissible as part or all of
      *            a solution.
      */
-    public ReferenceColumnObjectiveFunction(List<Column> columns,
-            List<Column> referenceColumns, Data state, String description,
+    public ReferenceColumnObjectiveFunction(Table table, List<Column> columns,
+            Table referenceTable, List<Column> referenceColumns, 
+            Data state, String description,
             boolean goalIsToSatisfy, boolean allowNull) {
 
-        super(columns, description, goalIsToSatisfy);
+        super(table, columns, description, goalIsToSatisfy);
+        this.referenceTable = referenceTable;
         this.referenceColumns = referenceColumns;
         this.state = state;
         this.allowNull = allowNull;
@@ -65,8 +73,8 @@ public class ReferenceColumnObjectiveFunction extends
         super.loadRows(data);
 
         // add all reference rows from data and the state
-        referenceRows = data.getRows(referenceColumns);
-        referenceRows.addAll(state.getRows(referenceColumns));
+        referenceRows = data.getRows(referenceTable, referenceColumns);
+        referenceRows.addAll(state.getRows(referenceTable, referenceColumns));
     }
 
     @Override

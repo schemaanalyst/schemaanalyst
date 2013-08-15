@@ -7,6 +7,7 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class NullColumnObjectiveFunction extends ColumnObjectiveFunction {
 
@@ -14,6 +15,8 @@ public class NullColumnObjectiveFunction extends ColumnObjectiveFunction {
      * Objective function to evaluate columns according to their NULL status
      * (typically as part of checking a NOT NULL constraint).
      * 
+     * @param table
+     *            The table involved. 
      * @param column
      *            The column of interest.
      * @param description
@@ -23,9 +26,9 @@ public class NullColumnObjectiveFunction extends ColumnObjectiveFunction {
      *            produce rows that all satisfy the constraint, else the goal is
      *            to produce rows that all falsify the constraint.
      */
-    public NullColumnObjectiveFunction(Column column, String description,
+    public NullColumnObjectiveFunction(Table table, Column column, String description,
             boolean goalIsToSatisfy) {
-        super(Collections.singletonList(column), description, goalIsToSatisfy);
+        super(table, Collections.singletonList(column), description, goalIsToSatisfy);
     }
 
     @Override

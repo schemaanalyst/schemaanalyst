@@ -18,6 +18,7 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.test.testutil.mock.FourColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
@@ -130,8 +131,8 @@ public class TestReferenceColumnObjectiveFunction {
         referenceColumns.add(database.column2);
         
         evaluate(goalIsToSatisfy, allowNull, optimal, 
-                numAcceptedRows, numRejectedRows, data,
-                state, columns, referenceColumns);
+                numAcceptedRows, numRejectedRows, data, state, 
+                database.table, columns, database.table, referenceColumns);
     }
  
 	
@@ -195,8 +196,8 @@ public class TestReferenceColumnObjectiveFunction {
         referenceColumns.add(database.column4);
         
         evaluate(goalIsToSatisfy, allowNull, optimal, 
-                numAcceptedRows, numRejectedRows, data,
-                state, columns, referenceColumns);
+                numAcceptedRows, numRejectedRows, data, state, 
+                database.table, columns, database.table, referenceColumns);
     }
 
     
@@ -245,15 +246,17 @@ public class TestReferenceColumnObjectiveFunction {
         
         evaluate(goalIsToSatisfy, allowNull, optimal, 
                 numAcceptedRows, numRejectedRows, data,
-                state, columns, referenceColumns);
+                state, database.table, columns, database.table, referenceColumns);
     }    
     
     private void evaluate(boolean goalIsToSatisfy, boolean allowNull,
             boolean optimal, int numAcceptedRows, int numRejectedRows, Data data, Data state,
-            List<Column> columns, List<Column> referenceColumns) {
+            Table table, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
         
-        ReferenceColumnObjectiveFunction objFun = new ReferenceColumnObjectiveFunction(
-                columns, referenceColumns, state, "", goalIsToSatisfy, allowNull);
+        ReferenceColumnObjectiveFunction objFun = 
+                new ReferenceColumnObjectiveFunction(
+                        table, columns, referenceTable, referenceColumns, 
+                        state, "", goalIsToSatisfy, allowNull);
         
         ObjectiveValue objVal = objFun.evaluate(data);
         

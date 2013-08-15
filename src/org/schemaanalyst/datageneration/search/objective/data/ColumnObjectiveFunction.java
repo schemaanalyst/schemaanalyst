@@ -10,9 +10,11 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
     
+    protected Table table;
     protected List<Column> columns;
     protected String description;
     protected boolean goalIsToSatisfy;
@@ -21,7 +23,9 @@ public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
     protected MultiObjectiveValue objVal;
     protected List<Row> satisfyingRows, falsifyingRows;
     
-    public ColumnObjectiveFunction(List<Column> columns, String description, boolean goalIsToSatisfy) {
+    public ColumnObjectiveFunction(
+            Table table, List<Column> columns, String description, boolean goalIsToSatisfy) {
+        this.table = table;
         this.columns = columns;
         this.description = description;
         this.goalIsToSatisfy = goalIsToSatisfy;
@@ -73,7 +77,7 @@ public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
     }
     
     protected void loadRows(Data data) {
-        dataRows = data.getRows(columns);
+        dataRows = data.getRows(table, columns);
     }
     
     protected abstract ObjectiveValue evaluateRow(Row row);

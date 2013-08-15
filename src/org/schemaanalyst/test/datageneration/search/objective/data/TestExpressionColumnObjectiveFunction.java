@@ -71,8 +71,9 @@ public class TestExpressionColumnObjectiveFunction {
 
         database.setDataValues(dataValues);
 
-        ExpressionColumnObjectiveFunction objFun = new ExpressionColumnObjectiveFunction(
-                expression, "", goalIsToSatisfy, allowNull);
+        ExpressionColumnObjectiveFunction objFun = 
+                new ExpressionColumnObjectiveFunction(
+                        database.table, expression, "", goalIsToSatisfy, allowNull);
         ObjectiveValue objVal = objFun.evaluate(database.data);
 
         if (optimal) {
@@ -102,8 +103,9 @@ public class TestExpressionColumnObjectiveFunction {
     
     @Test
     public void testNoRows() {
-        ExpressionColumnObjectiveFunction objFunTrue = new ExpressionColumnObjectiveFunction(
-                expression, "", true, true);        
+        ExpressionColumnObjectiveFunction objFunTrue = 
+                new ExpressionColumnObjectiveFunction(
+                        database.table, expression, "", true, true);        
         
         assertNonOptimal(objFunTrue.evaluate(new Data()));  
         
@@ -113,8 +115,9 @@ public class TestExpressionColumnObjectiveFunction {
         assertEquals("Number of rejected rows should be zero", 
                 0, objFunTrue.getFalsifyingRows().size());  
         
-        ExpressionColumnObjectiveFunction objFunFalse = new ExpressionColumnObjectiveFunction(
-                expression, "", false, true);  
+        ExpressionColumnObjectiveFunction objFunFalse = 
+                new ExpressionColumnObjectiveFunction(
+                        database.table, expression, "", false, true);  
         
         assertNonOptimal(objFunFalse.evaluate(new Data()));  
         
