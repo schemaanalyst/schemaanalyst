@@ -101,7 +101,7 @@ public class ColumnExpression extends ExpressionLeaf {
         if (table == null) {
             if (other.table != null)
                 return false;
-        // a full table comparison can lead to recursion and a stack overflow ....    
+        // Avoid a full table comparison due to the possibility of an infinite recursion    
         } else if (!table.getName().equalsIgnoreCase(other.table.getName()))
             return false;
         return true;

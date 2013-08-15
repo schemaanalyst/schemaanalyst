@@ -74,12 +74,13 @@ public class TestSchema {
         s.addTable(t2);
     }
     
+    @Test
     public void testDuplication() {
         Schema s1 = new Schema("schema");
         Table t1 = s1.createTable("table1");
         Column c1 = t1.createColumn("t1column", new IntDataType());
         Table t2 = s1.createTable("table2");
-        Column c2 = t1.createColumn("t2column", new IntDataType());
+        Column c2 = t2.createColumn("t2column", new IntDataType());
         t1.createForeignKeyConstraint(c1, t2, c2);
         
         Schema s2 = s1.duplicate();

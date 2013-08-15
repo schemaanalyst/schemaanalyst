@@ -118,6 +118,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
                 Table referenceTable = foreignKeyConstraint.getReferenceTable();
                 Table duplicateReferenceTable = 
                         duplicateSchema.getTable(referenceTable.getName());
+                foreignKeyConstraint.setReferenceTable(duplicateReferenceTable);
                 foreignKeyConstraint.remapReferenceColumns(duplicateReferenceTable);
             }
         }

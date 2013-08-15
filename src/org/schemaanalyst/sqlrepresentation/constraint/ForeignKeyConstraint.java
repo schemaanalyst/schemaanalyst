@@ -195,7 +195,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
         if (referenceTable == null) {
             if (other.referenceTable != null)
                 return false;
-        } else if (!referenceTable.equals(other.referenceTable))
+        // Avoid a full table comparison due to the possibility of an infinite recursion
+        } else if (!referenceTable.getName().equalsIgnoreCase(other.referenceTable.getName()))
             return false;
         return true;
     }
