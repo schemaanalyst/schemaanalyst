@@ -55,6 +55,7 @@ public class CheckConstraint extends Constraint {
      * @param table The table to remap the constraint's column to.
      */
     public void remap(Table table) {
+        expression.remap(table);
     }    
     
     /**

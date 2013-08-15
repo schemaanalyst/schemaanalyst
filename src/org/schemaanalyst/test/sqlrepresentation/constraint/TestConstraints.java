@@ -2,7 +2,6 @@ package org.schemaanalyst.test.sqlrepresentation.constraint;
 
 import java.util.ArrayList;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
@@ -129,7 +128,6 @@ public class TestConstraints {
         new PrimaryKeyConstraint(ca1, cb1).remap(t2);
     }    
     
-    @Ignore("Not Ready to Run")
     @Test
     public void testCheckConstraint() {
         Table table = new Table("table");
@@ -157,6 +155,28 @@ public class TestConstraints {
                 "Duplicated check constraints should not deep copy tables", 
                 table, ((ColumnExpression) cc2.getExpression()).getTable());        
     }      
+    
+    @Test
+    public void testCheckConstraintRemap() {
+        Table table1 = new Table("table");
+        Column table1Column = table1.createColumn("column", new IntDataType());
+        
+        Table table2 = new Table("table");
+        Column table2Column = table2.createColumn("column", new IntDataType());
+        
+        ColumnExpression colExp = new ColumnExpression(table1, table1Column);
+        
+        CheckConstraint cc = new CheckConstraint(colExp);
+        cc.remap(table2);
+        
+        assertSame(
+                "The table of colExp should be remapped to table2",
+                colExp.getTable(), table2);
+        
+        assertSame(
+                "The column of colExp should be remapped to table2Column",
+                colExp.getColumn(), table2Column);        
+    }
     
     @Test
     public void testForeignKeyConstraint() {

@@ -86,6 +86,49 @@ public class BetweenExpression extends ExpressionTree {
     }
     
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((lhs == null) ? 0 : lhs.hashCode());
+        result = prime * result + (notBetween ? 1231 : 1237);
+        result = prime * result + ((rhs == null) ? 0 : rhs.hashCode());
+        result = prime * result + ((subject == null) ? 0 : subject.hashCode());
+        result = prime * result + (symmetric ? 1231 : 1237);
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        BetweenExpression other = (BetweenExpression) obj;
+        if (lhs == null) {
+            if (other.lhs != null)
+                return false;
+        } else if (!lhs.equals(other.lhs))
+            return false;
+        if (notBetween != other.notBetween)
+            return false;
+        if (rhs == null) {
+            if (other.rhs != null)
+                return false;
+        } else if (!rhs.equals(other.rhs))
+            return false;
+        if (subject == null) {
+            if (other.subject != null)
+                return false;
+        } else if (!subject.equals(other.subject))
+            return false;
+        if (symmetric != other.symmetric)
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return subject + " " + (notBetween ? "NOT " : "") + "BETWEEN " + lhs
                 + " AND " + rhs;

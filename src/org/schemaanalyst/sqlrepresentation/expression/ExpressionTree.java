@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public abstract class ExpressionTree implements Expression {
 
@@ -53,5 +54,12 @@ public abstract class ExpressionTree implements Expression {
             columns.addAll(expression.getColumnsInvolved());
         }
         return new ArrayList<>(columns);
+    }
+
+    @Override
+    public void remap(Table table) {
+        for (Expression expression : getSubexpressions()) {
+            expression.remap(table);
+        }
     }
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Duplicable;
 
 /**
@@ -104,12 +105,23 @@ public class Schema implements Serializable, Duplicable<Schema> {
      */
     @Override
     public Schema duplicate() {
-        Schema copy = new Schema(name);
+        Schema duplicateSchema = new Schema(name);
         for (Table table : tables) {
-        	copy.addTable(table.duplicate());
+            duplicateSchema.addTable(table.duplicate());
         }
-        // TODO - foreign keys ...
-        return copy;
+        
+        // remap foreign keys to duplicated tables
+        for (Table duplicatedTable : duplicateSchema.getTables()) {
+            List<ForeignKeyConstraint> foreignKeyConstraints =
+                    duplicatedTable.getForeignKeyConstraints();
+            for (ForeignKeyConstraint foreignKeyConstraint : foreignKeyConstraints) {
+                Table referenceTable = foreignKeyConstraint.getReferenceTable();
+                Table duplicateReferenceTable = 
+                        duplicateSchema.getTable(referenceTable.getName());
+                foreignKeyConstraint.remapReferenceColumns(duplicateReferenceTable);
+            }
+        }
+        return duplicateSchema;
     }
 
     /**

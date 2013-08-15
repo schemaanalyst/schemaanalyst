@@ -127,7 +127,7 @@ public class SchemaJavaWriter {
         }
 
         // add constraints
-        List<Constraint> constraints = table.getConstraints();
+        List<Constraint> constraints = table.getAllConstraints();
         for (Constraint constraint : constraints) {
             code.appendln(constraintJavaWriter.writeAdditionToTable(table, constraint) + ";");
         }

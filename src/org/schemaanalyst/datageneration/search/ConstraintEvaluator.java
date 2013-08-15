@@ -31,7 +31,7 @@ public class ConstraintEvaluator {
 
         // go through each of the schema's constraints and check the row
         for (Table constraintTable : schema.getTables()) {
-            for (Constraint constraint : table.getConstraints()) {
+            for (Constraint constraint : table.getAllConstraints()) {
 
                 if (constraintTable == table) {
     

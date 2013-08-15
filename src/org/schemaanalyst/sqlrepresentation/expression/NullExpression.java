@@ -48,6 +48,35 @@ public class NullExpression extends ExpressionTree {
     }
     
     @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (notNull ? 1231 : 1237);
+        result = prime * result
+                + ((subexpression == null) ? 0 : subexpression.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        NullExpression other = (NullExpression) obj;
+        if (notNull != other.notNull)
+            return false;
+        if (subexpression == null) {
+            if (other.subexpression != null)
+                return false;
+        } else if (!subexpression.equals(other.subexpression))
+            return false;
+        return true;
+    }
+
+    @Override
     public String toString() {
         return subexpression + " IS " + (notNull ? "NOT" : "") + " NULL";
     }
