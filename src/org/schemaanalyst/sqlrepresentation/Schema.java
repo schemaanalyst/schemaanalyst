@@ -35,7 +35,16 @@ public class Schema implements Serializable, Duplicable<Schema> {
     public String getName() {
         return name;
     }
-
+    
+    /**
+     * Creates a table and adds it to the schema, returning the table created.
+     *  @param tableName The name of the table to be added.
+     */
+    public Table createTable(String name) {
+        Table table = new Table(name);
+        addTable(table);
+        return table;
+    }
     /**
      * Adds a table to the schema.
      * @param table The table to be added.
@@ -49,18 +58,19 @@ public class Schema implements Serializable, Duplicable<Schema> {
     }
 
     /**
-     * Looks up a table by its name, returning null if the table was not found.
+     * Looks up a table by its name (ignoring case), returning null if the table was not found.
      * @param name The name of the table.
      * @return The table, or null if no table was found for the name.
      */
     public Table getTable(String name) {
         for (Table table : tables) {
-            if (table.getName().equals(name)) {
+            String tableName = table.getName();
+            if (tableName.equalsIgnoreCase(name)) {
                 return table;
             }
         }
         return null;
-    }
+    }    
     
     /**
      * Returns an unmodifiable list of tables in the order they were added to the schema.

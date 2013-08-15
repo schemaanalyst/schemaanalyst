@@ -1,5 +1,6 @@
 package parsedcasestudy;
 
+import java.util.Arrays;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -14,40 +15,42 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * Flights schema.
- * Java code originally generated: 2013/07/11 14:08:08
+ * Java code originally generated: 2013/08/15 10:51:49
  *
  */
+
 @SuppressWarnings("serial")
 public class Flights extends Schema {
 
-    public Flights() {
-        super("Flights");
+	public Flights() {
+		super("Flights");
 
-        Table tableFlights = this.createTable("Flights");
-        tableFlights.addColumn("FLIGHT_ID", new CharDataType(6));
-        tableFlights.addColumn("SEGMENT_NUMBER", new IntDataType());
-        tableFlights.addColumn("ORIG_AIRPORT", new CharDataType(3));
-        tableFlights.addColumn("DEPART_TIME", new TimeDataType());
-        tableFlights.addColumn("DEST_AIRPORT", new CharDataType(3));
-        tableFlights.addColumn("ARRIVE_TIME", new TimeDataType());
-        tableFlights.addColumn("MEAL", new CharDataType(1));
-        tableFlights.setPrimaryKeyConstraint(tableFlights.getColumn("FLIGHT_ID"), tableFlights.getColumn("SEGMENT_NUMBER"));
-        tableFlights.addNotNullConstraint(tableFlights.getColumn("FLIGHT_ID"));
-        tableFlights.addNotNullConstraint(tableFlights.getColumn("SEGMENT_NUMBER"));
-        tableFlights.addNotNullConstraint(tableFlights.getColumn("MEAL"));
-        tableFlights.addCheckConstraint("MEAL_CONSTRAINT", new InExpression(new ColumnExpression(tableFlights.getColumn("MEAL")), new ListExpression(new ConstantExpression(new StringValue("B")), new ConstantExpression(new StringValue("L")), new ConstantExpression(new StringValue("D")), new ConstantExpression(new StringValue("S"))), false));
+		Table tableFlights = this.createTable("Flights");
+		tableFlights.createColumn("FLIGHT_ID", new CharDataType(6));
+		tableFlights.createColumn("SEGMENT_NUMBER", new IntDataType());
+		tableFlights.createColumn("ORIG_AIRPORT", new CharDataType(3));
+		tableFlights.createColumn("DEPART_TIME", new TimeDataType());
+		tableFlights.createColumn("DEST_AIRPORT", new CharDataType(3));
+		tableFlights.createColumn("ARRIVE_TIME", new TimeDataType());
+		tableFlights.createColumn("MEAL", new CharDataType(1));
+		tableFlights.createPrimaryKeyConstraint(tableFlights.getColumn("FLIGHT_ID"), tableFlights.getColumn("SEGMENT_NUMBER"));
+		tableFlights.createNotNullConstraint(tableFlights.getColumn("FLIGHT_ID"));
+		tableFlights.createNotNullConstraint(tableFlights.getColumn("SEGMENT_NUMBER"));
+		tableFlights.createNotNullConstraint(tableFlights.getColumn("MEAL"));
+		tableFlights.createCheckConstraint("MEAL_CONSTRAINT", new InExpression(new ColumnExpression(tableFlights, tableFlights.getColumn("MEAL")), new ListExpression(new ConstantExpression(new StringValue("B")), new ConstantExpression(new StringValue("L")), new ConstantExpression(new StringValue("D")), new ConstantExpression(new StringValue("S"))), false));
 
-        Table tableFlightavailable = this.createTable("FlightAvailable");
-        tableFlightavailable.addColumn("FLIGHT_ID", new CharDataType(6));
-        tableFlightavailable.addColumn("SEGMENT_NUMBER", new IntDataType());
-        tableFlightavailable.addColumn("FLIGHT_DATE", new DateDataType());
-        tableFlightavailable.addColumn("ECONOMY_SEATS_TAKEN", new IntDataType());
-        tableFlightavailable.addColumn("BUSINESS_SEATS_TAKEN", new IntDataType());
-        tableFlightavailable.addColumn("FIRSTCLASS_SEATS_TAKEN", new IntDataType());
-        tableFlightavailable.setPrimaryKeyConstraint("FLTAVAIL_PK", tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER"));
-        tableFlightavailable.addForeignKeyConstraint("FLTS_FK", tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER"), tableFlights, tableFlights.getColumn("FLIGHT_ID"), tableFlights.getColumn("SEGMENT_NUMBER"));
-        tableFlightavailable.addNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_ID"));
-        tableFlightavailable.addNotNullConstraint(tableFlightavailable.getColumn("SEGMENT_NUMBER"));
-        tableFlightavailable.addNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_DATE"));
-    }
+		Table tableFlightavailable = this.createTable("FlightAvailable");
+		tableFlightavailable.createColumn("FLIGHT_ID", new CharDataType(6));
+		tableFlightavailable.createColumn("SEGMENT_NUMBER", new IntDataType());
+		tableFlightavailable.createColumn("FLIGHT_DATE", new DateDataType());
+		tableFlightavailable.createColumn("ECONOMY_SEATS_TAKEN", new IntDataType());
+		tableFlightavailable.createColumn("BUSINESS_SEATS_TAKEN", new IntDataType());
+		tableFlightavailable.createColumn("FIRSTCLASS_SEATS_TAKEN", new IntDataType());
+		tableFlightavailable.createPrimaryKeyConstraint("FLTAVAIL_PK", tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER"));
+		tableFlightavailable.createForeignKeyConstraint("FLTS_FK", Arrays.asList(tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER")), tableFlights, Arrays.asList(tableFlightavailable.getColumn("FLIGHT_ID"), tableFlightavailable.getColumn("SEGMENT_NUMBER")));
+		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_ID"));
+		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("SEGMENT_NUMBER"));
+		tableFlightavailable.createNotNullConstraint(tableFlightavailable.getColumn("FLIGHT_DATE"));
+	}
 }
+

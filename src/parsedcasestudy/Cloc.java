@@ -7,27 +7,29 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Cloc schema.
- * Java code originally generated: 2013/07/11 14:07:02
+ * Java code originally generated: 2013/08/15 10:51:40
  *
  */
+
 @SuppressWarnings("serial")
 public class Cloc extends Schema {
 
-    public Cloc() {
-        super("Cloc");
+	public Cloc() {
+		super("Cloc");
 
-        Table tableMetadata = this.createTable("metadata");
-        tableMetadata.addColumn("timestamp", new VarCharDataType(50));
-        tableMetadata.addColumn("Project", new VarCharDataType(50));
-        tableMetadata.addColumn("elapsed_s", new IntDataType());
+		Table tableMetadata = this.createTable("metadata");
+		tableMetadata.createColumn("timestamp", new VarCharDataType(50));
+		tableMetadata.createColumn("Project", new VarCharDataType(50));
+		tableMetadata.createColumn("elapsed_s", new IntDataType());
 
-        Table tableT = this.createTable("t");
-        tableT.addColumn("Project", new VarCharDataType(50));
-        tableT.addColumn("Language", new VarCharDataType(50));
-        tableT.addColumn("File", new VarCharDataType(50));
-        tableT.addColumn("nBlank", new IntDataType());
-        tableT.addColumn("nComment", new IntDataType());
-        tableT.addColumn("nCode", new IntDataType());
-        tableT.addColumn("nScaled", new IntDataType());
-    }
+		Table tableT = this.createTable("t");
+		tableT.createColumn("Project", new VarCharDataType(50));
+		tableT.createColumn("Language", new VarCharDataType(50));
+		tableT.createColumn("File", new VarCharDataType(50));
+		tableT.createColumn("nBlank", new IntDataType());
+		tableT.createColumn("nComment", new IntDataType());
+		tableT.createColumn("nCode", new IntDataType());
+		tableT.createColumn("nScaled", new IntDataType());
+	}
 }
+

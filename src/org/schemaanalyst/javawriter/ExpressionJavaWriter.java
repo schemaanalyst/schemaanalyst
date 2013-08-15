@@ -3,6 +3,8 @@ package org.schemaanalyst.javawriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
@@ -58,9 +60,12 @@ public class ExpressionJavaWriter {
 
             @Override
             public void visit(ColumnExpression expression) {
+                Table table = expression.getTable();
+                Column column = expression.getColumn();
                 java += javaWriter.writeConstruction(
                         expression,
-                        javaWriter.writeGetColumn(expression.getTable(), expression.getColumn()));
+                        javaWriter.getVariableName(table),
+                        javaWriter.writeGetColumn(table, column));
             }
 
             @Override

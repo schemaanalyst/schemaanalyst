@@ -13,47 +13,49 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * Examination schema.
- * Java code originally generated: 2013/07/11 14:08:01
+ * Java code originally generated: 2013/08/15 10:51:47
  *
  */
+
 @SuppressWarnings("serial")
 public class Examination extends Schema {
 
-    public Examination() {
-        super("Examination");
+	public Examination() {
+		super("Examination");
 
-        Table tableExam = this.createTable("Exam");
-        tableExam.addColumn("ekey", new IntDataType());
-        tableExam.addColumn("fn", new VarCharDataType(15));
-        tableExam.addColumn("ln", new VarCharDataType(30));
-        tableExam.addColumn("exam", new IntDataType());
-        tableExam.addColumn("score", new IntDataType());
-        tableExam.addColumn("timeEnter", new DateDataType());
-        tableExam.setPrimaryKeyConstraint(tableExam.getColumn("ekey"));
-        tableExam.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExam.getColumn("score")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
-        tableExam.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExam.getColumn("score")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
+		Table tableExam = this.createTable("Exam");
+		tableExam.createColumn("ekey", new IntDataType());
+		tableExam.createColumn("fn", new VarCharDataType(15));
+		tableExam.createColumn("ln", new VarCharDataType(30));
+		tableExam.createColumn("exam", new IntDataType());
+		tableExam.createColumn("score", new IntDataType());
+		tableExam.createColumn("timeEnter", new DateDataType());
+		tableExam.createPrimaryKeyConstraint(tableExam.getColumn("ekey"));
+		tableExam.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExam, tableExam.getColumn("score")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		tableExam.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExam, tableExam.getColumn("score")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
 
-        Table tableExamlog = this.createTable("Examlog");
-        tableExamlog.addColumn("lkey", new IntDataType());
-        tableExamlog.addColumn("ekey", new IntDataType());
-        tableExamlog.addColumn("ekeyOLD", new IntDataType());
-        tableExamlog.addColumn("fnNEW", new VarCharDataType(15));
-        tableExamlog.addColumn("fnOLD", new VarCharDataType(15));
-        tableExamlog.addColumn("lnNEW", new VarCharDataType(30));
-        tableExamlog.addColumn("lnOLD", new VarCharDataType(30));
-        tableExamlog.addColumn("examNEW", new IntDataType());
-        tableExamlog.addColumn("examOLD", new IntDataType());
-        tableExamlog.addColumn("scoreNEW", new IntDataType());
-        tableExamlog.addColumn("scoreOLD", new IntDataType());
-        tableExamlog.addColumn("sqlAction", new VarCharDataType(15));
-        tableExamlog.addColumn("examtimeEnter", new DateDataType());
-        tableExamlog.addColumn("examtimeUpdate", new DateDataType());
-        tableExamlog.addColumn("timeEnter", new DateDataType());
-        tableExamlog.setPrimaryKeyConstraint(tableExamlog.getColumn("lkey"));
-        tableExamlog.addForeignKeyConstraint(tableExamlog.getColumn("ekey"), tableExam, tableExam.getColumn("ekey"));
-        tableExamlog.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog.getColumn("scoreNEW")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
-        tableExamlog.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog.getColumn("scoreNEW")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
-        tableExamlog.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog.getColumn("scoreOLD")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
-        tableExamlog.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog.getColumn("scoreOLD")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
-    }
+		Table tableExamlog = this.createTable("Examlog");
+		tableExamlog.createColumn("lkey", new IntDataType());
+		tableExamlog.createColumn("ekey", new IntDataType());
+		tableExamlog.createColumn("ekeyOLD", new IntDataType());
+		tableExamlog.createColumn("fnNEW", new VarCharDataType(15));
+		tableExamlog.createColumn("fnOLD", new VarCharDataType(15));
+		tableExamlog.createColumn("lnNEW", new VarCharDataType(30));
+		tableExamlog.createColumn("lnOLD", new VarCharDataType(30));
+		tableExamlog.createColumn("examNEW", new IntDataType());
+		tableExamlog.createColumn("examOLD", new IntDataType());
+		tableExamlog.createColumn("scoreNEW", new IntDataType());
+		tableExamlog.createColumn("scoreOLD", new IntDataType());
+		tableExamlog.createColumn("sqlAction", new VarCharDataType(15));
+		tableExamlog.createColumn("examtimeEnter", new DateDataType());
+		tableExamlog.createColumn("examtimeUpdate", new DateDataType());
+		tableExamlog.createColumn("timeEnter", new DateDataType());
+		tableExamlog.createPrimaryKeyConstraint(tableExamlog.getColumn("lkey"));
+		tableExamlog.createForeignKeyConstraint(tableExamlog.getColumn("ekey"), tableExam, tableExamlog.getColumn("ekey"));
+		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreNEW")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreNEW")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
+		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreOLD")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		tableExamlog.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableExamlog, tableExamlog.getColumn("scoreOLD")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(100))));
+	}
 }
+

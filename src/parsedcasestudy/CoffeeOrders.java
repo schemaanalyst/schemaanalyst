@@ -7,62 +7,64 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * CoffeeOrders schema.
- * Java code originally generated: 2013/07/11 14:07:30
+ * Java code originally generated: 2013/08/15 10:51:41
  *
  */
+
 @SuppressWarnings("serial")
 public class CoffeeOrders extends Schema {
 
-    public CoffeeOrders() {
-        super("CoffeeOrders");
+	public CoffeeOrders() {
+		super("CoffeeOrders");
 
-        Table tableCoffees = this.createTable("coffees");
-        tableCoffees.addColumn("id", new IntDataType());
-        tableCoffees.addColumn("coffee_name", new VarCharDataType(50));
-        tableCoffees.addColumn("price", new IntDataType());
-        tableCoffees.setPrimaryKeyConstraint(tableCoffees.getColumn("id"));
-        tableCoffees.addNotNullConstraint(tableCoffees.getColumn("coffee_name"));
-        tableCoffees.addNotNullConstraint(tableCoffees.getColumn("price"));
+		Table tableCoffees = this.createTable("coffees");
+		tableCoffees.createColumn("id", new IntDataType());
+		tableCoffees.createColumn("coffee_name", new VarCharDataType(50));
+		tableCoffees.createColumn("price", new IntDataType());
+		tableCoffees.createPrimaryKeyConstraint(tableCoffees.getColumn("id"));
+		tableCoffees.createNotNullConstraint(tableCoffees.getColumn("coffee_name"));
+		tableCoffees.createNotNullConstraint(tableCoffees.getColumn("price"));
 
-        Table tableSalespeople = this.createTable("salespeople");
-        tableSalespeople.addColumn("id", new IntDataType());
-        tableSalespeople.addColumn("first_name", new VarCharDataType(50));
-        tableSalespeople.addColumn("last_name", new VarCharDataType(50));
-        tableSalespeople.addColumn("commission_rate", new IntDataType());
-        tableSalespeople.setPrimaryKeyConstraint(tableSalespeople.getColumn("id"));
-        tableSalespeople.addNotNullConstraint(tableSalespeople.getColumn("first_name"));
-        tableSalespeople.addNotNullConstraint(tableSalespeople.getColumn("last_name"));
-        tableSalespeople.addNotNullConstraint(tableSalespeople.getColumn("commission_rate"));
+		Table tableSalespeople = this.createTable("salespeople");
+		tableSalespeople.createColumn("id", new IntDataType());
+		tableSalespeople.createColumn("first_name", new VarCharDataType(50));
+		tableSalespeople.createColumn("last_name", new VarCharDataType(50));
+		tableSalespeople.createColumn("commission_rate", new IntDataType());
+		tableSalespeople.createPrimaryKeyConstraint(tableSalespeople.getColumn("id"));
+		tableSalespeople.createNotNullConstraint(tableSalespeople.getColumn("first_name"));
+		tableSalespeople.createNotNullConstraint(tableSalespeople.getColumn("last_name"));
+		tableSalespeople.createNotNullConstraint(tableSalespeople.getColumn("commission_rate"));
 
-        Table tableCustomers = this.createTable("customers");
-        tableCustomers.addColumn("id", new IntDataType());
-        tableCustomers.addColumn("company_name", new VarCharDataType(50));
-        tableCustomers.addColumn("street_address", new VarCharDataType(50));
-        tableCustomers.addColumn("city", new VarCharDataType(50));
-        tableCustomers.addColumn("state", new VarCharDataType(50));
-        tableCustomers.addColumn("zip", new VarCharDataType(50));
-        tableCustomers.setPrimaryKeyConstraint(tableCustomers.getColumn("id"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("company_name"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("street_address"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("city"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("state"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("zip"));
+		Table tableCustomers = this.createTable("customers");
+		tableCustomers.createColumn("id", new IntDataType());
+		tableCustomers.createColumn("company_name", new VarCharDataType(50));
+		tableCustomers.createColumn("street_address", new VarCharDataType(50));
+		tableCustomers.createColumn("city", new VarCharDataType(50));
+		tableCustomers.createColumn("state", new VarCharDataType(50));
+		tableCustomers.createColumn("zip", new VarCharDataType(50));
+		tableCustomers.createPrimaryKeyConstraint(tableCustomers.getColumn("id"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("company_name"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("street_address"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("city"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("state"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("zip"));
 
-        Table tableOrders = this.createTable("orders");
-        tableOrders.addColumn("id", new IntDataType());
-        tableOrders.addColumn("customer_id", new IntDataType());
-        tableOrders.addColumn("salesperson_id", new IntDataType());
-        tableOrders.setPrimaryKeyConstraint(tableOrders.getColumn("id"));
-        tableOrders.addForeignKeyConstraint(tableOrders.getColumn("customer_id"), tableCustomers, tableCustomers.getColumn("id"));
-        tableOrders.addForeignKeyConstraint(tableOrders.getColumn("salesperson_id"), tableSalespeople, tableSalespeople.getColumn("id"));
+		Table tableOrders = this.createTable("orders");
+		tableOrders.createColumn("id", new IntDataType());
+		tableOrders.createColumn("customer_id", new IntDataType());
+		tableOrders.createColumn("salesperson_id", new IntDataType());
+		tableOrders.createPrimaryKeyConstraint(tableOrders.getColumn("id"));
+		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("customer_id"), tableCustomers, tableOrders.getColumn("id"));
+		tableOrders.createForeignKeyConstraint(tableOrders.getColumn("salesperson_id"), tableSalespeople, tableOrders.getColumn("id"));
 
-        Table tableOrderItems = this.createTable("order_items");
-        tableOrderItems.addColumn("id", new IntDataType());
-        tableOrderItems.addColumn("order_id", new IntDataType());
-        tableOrderItems.addColumn("product_id", new IntDataType());
-        tableOrderItems.addColumn("product_quantity", new IntDataType());
-        tableOrderItems.setPrimaryKeyConstraint(tableOrderItems.getColumn("id"));
-        tableOrderItems.addForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrders.getColumn("id"));
-        tableOrderItems.addForeignKeyConstraint(tableOrderItems.getColumn("product_id"), tableCoffees, tableCoffees.getColumn("id"));
-    }
+		Table tableOrderItems = this.createTable("order_items");
+		tableOrderItems.createColumn("id", new IntDataType());
+		tableOrderItems.createColumn("order_id", new IntDataType());
+		tableOrderItems.createColumn("product_id", new IntDataType());
+		tableOrderItems.createColumn("product_quantity", new IntDataType());
+		tableOrderItems.createPrimaryKeyConstraint(tableOrderItems.getColumn("id"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("order_id"), tableOrders, tableOrderItems.getColumn("id"));
+		tableOrderItems.createForeignKeyConstraint(tableOrderItems.getColumn("product_id"), tableCoffees, tableOrderItems.getColumn("id"));
+	}
 }
+

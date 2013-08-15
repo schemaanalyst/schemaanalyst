@@ -11,21 +11,23 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * NistXTS748 schema.
- * Java code originally generated: 2013/07/11 14:10:39
+ * Java code originally generated: 2013/08/15 10:52:11
  *
  */
+
 @SuppressWarnings("serial")
 public class NistXTS748 extends Schema {
 
-    public NistXTS748() {
-        super("NistXTS748");
+	public NistXTS748() {
+		super("NistXTS748");
 
-        Table tableTest12549 = this.createTable("TEST12549");
-        tableTest12549.addColumn("TNUM1", new NumericDataType(5));
-        tableTest12549.addColumn("TNUM2", new NumericDataType(5));
-        tableTest12549.addColumn("TNUM3", new NumericDataType(5));
-        tableTest12549.addNotNullConstraint("CND12549A", tableTest12549.getColumn("TNUM1"));
-        tableTest12549.addUniqueConstraint("CND12549B", tableTest12549.getColumn("TNUM2"));
-        tableTest12549.addCheckConstraint("CND12549C", new RelationalExpression(new ColumnExpression(tableTest12549.getColumn("TNUM3")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
-    }
+		Table tableTest12549 = this.createTable("TEST12549");
+		tableTest12549.createColumn("TNUM1", new NumericDataType(5));
+		tableTest12549.createColumn("TNUM2", new NumericDataType(5));
+		tableTest12549.createColumn("TNUM3", new NumericDataType(5));
+		tableTest12549.createNotNullConstraint("CND12549A", tableTest12549.getColumn("TNUM1"));
+		tableTest12549.createUniqueConstraint("CND12549B", tableTest12549.getColumn("TNUM2"));
+		tableTest12549.createCheckConstraint("CND12549C", new RelationalExpression(new ColumnExpression(tableTest12549, tableTest12549.getColumn("TNUM3")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
+	}
 }
+

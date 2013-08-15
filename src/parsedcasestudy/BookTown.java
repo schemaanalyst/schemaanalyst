@@ -20,152 +20,154 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * BookTown schema.
- * Java code originally generated: 2013/07/11 14:01:14
+ * Java code originally generated: 2013/08/15 10:51:39
  *
  */
+
 @SuppressWarnings("serial")
 public class BookTown extends Schema {
 
-    public BookTown() {
-        super("BookTown");
+	public BookTown() {
+		super("BookTown");
 
-        Table tableBooks = this.createTable("books");
-        tableBooks.addColumn("id", new IntDataType());
-        tableBooks.addColumn("title", new VarCharDataType(100));
-        tableBooks.addColumn("author_id", new IntDataType());
-        tableBooks.addColumn("subject_id", new IntDataType());
-        tableBooks.setPrimaryKeyConstraint("books_id_pkey", tableBooks.getColumn("id"));
-        tableBooks.addNotNullConstraint(tableBooks.getColumn("id"));
-        tableBooks.addNotNullConstraint(tableBooks.getColumn("title"));
+		Table tableBooks = this.createTable("books");
+		tableBooks.createColumn("id", new IntDataType());
+		tableBooks.createColumn("title", new VarCharDataType(100));
+		tableBooks.createColumn("author_id", new IntDataType());
+		tableBooks.createColumn("subject_id", new IntDataType());
+		tableBooks.createPrimaryKeyConstraint("books_id_pkey", tableBooks.getColumn("id"));
+		tableBooks.createNotNullConstraint(tableBooks.getColumn("id"));
+		tableBooks.createNotNullConstraint(tableBooks.getColumn("title"));
 
-        Table tablePublishers = this.createTable("publishers");
-        tablePublishers.addColumn("id", new IntDataType());
-        tablePublishers.addColumn("name", new VarCharDataType(100));
-        tablePublishers.addColumn("address", new VarCharDataType(100));
-        tablePublishers.setPrimaryKeyConstraint("publishers_pkey", tablePublishers.getColumn("id"));
-        tablePublishers.addNotNullConstraint(tablePublishers.getColumn("id"));
+		Table tablePublishers = this.createTable("publishers");
+		tablePublishers.createColumn("id", new IntDataType());
+		tablePublishers.createColumn("name", new VarCharDataType(100));
+		tablePublishers.createColumn("address", new VarCharDataType(100));
+		tablePublishers.createPrimaryKeyConstraint("publishers_pkey", tablePublishers.getColumn("id"));
+		tablePublishers.createNotNullConstraint(tablePublishers.getColumn("id"));
 
-        Table tableAuthors = this.createTable("authors");
-        tableAuthors.addColumn("id", new IntDataType());
-        tableAuthors.addColumn("last_name", new VarCharDataType(100));
-        tableAuthors.addColumn("first_name", new VarCharDataType(100));
-        tableAuthors.setPrimaryKeyConstraint("authors_pkey", tableAuthors.getColumn("id"));
-        tableAuthors.addNotNullConstraint(tableAuthors.getColumn("id"));
+		Table tableAuthors = this.createTable("authors");
+		tableAuthors.createColumn("id", new IntDataType());
+		tableAuthors.createColumn("last_name", new VarCharDataType(100));
+		tableAuthors.createColumn("first_name", new VarCharDataType(100));
+		tableAuthors.createPrimaryKeyConstraint("authors_pkey", tableAuthors.getColumn("id"));
+		tableAuthors.createNotNullConstraint(tableAuthors.getColumn("id"));
 
-        Table tableStates = this.createTable("states");
-        tableStates.addColumn("id", new IntDataType());
-        tableStates.addColumn("name", new VarCharDataType(100));
-        tableStates.addColumn("abbreviation", new CharDataType(2));
-        tableStates.setPrimaryKeyConstraint("state_pkey", tableStates.getColumn("id"));
-        tableStates.addNotNullConstraint(tableStates.getColumn("id"));
+		Table tableStates = this.createTable("states");
+		tableStates.createColumn("id", new IntDataType());
+		tableStates.createColumn("name", new VarCharDataType(100));
+		tableStates.createColumn("abbreviation", new CharDataType(2));
+		tableStates.createPrimaryKeyConstraint("state_pkey", tableStates.getColumn("id"));
+		tableStates.createNotNullConstraint(tableStates.getColumn("id"));
 
-        Table tableMyList = this.createTable("my_list");
-        tableMyList.addColumn("todos", new VarCharDataType(100));
+		Table tableMyList = this.createTable("my_list");
+		tableMyList.createColumn("todos", new VarCharDataType(100));
 
-        Table tableStock = this.createTable("stock");
-        tableStock.addColumn("isbn", new VarCharDataType(100));
-        tableStock.addColumn("cost", new NumericDataType(5, 2));
-        tableStock.addColumn("retail", new NumericDataType(5, 2));
-        tableStock.addColumn("stock", new IntDataType());
-        tableStock.setPrimaryKeyConstraint("stock_pkey", tableStock.getColumn("isbn"));
-        tableStock.addNotNullConstraint(tableStock.getColumn("isbn"));
+		Table tableStock = this.createTable("stock");
+		tableStock.createColumn("isbn", new VarCharDataType(100));
+		tableStock.createColumn("cost", new NumericDataType(5, 2));
+		tableStock.createColumn("retail", new NumericDataType(5, 2));
+		tableStock.createColumn("stock", new IntDataType());
+		tableStock.createPrimaryKeyConstraint("stock_pkey", tableStock.getColumn("isbn"));
+		tableStock.createNotNullConstraint(tableStock.getColumn("isbn"));
 
-        Table tableNumericValues = this.createTable("numeric_values");
-        tableNumericValues.addColumn("num", new NumericDataType(30, 6));
+		Table tableNumericValues = this.createTable("numeric_values");
+		tableNumericValues.createColumn("num", new NumericDataType(30, 6));
 
-        Table tableDailyInventory = this.createTable("daily_inventory");
-        tableDailyInventory.addColumn("isbn", new VarCharDataType(100));
-        tableDailyInventory.addColumn("is_stocked", new BooleanDataType());
+		Table tableDailyInventory = this.createTable("daily_inventory");
+		tableDailyInventory.createColumn("isbn", new VarCharDataType(100));
+		tableDailyInventory.createColumn("is_stocked", new BooleanDataType());
 
-        Table tableMoneyExample = this.createTable("money_example");
-        tableMoneyExample.addColumn("money_cash", new NumericDataType(6, 2));
-        tableMoneyExample.addColumn("numeric_cash", new NumericDataType(6, 2));
+		Table tableMoneyExample = this.createTable("money_example");
+		tableMoneyExample.createColumn("money_cash", new NumericDataType(6, 2));
+		tableMoneyExample.createColumn("numeric_cash", new NumericDataType(6, 2));
 
-        Table tableShipments = this.createTable("shipments");
-        tableShipments.addColumn("id", new IntDataType());
-        tableShipments.addColumn("customer_id", new IntDataType());
-        tableShipments.addColumn("isbn", new VarCharDataType(100));
-        tableShipments.addColumn("ship_date", new TimestampDataType());
-        tableShipments.addNotNullConstraint(tableShipments.getColumn("id"));
+		Table tableShipments = this.createTable("shipments");
+		tableShipments.createColumn("id", new IntDataType());
+		tableShipments.createColumn("customer_id", new IntDataType());
+		tableShipments.createColumn("isbn", new VarCharDataType(100));
+		tableShipments.createColumn("ship_date", new TimestampDataType());
+		tableShipments.createNotNullConstraint(tableShipments.getColumn("id"));
 
-        Table tableCustomers = this.createTable("customers");
-        tableCustomers.addColumn("id", new IntDataType());
-        tableCustomers.addColumn("last_name", new VarCharDataType(100));
-        tableCustomers.addColumn("first_name", new VarCharDataType(100));
-        tableCustomers.setPrimaryKeyConstraint("customers_pkey", tableCustomers.getColumn("id"));
-        tableCustomers.addNotNullConstraint(tableCustomers.getColumn("id"));
+		Table tableCustomers = this.createTable("customers");
+		tableCustomers.createColumn("id", new IntDataType());
+		tableCustomers.createColumn("last_name", new VarCharDataType(100));
+		tableCustomers.createColumn("first_name", new VarCharDataType(100));
+		tableCustomers.createPrimaryKeyConstraint("customers_pkey", tableCustomers.getColumn("id"));
+		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("id"));
 
-        Table tableBookQueue = this.createTable("book_queue");
-        tableBookQueue.addColumn("title", new VarCharDataType(100));
-        tableBookQueue.addColumn("author_id", new IntDataType());
-        tableBookQueue.addColumn("subject_id", new IntDataType());
-        tableBookQueue.addColumn("approved", new BooleanDataType());
-        tableBookQueue.addNotNullConstraint(tableBookQueue.getColumn("title"));
+		Table tableBookQueue = this.createTable("book_queue");
+		tableBookQueue.createColumn("title", new VarCharDataType(100));
+		tableBookQueue.createColumn("author_id", new IntDataType());
+		tableBookQueue.createColumn("subject_id", new IntDataType());
+		tableBookQueue.createColumn("approved", new BooleanDataType());
+		tableBookQueue.createNotNullConstraint(tableBookQueue.getColumn("title"));
 
-        Table tableStockBackup = this.createTable("stock_backup");
-        tableStockBackup.addColumn("isbn", new VarCharDataType(100));
-        tableStockBackup.addColumn("cost", new NumericDataType(5, 2));
-        tableStockBackup.addColumn("retail", new NumericDataType(5, 2));
-        tableStockBackup.addColumn("stock", new IntDataType());
+		Table tableStockBackup = this.createTable("stock_backup");
+		tableStockBackup.createColumn("isbn", new VarCharDataType(100));
+		tableStockBackup.createColumn("cost", new NumericDataType(5, 2));
+		tableStockBackup.createColumn("retail", new NumericDataType(5, 2));
+		tableStockBackup.createColumn("stock", new IntDataType());
 
-        Table tableFavoriteBooks = this.createTable("favorite_books");
-        tableFavoriteBooks.addColumn("employee_id", new IntDataType());
-        tableFavoriteBooks.addColumn("books", new VarCharDataType(100));
+		Table tableFavoriteBooks = this.createTable("favorite_books");
+		tableFavoriteBooks.createColumn("employee_id", new IntDataType());
+		tableFavoriteBooks.createColumn("books", new VarCharDataType(100));
 
-        Table tableEmployees = this.createTable("employees");
-        tableEmployees.addColumn("id", new IntDataType());
-        tableEmployees.addColumn("last_name", new VarCharDataType(100));
-        tableEmployees.addColumn("first_name", new VarCharDataType(100));
-        tableEmployees.setPrimaryKeyConstraint(tableEmployees.getColumn("id"));
-        tableEmployees.addNotNullConstraint(tableEmployees.getColumn("id"));
-        tableEmployees.addNotNullConstraint(tableEmployees.getColumn("last_name"));
-        tableEmployees.addCheckConstraint("employees_id", new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableEmployees.getColumn("id")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(100)))));
+		Table tableEmployees = this.createTable("employees");
+		tableEmployees.createColumn("id", new IntDataType());
+		tableEmployees.createColumn("last_name", new VarCharDataType(100));
+		tableEmployees.createColumn("first_name", new VarCharDataType(100));
+		tableEmployees.createPrimaryKeyConstraint(tableEmployees.getColumn("id"));
+		tableEmployees.createNotNullConstraint(tableEmployees.getColumn("id"));
+		tableEmployees.createNotNullConstraint(tableEmployees.getColumn("last_name"));
+		tableEmployees.createCheckConstraint("employees_id", new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableEmployees, tableEmployees.getColumn("id")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(100)))));
 
-        Table tableEditions = this.createTable("editions");
-        tableEditions.addColumn("isbn", new VarCharDataType(100));
-        tableEditions.addColumn("book_id", new IntDataType());
-        tableEditions.addColumn("edition", new IntDataType());
-        tableEditions.addColumn("publisher_id", new IntDataType());
-        tableEditions.addColumn("publication", new DateDataType());
-        tableEditions.addColumn("type", new CharDataType(1));
-        tableEditions.setPrimaryKeyConstraint(tableEditions.getColumn("isbn"));
-        tableEditions.addNotNullConstraint(tableEditions.getColumn("isbn"));
-        tableEditions.addCheckConstraint("integrity", new ParenthesisedExpression(new AndExpression(new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions.getColumn("book_id")), true)), new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions.getColumn("edition")), true)))));
+		Table tableEditions = this.createTable("editions");
+		tableEditions.createColumn("isbn", new VarCharDataType(100));
+		tableEditions.createColumn("book_id", new IntDataType());
+		tableEditions.createColumn("edition", new IntDataType());
+		tableEditions.createColumn("publisher_id", new IntDataType());
+		tableEditions.createColumn("publication", new DateDataType());
+		tableEditions.createColumn("type", new CharDataType(1));
+		tableEditions.createPrimaryKeyConstraint(tableEditions.getColumn("isbn"));
+		tableEditions.createNotNullConstraint(tableEditions.getColumn("isbn"));
+		tableEditions.createCheckConstraint("integrity", new ParenthesisedExpression(new AndExpression(new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("book_id")), true)), new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("edition")), true)))));
 
-        Table tableDistinguishedAuthors = this.createTable("distinguished_authors");
-        tableDistinguishedAuthors.addColumn("id", new IntDataType());
-        tableDistinguishedAuthors.addColumn("last_name", new VarCharDataType(100));
-        tableDistinguishedAuthors.addColumn("first_name", new VarCharDataType(100));
-        tableDistinguishedAuthors.addColumn("award", new VarCharDataType(100));
-        tableDistinguishedAuthors.setPrimaryKeyConstraint("authors_pkey", tableDistinguishedAuthors.getColumn("id"));
-        tableDistinguishedAuthors.addNotNullConstraint(tableDistinguishedAuthors.getColumn("id"));
+		Table tableDistinguishedAuthors = this.createTable("distinguished_authors");
+		tableDistinguishedAuthors.createColumn("id", new IntDataType());
+		tableDistinguishedAuthors.createColumn("last_name", new VarCharDataType(100));
+		tableDistinguishedAuthors.createColumn("first_name", new VarCharDataType(100));
+		tableDistinguishedAuthors.createColumn("award", new VarCharDataType(100));
+		tableDistinguishedAuthors.createPrimaryKeyConstraint("authors_pkey", tableDistinguishedAuthors.getColumn("id"));
+		tableDistinguishedAuthors.createNotNullConstraint(tableDistinguishedAuthors.getColumn("id"));
 
-        Table tableVarchar100Sorting = this.createTable("varchar(100)_sorting");
-        tableVarchar100Sorting.addColumn("letter", new CharDataType(1));
+		Table tableVarchar100Sorting = this.createTable("varchar(100)_sorting");
+		tableVarchar100Sorting.createColumn("letter", new CharDataType(1));
 
-        Table tableSubjects = this.createTable("subjects");
-        tableSubjects.addColumn("id", new IntDataType());
-        tableSubjects.addColumn("subject", new VarCharDataType(100));
-        tableSubjects.addColumn("location", new VarCharDataType(100));
-        tableSubjects.setPrimaryKeyConstraint("subjects_pkey", tableSubjects.getColumn("id"));
-        tableSubjects.addNotNullConstraint(tableSubjects.getColumn("id"));
+		Table tableSubjects = this.createTable("subjects");
+		tableSubjects.createColumn("id", new IntDataType());
+		tableSubjects.createColumn("subject", new VarCharDataType(100));
+		tableSubjects.createColumn("location", new VarCharDataType(100));
+		tableSubjects.createPrimaryKeyConstraint("subjects_pkey", tableSubjects.getColumn("id"));
+		tableSubjects.createNotNullConstraint(tableSubjects.getColumn("id"));
 
-        Table tableAlternateStock = this.createTable("alternate_stock");
-        tableAlternateStock.addColumn("isbn", new VarCharDataType(100));
-        tableAlternateStock.addColumn("cost", new NumericDataType(5, 2));
-        tableAlternateStock.addColumn("retail", new NumericDataType(5, 2));
-        tableAlternateStock.addColumn("stock", new IntDataType());
+		Table tableAlternateStock = this.createTable("alternate_stock");
+		tableAlternateStock.createColumn("isbn", new VarCharDataType(100));
+		tableAlternateStock.createColumn("cost", new NumericDataType(5, 2));
+		tableAlternateStock.createColumn("retail", new NumericDataType(5, 2));
+		tableAlternateStock.createColumn("stock", new IntDataType());
 
-        Table tableBookBackup = this.createTable("book_backup");
-        tableBookBackup.addColumn("id", new IntDataType());
-        tableBookBackup.addColumn("title", new VarCharDataType(100));
-        tableBookBackup.addColumn("author_id", new IntDataType());
-        tableBookBackup.addColumn("subject_id", new IntDataType());
+		Table tableBookBackup = this.createTable("book_backup");
+		tableBookBackup.createColumn("id", new IntDataType());
+		tableBookBackup.createColumn("title", new VarCharDataType(100));
+		tableBookBackup.createColumn("author_id", new IntDataType());
+		tableBookBackup.createColumn("subject_id", new IntDataType());
 
-        Table tableSchedules = this.createTable("schedules");
-        tableSchedules.addColumn("employee_id", new IntDataType());
-        tableSchedules.addColumn("schedule", new VarCharDataType(100));
-        tableSchedules.setPrimaryKeyConstraint("schedules_pkey", tableSchedules.getColumn("employee_id"));
-        tableSchedules.addNotNullConstraint(tableSchedules.getColumn("employee_id"));
-    }
+		Table tableSchedules = this.createTable("schedules");
+		tableSchedules.createColumn("employee_id", new IntDataType());
+		tableSchedules.createColumn("schedule", new VarCharDataType(100));
+		tableSchedules.createPrimaryKeyConstraint("schedules_pkey", tableSchedules.getColumn("employee_id"));
+		tableSchedules.createNotNullConstraint(tableSchedules.getColumn("employee_id"));
+	}
 }
+

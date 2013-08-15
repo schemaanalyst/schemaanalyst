@@ -62,8 +62,7 @@ public class SchemaMapper {
     private void mapTable(TCreateTableSqlStatement node) {
         // create a Table object
         String tableName = stripQuotes(node.getTableName());
-        Table table = new Table(tableName);
-        schema.addTable(table);
+        Table table = schema.createTable(tableName);
 
         // log this event
         LOGGER.log(Level.INFO, "Parsing table \"{0}\" at line {1}", new Object[]{tableName, node.getLineNo()});
@@ -87,8 +86,7 @@ public class SchemaMapper {
 
         // get data type and add column to table
         DataType type = dataTypeMapper.getDataType(node.getDatatype(), node);
-        Column column = new Column(columnName, type);
-        table.addColumn(column);
+        Column column = table.createColumn(columnName, type);
 
         // parse any inline column constraints
         constraintMapper.analyseConstraintList(schema, table, column, node.getConstraints());

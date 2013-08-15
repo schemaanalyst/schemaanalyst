@@ -14,11 +14,6 @@ import java.util.logging.Logger;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.StringUtils;
 
@@ -100,7 +95,7 @@ class ConstraintMapper {
 
         String constraintName = stripQuotes(constraintNameObject);
         Expression expression = expressionMapper.getExpression(currentTable, expressionNode);
-        currentTable.addCheckConstraint(new CheckConstraint(constraintName, expression));
+        currentTable.createCheckConstraint(constraintName, expression);
     }
 
     private void addForeignKeyConstraint(
@@ -110,7 +105,18 @@ class ConstraintMapper {
     	
     	String constraintName = stripQuotes(constraintNameObject);
         String referenceTableName = stripQuotes(referenceTableNameObject);
+        
+        LOGGER.log(Level.INFO, "Attempting to create FOREIGN KEY on {0} referencing table {1}", 
+                new Object[]{currentTable, referenceTableName});
+        
         Table referenceTable = schema.getTable(referenceTableName);
+        if (referenceTable == null) {
+            LOGGER.log(Level.SEVERE, "Could not find table {0} in schema", 
+                    new Object[]{referenceTableName});
+            
+            throw new SQLParseException("Unable to find reference table \"" 
+                    + referenceTableName + "\" in schema");
+        }
         
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
         List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList);
@@ -120,12 +126,14 @@ class ConstraintMapper {
         	referenceColumns = referenceTable.getPrimaryKeyConstraint().getColumns();
         }
 
-        LOGGER.log(Level.INFO, "Attempting to create FOREIGN KEY on {0} ({1}) to {2} ({3})", 
-        		new Object[]{currentTable, StringUtils.implode(columns), 
-        					 referenceTable, StringUtils.implode(referenceColumns)});
+        LOGGER.log(Level.INFO, "-- columns in source table {0} are {1}", 
+        		new Object[]{currentTable, StringUtils.implode(columns)});
         
-        currentTable.addForeignKeyConstraint(
-                new ForeignKeyConstraint(constraintName, columns, referenceTable, referenceColumns));
+        LOGGER.log(Level.INFO, "-- columns in reference table {0} are {1}", 
+                new Object[]{referenceTable, StringUtils.implode(referenceColumns)});
+                
+        currentTable.createForeignKeyConstraint(
+                constraintName, columns, referenceTable, referenceColumns);
         
         LOGGER.log(Level.INFO, "-- success");
     }
@@ -136,8 +144,7 @@ class ConstraintMapper {
 
         String constraintName = stripQuotes(constraintNameObject);
         Column[] columns = mapColumns(currentTable, currentColumn, columnNameObjectList).toArray(new Column[0]);
-        currentTable.addNotNullConstraint(
-                new NotNullConstraint(constraintName, columns[0]));
+        currentTable.createNotNullConstraint(constraintName, columns[0]);
     }
 
     private void setPrimaryKeyConstraint(
@@ -146,8 +153,7 @@ class ConstraintMapper {
 
         String constraintName = stripQuotes(constraintNameObject);
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
-        currentTable.setPrimaryKeyConstraint(
-                new PrimaryKeyConstraint(constraintName, columns));
+        currentTable.createPrimaryKeyConstraint(constraintName, columns);
     }
 
     private void addUniqueConstraint(
@@ -156,8 +162,7 @@ class ConstraintMapper {
 
         String constraintName = stripQuotes(constraintNameObject);
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
-        currentTable.addUniqueConstraint(
-                new UniqueConstraint(constraintName, columns));
+        currentTable.createUniqueConstraint(constraintName, columns);
     }
 
     private List<Column> mapColumns(Table currentTable, Column currentColumn, TObjectNameList columnNameObjectList) {

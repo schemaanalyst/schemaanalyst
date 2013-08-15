@@ -36,6 +36,20 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     
     /**
      * Constructor.
+     * @param name The name of the constraint.
+     * @param columns Columns over which the foreign key is defined
+     * @param referenceTable The table containing the columns that the foreign
+     * keys reference.
+     * @param referenceColumns Columns in the reference table paired with each
+     * column in columns
+     */
+    public ForeignKeyConstraint(
+            String name, Column column, Table referenceTable, Column referenceColumn) {
+        this(name, Arrays.asList(column), referenceTable, Arrays.asList(referenceColumn));
+    }     
+    
+    /**
+     * Constructor.
      * @param columns Columns over which the foreign key is defined
      * @param referenceTable The table containing the columns that the foreign
      * keys reference.
@@ -79,14 +93,20 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      * the foreign key relationship.
      */
     public void setReferenceColumns(List<Column> referenceColumns) {
-        System.out.println(columns);
-        System.out.println(referenceColumns);
         if (referenceColumns.size() != columns.size()) {
-            throw new SQLRepresentationException("Foreign key constraints must have matching column numbers");
+            throw new SQLRepresentationException(
+                    "Foreign key constraints must have matching numbers of columns in the subject and reference tables");
         }
 
         this.referenceColumns = new ArrayList<>();
         for (Column referenceColumn : referenceColumns) {
+            if (!referenceTable.hasColumn(referenceColumn)) {
+                throw new SQLRepresentationException(
+                        "No such column \"" + referenceColumn.getName() + 
+                        "\" in table " + referenceTable.getName() + 
+                        " for ForeignKeyConstraint");
+            }
+            
             this.referenceColumns.add(referenceColumn);
         }
     }

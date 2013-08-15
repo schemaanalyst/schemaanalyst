@@ -47,13 +47,13 @@ public class ConstraintJavaWriter {
 
             @Override
             public void visit(CheckConstraint constraint) {
-                methodName = TABLE_ADD_CHECK_CONSTRAINT_METHOD;
+                methodName = TABLE_CREATE_CHECK_CONSTRAINT_METHOD;
                 args.add(expressionJavaWriter.writeConstruction(constraint.getExpression()));
             }
 
             @Override
             public void visit(ForeignKeyConstraint constraint) {
-                methodName = TABLE_ADD_FOREIGN_KEY_CONSTRAINT_METHOD;
+                methodName = TABLE_CREATE_FOREIGN_KEY_CONSTRAINT_METHOD;
 
                 args.add(wrapColumnArgsString(table, constraint.getColumns()));
                 args.add(javaWriter.getVariableName(constraint.getReferenceTable()));
@@ -62,19 +62,19 @@ public class ConstraintJavaWriter {
 
             @Override
             public void visit(NotNullConstraint constraint) {
-                methodName = TABLE_ADD_NOT_NULL_CONSTRAINT_METHOD;
+                methodName = TABLE_CREATE_NOT_NULL_CONSTRAINT_METHOD;
                 args.add(javaWriter.writeGetColumn(table, constraint.getColumn()));
             }
 
             @Override
             public void visit(PrimaryKeyConstraint constraint) {
-                methodName = TABLE_SET_PRIMARY_KEY_CONSTRAINT_METHOD;
+                methodName = TABLE_CREATE_PRIMARY_KEY_CONSTRAINT_METHOD;
                 addColumnArgs(table, constraint.getColumns());
             }
 
             @Override
             public void visit(UniqueConstraint constraint) {
-                methodName = TABLE_ADD_UNIQUE_CONSTRAINT_METHOD;
+                methodName = TABLE_CREATE_UNIQUE_CONSTRAINT_METHOD;
                 addColumnArgs(table, constraint.getColumns());
             }
 
@@ -92,7 +92,7 @@ public class ConstraintJavaWriter {
 
             String wrapColumnArgsString(Table table, List<Column> columns) {
                 String columnArgsString = makeColumnArgsString(table, columns);
-                if (columns.size() > 2) {
+                if (columns.size() > 1) {
                     javaWriter.addImportFor(Arrays.class);
                     return javaWriter.writeMethodCall(
                             Arrays.class.getSimpleName(),

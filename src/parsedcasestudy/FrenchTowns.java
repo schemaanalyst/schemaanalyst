@@ -7,57 +7,59 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * FrenchTowns schema.
- * Java code originally generated: 2013/07/11 14:08:28
+ * Java code originally generated: 2013/08/15 10:51:50
  *
  */
+
 @SuppressWarnings("serial")
 public class FrenchTowns extends Schema {
 
-    public FrenchTowns() {
-        super("FrenchTowns");
+	public FrenchTowns() {
+		super("FrenchTowns");
 
-        Table tableRegions = this.createTable("Regions");
-        tableRegions.addColumn("id", new IntDataType());
-        tableRegions.addColumn("code", new VarCharDataType(4));
-        tableRegions.addColumn("capital", new VarCharDataType(10));
-        tableRegions.addColumn("name", new VarCharDataType(100));
-        tableRegions.addNotNullConstraint(tableRegions.getColumn("id"));
-        tableRegions.addNotNullConstraint(tableRegions.getColumn("code"));
-        tableRegions.addNotNullConstraint(tableRegions.getColumn("capital"));
-        tableRegions.addNotNullConstraint(tableRegions.getColumn("name"));
-        tableRegions.addUniqueConstraint(tableRegions.getColumn("id"));
-        tableRegions.addUniqueConstraint(tableRegions.getColumn("code"));
-        tableRegions.addUniqueConstraint(tableRegions.getColumn("name"));
+		Table tableRegions = this.createTable("Regions");
+		tableRegions.createColumn("id", new IntDataType());
+		tableRegions.createColumn("code", new VarCharDataType(4));
+		tableRegions.createColumn("capital", new VarCharDataType(10));
+		tableRegions.createColumn("name", new VarCharDataType(100));
+		tableRegions.createNotNullConstraint(tableRegions.getColumn("id"));
+		tableRegions.createNotNullConstraint(tableRegions.getColumn("code"));
+		tableRegions.createNotNullConstraint(tableRegions.getColumn("capital"));
+		tableRegions.createNotNullConstraint(tableRegions.getColumn("name"));
+		tableRegions.createUniqueConstraint(tableRegions.getColumn("id"));
+		tableRegions.createUniqueConstraint(tableRegions.getColumn("code"));
+		tableRegions.createUniqueConstraint(tableRegions.getColumn("name"));
 
-        Table tableDepartments = this.createTable("Departments");
-        tableDepartments.addColumn("id", new IntDataType());
-        tableDepartments.addColumn("code", new VarCharDataType(4));
-        tableDepartments.addColumn("capital", new VarCharDataType(10));
-        tableDepartments.addColumn("region", new VarCharDataType(4));
-        tableDepartments.addColumn("name", new VarCharDataType(100));
-        tableDepartments.addForeignKeyConstraint(tableDepartments.getColumn("region"), tableRegions, tableRegions.getColumn("code"));
-        tableDepartments.addNotNullConstraint(tableDepartments.getColumn("id"));
-        tableDepartments.addNotNullConstraint(tableDepartments.getColumn("code"));
-        tableDepartments.addNotNullConstraint(tableDepartments.getColumn("capital"));
-        tableDepartments.addNotNullConstraint(tableDepartments.getColumn("region"));
-        tableDepartments.addNotNullConstraint(tableDepartments.getColumn("name"));
-        tableDepartments.addUniqueConstraint(tableDepartments.getColumn("id"));
-        tableDepartments.addUniqueConstraint(tableDepartments.getColumn("code"));
-        tableDepartments.addUniqueConstraint(tableDepartments.getColumn("capital"));
-        tableDepartments.addUniqueConstraint(tableDepartments.getColumn("name"));
+		Table tableDepartments = this.createTable("Departments");
+		tableDepartments.createColumn("id", new IntDataType());
+		tableDepartments.createColumn("code", new VarCharDataType(4));
+		tableDepartments.createColumn("capital", new VarCharDataType(10));
+		tableDepartments.createColumn("region", new VarCharDataType(4));
+		tableDepartments.createColumn("name", new VarCharDataType(100));
+		tableDepartments.createForeignKeyConstraint(tableDepartments.getColumn("region"), tableRegions, tableDepartments.getColumn("code"));
+		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("id"));
+		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("code"));
+		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("capital"));
+		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("region"));
+		tableDepartments.createNotNullConstraint(tableDepartments.getColumn("name"));
+		tableDepartments.createUniqueConstraint(tableDepartments.getColumn("id"));
+		tableDepartments.createUniqueConstraint(tableDepartments.getColumn("code"));
+		tableDepartments.createUniqueConstraint(tableDepartments.getColumn("capital"));
+		tableDepartments.createUniqueConstraint(tableDepartments.getColumn("name"));
 
-        Table tableTowns = this.createTable("Towns");
-        tableTowns.addColumn("id", new IntDataType());
-        tableTowns.addColumn("code", new VarCharDataType(10));
-        tableTowns.addColumn("article", new VarCharDataType(100));
-        tableTowns.addColumn("name", new VarCharDataType(100));
-        tableTowns.addColumn("department", new VarCharDataType(4));
-        tableTowns.addForeignKeyConstraint(tableTowns.getColumn("department"), tableDepartments, tableDepartments.getColumn("code"));
-        tableTowns.addNotNullConstraint(tableTowns.getColumn("id"));
-        tableTowns.addNotNullConstraint(tableTowns.getColumn("code"));
-        tableTowns.addNotNullConstraint(tableTowns.getColumn("name"));
-        tableTowns.addNotNullConstraint(tableTowns.getColumn("department"));
-        tableTowns.addUniqueConstraint(tableTowns.getColumn("id"));
-        tableTowns.addUniqueConstraint(tableTowns.getColumn("code"), tableTowns.getColumn("department"));
-    }
+		Table tableTowns = this.createTable("Towns");
+		tableTowns.createColumn("id", new IntDataType());
+		tableTowns.createColumn("code", new VarCharDataType(10));
+		tableTowns.createColumn("article", new VarCharDataType(100));
+		tableTowns.createColumn("name", new VarCharDataType(100));
+		tableTowns.createColumn("department", new VarCharDataType(4));
+		tableTowns.createForeignKeyConstraint(tableTowns.getColumn("department"), tableDepartments, tableTowns.getColumn("code"));
+		tableTowns.createNotNullConstraint(tableTowns.getColumn("id"));
+		tableTowns.createNotNullConstraint(tableTowns.getColumn("code"));
+		tableTowns.createNotNullConstraint(tableTowns.getColumn("name"));
+		tableTowns.createNotNullConstraint(tableTowns.getColumn("department"));
+		tableTowns.createUniqueConstraint(tableTowns.getColumn("id"));
+		tableTowns.createUniqueConstraint(tableTowns.getColumn("code"), tableTowns.getColumn("department"));
+	}
 }
+

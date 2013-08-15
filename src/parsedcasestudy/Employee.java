@@ -12,26 +12,28 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * Employee schema.
- * Java code originally generated: 2013/07/11 14:07:55
+ * Java code originally generated: 2013/08/15 10:51:46
  *
  */
+
 @SuppressWarnings("serial")
 public class Employee extends Schema {
 
-    public Employee() {
-        super("Employee");
+	public Employee() {
+		super("Employee");
 
-        Table tableEmployee = this.createTable("Employee");
-        tableEmployee.addColumn("id", new IntDataType());
-        tableEmployee.addColumn("first", new VarCharDataType(15));
-        tableEmployee.addColumn("last", new VarCharDataType(20));
-        tableEmployee.addColumn("age", new IntDataType());
-        tableEmployee.addColumn("address", new VarCharDataType(30));
-        tableEmployee.addColumn("city", new VarCharDataType(20));
-        tableEmployee.addColumn("state", new VarCharDataType(20));
-        tableEmployee.setPrimaryKeyConstraint(tableEmployee.getColumn("id"));
-        tableEmployee.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
-        tableEmployee.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee.getColumn("age")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
-        tableEmployee.addCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee.getColumn("age")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(150))));
-    }
+		Table tableEmployee = this.createTable("Employee");
+		tableEmployee.createColumn("id", new IntDataType());
+		tableEmployee.createColumn("first", new VarCharDataType(15));
+		tableEmployee.createColumn("last", new VarCharDataType(20));
+		tableEmployee.createColumn("age", new IntDataType());
+		tableEmployee.createColumn("address", new VarCharDataType(30));
+		tableEmployee.createColumn("city", new VarCharDataType(20));
+		tableEmployee.createColumn("state", new VarCharDataType(20));
+		tableEmployee.createPrimaryKeyConstraint(tableEmployee.getColumn("id"));
+		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
+		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(150))));
+	}
 }
+

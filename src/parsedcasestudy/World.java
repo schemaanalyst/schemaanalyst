@@ -17,64 +17,69 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * World schema.
- * Java code originally generated: 2013/07/11 20:12:22
+ * Java code originally generated: 2013/08/15 10:52:23
  *
  */
+
 @SuppressWarnings("serial")
 public class World extends Schema {
 
-    public World() {
-        super("World");
+	public World() {
+		super("World");
 
-        Table tableCity = this.createTable("city");
-        tableCity.addColumn("id", new IntDataType());
-        tableCity.addColumn("name", new VarCharDataType(100));
-        tableCity.addColumn("countrycode", new CharDataType(3));
-        tableCity.addColumn("district", new VarCharDataType(100));
-        tableCity.addColumn("population", new IntDataType());
-        tableCity.setPrimaryKeyConstraint(tableCity.getColumn("id"));
-        tableCity.addNotNullConstraint(tableCity.getColumn("id"));
-        tableCity.addNotNullConstraint(tableCity.getColumn("name"));
-        tableCity.addNotNullConstraint(tableCity.getColumn("countrycode"));
-        tableCity.addNotNullConstraint(tableCity.getColumn("district"));
-        tableCity.addNotNullConstraint(tableCity.getColumn("population"));
+		Table tableCity = this.createTable("city");
+		tableCity.createColumn("id", new IntDataType());
+		tableCity.createColumn("name", new VarCharDataType(100));
+		tableCity.createColumn("countrycode", new CharDataType(3));
+		tableCity.createColumn("district", new VarCharDataType(100));
+		tableCity.createColumn("population", new IntDataType());
+		tableCity.createPrimaryKeyConstraint(tableCity.getColumn("id"));
+		tableCity.createNotNullConstraint(tableCity.getColumn("id"));
+		tableCity.createNotNullConstraint(tableCity.getColumn("name"));
+		tableCity.createNotNullConstraint(tableCity.getColumn("countrycode"));
+		tableCity.createNotNullConstraint(tableCity.getColumn("district"));
+		tableCity.createNotNullConstraint(tableCity.getColumn("population"));
 
-        Table tableCountry = this.createTable("country");
-        tableCountry.addColumn("code", new VarCharDataType(3));
-        tableCountry.addColumn("name", new VarCharDataType(100));
-        tableCountry.addColumn("continent", new VarCharDataType(100));
-        tableCountry.addColumn("region", new VarCharDataType(100));
-        tableCountry.addColumn("surfacearea", new IntDataType());
-        tableCountry.addColumn("indepyear", new IntDataType());
-        tableCountry.addColumn("population", new IntDataType());
-        tableCountry.addColumn("lifeexpectancy", new IntDataType());
-        tableCountry.addColumn("gnp", new IntDataType());
-        tableCountry.addColumn("gnpold", new IntDataType());
-        tableCountry.addColumn("localname", new VarCharDataType(100));
-        tableCountry.addColumn("governmentform", new VarCharDataType(100));
-        tableCountry.addColumn("headofstate", new VarCharDataType(100));
-        tableCountry.addColumn("capital", new IntDataType());
-        tableCountry.addColumn("code2", new VarCharDataType(2));
-        tableCountry.setPrimaryKeyConstraint(tableCountry.getColumn("code"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("code"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("name"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("continent"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("region"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("surfacearea"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("population"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("localname"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("governmentform"));
-        tableCountry.addNotNullConstraint(tableCountry.getColumn("code2"));
-        tableCountry.addCheckConstraint("country_continent_check", new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Asia")))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Europe")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("NorthAAmerica")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Africa")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Oceania")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Antarctica")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("SouthAAmerica")))))));
+		Table tableCountry = this.createTable("country");
+		tableCountry.createColumn("code", new VarCharDataType(3));
+		tableCountry.createColumn("name", new VarCharDataType(100));
+		tableCountry.createColumn("continent", new VarCharDataType(100));
+		tableCountry.createColumn("region", new VarCharDataType(100));
+		tableCountry.createColumn("surfacearea", new IntDataType());
+		tableCountry.createColumn("indepyear", new IntDataType());
+		tableCountry.createColumn("population", new IntDataType());
+		tableCountry.createColumn("lifeexpectancy", new IntDataType());
+		tableCountry.createColumn("gnp", new IntDataType());
+		tableCountry.createColumn("gnpold", new IntDataType());
+		tableCountry.createColumn("localname", new VarCharDataType(100));
+		tableCountry.createColumn("governmentform", new VarCharDataType(100));
+		tableCountry.createColumn("headofstate", new VarCharDataType(100));
+		tableCountry.createColumn("capital", new IntDataType());
+		tableCountry.createColumn("code2", new VarCharDataType(2));
+		tableCountry.createPrimaryKeyConstraint(tableCountry.getColumn("code"));
+		tableCountry.createForeignKeyConstraint("country_capital_fkey", tableCountry.getColumn("capital"), tableCity, tableCountry.getColumn("id"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("code"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("name"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("continent"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("region"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("surfacearea"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("population"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("localname"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("governmentform"));
+		tableCountry.createNotNullConstraint(tableCountry.getColumn("code2"));
+		tableCountry.createCheckConstraint("country_continent_check", new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new OrExpression(new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Asia")))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Europe")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("NorthAAmerica")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Africa")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Oceania")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("Antarctica")))))), new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableCountry, tableCountry.getColumn("continent")), RelationalOperator.EQUALS, new ConstantExpression(new StringValue("SouthAAmerica")))))));
 
-        Table tableCountrylanguage = this.createTable("countrylanguage");
-        tableCountrylanguage.addColumn("countrycode", new CharDataType(3));
-        tableCountrylanguage.addColumn("language", new VarCharDataType(100));
-        tableCountrylanguage.addColumn("isofficial", new BooleanDataType());
-        tableCountrylanguage.addColumn("percentage", new RealDataType());
-        tableCountrylanguage.addNotNullConstraint(tableCountrylanguage.getColumn("countrycode"));
-        tableCountrylanguage.addNotNullConstraint(tableCountrylanguage.getColumn("language"));
-        tableCountrylanguage.addNotNullConstraint(tableCountrylanguage.getColumn("isofficial"));
-        tableCountrylanguage.addNotNullConstraint(tableCountrylanguage.getColumn("percentage"));
-    }
+		Table tableCountrylanguage = this.createTable("countrylanguage");
+		tableCountrylanguage.createColumn("countrycode", new CharDataType(3));
+		tableCountrylanguage.createColumn("language", new VarCharDataType(100));
+		tableCountrylanguage.createColumn("isofficial", new BooleanDataType());
+		tableCountrylanguage.createColumn("percentage", new RealDataType());
+		tableCountrylanguage.createPrimaryKeyConstraint("countrylanguage_pkey", tableCountrylanguage.getColumn("countrycode"), tableCountrylanguage.getColumn("language"));
+		tableCountrylanguage.createForeignKeyConstraint("countrylanguage_countrycode_fkey", tableCountrylanguage.getColumn("countrycode"), tableCountry, tableCountrylanguage.getColumn("code"));
+		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("countrycode"));
+		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("language"));
+		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("isofficial"));
+		tableCountrylanguage.createNotNullConstraint(tableCountrylanguage.getColumn("percentage"));
+	}
 }
+

@@ -119,7 +119,7 @@ public class SchemaJavaWriter {
         for (Column column : columns) {
             String columnAddition = javaWriter.writeTableMethodCall(
                     table,
-                    TABLE_ADD_COLUMN_METHOD,
+                    TABLE_CREATE_COLUMN_METHOD,
                     javaWriter.writeString(column),
                     dataTypeJavaWriter.writeConstruction(column.getDataType()));
 

@@ -11,6 +11,8 @@ import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.datatype.DataType;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
 
 /**
@@ -65,6 +67,17 @@ public class Table implements Duplicable<Table>, Serializable {
         return name;
     }
 
+    /** 
+     * Creates a column and adds it to the table
+     * @columnName The name of the column.
+     * @dataType The data type of the column.
+     */
+    public Column createColumn(String name, DataType dataType) {
+        Column column = new Column(name, dataType);
+        addColumn(column);
+        return column;
+    }
+    
     /**
      * Adds a column to the table
      * @param column The column to be added.
@@ -78,19 +91,19 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Gets a reference to one of the table's columns by its name.
+     * Gets a reference to one of the table's columns by its name (ignoring case).
      * @param name The name of the column.
      * @return The column, or null if a column wasn't found for the name given.
      */
     public Column getColumn(String columnName) {
         for (Column column : columns) {
-            if (columnName.equals(column.getName())) {
+            if (columnName.equalsIgnoreCase(column.getName())) {
                 return column;
             }
         }
         return null;
     }
-
+    
     /**
      * Returns whether a column is present in a table or not
      * @param column The column.
@@ -138,8 +151,29 @@ public class Table implements Duplicable<Table>, Serializable {
     }
     
     /**
-     * Adds a check constraint to the table.
-     * @param checkConstriant The check constraint to be added.
+     * Creates a CHECK constraint and adds it to the table.
+     * @param expression The expression underpinning the constraint.
+     */
+    public CheckConstraint createCheckConstraint(Expression expression) {
+        CheckConstraint checkConstraint = new CheckConstraint(expression);
+        addCheckConstraint(checkConstraint);
+        return checkConstraint;
+    }      
+    
+    /**
+     * Creates a CHECK constraint and adds it to the table.
+     * @param constraintName The name of the constraint.
+     * @param expression The expression underpinning the constraint.
+     */
+    public CheckConstraint createCheckConstraint(String constraintName, Expression expression) {
+        CheckConstraint checkConstraint = new CheckConstraint(constraintName, expression);
+        addCheckConstraint(checkConstraint);
+        return checkConstraint;
+    } 
+    
+    /**
+     * Adds a CHECK constraint to the table.
+     * @param checkConstriant The CHECK constraint to be added.
      */
     public void addCheckConstraint(CheckConstraint checkConstraint) {
     	if (constraintNameClash(checkConstraint, checkConstraints)) {
@@ -151,9 +185,9 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Removes a check constraint from the table.
-     * @param checkConstraint The check constraint to remove.
-     * @return True if the check constraint was already on the table and was
+     * Removes a CHECK constraint from the table.
+     * @param checkConstraint The CHECK constraint to remove.
+     * @return True if the CHECK constraint was already on the table and was
      * successfully removed, else false.
      */
     public boolean removeCheckConstraint(CheckConstraint checkConstraint) {
@@ -161,19 +195,86 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Returns a unmodifiable list of the check constraints on this table, in
+     * Returns a unmodifiable list of the CHECK constraints on this table, in
      * the order they were added to the table.
-     * @return A unmodifiable list of the check constraints on the table.
+     * @return A unmodifiable list of the CHECK constraints on the table.
      */
     public List<CheckConstraint> getCheckConstraints() {
         return Collections.unmodifiableList(checkConstraints);
     }
 
     /**
-     * Adds a foreign key to the table.
-     * @param foreignKeyConstraint The foreign key to be added.
+     * Creates a FOREIGN KEY constraint and adds it to the table.
+     * @param column The column of this table that is the subject of the FOREIGN KEY.
+     * @param referenceTable The table being referenced.
+     * @param referenceColumn The column in the reference table.
+     */
+    public ForeignKeyConstraint createForeignKeyConstraint(
+            Column column, Table referenceTable, Column referenceColumn) {
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+                column, referenceTable, referenceColumn);
+        addForeignKeyConstraint(foreignKeyConstraint);
+        return foreignKeyConstraint;
+    }
+    
+    /**
+     * Creates a FOREIGN KEY constraint and adds it to the table.
+     * @param constraintName The name of the constraint.     
+     * @param columns The list of columns that are the subject of the FOREIGN KEY.
+     * @param referenceTable The table being referenced.
+     * @param referenceColumns The list of column in the reference table.
+     */
+    public ForeignKeyConstraint createForeignKeyConstraint(
+            String constraintName, List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+                constraintName, columns, referenceTable, referenceColumns);
+        addForeignKeyConstraint(foreignKeyConstraint);
+        return foreignKeyConstraint;
+    }    
+    
+    /**
+     * Creates a FOREIGN KEY constraint and adds it to the table.
+     * @param columns The list of columns that are the subject of the FOREIGN KEY.
+     * @param referenceTable The table being referenced.
+     * @param referenceColumns The list of column in the reference table.
+     */
+    public ForeignKeyConstraint createForeignKeyConstraint(
+            List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+                columns, referenceTable, referenceColumns);
+        addForeignKeyConstraint(foreignKeyConstraint);
+        return foreignKeyConstraint;
+    }
+    
+    /**
+     * Creates a FOREIGN KEY constraint and adds it to the table.
+     * @param constraintName The name of the constraint.
+     * @param column The column of this table that is the subject of the FOREIGN KEY.
+     * @param referenceTable The table being referenced.
+     * @param referenceColumn The column in the reference table.
+     */
+    public ForeignKeyConstraint createForeignKeyConstraint(
+            String constraintName, Column column, Table referenceTable, Column referenceColumn) {
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+                constraintName, column, referenceTable, referenceColumn);
+        addForeignKeyConstraint(foreignKeyConstraint);
+        return foreignKeyConstraint;
+    }      
+    
+    /**
+     * Adds a FOREIGN KEY to the table.
+     * @param foreignKeyConstraint The FOREIGN KEY to be added.
      */
     public void addForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
+        List<Column> columns = foreignKeyConstraint.getColumns();
+        for (Column column : columns) {
+            if (!hasColumn(column)) {
+                throw new SQLRepresentationException(
+                        "No such column \"" + column.getName() + "\" in table " + name + 
+                        " for ForeignKeyConstraint");
+            }        
+        }
+        
         if (constraintNameClash(foreignKeyConstraint, foreignKeyConstraints)) {
             throw new SQLRepresentationException(
                     "Table " + name + " already has a FOREIGN KEY constraint named \"" + 
@@ -183,7 +284,7 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Removes a foreign key from the table.
+     * Removes a FOREIGN KEY from the table.
      * @param foreignKeyConstraint The foreign key to remove.
      * @return True if the foreign key was defined for the table and was removed
      * successfully, else false.
@@ -193,24 +294,55 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Returns an unmodifiable list of the foreign keys on this table, in the
+     * Returns an unmodifiable list of the FOREIGN KEYs on this table, in the
      * order they were created.
-     * @return An unmodifiable list of the foreign keys on this table.
+     * @return An unmodifiable list of the FOREIGN KEYs on this table.
      */
     public List<ForeignKeyConstraint> getForeignKeyConstraints() {
         return Collections.unmodifiableList(foreignKeyConstraints);
     }
+    
+    /**
+     * Creates a NOT NULL constraint and adds it to the table.
+     * @param column The column to be the subject of the constraint.
+     * @return The NOT NULL constraint created.
+     */
+    public NotNullConstraint createNotNullConstraint(Column column) {
+        NotNullConstraint notNullConstraint = new NotNullConstraint(column);
+        addNotNullConstraint(notNullConstraint);
+        return notNullConstraint;
+    }
 
+    /**
+     * Creates a NOT NULL constraint and adds it to the table.
+     * @param constraintName The name of the constraint.
+     * @param column The column to be the subject of the constraint.
+     * @return The NOT NULL constraint created.
+     */
+    public NotNullConstraint createNotNullConstraint(String constraintName, Column column) {
+        NotNullConstraint notNullConstraint = new NotNullConstraint(constraintName, column);
+        addNotNullConstraint(notNullConstraint);
+        return notNullConstraint;
+    }    
+    
     /**
      * Adds a NOT NULL constraint to the table.
      * @param notNullConstraint The NOT NULL constraint to add.
      */
     public void addNotNullConstraint(NotNullConstraint notNullConstraint) {
+        Column column = notNullConstraint.getColumn();
+        if (!hasColumn(column)) {
+            throw new SQLRepresentationException(
+                    "No such column \"" + column.getName() + "\" in table " + name + 
+                    " for NotNullConstraint");
+        }
+
         if (constraintNameClash(notNullConstraint, notNullConstraints)) {
             throw new SQLRepresentationException(
                     "Table " + name + " already has a NOT NULL constraint named \"" + 
                             notNullConstraint.getName() + "\"");
         }
+        
         notNullConstraints.add(notNullConstraint);
     }
     
@@ -234,31 +366,131 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Sets the primary key for the table.
-     * @param primaryKeyConstraint The primary key for the table.
+     * Creates a PRIMARY KEY and sets it on the table
+     * @param columns The PRIMARY KEY columns.
+     * @return The PRIMARY KEY constraint created.
+     */
+    public PrimaryKeyConstraint createPrimaryKeyConstraint(Column... columns) {
+        PrimaryKeyConstraint primaryKeyConstraint = new PrimaryKeyConstraint(columns);
+        setPrimaryKeyConstraint(primaryKeyConstraint);
+        return primaryKeyConstraint;
+    }
+
+    /**
+     * Creates a PRIMARY KEY and sets it on the table
+     * @param constraintName The name of the constraint.
+     * @param columns The PRIMARY KEY columns.
+     * @return The PRIMARY KEY constraint created.
+     */
+    public PrimaryKeyConstraint createPrimaryKeyConstraint(String constraintName, Column... columns) {
+        PrimaryKeyConstraint primaryKeyConstraint = new PrimaryKeyConstraint(constraintName, columns);
+        setPrimaryKeyConstraint(primaryKeyConstraint);
+        return primaryKeyConstraint;
+    }    
+
+    /**
+     * Creates a PRIMARY KEY and sets it on the table
+     * @param columns The PRIMARY KEY columns.
+     * @return The PRIMARY KEY constraint created.
+     */
+    public PrimaryKeyConstraint createPrimaryKeyConstraint(List<Column> columns) {
+        PrimaryKeyConstraint primaryKeyConstraint = new PrimaryKeyConstraint(columns);
+        setPrimaryKeyConstraint(primaryKeyConstraint);
+        return primaryKeyConstraint;
+    }
+
+    /**
+     * Creates a PRIMARY KEY and sets it on the table
+     * @param constraintName The name of the constraint.
+     * @param columns The PRIMARY KEY columns.
+     * @return The PRIMARY KEY constraint created.
+     */
+    public PrimaryKeyConstraint createPrimaryKeyConstraint(String constraintName, List<Column> columns) {
+        PrimaryKeyConstraint primaryKeyConstraint = new PrimaryKeyConstraint(constraintName, columns);
+        setPrimaryKeyConstraint(primaryKeyConstraint);
+        return primaryKeyConstraint;
+    }   
+    
+    /**
+     * Sets the PRIMARY KEY for the table.
+     * @param primaryKeyConstraint The PRIMARY KEY for the table.
      */
     public void setPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
+        List<Column> columns = primaryKeyConstraint.getColumns();
+        for (Column column : columns) {
+            if (!hasColumn(column)) {
+                throw new SQLRepresentationException(
+                        "No such column \"" + column.getName() + "\" in table " + name + 
+                        " for PrimaryKeyConstraint");                
+            }
+        }
         this.primaryKeyConstraint = primaryKeyConstraint;
     }
 
     /**
-     * Removes the primary key for this table.
+     * Removes the PRIMARY KEY for this table.
      */
     public void removePrimaryKeyConstraint() {
         primaryKeyConstraint = null;
     }
 
     /**
-     * Returns the primary key for the table (null if no primary key is set).
-     * @return The table's primary key (null if no primary key is set).
+     * Returns the PRIMARY KEY for the table (null if no PRIMARY KEY is set).
+     * @return The table's PRIMARY KEY (null if no PRIMARY KEY is set).
      */
     public PrimaryKeyConstraint getPrimaryKeyConstraint() {
         return primaryKeyConstraint;
     }
 
     /**
-     * Sets a unique constraint on the table.
-     * @param uniqueConstraint The unique constraint to be added.
+     * Creates a UNIQUE constraint and sets it on the table
+     * @param columns The UNIQUE columns.
+     * @return The UNIQUE constraint created.
+     */
+    public UniqueConstraint createUniqueConstraint(Column... columns) {
+        UniqueConstraint UniqueConstraint = new UniqueConstraint(columns);
+        addUniqueConstraint(UniqueConstraint);
+        return UniqueConstraint;
+    }
+
+    /**
+     * Creates a UNIQUE constraint and sets it on the table
+     * @param constraintName The name of the constraint.
+     * @param columns The UNIQUE columns.
+     * @return The UNIQUE constraint created.
+     */
+    public UniqueConstraint createUniqueConstraint(String constraintName, Column... columns) {
+        UniqueConstraint UniqueConstraint = new UniqueConstraint(constraintName, columns);
+        addUniqueConstraint(UniqueConstraint);
+        return UniqueConstraint;
+    }    
+
+    /**
+     * Creates a UNIQUE constraint and sets it on the table
+     * @param columns The UNIQUE columns.
+     * @return The UNIQUE constraint created.
+     */
+    public UniqueConstraint createUniqueConstraint(List<Column> columns) {
+        UniqueConstraint UniqueConstraint = new UniqueConstraint(columns);
+        addUniqueConstraint(UniqueConstraint);
+        return UniqueConstraint;
+    }
+
+    /**
+     * Creates a UNIQUE constraint and sets it on the table
+     * @param constraintName The name of the constraint.
+     * @param columns The UNIQUE columns.
+     * @return The UNIQUE constraint created.
+     */
+    public UniqueConstraint createUniqueConstraint(String constraintName, List<Column> columns) {
+        UniqueConstraint UniqueConstraint = new UniqueConstraint(constraintName, columns);
+        addUniqueConstraint(UniqueConstraint);
+        return UniqueConstraint;
+    }    
+    
+    /**
+     * Sets a UNIQUE constraint on the table.
+     * @param uniqueConstraint The UNIQUE constraint to be added.
      */
     public void addUniqueConstraint(UniqueConstraint uniqueConstraint) {
         if (constraintNameClash(uniqueConstraint, uniqueConstraints)) {
@@ -270,7 +502,7 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Removes a unique constraint on the table.
+     * Removes a UNIQUE constraint on the table.
      * @param uniqueConstraint The unique constraint to be removed.
      * @return True if the unique constraint existed for the table and was
      * successfully removed, else false.
@@ -280,9 +512,9 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
-     * Returns the list of unique constraints on the table, in the order they
+     * Returns the list of UNIQUE constraints on the table, in the order they
      * were created.
-     * @return The list of unique constraints on the table.
+     * @return The list of UNIQUE constraints on the table.
      */
     public List<UniqueConstraint> getUniqueConstraints() {
         return Collections.unmodifiableList(uniqueConstraints);
@@ -334,7 +566,7 @@ public class Table implements Duplicable<Table>, Serializable {
      * @return The duplicate.
      */
     public Table duplicate() {
-    	//TODO
+    	//TODO -- fix up references etc.
     	return null;
     }    
     
