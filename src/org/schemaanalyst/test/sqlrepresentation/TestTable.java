@@ -221,4 +221,21 @@ public class TestTable {
                 t1.getUniqueConstraints().get(0).getColumns().get(0), 
                 t2.getUniqueConstraints().get(0).getColumns().get(0));            
     }    
+    
+    @Test
+    public void testHasPrimaryKey() {
+        Table table = new Table("test");
+        Column column = table.createColumn("test", new IntDataType());
+        
+        assertFalse(
+                "A newly-created table should not have a primary key, since one is not set",
+                table.hasPrimaryKeyConstraint());
+        
+        table.createPrimaryKeyConstraint(column);
+        
+        assertTrue(
+                "hasPrimaryKeyConstraint should return true if a primary key has been set",
+                table.hasPrimaryKeyConstraint());
+        
+    }
 }

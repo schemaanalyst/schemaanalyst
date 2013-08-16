@@ -17,7 +17,7 @@ public class SchemaPrimaryKeySupplier extends ArtefactSupplier<Schema, Pair<List
 	public SchemaPrimaryKeySupplier(Schema schema) {
 		super(schema);
 		tableIndex = 0;
-		tables = schema.getTablesInOrder();
+		tables = schema.getTables();
 	}
 	
 	@Override
@@ -39,24 +39,19 @@ public class SchemaPrimaryKeySupplier extends ArtefactSupplier<Schema, Pair<List
 		} else {
 			return null;
 		}
-
+		
 		PrimaryKeyConstraint pk = table.getPrimaryKeyConstraint();
+	
 		List<Column> pkColumns = (pk == null) ? new ArrayList<Column>() : pk.getColumns();
 		List<Column> alternatives = new ArrayList<>();
 		
 		for (Column tableColumn : table.getColumns()) {
-			boolean isAlternative = true;
-			for (Column pkColumn : pkColumns) {
-				if (tableColumn.getName().equals(pkColumn.getName())) {
-					isAlternative = false;
-				}
-			}
-			if (isAlternative) {
+			if (!pkColumns.contains(tableColumn)) {
 				alternatives.add(tableColumn);
 			}
 		}
 		
-		return new Pair<>(pk.getColumns(), table.getColumns());
+		return new Pair<>(pkColumns, table.getColumns());
 	}
 
 	@Override
@@ -65,11 +60,16 @@ public class SchemaPrimaryKeySupplier extends ArtefactSupplier<Schema, Pair<List
 		List<Column> pkColumns = columnListPair.getFirst();
 		
 		Table table = tables.get(tableIndex);
-		PrimaryKeyConstraint pk = table.getPrimaryKeyConstraint();
-		if (pk == null) {
-			table.setPrimaryKeyConstraint(new PrimaryKeyConstraint(pkColumns));
+		
+		if (pkColumns.size() == 0) {
+		    table.removePrimaryKeyConstraint();
 		} else {
-			pk.setColumns(pkColumns);
+		    if (table.hasPrimaryKeyConstraint()) {
+		        PrimaryKeyConstraint pk = table.getPrimaryKeyConstraint();
+		        pk.setColumns(pkColumns);
+		    } else {
+		        table.createPrimaryKeyConstraint(pkColumns);
+		    }
 		}
 	}
 	

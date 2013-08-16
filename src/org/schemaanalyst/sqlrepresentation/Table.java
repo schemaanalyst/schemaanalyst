@@ -365,6 +365,14 @@ public class Table implements Duplicable<Table>, Serializable {
     }
 
     /**
+     * Checks whether a PRIMARY KEY is set on the table.
+     * @return True if a PRIMARY KEY is set, else false.
+     */
+    public boolean hasPrimaryKeyConstraint() {
+        return primaryKeyConstraint != null;
+    }
+    
+    /**
      * Creates a PRIMARY KEY and sets it on the table
      * @param columns The PRIMARY KEY columns.
      * @return The PRIMARY KEY constraint created.
