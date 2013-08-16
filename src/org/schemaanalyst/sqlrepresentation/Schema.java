@@ -1,12 +1,12 @@
 package org.schemaanalyst.sqlrepresentation;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.collection.AbstractNamedEntity;
+import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
 
 /**
  * Represents a database schema.
@@ -14,27 +14,19 @@ import org.schemaanalyst.util.Duplicable;
  * @author Phil McMinn
  *
  */
-public class Schema implements Serializable, Duplicable<Schema> {
+public class Schema extends AbstractNamedEntity 
+                    implements Serializable, Duplicable<Schema> {
 
     private static final long serialVersionUID = 7338170433995168952L;
-    private String name;
-    private List<Table> tables;
+    private NamedEntityInsertOrderedSet<Table> tables;
 
     /**
      * Constructs the schema.
      * @param name The name of the schema.
      */
     public Schema(String name) {
-        this.name = name;
-        this.tables = new ArrayList<>();
-    }
-
-    /**
-     * Returns the name of the schema.
-     * @return The name of the schema.
-     */
-    public String getName() {
-        return name;
+        setName(name);
+        this.tables = new NamedEntityInsertOrderedSet<>();
     }
     
     /**
@@ -51,11 +43,11 @@ public class Schema implements Serializable, Duplicable<Schema> {
      * @param table The table to be added.
      */
     public void addTable(Table table) {
-    	if (getTable(table.getName()) == null) {
-    		tables.add(table);
-    	} else {
-    		throw new SQLRepresentationException("Table " + table + " already exists in this schema");
-    	}    	
+        boolean success = tables.add(table);
+        if (!success) {
+            throw new SQLRepresentationException(
+                    "Table " + table + " already exists in this schema");
+        }
     }
 
     /**
@@ -64,21 +56,15 @@ public class Schema implements Serializable, Duplicable<Schema> {
      * @return The table, or null if no table was found for the name.
      */
     public Table getTable(String name) {
-        for (Table table : tables) {
-            String tableName = table.getName();
-            if (tableName.equalsIgnoreCase(name)) {
-                return table;
-            }
-        }
-        return null;
+        return tables.get(name);
     }    
     
     /**
-     * Returns an unmodifiable list of tables in the order they were added to the schema.
-     * @return An unmodifiable list of tables that the schema contains.
+     * Returns a list of tables in the order they were added to the schema.
+     * @return A list of tables that the schema contains.
      */
     public List<Table> getTables() {
-        return Collections.unmodifiableList(tables);
+        return tables.toList();
     }    
 
     /**
@@ -88,15 +74,15 @@ public class Schema implements Serializable, Duplicable<Schema> {
      * @return A list of tables that the schema contains.
      */
     public List<Table> getTablesInOrder() {
-        return new TableDependencyOrderer().order(tables);
+        return new TableDependencyOrderer().order(getTables());
     }
 
     /**
-     * Returns a list of tables in the schema, in reverse order to getTablesInOrder.
+     * Returns a list of tables in th)e schema, in reverse order to getTablesInOrder.
      * @return A list of tables that the schema contains (in reverse order to getTablesInOrder).
      */
     public List<Table> getTablesInReverseOrder() {
-        return new TableDependencyOrderer().reverseOrder(tables);
+        return new TableDependencyOrderer().reverseOrder(getTables());
     }
     
     /**
@@ -105,7 +91,7 @@ public class Schema implements Serializable, Duplicable<Schema> {
      */
     @Override
     public Schema duplicate() {
-        Schema duplicateSchema = new Schema(name);
+        Schema duplicateSchema = new Schema(getName());
         for (Table table : tables) {
             duplicateSchema.addTable(table.duplicate());
         }
@@ -125,43 +111,28 @@ public class Schema implements Serializable, Duplicable<Schema> {
         return duplicateSchema;
     }
 
-    /**
-     * Generates a hash code for the schema.
-     * @return the hash code generated.
-     */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((tables == null) ? 0 : tables.hashCode());
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result + ((tables == null) ? 0 : tables.hashCode());
+        return result;
+    }
 
-	/**
-	 * Checks whether the schema equals another object.
-	 * @param obj The object to compare with.
-	 * @return true if the schema is equal to obj, else false.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Schema other = (Schema) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (tables == null) {
-			if (other.tables != null)
-				return false;
-		} else if (!tables.equals(other.tables))
-			return false;
-		return true;
-	}
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Schema other = (Schema) obj;
+        if (tables == null) {
+            if (other.tables != null)
+                return false;
+        } else if (!tables.equals(other.tables))
+            return false;
+        return true;
+    }
 }

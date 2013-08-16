@@ -36,8 +36,8 @@ public class ForeignKeyConstraintInsertionMutator extends Mutator {
 
     private void produceMutant(Column localColumn, Column foreignColumn, List<Schema> mutants) {
         Schema mutant = localColumn.getTable().getSchema().duplicate();
-        Column dupLocalColumn = mutant.getTable(localColumn.getTable().getName()).getColumn(localColumn.getName());
-        Column dupForeignColumn = mutant.getTable(foreignColumn.getTable().getName()).getColumn(foreignColumn.getName());
+        Column dupLocalColumn = mutant.getTable(localColumn.getTable().get()).getColumn(localColumn.getName());
+        Column dupForeignColumn = mutant.getTable(foreignColumn.getTable().get()).getColumn(foreignColumn.getName());
         dupLocalColumn.setForeignKey(dupForeignColumn.getTable(), foreignColumn);
         mutants.add(mutant);
     }

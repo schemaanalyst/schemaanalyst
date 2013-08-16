@@ -5,6 +5,9 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	org.schemaanalyst.test.collection.TestLinkedHashBacking.class,
+	org.schemaanalyst.test.collection.TestNamedEntity.class,
+	org.schemaanalyst.test.collection.TestNamedEntityInsertOrderedSet.class,
 	org.schemaanalyst.test.data.TestStringValue.class,
 	org.schemaanalyst.test.data.TestValueEquality.class,
 	org.schemaanalyst.test.datageneration.search.TestAlternatingValueSearch.class,
@@ -31,6 +34,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalCompoundValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalNumericValueObjectiveFunction.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
+	org.schemaanalyst.test.mutation.artefactsupplier.TestSchemaPrimaryKeySupplier.class,
 	org.schemaanalyst.test.sqlrepresentation.TestColumn.class,
 	org.schemaanalyst.test.sqlrepresentation.TestSchema.class,
 	org.schemaanalyst.test.sqlrepresentation.TestTable.class,

@@ -3,6 +3,8 @@ package org.schemaanalyst.sqlrepresentation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -14,17 +16,18 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.collection.AbstractNamedEntity;
 
 /**
  * Represents a database table.
  * @author Phil McMinn
  */
-public class Table implements Duplicable<Table>, Serializable {
+public class Table extends AbstractNamedEntity
+                   implements Duplicable<Table>, Serializable {
 
     private static final long serialVersionUID = 781185006248617033L;
     
-    private String name;
-    private List<Column> columns;
+    private LinkedHashMap<String, Column> columns;
 
     private PrimaryKeyConstraint primaryKeyConstraint;    
     private List<CheckConstraint> checkConstraints;
@@ -37,8 +40,8 @@ public class Table implements Duplicable<Table>, Serializable {
      * @param name The name of the schema.
      */
     public Table(String name) {
-        this.name = name;
-        columns = new ArrayList<>();
+        setName(name);
+        columns = new LinkedHashMap<String, Column>();
 
         // the primary key is null until one is created through setPrimaryKey
         primaryKeyConstraint = null;        
@@ -48,22 +51,6 @@ public class Table implements Duplicable<Table>, Serializable {
         foreignKeyConstraints = new ArrayList<>();
         notNullConstraints = new ArrayList<>();
         uniqueConstraints = new ArrayList<>();
-    }
-
-    /**
-     * Sets the name of the table.
-     * @param name The name of the table.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
-     * Retrieves the name of the table.
-     * @return The name of the table.
-     */
-    public String getName() {
-        return name;
     }
 
     /** 
@@ -84,9 +71,11 @@ public class Table implements Duplicable<Table>, Serializable {
     public void addColumn(Column column) {
         if (hasColumn(column)) {
             throw new SQLRepresentationException(
-            		"Table \"" + name + "\" already has a column named \"" + column + "\"");
+            		"Table \"" + getName() + "\" already has a column named \"" + column + "\"");
         }
-        columns.add(column);
+        
+        String caseInsensitiveName = column.getName().toLowerCase();
+        columns.put(caseInsensitiveName, column);
     }
 
     /**
@@ -95,12 +84,8 @@ public class Table implements Duplicable<Table>, Serializable {
      * @return The column, or null if a column wasn't found for the name given.
      */
     public Column getColumn(String columnName) {
-        for (Column column : columns) {
-            if (columnName.equalsIgnoreCase(column.getName())) {
-                return column;
-            }
-        }
-        return null;
+        String caseInsensitiveName = columnName.toLowerCase();
+        return columns.get(caseInsensitiveName);
     }
     
     /**
@@ -127,7 +112,7 @@ public class Table implements Duplicable<Table>, Serializable {
      * @return A list of the table's columns.
      */
     public List<Column> getColumns() {
-        return Collections.unmodifiableList(columns);
+        return new LinkedList<Column>(columns.values());
     }
 
     /**
@@ -177,7 +162,7 @@ public class Table implements Duplicable<Table>, Serializable {
     public void addCheckConstraint(CheckConstraint checkConstraint) {
     	if (constraintNameClash(checkConstraint, checkConstraints)) {
     	    throw new SQLRepresentationException(
-    	            "Table " + name + " already has a CHECK constraint named \"" + 
+    	            "Table " + getName() + " already has a CHECK constraint named \"" + 
     	                    checkConstraint.getName() + "\"");
     	}
         checkConstraints.add(checkConstraint);
@@ -269,14 +254,14 @@ public class Table implements Duplicable<Table>, Serializable {
         for (Column column : columns) {
             if (!hasColumn(column)) {
                 throw new SQLRepresentationException(
-                        "No such column \"" + column.getName() + "\" in table " + name + 
+                        "No such column \"" + column.getName() + "\" in table " + getName() + 
                         " for ForeignKeyConstraint");
             }        
         }
         
         if (constraintNameClash(foreignKeyConstraint, foreignKeyConstraints)) {
             throw new SQLRepresentationException(
-                    "Table " + name + " already has a FOREIGN KEY constraint named \"" + 
+                    "Table " + getName() + " already has a FOREIGN KEY constraint named \"" + 
                             foreignKeyConstraint.getName() + "\"");
         }
     	foreignKeyConstraints.add(foreignKeyConstraint);
@@ -332,13 +317,13 @@ public class Table implements Duplicable<Table>, Serializable {
         Column column = notNullConstraint.getColumn();
         if (!hasColumn(column)) {
             throw new SQLRepresentationException(
-                    "No such column \"" + column.getName() + "\" in table " + name + 
+                    "No such column \"" + column.getName() + "\" in table " + getName() + 
                     " for NotNullConstraint");
         }
 
         if (constraintNameClash(notNullConstraint, notNullConstraints)) {
             throw new SQLRepresentationException(
-                    "Table " + name + " already has a NOT NULL constraint named \"" + 
+                    "Table " + getName() + " already has a NOT NULL constraint named \"" + 
                             notNullConstraint.getName() + "\"");
         }
         
@@ -427,7 +412,7 @@ public class Table implements Duplicable<Table>, Serializable {
         for (Column column : columns) {
             if (!hasColumn(column)) {
                 throw new SQLRepresentationException(
-                        "No such column \"" + column.getName() + "\" in table " + name + 
+                        "No such column \"" + column.getName() + "\" in table " + getName() + 
                         " for PrimaryKeyConstraint");                
             }
         }
@@ -502,7 +487,7 @@ public class Table implements Duplicable<Table>, Serializable {
     public void addUniqueConstraint(UniqueConstraint uniqueConstraint) {
         if (constraintNameClash(uniqueConstraint, uniqueConstraints)) {
             throw new SQLRepresentationException(
-                    "Table " + name + " already has a UNIQUE constraint named \"" + 
+                    "Table " + getName() + " already has a UNIQUE constraint named \"" + 
                             uniqueConstraint.getName() + "\"");
         }
         uniqueConstraints.add(uniqueConstraint);
@@ -573,10 +558,10 @@ public class Table implements Duplicable<Table>, Serializable {
      * @return The duplicate.
      */
     public Table duplicate() {
-    	Table duplicate = new Table(name);
+    	Table duplicate = new Table(getName());
     	
     	// columns
-    	for (Column column : columns) {
+    	for (Column column : columns.values()) {
     	    duplicate.addColumn(column.duplicate());
     	}
     	
@@ -613,89 +598,76 @@ public class Table implements Duplicable<Table>, Serializable {
     	return duplicate;
     }    
     
-    /**
-     * Return a hash code for the table.
-     * @return The table's generated hash code.
-     */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime
-				* result
-				+ ((checkConstraints == null) ? 0 : checkConstraints.hashCode());
-		result = prime * result + ((columns == null) ? 0 : columns.hashCode());
-		result = prime
-				* result
-				+ ((foreignKeyConstraints == null) ? 0 : foreignKeyConstraints
-						.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime
-				* result
-				+ ((notNullConstraints == null) ? 0 : notNullConstraints
-						.hashCode());
-		result = prime
-				* result
-				+ ((primaryKeyConstraint == null) ? 0 : primaryKeyConstraint
-						.hashCode());
-		result = prime
-				* result
-				+ ((uniqueConstraints == null) ? 0 : uniqueConstraints
-						.hashCode());
-		return result;
-	}
+    
 
-    /**
-     * Checks if a table is equal to another.
-     * @param obj The object for comparison
-     * @return Whether the table is equal to obj
-     */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Table other = (Table) obj;
-		if (checkConstraints == null) {
-			if (other.checkConstraints != null)
-				return false;
-		} else if (!checkConstraints.equals(other.checkConstraints))
-			return false;
-		if (columns == null) {
-			if (other.columns != null)
-				return false;
-		} else if (!columns.equals(other.columns))
-			return false;
-		if (foreignKeyConstraints == null) {
-			if (other.foreignKeyConstraints != null)
-				return false;
-		} else if (!foreignKeyConstraints.equals(other.foreignKeyConstraints))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (notNullConstraints == null) {
-			if (other.notNullConstraints != null)
-				return false;
-		} else if (!notNullConstraints.equals(other.notNullConstraints))
-			return false;
-		if (primaryKeyConstraint == null) {
-			if (other.primaryKeyConstraint != null)
-				return false;
-		} else if (!primaryKeyConstraint.equals(other.primaryKeyConstraint))
-			return false;
-		if (uniqueConstraints == null) {
-			if (other.uniqueConstraints != null)
-				return false;
-		} else if (!uniqueConstraints.equals(other.uniqueConstraints))
-			return false;
-		return true;
-	}
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime
+                * result
+                + ((checkConstraints == null) ? 0 : checkConstraints.hashCode());
+        result = prime * result + ((columns == null) ? 0 : columns.hashCode());
+        result = prime
+                * result
+                + ((foreignKeyConstraints == null) ? 0 : foreignKeyConstraints
+                        .hashCode());
+        result = prime
+                * result
+                + ((notNullConstraints == null) ? 0 : notNullConstraints
+                        .hashCode());
+        result = prime
+                * result
+                + ((primaryKeyConstraint == null) ? 0 : primaryKeyConstraint
+                        .hashCode());
+        result = prime
+                * result
+                + ((uniqueConstraints == null) ? 0 : uniqueConstraints
+                        .hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Table other = (Table) obj;
+        if (checkConstraints == null) {
+            if (other.checkConstraints != null)
+                return false;
+        } else if (!checkConstraints.equals(other.checkConstraints))
+            return false;
+        if (columns == null) {
+            if (other.columns != null)
+                return false;
+        } else if (!columns.equals(other.columns))
+            return false;
+        if (foreignKeyConstraints == null) {
+            if (other.foreignKeyConstraints != null)
+                return false;
+        } else if (!foreignKeyConstraints.equals(other.foreignKeyConstraints))
+            return false;
+        if (notNullConstraints == null) {
+            if (other.notNullConstraints != null)
+                return false;
+        } else if (!notNullConstraints.equals(other.notNullConstraints))
+            return false;
+        if (primaryKeyConstraint == null) {
+            if (other.primaryKeyConstraint != null)
+                return false;
+        } else if (!primaryKeyConstraint.equals(other.primaryKeyConstraint))
+            return false;
+        if (uniqueConstraints == null) {
+            if (other.uniqueConstraints != null)
+                return false;
+        } else if (!uniqueConstraints.equals(other.uniqueConstraints))
+            return false;
+        return true;
+    }
 
     /**
      * Returns the table name.
