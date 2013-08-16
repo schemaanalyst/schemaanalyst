@@ -1,7 +1,9 @@
-package org.schemaanalyst.mutation;
+package org.schemaanalyst.mutation.mutator;
 
-import java.util.List;
+import java.util.Set;
 
+import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.artefactsupplier.ArtefactSupplier;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Mutator<A extends Duplicable<A>, C> {
@@ -12,7 +14,7 @@ public abstract class Mutator<A extends Duplicable<A>, C> {
 		this.artefactSupplier = artefactSupplier;
 	}
 	
-	public abstract List<Mutant<A>> mutate();
+	public abstract Set<Mutant<A>> mutate();
 	
 	public String toString() {
 		return getClass().getSimpleName() + " with " + artefactSupplier;

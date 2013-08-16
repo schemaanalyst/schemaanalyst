@@ -1,9 +1,8 @@
-package org.schemaanalyst.mutation.artefactsuppliers;
+package org.schemaanalyst.mutation.artefactsupplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.mutation.ArtefactSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -59,7 +58,6 @@ public class SchemaPrimaryKeySupplier extends ArtefactSupplier<Schema, Pair<List
 		
 		return new Pair<>(pk.getColumns(), table.getColumns());
 	}
-	
 
 	@Override
 	public void putComponentBack(Pair<List<Column>> columnListPair) {

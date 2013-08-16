@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation;
+package org.schemaanalyst.mutation.artefactsupplier;
 
 import org.schemaanalyst.util.Duplicable;
 

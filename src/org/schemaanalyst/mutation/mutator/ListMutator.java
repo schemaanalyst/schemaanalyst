@@ -1,11 +1,12 @@
-package org.schemaanalyst.mutation.mutators;
+package org.schemaanalyst.mutation.mutator;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.schemaanalyst.mutation.ArtefactSupplier;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.Mutator;
+import org.schemaanalyst.mutation.artefactsupplier.ArtefactSupplier;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.Pair;
 
@@ -16,8 +17,8 @@ public class ListMutator<A extends Duplicable<A>, E> extends Mutator<A, Pair<Lis
 	}
 
 	@Override
-	public List<Mutant<A>> mutate() {
-		List<Mutant<A>> mutants = new ArrayList<>();
+	public Set<Mutant<A>> mutate() {
+		Set<Mutant<A>> mutants = new HashSet<>();
 		
 		Pair<List<E>> nextComponent = artefactSupplier.getNextComponent();
 		while (nextComponent != null) {
