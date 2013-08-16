@@ -6,7 +6,7 @@ import org.junit.runners.Suite;
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
 	org.schemaanalyst.test.collection.TestLinkedHashBacking.class,
-	org.schemaanalyst.test.collection.TestNamedEntity.class,
+	org.schemaanalyst.test.collection.TestName.class,
 	org.schemaanalyst.test.collection.TestNamedEntityInsertOrderedSet.class,
 	org.schemaanalyst.test.data.TestStringValue.class,
 	org.schemaanalyst.test.data.TestValueEquality.class,

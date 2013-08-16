@@ -39,17 +39,16 @@ public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
     public E get(Name name) {
         return elements.get(name);
     }
-
+    
     protected Name nameFor(Object o) {
-        Name name = null;
         if (o instanceof String) {
-            name = new Name((String) o);
+            return new Name((String) o);
         } else if (o instanceof Name) {
-            name = (Name) o;
+            return (Name) o;
         } else if (o instanceof NamedEntity) {
-            name = ((NamedEntity) o).getNameInstance();
-        }
-        return name;
+            return ((NamedEntity) o).getNameInstance();
+        }         
+        return null;
     }
     
     @Override
@@ -118,11 +117,9 @@ public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
     public <T> T[] toArray(T[] a) {
         int size = size();
         
-        System.out.println(a.length + " " + size);
         if (a.length < size) { 
             // If array is too small, allocate the new one with the same component type
             a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
-            System.out.println(a.length);
         } else if (a.length > size) {
             // If array is to large, set the first unassigned element to null
             a[size] = null;

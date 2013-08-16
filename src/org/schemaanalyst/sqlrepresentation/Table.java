@@ -3,8 +3,6 @@ package org.schemaanalyst.sqlrepresentation;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -16,18 +14,19 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.AbstractNamedEntity;
+import org.schemaanalyst.util.collection.NamedEntity;
+import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
 
 /**
  * Represents a database table.
  * @author Phil McMinn
  */
-public class Table extends AbstractNamedEntity
+public class Table extends NamedEntity
                    implements Duplicable<Table>, Serializable {
 
     private static final long serialVersionUID = 781185006248617033L;
     
-    private LinkedHashMap<String, Column> columns;
+    private NamedEntityInsertOrderedSet<Column> columns;
 
     private PrimaryKeyConstraint primaryKeyConstraint;    
     private List<CheckConstraint> checkConstraints;
@@ -40,8 +39,12 @@ public class Table extends AbstractNamedEntity
      * @param name The name of the schema.
      */
     public Table(String name) {
+        if (name == null) {
+            throw new SQLRepresentationException(
+                    "Table names cannot be null");
+        }        
         setName(name);
-        columns = new LinkedHashMap<String, Column>();
+        columns = new NamedEntityInsertOrderedSet<Column>();
 
         // the primary key is null until one is created through setPrimaryKey
         primaryKeyConstraint = null;        
@@ -69,13 +72,10 @@ public class Table extends AbstractNamedEntity
      * @param column The column to be added.
      */
     public void addColumn(Column column) {
-        if (hasColumn(column)) {
+        if (!columns.add(column)) {
             throw new SQLRepresentationException(
             		"Table \"" + getName() + "\" already has a column named \"" + column + "\"");
         }
-        
-        String caseInsensitiveName = column.getName().toLowerCase();
-        columns.put(caseInsensitiveName, column);
     }
 
     /**
@@ -112,7 +112,7 @@ public class Table extends AbstractNamedEntity
      * @return A list of the table's columns.
      */
     public List<Column> getColumns() {
-        return new LinkedList<Column>(columns.values());
+        return columns.toList();
     }
 
     /**
@@ -561,7 +561,7 @@ public class Table extends AbstractNamedEntity
     	Table duplicate = new Table(getName());
     	
     	// columns
-    	for (Column column : columns.values()) {
+    	for (Column column : columns) {
     	    duplicate.addColumn(column.duplicate());
     	}
     	

@@ -10,18 +10,16 @@ public class Name implements Serializable {
     private String caseInsensitiveName;
     
     public Name(String name) {
-        setName(name);
+        this.name = name;
+        if (name != null) {
+            this.caseInsensitiveName = name.toLowerCase();
+        }
     }
-    
+
     public String get() {
         return name;
     }
     
-    public void setName(String name) {
-        this.name = name;
-        this.caseInsensitiveName = name.toLowerCase();
-    }
-
     @Override
     public int hashCode() {
         final int prime = 31;

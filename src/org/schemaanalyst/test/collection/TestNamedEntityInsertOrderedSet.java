@@ -3,7 +3,7 @@ package org.schemaanalyst.test.collection;
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.schemaanalyst.util.collection.AbstractNamedEntity;
+import org.schemaanalyst.util.collection.NamedEntity;
 import org.schemaanalyst.util.collection.Name;
 import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
 
@@ -11,12 +11,12 @@ import static org.junit.Assert.*;
 
 public class TestNamedEntityInsertOrderedSet {
 
-    class Person extends AbstractNamedEntity {
+    class Person extends NamedEntity {
         
         int age;
         
         Person(String name, int age) {
-            setName(name);
+            super(name);
             this.age = age;
         }
         
