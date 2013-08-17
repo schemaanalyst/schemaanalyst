@@ -1,3 +1,5 @@
+-- http://www.bioconductor.org/packages/2.12/bioc/html/SRAdb.html
+
 CREATE TABLE col_desc 
 ( col_desc_ID REAL,
 	table_name TEXT,
