@@ -1,35 +1,36 @@
 package org.schemaanalyst.test.collection;
 
 import org.junit.Test;
-import org.schemaanalyst.util.collection.Name;
+import org.schemaanalyst.util.collection.NamedEntity;
 
 import static org.junit.Assert.*;
 
 public class TestNamedEntity {
 
-    @Test
-    public void testEqualsSameCase() {
-        Name n1 = new Name("Phil");
-        Name n2 = new Name("Phil");
-        
-        assertEquals(n1, n2);
-        assertEquals(n1.hashCode(), n2.hashCode());
+    class NamedEntityMock extends NamedEntity {
+        public NamedEntityMock(String str) {
+            super(str);
+        }        
     }
     
     @Test
-    public void testEqualsNotSameCase() {
-        Name n1 = new Name("Phil");
-        Name n2 = new Name("phil");
+    public void testNamedEntity() {
+        NamedEntityMock ne1 = new NamedEntityMock("Phil");
+        assertEquals("Phil", ne1.getName());
         
-        assertEquals(n1, n2);
-        assertEquals(n1.hashCode(), n2.hashCode());
+        NamedEntityMock ne2 = new NamedEntityMock("Phil");
+        assertEquals(ne1, ne2);
+        
+        NamedEntityMock ne3 = new NamedEntityMock("Chris");
+        assertFalse(ne1.equals(ne3));
     }
     
     @Test
-    public void testNotEquals() {
-        Name n1 = new Name("Philemon");
-        Name n2 = new Name("Phil");
+    public void testNullNamedEntity() {
+        NamedEntityMock ne1 = new NamedEntityMock(null);
+        assertNull(ne1.getName());
         
-        assertFalse(n1.equals(n2));
-    }    
+        NamedEntityMock ne2 = new NamedEntityMock(null);
+        assertFalse(ne1.equals(ne2));
+    }
 }

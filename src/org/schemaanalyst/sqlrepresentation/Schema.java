@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.AbstractNamedEntity;
+import org.schemaanalyst.util.collection.NamedEntity;
 import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
 
 /**
@@ -14,7 +14,7 @@ import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
  * @author Phil McMinn
  *
  */
-public class Schema extends AbstractNamedEntity 
+public class Schema extends NamedEntity 
                     implements Serializable, Duplicable<Schema> {
 
     private static final long serialVersionUID = 7338170433995168952L;
@@ -25,6 +25,10 @@ public class Schema extends AbstractNamedEntity
      * @param name The name of the schema.
      */
     public Schema(String name) {
+        if (name == null) {
+            throw new SQLRepresentationException(
+                    "Schema names cannot be null");
+        }
         setName(name);
         this.tables = new NamedEntityInsertOrderedSet<>();
     }

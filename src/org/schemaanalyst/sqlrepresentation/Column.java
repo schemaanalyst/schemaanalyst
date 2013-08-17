@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.collection.NamedEntity;
 
 /**
  * Represents a table column in a database schema.
@@ -11,11 +12,10 @@ import org.schemaanalyst.util.Duplicable;
  * @author Phil McMinn
  *
  */
-public class Column implements Duplicable<Column>, Serializable {
+public class Column extends NamedEntity 
+                    implements Duplicable<Column>, Serializable {
 
     private static final long serialVersionUID = -2680046452756410766L;
-
-    private String name;
     private DataType dataType;
 
     /**
@@ -24,16 +24,12 @@ public class Column implements Duplicable<Column>, Serializable {
      * @param dataType The type of the column
      */
     public Column(String name, DataType dataType) {
-        this.name = name;
+        if (name == null) {
+            throw new SQLRepresentationException(
+                    "Column names cannot be null");
+        }        
+        setName(name);
         this.dataType = dataType;
-    }
-
-    /**
-     * Returns the name of the column.
-     * @return The name of the column.
-     */
-    public String getName() {
-        return name;
     }
 
     /**
@@ -57,51 +53,39 @@ public class Column implements Duplicable<Column>, Serializable {
      * @return A duplicated version of the column.
      */
     public Column duplicate() {
-    	return new Column(name, dataType.duplicate());
+    	return new Column(getName(), dataType.duplicate());
     }
     
-    /**
-     * Returns a hashcode value for the column.
-     */
 	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((dataType == null) ? 0 : dataType.hashCode());
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		return result;
-	}
+    public int hashCode() {
+        final int prime = 31;
+        int result = super.hashCode();
+        result = prime * result
+                + ((dataType == null) ? 0 : dataType.hashCode());
+        return result;
+    }
 
-	/**
-	 * Checks whether the column equals another.
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Column other = (Column) obj;
-		if (dataType == null) {
-			if (other.dataType != null)
-				return false;
-		} else if (!dataType.equals(other.dataType))
-			return false;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		return true;
-	}
-	
-	/**
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!super.equals(obj))
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Column other = (Column) obj;
+        if (dataType == null) {
+            if (other.dataType != null)
+                return false;
+        } else if (!dataType.equals(other.dataType))
+            return false;
+        return true;
+    }
+
+    /**
 	 * Returns the column's name.
 	 */
 	public String toString() {
-	    return name;
+	    return getName();
 	}
 }
