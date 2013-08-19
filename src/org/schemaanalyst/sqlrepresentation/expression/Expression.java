@@ -10,11 +10,11 @@ public interface Expression extends Duplicable<Expression> {
 
     public Expression getSubexpression(ExpressionPath expressionPath);
 
-    public Expression getSubexpression(int index, int... furtherIndexes);
-
     public Expression getSubexpression(int index);
 
     public void setSubexpression(int index, Expression subexpression);
+    
+    public void setSubexpressions(List<Expression> subexpressions);    
     
     public int getNumSubexpressions();
 

@@ -2,6 +2,7 @@ package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -16,28 +17,32 @@ public abstract class ExpressionTree implements Expression {
         if (indices.isEmpty()) {
             return null;
         }
-        int index = indices.get(0);
-        int[] furtherIndexes = new int[indices.size() - 1];
-        for (int i = 1; i < indices.size(); i++) {
-            furtherIndexes[i] = indices.get(i);
+        
+        Expression expression = this;
+        System.out.println("Expression is " + expression);
+        Iterator<Integer> iterator = indices.iterator();
+        while (iterator.hasNext()) {
+        	expression = expression.getSubexpression(iterator.next());
+        	System.out.println("Expression is " + expression);        	
         }
-        return getSubexpression(index, furtherIndexes);
+        return expression;
     }    
-
-    @Override
-    public Expression getSubexpression(int index, int... furtherIndexes) {
-        Expression subexpression = getSubexpression(index);
-        for (int i : furtherIndexes) {
-            subexpression = subexpression.getSubexpression(i);
-        }
-        return subexpression;
-    }
 
     @Override
     public abstract Expression getSubexpression(int index);
     
     @Override
     public abstract void setSubexpression(int index, Expression subexpression);
+    
+    @Override
+    public void setSubexpressions(List<Expression> subexpressions) {
+    	if (subexpressions.size() > getNumSubexpressions()) {
+    		throw new NonExistentSubexpressionException(this, subexpressions.size());
+    	}
+    	for (int i=0; i < subexpressions.size(); i++) {
+    		setSubexpression(i, subexpressions.get(i));
+    	}
+    }
     
     @Override
     public abstract int getNumSubexpressions();

@@ -19,11 +19,6 @@ public abstract class ExpressionLeaf implements Expression {
     }
 
     @Override
-    public Expression getSubexpression(int index, int... furtherIndexes) {
-        throw new NonExistentSubexpressionException(this, index);
-    }
-
-    @Override
     public Expression getSubexpression(int index) {
         throw new NonExistentSubexpressionException(this, index);
     }
@@ -32,6 +27,13 @@ public abstract class ExpressionLeaf implements Expression {
     public void setSubexpression(int index, Expression subexpression) {
         throw new NonExistentSubexpressionException(this, index);
     }
+    
+    @Override
+    public void setSubexpressions(List<Expression> subexpressions) {
+    	if (subexpressions.size() > 0) {
+    		throw new NonExistentSubexpressionException(this, 0);
+    	}
+    }    
     
     @Override
     public int getNumSubexpressions() {

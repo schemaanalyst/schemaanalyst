@@ -4,6 +4,6 @@ package org.schemaanalyst.sqlrepresentation.expression;
 public class NonExistentSubexpressionException extends RuntimeException {
 
     public NonExistentSubexpressionException(Expression expression, int index) {
-        super("No subexpression at index " + index + " for expression " + expression);
+        super("Expression " + expression + " does not allow subexpression at index " + index);
     }
 }

@@ -51,7 +51,7 @@ public class ExpressionFilterWalker {
 
 		for (int index = 0; index < expression.getNumSubexpressions(); index++) {
 			ExpressionPath currentPath = path.duplicate();
-			path.add(index);
+			currentPath.add(index);
 			filter(expression.getSubexpression(index), filter, currentPath,
 					paths);
 		}

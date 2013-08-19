@@ -1,6 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.schemaanalyst.util.Duplicable;
@@ -33,6 +34,15 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
     
 	/**
 	 * Constructor.
+	 * @param indices an series of integers denoting the path to
+	 * an expression.
+	 */    
+    public ExpressionPath(Integer... indices) {
+        this(Arrays.asList(indices));        
+    }     
+    
+	/**
+	 * Constructor.
 	 * @param indices a list of integers denoting the path to
 	 * an expression.
 	 */    
@@ -42,7 +52,7 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
             this.indices.add(new Integer(index));
         }        
     }
-    
+     
     /**
      * Add a decision point, denoted by an integer, to this path.
      * @param index
@@ -56,7 +66,7 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
      * @return
      */
     public List<Integer> getIndices() {
-        return indices;
+        return new ArrayList<>(indices);
     }
     
     @Override
@@ -66,5 +76,37 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
      */
     public ExpressionPath duplicate() {
         return new ExpressionPath(indices);
+    }
+    
+    
+    
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((indices == null) ? 0 : indices.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ExpressionPath other = (ExpressionPath) obj;
+		if (indices == null) {
+			if (other.indices != null)
+				return false;
+		} else if (!indices.equals(other.indices))
+			return false;
+		return true;
+	}
+
+	@Override
+    public String toString() {
+    	return indices.toString();
     }
 }
