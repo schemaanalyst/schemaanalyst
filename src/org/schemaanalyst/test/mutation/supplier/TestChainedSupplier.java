@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.mutation.supplier.ChainedSupplier;
 import org.schemaanalyst.mutation.supplier.CheckExpressionSupplier;
-import org.schemaanalyst.mutation.supplier.InExpressionListSupplier;
+import org.schemaanalyst.mutation.supplier.InExpressionRHSListExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
@@ -45,7 +45,7 @@ public class TestChainedSupplier {
 		ChainedSupplier<Schema, Expression, List<Expression>> supplier =
 				new ChainedSupplier<>(
 						new CheckExpressionSupplier(),
-						new InExpressionListSupplier());
+						new InExpressionRHSListExpressionSupplier());
 		
 		supplier.initialise(schema);
 		
@@ -65,7 +65,7 @@ public class TestChainedSupplier {
 		ChainedSupplier<Schema, Expression, List<Expression>> supplier =
 				new ChainedSupplier<>(
 						new CheckExpressionSupplier(),
-						new InExpressionListSupplier());
+						new InExpressionRHSListExpressionSupplier());
 		
 		supplier.initialise(schema);
 		
@@ -89,7 +89,7 @@ public class TestChainedSupplier {
 		ChainedSupplier<Schema, Expression, List<Expression>> supplier =
 				new ChainedSupplier<>(
 						new CheckExpressionSupplier(),
-						new InExpressionListSupplier());
+						new InExpressionRHSListExpressionSupplier());
 		
 		supplier.initialise(schema);
 		

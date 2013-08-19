@@ -10,11 +10,11 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
 
-public class ForeignKeyConstraintOperator extends MutationPipeline<Schema> {
+public class FKColumnPairR extends MutationPipeline<Schema> {
     
     private Schema schema;
     
-    public ForeignKeyConstraintOperator(Schema schema) {
+    public FKColumnPairR(Schema schema) {
         this.schema = schema;
     }
     

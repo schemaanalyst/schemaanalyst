@@ -45,7 +45,7 @@ public class ListElementRemover<A extends Duplicable<A>, E> extends Mutator<A, L
     }
     
     @Override
-    protected String getMutationDescription() {
-        return toString() + " - " + mutationDescription;
+    protected String getDescriptionOfLastMutation() {
+        return mutationDescription;
     }
 }

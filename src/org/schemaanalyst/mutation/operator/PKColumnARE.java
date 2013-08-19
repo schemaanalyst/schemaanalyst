@@ -12,11 +12,11 @@ import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsWithAlternativesSupp
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
-public class PrimaryKeyConstraintOperator extends MutationPipeline<Schema> {
+public class PKColumnARE extends MutationPipeline<Schema> {
     
     private Schema schema;
     
-    public PrimaryKeyConstraintOperator(Schema schema) {
+    public PKColumnARE(Schema schema) {
         this.schema = schema;
     }
     

@@ -44,7 +44,8 @@ public abstract class Mutator<A extends Duplicable<A>, C> extends
                 supplier.putComponentBackInDuplicate(mutatedComponent);
 
                 // make a mutant from the duplicate
-                Mutant<A> mutant = new Mutant<>(duplicate, getMutationDescription());
+                Mutant<A> mutant = new Mutant<>(duplicate, 
+                		getOperatorInfo() + " - " + getDescriptionOfLastMutation());
 
                 // add it to the set of mutants
                 mutants.add(mutant);
@@ -59,10 +60,14 @@ public abstract class Mutator<A extends Duplicable<A>, C> extends
     protected abstract boolean isMoreMutationToDo();
 
     protected abstract C performMutation(C componentToMutate);
-
-    protected abstract String getMutationDescription();
-
+    
+    protected abstract String getDescriptionOfLastMutation();
+    
+    public String getOperatorInfo() {
+    	return getClass().getSimpleName() + " with " + supplier;
+    }
+    
     public String toString() {
-        return getClass().getSimpleName() + " with " + supplier;
+        return getOperatorInfo();
     }
 }

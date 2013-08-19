@@ -43,7 +43,7 @@ public class ListElementAdder<A extends Duplicable<A>, E> extends Mutator<A, Pai
     }
     
     @Override
-    protected String getMutationDescription() {
-        return toString() + " - " + mutationDescription;
+    protected String getDescriptionOfLastMutation() {
+        return mutationDescription;
     }
 }
