@@ -10,7 +10,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Pair;
 
-public class PrimaryKeyColumnsWithAlternativesSupplier extends SchemaTableIteratingSupplier<Pair<List<Column>>> {
+public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIteratingSupplier<Pair<List<Column>>> {
 
     public PrimaryKeyColumnsWithAlternativesSupplier(Schema schema) {
         super(schema);

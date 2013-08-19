@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-public class PrimaryKeyColumnsSupplier extends SchemaTableIteratingSupplier<List<Column>> {
+public class PrimaryKeyColumnsSupplier extends TableIteratingSupplier<List<Column>> {
 
     public PrimaryKeyColumnsSupplier(Schema schema) {
         super(schema);

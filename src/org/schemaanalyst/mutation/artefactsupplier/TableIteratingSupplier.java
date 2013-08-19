@@ -5,9 +5,9 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-public abstract class SchemaTableIteratingSupplier<C> extends IteratingSupplier<Schema, Table, C> {
+public abstract class TableIteratingSupplier<C> extends IteratingSupplier<Schema, Table, C> {
 
-    public SchemaTableIteratingSupplier(Schema schema) {
+    public TableIteratingSupplier(Schema schema) {
         super(schema);
     }
 
