@@ -1,4 +1,7 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
+
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 
 public class UniqueConstraint extends MultiColumnConstraint {

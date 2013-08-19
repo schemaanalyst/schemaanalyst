@@ -7,7 +7,7 @@ import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 public class UniqueConstraintMutator extends Mutator {
 

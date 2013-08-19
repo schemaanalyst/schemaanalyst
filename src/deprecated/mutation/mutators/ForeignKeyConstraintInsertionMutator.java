@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 
 /**
  * Produces mutants containing new foreign key constraints for each column where

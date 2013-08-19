@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.schemaanalyst.mutation.artefactsupplier.Supplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Duplicable;
 
 public class ListElementRemover<A extends Duplicable<A>, E> extends Mutator<A, List<E>> {

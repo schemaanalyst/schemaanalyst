@@ -3,8 +3,8 @@ package org.schemaanalyst.datageneration;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class SimpleConstraintCoverageReport extends ConstraintCoverageReport {
 

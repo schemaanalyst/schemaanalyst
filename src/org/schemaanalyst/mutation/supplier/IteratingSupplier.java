@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.artefactsupplier;
+package org.schemaanalyst.mutation.supplier;
 
 import java.util.List;
 

@@ -7,6 +7,11 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.Name;

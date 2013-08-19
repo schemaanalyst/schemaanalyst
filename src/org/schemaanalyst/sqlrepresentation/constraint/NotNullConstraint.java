@@ -1,4 +1,8 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
+
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 
 /**

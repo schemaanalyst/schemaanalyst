@@ -1,7 +1,25 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+/**
+ * An {@link ExpressionFilter} is test for filtering expressions.
+ * 
+ * It is used by {@link ExpressionFilterWalker} to check if the
+ * {@link ExpressionPath} of a subexpression in the tree of an
+ * {@link Expression} should be returned by the
+ * {@link ExpressionFilterWalker#filter(ExpressionFilter)} method.
+ * 
+ * @author Phil McMinn
+ * 
+ */
 
 public interface ExpressionFilter {
 
-    public boolean accept(Expression expression);
+	/**
+	 * A test
+	 * 
+	 * @param expression
+	 *            the expression being tested.
+	 * @return true if the expression is to be filtered.
+	 */
+	public boolean accept(Expression expression);
 }

@@ -3,9 +3,9 @@ package deprecated.mutation.mutators;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 public class NotNullConstraintMutator extends Mutator {
 

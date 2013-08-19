@@ -6,8 +6,8 @@ import java.util.List;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.artefactsupplier.Supplier;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Duplicable;
 
 import static org.junit.Assert.*;

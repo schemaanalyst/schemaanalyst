@@ -35,6 +35,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalCompoundValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalNumericValueObjectiveFunction.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
+	org.schemaanalyst.test.mutation.artefactsupplier.TestIteratingSupplier.class,
 	org.schemaanalyst.test.mutation.artefactsupplier.TestSchemaPrimaryKeyColumnsWithAlternativesSupplier.class,
 	org.schemaanalyst.test.mutation.artefactsupplier.TestVisitorGenerics.class,
 	org.schemaanalyst.test.mutation.mutators.TestListElementRemover.class,

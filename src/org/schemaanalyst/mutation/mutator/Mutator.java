@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
-import org.schemaanalyst.mutation.artefactsupplier.Supplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Duplicable;
 
 public abstract class Mutator<A extends Duplicable<A>, C> extends

@@ -3,7 +3,7 @@ package org.schemaanalyst.mutation.mutator;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.mutation.artefactsupplier.Supplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.Pair;
 

@@ -1,7 +1,10 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.io.Serializable;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.NamedEntity;
 import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;

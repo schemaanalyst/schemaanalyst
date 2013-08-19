@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
-import org.schemaanalyst.mutation.artefactsupplier.PrimaryKeyColumnsSupplier;
-import org.schemaanalyst.mutation.artefactsupplier.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.mutation.mutator.ListElementAdder;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
+import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsSupplier;
+import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 

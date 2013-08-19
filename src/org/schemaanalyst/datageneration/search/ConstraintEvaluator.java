@@ -8,10 +8,10 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.ConstraintObjectiveFunctionFactory;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.Constraint;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 public class ConstraintEvaluator {
 

@@ -1,13 +1,13 @@
-package org.schemaanalyst.mutation.artefactsupplier;
+package org.schemaanalyst.mutation.supplier;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
 public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIteratingSupplier<Pair<List<Column>>> {

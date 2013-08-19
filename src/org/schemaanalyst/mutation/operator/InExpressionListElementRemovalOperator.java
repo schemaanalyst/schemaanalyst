@@ -5,8 +5,8 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
-import org.schemaanalyst.mutation.artefactsupplier.InExpressionListSupplier;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
+import org.schemaanalyst.mutation.supplier.InExpressionListSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 public class InExpressionListElementRemovalOperator extends MutationPipeline<Expression> {

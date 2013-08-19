@@ -1,10 +1,10 @@
-package org.schemaanalyst.mutation.artefactsupplier;
+package org.schemaanalyst.mutation.supplier;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
 public class ForeignKeyColumnsSupplier extends IteratingSupplier<Schema, ForeignKeyConstraint, List<Pair<Column>>> {

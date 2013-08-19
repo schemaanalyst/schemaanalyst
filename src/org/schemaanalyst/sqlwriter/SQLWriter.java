@@ -8,13 +8,13 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.TableDependencyOrderer;
-import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
 public class SQLWriter {

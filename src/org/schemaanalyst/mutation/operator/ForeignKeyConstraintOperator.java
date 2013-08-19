@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
-import org.schemaanalyst.mutation.artefactsupplier.ForeignKeyColumnsSupplier;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
+import org.schemaanalyst.mutation.supplier.ForeignKeyColumnsSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
