@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
+import org.schemaanalyst.util.collection.NamedEntitySet;
 
 /**
  * Abstract super class of all integrity constraints.
@@ -93,9 +93,9 @@ public abstract class Constraint extends NamedEntity implements
         return true;
     }
 
-    protected static NamedEntityInsertOrderedSet<Column> remapColumns(
-            Table table, NamedEntityInsertOrderedSet<Column> columns) {
-        NamedEntityInsertOrderedSet<Column> remappedColumns = new NamedEntityInsertOrderedSet<>();
+    protected static NamedEntitySet<Column> remapColumns(
+            Table table, NamedEntitySet<Column> columns) {
+        NamedEntitySet<Column> remappedColumns = new NamedEntitySet<>();
         for (Column column : columns) {
             remappedColumns.add(remapColumn(table, column));
         }

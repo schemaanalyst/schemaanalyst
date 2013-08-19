@@ -2,7 +2,7 @@ package org.schemaanalyst.util.collection;
 
 public abstract class NamedEntity {
 
-    private Name name;
+    private Identifier id;
     
     public NamedEntity() {        
     }
@@ -12,26 +12,26 @@ public abstract class NamedEntity {
     }
     
     public String getName() {
-        return name.get();
+        return id.get();
     }
     
     public void setName(String str) {
-        name = new Name(str);
+        id = new Identifier(str);
     }
     
     public boolean hasName() {
         return getName() != null;
     }
     
-    public Name getNameInstance() {
-        return name;
+    public Identifier getIdentifier() {
+        return id;
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
 
@@ -44,10 +44,10 @@ public abstract class NamedEntity {
         if (getClass() != obj.getClass())
             return false;
         NamedEntity other = (NamedEntity) obj;
-        if (name == null) {
-            if (other.name != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!id.equals(other.id))
             return false;
         return true;
     }

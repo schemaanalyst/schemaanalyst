@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.collection;
+package org.schemaanalyst.test.util.collection;
 
 import java.util.Iterator;
 import java.util.LinkedHashMap;

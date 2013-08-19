@@ -1,15 +1,15 @@
-package org.schemaanalyst.test.collection;
+package org.schemaanalyst.test.util.collection;
 
 import java.util.Iterator;
 
 import org.junit.Test;
 import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.Name;
-import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
+import org.schemaanalyst.util.collection.Identifier;
+import org.schemaanalyst.util.collection.NamedEntitySet;
 
 import static org.junit.Assert.*;
 
-public class TestNamedEntityInsertOrderedSet {
+public class TestNamedEntitySet {
 
     class Person extends NamedEntity {
         
@@ -49,7 +49,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testOneItem() {
-        NamedEntityInsertOrderedSet<Person> set = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set = new NamedEntitySet<>();
         Person p = new Person("Phil", 21); 
         
         assertEquals(0, set.size());
@@ -59,8 +59,8 @@ public class TestNamedEntityInsertOrderedSet {
         
         assertTrue(set.contains("phil"));
         assertTrue(set.contains("Phil"));
-        assertTrue(set.contains(new Name("Phil")));
-        assertTrue(set.contains(new Name("phil")));
+        assertTrue(set.contains(new Identifier("Phil")));
+        assertTrue(set.contains(new Identifier("phil")));
         assertTrue(set.contains(p));
         assertTrue(set.contains(new Person("Phil", 21)));
         assertEquals(1, set.size());
@@ -70,7 +70,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testTwoItems() {
-        NamedEntityInsertOrderedSet<Person> set = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);
         
@@ -99,7 +99,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testDuplication() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -108,7 +108,7 @@ public class TestNamedEntityInsertOrderedSet {
         set1.add(p2);
         set1.add(p3);
         
-        NamedEntityInsertOrderedSet<Person> set2 = set1.duplicate();
+        NamedEntitySet<Person> set2 = set1.duplicate();
         
         assertNotSame(set1, set2);
         assertEquals(set1, set2);
@@ -116,7 +116,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testEquals() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -125,19 +125,19 @@ public class TestNamedEntityInsertOrderedSet {
         set1.add(p2);
         set1.add(p3);
         
-        NamedEntityInsertOrderedSet<Person> set2 = new NamedEntityInsertOrderedSet<>();
-        
-        set2.add(p3); 
+        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
+         
         set2.add(p1);
         set2.add(p2);
-                
+        set2.add(p3);
+        
         assertEquals(set1, set2);
         assertEquals(set1.hashCode(), set2.hashCode());
     }  
     
     @Test
     public void testEqualWithDifferentInstances() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -146,14 +146,14 @@ public class TestNamedEntityInsertOrderedSet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntityInsertOrderedSet<Person> set2 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
         Person p1b = new Person("Phil", 21);
         Person p2b = new Person("Greg", 22);        
         Person p3b = new Person("Chris", 23);
         
-        set2.add(p3b); 
         set2.add(p1b);
         set2.add(p2b);
+        set2.add(p3b); 
                 
         assertEquals(set1, set2);
         assertEquals(set1.hashCode(), set2.hashCode());
@@ -161,7 +161,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testContainsAll() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -170,7 +170,7 @@ public class TestNamedEntityInsertOrderedSet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntityInsertOrderedSet<Person> set2 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
         Person p1b = new Person("Phil", 21);
         Person p2b = new Person("Greg", 22);        
         Person p3b = new Person("Chris", 23);
@@ -188,7 +188,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testRemove() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -212,7 +212,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testRemoveAll() {
-        NamedEntityInsertOrderedSet<Person> set1 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -221,7 +221,7 @@ public class TestNamedEntityInsertOrderedSet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntityInsertOrderedSet<Person> set2 = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
         Person p1b = new Person("Phil", 21);        
         Person p3b = new Person("Chris", 23);
         
@@ -234,7 +234,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testToArraySuppliedArrayTooSmall() {
-        NamedEntityInsertOrderedSet<Person> set = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -252,7 +252,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testToArraySuppliedArrayTooBig() {
-        NamedEntityInsertOrderedSet<Person> set = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -271,7 +271,7 @@ public class TestNamedEntityInsertOrderedSet {
     
     @Test
     public void testToArraySuppliedArrayCorrectSize() {
-        NamedEntityInsertOrderedSet<Person> set = new NamedEntityInsertOrderedSet<>();
+        NamedEntitySet<Person> set = new NamedEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);

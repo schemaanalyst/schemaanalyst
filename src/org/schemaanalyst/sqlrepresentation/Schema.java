@@ -14,9 +14,9 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.Name;
+import org.schemaanalyst.util.collection.Identifier;
 import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
+import org.schemaanalyst.util.collection.NamedEntitySet;
 
 /**
  * Represents a database schema.
@@ -28,13 +28,13 @@ public class Schema extends NamedEntity
                     implements Serializable, Duplicable<Schema> {
 
     private static final long serialVersionUID = 7338170433995168952L;
-    private NamedEntityInsertOrderedSet<Table> tables;
+    private NamedEntitySet<Table> tables;
 
-    private HashMap<Name, PrimaryKeyConstraint> primaryKeyConstraints;
-    private HashMap<Name, LinkedHashSet<CheckConstraint>> checkConstraints;
-    private HashMap<Name, LinkedHashSet<ForeignKeyConstraint>> foreignKeyConstraints;
-    private HashMap<Name, LinkedHashSet<NotNullConstraint>> notNullConstraints;
-    private HashMap<Name, LinkedHashSet<UniqueConstraint>> uniqueConstraints;
+    private HashMap<Identifier, PrimaryKeyConstraint> primaryKeyConstraints;
+    private HashMap<Identifier, LinkedHashSet<CheckConstraint>> checkConstraints;
+    private HashMap<Identifier, LinkedHashSet<ForeignKeyConstraint>> foreignKeyConstraints;
+    private HashMap<Identifier, LinkedHashSet<NotNullConstraint>> notNullConstraints;
+    private HashMap<Identifier, LinkedHashSet<UniqueConstraint>> uniqueConstraints;
     
     /**
      * Constructs the schema.
@@ -46,7 +46,7 @@ public class Schema extends NamedEntity
                     "Schema names cannot be null");
         }
         setName(name);
-        this.tables = new NamedEntityInsertOrderedSet<>();
+        this.tables = new NamedEntitySet<>();
         
         primaryKeyConstraints = new HashMap<>();
         checkConstraints = new HashMap<>();
@@ -428,7 +428,7 @@ public class Schema extends NamedEntity
      */
     public boolean hasPrimaryKeyConstraint(Table table) {
         checkTableExists(table);
-        return primaryKeyConstraints.containsKey(table.getNameInstance());
+        return primaryKeyConstraints.containsKey(table.getIdentifier());
     }
 
     /**
@@ -486,7 +486,7 @@ public class Schema extends NamedEntity
      * @param primaryKeyConstraint The PRIMARY KEY for the table.
      */
     public void setPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
-        Name tableName = getConstraintTable(primaryKeyConstraint).getNameInstance();
+        Identifier tableName = getConstraintTable(primaryKeyConstraint).getIdentifier();
         primaryKeyConstraints.put(tableName, primaryKeyConstraint);
     }
 
@@ -496,7 +496,7 @@ public class Schema extends NamedEntity
      */
     public void removePrimaryKeyConstraint(Table table) {
         checkTableExists(table);
-        primaryKeyConstraints.remove(table.getNameInstance());
+        primaryKeyConstraints.remove(table.getIdentifier());
     }
 
     /**
@@ -506,7 +506,7 @@ public class Schema extends NamedEntity
      */
     public PrimaryKeyConstraint getPrimaryKeyConstraint(Table table) {
         checkTableExists(table);
-        return primaryKeyConstraints.get(table.getNameInstance());
+        return primaryKeyConstraints.get(table.getIdentifier());
     }
     
     /**
@@ -609,8 +609,8 @@ public class Schema extends NamedEntity
      * @param constraint The constraint to be added.
      * @param constraintMap The constraint map to add the constraint to
      */
-    private <C extends Constraint> void addConstraint(C constraint, HashMap<Name, LinkedHashSet<C>> constraintMap) {
-        Name tableName = getConstraintTable(constraint).getNameInstance();
+    private <C extends Constraint> void addConstraint(C constraint, HashMap<Identifier, LinkedHashSet<C>> constraintMap) {
+        Identifier tableName = getConstraintTable(constraint).getIdentifier();
         LinkedHashSet<C> constraintsForTable = constraintMap.get(tableName);
         if (constraintsForTable == null) {
             constraintsForTable = new LinkedHashSet<>();
@@ -625,8 +625,8 @@ public class Schema extends NamedEntity
      * @return True if the not null constraint existed on the table and was
      * removed, else false.
      */
-    private <C extends Constraint> boolean removeConstraint(C constraint, HashMap<Name, LinkedHashSet<C>> constraintMap) {
-        Name tableName = getConstraintTable(constraint).getNameInstance();
+    private <C extends Constraint> boolean removeConstraint(C constraint, HashMap<Identifier, LinkedHashSet<C>> constraintMap) {
+        Identifier tableName = getConstraintTable(constraint).getIdentifier();
         LinkedHashSet<C> constraintsForTable = constraintMap.get(tableName);
         if (constraintsForTable == null) {
             return false;
@@ -640,9 +640,9 @@ public class Schema extends NamedEntity
      * @param table The table for which the constraints are required.  
      * @return A list of NOT NULL constraints on the table.
      */
-    private <C extends Constraint> List<C> getConstraints(Table table, HashMap<Name, LinkedHashSet<C>> constraintMap) {
+    private <C extends Constraint> List<C> getConstraints(Table table, HashMap<Identifier, LinkedHashSet<C>> constraintMap) {
         checkTableExists(table);
-        Name tableName = table.getNameInstance();
+        Identifier tableName = table.getIdentifier();
         LinkedHashSet<C> constraintsForTable = constraintMap.get(tableName);
         if (constraintsForTable == null) {
             return new ArrayList<>();

@@ -6,7 +6,7 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
+import org.schemaanalyst.util.collection.NamedEntitySet;
 
 /**
  * Represents a database table.
@@ -16,7 +16,7 @@ public class Table extends NamedEntity
                    implements Duplicable<Table>, Serializable {
 
     private static final long serialVersionUID = 781185006248617033L;    
-    private NamedEntityInsertOrderedSet<Column> columns;
+    private NamedEntitySet<Column> columns;
 
     /**
      * Constructs a Table.
@@ -28,7 +28,7 @@ public class Table extends NamedEntity
                     "Table names cannot be null");
         }        
         setName(name);
-        columns = new NamedEntityInsertOrderedSet<Column>();
+        columns = new NamedEntitySet<Column>();
     }
 
     /** 

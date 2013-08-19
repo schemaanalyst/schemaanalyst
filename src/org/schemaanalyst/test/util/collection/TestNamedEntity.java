@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.collection;
+package org.schemaanalyst.test.util.collection;
 
 import org.junit.Test;
 import org.schemaanalyst.util.collection.NamedEntity;

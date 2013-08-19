@@ -7,7 +7,7 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
+import org.schemaanalyst.util.collection.NamedEntitySet;
 
 /**
  * Abstract superclass for integrity constrains that potentially involve
@@ -19,7 +19,7 @@ import org.schemaanalyst.util.collection.NamedEntityInsertOrderedSet;
 public abstract class MultiColumnConstraint extends Constraint {
 
     private static final long serialVersionUID = 173815859465417000L;
-    protected NamedEntityInsertOrderedSet<Column> columns;
+    protected NamedEntitySet<Column> columns;
 
     /**
      * Constructor.
@@ -57,7 +57,7 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param columns The columns involved in the integrity constraint.
      */
     public void setColumns(Iterable<Column> columns) {
-        this.columns = new NamedEntityInsertOrderedSet<Column>();
+        this.columns = new NamedEntitySet<Column>();
         for (Column column : columns) {
             if (!table.hasColumn(column)) {
                 throw new SQLRepresentationException(

@@ -2,14 +2,14 @@ package org.schemaanalyst.util.collection;
 
 import java.io.Serializable;
 
-public class Name implements Serializable {
+public class Identifier implements Serializable {
 
     private static final long serialVersionUID = -6918681791248562084L;
 
     private String name;
     private String caseInsensitiveName;
     
-    public Name(String name) {
+    public Identifier(String name) {
         this.name = name;
         if (name != null) {
             this.caseInsensitiveName = name.toLowerCase();
@@ -39,7 +39,7 @@ public class Name implements Serializable {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Name other = (Name) obj;
+        Identifier other = (Identifier) obj;
         if (caseInsensitiveName == null) {
             if (other.caseInsensitiveName != null)
                 return false;

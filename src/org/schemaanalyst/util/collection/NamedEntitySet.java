@@ -5,79 +5,94 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.StringUtils;
 
-public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
-        Set<E>, Duplicable<NamedEntityInsertOrderedSet<E>>, Serializable {
+public class NamedEntitySet<E extends NamedEntity> implements
+        Set<E>, Duplicable<NamedEntitySet<E>>, Serializable {
 
     private static final long serialVersionUID = -20454495160065002L;
 
-    private LinkedHashMap<Name, E> elements;
+    private List<E> elements;
 
-    public NamedEntityInsertOrderedSet() {
-        elements = new LinkedHashMap<>();
+    public NamedEntitySet() {
+        elements = new ArrayList<>();
     }
 
     @Override
     public boolean add(E element) {
-        Name name = element.getNameInstance();
         if (contains(element)) {
             return false;
         }
-        elements.put(name, element);
+        elements.add(element);
         return true;
     }
   
     public E get(String string) {
-        return get(new Name(string));
+        return get(new Identifier(string));
     }
     
-    public E get(Name name) {
-        return elements.get(name);
+    public E get(Identifier identifier) {
+        for (E element : elements) {
+            if (element.getIdentifier().equals(identifier)) {
+                return element;
+            }
+        }
+        return null;
     }
     
-    protected Name nameFor(Object o) {
+    protected Identifier nameFor(Object o) {
         if (o instanceof String) {
-            return new Name((String) o);
-        } else if (o instanceof Name) {
-            return (Name) o;
+            return new Identifier((String) o);
+        } else if (o instanceof Identifier) {
+            return (Identifier) o;
         } else if (o instanceof NamedEntity) {
-            return ((NamedEntity) o).getNameInstance();
+            return ((NamedEntity) o).getIdentifier();
         }         
         return null;
     }
     
     @Override
     public boolean contains(Object o) {
-        Name name = nameFor(o);        
-        if (name == null) {
+        Identifier identifier = nameFor(o);        
+        if (identifier == null) {
             return false;
         }
-        return elements.containsKey(name);
+        for (E element : elements) {
+            if (element.getIdentifier().equals(identifier)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean remove(Object o) {
-        Name name = nameFor(o);       
-        if (name == null) {
+        Identifier identifier = nameFor(o);       
+        if (identifier == null) {
             return false;
         }
-        return elements.remove(name) != null;                        
+        for (int i=0; i < elements.size(); i++) {
+            E element = elements.get(i);
+            if (element.getIdentifier().equals(identifier)) {
+                elements.remove(i);
+                return true;
+            }
+        }
+        return false;                        
     }
 
     @Override
     public Iterator<E> iterator() {
-        return elements.values().iterator();
+        return elements.iterator();
     }
     
     @Override
-    public NamedEntityInsertOrderedSet<E> duplicate() {
-        NamedEntityInsertOrderedSet<E> duplicate = new NamedEntityInsertOrderedSet<>();
+    public NamedEntitySet<E> duplicate() {
+        NamedEntitySet<E> duplicate = new NamedEntitySet<>();
         for (E element : this) {
             duplicate.add(element);
         }
@@ -204,7 +219,7 @@ public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
         if (getClass() != obj.getClass())
             return false;
         @SuppressWarnings("rawtypes")
-        NamedEntityInsertOrderedSet other = (NamedEntityInsertOrderedSet) obj;
+        NamedEntitySet other = (NamedEntitySet) obj;
         if (elements == null) {
             if (other.elements != null)
                 return false;
@@ -215,6 +230,6 @@ public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
     
     @Override
     public String toString() {
-        return "{" + StringUtils.implode(elements.values()) + "}";
+        return "{" + StringUtils.implode(elements) + "}";
     }
 }
