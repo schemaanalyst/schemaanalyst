@@ -6,13 +6,13 @@ import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicable;
 
 /**
- * {@link IteratingSupplier} is a {@link Supplier} that iterates over an
- * intermediary list of objects that are used to extract specific components for
- * mutation. For example, in mutating lists of <tt>PRIMARY KEY</tt> columns, a
- * supplier may need to iterate over the list of
+ * {@link IntermediaryIteratingSupplier} is a {@link Supplier} that iterates
+ * over an intermediary list of objects that are used to extract specific
+ * components for mutation. For example, in mutating lists of
+ * <tt>PRIMARY KEY</tt> columns, a supplier may need to iterate over the list of
  * {@link org.schemaanalyst.sqlrepresentation.Table} objects obtained from a
  * {@link org.schemaanalyst.sqlrepresentation.Schema}.
- * {@link IteratingSupplier} provides common code to ease this task.
+ * {@link IntermediaryIteratingSupplier} provides common code to ease this task.
  * 
  * @author Phil McMinn
  * 
@@ -28,22 +28,26 @@ import org.schemaanalyst.util.Duplicable;
  *            a <tt>PRIMARY KEY</tt>)
  */
 
-public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends
-		Supplier<A, C> {
+public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, C>
+		extends Supplier<A, C> {
 
 	private List<I> intermediaries, duplicateIntermediaries;
 	private int index;
+	private boolean initialised, haveCurrent;
+
+	public IntermediaryIteratingSupplier() {
+		initialised = false;
+	}
 
 	/**
-	 * Constructor.
-	 * 
-	 * @param originalArtefact
-	 *            the artefact to be mutated.
+	 * {@inheritDoc}
 	 */
-	public IteratingSupplier(A originalArtefact) {
-		super(originalArtefact);
+	public void initialise(A originalArtefact) {
+		super.initialise(originalArtefact);
 		intermediaries = getIntermediaries(originalArtefact);
 		index = -1;
+		initialised = true;
+		haveCurrent = false;
 	}
 
 	/**
@@ -51,7 +55,7 @@ public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends
 	 */
 	@Override
 	public boolean hasNext() {
-		return index + 1 < intermediaries.size();
+		return initialised && index + 1 < intermediaries.size();
 	}
 
 	/**
@@ -59,7 +63,7 @@ public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends
 	 */
 	@Override
 	public boolean haveCurrent() {
-		return index >= 0 && index < intermediaries.size();
+		return initialised && haveCurrent;
 	}
 
 	/**
@@ -68,8 +72,9 @@ public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends
 	@Override
 	public C getNextComponent() {
 		boolean hasNext = hasNext();
+		haveCurrent = hasNext;
 		index++;
-		if (hasNext) {			
+		if (hasNext) {
 			return getComponentFromIntermediary(originalArtefact,
 					intermediaries.get(index));
 		} else {
@@ -121,12 +126,33 @@ public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends
 	/**
 	 * Extracts the component for mutation from the current intermediary
 	 * (returned by {@link #getDuplicateIntermediary()}).
+	 * 
+	 * @param artefact
+	 *            the artefact from which to get the component.
+	 * @param intermediary
+	 *            the intermediary to be used.
 	 */
-	protected abstract C getComponentFromIntermediary(A artefact, I item);
+	protected abstract C getComponentFromIntermediary(A artefact, I intermediary);
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public abstract void putComponentBackInDuplicate(C component);
+	public void putComponentBackInDuplicate(C component) {
+        if (!haveCurrent()) {
+            throw new MutationException("Cannot put component back in duplicate when there is no current duplicate");
+        }		
+		putComponentBackInIntermediary(getDuplicateIntermediary(), component);
+	}
+
+	/**
+	 * Puts the component back in the intermediary item.
+	 * 
+	 * @param intermediary
+	 *            the intermediary to be used.
+	 * @param componentn
+	 *            the component to put back.
+	 */
+	protected abstract void putComponentBackInIntermediary(I intermediary,
+			C Component);
 }

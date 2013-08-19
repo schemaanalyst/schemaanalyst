@@ -10,14 +10,9 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 import static org.junit.Assert.*;
 
-public class TestIteratingSupplier {
+public class TestIntermediaryIteratingSupplier {
 
 	class MockTableIteratingSupplier extends TableIteratingSupplier<Column> {
-
-		public MockTableIteratingSupplier(Schema schema) {
-			super(schema);
-			// TODO Auto-generated constructor stub
-		}
 
 		@Override
 		protected Column getComponentFromIntermediary(Schema schema, Table table) {
@@ -25,7 +20,7 @@ public class TestIteratingSupplier {
 		}
 
 		@Override
-		public void putComponentBackInDuplicate(Column component) {
+		public void putComponentBackInIntermediary(Table table, Column component) {
 			// TODO Auto-generated method stub			
 		}
 	}
@@ -33,7 +28,9 @@ public class TestIteratingSupplier {
 	@Test 
 	public void testNoTables() {
 		Schema schema = new Schema("schema");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);
+		
 		assertFalse(supplier.hasNext());
 		assertNull(supplier.getNextComponent());
 		assertFalse(supplier.haveCurrent());
@@ -42,7 +39,9 @@ public class TestIteratingSupplier {
 	@Test(expected=MutationException.class) 
 	public void testNoTablesMakeDuplicateException() {
 		Schema schema = new Schema("schema");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);		
+		
 		assertFalse(supplier.hasNext());
 		assertNull(supplier.getNextComponent());
 		assertFalse(supplier.haveCurrent());
@@ -53,7 +52,9 @@ public class TestIteratingSupplier {
 	@Test(expected=MutationException.class) 
 	public void testNoTablesGetDuplicateComponentException() {
 		Schema schema = new Schema("schema");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);			
+		
 		assertFalse(supplier.hasNext());
 		assertNull(supplier.getNextComponent());
 		assertFalse(supplier.haveCurrent());
@@ -65,7 +66,8 @@ public class TestIteratingSupplier {
 	public void testOneTable() {
 		Schema schema = new Schema("schema");
 		schema.createTable("table");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);
 		
 		assertTrue(supplier.hasNext());
 		assertNotNull(supplier.getNextComponent());		
@@ -80,8 +82,9 @@ public class TestIteratingSupplier {
 	public void testTableSupplyExhaustedMakeDuplicateException() {
 		Schema schema = new Schema("schema");
 		schema.createTable("table");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
-
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();
+		supplier.initialise(schema);
+		
 		assertTrue(supplier.hasNext());
 		assertNotNull(supplier.getNextComponent());		
 		assertTrue(supplier.haveCurrent());
@@ -97,7 +100,8 @@ public class TestIteratingSupplier {
 	public void testTableSupplyExhaustedGetDuplicateComponentException() {
 		Schema schema = new Schema("schema");
 		schema.createTable("table");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);			
 
 		assertTrue(supplier.hasNext());
 		assertNotNull(supplier.getNextComponent());		
@@ -115,7 +119,8 @@ public class TestIteratingSupplier {
 		Schema schema = new Schema("schema");
 		schema.createTable("table1");
 		schema.createTable("table2");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);			
 		
 		assertTrue(supplier.hasNext());
 		assertNotNull(supplier.getNextComponent());		
@@ -134,7 +139,8 @@ public class TestIteratingSupplier {
 	public void testCanMakeSeveralDuplicates() {
 		Schema schema = new Schema("schema");
 		schema.createTable("table");
-		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier();	
+		supplier.initialise(schema);	
 		
 		assertTrue(supplier.hasNext());
 		assertNotNull(supplier.getNextComponent());		

@@ -21,8 +21,9 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test
     public void testNoTables() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
-
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
+        
         assertFalse(
                 "If there are no tables in the schema getNextComponent should return null",
                 supplier.hasNext());
@@ -36,8 +37,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test(expected=MutationException.class) 
     public void testNoTablesException1() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
-
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getNextComponent();
         supplier.getDuplicateComponent();
     }  
@@ -45,8 +46,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test(expected=MutationException.class) 
     public void testNoTablesException2() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
-
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getNextComponent();
         supplier.makeDuplicate();
     }  
@@ -54,8 +55,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test(expected=MutationException.class) 
     public void testNoTablesException3() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
-
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getNextComponent();
         supplier.getDuplicateComponent();
     }  
@@ -63,8 +64,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test(expected=MutationException.class) 
     public void testNoTablesException4() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
-
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getNextComponent();
         supplier.putComponentBackInDuplicate(null);
     }    
@@ -72,28 +73,32 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
     @Test(expected=MutationException.class) 
     public void testNotInitialisedException1() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getDuplicateComponent();
     }  
     
     @Test(expected=MutationException.class) 
     public void testNotInitialisedException2() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.makeDuplicate();
     }  
 
     @Test(expected=MutationException.class) 
     public void testNotInitialisedException3() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.getDuplicateComponent();
     }  
     
     @Test(expected=MutationException.class) 
     public void testNotInitialisedException4() {
         Schema schema = new Schema("test");
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         supplier.putComponentBackInDuplicate(null);
     }      
     
@@ -103,7 +108,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
         Table table = schema.createTable("table");
         Column column = table.createColumn("column", new IntDataType());
         
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         
         assertTrue(
                 "There is one table, so hasNext() should return true",
@@ -171,7 +177,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
         Column column = table.createColumn("column", new IntDataType());
         schema.createPrimaryKeyConstraint(table, column);
         
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         
         Pair<List<Column>> nextComponent = supplier.getNextComponent(); 
         List<Column> constraintColumns = nextComponent.getFirst();
@@ -231,7 +238,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
         Column column2 = table.createColumn("column2", new RealDataType());
         schema.createPrimaryKeyConstraint(table, column1);
         
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         
         Pair<List<Column>> nextComponent = supplier.getNextComponent(); 
         
@@ -299,7 +307,8 @@ public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {
         Column column2 = table2.createColumn("column2", new IntDataType());
         schema.createPrimaryKeyConstraint(table2, column2);     
         
-        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier supplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        supplier.initialise(schema);
         
         Pair<List<Column>> nextComponent = supplier.getNextComponent(); 
         

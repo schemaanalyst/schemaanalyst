@@ -9,43 +9,43 @@ import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilterWalker;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
-public class InExpressionListSupplier extends IteratingSupplier<Expression, ExpressionPath, List<Expression>> {
+public class InExpressionListSupplier extends IntermediaryIteratingSupplier<Expression, ExpressionPath, List<Expression>> {
 
-    private ExpressionFilter expressionFilter;
-    
-    public InExpressionListSupplier(Expression originalArtefact) {
-        super(originalArtefact);
-        this.expressionFilter = new ExpressionFilter() {            
-            @Override
-            public boolean accept(Expression e) {
-                if (e instanceof InExpression) {
-                    InExpression inExpression = (InExpression) e;
-                    if (inExpression.getRHS() instanceof ListExpression) {
-                        return true;
-                    }
+    private ExpressionFilter expressionFilter = new ExpressionFilter() {            
+        @Override
+        public boolean accept(Expression e) {
+            if (e instanceof InExpression) {
+                InExpression inExpression = (InExpression) e;
+                if (inExpression.getRHS() instanceof ListExpression) {
+                    return true;
                 }
-                return false;
             }
-        };
+            return false;
+        }
+    }; 
+    
+    @Override
+    public void initialise(Expression expression) {
+    	super.initialise(expression);
     }
 
     @Override
-    protected List<ExpressionPath> getIntermediaries(Expression artefact) {
-        ExpressionFilterWalker expressionWalker = new ExpressionFilterWalker(artefact);
-        return expressionWalker.filter(expressionFilter);
+    protected List<ExpressionPath> getIntermediaries(Expression expression) {
+        ExpressionFilterWalker expressionWalker = new ExpressionFilterWalker(expression);
+        List<ExpressionPath> paths = expressionWalker.filter(expressionFilter);
+        return paths;
     }
 
     @Override
     protected List<Expression> getComponentFromIntermediary(Expression expression, ExpressionPath path) {
-        InExpression inExpression = (InExpression) expression.getSubexpression(path);
+    	InExpression inExpression = (InExpression) expression.getSubexpression(path);
         ListExpression rhs = (ListExpression) inExpression.getRHS();
         return rhs.getSubexpressions();
     }
 
     @Override
-    public void putComponentBackInDuplicate(List<Expression> subexpressions) {
-        ExpressionPath path = getDuplicateIntermediary();   
-        InExpression inExpression = (InExpression) currentDuplicate.getSubexpression(path);
+    public void putComponentBackInIntermediary(ExpressionPath expressionPath, List<Expression> subexpressions) {
+        InExpression inExpression = (InExpression) currentDuplicate.getSubexpression(expressionPath);
         ListExpression rhs = (ListExpression) inExpression.getRHS();
         rhs.setSubexpressions(subexpressions);
     }

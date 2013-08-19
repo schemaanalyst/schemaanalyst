@@ -250,6 +250,19 @@ public class Schema extends NamedEntity
     public List<CheckConstraint> getCheckConstraints(Table table) {
         return getConstraints(table, checkConstraints);
     }
+    
+    /**
+     * Returns a list of all CHECK constraints defined on a schema.
+     * @param table The table for which the constraints are required.  
+     * @return An unmodifiable list of the FOREIGN KEYs on this table.
+     */
+    public List<CheckConstraint> getAllCheckConstraints() {
+        List<CheckConstraint> allConstraints = new ArrayList<CheckConstraint>();
+        for (Table table : tables) {
+            allConstraints.addAll(getConstraints(table, checkConstraints));
+        }
+        return allConstraints;
+    }      
 
     /**
      * Creates a FOREIGN KEY constraint and adds it to the table.

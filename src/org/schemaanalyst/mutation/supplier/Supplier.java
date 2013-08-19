@@ -5,14 +5,13 @@ import org.schemaanalyst.util.Duplicable;
 
 /**
  * <p>
- * {@link Supplier} and
- * {@link org.schemaanalyst.mutation.mutator.Mutator} are designed to
- * separate the two concerns of implementing mutation in SchemaAnalyst of 1)
- * providing an algorithm underlying the mutation operator (e.g. "removal
- * elements one-by-one from a list") and 2) obtaining access to the specific
- * components in a duplicate of the original artefact that are targeted for
- * mutation (e.g. the primay key columns of a constraint, forming part of a
- * schema).
+ * {@link Supplier} and {@link org.schemaanalyst.mutation.mutator.Mutator} are
+ * designed to separate the two concerns of implementing mutation in
+ * SchemaAnalyst of 1) providing an algorithm underlying the mutation operator
+ * (e.g. "removal elements one-by-one from a list") and 2) obtaining access to
+ * the specific components in a duplicate of the original artefact that are
+ * targeted for mutation (e.g. the primay key columns of a constraint, forming
+ * part of a schema).
  * </p>
  * 
  * <p>
@@ -28,9 +27,11 @@ import org.schemaanalyst.util.Duplicable;
  * </p>
  * 
  * <p>
- * Following construction, {@link Supplier} is used as follows (see the source
- * code of {@link org.schemaanalyst.mutation.mutator.Mutator#mutate()} for an
- * actual example). First, we check that there is a component in the artefact to
+ * Following construction, and a call to the {@link #initialise(Duplicable)
+ * method to set the original artefact, {@link Supplier} is used as follows (see
+ * the source code of
+ * {@link org.schemaanalyst.mutation.mutator.Mutator#mutate()} for an actual
+ * example). First, we check that there is a component in the artefact to
  * mutate, through a call to {@link #hasNext()}. If the method call returns
  * true, we get a reference version of the component to mutate from the original
  * artefact using {@link #getNextComponent()} (as the original, this object is
@@ -69,12 +70,13 @@ public abstract class Supplier<A extends Duplicable<A>, C> {
 	protected A currentDuplicate;
 
 	/**
-	 * Constructor.
+	 * Initialises the supplier and sets the original artefact to be mutated and
+	 * used as a "reference" for mutations.
 	 * 
 	 * @param originalArtefact
 	 *            the artefact to be mutated.
 	 */
-	public Supplier(A originalArtefact) {
+	public void initialise(A originalArtefact) {
 		this.originalArtefact = originalArtefact;
 	}
 

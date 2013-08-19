@@ -7,5 +7,9 @@ public class MutationException extends RuntimeException {
 	public MutationException(String message) {
 		super(message);
 	}
+	
+	public MutationException(Exception e) {
+		super(e);
+	}	
 
 }

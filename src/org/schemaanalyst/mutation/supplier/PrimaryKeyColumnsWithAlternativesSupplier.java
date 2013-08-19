@@ -3,7 +3,6 @@ package org.schemaanalyst.mutation.supplier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -11,10 +10,6 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
 public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIteratingSupplier<Pair<List<Column>>> {
-
-    public PrimaryKeyColumnsWithAlternativesSupplier(Schema schema) {
-        super(schema);
-    }
 
     @Override
     protected Pair<List<Column>> getComponentFromIntermediary(Schema schema, Table table) {
@@ -35,15 +30,9 @@ public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIteratingSup
     }
 
     @Override
-    public void putComponentBackInDuplicate(Pair<List<Column>> columnListPair) {
-        if (!haveCurrent()) {
-            throw new MutationException("Cannot put component back in duplicate when there is no current duplicate");
-        }
-        
+    public void putComponentBackInIntermediary(Table table, Pair<List<Column>> columnListPair) {
         // the alternativeColumns (columnListPair.getSecond()) are ignored here
         List<Column> constraintColumns = columnListPair.getFirst();
-
-        Table table = getDuplicateIntermediary();
 
         if (constraintColumns.size() == 0) {
             currentDuplicate.removePrimaryKeyConstraint(table);

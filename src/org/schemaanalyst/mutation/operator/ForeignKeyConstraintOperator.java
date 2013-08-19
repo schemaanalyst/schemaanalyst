@@ -19,7 +19,8 @@ public class ForeignKeyConstraintOperator extends MutationPipeline<Schema> {
     }
     
     public List<Mutant<Schema>> mutate() {
-        ForeignKeyColumnsSupplier supplier = new ForeignKeyColumnsSupplier(schema);
+        ForeignKeyColumnsSupplier supplier = new ForeignKeyColumnsSupplier();
+        supplier.initialise(schema);
         ListElementRemover<Schema, Pair<Column>> mutator = new ListElementRemover<>(supplier);
         return mutator.mutate();
     }

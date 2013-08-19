@@ -39,7 +39,7 @@ public class TestExpressionTreeWithExpressionPath {
 	@Test
 	public void testEmptyPath() {		
 		ExpressionPath path = new ExpressionPath();
-		assertNull(testExpression.getSubexpression(path));		
+		assertSame(testExpression, testExpression.getSubexpression(path));		
 	}
 	
 	@Test

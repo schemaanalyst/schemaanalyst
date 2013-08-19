@@ -23,15 +23,17 @@ public class PrimaryKeyConstraintOperator extends MutationPipeline<Schema> {
     public List<Mutant<Schema>> mutate() {
         List<Mutant<Schema>> mutants = new ArrayList<>();
         
-        PrimaryKeyColumnsSupplier columnsSupplier = new PrimaryKeyColumnsSupplier(schema);
+        PrimaryKeyColumnsSupplier columnsSupplier = new PrimaryKeyColumnsSupplier();
+        columnsSupplier.initialise(schema);
         ListElementRemover<Schema, Column> columnRemover = new ListElementRemover<>(columnsSupplier);
         mutants.addAll(columnRemover.mutate());
         
-        PrimaryKeyColumnsWithAlternativesSupplier columnsWithAlternativesSupplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        PrimaryKeyColumnsWithAlternativesSupplier columnsWithAlternativesSupplier = new PrimaryKeyColumnsWithAlternativesSupplier();
+        columnsWithAlternativesSupplier.initialise(schema);
         ListElementAdder<Schema, Column> columnAdder = new ListElementAdder<>(columnsWithAlternativesSupplier);
         mutants.addAll(columnAdder.mutate());
         
-        columnsWithAlternativesSupplier = new PrimaryKeyColumnsWithAlternativesSupplier(schema);
+        columnsWithAlternativesSupplier.initialise(schema); // restart the process
         ListElementAdder<Schema, Column> columnExchanger = new ListElementAdder<>(columnsWithAlternativesSupplier);
         mutants.addAll(columnExchanger.mutate());
         

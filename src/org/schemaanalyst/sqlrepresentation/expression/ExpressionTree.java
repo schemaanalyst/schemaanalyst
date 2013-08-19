@@ -14,16 +14,10 @@ public abstract class ExpressionTree implements Expression {
     @Override
     public Expression getSubexpression(ExpressionPath expressionPath) {
         List<Integer> indices = expressionPath.getIndices();
-        if (indices.isEmpty()) {
-            return null;
-        }
-        
         Expression expression = this;
-        System.out.println("Expression is " + expression);
         Iterator<Integer> iterator = indices.iterator();
         while (iterator.hasNext()) {
-        	expression = expression.getSubexpression(iterator.next());
-        	System.out.println("Expression is " + expression);        	
+        	expression = expression.getSubexpression(iterator.next());        	
         }
         return expression;
     }    

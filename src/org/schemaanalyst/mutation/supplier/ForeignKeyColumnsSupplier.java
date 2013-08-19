@@ -7,11 +7,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
-public class ForeignKeyColumnsSupplier extends IteratingSupplier<Schema, ForeignKeyConstraint, List<Pair<Column>>> {
-
-    public ForeignKeyColumnsSupplier(Schema schema) {
-        super(schema);        
-    }
+public class ForeignKeyColumnsSupplier extends IntermediaryIteratingSupplier<Schema, ForeignKeyConstraint, List<Pair<Column>>> {
 
     @Override
     protected List<ForeignKeyConstraint> getIntermediaries(Schema schema) {
@@ -32,7 +28,7 @@ public class ForeignKeyColumnsSupplier extends IteratingSupplier<Schema, Foreign
     }
     
     @Override
-    public void putComponentBackInDuplicate(List<Pair<Column>> columnPairs) {
+    public void putComponentBackInIntermediary(ForeignKeyConstraint foreignKeyConstraint, List<Pair<Column>> columnPairs) {
         List<Column> columns = new ArrayList<>();
         List<Column> referenceColumns = new ArrayList<>();        
         
@@ -41,7 +37,6 @@ public class ForeignKeyColumnsSupplier extends IteratingSupplier<Schema, Foreign
             referenceColumns.add(columnPair.getSecond());
         }
         
-        ForeignKeyConstraint foreignKeyConstraint = getDuplicateIntermediary();        
         foreignKeyConstraint.setColumns(columns);
         foreignKeyConstraint.setReferenceColumns(referenceColumns);
     }

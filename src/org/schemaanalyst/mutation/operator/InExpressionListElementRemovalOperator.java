@@ -20,7 +20,9 @@ public class InExpressionListElementRemovalOperator extends MutationPipeline<Exp
     public List<Mutant<Expression>> mutate() {
         List<Mutant<Expression>> mutants = new ArrayList<>();
         
-        InExpressionListSupplier supplier = new InExpressionListSupplier(expression);
+        InExpressionListSupplier supplier = new InExpressionListSupplier();
+        supplier.initialise(expression);
+        
         ListElementRemover<Expression, Expression> inExpressionListElementRemover = 
                 new ListElementRemover<>(supplier);        
         mutants.addAll(inExpressionListElementRemover.mutate());        

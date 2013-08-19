@@ -37,10 +37,6 @@ public class TestListElementRemover {
 
         boolean hasNext = true, haveCurrent = false;
         
-        public ListSupplier(MockOuterObject originalArtefact) {
-            super(originalArtefact);
-        }
-        
         public boolean hasNext() {
             return hasNext;
         }
@@ -72,7 +68,9 @@ public class TestListElementRemover {
     public void testOneElementList() {
         List<Integer> elements = Arrays.asList(1);
         MockOuterObject mockOuterObject = new MockOuterObject(elements);
-        ListSupplier listSupplier = new ListSupplier(mockOuterObject);
+        ListSupplier listSupplier = new ListSupplier();
+        listSupplier.initialise(mockOuterObject);        
+
         ListElementRemover<MockOuterObject, Integer> mutator = new ListElementRemover<>(listSupplier);
         List<Mutant<MockOuterObject>> mutants = mutator.mutate();
         
@@ -89,7 +87,9 @@ public class TestListElementRemover {
     public void testTwoElementList() {
         List<Integer> elements = Arrays.asList(1, 2);
         MockOuterObject mockOuterObject = new MockOuterObject(elements);
-        ListSupplier listSupplier = new ListSupplier(mockOuterObject);
+        ListSupplier listSupplier = new ListSupplier();
+        listSupplier.initialise(mockOuterObject);
+        
         ListElementRemover<MockOuterObject, Integer> mutator = new ListElementRemover<>(listSupplier);
         List<Mutant<MockOuterObject>> mutants = mutator.mutate();
         
