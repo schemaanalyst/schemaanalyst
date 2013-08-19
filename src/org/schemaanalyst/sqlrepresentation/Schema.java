@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
@@ -15,8 +16,8 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.Identifier;
-import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntitySet;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Represents a database schema.
@@ -24,11 +25,11 @@ import org.schemaanalyst.util.collection.NamedEntitySet;
  * @author Phil McMinn
  *
  */
-public class Schema extends NamedEntity 
+public class Schema extends IdentifiableEntity 
                     implements Serializable, Duplicable<Schema> {
 
     private static final long serialVersionUID = 7338170433995168952L;
-    private NamedEntitySet<Table> tables;
+    private IdentifiableEntitySet<Table> tables;
 
     private HashMap<Identifier, PrimaryKeyConstraint> primaryKeyConstraints;
     private HashMap<Identifier, LinkedHashSet<CheckConstraint>> checkConstraints;
@@ -46,7 +47,7 @@ public class Schema extends NamedEntity
                     "Schema names cannot be null");
         }
         setName(name);
-        this.tables = new NamedEntitySet<>();
+        this.tables = new IdentifiableEntitySet<>();
         
         primaryKeyConstraints = new HashMap<>();
         checkConstraints = new HashMap<>();

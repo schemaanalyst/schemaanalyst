@@ -1,6 +1,5 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
-import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 
 /**
  * A class for visiting the different subclasses of constraint.

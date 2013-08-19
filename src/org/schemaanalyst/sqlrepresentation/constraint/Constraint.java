@@ -6,8 +6,8 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntitySet;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Abstract super class of all integrity constraints.
@@ -15,7 +15,7 @@ import org.schemaanalyst.util.collection.NamedEntitySet;
  * @author Phil McMinn
  * 
  */
-public abstract class Constraint extends NamedEntity implements
+public abstract class Constraint extends IdentifiableEntity implements
         Duplicable<Constraint>, Serializable {
 
     private static final long serialVersionUID = -1552612200017351725L;
@@ -77,11 +77,14 @@ public abstract class Constraint extends NamedEntity implements
     }
 
     @Override
+    /**
+     * The <tt>equals</tt> method for constraints ignores names assigned,
+     * taking into account other attributes only.
+     *  
+     */
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (!super.equals(obj))
-            return false;
         if (getClass() != obj.getClass())
             return false;
         Constraint other = (Constraint) obj;
@@ -93,9 +96,9 @@ public abstract class Constraint extends NamedEntity implements
         return true;
     }
 
-    protected static NamedEntitySet<Column> remapColumns(
-            Table table, NamedEntitySet<Column> columns) {
-        NamedEntitySet<Column> remappedColumns = new NamedEntitySet<>();
+    protected static IdentifiableEntitySet<Column> remapColumns(
+            Table table, IdentifiableEntitySet<Column> columns) {
+        IdentifiableEntitySet<Column> remappedColumns = new IdentifiableEntitySet<>();
         for (Column column : columns) {
             remappedColumns.add(remapColumn(table, column));
         }

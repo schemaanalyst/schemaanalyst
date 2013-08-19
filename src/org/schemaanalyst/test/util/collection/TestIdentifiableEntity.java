@@ -1,13 +1,13 @@
 package org.schemaanalyst.test.util.collection;
 
 import org.junit.Test;
-import org.schemaanalyst.util.collection.NamedEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
 
 import static org.junit.Assert.*;
 
-public class TestNamedEntity {
+public class TestIdentifiableEntity {
 
-    class NamedEntityMock extends NamedEntity {
+    class NamedEntityMock extends IdentifiableEntity {
         public NamedEntityMock(String str) {
             super(str);
         }        

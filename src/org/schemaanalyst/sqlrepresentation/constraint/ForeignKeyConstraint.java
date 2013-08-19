@@ -7,7 +7,7 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.collection.NamedEntitySet;
+import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Represents foreign key constraints.
@@ -19,7 +19,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 
     private static final long serialVersionUID = 373214484205495500L;
     private Table referenceTable;
-    private NamedEntitySet<Column> referenceColumns;
+    private IdentifiableEntitySet<Column> referenceColumns;
 
     /**
      * Constructor.
@@ -118,7 +118,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      */
     public void setReferenceColumns(Iterable<Column> referenceColumns) {
 
-        this.referenceColumns = new NamedEntitySet<>();
+        this.referenceColumns = new IdentifiableEntitySet<>();
         for (Column referenceColumn : referenceColumns) {
             if (!referenceTable.hasColumn(referenceColumn)) {
                 throw new SQLRepresentationException("No such column \""

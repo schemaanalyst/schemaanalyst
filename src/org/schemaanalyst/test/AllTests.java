@@ -47,8 +47,8 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.sqlrepresentation.expression.TestExpressions.class,
 	org.schemaanalyst.test.util.collection.TestIdentifier.class,
 	org.schemaanalyst.test.util.collection.TestLinkedHashBacking.class,
-	org.schemaanalyst.test.util.collection.TestNamedEntity.class,
-	org.schemaanalyst.test.util.collection.TestNamedEntitySet.class,
+	org.schemaanalyst.test.util.collection.TestIdentifiableEntity.class,
+	org.schemaanalyst.test.util.collection.TestIdentifiableEntitySet.class,
 	org.schemaanalyst.test.util.runner.TestRunner.class,
 	org.schemaanalyst.test.util.sql.TestSQLRepairer.class
 })

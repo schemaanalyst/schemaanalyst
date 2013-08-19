@@ -3,15 +3,15 @@ package org.schemaanalyst.test.util.collection;
 import java.util.Iterator;
 
 import org.junit.Test;
-import org.schemaanalyst.util.collection.NamedEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.Identifier;
-import org.schemaanalyst.util.collection.NamedEntitySet;
+import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 import static org.junit.Assert.*;
 
-public class TestNamedEntitySet {
+public class TestIdentifiableEntitySet {
 
-    class Person extends NamedEntity {
+    class Person extends IdentifiableEntity {
         
         int age;
         
@@ -49,7 +49,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testOneItem() {
-        NamedEntitySet<Person> set = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set = new IdentifiableEntitySet<>();
         Person p = new Person("Phil", 21); 
         
         assertEquals(0, set.size());
@@ -70,7 +70,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testTwoItems() {
-        NamedEntitySet<Person> set = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);
         
@@ -99,7 +99,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testDuplication() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -108,7 +108,7 @@ public class TestNamedEntitySet {
         set1.add(p2);
         set1.add(p3);
         
-        NamedEntitySet<Person> set2 = set1.duplicate();
+        IdentifiableEntitySet<Person> set2 = set1.duplicate();
         
         assertNotSame(set1, set2);
         assertEquals(set1, set2);
@@ -116,7 +116,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testEquals() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -125,11 +125,11 @@ public class TestNamedEntitySet {
         set1.add(p2);
         set1.add(p3);
         
-        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
-         
+        IdentifiableEntitySet<Person> set2 = new IdentifiableEntitySet<>();
+
+        set2.add(p3);
         set2.add(p1);
         set2.add(p2);
-        set2.add(p3);
         
         assertEquals(set1, set2);
         assertEquals(set1.hashCode(), set2.hashCode());
@@ -137,7 +137,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testEqualWithDifferentInstances() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -146,22 +146,22 @@ public class TestNamedEntitySet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set2 = new IdentifiableEntitySet<>();
         Person p1b = new Person("Phil", 21);
         Person p2b = new Person("Greg", 22);        
         Person p3b = new Person("Chris", 23);
         
+        set2.add(p3b);
         set2.add(p1b);
         set2.add(p2b);
-        set2.add(p3b); 
-                
+        
         assertEquals(set1, set2);
         assertEquals(set1.hashCode(), set2.hashCode());
     }
     
     @Test
     public void testContainsAll() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -170,7 +170,7 @@ public class TestNamedEntitySet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set2 = new IdentifiableEntitySet<>();
         Person p1b = new Person("Phil", 21);
         Person p2b = new Person("Greg", 22);        
         Person p3b = new Person("Chris", 23);
@@ -188,7 +188,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testRemove() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -212,7 +212,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testRemoveAll() {
-        NamedEntitySet<Person> set1 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
         Person p1a = new Person("Phil", 21);
         Person p2a = new Person("Greg", 22);        
         Person p3a = new Person("Chris", 23);
@@ -221,7 +221,7 @@ public class TestNamedEntitySet {
         set1.add(p2a);
         set1.add(p3a);
         
-        NamedEntitySet<Person> set2 = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set2 = new IdentifiableEntitySet<>();
         Person p1b = new Person("Phil", 21);        
         Person p3b = new Person("Chris", 23);
         
@@ -234,7 +234,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testToArraySuppliedArrayTooSmall() {
-        NamedEntitySet<Person> set = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -252,7 +252,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testToArraySuppliedArrayTooBig() {
-        NamedEntitySet<Person> set = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);
@@ -271,7 +271,7 @@ public class TestNamedEntitySet {
     
     @Test
     public void testToArraySuppliedArrayCorrectSize() {
-        NamedEntitySet<Person> set = new NamedEntitySet<>();
+        IdentifiableEntitySet<Person> set = new IdentifiableEntitySet<>();
         Person p1 = new Person("Phil", 21);
         Person p2 = new Person("Greg", 22);        
         Person p3 = new Person("Chris", 23);

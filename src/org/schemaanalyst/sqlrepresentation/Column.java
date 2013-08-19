@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.NamedEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
 
 /**
  * Represents a table column in a database schema.
@@ -12,7 +12,7 @@ import org.schemaanalyst.util.collection.NamedEntity;
  * @author Phil McMinn
  *
  */
-public class Column extends NamedEntity 
+public class Column extends IdentifiableEntity 
                     implements Duplicable<Column>, Serializable {
 
     private static final long serialVersionUID = -2680046452756410766L;

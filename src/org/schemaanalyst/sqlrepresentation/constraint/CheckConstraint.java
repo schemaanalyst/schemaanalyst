@@ -1,7 +1,6 @@
-package org.schemaanalyst.sqlrepresentation;
+package org.schemaanalyst.sqlrepresentation.constraint;
 
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 /**

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -11,14 +12,36 @@ import java.util.Set;
 import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.StringUtils;
 
-public class NamedEntitySet<E extends NamedEntity> implements
-        Set<E>, Duplicable<NamedEntitySet<E>>, Serializable {
+/**
+ * <p>
+ * {@link IdentifiableEntitySet} is a set where the elements are deemed to be
+ * unique if they have a different {@link Identifier} instance.
+ * </p>
+ * 
+ * <p>
+ * The set is backed by an {#link List} to maintain a set with insertion-order,
+ * making it similar to {#link java.util.LinkedHashSet} except key values
+ * ({#linnk Identifier} instances) are mutatable. With all Java collections,
+ * behaviour is undefined for mutatable key values in Map-backed sets, creating
+ * havoc with the backing HashMap or TreeMap. The downside of using a list
+ * backing is slower performance, but this collection is intended to be used to
+ * manage table columns etc., whose sizes tend to be relatively small.
+ * </p>
+ * 
+ * @author Phil McMinn
+ * 
+ * @param <E>
+ *            the type of element to store in the set.
+ */
+
+public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
+        Set<E>, Duplicable<IdentifiableEntitySet<E>>, Serializable {
 
     private static final long serialVersionUID = -20454495160065002L;
 
     private List<E> elements;
 
-    public NamedEntitySet() {
+    public IdentifiableEntitySet() {
         elements = new ArrayList<>();
     }
 
@@ -30,11 +53,11 @@ public class NamedEntitySet<E extends NamedEntity> implements
         elements.add(element);
         return true;
     }
-  
+
     public E get(String string) {
         return get(new Identifier(string));
     }
-    
+
     public E get(Identifier identifier) {
         for (E element : elements) {
             if (element.getIdentifier().equals(identifier)) {
@@ -43,21 +66,21 @@ public class NamedEntitySet<E extends NamedEntity> implements
         }
         return null;
     }
-    
+
     protected Identifier nameFor(Object o) {
         if (o instanceof String) {
             return new Identifier((String) o);
         } else if (o instanceof Identifier) {
             return (Identifier) o;
-        } else if (o instanceof NamedEntity) {
-            return ((NamedEntity) o).getIdentifier();
-        }         
+        } else if (o instanceof IdentifiableEntity) {
+            return ((IdentifiableEntity) o).getIdentifier();
+        }
         return null;
     }
-    
+
     @Override
     public boolean contains(Object o) {
-        Identifier identifier = nameFor(o);        
+        Identifier identifier = nameFor(o);
         if (identifier == null) {
             return false;
         }
@@ -71,28 +94,28 @@ public class NamedEntitySet<E extends NamedEntity> implements
 
     @Override
     public boolean remove(Object o) {
-        Identifier identifier = nameFor(o);       
+        Identifier identifier = nameFor(o);
         if (identifier == null) {
             return false;
         }
-        for (int i=0; i < elements.size(); i++) {
+        for (int i = 0; i < elements.size(); i++) {
             E element = elements.get(i);
             if (element.getIdentifier().equals(identifier)) {
                 elements.remove(i);
                 return true;
             }
         }
-        return false;                        
+        return false;
     }
 
     @Override
     public Iterator<E> iterator() {
         return elements.iterator();
     }
-    
+
     @Override
-    public NamedEntitySet<E> duplicate() {
-        NamedEntitySet<E> duplicate = new NamedEntitySet<>();
+    public IdentifiableEntitySet<E> duplicate() {
+        IdentifiableEntitySet<E> duplicate = new IdentifiableEntitySet<>();
         for (E element : this) {
             duplicate.add(element);
         }
@@ -116,14 +139,14 @@ public class NamedEntitySet<E extends NamedEntity> implements
         }
         return list;
     }
-    
+
     @Override
     public Object[] toArray() {
         Object[] a = new Object[size()];
         int i = 0;
         for (E element : this) {
             a[i] = element;
-            i ++;
+            i++;
         }
         return a;
     }
@@ -132,9 +155,10 @@ public class NamedEntitySet<E extends NamedEntity> implements
     @Override
     public <T> T[] toArray(T[] a) {
         int size = size();
-        
-        if (a.length < size) { 
-            // If array is too small, allocate the new one with the same component type
+
+        if (a.length < size) {
+            // If array is too small, allocate the new one with the same
+            // component type
             a = (T[]) Array.newInstance(a.getClass().getComponentType(), size);
         } else if (a.length > size) {
             // If array is to large, set the first unassigned element to null
@@ -142,8 +166,8 @@ public class NamedEntitySet<E extends NamedEntity> implements
         }
 
         int i = 0;
-        for (E e: this) {
-            // No need for checked cast - ArrayStoreException will be thrown 
+        for (E e : this) {
+            // No need for checked cast - ArrayStoreException will be thrown
             // if types are incompatible, just as required
             a[i] = (T) e;
             i++;
@@ -187,7 +211,7 @@ public class NamedEntitySet<E extends NamedEntity> implements
 
     @Override
     public void clear() {
-        elements.clear();   
+        elements.clear();
     }
 
     @Override
@@ -203,10 +227,13 @@ public class NamedEntitySet<E extends NamedEntity> implements
 
     @Override
     public int hashCode() {
+        // we have to revert to a HashSet temporarily to get
+        // a hashcode that is not dependent on object order 
+        // in the set.
+        HashSet<E> elementSet = new HashSet<>(elements);
         final int prime = 31;
         int result = 1;
-        result = prime * result
-                + ((elements == null) ? 0 : elements.hashCode());
+        result = prime * result + elementSet.hashCode();
         return result;
     }
 
@@ -218,16 +245,14 @@ public class NamedEntitySet<E extends NamedEntity> implements
             return false;
         if (getClass() != obj.getClass())
             return false;
-        @SuppressWarnings("rawtypes")
-        NamedEntitySet other = (NamedEntitySet) obj;
-        if (elements == null) {
-            if (other.elements != null)
-                return false;
-        } else if (!elements.equals(other.elements))
-            return false;
-        return true;
-    }   
-    
+        
+        HashSet<E> elementSet = new HashSet<>(elements);
+        
+        @SuppressWarnings({ "unchecked", "rawtypes" })
+        HashSet<?> otherElementSet = new HashSet<>(((IdentifiableEntitySet) obj).elements);
+        return elementSet.equals(otherElementSet);
+    }
+
     @Override
     public String toString() {
         return "{" + StringUtils.implode(elements) + "}";

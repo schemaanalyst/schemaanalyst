@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -36,7 +36,7 @@ public class ConstraintJavaWriter {
 
             String writeConstraint(Constraint constraint) {
                 args = new ArrayList<>();
-                if (constraint.hasName()) {
+                if (constraint.hasIdentifier()) {
                     args.add(javaWriter.writeString(constraint.getName()));
                 }
                 args.add(javaWriter.getVariableName(constraint.getTable()));

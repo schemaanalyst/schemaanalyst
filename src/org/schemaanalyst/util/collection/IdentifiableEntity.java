@@ -1,13 +1,13 @@
 package org.schemaanalyst.util.collection;
 
-public abstract class NamedEntity {
+public abstract class IdentifiableEntity {
 
     private Identifier id;
     
-    public NamedEntity() {        
+    public IdentifiableEntity() {        
     }
     
-    public NamedEntity(String str) {
+    public IdentifiableEntity(String str) {
         setName(str);
     }
     
@@ -19,8 +19,8 @@ public abstract class NamedEntity {
         id = new Identifier(str);
     }
     
-    public boolean hasName() {
-        return getName() != null;
+    public boolean hasIdentifier() {
+        return getIdentifier() != null;
     }
     
     public Identifier getIdentifier() {
@@ -43,7 +43,7 @@ public abstract class NamedEntity {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        NamedEntity other = (NamedEntity) obj;
+        IdentifiableEntity other = (IdentifiableEntity) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

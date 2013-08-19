@@ -1,6 +1,6 @@
 package org.schemaanalyst.sqlwriter;
 
-import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -98,7 +98,7 @@ public class ConstraintSQLWriter {
     }
 
     public String writeConstraintName(Constraint constraint) {
-        if (constraint.hasName()) {
+        if (constraint.hasIdentifier()) {
             return "CONSTRAINT " + constraint.getName() + " ";
         } else {
             return "";

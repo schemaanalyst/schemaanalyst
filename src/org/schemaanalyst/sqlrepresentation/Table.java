@@ -5,18 +5,18 @@ import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.Duplicable;
-import org.schemaanalyst.util.collection.NamedEntity;
-import org.schemaanalyst.util.collection.NamedEntitySet;
+import org.schemaanalyst.util.collection.IdentifiableEntity;
+import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Represents a database table.
  * @author Phil McMinn
  */
-public class Table extends NamedEntity
+public class Table extends IdentifiableEntity
                    implements Duplicable<Table>, Serializable {
 
     private static final long serialVersionUID = 781185006248617033L;    
-    private NamedEntitySet<Column> columns;
+    private IdentifiableEntitySet<Column> columns;
 
     /**
      * Constructs a Table.
@@ -28,7 +28,7 @@ public class Table extends NamedEntity
                     "Table names cannot be null");
         }        
         setName(name);
-        columns = new NamedEntitySet<Column>();
+        columns = new IdentifiableEntitySet<Column>();
     }
 
     /** 
