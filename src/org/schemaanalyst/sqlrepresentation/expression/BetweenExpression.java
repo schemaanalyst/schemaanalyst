@@ -69,10 +69,28 @@ public class BetweenExpression extends ExpressionTree {
                 return lhs;
             case RHS:
                 return rhs;
+            default:
+                throw new NonExistentSubexpressionException(this, index);                
         }
-        throw new NonExistentSubexpressionException(this, index);
     }
 
+    @Override
+    public void setSubexpression(int index, Expression subexpression) {
+        switch (index) {
+            case SUBJECT:
+                subject = subexpression;
+                break;                
+            case LHS:
+                lhs = subexpression;
+                break;
+            case RHS:
+                rhs = subexpression;
+                break;
+            default:
+                throw new NonExistentSubexpressionException(this, index);                
+        }
+    }        
+    
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);

@@ -11,17 +11,18 @@ import org.schemaanalyst.sqlrepresentation.Table;
 public abstract class ExpressionTree implements Expression {
 
     @Override
-    public Expression getSubexpression(List<Integer> indexes) {
-        if (indexes.isEmpty()) {
+    public Expression getSubexpression(ExpressionPath expressionPath) {
+        List<Integer> indices = expressionPath.getIndices();
+        if (indices.isEmpty()) {
             return null;
         }
-        int index = indexes.get(0);
-        int[] furtherIndexes = new int[indexes.size() - 1];
-        for (int i = 1; i < indexes.size(); i++) {
-            furtherIndexes[i] = indexes.get(i);
+        int index = indices.get(0);
+        int[] furtherIndexes = new int[indices.size() - 1];
+        for (int i = 1; i < indices.size(); i++) {
+            furtherIndexes[i] = indices.get(i);
         }
         return getSubexpression(index, furtherIndexes);
-    }
+    }    
 
     @Override
     public Expression getSubexpression(int index, int... furtherIndexes) {
@@ -34,6 +35,9 @@ public abstract class ExpressionTree implements Expression {
 
     @Override
     public abstract Expression getSubexpression(int index);
+    
+    @Override
+    public abstract void setSubexpression(int index, Expression subexpression);
     
     @Override
     public abstract int getNumSubexpressions();

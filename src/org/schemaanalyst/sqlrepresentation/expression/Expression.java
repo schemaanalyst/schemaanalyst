@@ -8,11 +8,13 @@ import org.schemaanalyst.util.Duplicable;
 
 public interface Expression extends Duplicable<Expression> {
 
-    public Expression getSubexpression(List<Integer> indexes);
+    public Expression getSubexpression(ExpressionPath expressionPath);
 
     public Expression getSubexpression(int index, int... furtherIndexes);
 
     public Expression getSubexpression(int index);
+
+    public void setSubexpression(int index, Expression subexpression);
     
     public int getNumSubexpressions();
 

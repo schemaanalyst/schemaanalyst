@@ -35,6 +35,11 @@ public abstract class CompoundExpression extends ExpressionTree {
         throw new NonExistentSubexpressionException(this, index);
     }
     
+    @Override
+    public void setSubexpression(int index, Expression subexpression) {
+        subexpressions.set(index, subexpression);
+    }    
+    
     public void setSubexpressions(List<Expression> subexpressions) {
         this.subexpressions = new ArrayList<>(subexpressions);
     }

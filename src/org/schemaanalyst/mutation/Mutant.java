@@ -3,12 +3,10 @@ package org.schemaanalyst.mutation;
 public class Mutant<A> {
 
 	private A artefact;
-	private String operatorUsed;
 	private String description;
 	
-	public Mutant(A artefact, String operatorUsed, String description) {
+	public Mutant(A artefact, String description) {
 		this.artefact = artefact;
-		this.operatorUsed = operatorUsed;
 		this.description = description;
 	}
 	
@@ -16,11 +14,11 @@ public class Mutant<A> {
 		return artefact;
 	}
 
-	public String getOperatorUsed() {
-		return operatorUsed;
-	}
-
 	public String getDescription() {
 		return description;
+	}
+	
+	public String toString() {
+	    return description + " " + artefact;
 	}
 }

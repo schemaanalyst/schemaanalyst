@@ -1,9 +1,5 @@
-package org.schemaanalyst.sqlrepresentation.constraint;
+package org.schemaanalyst.sqlrepresentation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.schemaanalyst.sqlrepresentation.Column;
 
 /**
  * Represents the primary key of a table.
@@ -17,43 +13,47 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
 
     /**
      * Constructor.
+     * @param table The table on which the PRIMARY KEY is defined.
      * @param columns The columns involved in the primary key.
      */
-    public PrimaryKeyConstraint(Column... columns) {
-        super(null, columns);
+    public PrimaryKeyConstraint(Table table, Column... columns) {
+        super(null, table, columns);
     }    
     
     /**
      * Constructor.
      * @param name A name for the primary key constraint (optional - can be
      * null).
+     * @param table The table on which the PRIMARY KEY is defined. 
      * @param columns The columns involved in the primary key.
      */
-    public PrimaryKeyConstraint(String name, Column... columns) {
-        super(name, columns);
+    public PrimaryKeyConstraint(String name, Table table, Column... columns) {
+        super(name, table, columns);
     }
     
     /**
      * Constructor.
+     * @param table The table on which the PRIMARY KEY is defined.
      * @param columns The columns involved in the primary key.
      */
-    public PrimaryKeyConstraint(List<Column> columns) {
-        super(null, columns);
+    public PrimaryKeyConstraint(Table table, Iterable<Column> columns) {
+        super(null, table, columns);
     }    
     
     /**
      * Constructor.
-     * @param name A name for the primary key constraint (optional - can be
+     * @param name A name for the PRIMARY KEY constraint (optional - can be
      * null).
-     * @param columns The columns involved in the primary key.
+     * @param table The table on which the PRIMARY KEY is defined. 
+     * @param columns The columns involved in the PRIMARY KEY.
      */
-    public PrimaryKeyConstraint(String name, List<Column> columns) {
-        super(name, columns);
+    public PrimaryKeyConstraint(String name, Table table, Iterable<Column> columns) {
+        super(name, table, columns);
     }
 
     /**
-     * Method for accepting visitors of type IntegrityConstraintVisitor.
-     * @param visitor The IntegrityConstraintVisitor instance visiting this
+     * Method for accepting visitors of type ConstraintVisitor.
+     * @param visitor The ConstraintVisitor instance visiting this
      * constraint.
      */
     @Override
@@ -67,7 +67,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      */
     @Override
     public PrimaryKeyConstraint duplicate() {
-        return new PrimaryKeyConstraint(name, new ArrayList<>(columns));
+        return new PrimaryKeyConstraint(getName(), table, columns);
     }
     
     /**

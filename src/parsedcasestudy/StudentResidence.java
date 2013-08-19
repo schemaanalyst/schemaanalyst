@@ -12,7 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * StudentResidence schema.
- * Java code originally generated: 2013/08/15 23:00:41
+ * Java code originally generated: 2013/08/17 00:31:03
  *
  */
 
@@ -25,20 +25,20 @@ public class StudentResidence extends Schema {
 		Table tableResidence = this.createTable("Residence");
 		tableResidence.createColumn("name", new VarCharDataType(50));
 		tableResidence.createColumn("capacity", new IntDataType());
-		tableResidence.createPrimaryKeyConstraint(tableResidence.getColumn("name"));
-		tableResidence.createNotNullConstraint(tableResidence.getColumn("name"));
-		tableResidence.createNotNullConstraint(tableResidence.getColumn("capacity"));
-		tableResidence.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableResidence, tableResidence.getColumn("capacity")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(1))));
-		tableResidence.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableResidence, tableResidence.getColumn("capacity")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(10))));
+		this.createPrimaryKeyConstraint(tableResidence, tableResidence.getColumn("name"));
+		this.createCheckConstraint(tableResidence, new RelationalExpression(new ColumnExpression(tableResidence, tableResidence.getColumn("capacity")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(1))));
+		this.createCheckConstraint(tableResidence, new RelationalExpression(new ColumnExpression(tableResidence, tableResidence.getColumn("capacity")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(10))));
+		this.createNotNullConstraint(tableResidence, tableResidence.getColumn("name"));
+		this.createNotNullConstraint(tableResidence, tableResidence.getColumn("capacity"));
 
 		Table tableStudent = this.createTable("Student");
 		tableStudent.createColumn("id", new IntDataType());
 		tableStudent.createColumn("firstName", new VarCharDataType(50));
 		tableStudent.createColumn("lastName", new VarCharDataType(50));
 		tableStudent.createColumn("residence", new VarCharDataType(50));
-		tableStudent.createPrimaryKeyConstraint(tableStudent.getColumn("id"));
-		tableStudent.createForeignKeyConstraint(tableStudent.getColumn("residence"), tableResidence, tableResidence.getColumn("name"));
-		tableStudent.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableStudent, tableStudent.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		this.createPrimaryKeyConstraint(tableStudent, tableStudent.getColumn("id"));
+		this.createCheckConstraint(tableStudent, new RelationalExpression(new ColumnExpression(tableStudent, tableStudent.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		this.createForeignKeyConstraint(tableStudent, tableStudent.getColumn("residence"), tableResidence, tableResidence.getColumn("name"));
 	}
 }
 

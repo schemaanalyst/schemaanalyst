@@ -103,19 +103,40 @@ public class NumericValue extends Value {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((max == null) ? 0 : max.hashCode());
+        result = prime * result + ((min == null) ? 0 : min.hashCode());
+        result = prime * result + ((value == null) ? 0 : value.hashCode());
+        return result;
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
         NumericValue other = (NumericValue) obj;
-        return value.compareTo(other.value) == 0;
+        if (max == null) {
+            if (other.max != null)
+                return false;
+        } else if (!max.equals(other.max))
+            return false;
+        if (min == null) {
+            if (other.min != null)
+                return false;
+        } else if (!min.equals(other.min))
+            return false;
+        if (value == null) {
+            if (other.value != null)
+                return false;
+        } else if (!value.equals(other.value))
+            return false;
+        return true;
     }
 
     @Override

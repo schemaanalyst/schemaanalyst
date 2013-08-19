@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * Person schema.
- * Java code originally generated: 2013/08/15 23:00:37
+ * Java code originally generated: 2013/08/17 00:30:59
  *
  */
 
@@ -29,13 +29,13 @@ public class Person extends Schema {
 		tablePerson.createColumn("first_name", new VarCharDataType(45));
 		tablePerson.createColumn("gender", new VarCharDataType(6));
 		tablePerson.createColumn("date_of_birth", new DateDataType());
-		tablePerson.createPrimaryKeyConstraint(tablePerson.getColumn("id"));
-		tablePerson.createNotNullConstraint(tablePerson.getColumn("id"));
-		tablePerson.createNotNullConstraint(tablePerson.getColumn("last_name"));
-		tablePerson.createNotNullConstraint(tablePerson.getColumn("first_name"));
-		tablePerson.createNotNullConstraint(tablePerson.getColumn("gender"));
-		tablePerson.createNotNullConstraint(tablePerson.getColumn("date_of_birth"));
-		tablePerson.createCheckConstraint(new InExpression(new ColumnExpression(tablePerson, tablePerson.getColumn("gender")), new ListExpression(new ConstantExpression(new StringValue("Male")), new ConstantExpression(new StringValue("Female")), new ConstantExpression(new StringValue("Uknown"))), false));
+		this.createPrimaryKeyConstraint(tablePerson, tablePerson.getColumn("id"));
+		this.createCheckConstraint(tablePerson, new InExpression(new ColumnExpression(tablePerson, tablePerson.getColumn("gender")), new ListExpression(new ConstantExpression(new StringValue("Male")), new ConstantExpression(new StringValue("Female")), new ConstantExpression(new StringValue("Uknown"))), false));
+		this.createNotNullConstraint(tablePerson, tablePerson.getColumn("id"));
+		this.createNotNullConstraint(tablePerson, tablePerson.getColumn("last_name"));
+		this.createNotNullConstraint(tablePerson, tablePerson.getColumn("first_name"));
+		this.createNotNullConstraint(tablePerson, tablePerson.getColumn("gender"));
+		this.createNotNullConstraint(tablePerson, tablePerson.getColumn("date_of_birth"));
 	}
 }
 

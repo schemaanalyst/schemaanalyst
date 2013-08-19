@@ -8,11 +8,11 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 
@@ -35,11 +35,13 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
         if (constraintTable == null) {
             tables = schema.getTablesInOrder();
         } else {
-            tables = constraintTable.getConnectedTables();
+            tables = schema.getConnectedTables(constraintTable);
             tables.add(constraintTable);
         }
         
         for (Table table : tables) {
+            /*
+             * TODO: PSM commented out to get to compile quickly ... 19/08/13    
             for (Constraint constraint : table.getAllConstraints()) {
                 boolean satisfyConstraint = !constraint.equals(constraintToInvalidate);
     
@@ -62,6 +64,7 @@ public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<D
     
                 subObjectiveFunctions.add(factory.create());
             }
+            */
         }
         
         description = constraintToInvalidate == null

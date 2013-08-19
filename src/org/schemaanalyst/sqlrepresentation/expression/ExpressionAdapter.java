@@ -39,6 +39,6 @@ public class ExpressionAdapter implements ExpressionVisitor {
     }
 
     @Override
-    public void visit(RelationalExpression expression) {
+    public void visit(RelationalExpression expression) {        
     }
 }

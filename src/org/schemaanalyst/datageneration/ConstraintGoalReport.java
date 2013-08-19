@@ -1,18 +1,21 @@
 package org.schemaanalyst.datageneration;
 
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class ConstraintGoalReport extends GoalReport {
 
+    protected Schema schema;
     protected Table table;
     protected Constraint constraint;
 
-    public ConstraintGoalReport(Table table) {
-        this(table, null);
+    public ConstraintGoalReport(Schema schema, Table table) {
+        this(schema, table, null);
     }
 
-    public ConstraintGoalReport(Table table, Constraint constraint) {
+    public ConstraintGoalReport(Schema schema, Table table, Constraint constraint) {
+        super(schema);
         this.table = table;
         this.constraint = constraint;
     }

@@ -2,9 +2,9 @@ package deprecated.mutation.mutators;
 
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 
 public class CheckConstraintMutator extends Mutator {
 

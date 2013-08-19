@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /*
  * NistDML183Ints schema.
- * Java code originally generated: 2013/08/15 23:00:26
+ * Java code originally generated: 2013/08/17 00:30:49
  *
  */
 
@@ -21,13 +21,13 @@ public class NistDML183Ints extends Schema {
 		tableT.createColumn("A", new IntDataType());
 		tableT.createColumn("B", new IntDataType());
 		tableT.createColumn("C", new IntDataType());
-		tableT.createUniqueConstraint("UniqueOnColsAandB", tableT.getColumn("A"), tableT.getColumn("B"));
+		this.createUniqueConstraint("UniqueOnColsAandB", tableT, tableT.getColumn("A"), tableT.getColumn("B"));
 
 		Table tableS = this.createTable("S");
 		tableS.createColumn("X", new IntDataType());
 		tableS.createColumn("Y", new IntDataType());
 		tableS.createColumn("Z", new IntDataType());
-		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
+		this.createForeignKeyConstraint("RefToColsAandB", tableS, Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
 	}
 }
 

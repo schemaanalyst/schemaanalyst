@@ -33,10 +33,22 @@ public class NullExpression extends ExpressionTree {
         switch (index) {
             case SUBEXPRESSION:
                 return subexpression;
+            default:
+                throw new NonExistentSubexpressionException(this, index);                
         }
-        throw new NonExistentSubexpressionException(this, index);
     }
 
+    @Override
+    public void setSubexpression(int index, Expression subexpression) {
+        switch (index) {
+            case SUBEXPRESSION:
+                this.subexpression = subexpression;
+                break;
+            default:
+                throw new NonExistentSubexpressionException(this, index);            
+        }                
+    }    
+    
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);

@@ -6,9 +6,11 @@ import java.util.List;
 
 public class TableDependencyOrderer {
 
-    protected List<Table> order;
+    private Schema schema;
+    private List<Table> order;
 
-    public List<Table> order(List<Table> tables) {
+    public List<Table> order(List<Table> tables, Schema schema) {
+        this.schema = schema;
         order = new ArrayList<>();
         for (Table table : tables) {
             orderFrom(table, new ArrayList<Table>());
@@ -16,14 +18,14 @@ public class TableDependencyOrderer {
         return order;
     }
 
-    public List<Table> reverseOrder(List<Table> tables) {
-    	order(tables);
+    public List<Table> reverseOrder(List<Table> tables, Schema schema) {
+    	order(tables, schema);
     	Collections.reverse(order);
     	return order;
     }
     
     protected void orderFrom(Table currentTable, List<Table> runningList) {
-        List<Table> references = currentTable.getConnectedTables();
+        List<Table> references = schema.getConnectedTables(currentTable);
 
         for (Table referencedTable : references) {
             if (!referencedTable.equals(currentTable) && !order.contains(referencedTable)) {

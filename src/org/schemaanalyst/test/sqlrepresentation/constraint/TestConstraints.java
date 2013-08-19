@@ -3,14 +3,14 @@ package org.schemaanalyst.test.sqlrepresentation.constraint;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
@@ -21,13 +21,14 @@ public class TestConstraints {
 
     @Test(expected=SQLRepresentationException.class)
     public void testMultiColumnConstraintNoColumns() {
-        new PrimaryKeyConstraint(new ArrayList<Column>());
+        new PrimaryKeyConstraint(new Table("test"), new ArrayList<Column>());
     }
 
     @Test
     public void testMultiColumnConstraintOneColumn() {
-        Column column = new Column("column1", new IntDataType());
-        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(column);
+        Table table = new Table("test");
+        Column column = table.createColumn("column1", new IntDataType());
+        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(table, column);
         
         assertTrue(
                 "MultiColumnConstraint should involve the column assigned to it",
@@ -44,9 +45,10 @@ public class TestConstraints {
     
     @Test
     public void testMultiColumnConstraintTwoColumns() {
-        Column column1 = new Column("column1", new IntDataType());
-        Column column2 = new Column("column2", new IntDataType());
-        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(column1, column2);
+        Table table = new Table("test");
+        Column column1 = table.createColumn("column1", new IntDataType());
+        Column column2 = table.createColumn("column2", new IntDataType());
+        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(table, column1, column2);
         
         assertTrue(
                 "MultiColumnConstraint should involve the columns assigned to it",
@@ -66,10 +68,10 @@ public class TestConstraints {
     }    
     
     @Test(expected=SQLRepresentationException.class)
-    public void testMultiColumnConstraintColumnNameClash() {
-        Column column1 = new Column("column", new IntDataType());
-        Column column2 = new Column("column", new DoubleDataType());
-        new PrimaryKeyConstraint(column1, column2);        
+    public void testMultiColumnConstraintColumnDefinedTwice() {
+        Table table = new Table("test");
+        Column column = table.createColumn("column", new IntDataType());
+        new PrimaryKeyConstraint(table, column, column);        
     } 
     
     @Test
@@ -82,24 +84,28 @@ public class TestConstraints {
         Column ca2 = t2.createColumn("ca", new IntDataType());
         Column cb2 = t2.createColumn("cb", new IntDataType());
         
-        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(ca1, cb1);
+        PrimaryKeyConstraint pk = new PrimaryKeyConstraint(t1, ca1, cb1);
         pk.remap(t2);
+
+        assertSame(
+                "The table of the constraint should be t2 after the remapping",
+                t2, pk.getTable());        
         
         assertSame(
                 "The first column should be that from t2 after the remapping",
-                pk.getColumns().get(0), ca2);
+                ca2, pk.getColumns().get(0));
 
         assertSame(
                 "The second column should be that from t2 after the remapping",
-                pk.getColumns().get(1), cb2);    
+                cb2, pk.getColumns().get(1));    
 
         assertNotSame(
                 "The first column should not be that from t1 after the remapping",
-                pk.getColumns().get(0), ca1);
+                ca1, pk.getColumns().get(0));
 
         assertNotSame(
                 "The second column should not be that from t1 after the remapping",
-                pk.getColumns().get(1), cb1);       
+                cb1, pk.getColumns().get(1));       
     }
     
     @Test(expected=SQLRepresentationException.class)
@@ -112,7 +118,7 @@ public class TestConstraints {
         t2.createColumn("ca2", new IntDataType());
         t2.createColumn("cb2", new IntDataType());
         
-        new PrimaryKeyConstraint(ca1, cb1).remap(t2);
+        new PrimaryKeyConstraint(t1, ca1, cb1).remap(t2);
     }    
 
     @Test(expected=SQLRepresentationException.class)
@@ -125,7 +131,7 @@ public class TestConstraints {
         t2.createColumn("ca", new DoubleDataType());
         t2.createColumn("cb", new DoubleDataType());
         
-        new PrimaryKeyConstraint(ca1, cb1).remap(t2);
+        new PrimaryKeyConstraint(t1, ca1, cb1).remap(t2);
     }    
     
     @Test
@@ -134,25 +140,29 @@ public class TestConstraints {
         Column column = table.createColumn("column", new IntDataType());
         ColumnExpression ce = new ColumnExpression(table, column);
         CheckConstraint cc1 = new CheckConstraint(
-                "cc", new ColumnExpression(table, column));
+                "cc", table, new ColumnExpression(table, column));
         CheckConstraint cc2 = cc1.duplicate();
         
         assertNotSame(
-                "Duplicated check constraints should not refer to the same object", cc1, cc2);
+                "Duplicated CHECK constraints should not refer to the same object", cc1, cc2);
         
         assertEquals(
-                "Duplicated check constraints should be equal", cc1, cc2);      
+                "Duplicated CHECK constraints should be equal", cc1, cc2);  
+        
+        assertEquals(
+                "Duplicated CHECK constraints should have the same hashcode", 
+                cc1.hashCode(), cc2.hashCode());          
         
         assertNotSame(
-                "Duplicated check constraints should deep copy subexpressions", 
+                "Duplicated CHECK constraints should deep copy subexpressions", 
                 ce, cc2.getExpression());        
         
         assertSame(
-                "Duplicated check constraints should not deep copy columns", 
+                "Duplicated CHECK constraints should not deep copy columns", 
                 column, ((ColumnExpression) cc2.getExpression()).getColumn());
         
         assertSame(
-                "Duplicated check constraints should not deep copy tables", 
+                "Duplicated CHECK constraints should not deep copy tables", 
                 table, ((ColumnExpression) cc2.getExpression()).getTable());        
     }      
     
@@ -166,16 +176,20 @@ public class TestConstraints {
         
         ColumnExpression colExp = new ColumnExpression(table1, table1Column);
         
-        CheckConstraint cc = new CheckConstraint(colExp);
+        CheckConstraint cc = new CheckConstraint(table1, colExp);
         cc.remap(table2);
         
         assertSame(
+                "The table of the CHECK constraint should be table2",
+                table2, colExp.getTable());        
+        
+        assertSame(
                 "The table of colExp should be remapped to table2",
-                colExp.getTable(), table2);
+                table2, colExp.getTable());
         
         assertSame(
                 "The column of colExp should be remapped to table2Column",
-                colExp.getColumn(), table2Column);        
+                table2Column, colExp.getColumn());        
     }
     
     @Test
@@ -183,71 +197,103 @@ public class TestConstraints {
         Table table = new Table("table");
         Column column = table.createColumn("column1", new IntDataType());
         
-        ForeignKeyConstraint fk1 = new ForeignKeyConstraint("fk", column, table, column);
+        ForeignKeyConstraint fk1 = new ForeignKeyConstraint("fk", table, column, table, column);
         ForeignKeyConstraint fk2 = fk1.duplicate();
         
         assertNotSame(
-                "Duplicated foreign keys should not refer to the same object", fk1, fk2);
+                "Duplicated FOREIGN KEYs should not refer to the same object", fk1, fk2);
         
         assertEquals(
-                "Duplicated foreign keys should be equal", fk1, fk2);      
+                "Duplicated FOREIGN KEYs should be equal", fk1, fk2);      
+
+        assertEquals(
+                "Duplicated FOREIGN KEYs should have the same hashcode", 
+                fk1.hashCode(), fk2.hashCode());          
         
         assertSame(
-                "Duplicated foreign keys should not deep copy columns", 
+                "Duplicated FOREIGN KEYs should not deep copy tables", 
+                fk1.getTable(), fk2.getTable());        
+
+        assertSame(
+                "Duplicated FOREIGN KEYs should not deep copy tables", 
+                fk1.getReferenceTable(), fk2.getReferenceTable());        
+        
+        assertSame(
+                "Duplicated FOREIGN KEYs should not deep copy columns", 
                 fk1.getColumns().get(0), fk2.getColumns().get(0));
+
+        assertSame(
+                "Duplicated FOREIGN KEYs should not deep copy columns", 
+                fk1.getReferenceColumns().get(0), fk2.getReferenceColumns().get(0));    
     }  
     
     @Test 
     public void testForeignKeyConstraintRemap() {
-        Column column1 = new Column("column", new IntDataType());
+        Table table1 = new Table("test");
+        Column column1 = table1.createColumn("column", new IntDataType());
         
-        Table table = new Table("test");
-        Column column2 = table.createColumn("column", new IntDataType());
+        Table table2 = new Table("test");
+        Column column2 = table2.createColumn("column", new IntDataType());
         
-        ForeignKeyConstraint fk = new ForeignKeyConstraint("fk", column1, table, column1);
-        fk.remapReferenceColumns(table);
+        ForeignKeyConstraint fk = new ForeignKeyConstraint("fk", table1, column1, table2, column1);
+        fk.remapReferenceColumns(table2);
+        
+        assertSame(
+                "The remapped reference table should be table2",
+                table2, fk.getReferenceTable());
         
         assertSame(
                 "The first column should be that from table after the remapping",
-                fk.getReferenceColumns().get(0), column2);
+                column2, fk.getReferenceColumns().get(0));
 
 
         assertNotSame(
                 "The first column should not be the same as the original after the remapping",
-                fk.getReferenceColumns().get(0), column1);
+                column1, fk.getReferenceColumns().get(0));
     }
     
     @Test(expected=SQLRepresentationException.class)
     public void testForeignKeyConstraintRemapFail() {
-        Column column1 = new Column("column", new IntDataType());
+        Table table1 = new Table("test");
+        Column column1 = table1.createColumn("column", new IntDataType());
         
-        Table table = new Table("test");
-        table.createColumn("column", new DoubleDataType());
+        Table table2 = new Table("test");
+        table2.createColumn("column", new DoubleDataType());
         
-         new ForeignKeyConstraint("fk", column1, table, column1).remapReferenceColumns(table);
+         new ForeignKeyConstraint("fk", table1, column1, table2, column1).remapReferenceColumns(table2);
     }    
     
     @Test
     public void testPrimaryKeyConstraint() {
-        Column column = new Column("column1", new IntDataType());
-        PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint("pk", column);
+        Table table = new Table("table");
+        Column column = table.createColumn("column1", new IntDataType());
+        PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint("pk", table, column);
         PrimaryKeyConstraint pk2 = pk1.duplicate();
         
         assertNotSame(
-                "Duplicated primary keys should not refer to the same object", pk1, pk2);
+                "Duplicated PRIMARY KEYs should not refer to the same object", pk1, pk2);
         
         assertEquals(
-                "Duplicated primary keys should be equal", pk1, pk2);      
+                "Duplicated PRIMARY KEYs should be equal", pk1, pk2);      
+
+        assertEquals(
+                "Duplicated PRIMARY KEYs should have the same hashcode", 
+                pk1.hashCode(), pk1.hashCode());           
         
         assertSame(
-                "Duplicated primary keys should not deep copy columns", 
+                "Duplicated PRIMARY KEYs should not deep copy tables", 
+                pk1.getTable(), pk2.getTable());        
+        
+        assertSame(
+                "Duplicated PRIMARY KEYs should not deep copy columns", 
                 pk1.getColumns().get(0), pk2.getColumns().get(0));
     }
     
     @Test
     public void testNotNullConstraint() {
-        Column column = new Column("column1", new IntDataType());
-        NotNullConstraint nn1 = new NotNullConstraint("nn", column);
+        Table table = new Table("table");
+        Column column = table.createColumn("column1", new IntDataType());
+        NotNullConstraint nn1 = new NotNullConstraint("nn", table, column);
         NotNullConstraint nn2 = nn1.duplicate();
         
         assertNotSame(
@@ -256,55 +302,77 @@ public class TestConstraints {
         assertEquals(
                 "Duplicated NOT NULL constraints should be equal", nn1, nn2);      
         
+        assertEquals(
+                "Duplicated NOT NULL constraints should have the same hashcode", 
+                nn1.hashCode(), nn2.hashCode());           
+        
         assertSame(
-                "Duplicated primary keys should not deep copy columns", 
+                "Duplicated NOT NULL constraints should not deep copy tables", 
+                nn1.getTable(), nn2.getTable());        
+
+        assertSame(
+                "Duplicated NOT NULL constraints should not deep copy columns", 
                 nn1.getColumn(), nn2.getColumn());
     }  
     
     @Test
     public void testNotNullConstraintRemap() {
-        Column column1 = new Column("column", new IntDataType());
+        Table table1 = new Table("table");
+        Column column1 = table1.createColumn("column", new IntDataType());
         
-        Table table = new Table("test");
-        Column column2 = table.createColumn("column", new IntDataType());
+        Table table2 = new Table("table");
+        Column column2 = table2.createColumn("column", new IntDataType());
         
-        NotNullConstraint nn = new NotNullConstraint("nn", column1);
-        nn.remap(table);
+        NotNullConstraint nn = new NotNullConstraint("nn", table1, column1);
+        nn.remap(table2);
         
         assertSame(
                 "The NOT NULL column should be that from table after the remapping",
-                nn.getColumn(), column2);
+                column2, nn.getColumn());
 
-
+        assertSame(
+                "The remapped table should be table2",
+                table2, nn.getTable());          
+        
         assertNotSame(
                 "The NOT NULL column should not be the same as the original after the remapping",
-                nn.getColumn(), column1);
+                column1, nn.getColumn());
     }
     
     @Test(expected=SQLRepresentationException.class)
     public void testNotNullConstraintRemapFail() {
-        Column column1 = new Column("column", new IntDataType());
+        Table table1 = new Table("table");
+        Column column1 = table1.createColumn("column", new IntDataType());
         
-        Table table = new Table("test");
-        table.createColumn("column", new DoubleDataType());
+        Table table2 = new Table("test");
+        table2.createColumn("column", new DoubleDataType());
         
-        new NotNullConstraint("nn", column1).remap(table);
+        new NotNullConstraint("nn", table1, column1).remap(table2);
     }    
     
     @Test
     public void testUniqueConstraint() {
-        Column column = new Column("column1", new IntDataType());
-        UniqueConstraint uc1 = new UniqueConstraint("uc", column);
+        Table table = new Table("table");
+        Column column = table.createColumn("column", new IntDataType());
+        UniqueConstraint uc1 = new UniqueConstraint("uc", table, column);
         UniqueConstraint uc2 = uc1.duplicate();
         
         assertNotSame(
-                "Duplicated unique constraints should not refer to the same object", uc1, uc2);
+                "Duplicated UNIQUE constraints should not refer to the same object", uc1, uc2);
         
         assertEquals(
-                "Duplicated unique constraints should be equal", uc1, uc2);      
+                "Duplicated UNIQUE constraints should be equal", uc1, uc2);      
+        
+        assertEquals(
+                "Duplicated UNIQUE constraints should have the same hashcode", 
+                uc1.hashCode(), uc2.hashCode());         
         
         assertSame(
-                "Duplicated unique constraints should not deep copy columns", 
+                "Duplicated UNIQUE constraints should not deep copy tables", 
+                uc1.getTable(), uc2.getTable());           
+        
+        assertSame(
+                "Duplicated UNIQUE constraints should not deep copy columns", 
                 uc1.getColumns().get(0), uc2.getColumns().get(0));
     }    
 }

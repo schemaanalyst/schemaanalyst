@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML183Varchars schema.
- * Java code originally generated: 2013/08/15 23:00:30
+ * Java code originally generated: 2013/08/17 00:30:53
  *
  */
 
@@ -21,13 +21,13 @@ public class NistDML183Varchars extends Schema {
 		tableT.createColumn("A", new VarCharDataType(1));
 		tableT.createColumn("B", new VarCharDataType(1));
 		tableT.createColumn("C", new VarCharDataType(1));
-		tableT.createUniqueConstraint("UniqueOnColsAandB", tableT.getColumn("A"), tableT.getColumn("B"));
+		this.createUniqueConstraint("UniqueOnColsAandB", tableT, tableT.getColumn("A"), tableT.getColumn("B"));
 
 		Table tableS = this.createTable("S");
 		tableS.createColumn("X", new VarCharDataType(1));
 		tableS.createColumn("Y", new VarCharDataType(1));
 		tableS.createColumn("Z", new VarCharDataType(1));
-		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
+		this.createForeignKeyConstraint("RefToColsAandB", tableS, Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
 	}
 }
 

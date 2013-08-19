@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML181NotNulls schema.
- * Java code originally generated: 2013/08/15 23:00:20
+ * Java code originally generated: 2013/08/17 00:30:44
  *
  */
 
@@ -23,18 +23,18 @@ public class NistDML181NotNulls extends Schema {
 		tableLongNamedPeople.createColumn("FIRSTNAME", new VarCharDataType(373));
 		tableLongNamedPeople.createColumn("LASTNAME", new VarCharDataType(373));
 		tableLongNamedPeople.createColumn("AGE", new IntDataType());
-		tableLongNamedPeople.createPrimaryKeyConstraint(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME"));
-		tableLongNamedPeople.createNotNullConstraint(tableLongNamedPeople.getColumn("FIRSTNAME"));
-		tableLongNamedPeople.createNotNullConstraint(tableLongNamedPeople.getColumn("LASTNAME"));
+		this.createPrimaryKeyConstraint(tableLongNamedPeople, tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME"));
+		this.createNotNullConstraint(tableLongNamedPeople, tableLongNamedPeople.getColumn("FIRSTNAME"));
+		this.createNotNullConstraint(tableLongNamedPeople, tableLongNamedPeople.getColumn("LASTNAME"));
 
 		Table tableOrders = this.createTable("ORDERS");
 		tableOrders.createColumn("FIRSTNAME", new VarCharDataType(373));
 		tableOrders.createColumn("LASTNAME", new VarCharDataType(373));
 		tableOrders.createColumn("TITLE", new VarCharDataType(80));
 		tableOrders.createColumn("COST", new NumericDataType(5, 2));
-		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME")));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("FIRSTNAME"));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("LASTNAME"));
+		this.createForeignKeyConstraint(tableOrders, Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME")));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("FIRSTNAME"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("LASTNAME"));
 	}
 }
 

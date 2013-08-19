@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Iso3166 schema.
- * Java code originally generated: 2013/08/15 23:00:16
+ * Java code originally generated: 2013/08/17 00:30:40
  *
  */
 
@@ -21,9 +21,9 @@ public class Iso3166 extends Schema {
 		tableCountry.createColumn("name", new VarCharDataType(100));
 		tableCountry.createColumn("two_letter", new VarCharDataType(100));
 		tableCountry.createColumn("country_id", new IntDataType());
-		tableCountry.createPrimaryKeyConstraint(tableCountry.getColumn("two_letter"));
-		tableCountry.createNotNullConstraint(tableCountry.getColumn("name"));
-		tableCountry.createNotNullConstraint(tableCountry.getColumn("country_id"));
+		this.createPrimaryKeyConstraint(tableCountry, tableCountry.getColumn("two_letter"));
+		this.createNotNullConstraint(tableCountry, tableCountry.getColumn("name"));
+		this.createNotNullConstraint(tableCountry, tableCountry.getColumn("country_id"));
 	}
 }
 

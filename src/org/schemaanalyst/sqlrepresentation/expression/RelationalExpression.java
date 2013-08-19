@@ -47,13 +47,29 @@ public class RelationalExpression extends ExpressionTree {
     @Override
     public Expression getSubexpression(int index) {
         switch (index) {
-        case LHS:
-            return lhs;
-        case RHS:
-            return rhs;
+            case LHS:
+                return lhs;
+            case RHS:
+                return rhs;
+            default:
+                throw new NonExistentSubexpressionException(this, index);                
         }
-        throw new NonExistentSubexpressionException(this, index);
     }
+    
+    @Override
+    public void setSubexpression(int index, Expression subexpression) {
+        switch (index) {
+            case LHS:
+                lhs = subexpression;
+                break;                
+            case RHS:
+                rhs = subexpression;
+                break;
+            default:
+                throw new NonExistentSubexpressionException(this, index);
+        }
+                        
+    }      
 
     @Override
     public void accept(ExpressionVisitor visitor) {

@@ -1,12 +1,12 @@
 package org.schemaanalyst.sqlwriter;
 
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;

@@ -10,7 +10,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * DellStore schema.
- * Java code originally generated: 2013/08/15 23:00:07
+ * Java code originally generated: 2013/08/17 00:30:32
  *
  */
 
@@ -23,16 +23,16 @@ public class DellStore extends Schema {
 		Table tableCategories = this.createTable("categories");
 		tableCategories.createColumn("category", new IntDataType());
 		tableCategories.createColumn("categoryname", new VarCharDataType(50));
-		tableCategories.createNotNullConstraint(tableCategories.getColumn("category"));
-		tableCategories.createNotNullConstraint(tableCategories.getColumn("categoryname"));
+		this.createNotNullConstraint(tableCategories, tableCategories.getColumn("category"));
+		this.createNotNullConstraint(tableCategories, tableCategories.getColumn("categoryname"));
 
 		Table tableCustHist = this.createTable("cust_hist");
 		tableCustHist.createColumn("customerid", new IntDataType());
 		tableCustHist.createColumn("orderid", new IntDataType());
 		tableCustHist.createColumn("prod_id", new IntDataType());
-		tableCustHist.createNotNullConstraint(tableCustHist.getColumn("customerid"));
-		tableCustHist.createNotNullConstraint(tableCustHist.getColumn("orderid"));
-		tableCustHist.createNotNullConstraint(tableCustHist.getColumn("prod_id"));
+		this.createNotNullConstraint(tableCustHist, tableCustHist.getColumn("customerid"));
+		this.createNotNullConstraint(tableCustHist, tableCustHist.getColumn("orderid"));
+		this.createNotNullConstraint(tableCustHist, tableCustHist.getColumn("prod_id"));
 
 		Table tableCustomers = this.createTable("customers");
 		tableCustomers.createColumn("customerid", new IntDataType());
@@ -55,26 +55,26 @@ public class DellStore extends Schema {
 		tableCustomers.createColumn("age", new SmallIntDataType());
 		tableCustomers.createColumn("income", new IntDataType());
 		tableCustomers.createColumn("gender", new VarCharDataType(1));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("customerid"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("firstname"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("lastname"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("address1"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("city"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("country"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("region"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("creditcardtype"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("creditcard"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("creditcardexpiration"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("username"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("password"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("customerid"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("firstname"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("lastname"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("address1"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("city"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("country"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("region"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("creditcardtype"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("creditcard"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("creditcardexpiration"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("username"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("password"));
 
 		Table tableInventory = this.createTable("inventory");
 		tableInventory.createColumn("prod_id", new IntDataType());
 		tableInventory.createColumn("quan_in_stock", new IntDataType());
 		tableInventory.createColumn("sales", new IntDataType());
-		tableInventory.createNotNullConstraint(tableInventory.getColumn("prod_id"));
-		tableInventory.createNotNullConstraint(tableInventory.getColumn("quan_in_stock"));
-		tableInventory.createNotNullConstraint(tableInventory.getColumn("sales"));
+		this.createNotNullConstraint(tableInventory, tableInventory.getColumn("prod_id"));
+		this.createNotNullConstraint(tableInventory, tableInventory.getColumn("quan_in_stock"));
+		this.createNotNullConstraint(tableInventory, tableInventory.getColumn("sales"));
 
 		Table tableOrderlines = this.createTable("orderlines");
 		tableOrderlines.createColumn("orderlineid", new IntDataType());
@@ -82,11 +82,11 @@ public class DellStore extends Schema {
 		tableOrderlines.createColumn("prod_id", new IntDataType());
 		tableOrderlines.createColumn("quantity", new SmallIntDataType());
 		tableOrderlines.createColumn("orderdate", new DateDataType());
-		tableOrderlines.createNotNullConstraint(tableOrderlines.getColumn("orderlineid"));
-		tableOrderlines.createNotNullConstraint(tableOrderlines.getColumn("orderid"));
-		tableOrderlines.createNotNullConstraint(tableOrderlines.getColumn("prod_id"));
-		tableOrderlines.createNotNullConstraint(tableOrderlines.getColumn("quantity"));
-		tableOrderlines.createNotNullConstraint(tableOrderlines.getColumn("orderdate"));
+		this.createNotNullConstraint(tableOrderlines, tableOrderlines.getColumn("orderlineid"));
+		this.createNotNullConstraint(tableOrderlines, tableOrderlines.getColumn("orderid"));
+		this.createNotNullConstraint(tableOrderlines, tableOrderlines.getColumn("prod_id"));
+		this.createNotNullConstraint(tableOrderlines, tableOrderlines.getColumn("quantity"));
+		this.createNotNullConstraint(tableOrderlines, tableOrderlines.getColumn("orderdate"));
 
 		Table tableOrders = this.createTable("orders");
 		tableOrders.createColumn("orderid", new IntDataType());
@@ -95,11 +95,11 @@ public class DellStore extends Schema {
 		tableOrders.createColumn("netamount", new NumericDataType(12, 2));
 		tableOrders.createColumn("tax", new NumericDataType(12, 2));
 		tableOrders.createColumn("totalamount", new NumericDataType(12, 2));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("orderid"));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("orderdate"));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("netamount"));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("tax"));
-		tableOrders.createNotNullConstraint(tableOrders.getColumn("totalamount"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("orderid"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("orderdate"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("netamount"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("tax"));
+		this.createNotNullConstraint(tableOrders, tableOrders.getColumn("totalamount"));
 
 		Table tableProducts = this.createTable("products");
 		tableProducts.createColumn("prod_id", new IntDataType());
@@ -109,12 +109,12 @@ public class DellStore extends Schema {
 		tableProducts.createColumn("price", new NumericDataType(12, 2));
 		tableProducts.createColumn("special", new SmallIntDataType());
 		tableProducts.createColumn("common_prod_id", new IntDataType());
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("prod_id"));
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("category"));
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("title"));
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("actor"));
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("price"));
-		tableProducts.createNotNullConstraint(tableProducts.getColumn("common_prod_id"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("prod_id"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("category"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("title"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("actor"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("price"));
+		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("common_prod_id"));
 
 		Table tableReorder = this.createTable("reorder");
 		tableReorder.createColumn("prod_id", new IntDataType());
@@ -123,9 +123,9 @@ public class DellStore extends Schema {
 		tableReorder.createColumn("date_reordered", new DateDataType());
 		tableReorder.createColumn("quan_reordered", new IntDataType());
 		tableReorder.createColumn("date_expected", new DateDataType());
-		tableReorder.createNotNullConstraint(tableReorder.getColumn("prod_id"));
-		tableReorder.createNotNullConstraint(tableReorder.getColumn("date_low"));
-		tableReorder.createNotNullConstraint(tableReorder.getColumn("quan_low"));
+		this.createNotNullConstraint(tableReorder, tableReorder.getColumn("prod_id"));
+		this.createNotNullConstraint(tableReorder, tableReorder.getColumn("date_low"));
+		this.createNotNullConstraint(tableReorder, tableReorder.getColumn("quan_low"));
 	}
 }
 

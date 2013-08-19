@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Cloc schema.
- * Java code originally generated: 2013/08/15 23:00:03
+ * Java code originally generated: 2013/08/17 00:30:28
  *
  */
 

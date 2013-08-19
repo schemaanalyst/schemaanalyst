@@ -19,6 +19,10 @@ public abstract class NamedEntity {
         name = new Name(str);
     }
     
+    public boolean hasName() {
+        return getName() != null;
+    }
+    
     public Name getNameInstance() {
         return name;
     }
@@ -46,5 +50,10 @@ public abstract class NamedEntity {
         } else if (!name.equals(other.name))
             return false;
         return true;
+    }
+    
+    @Override
+    public String toString() {
+        return getName();
     }
 }

@@ -7,9 +7,9 @@ import org.schemaanalyst.datageneration.ConstraintCoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
 import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.sqlrepresentation.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class SearchConstraintCoverer extends DataGenerator {
 
@@ -40,10 +40,12 @@ public class SearchConstraintCoverer extends DataGenerator {
         report.addGoalReport(goalReport);
 
         for (Table table : schema.getTables()) {
+            /* // TODO: PSM commented out to get to compile quickly ... 19/08/13
             for (Constraint constraint : table.getAllConstraints()) {
                 goalReport = negateConstraint(table, constraint);
                 report.addGoalReport(goalReport);
             }
+            */
         }
 
         return report;
@@ -55,7 +57,7 @@ public class SearchConstraintCoverer extends DataGenerator {
 
     protected SearchConstraintGoalReport negateConstraint(
             Table constraintTable, Constraint constraint) {
-        List<Table> tables = constraintTable.getConnectedTables();
+        List<Table> tables = schema.getConnectedTables(constraintTable);
         tables.add(constraintTable);
         return generateData(constraintTable, constraint, tables, negateRows);
     }
@@ -89,7 +91,7 @@ public class SearchConstraintCoverer extends DataGenerator {
             Table table, Constraint constraint, Data data) {
         // create the report and start the clock ...
         SearchConstraintGoalReport goalReport = 
-                new SearchConstraintGoalReport(table, constraint);
+                new SearchConstraintGoalReport(schema, table, constraint);
         goalReport.startTimer();
 
         // do the search

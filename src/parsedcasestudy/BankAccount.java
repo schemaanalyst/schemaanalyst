@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * BankAccount schema.
- * Java code originally generated: 2013/08/15 23:00:00
+ * Java code originally generated: 2013/08/17 00:30:25
  *
  */
 
@@ -22,9 +22,9 @@ public class BankAccount extends Schema {
 		tableUserinfo.createColumn("pin_number", new IntDataType());
 		tableUserinfo.createColumn("user_name", new VarCharDataType(50));
 		tableUserinfo.createColumn("acct_lock", new IntDataType());
-		tableUserinfo.createPrimaryKeyConstraint(tableUserinfo.getColumn("card_number"));
-		tableUserinfo.createNotNullConstraint(tableUserinfo.getColumn("pin_number"));
-		tableUserinfo.createNotNullConstraint(tableUserinfo.getColumn("user_name"));
+		this.createPrimaryKeyConstraint(tableUserinfo, tableUserinfo.getColumn("card_number"));
+		this.createNotNullConstraint(tableUserinfo, tableUserinfo.getColumn("pin_number"));
+		this.createNotNullConstraint(tableUserinfo, tableUserinfo.getColumn("user_name"));
 
 		Table tableAccount = this.createTable("Account");
 		tableAccount.createColumn("id", new IntDataType());
@@ -32,11 +32,11 @@ public class BankAccount extends Schema {
 		tableAccount.createColumn("user_name", new VarCharDataType(50));
 		tableAccount.createColumn("balance", new IntDataType());
 		tableAccount.createColumn("card_number", new IntDataType());
-		tableAccount.createPrimaryKeyConstraint(tableAccount.getColumn("id"));
-		tableAccount.createForeignKeyConstraint(tableAccount.getColumn("card_number"), tableUserinfo, tableUserinfo.getColumn("card_number"));
-		tableAccount.createNotNullConstraint(tableAccount.getColumn("account_name"));
-		tableAccount.createNotNullConstraint(tableAccount.getColumn("user_name"));
-		tableAccount.createNotNullConstraint(tableAccount.getColumn("card_number"));
+		this.createPrimaryKeyConstraint(tableAccount, tableAccount.getColumn("id"));
+		this.createForeignKeyConstraint(tableAccount, tableAccount.getColumn("card_number"), tableUserinfo, tableUserinfo.getColumn("card_number"));
+		this.createNotNullConstraint(tableAccount, tableAccount.getColumn("account_name"));
+		this.createNotNullConstraint(tableAccount, tableAccount.getColumn("user_name"));
+		this.createNotNullConstraint(tableAccount, tableAccount.getColumn("card_number"));
 	}
 }
 

@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.ConstraintVisitor;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 
@@ -27,55 +27,54 @@ public class ConstraintJavaWriter {
         this.expressionJavaWriter = expressionJavaWriter;
     }
 
-    public String writeAdditionToTable(Table table, Constraint constraint) {
+    public String writeAdditionToTable(Constraint constraint) {
 
         class WriterContraintVisitor implements ConstraintVisitor {
 
-            Table table;
             String methodName;
             List<String> args;
 
-            String writeConstraint(Table table, Constraint constraint) {
-                this.table = table;
+            String writeConstraint(Constraint constraint) {
                 args = new ArrayList<>();
                 if (constraint.hasName()) {
                     args.add(javaWriter.writeString(constraint.getName()));
                 }
+                args.add(javaWriter.getVariableName(constraint.getTable()));
                 constraint.accept(this);
-                return javaWriter.writeTableMethodCall(table, methodName, args);
+                return javaWriter.writeMethodCall("this", methodName, args);
             }
 
             @Override
             public void visit(CheckConstraint constraint) {
-                methodName = TABLE_CREATE_CHECK_CONSTRAINT_METHOD;
+                methodName = SCHEMA_CREATE_CHECK_CONSTRAINT_METHOD;
                 args.add(expressionJavaWriter.writeConstruction(constraint.getExpression()));
             }
 
             @Override
             public void visit(ForeignKeyConstraint constraint) {
-                methodName = TABLE_CREATE_FOREIGN_KEY_CONSTRAINT_METHOD;
+                methodName = SCHEMA_CREATE_FOREIGN_KEY_CONSTRAINT_METHOD;
 
-                args.add(wrapColumnArgsString(table, constraint.getColumns()));
+                args.add(wrapColumnArgsString(constraint.getTable(), constraint.getColumns()));
                 args.add(javaWriter.getVariableName(constraint.getReferenceTable()));
                 args.add(wrapColumnArgsString(constraint.getReferenceTable(), constraint.getReferenceColumns()));
             }
 
             @Override
             public void visit(NotNullConstraint constraint) {
-                methodName = TABLE_CREATE_NOT_NULL_CONSTRAINT_METHOD;
-                args.add(javaWriter.writeGetColumn(table, constraint.getColumn()));
+                methodName = SCHEMA_CREATE_NOT_NULL_CONSTRAINT_METHOD;
+                args.add(javaWriter.writeGetColumn(constraint.getTable(), constraint.getColumn()));
             }
 
             @Override
             public void visit(PrimaryKeyConstraint constraint) {
-                methodName = TABLE_CREATE_PRIMARY_KEY_CONSTRAINT_METHOD;
-                addColumnArgs(table, constraint.getColumns());
+                methodName = SCHEMA_CREATE_PRIMARY_KEY_CONSTRAINT_METHOD;
+                addColumnArgs(constraint.getTable(), constraint.getColumns());
             }
 
             @Override
             public void visit(UniqueConstraint constraint) {
-                methodName = TABLE_CREATE_UNIQUE_CONSTRAINT_METHOD;
-                addColumnArgs(table, constraint.getColumns());
+                methodName = SCHEMA_CREATE_UNIQUE_CONSTRAINT_METHOD;
+                addColumnArgs(constraint.getTable(), constraint.getColumns());
             }
 
             void addColumnArgs(Table table, List<Column> columns) {
@@ -109,6 +108,6 @@ public class ConstraintJavaWriter {
             }
         }
 
-        return (new WriterContraintVisitor()).writeConstraint(table, constraint);
+        return (new WriterContraintVisitor()).writeConstraint(constraint);
     }
 }

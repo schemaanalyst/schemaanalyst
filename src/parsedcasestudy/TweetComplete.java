@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * TweetComplete schema.
- * Java code originally generated: 2013/08/15 23:00:43
+ * Java code originally generated: 2013/08/17 00:31:04
  *
  */
 
@@ -28,13 +28,13 @@ public class TweetComplete extends Schema {
 		tableTweets.createColumn("timestamp", new DateTimeDataType());
 		tableTweets.createColumn("source", new TextDataType());
 		tableTweets.createColumn("text", new VarCharDataType(140));
-		tableTweets.createPrimaryKeyConstraint(tableTweets.getColumn("tweet_id"));
+		this.createPrimaryKeyConstraint(tableTweets, tableTweets.getColumn("tweet_id"));
 
 		Table tableExpandedUrls = this.createTable("Expanded_URLS");
 		tableExpandedUrls.createColumn("tweet_id", new IntDataType());
 		tableExpandedUrls.createColumn("expanded_url", new TextDataType());
-		tableExpandedUrls.createPrimaryKeyConstraint(tableExpandedUrls.getColumn("tweet_id"), tableExpandedUrls.getColumn("expanded_url"));
-		tableExpandedUrls.createForeignKeyConstraint(tableExpandedUrls.getColumn("tweet_id"), tableTweets, tableTweets.getColumn("tweet_id"));
+		this.createPrimaryKeyConstraint(tableExpandedUrls, tableExpandedUrls.getColumn("tweet_id"), tableExpandedUrls.getColumn("expanded_url"));
+		this.createForeignKeyConstraint(tableExpandedUrls, tableExpandedUrls.getColumn("tweet_id"), tableTweets, tableTweets.getColumn("tweet_id"));
 	}
 }
 

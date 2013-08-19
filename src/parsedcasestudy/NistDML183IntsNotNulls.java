@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /*
  * NistDML183IntsNotNulls schema.
- * Java code originally generated: 2013/08/15 23:00:27
+ * Java code originally generated: 2013/08/17 00:30:50
  *
  */
 
@@ -21,19 +21,19 @@ public class NistDML183IntsNotNulls extends Schema {
 		tableT.createColumn("A", new IntDataType());
 		tableT.createColumn("B", new IntDataType());
 		tableT.createColumn("C", new IntDataType());
-		tableT.createNotNullConstraint(tableT.getColumn("A"));
-		tableT.createNotNullConstraint(tableT.getColumn("B"));
-		tableT.createNotNullConstraint(tableT.getColumn("C"));
-		tableT.createUniqueConstraint("UniqueOnColsAandB", tableT.getColumn("A"), tableT.getColumn("B"));
+		this.createNotNullConstraint(tableT, tableT.getColumn("A"));
+		this.createNotNullConstraint(tableT, tableT.getColumn("B"));
+		this.createNotNullConstraint(tableT, tableT.getColumn("C"));
+		this.createUniqueConstraint("UniqueOnColsAandB", tableT, tableT.getColumn("A"), tableT.getColumn("B"));
 
 		Table tableS = this.createTable("S");
 		tableS.createColumn("X", new IntDataType());
 		tableS.createColumn("Y", new IntDataType());
 		tableS.createColumn("Z", new IntDataType());
-		tableS.createForeignKeyConstraint("RefToColsAandB", Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
-		tableS.createNotNullConstraint(tableS.getColumn("X"));
-		tableS.createNotNullConstraint(tableS.getColumn("Y"));
-		tableS.createNotNullConstraint(tableS.getColumn("Z"));
+		this.createForeignKeyConstraint("RefToColsAandB", tableS, Arrays.asList(tableS.getColumn("X"), tableS.getColumn("Y")), tableT, Arrays.asList(tableT.getColumn("A"), tableT.getColumn("B")));
+		this.createNotNullConstraint(tableS, tableS.getColumn("X"));
+		this.createNotNullConstraint(tableS, tableS.getColumn("Y"));
+		this.createNotNullConstraint(tableS, tableS.getColumn("Z"));
 	}
 }
 

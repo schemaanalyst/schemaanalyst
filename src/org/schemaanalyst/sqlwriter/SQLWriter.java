@@ -6,15 +6,15 @@ import java.util.List;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.sqlrepresentation.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.TableDependencyOrderer;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.UniqueConstraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
 public class SQLWriter {
@@ -64,12 +64,12 @@ public class SQLWriter {
 
         List<Table> tables = schema.getTablesInOrder();
         for (Table table : tables) {
-            statements.add(writeCreateTableStatement(table));
+            statements.add(writeCreateTableStatement(schema, table));
         }
         return statements;
     }
 
-    public String writeCreateTableStatement(Table table) {
+    public String writeCreateTableStatement(Schema schema, Table table) {
 
         IndentableStringBuilder sql = new IndentableStringBuilder();
         sql.append("CREATE TABLE ");
@@ -91,24 +91,24 @@ public class SQLWriter {
             sql.appendTabbed(dataTypeSQLWriter.writeDataType(column));
 
             // write column constraints
-            PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
+            PrimaryKeyConstraint primaryKey = schema.getPrimaryKeyConstraint(table);
             if (primaryKey != null && !primaryKey.hasMultipleColumns() && primaryKey.involvesColumn(column)) {
                 sql.appendTabbed(constraintSQLWriter.writeConstraint(primaryKey));
             }
 
-            for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
+            for (ForeignKeyConstraint foreignKey : schema.getForeignKeyConstraints(table)) {
                 if (!foreignKey.hasMultipleColumns() && foreignKey.involvesColumn(column)) {
                     sql.appendTabbed(constraintSQLWriter.writeConstraint(foreignKey));
                 }
             }
 
-            for (UniqueConstraint unique : table.getUniqueConstraints()) {
+            for (UniqueConstraint unique : schema.getUniqueConstraints(table)) {
                 if (!unique.hasMultipleColumns() && unique.involvesColumn(column)) {
                     sql.appendTabbed(constraintSQLWriter.writeConstraint(unique));
                 }
             }
 
-            for (NotNullConstraint notNull : table.getNotNullConstraints()) {
+            for (NotNullConstraint notNull : schema.getNotNullConstraints(table)) {
                 if (notNull.getColumn().equals(column)) {
                     sql.appendTabbed(constraintSQLWriter.writeConstraint(notNull));
                 }
@@ -116,14 +116,14 @@ public class SQLWriter {
         }
 
         // write primary key
-        PrimaryKeyConstraint primaryKey = table.getPrimaryKeyConstraint();
+        PrimaryKeyConstraint primaryKey = schema.getPrimaryKeyConstraint(table);
         if (primaryKey != null && primaryKey.hasMultipleColumns()) {
             sql.appendln(0, ",");
             sql.append(1, constraintSQLWriter.writeConstraint(primaryKey));
         }
 
         // write foreign keys
-        for (ForeignKeyConstraint foreignKey : table.getForeignKeyConstraints()) {
+        for (ForeignKeyConstraint foreignKey : schema.getForeignKeyConstraints(table)) {
             if (foreignKey.hasMultipleColumns()) {
                 sql.appendln(0, ",");
                 sql.append(1, constraintSQLWriter.writeConstraint(foreignKey));
@@ -131,7 +131,7 @@ public class SQLWriter {
         }
 
         // write unique constraints
-        for (UniqueConstraint unique : table.getUniqueConstraints()) {
+        for (UniqueConstraint unique : schema.getUniqueConstraints(table)) {
             if (unique.hasMultipleColumns()) {
                 sql.appendln(0, ",");
                 sql.append(1, constraintSQLWriter.writeConstraint(unique));
@@ -139,7 +139,7 @@ public class SQLWriter {
         }
 
         // write check constraints
-        for (CheckConstraint check : table.getCheckConstraints()) {
+        for (CheckConstraint check : schema.getCheckConstraints(table)) {
             sql.appendln(0, ",");
             sql.append(1, constraintSQLWriter.writeConstraint(check));
         }
@@ -168,10 +168,10 @@ public class SQLWriter {
         return writeInsertStatement(table, columns, valueStrings);
     }
 
-    public List<String> writeInsertStatements(Data data) {
+    public List<String> writeInsertStatements(Schema schema, Data data) {
         List<String> statements = new ArrayList<>();
 
-        List<Table> tables = new TableDependencyOrderer().order(data.getTables());
+        List<Table> tables = new TableDependencyOrderer().order(data.getTables(), schema);
 
         for (Table table : tables) {
             List<Row> rows = data.getRows(table);

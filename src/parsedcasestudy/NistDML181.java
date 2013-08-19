@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * NistDML181 schema.
- * Java code originally generated: 2013/08/15 23:00:19
+ * Java code originally generated: 2013/08/17 00:30:43
  *
  */
 
@@ -23,14 +23,14 @@ public class NistDML181 extends Schema {
 		tableLongNamedPeople.createColumn("FIRSTNAME", new VarCharDataType(373));
 		tableLongNamedPeople.createColumn("LASTNAME", new VarCharDataType(373));
 		tableLongNamedPeople.createColumn("AGE", new IntDataType());
-		tableLongNamedPeople.createPrimaryKeyConstraint(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME"));
+		this.createPrimaryKeyConstraint(tableLongNamedPeople, tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME"));
 
 		Table tableOrders = this.createTable("ORDERS");
 		tableOrders.createColumn("FIRSTNAME", new VarCharDataType(373));
 		tableOrders.createColumn("LASTNAME", new VarCharDataType(373));
 		tableOrders.createColumn("TITLE", new VarCharDataType(80));
 		tableOrders.createColumn("COST", new NumericDataType(5, 2));
-		tableOrders.createForeignKeyConstraint(Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME")));
+		this.createForeignKeyConstraint(tableOrders, Arrays.asList(tableOrders.getColumn("FIRSTNAME"), tableOrders.getColumn("LASTNAME")), tableLongNamedPeople, Arrays.asList(tableLongNamedPeople.getColumn("FIRSTNAME"), tableLongNamedPeople.getColumn("LASTNAME")));
 	}
 }
 

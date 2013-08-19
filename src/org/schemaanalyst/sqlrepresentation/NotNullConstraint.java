@@ -1,9 +1,5 @@
-package org.schemaanalyst.sqlrepresentation.constraint;
+package org.schemaanalyst.sqlrepresentation;
 
-import java.util.Collections;
-
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Table;
 
 /**
  * Represents a NOT NULL integrity constraint.
@@ -16,19 +12,21 @@ public class NotNullConstraint extends Constraint {
 
     /**
      * Constructor.
+     * @param table The table of the column that is to be designated as NOT NULL.
      * @param column The column that is designated to be NOT NULL.
      */
-    public NotNullConstraint(Column column) {
-        this(null, column);
+    public NotNullConstraint(Table table, Column column) {
+        this(null, table, column);
     }    
     
     /**
      * Constructor.
+     * @param table The table of the column that is to be designated as NOT NULL.
      * @param name A name for the constraint (optional - can be null).
      * @param column The column that is designated to be NOT NULL.
      */
-    public NotNullConstraint(String name, Column column) {
-        super(name);
+    public NotNullConstraint(String name, Table table, Column column) {
+        super(name, table);
         this.column = column;
     }
 
@@ -45,6 +43,11 @@ public class NotNullConstraint extends Constraint {
      * @param column The column that is the subject of the NOT NULL constraint.
      */
     public void setColumn(Column column) {
+        if (!table.hasColumn(column)) {
+            throw new SQLRepresentationException(
+                    "No such column \"" + column + 
+                    "\" in table " + table);                
+        }           
         this.column = column;
     }    
 
@@ -64,7 +67,8 @@ public class NotNullConstraint extends Constraint {
      * @param table The table to remap the constraint's column to.
      */
     public void remap(Table table) {
-        setColumn(remapColumns(Collections.singletonList(column), table).get(0));
+        super.remap(table);
+        setColumn(remapColumn(table, column));
     }
     
     /**
@@ -74,13 +78,9 @@ public class NotNullConstraint extends Constraint {
      */
     @Override
     public NotNullConstraint duplicate() {
-    	return new NotNullConstraint(name, column);
+    	return new NotNullConstraint(getName(), table, column);
     }
 
-    /**
-     * Generates a hash code for this instance.
-     * @return The hash code.
-     */      
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -89,11 +89,6 @@ public class NotNullConstraint extends Constraint {
         return result;
     }
 
-    /**
-     * Checks if this instance is equal to another.
-     * @param obj Another object.
-     * @return True if the objects are equal, else false.
-     */ 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)

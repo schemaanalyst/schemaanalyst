@@ -24,13 +24,4 @@ public class TestNamedEntity {
         NamedEntityMock ne3 = new NamedEntityMock("Chris");
         assertFalse(ne1.equals(ne3));
     }
-    
-    @Test
-    public void testNullNamedEntity() {
-        NamedEntityMock ne1 = new NamedEntityMock(null);
-        assertNull(ne1.getName());
-        
-        NamedEntityMock ne2 = new NamedEntityMock(null);
-        assertFalse(ne1.equals(ne2));
-    }
 }

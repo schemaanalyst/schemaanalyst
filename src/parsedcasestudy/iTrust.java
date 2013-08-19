@@ -18,7 +18,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /*
  * iTrust schema.
- * Java code originally generated: 2013/08/15 23:00:50
+ * Java code originally generated: 2013/08/17 00:31:10
  *
  */
 
@@ -34,15 +34,15 @@ public class iTrust extends Schema {
 		tableUsers.createColumn("Role", new VarCharDataType(20));
 		tableUsers.createColumn("sQuestion", new VarCharDataType(100));
 		tableUsers.createColumn("sAnswer", new VarCharDataType(30));
-		tableUsers.createPrimaryKeyConstraint(tableUsers.getColumn("MID"));
-		tableUsers.createNotNullConstraint(tableUsers.getColumn("Role"));
-		tableUsers.createCheckConstraint(new InExpression(new ColumnExpression(tableUsers, tableUsers.getColumn("Role")), new ListExpression(new ConstantExpression(new StringValue("patient")), new ConstantExpression(new StringValue("admin")), new ConstantExpression(new StringValue("hcp")), new ConstantExpression(new StringValue("uap")), new ConstantExpression(new StringValue("er")), new ConstantExpression(new StringValue("tester")), new ConstantExpression(new StringValue("pha")), new ConstantExpression(new StringValue("lt"))), false));
+		this.createPrimaryKeyConstraint(tableUsers, tableUsers.getColumn("MID"));
+		this.createCheckConstraint(tableUsers, new InExpression(new ColumnExpression(tableUsers, tableUsers.getColumn("Role")), new ListExpression(new ConstantExpression(new StringValue("patient")), new ConstantExpression(new StringValue("admin")), new ConstantExpression(new StringValue("hcp")), new ConstantExpression(new StringValue("uap")), new ConstantExpression(new StringValue("er")), new ConstantExpression(new StringValue("tester")), new ConstantExpression(new StringValue("pha")), new ConstantExpression(new StringValue("lt"))), false));
+		this.createNotNullConstraint(tableUsers, tableUsers.getColumn("Role"));
 
 		Table tableHospitals = this.createTable("Hospitals");
 		tableHospitals.createColumn("HospitalID", new VarCharDataType(10));
 		tableHospitals.createColumn("HospitalName", new VarCharDataType(30));
-		tableHospitals.createPrimaryKeyConstraint(tableHospitals.getColumn("HospitalID"));
-		tableHospitals.createNotNullConstraint(tableHospitals.getColumn("HospitalName"));
+		this.createPrimaryKeyConstraint(tableHospitals, tableHospitals.getColumn("HospitalID"));
+		this.createNotNullConstraint(tableHospitals, tableHospitals.getColumn("HospitalName"));
 
 		Table tablePersonnel = this.createTable("Personnel");
 		tablePersonnel.createColumn("MID", new IntDataType());
@@ -65,17 +65,17 @@ public class iTrust extends Schema {
 		tablePersonnel.createColumn("specialty", new VarCharDataType(40));
 		tablePersonnel.createColumn("email", new VarCharDataType(55));
 		tablePersonnel.createColumn("MessageFilter", new VarCharDataType(60));
-		tablePersonnel.createPrimaryKeyConstraint(tablePersonnel.getColumn("MID"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("role"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("enabled"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("lastName"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("firstName"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("address1"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("address2"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("city"));
-		tablePersonnel.createNotNullConstraint(tablePersonnel.getColumn("state"));
-		tablePersonnel.createCheckConstraint(new InExpression(new ColumnExpression(tablePersonnel, tablePersonnel.getColumn("role")), new ListExpression(new ConstantExpression(new StringValue("admin")), new ConstantExpression(new StringValue("hcp")), new ConstantExpression(new StringValue("uap")), new ConstantExpression(new StringValue("er")), new ConstantExpression(new StringValue("tester")), new ConstantExpression(new StringValue("pha")), new ConstantExpression(new StringValue("lt"))), false));
-		tablePersonnel.createCheckConstraint(new InExpression(new ColumnExpression(tablePersonnel, tablePersonnel.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("")), new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createPrimaryKeyConstraint(tablePersonnel, tablePersonnel.getColumn("MID"));
+		this.createCheckConstraint(tablePersonnel, new InExpression(new ColumnExpression(tablePersonnel, tablePersonnel.getColumn("role")), new ListExpression(new ConstantExpression(new StringValue("admin")), new ConstantExpression(new StringValue("hcp")), new ConstantExpression(new StringValue("uap")), new ConstantExpression(new StringValue("er")), new ConstantExpression(new StringValue("tester")), new ConstantExpression(new StringValue("pha")), new ConstantExpression(new StringValue("lt"))), false));
+		this.createCheckConstraint(tablePersonnel, new InExpression(new ColumnExpression(tablePersonnel, tablePersonnel.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("")), new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("role"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("enabled"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("lastName"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("firstName"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("address1"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("address2"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("city"));
+		this.createNotNullConstraint(tablePersonnel, tablePersonnel.getColumn("state"));
 
 		Table tablePatients = this.createTable("Patients");
 		tablePatients.createColumn("MID", new IntDataType());
@@ -123,9 +123,9 @@ public class iTrust extends Schema {
 		tablePatients.createColumn("Language", new VarCharDataType(32));
 		tablePatients.createColumn("SpiritualPractices", new VarCharDataType(100));
 		tablePatients.createColumn("AlternateName", new VarCharDataType(32));
-		tablePatients.createPrimaryKeyConstraint(tablePatients.getColumn("MID"));
-		tablePatients.createCheckConstraint(new InExpression(new ColumnExpression(tablePatients, tablePatients.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
-		tablePatients.createCheckConstraint(new InExpression(new ColumnExpression(tablePatients, tablePatients.getColumn("ICState")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createPrimaryKeyConstraint(tablePatients, tablePatients.getColumn("MID"));
+		this.createCheckConstraint(tablePatients, new InExpression(new ColumnExpression(tablePatients, tablePatients.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createCheckConstraint(tablePatients, new InExpression(new ColumnExpression(tablePatients, tablePatients.getColumn("ICState")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
 
 		Table tableHistorypatients = this.createTable("HistoryPatients");
 		tableHistorypatients.createColumn("ID", new IntDataType());
@@ -176,71 +176,71 @@ public class iTrust extends Schema {
 		tableHistorypatients.createColumn("Language", new VarCharDataType(32));
 		tableHistorypatients.createColumn("SpiritualPractices", new VarCharDataType(100));
 		tableHistorypatients.createColumn("AlternateName", new VarCharDataType(32));
-		tableHistorypatients.createPrimaryKeyConstraint(tableHistorypatients.getColumn("ID"));
-		tableHistorypatients.createNotNullConstraint(tableHistorypatients.getColumn("changeDate"));
-		tableHistorypatients.createNotNullConstraint(tableHistorypatients.getColumn("changeMID"));
-		tableHistorypatients.createNotNullConstraint(tableHistorypatients.getColumn("MID"));
-		tableHistorypatients.createCheckConstraint(new InExpression(new ColumnExpression(tableHistorypatients, tableHistorypatients.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
-		tableHistorypatients.createCheckConstraint(new InExpression(new ColumnExpression(tableHistorypatients, tableHistorypatients.getColumn("ICState")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createPrimaryKeyConstraint(tableHistorypatients, tableHistorypatients.getColumn("ID"));
+		this.createCheckConstraint(tableHistorypatients, new InExpression(new ColumnExpression(tableHistorypatients, tableHistorypatients.getColumn("state")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createCheckConstraint(tableHistorypatients, new InExpression(new ColumnExpression(tableHistorypatients, tableHistorypatients.getColumn("ICState")), new ListExpression(new ConstantExpression(new StringValue("AK")), new ConstantExpression(new StringValue("AL")), new ConstantExpression(new StringValue("AR")), new ConstantExpression(new StringValue("AZ")), new ConstantExpression(new StringValue("CA")), new ConstantExpression(new StringValue("CO")), new ConstantExpression(new StringValue("CT")), new ConstantExpression(new StringValue("DE")), new ConstantExpression(new StringValue("DC")), new ConstantExpression(new StringValue("FL")), new ConstantExpression(new StringValue("GA")), new ConstantExpression(new StringValue("HI")), new ConstantExpression(new StringValue("IA")), new ConstantExpression(new StringValue("ID")), new ConstantExpression(new StringValue("IL")), new ConstantExpression(new StringValue("IN")), new ConstantExpression(new StringValue("KS")), new ConstantExpression(new StringValue("KY")), new ConstantExpression(new StringValue("LA")), new ConstantExpression(new StringValue("MA")), new ConstantExpression(new StringValue("MD")), new ConstantExpression(new StringValue("ME")), new ConstantExpression(new StringValue("MI")), new ConstantExpression(new StringValue("MN")), new ConstantExpression(new StringValue("MO")), new ConstantExpression(new StringValue("MS")), new ConstantExpression(new StringValue("MT")), new ConstantExpression(new StringValue("NC")), new ConstantExpression(new StringValue("ND")), new ConstantExpression(new StringValue("NE")), new ConstantExpression(new StringValue("NH")), new ConstantExpression(new StringValue("NJ")), new ConstantExpression(new StringValue("NM")), new ConstantExpression(new StringValue("NV")), new ConstantExpression(new StringValue("NY")), new ConstantExpression(new StringValue("OH")), new ConstantExpression(new StringValue("OK")), new ConstantExpression(new StringValue("OR")), new ConstantExpression(new StringValue("PA")), new ConstantExpression(new StringValue("RI")), new ConstantExpression(new StringValue("SC")), new ConstantExpression(new StringValue("SD")), new ConstantExpression(new StringValue("TN")), new ConstantExpression(new StringValue("TX")), new ConstantExpression(new StringValue("UT")), new ConstantExpression(new StringValue("VA")), new ConstantExpression(new StringValue("VT")), new ConstantExpression(new StringValue("WA")), new ConstantExpression(new StringValue("WI")), new ConstantExpression(new StringValue("WV")), new ConstantExpression(new StringValue("WY"))), false));
+		this.createNotNullConstraint(tableHistorypatients, tableHistorypatients.getColumn("changeDate"));
+		this.createNotNullConstraint(tableHistorypatients, tableHistorypatients.getColumn("changeMID"));
+		this.createNotNullConstraint(tableHistorypatients, tableHistorypatients.getColumn("MID"));
 
 		Table tableLoginfailures = this.createTable("LoginFailures");
 		tableLoginfailures.createColumn("ipaddress", new VarCharDataType(100));
 		tableLoginfailures.createColumn("failureCount", new IntDataType());
 		tableLoginfailures.createColumn("lastFailure", new TimestampDataType());
-		tableLoginfailures.createPrimaryKeyConstraint(tableLoginfailures.getColumn("ipaddress"));
-		tableLoginfailures.createNotNullConstraint(tableLoginfailures.getColumn("ipaddress"));
-		tableLoginfailures.createNotNullConstraint(tableLoginfailures.getColumn("failureCount"));
-		tableLoginfailures.createNotNullConstraint(tableLoginfailures.getColumn("lastFailure"));
+		this.createPrimaryKeyConstraint(tableLoginfailures, tableLoginfailures.getColumn("ipaddress"));
+		this.createNotNullConstraint(tableLoginfailures, tableLoginfailures.getColumn("ipaddress"));
+		this.createNotNullConstraint(tableLoginfailures, tableLoginfailures.getColumn("failureCount"));
+		this.createNotNullConstraint(tableLoginfailures, tableLoginfailures.getColumn("lastFailure"));
 
 		Table tableResetpasswordfailures = this.createTable("ResetPasswordFailures");
 		tableResetpasswordfailures.createColumn("ipaddress", new VarCharDataType(128));
 		tableResetpasswordfailures.createColumn("failureCount", new IntDataType());
 		tableResetpasswordfailures.createColumn("lastFailure", new TimestampDataType());
-		tableResetpasswordfailures.createPrimaryKeyConstraint(tableResetpasswordfailures.getColumn("ipaddress"));
-		tableResetpasswordfailures.createNotNullConstraint(tableResetpasswordfailures.getColumn("ipaddress"));
-		tableResetpasswordfailures.createNotNullConstraint(tableResetpasswordfailures.getColumn("failureCount"));
-		tableResetpasswordfailures.createNotNullConstraint(tableResetpasswordfailures.getColumn("lastFailure"));
+		this.createPrimaryKeyConstraint(tableResetpasswordfailures, tableResetpasswordfailures.getColumn("ipaddress"));
+		this.createNotNullConstraint(tableResetpasswordfailures, tableResetpasswordfailures.getColumn("ipaddress"));
+		this.createNotNullConstraint(tableResetpasswordfailures, tableResetpasswordfailures.getColumn("failureCount"));
+		this.createNotNullConstraint(tableResetpasswordfailures, tableResetpasswordfailures.getColumn("lastFailure"));
 
 		Table tableIcdcodes = this.createTable("icdcodes");
 		tableIcdcodes.createColumn("Code", new NumericDataType(5, 2));
 		tableIcdcodes.createColumn("Description", new VarCharDataType(50));
 		tableIcdcodes.createColumn("Chronic", new VarCharDataType(3));
-		tableIcdcodes.createPrimaryKeyConstraint(tableIcdcodes.getColumn("Code"));
-		tableIcdcodes.createNotNullConstraint(tableIcdcodes.getColumn("Code"));
-		tableIcdcodes.createNotNullConstraint(tableIcdcodes.getColumn("Description"));
-		tableIcdcodes.createNotNullConstraint(tableIcdcodes.getColumn("Chronic"));
-		tableIcdcodes.createCheckConstraint(new InExpression(new ColumnExpression(tableIcdcodes, tableIcdcodes.getColumn("Chronic")), new ListExpression(new ConstantExpression(new StringValue("no")), new ConstantExpression(new StringValue("yes"))), false));
+		this.createPrimaryKeyConstraint(tableIcdcodes, tableIcdcodes.getColumn("Code"));
+		this.createCheckConstraint(tableIcdcodes, new InExpression(new ColumnExpression(tableIcdcodes, tableIcdcodes.getColumn("Chronic")), new ListExpression(new ConstantExpression(new StringValue("no")), new ConstantExpression(new StringValue("yes"))), false));
+		this.createNotNullConstraint(tableIcdcodes, tableIcdcodes.getColumn("Code"));
+		this.createNotNullConstraint(tableIcdcodes, tableIcdcodes.getColumn("Description"));
+		this.createNotNullConstraint(tableIcdcodes, tableIcdcodes.getColumn("Chronic"));
 
 		Table tableCptcodes = this.createTable("CPTCodes");
 		tableCptcodes.createColumn("Code", new VarCharDataType(5));
 		tableCptcodes.createColumn("Description", new VarCharDataType(30));
 		tableCptcodes.createColumn("Attribute", new VarCharDataType(30));
-		tableCptcodes.createPrimaryKeyConstraint(tableCptcodes.getColumn("Code"));
-		tableCptcodes.createNotNullConstraint(tableCptcodes.getColumn("Code"));
-		tableCptcodes.createNotNullConstraint(tableCptcodes.getColumn("Description"));
+		this.createPrimaryKeyConstraint(tableCptcodes, tableCptcodes.getColumn("Code"));
+		this.createNotNullConstraint(tableCptcodes, tableCptcodes.getColumn("Code"));
+		this.createNotNullConstraint(tableCptcodes, tableCptcodes.getColumn("Description"));
 
 		Table tableDrugreactionoverridecodes = this.createTable("DrugReactionOverrideCodes");
 		tableDrugreactionoverridecodes.createColumn("Code", new VarCharDataType(5));
 		tableDrugreactionoverridecodes.createColumn("Description", new VarCharDataType(80));
-		tableDrugreactionoverridecodes.createPrimaryKeyConstraint(tableDrugreactionoverridecodes.getColumn("Code"));
-		tableDrugreactionoverridecodes.createNotNullConstraint(tableDrugreactionoverridecodes.getColumn("Code"));
-		tableDrugreactionoverridecodes.createNotNullConstraint(tableDrugreactionoverridecodes.getColumn("Description"));
+		this.createPrimaryKeyConstraint(tableDrugreactionoverridecodes, tableDrugreactionoverridecodes.getColumn("Code"));
+		this.createNotNullConstraint(tableDrugreactionoverridecodes, tableDrugreactionoverridecodes.getColumn("Code"));
+		this.createNotNullConstraint(tableDrugreactionoverridecodes, tableDrugreactionoverridecodes.getColumn("Description"));
 
 		Table tableNdcodes = this.createTable("NDCodes");
 		tableNdcodes.createColumn("Code", new VarCharDataType(10));
 		tableNdcodes.createColumn("Description", new VarCharDataType(100));
-		tableNdcodes.createPrimaryKeyConstraint(tableNdcodes.getColumn("Code"));
-		tableNdcodes.createNotNullConstraint(tableNdcodes.getColumn("Code"));
-		tableNdcodes.createNotNullConstraint(tableNdcodes.getColumn("Description"));
+		this.createPrimaryKeyConstraint(tableNdcodes, tableNdcodes.getColumn("Code"));
+		this.createNotNullConstraint(tableNdcodes, tableNdcodes.getColumn("Code"));
+		this.createNotNullConstraint(tableNdcodes, tableNdcodes.getColumn("Description"));
 
 		Table tableDruginteractions = this.createTable("DrugInteractions");
 		tableDruginteractions.createColumn("FirstDrug", new VarCharDataType(9));
 		tableDruginteractions.createColumn("SecondDrug", new VarCharDataType(9));
 		tableDruginteractions.createColumn("Description", new VarCharDataType(100));
-		tableDruginteractions.createPrimaryKeyConstraint(tableDruginteractions.getColumn("FirstDrug"), tableDruginteractions.getColumn("SecondDrug"));
-		tableDruginteractions.createNotNullConstraint(tableDruginteractions.getColumn("FirstDrug"));
-		tableDruginteractions.createNotNullConstraint(tableDruginteractions.getColumn("SecondDrug"));
-		tableDruginteractions.createNotNullConstraint(tableDruginteractions.getColumn("Description"));
+		this.createPrimaryKeyConstraint(tableDruginteractions, tableDruginteractions.getColumn("FirstDrug"), tableDruginteractions.getColumn("SecondDrug"));
+		this.createNotNullConstraint(tableDruginteractions, tableDruginteractions.getColumn("FirstDrug"));
+		this.createNotNullConstraint(tableDruginteractions, tableDruginteractions.getColumn("SecondDrug"));
+		this.createNotNullConstraint(tableDruginteractions, tableDruginteractions.getColumn("Description"));
 
 		Table tableTransactionlog = this.createTable("TransactionLog");
 		tableTransactionlog.createColumn("transactionID", new IntDataType());
@@ -249,46 +249,46 @@ public class iTrust extends Schema {
 		tableTransactionlog.createColumn("transactionCode", new IntDataType());
 		tableTransactionlog.createColumn("timeLogged", new TimestampDataType());
 		tableTransactionlog.createColumn("addedInfo", new VarCharDataType(255));
-		tableTransactionlog.createPrimaryKeyConstraint(tableTransactionlog.getColumn("transactionID"));
-		tableTransactionlog.createNotNullConstraint(tableTransactionlog.getColumn("transactionID"));
-		tableTransactionlog.createNotNullConstraint(tableTransactionlog.getColumn("loggedInMID"));
-		tableTransactionlog.createNotNullConstraint(tableTransactionlog.getColumn("secondaryMID"));
-		tableTransactionlog.createNotNullConstraint(tableTransactionlog.getColumn("transactionCode"));
-		tableTransactionlog.createNotNullConstraint(tableTransactionlog.getColumn("timeLogged"));
+		this.createPrimaryKeyConstraint(tableTransactionlog, tableTransactionlog.getColumn("transactionID"));
+		this.createNotNullConstraint(tableTransactionlog, tableTransactionlog.getColumn("transactionID"));
+		this.createNotNullConstraint(tableTransactionlog, tableTransactionlog.getColumn("loggedInMID"));
+		this.createNotNullConstraint(tableTransactionlog, tableTransactionlog.getColumn("secondaryMID"));
+		this.createNotNullConstraint(tableTransactionlog, tableTransactionlog.getColumn("transactionCode"));
+		this.createNotNullConstraint(tableTransactionlog, tableTransactionlog.getColumn("timeLogged"));
 
 		Table tableHcprelations = this.createTable("HCPRelations");
 		tableHcprelations.createColumn("HCP", new IntDataType());
 		tableHcprelations.createColumn("UAP", new IntDataType());
-		tableHcprelations.createPrimaryKeyConstraint(tableHcprelations.getColumn("HCP"), tableHcprelations.getColumn("UAP"));
-		tableHcprelations.createNotNullConstraint(tableHcprelations.getColumn("HCP"));
-		tableHcprelations.createNotNullConstraint(tableHcprelations.getColumn("UAP"));
+		this.createPrimaryKeyConstraint(tableHcprelations, tableHcprelations.getColumn("HCP"), tableHcprelations.getColumn("UAP"));
+		this.createNotNullConstraint(tableHcprelations, tableHcprelations.getColumn("HCP"));
+		this.createNotNullConstraint(tableHcprelations, tableHcprelations.getColumn("UAP"));
 
 		Table tablePersonalrelations = this.createTable("PersonalRelations");
 		tablePersonalrelations.createColumn("PatientID", new IntDataType());
 		tablePersonalrelations.createColumn("RelativeID", new IntDataType());
 		tablePersonalrelations.createColumn("RelativeType", new VarCharDataType(35));
-		tablePersonalrelations.createNotNullConstraint(tablePersonalrelations.getColumn("PatientID"));
-		tablePersonalrelations.createNotNullConstraint(tablePersonalrelations.getColumn("RelativeID"));
-		tablePersonalrelations.createNotNullConstraint(tablePersonalrelations.getColumn("RelativeType"));
+		this.createNotNullConstraint(tablePersonalrelations, tablePersonalrelations.getColumn("PatientID"));
+		this.createNotNullConstraint(tablePersonalrelations, tablePersonalrelations.getColumn("RelativeID"));
+		this.createNotNullConstraint(tablePersonalrelations, tablePersonalrelations.getColumn("RelativeType"));
 
 		Table tableRepresentatives = this.createTable("Representatives");
 		tableRepresentatives.createColumn("representerMID", new IntDataType());
 		tableRepresentatives.createColumn("representeeMID", new IntDataType());
-		tableRepresentatives.createPrimaryKeyConstraint(tableRepresentatives.getColumn("representerMID"), tableRepresentatives.getColumn("representeeMID"));
+		this.createPrimaryKeyConstraint(tableRepresentatives, tableRepresentatives.getColumn("representerMID"), tableRepresentatives.getColumn("representeeMID"));
 
 		Table tableHcpassignedhos = this.createTable("HCPAssignedHos");
 		tableHcpassignedhos.createColumn("hosID", new VarCharDataType(10));
 		tableHcpassignedhos.createColumn("HCPID", new IntDataType());
-		tableHcpassignedhos.createPrimaryKeyConstraint(tableHcpassignedhos.getColumn("hosID"), tableHcpassignedhos.getColumn("HCPID"));
-		tableHcpassignedhos.createNotNullConstraint(tableHcpassignedhos.getColumn("hosID"));
-		tableHcpassignedhos.createNotNullConstraint(tableHcpassignedhos.getColumn("HCPID"));
+		this.createPrimaryKeyConstraint(tableHcpassignedhos, tableHcpassignedhos.getColumn("hosID"), tableHcpassignedhos.getColumn("HCPID"));
+		this.createNotNullConstraint(tableHcpassignedhos, tableHcpassignedhos.getColumn("hosID"));
+		this.createNotNullConstraint(tableHcpassignedhos, tableHcpassignedhos.getColumn("HCPID"));
 
 		Table tableDeclaredhcp = this.createTable("DeclaredHCP");
 		tableDeclaredhcp.createColumn("PatientID", new IntDataType());
 		tableDeclaredhcp.createColumn("HCPID", new IntDataType());
-		tableDeclaredhcp.createPrimaryKeyConstraint(tableDeclaredhcp.getColumn("PatientID"), tableDeclaredhcp.getColumn("HCPID"));
-		tableDeclaredhcp.createNotNullConstraint(tableDeclaredhcp.getColumn("PatientID"));
-		tableDeclaredhcp.createNotNullConstraint(tableDeclaredhcp.getColumn("HCPID"));
+		this.createPrimaryKeyConstraint(tableDeclaredhcp, tableDeclaredhcp.getColumn("PatientID"), tableDeclaredhcp.getColumn("HCPID"));
+		this.createNotNullConstraint(tableDeclaredhcp, tableDeclaredhcp.getColumn("PatientID"));
+		this.createNotNullConstraint(tableDeclaredhcp, tableDeclaredhcp.getColumn("HCPID"));
 
 		Table tableOfficevisits = this.createTable("OfficeVisits");
 		tableOfficevisits.createColumn("ID", new IntDataType());
@@ -297,7 +297,7 @@ public class iTrust extends Schema {
 		tableOfficevisits.createColumn("notes", new VarCharDataType(50));
 		tableOfficevisits.createColumn("PatientID", new IntDataType());
 		tableOfficevisits.createColumn("HospitalID", new VarCharDataType(10));
-		tableOfficevisits.createPrimaryKeyConstraint(tableOfficevisits.getColumn("ID"));
+		this.createPrimaryKeyConstraint(tableOfficevisits, tableOfficevisits.getColumn("ID"));
 
 		Table tablePersonalhealthinformation = this.createTable("PersonalHealthInformation");
 		tablePersonalhealthinformation.createColumn("PatientID", new IntDataType());
@@ -312,36 +312,36 @@ public class iTrust extends Schema {
 		tablePersonalhealthinformation.createColumn("CholesterolTri", new IntDataType());
 		tablePersonalhealthinformation.createColumn("HCPID", new IntDataType());
 		tablePersonalhealthinformation.createColumn("AsOfDate", new TimestampDataType());
-		tablePersonalhealthinformation.createNotNullConstraint(tablePersonalhealthinformation.getColumn("PatientID"));
-		tablePersonalhealthinformation.createNotNullConstraint(tablePersonalhealthinformation.getColumn("Smoker"));
-		tablePersonalhealthinformation.createNotNullConstraint(tablePersonalhealthinformation.getColumn("SmokingStatus"));
-		tablePersonalhealthinformation.createNotNullConstraint(tablePersonalhealthinformation.getColumn("AsOfDate"));
+		this.createNotNullConstraint(tablePersonalhealthinformation, tablePersonalhealthinformation.getColumn("PatientID"));
+		this.createNotNullConstraint(tablePersonalhealthinformation, tablePersonalhealthinformation.getColumn("Smoker"));
+		this.createNotNullConstraint(tablePersonalhealthinformation, tablePersonalhealthinformation.getColumn("SmokingStatus"));
+		this.createNotNullConstraint(tablePersonalhealthinformation, tablePersonalhealthinformation.getColumn("AsOfDate"));
 
 		Table tablePersonalallergies = this.createTable("PersonalAllergies");
 		tablePersonalallergies.createColumn("PatientID", new IntDataType());
 		tablePersonalallergies.createColumn("Allergy", new VarCharDataType(50));
-		tablePersonalallergies.createNotNullConstraint(tablePersonalallergies.getColumn("PatientID"));
-		tablePersonalallergies.createNotNullConstraint(tablePersonalallergies.getColumn("Allergy"));
+		this.createNotNullConstraint(tablePersonalallergies, tablePersonalallergies.getColumn("PatientID"));
+		this.createNotNullConstraint(tablePersonalallergies, tablePersonalallergies.getColumn("Allergy"));
 
 		Table tableAllergies = this.createTable("Allergies");
 		tableAllergies.createColumn("ID", new IntDataType());
 		tableAllergies.createColumn("PatientID", new IntDataType());
 		tableAllergies.createColumn("Description", new VarCharDataType(50));
 		tableAllergies.createColumn("FirstFound", new TimestampDataType());
-		tableAllergies.createPrimaryKeyConstraint(tableAllergies.getColumn("ID"));
-		tableAllergies.createNotNullConstraint(tableAllergies.getColumn("PatientID"));
-		tableAllergies.createNotNullConstraint(tableAllergies.getColumn("Description"));
-		tableAllergies.createNotNullConstraint(tableAllergies.getColumn("FirstFound"));
+		this.createPrimaryKeyConstraint(tableAllergies, tableAllergies.getColumn("ID"));
+		this.createNotNullConstraint(tableAllergies, tableAllergies.getColumn("PatientID"));
+		this.createNotNullConstraint(tableAllergies, tableAllergies.getColumn("Description"));
+		this.createNotNullConstraint(tableAllergies, tableAllergies.getColumn("FirstFound"));
 
 		Table tableOvprocedure = this.createTable("OVProcedure");
 		tableOvprocedure.createColumn("ID", new IntDataType());
 		tableOvprocedure.createColumn("VisitID", new IntDataType());
 		tableOvprocedure.createColumn("CPTCode", new VarCharDataType(5));
 		tableOvprocedure.createColumn("HCPID", new VarCharDataType(10));
-		tableOvprocedure.createPrimaryKeyConstraint(tableOvprocedure.getColumn("ID"));
-		tableOvprocedure.createNotNullConstraint(tableOvprocedure.getColumn("VisitID"));
-		tableOvprocedure.createNotNullConstraint(tableOvprocedure.getColumn("CPTCode"));
-		tableOvprocedure.createNotNullConstraint(tableOvprocedure.getColumn("HCPID"));
+		this.createPrimaryKeyConstraint(tableOvprocedure, tableOvprocedure.getColumn("ID"));
+		this.createNotNullConstraint(tableOvprocedure, tableOvprocedure.getColumn("VisitID"));
+		this.createNotNullConstraint(tableOvprocedure, tableOvprocedure.getColumn("CPTCode"));
+		this.createNotNullConstraint(tableOvprocedure, tableOvprocedure.getColumn("HCPID"));
 
 		Table tableOvmedication = this.createTable("OVMedication");
 		tableOvmedication.createColumn("ID", new IntDataType());
@@ -351,31 +351,31 @@ public class iTrust extends Schema {
 		tableOvmedication.createColumn("EndDate", new DateDataType());
 		tableOvmedication.createColumn("Dosage", new IntDataType());
 		tableOvmedication.createColumn("Instructions", new VarCharDataType(500));
-		tableOvmedication.createPrimaryKeyConstraint(tableOvmedication.getColumn("ID"));
-		tableOvmedication.createNotNullConstraint(tableOvmedication.getColumn("VisitID"));
-		tableOvmedication.createNotNullConstraint(tableOvmedication.getColumn("NDCode"));
+		this.createPrimaryKeyConstraint(tableOvmedication, tableOvmedication.getColumn("ID"));
+		this.createNotNullConstraint(tableOvmedication, tableOvmedication.getColumn("VisitID"));
+		this.createNotNullConstraint(tableOvmedication, tableOvmedication.getColumn("NDCode"));
 
 		Table tableOvreactionoverride = this.createTable("OVReactionOverride");
 		tableOvreactionoverride.createColumn("ID", new IntDataType());
 		tableOvreactionoverride.createColumn("OVMedicationID", new IntDataType());
 		tableOvreactionoverride.createColumn("OverrideCode", new VarCharDataType(5));
 		tableOvreactionoverride.createColumn("OverrideComment", new VarCharDataType(255));
-		tableOvreactionoverride.createPrimaryKeyConstraint(tableOvreactionoverride.getColumn("ID"));
-		tableOvreactionoverride.createForeignKeyConstraint(tableOvreactionoverride.getColumn("OVMedicationID"), tableOvmedication, tableOvmedication.getColumn("ID"));
-		tableOvreactionoverride.createNotNullConstraint(tableOvreactionoverride.getColumn("OVMedicationID"));
+		this.createPrimaryKeyConstraint(tableOvreactionoverride, tableOvreactionoverride.getColumn("ID"));
+		this.createForeignKeyConstraint(tableOvreactionoverride, tableOvreactionoverride.getColumn("OVMedicationID"), tableOvmedication, tableOvmedication.getColumn("ID"));
+		this.createNotNullConstraint(tableOvreactionoverride, tableOvreactionoverride.getColumn("OVMedicationID"));
 
 		Table tableOvdiagnosis = this.createTable("OVDiagnosis");
 		tableOvdiagnosis.createColumn("ID", new IntDataType());
 		tableOvdiagnosis.createColumn("VisitID", new IntDataType());
 		tableOvdiagnosis.createColumn("ICDCode", new DecimalDataType(5, 2));
-		tableOvdiagnosis.createPrimaryKeyConstraint(tableOvdiagnosis.getColumn("ID"));
-		tableOvdiagnosis.createNotNullConstraint(tableOvdiagnosis.getColumn("VisitID"));
-		tableOvdiagnosis.createNotNullConstraint(tableOvdiagnosis.getColumn("ICDCode"));
+		this.createPrimaryKeyConstraint(tableOvdiagnosis, tableOvdiagnosis.getColumn("ID"));
+		this.createNotNullConstraint(tableOvdiagnosis, tableOvdiagnosis.getColumn("VisitID"));
+		this.createNotNullConstraint(tableOvdiagnosis, tableOvdiagnosis.getColumn("ICDCode"));
 
 		Table tableGlobalvariables = this.createTable("GlobalVariables");
 		tableGlobalvariables.createColumn("Name", new VarCharDataType(20));
 		tableGlobalvariables.createColumn("Value", new VarCharDataType(20));
-		tableGlobalvariables.createPrimaryKeyConstraint(tableGlobalvariables.getColumn("Name"));
+		this.createPrimaryKeyConstraint(tableGlobalvariables, tableGlobalvariables.getColumn("Name"));
 
 		Table tableFakeemail = this.createTable("FakeEmail");
 		tableFakeemail.createColumn("ID", new IntDataType());
@@ -384,8 +384,8 @@ public class iTrust extends Schema {
 		tableFakeemail.createColumn("Subject", new VarCharDataType(500));
 		tableFakeemail.createColumn("Body", new VarCharDataType(2000));
 		tableFakeemail.createColumn("AddedDate", new TimestampDataType());
-		tableFakeemail.createPrimaryKeyConstraint(tableFakeemail.getColumn("ID"));
-		tableFakeemail.createNotNullConstraint(tableFakeemail.getColumn("AddedDate"));
+		this.createPrimaryKeyConstraint(tableFakeemail, tableFakeemail.getColumn("ID"));
+		this.createNotNullConstraint(tableFakeemail, tableFakeemail.getColumn("AddedDate"));
 
 		Table tableReportrequests = this.createTable("ReportRequests");
 		tableReportrequests.createColumn("ID", new IntDataType());
@@ -397,7 +397,7 @@ public class iTrust extends Schema {
 		tableReportrequests.createColumn("ViewedDate", new TimestampDataType());
 		tableReportrequests.createColumn("Status", new VarCharDataType(30));
 		tableReportrequests.createColumn("Comment", new VarCharDataType(50));
-		tableReportrequests.createPrimaryKeyConstraint(tableReportrequests.getColumn("ID"));
+		this.createPrimaryKeyConstraint(tableReportrequests, tableReportrequests.getColumn("ID"));
 
 		Table tableOvsurvey = this.createTable("OVSurvey");
 		tableOvsurvey.createColumn("VisitID", new IntDataType());
@@ -406,8 +406,8 @@ public class iTrust extends Schema {
 		tableOvsurvey.createColumn("ExamRoomMinutes", new IntDataType());
 		tableOvsurvey.createColumn("VisitSatisfaction", new IntDataType());
 		tableOvsurvey.createColumn("TreatmentSatisfaction", new IntDataType());
-		tableOvsurvey.createPrimaryKeyConstraint(tableOvsurvey.getColumn("VisitID"));
-		tableOvsurvey.createNotNullConstraint(tableOvsurvey.getColumn("SurveyDate"));
+		this.createPrimaryKeyConstraint(tableOvsurvey, tableOvsurvey.getColumn("VisitID"));
+		this.createNotNullConstraint(tableOvsurvey, tableOvsurvey.getColumn("SurveyDate"));
 
 		Table tableLoinc = this.createTable("LOINC");
 		tableLoinc.createColumn("LaboratoryProcedureCode", new VarCharDataType(7));
@@ -435,9 +435,9 @@ public class iTrust extends Schema {
 		tableLabprocedure.createColumn("PriorityCode", new IntDataType());
 		tableLabprocedure.createColumn("ViewedByPatient", new BooleanDataType());
 		tableLabprocedure.createColumn("UpdatedDate", new TimestampDataType());
-		tableLabprocedure.createPrimaryKeyConstraint(tableLabprocedure.getColumn("LaboratoryProcedureID"));
-		tableLabprocedure.createNotNullConstraint(tableLabprocedure.getColumn("ViewedByPatient"));
-		tableLabprocedure.createNotNullConstraint(tableLabprocedure.getColumn("UpdatedDate"));
+		this.createPrimaryKeyConstraint(tableLabprocedure, tableLabprocedure.getColumn("LaboratoryProcedureID"));
+		this.createNotNullConstraint(tableLabprocedure, tableLabprocedure.getColumn("ViewedByPatient"));
+		this.createNotNullConstraint(tableLabprocedure, tableLabprocedure.getColumn("UpdatedDate"));
 
 		Table tableMessage = this.createTable("message");
 		tableMessage.createColumn("message_id", new IntDataType());
@@ -448,9 +448,9 @@ public class iTrust extends Schema {
 		tableMessage.createColumn("message", new VarCharDataType(50));
 		tableMessage.createColumn("subject", new VarCharDataType(50));
 		tableMessage.createColumn("been_read", new IntDataType());
-		tableMessage.createNotNullConstraint(tableMessage.getColumn("from_id"));
-		tableMessage.createNotNullConstraint(tableMessage.getColumn("to_id"));
-		tableMessage.createNotNullConstraint(tableMessage.getColumn("sent_date"));
+		this.createNotNullConstraint(tableMessage, tableMessage.getColumn("from_id"));
+		this.createNotNullConstraint(tableMessage, tableMessage.getColumn("to_id"));
+		this.createNotNullConstraint(tableMessage, tableMessage.getColumn("sent_date"));
 
 		Table tableAppointment = this.createTable("Appointment");
 		tableAppointment.createColumn("appt_id", new IntDataType());
@@ -459,19 +459,19 @@ public class iTrust extends Schema {
 		tableAppointment.createColumn("sched_date", new TimestampDataType());
 		tableAppointment.createColumn("appt_type", new VarCharDataType(30));
 		tableAppointment.createColumn("comment", new VarCharDataType(50));
-		tableAppointment.createPrimaryKeyConstraint(tableAppointment.getColumn("appt_id"));
-		tableAppointment.createNotNullConstraint(tableAppointment.getColumn("doctor_id"));
-		tableAppointment.createNotNullConstraint(tableAppointment.getColumn("patient_id"));
-		tableAppointment.createNotNullConstraint(tableAppointment.getColumn("sched_date"));
-		tableAppointment.createNotNullConstraint(tableAppointment.getColumn("appt_type"));
+		this.createPrimaryKeyConstraint(tableAppointment, tableAppointment.getColumn("appt_id"));
+		this.createNotNullConstraint(tableAppointment, tableAppointment.getColumn("doctor_id"));
+		this.createNotNullConstraint(tableAppointment, tableAppointment.getColumn("patient_id"));
+		this.createNotNullConstraint(tableAppointment, tableAppointment.getColumn("sched_date"));
+		this.createNotNullConstraint(tableAppointment, tableAppointment.getColumn("appt_type"));
 
 		Table tableAppointmenttype = this.createTable("AppointmentType");
 		tableAppointmenttype.createColumn("apptType_id", new IntDataType());
 		tableAppointmenttype.createColumn("appt_type", new VarCharDataType(30));
 		tableAppointmenttype.createColumn("duration", new IntDataType());
-		tableAppointmenttype.createPrimaryKeyConstraint(tableAppointmenttype.getColumn("apptType_id"));
-		tableAppointmenttype.createNotNullConstraint(tableAppointmenttype.getColumn("appt_type"));
-		tableAppointmenttype.createNotNullConstraint(tableAppointmenttype.getColumn("duration"));
+		this.createPrimaryKeyConstraint(tableAppointmenttype, tableAppointmenttype.getColumn("apptType_id"));
+		this.createNotNullConstraint(tableAppointmenttype, tableAppointmenttype.getColumn("appt_type"));
+		this.createNotNullConstraint(tableAppointmenttype, tableAppointmenttype.getColumn("duration"));
 
 		Table tableReferrals = this.createTable("referrals");
 		tableReferrals.createColumn("id", new IntDataType());
@@ -484,14 +484,14 @@ public class iTrust extends Schema {
 		tableReferrals.createColumn("viewed_by_HCP", new BooleanDataType());
 		tableReferrals.createColumn("TimeStamp", new TimestampDataType());
 		tableReferrals.createColumn("PriorityCode", new IntDataType());
-		tableReferrals.createPrimaryKeyConstraint(tableReferrals.getColumn("id"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("PatientID"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("SenderID"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("ReceiverID"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("OVID"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("viewed_by_patient"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("viewed_by_HCP"));
-		tableReferrals.createNotNullConstraint(tableReferrals.getColumn("TimeStamp"));
+		this.createPrimaryKeyConstraint(tableReferrals, tableReferrals.getColumn("id"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("PatientID"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("SenderID"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("ReceiverID"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("OVID"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("viewed_by_patient"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("viewed_by_HCP"));
+		this.createNotNullConstraint(tableReferrals, tableReferrals.getColumn("TimeStamp"));
 
 		Table tableRemotemonitoringdata = this.createTable("RemoteMonitoringData");
 		tableRemotemonitoringdata.createColumn("id", new IntDataType());
@@ -505,9 +505,9 @@ public class iTrust extends Schema {
 		tableRemotemonitoringdata.createColumn("timeLogged", new TimestampDataType());
 		tableRemotemonitoringdata.createColumn("ReporterRole", new VarCharDataType(50));
 		tableRemotemonitoringdata.createColumn("ReporterID", new IntDataType());
-		tableRemotemonitoringdata.createPrimaryKeyConstraint(tableRemotemonitoringdata.getColumn("id"));
-		tableRemotemonitoringdata.createNotNullConstraint(tableRemotemonitoringdata.getColumn("PatientID"));
-		tableRemotemonitoringdata.createNotNullConstraint(tableRemotemonitoringdata.getColumn("timeLogged"));
+		this.createPrimaryKeyConstraint(tableRemotemonitoringdata, tableRemotemonitoringdata.getColumn("id"));
+		this.createNotNullConstraint(tableRemotemonitoringdata, tableRemotemonitoringdata.getColumn("PatientID"));
+		this.createNotNullConstraint(tableRemotemonitoringdata, tableRemotemonitoringdata.getColumn("timeLogged"));
 
 		Table tableRemotemonitoringlists = this.createTable("RemoteMonitoringLists");
 		tableRemotemonitoringlists.createColumn("PatientMID", new IntDataType());
@@ -518,7 +518,7 @@ public class iTrust extends Schema {
 		tableRemotemonitoringlists.createColumn("Height", new BooleanDataType());
 		tableRemotemonitoringlists.createColumn("Weight", new BooleanDataType());
 		tableRemotemonitoringlists.createColumn("PedometerReading", new BooleanDataType());
-		tableRemotemonitoringlists.createPrimaryKeyConstraint(tableRemotemonitoringlists.getColumn("PatientMID"), tableRemotemonitoringlists.getColumn("HCPMID"));
+		this.createPrimaryKeyConstraint(tableRemotemonitoringlists, tableRemotemonitoringlists.getColumn("PatientMID"), tableRemotemonitoringlists.getColumn("HCPMID"));
 
 		Table tableAdverseevents = this.createTable("AdverseEvents");
 		tableAdverseevents.createColumn("id", new IntDataType());
@@ -529,14 +529,14 @@ public class iTrust extends Schema {
 		tableAdverseevents.createColumn("Comment", new VarCharDataType(2000));
 		tableAdverseevents.createColumn("Prescriber", new IntDataType());
 		tableAdverseevents.createColumn("TimeLogged", new TimestampDataType());
-		tableAdverseevents.createPrimaryKeyConstraint(tableAdverseevents.getColumn("id"));
+		this.createPrimaryKeyConstraint(tableAdverseevents, tableAdverseevents.getColumn("id"));
 
 		Table tableProfilephotos = this.createTable("ProfilePhotos");
 		tableProfilephotos.createColumn("MID", new IntDataType());
 		tableProfilephotos.createColumn("Photo", new VarCharDataType(50));
 		tableProfilephotos.createColumn("UpdatedDate", new TimestampDataType());
-		tableProfilephotos.createPrimaryKeyConstraint(tableProfilephotos.getColumn("MID"));
-		tableProfilephotos.createNotNullConstraint(tableProfilephotos.getColumn("UpdatedDate"));
+		this.createPrimaryKeyConstraint(tableProfilephotos, tableProfilephotos.getColumn("MID"));
+		this.createNotNullConstraint(tableProfilephotos, tableProfilephotos.getColumn("UpdatedDate"));
 
 		Table tablePatientspecificinstructions = this.createTable("PatientSpecificInstructions");
 		tablePatientspecificinstructions.createColumn("id", new IntDataType());
@@ -545,15 +545,15 @@ public class iTrust extends Schema {
 		tablePatientspecificinstructions.createColumn("Name", new VarCharDataType(100));
 		tablePatientspecificinstructions.createColumn("URL", new VarCharDataType(250));
 		tablePatientspecificinstructions.createColumn("Comment", new VarCharDataType(500));
-		tablePatientspecificinstructions.createPrimaryKeyConstraint(tablePatientspecificinstructions.getColumn("id"));
-		tablePatientspecificinstructions.createNotNullConstraint(tablePatientspecificinstructions.getColumn("Modified"));
+		this.createPrimaryKeyConstraint(tablePatientspecificinstructions, tablePatientspecificinstructions.getColumn("id"));
+		this.createNotNullConstraint(tablePatientspecificinstructions, tablePatientspecificinstructions.getColumn("Modified"));
 
 		Table tableReferralmessage = this.createTable("ReferralMessage");
 		tableReferralmessage.createColumn("messageID", new IntDataType());
 		tableReferralmessage.createColumn("referralID", new IntDataType());
-		tableReferralmessage.createPrimaryKeyConstraint(tableReferralmessage.getColumn("messageID"), tableReferralmessage.getColumn("referralID"));
-		tableReferralmessage.createNotNullConstraint(tableReferralmessage.getColumn("messageID"));
-		tableReferralmessage.createNotNullConstraint(tableReferralmessage.getColumn("referralID"));
+		this.createPrimaryKeyConstraint(tableReferralmessage, tableReferralmessage.getColumn("messageID"), tableReferralmessage.getColumn("referralID"));
+		this.createNotNullConstraint(tableReferralmessage, tableReferralmessage.getColumn("messageID"));
+		this.createNotNullConstraint(tableReferralmessage, tableReferralmessage.getColumn("referralID"));
 	}
 }
 

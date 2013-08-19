@@ -12,7 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * Employee schema.
- * Java code originally generated: 2013/08/15 23:00:09
+ * Java code originally generated: 2013/08/17 00:30:33
  *
  */
 
@@ -30,10 +30,10 @@ public class Employee extends Schema {
 		tableEmployee.createColumn("address", new VarCharDataType(30));
 		tableEmployee.createColumn("city", new VarCharDataType(20));
 		tableEmployee.createColumn("state", new VarCharDataType(20));
-		tableEmployee.createPrimaryKeyConstraint(tableEmployee.getColumn("id"));
-		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
-		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
-		tableEmployee.createCheckConstraint(new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(150))));
+		this.createPrimaryKeyConstraint(tableEmployee, tableEmployee.getColumn("id"));
+		this.createCheckConstraint(tableEmployee, new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("id")), RelationalOperator.GREATER_OR_EQUALS, new ConstantExpression(new NumericValue(0))));
+		this.createCheckConstraint(tableEmployee, new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
+		this.createCheckConstraint(tableEmployee, new RelationalExpression(new ColumnExpression(tableEmployee, tableEmployee.getColumn("age")), RelationalOperator.LESS_OR_EQUALS, new ConstantExpression(new NumericValue(150))));
 	}
 }
 

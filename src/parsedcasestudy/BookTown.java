@@ -20,7 +20,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * BookTown schema.
- * Java code originally generated: 2013/08/15 23:00:02
+ * Java code originally generated: 2013/08/17 00:30:27
  *
  */
 
@@ -35,30 +35,30 @@ public class BookTown extends Schema {
 		tableBooks.createColumn("title", new VarCharDataType(100));
 		tableBooks.createColumn("author_id", new IntDataType());
 		tableBooks.createColumn("subject_id", new IntDataType());
-		tableBooks.createPrimaryKeyConstraint("books_id_pkey", tableBooks.getColumn("id"));
-		tableBooks.createNotNullConstraint(tableBooks.getColumn("id"));
-		tableBooks.createNotNullConstraint(tableBooks.getColumn("title"));
+		this.createPrimaryKeyConstraint("books_id_pkey", tableBooks, tableBooks.getColumn("id"));
+		this.createNotNullConstraint(tableBooks, tableBooks.getColumn("id"));
+		this.createNotNullConstraint(tableBooks, tableBooks.getColumn("title"));
 
 		Table tablePublishers = this.createTable("publishers");
 		tablePublishers.createColumn("id", new IntDataType());
 		tablePublishers.createColumn("name", new VarCharDataType(100));
 		tablePublishers.createColumn("address", new VarCharDataType(100));
-		tablePublishers.createPrimaryKeyConstraint("publishers_pkey", tablePublishers.getColumn("id"));
-		tablePublishers.createNotNullConstraint(tablePublishers.getColumn("id"));
+		this.createPrimaryKeyConstraint("publishers_pkey", tablePublishers, tablePublishers.getColumn("id"));
+		this.createNotNullConstraint(tablePublishers, tablePublishers.getColumn("id"));
 
 		Table tableAuthors = this.createTable("authors");
 		tableAuthors.createColumn("id", new IntDataType());
 		tableAuthors.createColumn("last_name", new VarCharDataType(100));
 		tableAuthors.createColumn("first_name", new VarCharDataType(100));
-		tableAuthors.createPrimaryKeyConstraint("authors_pkey", tableAuthors.getColumn("id"));
-		tableAuthors.createNotNullConstraint(tableAuthors.getColumn("id"));
+		this.createPrimaryKeyConstraint("authors_pkey", tableAuthors, tableAuthors.getColumn("id"));
+		this.createNotNullConstraint(tableAuthors, tableAuthors.getColumn("id"));
 
 		Table tableStates = this.createTable("states");
 		tableStates.createColumn("id", new IntDataType());
 		tableStates.createColumn("name", new VarCharDataType(100));
 		tableStates.createColumn("abbreviation", new CharDataType(2));
-		tableStates.createPrimaryKeyConstraint("state_pkey", tableStates.getColumn("id"));
-		tableStates.createNotNullConstraint(tableStates.getColumn("id"));
+		this.createPrimaryKeyConstraint("state_pkey", tableStates, tableStates.getColumn("id"));
+		this.createNotNullConstraint(tableStates, tableStates.getColumn("id"));
 
 		Table tableMyList = this.createTable("my_list");
 		tableMyList.createColumn("todos", new VarCharDataType(100));
@@ -68,8 +68,8 @@ public class BookTown extends Schema {
 		tableStock.createColumn("cost", new NumericDataType(5, 2));
 		tableStock.createColumn("retail", new NumericDataType(5, 2));
 		tableStock.createColumn("stock", new IntDataType());
-		tableStock.createPrimaryKeyConstraint("stock_pkey", tableStock.getColumn("isbn"));
-		tableStock.createNotNullConstraint(tableStock.getColumn("isbn"));
+		this.createPrimaryKeyConstraint("stock_pkey", tableStock, tableStock.getColumn("isbn"));
+		this.createNotNullConstraint(tableStock, tableStock.getColumn("isbn"));
 
 		Table tableNumericValues = this.createTable("numeric_values");
 		tableNumericValues.createColumn("num", new NumericDataType(30, 6));
@@ -87,21 +87,21 @@ public class BookTown extends Schema {
 		tableShipments.createColumn("customer_id", new IntDataType());
 		tableShipments.createColumn("isbn", new VarCharDataType(100));
 		tableShipments.createColumn("ship_date", new TimestampDataType());
-		tableShipments.createNotNullConstraint(tableShipments.getColumn("id"));
+		this.createNotNullConstraint(tableShipments, tableShipments.getColumn("id"));
 
 		Table tableCustomers = this.createTable("customers");
 		tableCustomers.createColumn("id", new IntDataType());
 		tableCustomers.createColumn("last_name", new VarCharDataType(100));
 		tableCustomers.createColumn("first_name", new VarCharDataType(100));
-		tableCustomers.createPrimaryKeyConstraint("customers_pkey", tableCustomers.getColumn("id"));
-		tableCustomers.createNotNullConstraint(tableCustomers.getColumn("id"));
+		this.createPrimaryKeyConstraint("customers_pkey", tableCustomers, tableCustomers.getColumn("id"));
+		this.createNotNullConstraint(tableCustomers, tableCustomers.getColumn("id"));
 
 		Table tableBookQueue = this.createTable("book_queue");
 		tableBookQueue.createColumn("title", new VarCharDataType(100));
 		tableBookQueue.createColumn("author_id", new IntDataType());
 		tableBookQueue.createColumn("subject_id", new IntDataType());
 		tableBookQueue.createColumn("approved", new BooleanDataType());
-		tableBookQueue.createNotNullConstraint(tableBookQueue.getColumn("title"));
+		this.createNotNullConstraint(tableBookQueue, tableBookQueue.getColumn("title"));
 
 		Table tableStockBackup = this.createTable("stock_backup");
 		tableStockBackup.createColumn("isbn", new VarCharDataType(100));
@@ -117,10 +117,10 @@ public class BookTown extends Schema {
 		tableEmployees.createColumn("id", new IntDataType());
 		tableEmployees.createColumn("last_name", new VarCharDataType(100));
 		tableEmployees.createColumn("first_name", new VarCharDataType(100));
-		tableEmployees.createPrimaryKeyConstraint(tableEmployees.getColumn("id"));
-		tableEmployees.createNotNullConstraint(tableEmployees.getColumn("id"));
-		tableEmployees.createNotNullConstraint(tableEmployees.getColumn("last_name"));
-		tableEmployees.createCheckConstraint("employees_id", new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableEmployees, tableEmployees.getColumn("id")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(100)))));
+		this.createPrimaryKeyConstraint(tableEmployees, tableEmployees.getColumn("id"));
+		this.createCheckConstraint("employees_id", tableEmployees, new ParenthesisedExpression(new RelationalExpression(new ColumnExpression(tableEmployees, tableEmployees.getColumn("id")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(100)))));
+		this.createNotNullConstraint(tableEmployees, tableEmployees.getColumn("id"));
+		this.createNotNullConstraint(tableEmployees, tableEmployees.getColumn("last_name"));
 
 		Table tableEditions = this.createTable("editions");
 		tableEditions.createColumn("isbn", new VarCharDataType(100));
@@ -129,17 +129,17 @@ public class BookTown extends Schema {
 		tableEditions.createColumn("publisher_id", new IntDataType());
 		tableEditions.createColumn("publication", new DateDataType());
 		tableEditions.createColumn("type", new CharDataType(1));
-		tableEditions.createPrimaryKeyConstraint(tableEditions.getColumn("isbn"));
-		tableEditions.createNotNullConstraint(tableEditions.getColumn("isbn"));
-		tableEditions.createCheckConstraint("integrity", new ParenthesisedExpression(new AndExpression(new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("book_id")), true)), new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("edition")), true)))));
+		this.createPrimaryKeyConstraint(tableEditions, tableEditions.getColumn("isbn"));
+		this.createCheckConstraint("integrity", tableEditions, new ParenthesisedExpression(new AndExpression(new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("book_id")), true)), new ParenthesisedExpression(new NullExpression(new ColumnExpression(tableEditions, tableEditions.getColumn("edition")), true)))));
+		this.createNotNullConstraint(tableEditions, tableEditions.getColumn("isbn"));
 
 		Table tableDistinguishedAuthors = this.createTable("distinguished_authors");
 		tableDistinguishedAuthors.createColumn("id", new IntDataType());
 		tableDistinguishedAuthors.createColumn("last_name", new VarCharDataType(100));
 		tableDistinguishedAuthors.createColumn("first_name", new VarCharDataType(100));
 		tableDistinguishedAuthors.createColumn("award", new VarCharDataType(100));
-		tableDistinguishedAuthors.createPrimaryKeyConstraint("authors_pkey", tableDistinguishedAuthors.getColumn("id"));
-		tableDistinguishedAuthors.createNotNullConstraint(tableDistinguishedAuthors.getColumn("id"));
+		this.createPrimaryKeyConstraint("authors_pkey", tableDistinguishedAuthors, tableDistinguishedAuthors.getColumn("id"));
+		this.createNotNullConstraint(tableDistinguishedAuthors, tableDistinguishedAuthors.getColumn("id"));
 
 		Table tableVarchar100Sorting = this.createTable("varchar(100)_sorting");
 		tableVarchar100Sorting.createColumn("letter", new CharDataType(1));
@@ -148,8 +148,8 @@ public class BookTown extends Schema {
 		tableSubjects.createColumn("id", new IntDataType());
 		tableSubjects.createColumn("subject", new VarCharDataType(100));
 		tableSubjects.createColumn("location", new VarCharDataType(100));
-		tableSubjects.createPrimaryKeyConstraint("subjects_pkey", tableSubjects.getColumn("id"));
-		tableSubjects.createNotNullConstraint(tableSubjects.getColumn("id"));
+		this.createPrimaryKeyConstraint("subjects_pkey", tableSubjects, tableSubjects.getColumn("id"));
+		this.createNotNullConstraint(tableSubjects, tableSubjects.getColumn("id"));
 
 		Table tableAlternateStock = this.createTable("alternate_stock");
 		tableAlternateStock.createColumn("isbn", new VarCharDataType(100));
@@ -166,8 +166,8 @@ public class BookTown extends Schema {
 		Table tableSchedules = this.createTable("schedules");
 		tableSchedules.createColumn("employee_id", new IntDataType());
 		tableSchedules.createColumn("schedule", new VarCharDataType(100));
-		tableSchedules.createPrimaryKeyConstraint("schedules_pkey", tableSchedules.getColumn("employee_id"));
-		tableSchedules.createNotNullConstraint(tableSchedules.getColumn("employee_id"));
+		this.createPrimaryKeyConstraint("schedules_pkey", tableSchedules, tableSchedules.getColumn("employee_id"));
+		this.createNotNullConstraint(tableSchedules, tableSchedules.getColumn("employee_id"));
 	}
 }
 

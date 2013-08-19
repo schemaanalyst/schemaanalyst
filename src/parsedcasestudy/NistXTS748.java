@@ -11,7 +11,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * NistXTS748 schema.
- * Java code originally generated: 2013/08/15 23:00:34
+ * Java code originally generated: 2013/08/17 00:30:57
  *
  */
 
@@ -25,9 +25,9 @@ public class NistXTS748 extends Schema {
 		tableTest12549.createColumn("TNUM1", new NumericDataType(5));
 		tableTest12549.createColumn("TNUM2", new NumericDataType(5));
 		tableTest12549.createColumn("TNUM3", new NumericDataType(5));
-		tableTest12549.createNotNullConstraint("CND12549A", tableTest12549.getColumn("TNUM1"));
-		tableTest12549.createUniqueConstraint("CND12549B", tableTest12549.getColumn("TNUM2"));
-		tableTest12549.createCheckConstraint("CND12549C", new RelationalExpression(new ColumnExpression(tableTest12549, tableTest12549.getColumn("TNUM3")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
+		this.createCheckConstraint("CND12549C", tableTest12549, new RelationalExpression(new ColumnExpression(tableTest12549, tableTest12549.getColumn("TNUM3")), RelationalOperator.GREATER, new ConstantExpression(new NumericValue(0))));
+		this.createNotNullConstraint("CND12549A", tableTest12549, tableTest12549.getColumn("TNUM1"));
+		this.createUniqueConstraint("CND12549B", tableTest12549, tableTest12549.getColumn("TNUM2"));
 	}
 }
 

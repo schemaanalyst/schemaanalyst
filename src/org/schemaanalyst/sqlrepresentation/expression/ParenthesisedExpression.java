@@ -27,10 +27,22 @@ public class ParenthesisedExpression extends ExpressionTree {
         switch (index) {
             case SUBEXPRESSION:
                 return subexpression;
-        }
-        throw new NonExistentSubexpressionException(this, index);
+            default:
+                throw new NonExistentSubexpressionException(this, index);
+        }        
     }
 
+    @Override
+    public void setSubexpression(int index, Expression subexpression) {
+        switch (index) {
+            case SUBEXPRESSION:
+                this.subexpression = subexpression;
+                break;
+            default:
+                throw new NonExistentSubexpressionException(this, index);
+        }                        
+    }      
+    
     @Override
     public void accept(ExpressionVisitor visitor) {
         visitor.visit(this);

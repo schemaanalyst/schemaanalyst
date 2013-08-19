@@ -8,10 +8,10 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.ConstraintObjectiveFunctionFactory;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
+import org.schemaanalyst.sqlrepresentation.Constraint;
+import org.schemaanalyst.sqlrepresentation.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 public class ConstraintEvaluator {
 
@@ -31,6 +31,9 @@ public class ConstraintEvaluator {
 
         // go through each of the schema's constraints and check the row
         for (Table constraintTable : schema.getTables()) {
+            
+            /*
+            // TODO: PSM commented out to get to compile quickly ... 19/08/13            
             for (Constraint constraint : table.getAllConstraints()) {
 
                 if (constraintTable == table) {
@@ -49,6 +52,7 @@ public class ConstraintEvaluator {
                     }
                 }
             }
+            */
         }
         // test if the row should go into the state
         ObjectiveFunction<Data> objFun = 

@@ -29,15 +29,15 @@ public class SchemaStats {
 
             numColumns += columns.size();
             numUniqueColumnTypes = columnTypes.size();
-            numChecks += table.getCheckConstraints().size();
-            numForeignKeys += table.getForeignKeyConstraints().size();
-            numNotNulls += table.getNotNullConstraints().size();
+            numChecks += schema.getCheckConstraints(table).size();
+            numForeignKeys += schema.getForeignKeyConstraints(table).size();
+            numNotNulls += schema.getNotNullConstraints(table).size();
 
-            if (table.getPrimaryKeyConstraint() != null) {
+            if (schema.getPrimaryKeyConstraint(table) != null) {
                 numPrimaryKeys++;
             }
 
-            numUniques += table.getUniqueConstraints().size();
+            numUniques += schema.getUniqueConstraints(table).size();
         }
     }
 

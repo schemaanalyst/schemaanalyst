@@ -1,4 +1,4 @@
-package org.schemaanalyst.sqlrepresentation.constraint;
+package org.schemaanalyst.sqlrepresentation;
 
 /**
  * A class for visiting the different subclasses of constraint.

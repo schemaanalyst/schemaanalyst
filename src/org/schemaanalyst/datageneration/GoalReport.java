@@ -1,15 +1,18 @@
 package org.schemaanalyst.datageneration;
 
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public abstract class GoalReport {
 
+    protected Schema schema;
     protected Data data;
     protected boolean success;
     protected long timeToGenerate, startTime, endTime;
 
-    public GoalReport() {
+    public GoalReport(Schema schema) {
+        this.schema = schema;
         success = false;
         initializeTimings();
     }
@@ -54,7 +57,7 @@ public abstract class GoalReport {
 
     public void appendDataToStringBuilder(StringBuilder sb) {
         SQLWriter sqlWriter = new SQLWriter();
-        for (String statement : sqlWriter.writeInsertStatements(data)) {
+        for (String statement : sqlWriter.writeInsertStatements(schema, data)) {
             if (!wasSuccess()) {
                 sb.append("-- ");
             }

@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * Inventory schema.
- * Java code originally generated: 2013/08/15 23:00:14
+ * Java code originally generated: 2013/08/17 00:30:39
  *
  */
 
@@ -23,8 +23,8 @@ public class Inventory extends Schema {
 		tableInventory.createColumn("product", new VarCharDataType(50));
 		tableInventory.createColumn("quantity", new IntDataType());
 		tableInventory.createColumn("price", new DecimalDataType(18, 2));
-		tableInventory.createPrimaryKeyConstraint(tableInventory.getColumn("id"));
-		tableInventory.createUniqueConstraint(tableInventory.getColumn("product"));
+		this.createPrimaryKeyConstraint(tableInventory, tableInventory.getColumn("id"));
+		this.createUniqueConstraint(tableInventory, tableInventory.getColumn("product"));
 	}
 }
 

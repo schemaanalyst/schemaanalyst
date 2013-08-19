@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.StringUtils;
 
 public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
         Set<E>, Duplicable<NamedEntityInsertOrderedSet<E>>, Serializable {
@@ -211,4 +212,9 @@ public class NamedEntityInsertOrderedSet<E extends NamedEntity> implements
             return false;
         return true;
     }   
+    
+    @Override
+    public String toString() {
+        return "{" + StringUtils.implode(elements.values()) + "}";
+    }
 }
