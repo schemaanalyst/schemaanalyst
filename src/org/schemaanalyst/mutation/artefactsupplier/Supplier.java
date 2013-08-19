@@ -9,7 +9,7 @@ import org.schemaanalyst.util.Duplicable;
  * <tt>{@link org.schemaanalyst.mutation.mutator.Mutator}</tt> are designed to
  * separate the two concerns of implementing mutation in SchemaAnalyst of 1)
  * providing an algorithm underlying the mutation operator (e.g. "removal
- * elements one-by-one from a list") and 2) obtaining and access to the specific
+ * elements one-by-one from a list") and 2) obtaining access to the specific
  * components in a duplicate of the original artefact that are targeted for
  * mutation (e.g. the primay key columns of a constraint, forming part of a
  * schema).
@@ -23,8 +23,8 @@ import org.schemaanalyst.util.Duplicable;
  * to the <em>same</em> component in the duplicate as identified in this
  * original. It is this problem that {@link Supplier} handles. It duplicates the
  * original artefact and passes duplicates of the components to be mutated to
- * subclasses of {@link org.schemaanalyst.mutation.mutator.Mutator}, which
- * actually perform the mutation steps.
+ * subclasses of {@link org.schemaanalyst.mutation.mutator.Mutator}, which is
+ * responsible for actually performing the mutation steps.
  * </p>
  * 
  * <p>
@@ -33,14 +33,14 @@ import org.schemaanalyst.util.Duplicable;
  * actual example). First, we check that there is a component in the artefact to
  * mutate, through a call to {@link #hasNext()}. If the method call returns
  * true, we get a reference version of the component to mutate from the original
- * artefact using {@link #getNextComponent()} (this object is to be left
- * unchanged). The caller is then free to call {@link #makeDuplicate()} and
- * {@link #getDuplicateComponent()} in sequence as many times as new mutants are
- * required to make mutants. After each component is mutated, a call to
- * {@link #putComponentBackInDuplicate(Object)} is required to insert the mutated
- * component back into the duplicate copy. Once a component is done with
- * mutation-wise, {@link #hasNext()} can be used to check for the existence of
- * more components to mutate, and so on.
+ * artefact using {@link #getNextComponent()} (as the original, this object is
+ * to be left unchanged). The caller is then free to call
+ * {@link #makeDuplicate()} and {@link #getDuplicateComponent()} in sequence as
+ * many times as is required to make mutants. After each component is mutated, a
+ * call to {@link #putComponentBackInDuplicate(Object)} is required to insert
+ * the mutated component back into the duplicate copy. Once a component is done
+ * with mutation-wise, {@link #hasNext()} can be used to check for the existence
+ * of more components to mutate, and so on.
  * </p>
  * 
  * @author Phil McMinn
@@ -116,8 +116,8 @@ public abstract class Supplier<A extends Duplicable<A>, C> {
 	/**
 	 * Returns a duplicate of the original artefact. If there is no current
 	 * component to mutate (i.e. a call to {@link #haveCurrent()} would return
-	 * false), the method throws a {@link 
-	 * org.schemaanalyst.mutation.MutationException}.
+	 * false), the method throws a
+	 * {@link org.schemaanalyst.mutation.MutationException}.
 	 * 
 	 * @return A duplicate of the original artefact.
 	 * @throws MutationException
@@ -138,8 +138,8 @@ public abstract class Supplier<A extends Duplicable<A>, C> {
 	 * Extracts the component for mutation from the duplicate copy of the
 	 * original artefact that was last returned by {@link #makeDuplicate()}. If
 	 * there is no current component to mutate (i.e. a call
-	 * {@link #haveCurrent()} would return false), the method throws a {@link 
-	 * org.schemaanalyst.mutation.MutationException}.
+	 * {@link #haveCurrent()} would return false), the method throws a
+	 * {@link org.schemaanalyst.mutation.MutationException}.
 	 * 
 	 * @return The component from the last made duplicate.
 	 * @throws MutationException
