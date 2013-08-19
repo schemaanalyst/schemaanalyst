@@ -6,7 +6,7 @@ import org.schemaanalyst.util.Duplicable;
 /**
  * <p>
  * {@link Supplier} and
- * <tt>{@link org.schemaanalyst.mutation.mutator.Mutator}</tt> are designed to
+ * {@link org.schemaanalyst.mutation.mutator.Mutator} are designed to
  * separate the two concerns of implementing mutation in SchemaAnalyst of 1)
  * providing an algorithm underlying the mutation operator (e.g. "removal
  * elements one-by-one from a list") and 2) obtaining access to the specific

@@ -17,15 +17,15 @@ import org.schemaanalyst.util.Duplicable;
  * @author Phil McMinn
  * 
  * @param <A>
- *            the type of the original artefact being mutated (e.g. a
+ *            the type of the original artefact being mutated (e.g.
  *            {@link org.schemaanalyst.sqlrepresentation.Schema})
  * @param <I>
  *            the type of the intermediary objects from which components are
- *            being extracted (e.g. a
+ *            being extracted (e.g.
  *            {@link org.schemaanalyst.sqlrepresentation.Table})
  * @param <C>
  *            the type of the component to be mutated (e.g. a list of columns in
- *            a <tt>PRIMARY KEY</tt>
+ *            a <tt>PRIMARY KEY</tt>)
  */
 
 public abstract class IteratingSupplier<A extends Duplicable<A>, I, C> extends

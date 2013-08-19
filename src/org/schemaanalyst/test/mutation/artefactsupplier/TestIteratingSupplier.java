@@ -1,6 +1,7 @@
 package org.schemaanalyst.test.mutation.artefactsupplier;
 
 import org.junit.Test;
+import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.mutation.artefactsupplier.TableIteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -38,15 +39,26 @@ public class TestIteratingSupplier {
 		assertFalse(supplier.haveCurrent());
 	}
 	
-	@Ignore
-	@Test 
-	public void testNoTablesException1() {
+	@Test(expected=MutationException.class) 
+	public void testNoTablesMakeDuplicateException() {
 		Schema schema = new Schema("schema");
 		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
 		assertFalse(supplier.hasNext());
 		assertNull(supplier.getNextComponent());
 		assertFalse(supplier.haveCurrent());
-		
+	
+		supplier.makeDuplicate();
+	}	
+	
+	@Test(expected=MutationException.class) 
+	public void testNoTablesGetDuplicateComponentException() {
+		Schema schema = new Schema("schema");
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+		assertFalse(supplier.hasNext());
+		assertNull(supplier.getNextComponent());
+		assertFalse(supplier.haveCurrent());
+	
+		supplier.getDuplicateComponent();
 	}	
 	
 	@Test 
@@ -63,6 +75,40 @@ public class TestIteratingSupplier {
 		assertNull(supplier.getNextComponent());
 		assertFalse(supplier.haveCurrent());		
 	}
+	
+	@Test(expected=MutationException.class) 
+	public void testTableSupplyExhaustedMakeDuplicateException() {
+		Schema schema = new Schema("schema");
+		schema.createTable("table");
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+
+		assertTrue(supplier.hasNext());
+		assertNotNull(supplier.getNextComponent());		
+		assertTrue(supplier.haveCurrent());
+	
+		assertFalse(supplier.hasNext());
+		assertNull(supplier.getNextComponent());
+		assertFalse(supplier.haveCurrent());		
+		
+		supplier.makeDuplicate();
+	}	
+	
+	@Test(expected=MutationException.class) 
+	public void testTableSupplyExhaustedGetDuplicateComponentException() {
+		Schema schema = new Schema("schema");
+		schema.createTable("table");
+		MockTableIteratingSupplier supplier = new MockTableIteratingSupplier(schema);			
+
+		assertTrue(supplier.hasNext());
+		assertNotNull(supplier.getNextComponent());		
+		assertTrue(supplier.haveCurrent());
+	
+		assertFalse(supplier.hasNext());
+		assertNull(supplier.getNextComponent());
+		assertFalse(supplier.haveCurrent());	
+	
+		supplier.getDuplicateComponent();
+	}		
 	
 	@Test 
 	public void testTwoTables() {
