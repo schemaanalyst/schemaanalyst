@@ -8,13 +8,14 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	private Supplier<A, I> topLevelSupplier;
 	private Supplier<I, C> bottomLevelSupplier;
 	
-	private boolean initialised, haveCurrent;
+	private boolean initialised, bottomLevelInitialised, haveCurrent;
 	
 	public ChainedSupplier(Supplier<A, I> topLevelSupplier, Supplier<I, C> bottomLevelSupplier) {
 		this.topLevelSupplier = topLevelSupplier;
 		this.bottomLevelSupplier = bottomLevelSupplier;
 		
 		initialised = false;
+		bottomLevelInitialised = false;
 		haveCurrent = false;
 	}
 	
@@ -22,6 +23,12 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	public void initialise(A originalArtefact) {
 		topLevelSupplier.initialise(originalArtefact);
 		initialised = true;
+		bottomLevelInitialised = false;
+	}
+	
+	private void initialiseBottomLevel(I topLevelComponent) {
+		bottomLevelSupplier.initialise(topLevelComponent);
+		bottomLevelInitialised = true;		
 	}
 	
 	@Override
@@ -31,15 +38,14 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 		}
 		
 		while (!bottomLevelHasNext() && topLevelSupplier.hasNext()) {
-			I topLevelComponent = topLevelSupplier.getNextComponent();
-			bottomLevelSupplier.initialise(topLevelComponent);
+			initialiseBottomLevel(topLevelSupplier.getNextComponent());			
 		}
 		
 		return bottomLevelHasNext();
 	}
 
 	private boolean bottomLevelHasNext() {
-		return bottomLevelSupplier != null && bottomLevelSupplier.hasNext();
+		return bottomLevelInitialised && bottomLevelSupplier.hasNext();
 	}
 		
 	@Override

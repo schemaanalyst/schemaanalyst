@@ -100,6 +100,34 @@ public class TestChainedSupplier {
 		assertEquals(listExpression2.getSubexpressions(), supplier.getNextComponent());
 		
 		assertFalse(supplier.hasNext());
-		
 	}
+	
+	@Test
+	public void testReinitialise() {
+		Schema schema = new Schema("schema");
+		Table table1 = schema.createTable("table1");
+		Table table2 = schema.createTable("table2");
+		schema.createCheckConstraint(table1, inExpression1);
+		schema.createCheckConstraint(table2, inExpression2);
+		
+		ChainedSupplier<Schema, Expression, List<Expression>> supplier =
+				new ChainedSupplier<>(
+						new CheckExpressionSupplier(),
+						new InExpressionRHSListExpressionSupplier());
+		
+		supplier.initialise(schema);
+		
+		assertTrue(supplier.hasNext());	
+		assertEquals(listExpression1.getSubexpressions(), supplier.getNextComponent());	
+		
+		supplier.initialise(schema);
+		
+		assertTrue(supplier.hasNext());
+		assertEquals(listExpression1.getSubexpressions(), supplier.getNextComponent());
+		
+		assertTrue(supplier.hasNext());
+		assertEquals(listExpression2.getSubexpressions(), supplier.getNextComponent());		
+		
+		assertFalse(supplier.hasNext());
+	}	
 }
