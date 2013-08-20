@@ -48,10 +48,12 @@ public class TestChainedSupplier {
 						new InExpressionRHSListExpressionSupplier());
 		
 		supplier.initialise(schema);
+		assertSame(
+				"The original artefact should be the same as that passed to initialise",
+				schema, supplier.getOriginalArtefact());
 		
-		assertTrue(supplier.hasNext());	
+		assertTrue(supplier.hasNext());
 		assertEquals(listExpression1.getSubexpressions(), supplier.getNextComponent());	
-		
 		assertFalse(supplier.hasNext());
 	}
 

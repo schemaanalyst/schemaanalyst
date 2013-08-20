@@ -21,6 +21,7 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	
 	@Override
 	public void initialise(A originalArtefact) {
+		super.initialise(originalArtefact);
 		topLevelSupplier.initialise(originalArtefact);
 		initialised = true;
 		bottomLevelInitialised = false;
