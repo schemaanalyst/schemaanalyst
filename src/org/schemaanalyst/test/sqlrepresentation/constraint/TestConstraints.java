@@ -3,8 +3,10 @@ package org.schemaanalyst.test.sqlrepresentation.constraint;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -14,6 +16,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
+import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 import static org.junit.Assert.*;
 
@@ -228,6 +231,65 @@ public class TestConstraints {
         assertSame(
                 "The column of colExp should be remapped to table2Column",
                 table2Column, colExp.getColumn());        
+    }
+    
+    @Test 
+    public void testCheckConstraintDuplication() {
+        Column c_a = new Column("a", new IntDataType());
+        Column c_b = new Column("b", new IntDataType());
+        Table t_one = new Table("one");
+        t_one.addColumn(c_a);
+        t_one.addColumn(c_b);
+        
+        
+        Schema schema1 = new Schema("schema");
+        schema1.addTable(t_one);
+        
+        schema1.addCheckConstraint(new CheckConstraint(t_one,
+                new RelationalExpression(
+                    new ColumnExpression(t_one, c_a),
+                    RelationalOperator.EQUALS,
+                    new ColumnExpression(t_one, c_b))
+                ));
+        
+        Schema schema2 = schema1.duplicate();
+        
+        assertNotSame(schema1, schema2);
+        assertEquals(schema1, schema2);
+        
+        assertNotSame(
+        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)), 
+        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)));        
+
+        assertEquals(
+        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)), 
+        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)));         
+        
+        assertNotSame(
+        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression(), 
+        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression());
+
+        assertEquals(
+        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression(), 
+        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression());
+        
+        
+        assertNotSame(
+        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getLHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getLHS());
+
+        assertEquals(
+        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getLHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getLHS());
+        
+        assertNotSame(
+        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getRHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getRHS());        
+        
+        assertEquals(
+        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getRHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getRHS());        
+        
     }
     
     @Test

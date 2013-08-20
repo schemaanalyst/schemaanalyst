@@ -23,6 +23,12 @@ public class TestExpression {
     Column table1Column3 = table1.createColumn("column3", new IntDataType());
     Column table1Column4 = table1.createColumn("column4", new IntDataType());
     
+    Table table1Duplicate = new Table("table");
+    Column table1DuplicateColumn1 = table1Duplicate.createColumn("column1", new IntDataType());
+    Column table1DuplicateColumn2 = table1Duplicate.createColumn("column2", new IntDataType());
+    Column table1DuplicateColumn3 = table1Duplicate.createColumn("column3", new IntDataType());
+    Column table1DuplicateColumn4 = table1Duplicate.createColumn("column4", new IntDataType());    
+    
     Table table2 = new Table("table");
     Column table2Column1 = table2.createColumn("column1", new IntDataType());
     Column table2Column2 = table2.createColumn("column2", new IntDataType());
@@ -112,23 +118,23 @@ public class TestExpression {
                 new RelationalExpression(
                         exp1, RelationalOperator.EQUALS, exp2);
         
-        relationalExpression.remap(table2);
+        relationalExpression.remap(table1Duplicate);
         
         assertSame(
                 "The table of exp1 should be remapped to table2",
-                exp1.getTable(), table2);
+                exp1.getTable(), table1Duplicate);
         
         assertSame(
                 "The table of exp2 should be remapped to table2",
-                exp2.getTable(), table2);
+                exp2.getTable(), table1Duplicate);
         
         assertSame(
                 "The column of exp1 should be remapped to table2Column1",
-                exp1.getColumn(), table2Column1);
+                exp1.getColumn(), table1DuplicateColumn1);
         
         assertSame(
                 "The column of exp2 should be remapped to table2Column2",
-                exp2.getColumn(), table2Column2);        
+                exp2.getColumn(), table1DuplicateColumn2);        
     }
     
     @Test
@@ -161,7 +167,6 @@ public class TestExpression {
     }    
     
     // table2 has no column named "column4"
-    @Test(expected=SQLRepresentationException.class)
     public void testRemapFailNoColumn() {
         ColumnExpression exp1 = new ColumnExpression(table1, table1Column1);
         ColumnExpression exp2 = new ColumnExpression(table1, table1Column4);
@@ -170,7 +175,11 @@ public class TestExpression {
                 new RelationalExpression(
                         exp1, RelationalOperator.EQUALS, exp2);
         
-        relationalExpression.remap(table2);                
+        relationalExpression.remap(table2);
+        
+        assertSame(
+                "Column 1 should not be remapped as table1 and table2 are not identical",
+        		table1Column1, exp1.getColumn());        
     } 
     
     // table1Column3 has a different data type to table2Column3

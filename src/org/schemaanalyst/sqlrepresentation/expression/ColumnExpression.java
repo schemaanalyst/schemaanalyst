@@ -11,10 +11,6 @@ public class ColumnExpression extends ExpressionLeaf {
 
     private Table table;
     private Column column;
-
-    public ColumnExpression(Column column) {
-        this(null, column);
-    }
     
     public ColumnExpression(Table table, Column column) {
         this.table = table;
@@ -56,22 +52,24 @@ public class ColumnExpression extends ExpressionLeaf {
     
     @Override
     public void remap(Table table) {
-        // only remap if the table names are the same, the intention
-        // is that this method is used following a duplication to
-        // sort out references.
-        if (table.getName().equalsIgnoreCase(this.table.getName())) {
-            // change the table
-            this.table = table;
-            
-            // change the column
-            Column counterpartColumn = table.getColumn(column.getName());
-            if (!column.equals(counterpartColumn)) {
-                throw new SQLRepresentationException(
-                        "Cannot remap column \"" + column 
-                        + "\" - an identical column does not exist in table \""
-                        + table + "\"");                
-            }            
-            column = counterpartColumn;
+        // only remap if the tables are equal, the intention
+        // is that this method is used following duplication of
+    	// the artefact in which the expression resides (to
+        // sort out references) -- NOT to change the expression's
+    	// table.
+        if (table.equals(this.table)) {    	
+	    	// change the table
+	        this.table = table;
+	        
+	        // change the column
+	        Column counterpartColumn = table.getColumn(column.getName());
+	        if (!column.equals(counterpartColumn)) {
+	            throw new SQLRepresentationException(
+	                    "Cannot remap column \"" + column 
+	                    + "\" - an identical column does not exist in table \""
+	                    + table + "\"");                
+	        }            
+	        column = counterpartColumn;
         }
     }    
     
