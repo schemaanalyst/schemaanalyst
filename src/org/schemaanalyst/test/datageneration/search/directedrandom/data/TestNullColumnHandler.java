@@ -4,8 +4,7 @@ import java.util.List;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import static junit.framework.Assert.assertNull;
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static junitparams.JUnitParamsRunner.$;
 
 import org.junit.Test;
