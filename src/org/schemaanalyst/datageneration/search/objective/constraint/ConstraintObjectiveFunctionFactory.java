@@ -6,7 +6,6 @@ import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnOb
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
@@ -17,15 +16,13 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 public class ConstraintObjectiveFunctionFactory {
 
-    private Table table;
     private Constraint constraint;
     private Data state;
     private boolean goalIsToSatisfy, allowNull;
 
     public ConstraintObjectiveFunctionFactory(
-            Table table, Constraint constraint, Data state,
+            Constraint constraint, Data state,
             boolean goalIsToSatisfy, boolean allowNull) {
-        this.table = table;
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
@@ -77,7 +74,7 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ExpressionColumnObjectiveFunction(
-                table, checkConstraint.getExpression(), 
+                checkConstraint.getTable(), checkConstraint.getExpression(), 
                 makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
 
@@ -89,7 +86,7 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = false;
         
         return new UniqueColumnObjectiveFunction(
-                table, primaryKeyConstraint.getColumns(), state,
+        		primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), state,
                 makeDescription(), goalIsToSatisfy, constraintAllowNull);  
     }
 
@@ -98,7 +95,7 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ReferenceColumnObjectiveFunction(
-                table, foreignKeyConstraint.getColumns(), 
+        		foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), 
                 foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(),
                 state, makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
@@ -106,7 +103,7 @@ public class ConstraintObjectiveFunctionFactory {
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
 
         return new NullColumnObjectiveFunction(
-                table, notNullConstraint.getColumn(),
+                notNullConstraint.getTable(), notNullConstraint.getColumn(),
                 makeDescription(), !goalIsToSatisfy);
     }
 
@@ -115,7 +112,7 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new UniqueColumnObjectiveFunction(
-                table, uniqueConstraint.getColumns(), state,
+                uniqueConstraint.getTable(), uniqueConstraint.getColumns(), state,
                 makeDescription(), goalIsToSatisfy, constraintAllowNull);
     }
 

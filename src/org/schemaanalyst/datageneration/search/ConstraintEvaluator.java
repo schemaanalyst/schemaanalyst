@@ -30,21 +30,17 @@ public class ConstraintEvaluator {
         data.addRow(table, row);
 
         // go through each of the schema's constraints and check the row
-        for (Table constraintTable : schema.getTables()) {
-            
-            /*
-            // TODO: PSM commented out to get to compile quickly ... 19/08/13            
-            for (Constraint constraint : table.getAllConstraints()) {
+            for (Constraint constraint : schema.getAllConstraints()) {
 
-                if (constraintTable == table) {
+                if (table.equals(constraint.getTable())) {
     
                     boolean[] satisfyConstraintModes = {true, false};
     
                     for (boolean satisfyConstraint : satisfyConstraintModes) {
-                        ObjectiveValue objVal = evaluateConstraint(constraintTable, constraint, data, satisfyConstraint);
+                        ObjectiveValue objVal = evaluateConstraint(constraint, data, satisfyConstraint);
     
                         if (objVal.isOptimal()) {
-                            SimpleConstraintGoalReport goalReport = new SimpleConstraintGoalReport(constraint, satisfyConstraint);
+                            SimpleConstraintGoalReport goalReport = new SimpleConstraintGoalReport(schema, constraint, satisfyConstraint);
                             goalReport.setData(data);
                             goalReport.setSuccess(true);
                             report.addGoalReport(goalReport);
@@ -52,8 +48,7 @@ public class ConstraintEvaluator {
                     }
                 }
             }
-            */
-        }
+        
         // test if the row should go into the state
         ObjectiveFunction<Data> objFun = 
                 new SchemaConstraintSystemObjectiveFunction(schema, state, null, null);
@@ -66,7 +61,7 @@ public class ConstraintEvaluator {
         return success;
     }
 
-    protected ObjectiveValue evaluateConstraint(Table table, Constraint constraint, Data data, boolean satisfyConstraint) {
+    protected ObjectiveValue evaluateConstraint(Constraint constraint, Data data, boolean satisfyConstraint) {
         boolean considerNull = satisfyConstraint;
 
         if (constraint instanceof PrimaryKeyConstraint) {
@@ -75,7 +70,7 @@ public class ConstraintEvaluator {
 
         ConstraintObjectiveFunctionFactory factory = 
                 new ConstraintObjectiveFunctionFactory(
-                        table, constraint, state, satisfyConstraint, considerNull);
+                        constraint, state, satisfyConstraint, considerNull);
 
         ObjectiveFunction<Data> objFun = factory.create();
 
