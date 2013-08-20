@@ -2,7 +2,7 @@ package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import static junit.framework.Assert.*;
+import static org.junit.Assert.*;
 import static junitparams.JUnitParamsRunner.$;
 
 import org.junit.Test;
