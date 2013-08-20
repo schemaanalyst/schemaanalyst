@@ -3,7 +3,6 @@ package org.schemaanalyst.datageneration;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class ConstraintCoverageReport extends CoverageReport {
@@ -14,12 +13,7 @@ public class ConstraintCoverageReport extends CoverageReport {
     public ConstraintCoverageReport(Schema schema) {
         super("Constraint coverage for " + schema.getName());
         this.schema = schema;
-        
-        numConstraints = 0;
-        for (Table table : schema.getTables()) {
-            // TODO: PSM commented out to get to compile quickly ... 19/08/13
-            //numConstraints += table.getAllConstraints().size();
-        }
+        numConstraints = schema.getAllConstraints().size();
     }
 
     @Override

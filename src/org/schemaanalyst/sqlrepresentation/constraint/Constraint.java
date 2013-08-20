@@ -32,14 +32,14 @@ public abstract class Constraint extends IdentifiableEntity implements
      *            The table that is the centre of the integrity constraint.
      */
     public Constraint(String name, Table table) {
-        setName(name);
+        //setName(name);
         this.table = table;
     }
 
     /**
      * Gets the table of the constraint.
      * 
-     * @return The table of the constriant.
+     * @return The table of the constraint.
      */
     public Table getTable() {
         return table;
@@ -68,35 +68,40 @@ public abstract class Constraint extends IdentifiableEntity implements
      */
     public abstract void accept(ConstraintVisitor visitor);
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = super.hashCode();
-        result = prime * result + ((table == null) ? 0 : table.hashCode());
-        return result;
-    }
-
-    @Override
-    /**
-     * The <tt>equals</tt> method for constraints ignores names assigned,
-     * taking into account other attributes only.
-     *  
+	/**
+     * The hashCode method for constraints intentionally ignores 
+     * the identifier superclass and any name/ID assigned.
      */
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (getClass() != obj.getClass())
-            return false;
-        Constraint other = (Constraint) obj;
-        if (table == null) {
-            if (other.table != null)
-                return false;
-        } else if (!table.equals(other.table))
-            return false;
-        return true;
-    }
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((table == null) ? 0 : table.hashCode());
+		return result;
+	}
 
-    protected static IdentifiableEntitySet<Column> remapColumns(
+	/**
+     * The equals method for constraints intentionally ignores 
+     * the identifier superclass and any name/ID assigned.
+     */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Constraint other = (Constraint) obj;
+		if (table == null) {
+			if (other.table != null)
+				return false;
+		} else if (!table.equals(other.table))
+			return false;
+		return true;
+	}
+
+	protected static IdentifiableEntitySet<Column> remapColumns(
             Table table, IdentifiableEntitySet<Column> columns) {
         IdentifiableEntitySet<Column> remappedColumns = new IdentifiableEntitySet<>();
         for (Column column : columns) {
