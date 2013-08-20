@@ -5,7 +5,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 
 /**
- * Represents the primary key of a table.
+ * Represents the PRIMARY KEY of a table.
  *
  * @author Phil McMinn
  *
@@ -71,7 +71,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
     @Override
     public PrimaryKeyConstraint duplicate() {
         return new PrimaryKeyConstraint(getName(), table, columns);
-    }
+    }  
     
     /**
      * Returns an informative string about the foreign key instance.

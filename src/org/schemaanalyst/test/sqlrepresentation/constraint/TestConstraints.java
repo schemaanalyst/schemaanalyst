@@ -135,6 +135,44 @@ public class TestConstraints {
     }    
     
     @Test
+    public void testMultiColumnEquals() {
+    	Table t = new Table("table");
+        Column c1 = t.createColumn("ca", new IntDataType());
+        Column c2 = t.createColumn("cb", new IntDataType());
+    	
+        UniqueConstraint uc1 = new UniqueConstraint(t, c1, c2);
+        UniqueConstraint uc2 = new UniqueConstraint(t, c1, c2);
+    	UniqueConstraint uc3 = new UniqueConstraint(t, c2, c1);
+    	
+    	assertEquals(
+    			"Identical constraints should be equal",
+    			uc1, uc2);
+    	assertEquals(
+    			"Column order should not matter for the equals operator",
+    			uc2, uc3);
+    	
+    	UniqueConstraint uc4 = new UniqueConstraint("MyConstraint", t, c1, c2);
+    	assertEquals(
+    			"Identifying names should not be taken into account in the equals operator",
+    			uc1, uc4);
+    	assertEquals(
+    			"Identifying names and column ordershould not be taken into account in the equals operator",
+    			uc3, uc4);    	
+    	
+    	
+    	assertFalse(
+    			"A constraint should never be equal to null",
+    			uc1.equals(null));
+    	
+    	System.out.println("here");
+    	PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint(t, c1, c2);
+    	assertNotEquals(
+    			"UNIQUE constraints and PRIMARY KEY constraints of the same columns should not be equal",
+    			uc1, pk1);    	
+    }     
+    
+    
+    @Test
     public void testCheckConstraint() {
         Table table = new Table("table");
         Column column = table.createColumn("column", new IntDataType());
