@@ -66,6 +66,7 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 
 	@Override
 	public C getDuplicateComponent() {
+        bottomLevelSupplier.makeDuplicate();
 		return bottomLevelSupplier.getDuplicateComponent();
 	}
 

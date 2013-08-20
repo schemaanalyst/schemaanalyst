@@ -7,19 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.supplier.Supplier;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.util.Duplicable;
 
 /**
  *
  * @author Chris J. Wright
  */
-public class RelationalOperatorExchanger extends Mutator<Expression, RelationalOperator>{
+public class RelationalOperatorExchanger<A extends Duplicable<A>> extends Mutator<A, RelationalOperator>{
 
     private RelationalOperator componentFromOriginalArtefact;
     private Iterator<RelationalOperator> iterator;
     private String description;
 
-    public RelationalOperatorExchanger(Supplier<Expression, RelationalOperator> supplier) {
+    public RelationalOperatorExchanger(Supplier<A, RelationalOperator> supplier) {
         super(supplier);
     }
     
