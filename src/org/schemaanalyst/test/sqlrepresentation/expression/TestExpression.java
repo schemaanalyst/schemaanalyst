@@ -147,23 +147,27 @@ public class TestExpression {
                         exp1, RelationalOperator.EQUALS, exp2);
         
         // table1 has the same name as table2 but not table3
-        relationalExpression.remap(table2);
+        relationalExpression.remap(table1Duplicate);
         
         assertSame(
                 "The table of exp1 should be remapped to table2",
-                exp1.getTable(), table2);
-        
-        assertNotSame(
-                "The table of exp2 should not be remapped to table2",
-                exp2.getTable(), table2);
+                exp1.getTable(), table1Duplicate);
         
         assertSame(
-                "The column of exp1 should be remapped to table2Column1",
-                exp1.getColumn(), table2Column1);
+                "The table of exp1 should be remapped to table2",
+                exp1.getTable(), table1Duplicate);
+
+        assertSame(
+                "The table of exp2 should still be table3",
+                exp2.getTable(), table3);        
         
-        assertNotSame(
-                "The column of exp2 should not be remapped to table2Column2",
-                exp2.getColumn(), table2Column2);        
+        assertSame(
+                "The column of exp1 should be remapped to table 1's column",
+                exp1.getColumn(), table1DuplicateColumn1);
+        
+        assertSame(
+                "The column of exp2 should not be remapped",
+                exp2.getColumn(), table3Column2);        
     }    
     
     // table2 has no column named "column4"
@@ -181,17 +185,5 @@ public class TestExpression {
                 "Column 1 should not be remapped as table1 and table2 are not identical",
         		table1Column1, exp1.getColumn());        
     } 
-    
-    // table1Column3 has a different data type to table2Column3
-    @Test(expected=SQLRepresentationException.class)
-    public void testRemapFailMismatchedColumnDataType() {
-        ColumnExpression exp1 = new ColumnExpression(table1, table1Column1);
-        ColumnExpression exp2 = new ColumnExpression(table1, table1Column3);
-        
-        RelationalExpression relationalExpression = 
-                new RelationalExpression(
-                        exp1, RelationalOperator.EQUALS, exp2);
-        
-        relationalExpression.remap(table2);                
-    }     
+         
 }
