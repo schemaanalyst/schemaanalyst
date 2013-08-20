@@ -37,6 +37,8 @@ public class TestRelationalExpressionOperatorSupplier {
     AndExpression andExpression = new AndExpression(
             relationalExpression1, parenExpression);
     
+    ConstantExpression constantExpression = new ConstantExpression(new NumericValue(1));
+    
     @Test
     public void TestTopLevel() {
         RelationalExpressionOperatorSupplier supplier =
@@ -67,5 +69,14 @@ public class TestRelationalExpressionOperatorSupplier {
         assertTrue(supplier.hasNext());
         assertEquals(RelationalOperator.EQUALS, supplier.getNextComponent());
         assertFalse(supplier.hasNext());
+    }
+    
+    @Test
+    public void TestNone() {
+        RelationalExpressionOperatorSupplier supplier =
+                new RelationalExpressionOperatorSupplier();
+        supplier.initialise(constantExpression);
+        assertFalse(supplier.hasNext());
+        assertNull(supplier.getNextComponent());
     }
 }
