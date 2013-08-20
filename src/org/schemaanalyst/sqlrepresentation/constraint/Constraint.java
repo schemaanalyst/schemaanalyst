@@ -32,7 +32,7 @@ public abstract class Constraint extends IdentifiableEntity implements
      *            The table that is the centre of the integrity constraint.
      */
     public Constraint(String name, Table table) {
-        //setName(name);
+        setName(name);
         this.table = table;
     }
 
