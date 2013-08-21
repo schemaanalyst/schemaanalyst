@@ -12,6 +12,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 import static org.junit.Assert.*;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 
 /**
@@ -78,5 +79,14 @@ public class TestRelationalExpressionOperatorSupplier {
         supplier.initialise(constantExpression);
         assertFalse(supplier.hasNext());
         assertNull(supplier.getNextComponent());
+    }
+    
+    @Test
+    public void TestDuplicate() {
+        RelationalExpressionOperatorSupplier supplier =
+                new RelationalExpressionOperatorSupplier();
+        supplier.initialise(relationalExpression1);
+        supplier.getNextComponent();
+        assertNotSame(supplier.makeDuplicate(), relationalExpression1);
     }
 }
