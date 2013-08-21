@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.supplier;
 
+import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicable;
 
 public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C>
@@ -31,6 +32,18 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 		bottomLevelSupplier.initialise(topLevelComponent);
 		bottomLevelInitialised = true;		
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */	
+	public A makeDuplicate() {
+		if (!haveCurrent()) {
+			throw new MutationException(
+					"There is no current component to mutate");
+		}
+		currentDuplicate = topLevelSupplier.makeDuplicate();
+		return currentDuplicate;
+	}	
 	
 	@Override
 	public boolean hasNext() {

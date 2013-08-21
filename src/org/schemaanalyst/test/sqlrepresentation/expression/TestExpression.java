@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
