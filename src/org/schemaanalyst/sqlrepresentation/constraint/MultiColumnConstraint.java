@@ -125,7 +125,7 @@ public abstract class MultiColumnConstraint extends Constraint {
             return true;
         if (!super.equals(obj))
             return false;
-        System.out.println(getClass() + " " + obj.getClass());
+//        System.out.println(getClass() + " " + obj.getClass());
         if (getClass() != obj.getClass())
             return false;
         MultiColumnConstraint other = (MultiColumnConstraint) obj;

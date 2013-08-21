@@ -167,7 +167,7 @@ public class TestConstraints {
     			"A constraint should never be equal to null",
     			uc1.equals(null));
     	
-    	System.out.println("here");
+//    	System.out.println("here");
     	PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint(t, c1, c2);
     	assertNotEquals(
     			"UNIQUE constraints and PRIMARY KEY constraints of the same columns should not be equal",
