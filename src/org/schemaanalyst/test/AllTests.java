@@ -34,6 +34,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.mutator.TestListElementRemover.class,
     org.schemaanalyst.test.mutation.mutator.TestRelationalOperatorExchanger.class,
     org.schemaanalyst.test.mutation.operator.TestCCInExpressionRHSListExpressionElementR.class,
+    org.schemaanalyst.test.mutation.operator.TestCCRelationalExpressionOperatorE.class,
 	org.schemaanalyst.test.mutation.supplier.TestChainedSupplier.class,
 	org.schemaanalyst.test.mutation.supplier.TestIntermediaryIteratingSupplier.class,
 	org.schemaanalyst.test.mutation.supplier.TestSchemaPrimaryKeyColumnsWithAlternativesSupplier.class,
