@@ -31,6 +31,7 @@ public class InExpressionRHSListExpressionSupplier
 		super.initialise(expression);
 	}
 
+    @Override
 	public void setDuplicate(Expression duplicate) {
 	    super.setDuplicate(duplicate);
 	}
