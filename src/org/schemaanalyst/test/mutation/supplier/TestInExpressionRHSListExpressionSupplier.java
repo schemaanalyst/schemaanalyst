@@ -12,7 +12,6 @@ import org.schemaanalyst.mutation.supplier.CheckExpressionSupplier;
 import org.schemaanalyst.mutation.supplier.InExpressionRHSListExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
@@ -20,22 +19,18 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 public class TestInExpressionRHSListExpressionSupplier {
 	
-	ListExpression listExpression = new ListExpression(
-			new ConstantExpression(new NumericValue(2)), 
-		    new ConstantExpression(new NumericValue(3))); 
-	
-	InExpression inExpression = new InExpression(
-			new ConstantExpression(new NumericValue(1)),
-			listExpression,
-			false);		
-	
-	Schema schema = new Schema("schema");
-	Table table = schema.createTable("table");
-	CheckConstraint checkConstraint = schema.createCheckConstraint(table, inExpression);	
-	
 	@Test
 	public void testDuplication() {
 
+	    ListExpression listExpression = new ListExpression(
+	            new ConstantExpression(new NumericValue(2)), 
+	            new ConstantExpression(new NumericValue(3))); 
+	    
+	    InExpression inExpression = new InExpression(
+	            new ConstantExpression(new NumericValue(1)),
+	            listExpression,
+	            false);     
+	    
 		InExpressionRHSListExpressionSupplier supplier =
 				new InExpressionRHSListExpressionSupplier();
 		
@@ -62,21 +57,38 @@ public class TestInExpressionRHSListExpressionSupplier {
 		assertEquals(listExpression.getSubexpressions().get(1), duplicateComponent.get(1));	
 		assertNotSame(listExpression.getSubexpressions().get(1), duplicateComponent.get(1));
 		
-		// now mutate the list 
-		List<Expression> mutantSubexpressions =  Collections.singletonList((Expression) new ConstantExpression(new NumericValue(5)));
-		supplier.putComponentBackInDuplicate(mutantSubexpressions);		
-		//System.out.println(duplicate);
-		//System.out.println(duplicateComponent);
-		assertEquals(duplicateComponent.get(0), mutantSubexpressions.get(0));   
-        //assertNotSame(duplicateComponent.get(0), mutantSubexpressions.get(0));
+		// now mutate the list
+		Expression mutantExpression = new ConstantExpression(new NumericValue(5));
+		List<Expression> mutantSubexpressions =  Collections.singletonList(mutantExpression);
+		supplier.putComponentBackInDuplicate(mutantSubexpressions);
+		
+		Expression duplicateReferenceToExpression =
+		        ((InExpression) duplicate).getRHS().getSubexpressions().get(0); 
+		assertSame(
+		        "The mutant expression should have been inserted correctly and "
+		        + "be the same as that in the duplicate",
+		        duplicateReferenceToExpression, mutantExpression);   
+		
 		assertFalse(supplier.hasNext());
-		
-		
 	}	
 	
 	@Test
 	public void testDuplicationInChainedSupplier() {
 		
+        ListExpression listExpression = new ListExpression(
+                new ConstantExpression(new NumericValue(2)), 
+                new ConstantExpression(new NumericValue(3))); 
+        
+        InExpression inExpression = new InExpression(
+                new ConstantExpression(new NumericValue(1)),
+                listExpression,
+                false);     
+        
+        Schema schema = new Schema("schema");
+        Table table = schema.createTable("table");
+        schema.createCheckConstraint(table, inExpression);        
+	    
+	    
 		CheckExpressionSupplier topLevelSupplier = 
 				new CheckExpressionSupplier(); 
 				
@@ -113,11 +125,18 @@ public class TestInExpressionRHSListExpressionSupplier {
 		assertEquals(listExpression.getSubexpressions().get(1), duplicateComponent.get(1));	
 		assertNotSame(listExpression.getSubexpressions().get(1), duplicateComponent.get(1));
 		
-		// now mutate the list 
-		List<Expression> mutantSubexpressions =  Collections.singletonList((Expression) new ConstantExpression(new NumericValue(5)));
-		supplier.putComponentBackInDuplicate(mutantSubexpressions);		
-		assertSame(listExpression.getSubexpressions(), mutantSubexpressions);		
-		
-		assertFalse(supplier.hasNext());				
+        // now mutate the list
+        Expression mutantExpression = new ConstantExpression(new NumericValue(5));
+        List<Expression> mutantSubexpressions =  Collections.singletonList(mutantExpression);
+        supplier.putComponentBackInDuplicate(mutantSubexpressions);
+        
+        Expression duplicateReferenceToExpression =
+                ((InExpression) duplicate.getAllCheckConstraints().get(0).getExpression()).getRHS().getSubexpressions().get(0); 
+        assertSame(
+                "The mutant expression should have been inserted correctly and "
+                + "be the same as that in the duplicate",
+                duplicateReferenceToExpression, mutantExpression);   
+        
+        assertFalse(supplier.hasNext());			
 	}
 }

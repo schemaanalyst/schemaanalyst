@@ -31,6 +31,11 @@ public class InExpressionRHSListExpressionSupplier
 		super.initialise(expression);
 	}
 
+	public void setDuplicate(Expression duplicate) {
+	    super.setDuplicate(duplicate);
+	    System.out.println(duplicate);
+	}
+	
 	@Override
 	protected List<ExpressionPath> getIntermediaries(Expression expression) {
 		ExpressionFilterWalker expressionWalker = new ExpressionFilterWalker(

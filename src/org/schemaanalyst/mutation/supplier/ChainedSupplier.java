@@ -13,8 +13,7 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	
 	public ChainedSupplier(Supplier<A, I> topLevelSupplier, Supplier<I, C> bottomLevelSupplier) {
 		this.topLevelSupplier = topLevelSupplier;
-		this.bottomLevelSupplier = bottomLevelSupplier;
-		
+		this.bottomLevelSupplier = bottomLevelSupplier;		
 		initialised = false;
 		bottomLevelInitialised = false;
 		haveCurrent = false;
@@ -100,7 +99,6 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 
 	@Override
 	public C getDuplicateComponent() {
-        bottomLevelSupplier.makeDuplicate();
 		return bottomLevelSupplier.getDuplicateComponent();
 	}
 
