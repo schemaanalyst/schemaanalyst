@@ -6,6 +6,7 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ListElementAdder;
+import org.schemaanalyst.mutation.mutator.ListElementExchanger;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
 import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsSupplier;
 import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsWithAlternativesSupplier;
@@ -34,7 +35,7 @@ public class PKColumnARE extends MutationPipeline<Schema> {
         mutants.addAll(columnAdder.mutate());
         
         columnsWithAlternativesSupplier.initialise(schema); // restart the process
-        ListElementAdder<Schema, Column> columnExchanger = new ListElementAdder<>(columnsWithAlternativesSupplier);
+        ListElementExchanger<Schema, Column> columnExchanger = new ListElementExchanger<>(columnsWithAlternativesSupplier);
         mutants.addAll(columnExchanger.mutate());
         
         return mutants;
