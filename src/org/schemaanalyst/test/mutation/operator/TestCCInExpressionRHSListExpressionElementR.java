@@ -302,6 +302,14 @@ public class TestCCInExpressionRHSListExpressionElementR {
     }
     
     @Test
+    public void testSchemaMultipleChecksMutantNumber() {
+        assertEquals("Two mutants should be created for a schema with two "
+                + "constraints, where each corresponding expression has lists "
+                + "with one item",
+                2, schemaMultipleChecksMutants.size());
+    }
+    
+    @Test
     public void testSchemaMultipleChecksMutant1() {
         Schema mutant = schemaMultipleChecksMutants.get(0).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
