@@ -25,6 +25,7 @@ public class ElementNullifier<A extends Duplicable<A>, E> extends Mutator<A, E> 
 
 	@Override
 	protected E performMutation(E componentToMutate) {
+        isMoreMuationToDo = false;
 		return null;
 	}
 
