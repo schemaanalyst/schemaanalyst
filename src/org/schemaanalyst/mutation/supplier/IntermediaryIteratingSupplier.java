@@ -112,8 +112,7 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	        throw new MutationException(
 	                "There is no current component to mutate");
 	    }
-	    currentDuplicate = originalArtefact.duplicate();
-		duplicateIntermediaries = getIntermediaries(currentDuplicate);
+	    setDuplicate(originalArtefact.duplicate());
 		return currentDuplicate;
 	}
 
@@ -123,6 +122,7 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	@Override
 	public void setDuplicate(A currentDuplicate) {
 	    this.currentDuplicate = currentDuplicate;
+	    duplicateIntermediaries = getIntermediaries(currentDuplicate);
 	}
 	
 	/**
@@ -183,7 +183,7 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	 * 
 	 * @param intermediary
 	 *            the intermediary to be used.
-	 * @param componentn
+	 * @param component
 	 *            the component to put back.
 	 */
 	protected abstract void putComponentBackInIntermediary(I intermediary,

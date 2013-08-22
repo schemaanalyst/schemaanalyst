@@ -65,9 +65,13 @@ public class TestInExpressionRHSListExpressionSupplier {
 		// now mutate the list 
 		List<Expression> mutantSubexpressions =  Collections.singletonList((Expression) new ConstantExpression(new NumericValue(5)));
 		supplier.putComponentBackInDuplicate(mutantSubexpressions);		
-		assertSame(listExpression.getSubexpressions(), mutantSubexpressions);
+		//System.out.println(duplicate);
+		//System.out.println(duplicateComponent);
+		assertEquals(duplicateComponent.get(0), mutantSubexpressions.get(0));   
+        //assertNotSame(duplicateComponent.get(0), mutantSubexpressions.get(0));
+		assertFalse(supplier.hasNext());
 		
-		assertFalse(supplier.hasNext());		
+		
 	}	
 	
 	@Test
@@ -87,7 +91,6 @@ public class TestInExpressionRHSListExpressionSupplier {
 		assertSame(
 				"The original artefact should be the same as that passed to initialise",
 				schema, supplier.getOriginalArtefact());
-		System.out.println("here1");
 		assertTrue(
 				"The supplier should have another component",
 				supplier.hasNext());

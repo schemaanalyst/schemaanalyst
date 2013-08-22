@@ -51,15 +51,19 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 			throw new MutationException(
 					"There is no current component to mutate");
 		}
-		return topLevelSupplier.makeDuplicate();
+		A duplicate = topLevelSupplier.makeDuplicate();
+		setDuplicate(duplicate);
+		return duplicate;
 	}	
 	
     /**
      * {@inheritDoc}
      */
     @Override
-    public void setDuplicate(A currentDuplicate) {
-    
+    public void setDuplicate(A duplicate) {
+        topLevelSupplier.setDuplicate(duplicate);
+        I duplicateComponent = topLevelSupplier.getDuplicateComponent();
+        bottomLevelSupplier.setDuplicate(duplicateComponent);
     }	
 	
 	@Override
