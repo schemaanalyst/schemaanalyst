@@ -21,7 +21,6 @@ public class CheckExpressionSupplier extends IntermediaryIteratingSupplier<Schem
 
 	@Override
 	public void putComponentBackInIntermediary(CheckConstraint checkConstraint, Expression expression) {
-        System.out.println("PUTTING BACK IN INTERMEDIARY");
 		if (expression == null) {
 			currentDuplicate.removeCheckConstraint(checkConstraint);
 		} else {

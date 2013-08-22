@@ -33,7 +33,6 @@ public class InExpressionRHSListExpressionSupplier
 
 	public void setDuplicate(Expression duplicate) {
 	    super.setDuplicate(duplicate);
-	    System.out.println(duplicate);
 	}
 	
 	@Override
