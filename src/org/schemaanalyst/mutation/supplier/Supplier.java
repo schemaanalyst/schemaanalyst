@@ -54,121 +54,103 @@ import org.schemaanalyst.util.Duplicable;
  *            columns of an integrity constraint)
  */
 
-public abstract class Supplier<A extends Duplicable<A>, C> {
+public interface Supplier<A extends Duplicable<A>, C> {
 
-	/**
-	 * Instance of the <em>original artefact</em> being mutated. The original
-	 * instance is unchanged, it is duplicates of this instance that are
-	 * mutated.
-	 */
-	protected A originalArtefact;
+    /**
+     * Initialises the supplier and sets the original artefact to be mutated and
+     * used as a "reference" for mutations.
+     * 
+     * @param originalArtefact
+     *            the artefact to be mutated.
+     */
+    public void initialise(A originalArtefact);
 
-	/**
-	 * The current duplicate copy of <tt>originalArtefact</tt> which is to be
-	 * mutated.
-	 */
-	protected A currentDuplicate;
+    /**
+     * Returns the original artefact that is being mutated.
+     * 
+     * @return the original artefact.
+     */
+    public A getOriginalArtefact();
 
-	/**
-	 * Initialises the supplier and sets the original artefact to be mutated and
-	 * used as a "reference" for mutations.
-	 * 
-	 * @param originalArtefact
-	 *            the artefact to be mutated.
-	 */
-	public void initialise(A originalArtefact) {
-		this.originalArtefact = originalArtefact;
-	}
+    /**
+     * Indicates whether there are more components in the original artefact for
+     * mutation.
+     * 
+     * @return True if there are more components, else false.
+     */
+    public abstract boolean hasNext();
 
-	/**
-	 * Returns the original artefact that is being mutated.
-	 * 
-	 * @return the original artefact.
-	 */
-	public A getOriginalArtefact() {
-		return originalArtefact;
-	}
+    /**
+     * Returns the next component from the original artefact for mutation, or
+     * null if there are no more components left to mutate (i.e. the result of
+     * {@link #hasNext()} is false). The returned object is referred to as the
+     * "current component".
+     * 
+     * @return The next component from the to be mutated.
+     */
+    public abstract C getNextComponent();
 
-	/**
-	 * Indicates whether there are more components in the original artefact for
-	 * mutation.
-	 * 
-	 * @return True if there are more components, else false.
-	 */
-	public abstract boolean hasNext();
+    /**
+     * Indicates whether there is a current component available for mutation
+     * (following a call to {@link #getNextComponent()}</tt>).
+     * 
+     * @return True if there is a current component, else false.
+     */
+    public abstract boolean haveCurrent();
 
-	/**
-	 * Returns the next component from the original artefact for mutation, or
-	 * null if there are no more components left to mutate (i.e. the result of
-	 * {@link #hasNext()} is false). The returned object is referred to as the
-	 * "current component".
-	 * 
-	 * @return The next component from the to be mutated.
-	 */
-	public abstract C getNextComponent();
+    /**
+     * Returns a duplicate of the original artefact. If there is no current
+     * component to mutate (i.e. a call to {@link #haveCurrent()} would return
+     * false), the method throws a
+     * {@link org.schemaanalyst.mutation.MutationException}.
+     * 
+     * @return A duplicate of the original artefact.
+     * @throws MutationException
+     *             if there is no current component to mutate, i.e. the result
+     *             of {@link #haveCurrent()} before calling this method is
+     *             false.
+     */
+    public A makeDuplicate();
 
-	/**
-	 * Indicates whether there is a current component available for mutation
-	 * (following a call to {@link #getNextComponent()}</tt>).
-	 * 
-	 * @return True if there is a current component, else false.
-	 */
-	public abstract boolean haveCurrent();
+    /**
+     * Instead of having the supplier make its own duplicate, a duplicate can be
+     * set from another source instead using this method. The result of
+     * {@link #duplicateComponent()} is derived from the duplicate set rather
+     * than the duplicate made.
+     * 
+     * @throws MutationException
+     *             if there is no current component to mutate, i.e. the result
+     *             of {@link #haveCurrent()} before calling this method is
+     *             false.
+     */
+    public void setDuplicate(A duplicate);
 
-	/**
-	 * Returns a duplicate of the original artefact. If there is no current
-	 * component to mutate (i.e. a call to {@link #haveCurrent()} would return
-	 * false), the method throws a
-	 * {@link org.schemaanalyst.mutation.MutationException}.
-	 * 
-	 * @return A duplicate of the original artefact.
-	 * @throws MutationException
-	 *             if there is no current component to mutate, i.e. the result
-	 *             of {@link #haveCurrent()} before calling this method is
-	 *             false.
-	 */
-	public A makeDuplicate() {
-		if (!haveCurrent()) {
-			throw new MutationException(
-					"There is no current component to mutate");
-		}
-		currentDuplicate = originalArtefact.duplicate();
-		return currentDuplicate;
-	}
+    /**
+     * Extracts the component for mutation from the duplicate copy of the
+     * original artefact that was last returned by {@link #makeDuplicate()}, or
+     * set using {@link #setDuplicate(Duplicable). If there is no current
+     * component to mutate (i.e. a call {@link #haveCurrent()} would return
+     * false), the method throws a
+     * {@link org.schemaanalyst.mutation.MutationException}.
+     * 
+     * @return The component from the last made duplicate.
+     * @throws MutationException
+     *             if there is no current component to mutate, i.e. the result
+     *             of {@link #haveCurrent()} before calling this method is
+     *             false.
+     */
+    public abstract C getDuplicateComponent();
 
-	/**
-	 * Extracts the component for mutation from the duplicate copy of the
-	 * original artefact that was last returned by {@link #makeDuplicate()}. If
-	 * there is no current component to mutate (i.e. a call
-	 * {@link #haveCurrent()} would return false), the method throws a
-	 * {@link org.schemaanalyst.mutation.MutationException}.
-	 * 
-	 * @return The component from the last made duplicate.
-	 * @throws MutationException
-	 *             if there is no current component to mutate, i.e. the result
-	 *             of {@link #haveCurrent()} before calling this method is
-	 *             false.
-	 */
-	public abstract C getDuplicateComponent();
-
-	/**
-	 * Puts a mutated component back into the duplicated artefact (i.e. that
-	 * which was last returned by {@link #makeDuplicate()}).
-	 * 
-	 * @param component
-	 *            The mutated component.
-	 * @throws MutationException
-	 *             if there is no current component to mutate, i.e. the result
-	 *             of {@link #haveCurrent()} before calling this method is
-	 *             false.
-	 */
-	public abstract void putComponentBackInDuplicate(C component);
-
-	/**
-	 * Returns the simple name of the class.
-	 */
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
+    /**
+     * Puts a mutated component back into the duplicated artefact (i.e. that
+     * which was last returned by {@link #makeDuplicate()}).
+     * 
+     * @param component
+     *            The mutated component.
+     * @throws MutationException
+     *             if there is no current component to mutate, i.e. the result
+     *             of {@link #haveCurrent()} before calling this method is
+     *             false.
+     */
+    public abstract void putComponentBackInDuplicate(C component);
 }

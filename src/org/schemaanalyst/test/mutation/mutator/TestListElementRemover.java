@@ -33,8 +33,9 @@ public class TestListElementRemover {
         }
     }
     
-    public class ListSupplier extends Supplier<MockOuterObject, List<Integer>> {
-
+    public class ListSupplier implements Supplier<MockOuterObject, List<Integer>> {
+        
+        protected MockOuterObject originalArtefact, currentDuplicate;  
         boolean hasNext = true, haveCurrent = false;
         
         public boolean hasNext() {
@@ -61,6 +62,26 @@ public class TestListElementRemover {
         
         public String toString() {
             return "ListSupplier";
+        }
+
+        @Override
+        public void initialise(MockOuterObject originalArtefact) {
+            this.originalArtefact = originalArtefact;
+        }
+
+        @Override
+        public MockOuterObject getOriginalArtefact() {
+            return originalArtefact;
+        }
+
+        @Override
+        public MockOuterObject makeDuplicate() {
+            currentDuplicate = originalArtefact.duplicate();
+            return currentDuplicate;
+        }
+
+        @Override
+        public void setDuplicate(MockOuterObject duplicate) {
         }
     }    
     

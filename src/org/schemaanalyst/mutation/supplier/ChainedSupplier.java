@@ -4,7 +4,7 @@ import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicable;
 
 public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C>
-		extends Supplier<A, C> {
+		implements Supplier<A, C> {
 
 	private Supplier<A, I> topLevelSupplier;
 	private Supplier<I, C> bottomLevelSupplier;
@@ -20,9 +20,11 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 		haveCurrent = false;
 	}
 	
-	@Override
+    /**
+     * {@inheritDoc}
+     */ 
+    @Override
 	public void initialise(A originalArtefact) {
-		super.initialise(originalArtefact);
 		topLevelSupplier.initialise(originalArtefact);
 		initialised = true;
 		bottomLevelInitialised = false;
@@ -32,6 +34,14 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 		bottomLevelSupplier.initialise(topLevelComponent);
 		bottomLevelInitialised = true;		
 	}
+
+    /**
+     * {@inheritDoc}
+     */ 
+    @Override
+    public A getOriginalArtefact() {
+        return topLevelSupplier.getOriginalArtefact();
+    }   	
 	
 	/**
 	 * {@inheritDoc}
@@ -41,9 +51,16 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 			throw new MutationException(
 					"There is no current component to mutate");
 		}
-		currentDuplicate = topLevelSupplier.makeDuplicate();
-		return currentDuplicate;
+		return topLevelSupplier.makeDuplicate();
 	}	
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDuplicate(A currentDuplicate) {
+    
+    }	
 	
 	@Override
 	public boolean hasNext() {

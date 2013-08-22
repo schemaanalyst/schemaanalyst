@@ -12,7 +12,6 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 import static org.junit.Assert.*;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 
 /**

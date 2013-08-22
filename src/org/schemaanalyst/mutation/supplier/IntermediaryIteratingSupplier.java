@@ -29,8 +29,21 @@ import org.schemaanalyst.util.Duplicable;
  */
 
 public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, C>
-		extends Supplier<A, C> {
+		implements Supplier<A, C> {
 
+    /**
+     * Instance of the <em>original artefact</em> being mutated. The original
+     * instance is unchanged, it is duplicates of this instance that are
+     * mutated.
+     */
+    protected A originalArtefact;
+
+    /**
+     * The current duplicate copy of <tt>originalArtefact</tt> which is to be
+     * mutated.
+     */
+    protected A currentDuplicate;    
+    
 	private List<I> intermediaries, duplicateIntermediaries;
 	private int index;
 	private boolean initialised, haveCurrent;
@@ -43,13 +56,21 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	 * {@inheritDoc}
 	 */
 	public void initialise(A originalArtefact) {
-		super.initialise(originalArtefact);
+	    this.originalArtefact = originalArtefact;
 		intermediaries = getIntermediaries(originalArtefact);
 		index = -1;
 		initialised = true;
 		haveCurrent = false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public A getOriginalArtefact() {
+        return originalArtefact;
+    }	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -87,11 +108,23 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	 */
 	@Override
 	public A makeDuplicate() {
-		super.makeDuplicate();
+	    if (!haveCurrent()) {
+	        throw new MutationException(
+	                "There is no current component to mutate");
+	    }
+	    currentDuplicate = originalArtefact.duplicate();
 		duplicateIntermediaries = getIntermediaries(currentDuplicate);
 		return currentDuplicate;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setDuplicate(A currentDuplicate) {
+	    this.currentDuplicate = currentDuplicate;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -155,4 +188,12 @@ public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, 
 	 */
 	protected abstract void putComponentBackInIntermediary(I intermediary,
 			C Component);
+	
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return getClass().getSimpleName();
+    }	
 }

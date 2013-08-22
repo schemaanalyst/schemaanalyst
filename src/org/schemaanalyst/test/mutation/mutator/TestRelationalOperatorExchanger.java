@@ -5,8 +5,11 @@ package org.schemaanalyst.test.mutation.mutator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+
 import org.junit.Test;
+
 import static org.junit.Assert.*;
+
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
@@ -30,8 +33,9 @@ public class TestRelationalOperatorExchanger {
     /**
      * Mock implementation of a Supplier
      */
-    class MockSupplier extends Supplier<Expression, RelationalOperator> {
+    class MockSupplier implements Supplier<Expression, RelationalOperator> {
 
+        protected Expression originalArtefact, currentDuplicate;  
         boolean hasNext = true, haveCurrent = false;
 
         @Override
@@ -60,6 +64,26 @@ public class TestRelationalOperatorExchanger {
         public void putComponentBackInDuplicate(RelationalOperator component) {
             ((RelationalExpression) currentDuplicate).setRelationalOperator(component);
         }
+        
+        @Override
+        public void initialise(Expression originalArtefact) {
+            this.originalArtefact = originalArtefact;
+        }
+
+        @Override
+        public Expression getOriginalArtefact() {
+            return originalArtefact;
+        }
+
+        @Override
+        public Expression makeDuplicate() {
+            currentDuplicate = originalArtefact.duplicate();
+            return currentDuplicate;
+        }      
+        
+        @Override
+        public void setDuplicate(Expression duplicate) {
+        }        
     }
 
     /**
@@ -69,7 +93,7 @@ public class TestRelationalOperatorExchanger {
     public void testExchangeLess() {
         MockSupplier supplier = new MockSupplier();
         supplier.initialise(relationalExpression1);
-        RelationalOperatorExchanger exchanger = new RelationalOperatorExchanger(supplier);
+        RelationalOperatorExchanger<Expression> exchanger = new RelationalOperatorExchanger<>(supplier);
         List<Mutant<Expression>> mutants = exchanger.mutate();
         assertEquals(5, mutants.size());
         Set<RelationalOperator> ops = EnumSet.noneOf(RelationalOperator.class);
@@ -92,7 +116,7 @@ public class TestRelationalOperatorExchanger {
     public void testExchangeEquals() {
         MockSupplier supplier = new MockSupplier();
         supplier.initialise(relationalExpression2);
-        RelationalOperatorExchanger exchanger = new RelationalOperatorExchanger(supplier);
+        RelationalOperatorExchanger<Expression> exchanger = new RelationalOperatorExchanger<>(supplier);
         List<Mutant<Expression>> mutants = exchanger.mutate();
         assertEquals(5, mutants.size());
         Set<RelationalOperator> ops = EnumSet.noneOf(RelationalOperator.class);
