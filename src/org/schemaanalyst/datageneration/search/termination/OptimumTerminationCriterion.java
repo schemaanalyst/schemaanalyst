@@ -2,9 +2,8 @@ package org.schemaanalyst.datageneration.search.termination;
 
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.util.Duplicable;
 
-public class OptimumTerminationCriterion<T extends Duplicable<T>> implements TerminationCriterion {
+public class OptimumTerminationCriterion<T> implements TerminationCriterion {
 
     protected Search<T> search;
 

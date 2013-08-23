@@ -2,14 +2,12 @@ package org.schemaanalyst.sqlrepresentation.datatype;
 
 import java.io.Serializable;
 
-import org.schemaanalyst.util.Duplicable;
-
 /**
  * Root class for representing a data type in SQL
  * @author Phil McMinn
  *
  */
-public abstract class DataType implements Duplicable<DataType>, Serializable {
+public abstract class DataType implements Serializable {
 
     private static final long serialVersionUID = -7105047166176083429L;
 

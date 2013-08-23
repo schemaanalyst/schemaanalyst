@@ -1,9 +1,8 @@
 package org.schemaanalyst.mutation.mutator;
 
 import org.schemaanalyst.mutation.supplier.Supplier;
-import org.schemaanalyst.util.Duplicable;
 
-public class ElementNullifier<A extends Duplicable<A>, E> extends Mutator<A, E> {
+public class ElementNullifier<A, E> extends Mutator<A, E> {
 
 	private boolean isMoreMuationToDo = false;
 	private E element;

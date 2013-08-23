@@ -4,7 +4,9 @@ package org.schemaanalyst.test.mutation.operator;
 
 import java.util.Arrays;
 import java.util.List;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.FKColumnPairR;
@@ -20,6 +22,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  */
 public class TestFKColumnPairR {
 
+    @SuppressWarnings("serial")
     private class TestSchemaBase extends Schema {
 
         Table t1 = new Table("t1");
@@ -44,6 +47,7 @@ public class TestFKColumnPairR {
         }
     }
     
+    @SuppressWarnings("serial")
     private class TestSchemaNoFK extends TestSchemaBase {
 
         public TestSchemaNoFK(String name) {
@@ -54,6 +58,7 @@ public class TestFKColumnPairR {
     TestSchemaNoFK schemaNoFK = new TestSchemaNoFK("schema");
     List<Mutant<Schema>> schemaNoFKMutants = new FKColumnPairR(schemaNoFK).mutate();
     
+    @SuppressWarnings("serial")
     private class TestSchemaOneColFK extends TestSchemaBase {
 
         public TestSchemaOneColFK(String name) {
@@ -64,6 +69,7 @@ public class TestFKColumnPairR {
     TestSchemaOneColFK schemaOneColFK = new TestSchemaOneColFK("schema");
     List<Mutant<Schema>> schemaOneColFKMutants = new FKColumnPairR(schemaOneColFK).mutate();
     
+    @SuppressWarnings("serial")
     private class TestSchemaTwoColFK extends TestSchemaBase {
 
         public TestSchemaTwoColFK(String name) {

@@ -8,10 +8,9 @@ import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.StringUtils;
 
-public class Row implements Duplicable<Row> {
+public class Row {
 
     protected Table table;
     protected List<Cell> cells;
@@ -73,7 +72,6 @@ public class Row implements Duplicable<Row> {
         }
     }
 
-    @Override
     public Row duplicate() {
         Row duplicate = new Row();
         duplicate.table = this.table;

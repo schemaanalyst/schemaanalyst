@@ -3,52 +3,42 @@ package org.schemaanalyst.test.datageneration.search;
 import java.math.BigDecimal;
 
 import org.junit.Test;
-
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.Duplicator;
 
 import static org.junit.Assert.*;
 
 public class TestSearchEvaluation {
 
-    class DuplicableDouble implements Duplicable<DuplicableDouble> {
-
-        public double value;
-
-        public DuplicableDouble(double value) {
-            this.value = value;
-        }
+      class MockObjectiveFunction extends ObjectiveFunction<Double> {
 
         @Override
-        public DuplicableDouble duplicate() {
-            return new DuplicableDouble(value);
-        }
-    }
-
-    class MockObjectiveFunction extends ObjectiveFunction<DuplicableDouble> {
-
-        @Override
-        public ObjectiveValue evaluate(DuplicableDouble duplicableDouble) {
+        public ObjectiveValue evaluate(Double value) {
             ObjectiveValue objVal = new ObjectiveValue();
-            objVal.setValue(duplicableDouble.value);
+            objVal.setValue(value);
             return objVal;
         }
     }
 
-    class MockSearch extends Search<DuplicableDouble> {
+    class MockSearch extends Search<Double> {
 
         public MockSearch() {
-            super();
+            super(new Duplicator<Double>() {
+                @Override
+                public Double duplicate(Double value) {
+                    return new Double(value.doubleValue());
+                }
+            });
         }
 
         @Override
-        public void search(DuplicableDouble d) {
+        public void search(Double d) {
         }
 
         @Override
-        public ObjectiveValue evaluate(DuplicableDouble d) {
+        public ObjectiveValue evaluate(Double d) {
             return super.evaluate(d);
         }
     }
@@ -58,9 +48,9 @@ public class TestSearchEvaluation {
         MockSearch s = new MockSearch();
 
         s.setObjectiveFunction(new MockObjectiveFunction());
-        s.evaluate(new DuplicableDouble(0.6));
-        s.evaluate(new DuplicableDouble(0.2));
-        s.evaluate(new DuplicableDouble(0.5));
+        s.evaluate(0.6);
+        s.evaluate(0.2);
+        s.evaluate(0.5);
 
         assertEquals(3, s.getEvaluationsCounter().getValue());
         assertEquals(new BigDecimal(0.2), s.getBestObjectiveValue().getValue());

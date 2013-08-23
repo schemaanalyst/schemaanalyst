@@ -9,6 +9,10 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 public class CheckExpressionSupplier extends IntermediaryIteratingSupplier<Schema, CheckConstraint, Expression>{
 
+    public CheckExpressionSupplier() {
+        super(new Schema.Duplicator());
+    }    
+    
 	@Override
 	protected List<CheckConstraint> getIntermediaries(Schema schema) {
 		return schema.getCheckConstraints();

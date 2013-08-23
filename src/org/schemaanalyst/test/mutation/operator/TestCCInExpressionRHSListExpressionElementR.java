@@ -3,7 +3,9 @@
 package org.schemaanalyst.test.mutation.operator;
 
 import java.util.List;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.mutation.Mutant;
@@ -32,6 +34,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with one list, with 3 items
      */
+    @SuppressWarnings("serial")
     private class TestSchema3ListItems extends Schema {
 
         public TestSchema3ListItems(String name) {
@@ -107,6 +110,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with one list, with 1 item
      */
+    @SuppressWarnings("serial")
     private class TestSchema1ListItem extends Schema {
 
         public TestSchema1ListItem(String name) {
@@ -148,6 +152,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with two lists, with two items
      */
+    @SuppressWarnings("serial")    
     private class TestSchemaMultipleLists extends Schema {
 
         public TestSchemaMultipleLists(String name) {
@@ -278,6 +283,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with two constraints, with one list, with 1 item
      */
+    @SuppressWarnings("serial")    
     private class TestSchemaMultipleChecks extends Schema {
 
         public TestSchemaMultipleChecks(String name) {

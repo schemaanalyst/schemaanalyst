@@ -14,7 +14,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
-import org.schemaanalyst.mutation.supplier.AbstractSupplier;
+import org.schemaanalyst.mutation.supplier.OneComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -33,35 +33,20 @@ public class TestRelationalOperatorExchanger {
     /**
      * Mock implementation of a Supplier
      */
-    class MockSupplier extends AbstractSupplier<Expression, RelationalOperator> {
+    class MockSupplier extends OneComponentSupplier<Expression, RelationalOperator> {
   
-        boolean hasNext = true, haveCurrent = false;
-
-        @Override
-        public boolean hasNext() {
-            return hasNext;
-        }
-
-        @Override
-        public RelationalOperator getNextComponent() {
-            hasNext = false;
-            haveCurrent = true;
-            return ((RelationalExpression) originalArtefact).getRelationalOperator();
-        }
-
-        @Override
-        public boolean haveCurrent() {
-            return haveCurrent;
-        }
-
-        @Override
-        public RelationalOperator getDuplicateComponent() {
-            return ((RelationalExpression) currentDuplicate).getRelationalOperator();
+        public MockSupplier() {
+            super(new Expression.Duplicator());
         }
 
         @Override
         public void putComponentBackInDuplicate(RelationalOperator component) {
             ((RelationalExpression) currentDuplicate).setRelationalOperator(component);
+        }
+
+        @Override
+        protected RelationalOperator getComponent(Expression expression) {
+            return ((RelationalExpression) expression).getRelationalOperator();
         }
     }
 

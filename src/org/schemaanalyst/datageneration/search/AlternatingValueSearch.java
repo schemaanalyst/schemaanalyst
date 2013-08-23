@@ -35,6 +35,7 @@ public class AlternatingValueSearch extends Search<Data> {
     public AlternatingValueSearch(Random random,
             DataInitialiser startInitializer,
             DataInitialiser restartInitializer) {
+        super(new Data.Duplicator());
         this.random = random;
         this.startInitialiser = startInitializer;
         this.restartInitialiser = restartInitializer;

@@ -6,7 +6,6 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.supplier.Supplier;
-import org.schemaanalyst.util.Duplicable;
 
 /**
  * A {@link Mutator} takes a {@link Supplier} to generate duplicates of an
@@ -23,8 +22,7 @@ import org.schemaanalyst.util.Duplicable;
  *            the type of component of the artefact which is to be mutated.
  */
 
-public abstract class Mutator<A extends Duplicable<A>, C> extends
-		MutationPipeline<A> {
+public abstract class Mutator<A, C> extends MutationPipeline<A> {
 
 	/**
 	 * The supplier for this mutator.

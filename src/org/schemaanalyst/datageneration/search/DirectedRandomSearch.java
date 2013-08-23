@@ -30,6 +30,7 @@ public class DirectedRandomSearch extends Search<Data> {
     public DirectedRandomSearch(Random random,
             DataInitialiser startInitialiser,
             CellRandomiser cellRandomiser) {
+        super(new Data.Duplicator());        
         this.random = random;
         this.startInitializer = startInitialiser;
         this.cellRandomiser = cellRandomiser;

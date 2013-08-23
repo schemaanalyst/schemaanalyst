@@ -1,9 +1,8 @@
 package org.schemaanalyst.data;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.util.Duplicable;
 
-public class Cell implements Duplicable<Cell> {
+public class Cell {
 
     protected Column column;
     protected ValueFactory valueFactory;
@@ -51,7 +50,6 @@ public class Cell implements Duplicable<Cell> {
         return value;
     }
 
-    @Override
     public Cell duplicate() {
         Cell duplicate = new Cell(column, valueFactory);
         if (isNull()) {

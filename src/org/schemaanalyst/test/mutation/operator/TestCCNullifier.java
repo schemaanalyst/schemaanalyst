@@ -3,6 +3,7 @@
 package org.schemaanalyst.test.mutation.operator;
 
 import java.util.List;
+
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
@@ -17,6 +18,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+
 import static org.junit.Assert.*;
 
 /**
@@ -25,6 +27,7 @@ import static org.junit.Assert.*;
  */
 public class TestCCNullifier {
 
+    @SuppressWarnings("serial")
     private class TestSchemaNoConstraints extends Schema {
 
         public TestSchemaNoConstraints(String name) {
@@ -43,6 +46,7 @@ public class TestCCNullifier {
                 0, mutants.size());
     }
 
+    @SuppressWarnings("serial")
     private class TestSchemaOneConstraint extends Schema {
 
         public TestSchemaOneConstraint(String name) {
@@ -74,6 +78,7 @@ public class TestCCNullifier {
                 0, oneConstraintSchemaMutants.get(0).getMutatedArtefact().getCheckConstraints().size());
     }
 
+    @SuppressWarnings("serial")    
     private class TestSchemaTwoConstraint extends Schema {
 
         public TestSchemaTwoConstraint(String name) {
@@ -136,6 +141,7 @@ public class TestCCNullifier {
                 expr, mutant.getCheckConstraints(t1).get(0).getExpression());
     }
 
+    @SuppressWarnings("serial")
     private class TestSchemaTwoTables extends Schema {
 
         public TestSchemaTwoTables(String name) {
@@ -198,7 +204,7 @@ public class TestCCNullifier {
         Table t1 = mutant.getTable("t1");
         Column c1 = t1.getColumn("c1");
         Table t2 = mutant.getTable("t2");
-        Column c2 = t2.getColumn("c2");
+        t2.getColumn("c2");
         Expression expr = new RelationalExpression(
                     new ColumnExpression(t1, c1),
                     RelationalOperator.LESS,

@@ -3,7 +3,7 @@ package org.schemaanalyst.datageneration.search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
-import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.Duplicator;
 
 /**
  * Abstract class for representing a search
@@ -11,8 +11,9 @@ import org.schemaanalyst.util.Duplicable;
  * @author Phil McMinn
  *
  */
-public abstract class Search<T extends Duplicable<T>> {
+public abstract class Search<T> {
 
+    protected Duplicator<T> duplicator;
     protected ObjectiveFunction<T> objFun;
     protected Counter evaluationsCounter, restartsCounter;
     protected ObjectiveValue bestObjVal;
@@ -24,7 +25,8 @@ public abstract class Search<T extends Duplicable<T>> {
      *
      * @param random The instance of random to use during the search.
      */
-    public Search() {
+    public Search(Duplicator<T> duplicator) {
+        this.duplicator = duplicator;
         evaluationsCounter = new Counter("Number of evaluations");
         restartsCounter = new Counter("Number of restarts");
     }
@@ -77,7 +79,7 @@ public abstract class Search<T extends Duplicable<T>> {
 
         if (bestObjVal == null || objVal.betterThan(bestObjVal)) {
             bestObjVal = objVal;
-            bestCandidateSolution = candidateSolution.duplicate();
+            bestCandidateSolution = duplicator.duplicate(candidateSolution);
         }
 
         evaluationsCounter.increment();

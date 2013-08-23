@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.StringUtils;
 
 /**
@@ -35,7 +34,7 @@ import org.schemaanalyst.util.StringUtils;
  */
 
 public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
-        Set<E>, Duplicable<IdentifiableEntitySet<E>>, Serializable {
+        Set<E>, Serializable {
 
     private static final long serialVersionUID = -20454495160065002L;
 
@@ -113,7 +112,6 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
         return elements.iterator();
     }
 
-    @Override
     public IdentifiableEntitySet<E> duplicate() {
         IdentifiableEntitySet<E> duplicate = new IdentifiableEntitySet<>();
         for (E element : this) {

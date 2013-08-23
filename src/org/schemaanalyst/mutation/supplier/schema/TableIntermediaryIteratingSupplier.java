@@ -8,6 +8,10 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public abstract class TableIntermediaryIteratingSupplier<C> extends IntermediaryIteratingSupplier<Schema, Table, C> {
 	
+    public TableIntermediaryIteratingSupplier() {
+        super(new Schema.Duplicator());
+    }
+    
     protected List<Table> getIntermediaries(Schema schema) {
         return schema.getTables();
     }    

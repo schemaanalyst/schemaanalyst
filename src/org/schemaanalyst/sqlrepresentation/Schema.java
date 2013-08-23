@@ -13,7 +13,6 @@ import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
@@ -23,9 +22,14 @@ import org.schemaanalyst.util.collection.IdentifiableEntitySet;
  * @author Phil McMinn
  * 
  */
-public class Schema extends IdentifiableEntity implements Serializable,
-        Duplicable<Schema> {
+public class Schema extends IdentifiableEntity implements Serializable {
 
+    public static class Duplicator implements org.schemaanalyst.util.Duplicator<Schema> {
+        public Schema duplicate(Schema schema) {
+            return schema.duplicate();
+        }
+    }
+    
     private static final long serialVersionUID = 7338170433995168952L;
     private IdentifiableEntitySet<Table> tables;
 
@@ -167,7 +171,6 @@ public class Schema extends IdentifiableEntity implements Serializable,
      * 
      * @return a deep copy of the schema.
      */
-    @Override
     public Schema duplicate() {
         Schema duplicateSchema = new Schema(getName());
 

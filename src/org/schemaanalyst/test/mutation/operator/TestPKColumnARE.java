@@ -5,7 +5,9 @@ package org.schemaanalyst.test.mutation.operator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.PKColumnARE;
@@ -24,6 +26,7 @@ public class TestPKColumnARE {
     /**
      * Schema with single column PK and no spare columns
      */
+    @SuppressWarnings("serial")
     private class TestSchemaSinglePKNoExchange extends Schema {
 
         public TestSchemaSinglePKNoExchange(String name) {
@@ -39,6 +42,7 @@ public class TestPKColumnARE {
     /**
      * Schema with single column PK and two spare columns
      */
+    @SuppressWarnings("serial")
     private class TestSchemaSinglePKTwoExchange extends Schema {
 
         public TestSchemaSinglePKTwoExchange(String name) {
@@ -58,6 +62,7 @@ public class TestPKColumnARE {
     /**
      * Schema with double column PK and no spare columns
      */
+    @SuppressWarnings("serial")
     private class TestSchemaDoublePKNoExchange extends Schema {
 
         public TestSchemaDoublePKNoExchange(String name) {
@@ -75,6 +80,7 @@ public class TestPKColumnARE {
     /**
      * Schema with double column PK and two spare columns
      */
+    @SuppressWarnings("serial")    
     private class TestSchemaDoublePKTwoExchange extends Schema {
 
         public TestSchemaDoublePKTwoExchange(String name) {
@@ -96,6 +102,7 @@ public class TestPKColumnARE {
     /**
      * Schema with two tables, both with PKs
      */
+    @SuppressWarnings("serial")
     private class TestSchemaTwoTable extends Schema {
 
         public TestSchemaTwoTable(String name) {

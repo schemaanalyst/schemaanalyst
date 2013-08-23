@@ -26,6 +26,10 @@ public class InExpressionRHSListExpressionSupplier
 			return false;
 		}
 	};
+	
+	public InExpressionRHSListExpressionSupplier() {
+	    super(new Expression.Duplicator());
+	}
 
 	@Override
 	public void initialise(Expression expression) {

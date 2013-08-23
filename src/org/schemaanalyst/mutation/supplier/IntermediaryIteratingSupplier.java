@@ -3,7 +3,7 @@ package org.schemaanalyst.mutation.supplier;
 import java.util.List;
 
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.Duplicator;
 
 /**
  * {@link IntermediaryIteratingSupplier} is a {@link Supplier} that iterates
@@ -28,12 +28,26 @@ import org.schemaanalyst.util.Duplicable;
  *            a <tt>PRIMARY KEY</tt>)
  */
 
-public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, C>
-        extends AbstractSupplier<A, C> {
+public abstract class IntermediaryIteratingSupplier<A, I, C> extends AbstractSupplier<A, C> {
 
     private List<I> intermediaries, duplicateIntermediaries;
     private int index;
+    
+    /**
+     * Constructor.
+     */
+    public IntermediaryIteratingSupplier() {
+        super();
+    }
 
+    /**
+     * Constructor.
+     * @param duplicator the Duplicator for instances of A. 
+     */
+    public IntermediaryIteratingSupplier(Duplicator<A> duplicator) {
+        super(duplicator);
+    }
+    
     /**
      * {@inheritDoc}
      */

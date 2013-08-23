@@ -4,10 +4,16 @@ import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.Duplicable;
 
-public interface Expression extends Duplicable<Expression> {
+public interface Expression {
 
+    public static class Duplicator implements org.schemaanalyst.util.Duplicator<Expression> {
+        @Override
+        public Expression duplicate(Expression expression) {
+            return expression.duplicate();
+        }
+    }
+    
     public Expression getSubexpression(ExpressionPath expressionPath);
 
     public Expression getSubexpression(int index);

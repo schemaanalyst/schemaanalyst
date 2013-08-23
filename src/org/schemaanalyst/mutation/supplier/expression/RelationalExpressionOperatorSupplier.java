@@ -13,6 +13,10 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class RelationalExpressionOperatorSupplier
         extends IntermediaryIteratingSupplier<Expression, ExpressionPath, RelationalOperator> {
 
+    public RelationalExpressionOperatorSupplier() {
+        super(new Expression.Duplicator());
+    }
+    
     private ExpressionFilter expressionFilter = new ExpressionFilter() {
         @Override
         public boolean accept(Expression e) {

@@ -1,7 +1,6 @@
 package org.schemaanalyst.mutation.supplier;
 
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.util.Duplicable;
 
 /**
  * Chains two suppliers together.  A "top level" supplier provides components which
@@ -24,8 +23,7 @@ import org.schemaanalyst.util.Duplicable;
  *            the type of the component to be mutated (e.g. a list of columns in
  *            a <tt>PRIMARY KEY</tt>)
  */
-public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C>
-		implements Supplier<A, C> {
+public class ChainedSupplier<A, I, C> implements Supplier<A, C> {
 
 	private Supplier<A, I> topLevelSupplier;
 	private Supplier<I, C> bottomLevelSupplier;

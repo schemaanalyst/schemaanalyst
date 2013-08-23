@@ -3,7 +3,6 @@ package org.schemaanalyst.sqlrepresentation;
 import java.io.Serializable;
 
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 
 /**
@@ -13,7 +12,7 @@ import org.schemaanalyst.util.collection.IdentifiableEntity;
  *
  */
 public class Column extends IdentifiableEntity 
-                    implements Duplicable<Column>, Serializable {
+                    implements Serializable {
 
     private static final long serialVersionUID = -2680046452756410766L;
     private DataType dataType;

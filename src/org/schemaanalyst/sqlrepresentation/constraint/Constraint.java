@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
@@ -15,8 +14,7 @@ import org.schemaanalyst.util.collection.IdentifiableEntitySet;
  * @author Phil McMinn
  * 
  */
-public abstract class Constraint extends IdentifiableEntity implements
-        Duplicable<Constraint>, Serializable {
+public abstract class Constraint extends IdentifiableEntity implements Serializable {
 
     private static final long serialVersionUID = -1552612200017351725L;
 

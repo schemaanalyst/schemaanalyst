@@ -1,7 +1,7 @@
 package org.schemaanalyst.mutation.supplier;
 
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.util.Duplicator;
 
 /**
  * Provides common basic supplier functionality for subclasses to re-use
@@ -15,9 +15,14 @@ import org.schemaanalyst.util.Duplicable;
  *            the type of component of the artefact being mutated (e.g. the
  *            columns of an integrity constraint)
  */
-public abstract class AbstractSupplier<A extends Duplicable<A>, C> implements
+public abstract class AbstractSupplier<A, C> implements
         Supplier<A, C> {
 
+    /**
+     * The class that provides duplicates of A.
+     */
+    protected Duplicator<A> duplicator;
+    
     /**
      * Instance of the <em>original artefact</em> being mutated. The original
      * instance is unchanged, it is duplicates of this instance that are
@@ -45,7 +50,15 @@ public abstract class AbstractSupplier<A extends Duplicable<A>, C> implements
      * Constructor
      */
     public AbstractSupplier() {
-        initialised = false;
+        this(null);
+    }
+    
+    /**
+     * Constructor
+     */
+    public AbstractSupplier(Duplicator<A> duplicator) {
+        this.duplicator = duplicator;
+        initialised = false;        
     }
 
     /**
@@ -94,7 +107,11 @@ public abstract class AbstractSupplier<A extends Duplicable<A>, C> implements
             throw new MutationException(
                     "There is no current component to mutate");
         }
-        setDuplicate(originalArtefact.duplicate());
+        if (duplicator == null) {
+            throw new MutationException(
+                    "Cannot make duplicates of an object as no Duplicator has been set");
+        }
+        setDuplicate(duplicator.duplicate(originalArtefact));
         return currentDuplicate;
     }
 

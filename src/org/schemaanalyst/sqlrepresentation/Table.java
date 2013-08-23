@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
@@ -13,7 +12,7 @@ import org.schemaanalyst.util.collection.IdentifiableEntitySet;
  * @author Phil McMinn
  */
 public class Table extends IdentifiableEntity
-                   implements Duplicable<Table>, Serializable {
+                   implements Serializable {
 
     private static final long serialVersionUID = 781185006248617033L;    
     private IdentifiableEntitySet<Column> columns;

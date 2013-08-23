@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.StringUtils;
 
 /**
@@ -18,8 +17,15 @@ import org.schemaanalyst.util.StringUtils;
  * @author Phil McMinn
  *
  */
-public class Data implements Duplicable<Data> {
+public class Data  {
 
+    public static class Duplicator implements org.schemaanalyst.util.Duplicator<Data> {
+        @Override
+        public Data duplicate(Data data) {
+            return data.duplicate();
+        }
+    }
+    
     protected Map<Table, List<Row>> data;
 
     /**
@@ -233,7 +239,6 @@ public class Data implements Duplicable<Data> {
     /**
      * Copies this data instance.
      */
-    @Override
     public Data duplicate() {
         Data duplicate = new Data();
 

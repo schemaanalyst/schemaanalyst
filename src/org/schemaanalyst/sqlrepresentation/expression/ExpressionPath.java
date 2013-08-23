@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.schemaanalyst.util.Duplicable;
-
 /**
  * <p>An {@link ExpressionPath} represents the path to a subexpression of 
  * an overall {@link Expression}.  It can be used to traverse back to a subexpression
@@ -18,7 +16,7 @@ import org.schemaanalyst.util.Duplicable;
  * @author Phil McMinn
  *
  */
-public class ExpressionPath implements Duplicable<ExpressionPath> {
+public class ExpressionPath {
 
 	/**
 	 * The indices corresponding to the path to an expression.
@@ -69,7 +67,6 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
         return new ArrayList<>(indices);
     }
     
-    @Override
     /**
 	 * Performs a deep copy of the current {@link ExpressionPath}
 	 * instance and returns it.
@@ -77,8 +74,6 @@ public class ExpressionPath implements Duplicable<ExpressionPath> {
     public ExpressionPath duplicate() {
         return new ExpressionPath(indices);
     }
-    
-    
     
     @Override
 	public int hashCode() {

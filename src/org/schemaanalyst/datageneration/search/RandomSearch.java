@@ -11,6 +11,7 @@ public class RandomSearch extends Search<Data> {
     protected CellRandomiser profile;
 
     public RandomSearch(CellRandomiser profile) {
+        super(new Data.Duplicator());        
         this.profile = profile;
     }
 

@@ -7,15 +7,15 @@ import java.util.List;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
-import org.schemaanalyst.mutation.supplier.AbstractSupplier;
-import org.schemaanalyst.util.Duplicable;
+import org.schemaanalyst.mutation.supplier.OneComponentSupplier;
+import org.schemaanalyst.util.Duplicator;
 
 import static org.junit.Assert.*;
 
 public class TestListElementRemover {
 
-    class MockOuterObject implements Duplicable<MockOuterObject> {
-        
+    class MockOuterObject {
+                
         List<Integer> elements = new ArrayList<>();
         
         public MockOuterObject(List<Integer> elements) {
@@ -33,30 +33,25 @@ public class TestListElementRemover {
         }
     }
     
-    public class ListSupplier extends AbstractSupplier<MockOuterObject, List<Integer>> {
+    public class ListSupplier extends OneComponentSupplier<MockOuterObject, List<Integer>> {
         
-        boolean hasNext = true, haveCurrent = false;
-        
-        public boolean hasNext() {
-            return hasNext;
-        }
-        
-        public boolean haveCurrent() {
-            return haveCurrent;
-        }
-        
-        public List<Integer> getNextComponent() {
-            hasNext = false;
-            haveCurrent = true;
-            return originalArtefact.elements; 
-        }
-        
-        public List<Integer> getDuplicateComponent() {
-            return currentDuplicate.elements;
+        public ListSupplier() {
+            super(new Duplicator<MockOuterObject>() {
+                @Override
+                public MockOuterObject duplicate(MockOuterObject mockOuterObject) {
+                    return mockOuterObject.duplicate();
+                }
+            });
         }
 
+        @Override
         public void putComponentBackInDuplicate(List<Integer> elements) {
             currentDuplicate.elements = elements;         
+        }
+
+        @Override
+        protected List<Integer> getComponent(MockOuterObject artefact) {
+            return artefact.elements;
         }
     }    
     

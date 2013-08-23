@@ -3,7 +3,9 @@
 package org.schemaanalyst.test.mutation.operator;
 
 import java.util.List;
+
 import static org.junit.Assert.*;
+
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
@@ -28,6 +30,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
  */
 public class TestCCRelationalExpressionOperatorE {
 
+    @SuppressWarnings("serial")
     private class TestSchemaNoRelational extends Schema {
 
         public TestSchemaNoRelational(String name) {
@@ -50,7 +53,8 @@ public class TestCCRelationalExpressionOperatorE {
         assertEquals("Mutating a schema with no constraints with relational "
                 + "expressions should produce 0 mutants", 0, schemaNoRelationalMutants.size());
     }
-
+    
+    @SuppressWarnings("serial")
     private class TestSchemaOneRelational extends Schema {
 
         public TestSchemaOneRelational(String name) {
@@ -116,6 +120,7 @@ public class TestCCRelationalExpressionOperatorE {
         testSchemaOneRelationalMutant(4, RelationalOperator.LESS_OR_EQUALS);
     }
 
+    @SuppressWarnings("serial")
     private class TestSchemaTwoRelational extends Schema {
 
         public TestSchemaTwoRelational(String name) {

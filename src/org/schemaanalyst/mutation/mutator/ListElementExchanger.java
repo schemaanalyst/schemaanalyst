@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.Supplier;
-import org.schemaanalyst.util.Duplicable;
 import org.schemaanalyst.util.Pair;
 
-public class ListElementExchanger<A extends Duplicable<A>, E> extends Mutator<A, Pair<List<E>>> {
+public class ListElementExchanger<A, E> extends Mutator<A, Pair<List<E>>> {
     
     private List<E> elements;
     private List<E> alternatives;

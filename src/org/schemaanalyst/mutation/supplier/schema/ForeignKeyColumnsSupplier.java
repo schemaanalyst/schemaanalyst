@@ -11,6 +11,10 @@ import org.schemaanalyst.util.Pair;
 
 public class ForeignKeyColumnsSupplier extends IntermediaryIteratingSupplier<Schema, ForeignKeyConstraint, List<Pair<Column>>> {
 
+    public ForeignKeyColumnsSupplier() {
+        super(new Schema.Duplicator());
+    }      
+    
     @Override
     protected List<ForeignKeyConstraint> getIntermediaries(Schema schema) {
         return schema.getForeignKeyConstraints();
