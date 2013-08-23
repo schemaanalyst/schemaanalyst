@@ -41,7 +41,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.supplier.expression.TestInExpressionRHSListExpressionSupplier.class,
 	org.schemaanalyst.test.mutation.supplier.TestIntermediaryIteratingSupplier.class,
 	org.schemaanalyst.test.mutation.supplier.expression.TestRelationalExpressionOperatorSupplier.class,
-	org.schemaanalyst.test.mutation.supplier.TestSchemaPrimaryKeyColumnsWithAlternativesSupplier.class,
+	org.schemaanalyst.test.mutation.supplier.schema.TestSchemaPrimaryKeyColumnsWithAlternativesSupplier.class,
 	org.schemaanalyst.test.sqlrepresentation.TestColumn.class,
 	org.schemaanalyst.test.sqlrepresentation.TestSchema.class,
 	org.schemaanalyst.test.sqlrepresentation.TestTable.class,

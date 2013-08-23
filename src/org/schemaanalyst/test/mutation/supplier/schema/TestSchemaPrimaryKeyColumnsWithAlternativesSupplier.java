@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.mutation.supplier;
+package org.schemaanalyst.test.mutation.supplier.schema;
 
 import java.util.ArrayList;
 import java.util.Collections;
