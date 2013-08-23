@@ -54,7 +54,7 @@ import org.schemaanalyst.util.Duplicable;
  *            columns of an integrity constraint)
  */
 
-public interface Supplier<A extends Duplicable<A>, C> {
+public interface Supplier<A extends Duplicable<? super A>, C> {
 
     /**
      * Initialises the supplier and sets the original artefact to be mutated and

@@ -529,7 +529,7 @@ public class Schema extends IdentifiableEntity implements Serializable,
      *            the table for which the constraints are required.
      * @return a list of the NOT NULLs on this schema.
      */
-    public List<NotNullConstraint> getAllNotNullConstraints() {
+    public List<NotNullConstraint> getNotNullConstraints() {
         return new ArrayList<>(notNullConstraints);
     }
 
@@ -669,7 +669,7 @@ public class Schema extends IdentifiableEntity implements Serializable,
      * 
      * @return a list of all the PRIMARY KEY constraints for this schema.
      */
-    public List<PrimaryKeyConstraint> getAllPrimaryKeyConstraints() {
+    public List<PrimaryKeyConstraint> getPrimaryKeyConstraints() {
         return new ArrayList<>(primaryKeyConstraints);
     }
 
@@ -810,7 +810,7 @@ public class Schema extends IdentifiableEntity implements Serializable,
      *            the table for which the constraints are required.
      * @return a list of the UNIQUE constraints on this schema.
      */
-    public List<UniqueConstraint> getAllUniqueConstraints() {
+    public List<UniqueConstraint> getUniqueConstraints() {
         return new ArrayList<>(uniqueConstraints);
     }
 

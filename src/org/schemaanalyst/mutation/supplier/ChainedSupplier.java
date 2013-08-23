@@ -31,6 +31,7 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	private Supplier<I, C> bottomLevelSupplier;
 	
 	private boolean initialised, bottomLevelInitialised, haveCurrent;
+	private I currentTopLevelComponentDuplicate;
 	
     /**
      * Constructor.
@@ -101,8 +102,8 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
     @Override
     public void setDuplicate(A duplicate) {
         topLevelSupplier.setDuplicate(duplicate);
-        I duplicateComponent = topLevelSupplier.getDuplicateComponent();
-        bottomLevelSupplier.setDuplicate(duplicateComponent);
+        currentTopLevelComponentDuplicate = topLevelSupplier.getDuplicateComponent();
+        bottomLevelSupplier.setDuplicate(currentTopLevelComponentDuplicate);
     }	
 	
     /**
@@ -163,6 +164,7 @@ public class ChainedSupplier<A extends Duplicable<A>, I extends Duplicable<I>, C
 	@Override
 	public void putComponentBackInDuplicate(C component) {
 		bottomLevelSupplier.putComponentBackInDuplicate(component);
+		topLevelSupplier.putComponentBackInDuplicate(currentTopLevelComponentDuplicate);
 	}
 	
     /**

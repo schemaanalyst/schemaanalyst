@@ -5,7 +5,6 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-
 /**
  * Represents the PRIMARY KEY of a table.
  *
