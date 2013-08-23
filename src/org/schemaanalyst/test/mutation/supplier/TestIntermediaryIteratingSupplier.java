@@ -2,7 +2,7 @@ package org.schemaanalyst.test.mutation.supplier;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.mutation.supplier.TableIteratingSupplier;
+import org.schemaanalyst.mutation.supplier.schema.TableIntermediaryIteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 
 public class TestIntermediaryIteratingSupplier {
 
-	class MockTableIteratingSupplier extends TableIteratingSupplier<Column> {
+	class MockTableIteratingSupplier extends TableIntermediaryIteratingSupplier<Column> {
 
 		@Override
 		protected Column getComponentFromIntermediary(Schema schema, Table table) {

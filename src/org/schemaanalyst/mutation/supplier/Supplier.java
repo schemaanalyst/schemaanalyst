@@ -28,8 +28,8 @@ import org.schemaanalyst.util.Duplicable;
  * 
  * <p>
  * Following construction, and a call to the {@link #initialise(Duplicable)
- * method to set the original artefact, {@link Supplier} is used as follows (see
- * the source code of
+ * method to set the original artefact, {@link Supplier} is used as follows
+ * (refer to the source code of
  * {@link org.schemaanalyst.mutation.mutator.Mutator#mutate()} for an actual
  * example). First, we check that there is a component in the artefact to
  * mutate, through a call to {@link #hasNext()}. If the method call returns
@@ -66,9 +66,20 @@ public interface Supplier<A extends Duplicable<A>, C> {
     public void initialise(A originalArtefact);
 
     /**
+     * Indicates whether there the supplier has been initialised (through a call
+     * to {@link #initialise(Duplicable)}
+     * 
+     * @return True if the supplier has been initialised, else false;
+     */
+    public boolean isInitialised();
+
+    /**
      * Returns the original artefact that is being mutated.
      * 
      * @return the original artefact.
+     * @throws MutationException
+     *             if the supplier has not been initialised (through a call to
+     *             {@link #initialise(Duplicable)}
      */
     public A getOriginalArtefact();
 
@@ -77,8 +88,11 @@ public interface Supplier<A extends Duplicable<A>, C> {
      * mutation.
      * 
      * @return True if there are more components, else false.
+     * @throws MutationException
+     *             if the supplier has not been initialised (through a call to
+     *             {@link #initialise(Duplicable)}
      */
-    public abstract boolean hasNext();
+    public boolean hasNext();
 
     /**
      * Returns the next component from the original artefact for mutation, or
@@ -87,8 +101,11 @@ public interface Supplier<A extends Duplicable<A>, C> {
      * "current component".
      * 
      * @return The next component from the to be mutated.
+     * @throws MutationException
+     *             if the supplier has not been initialised (through a call to
+     *             {@link #initialise(Duplicable)}
      */
-    public abstract C getNextComponent();
+    public C getNextComponent();
 
     /**
      * Indicates whether there is a current component available for mutation
@@ -96,7 +113,7 @@ public interface Supplier<A extends Duplicable<A>, C> {
      * 
      * @return True if there is a current component, else false.
      */
-    public abstract boolean haveCurrent();
+    public boolean haveCurrent();
 
     /**
      * Returns a duplicate of the original artefact. If there is no current
@@ -139,7 +156,7 @@ public interface Supplier<A extends Duplicable<A>, C> {
      *             of {@link #haveCurrent()} before calling this method is
      *             false.
      */
-    public abstract C getDuplicateComponent();
+    public C getDuplicateComponent();
 
     /**
      * Puts a mutated component back into the duplicated artefact (i.e. that
@@ -152,5 +169,5 @@ public interface Supplier<A extends Duplicable<A>, C> {
      *             of {@link #haveCurrent()} before calling this method is
      *             false.
      */
-    public abstract void putComponentBackInDuplicate(C component);
+    public void putComponentBackInDuplicate(C component);
 }

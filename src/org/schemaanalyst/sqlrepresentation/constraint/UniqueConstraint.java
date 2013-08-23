@@ -18,7 +18,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
     }
     
     /**
-     * Constructor.     * 
+     * Constructor. 
      * @param name A name for the UNIQUE constraint (optional - can be null).
      * @param table The table that is the centre of the UNIQUE constraint. 
      * @param columns The columns involved in the UNIQUE constraint.

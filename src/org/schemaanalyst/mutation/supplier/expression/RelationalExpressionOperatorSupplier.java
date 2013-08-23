@@ -1,8 +1,9 @@
-package org.schemaanalyst.mutation.supplier;
+package org.schemaanalyst.mutation.supplier.expression;
 
 import java.util.List;
-import org.schemaanalyst.logic.RelationalOperator;
 
+import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.mutation.supplier.IntermediaryIteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;

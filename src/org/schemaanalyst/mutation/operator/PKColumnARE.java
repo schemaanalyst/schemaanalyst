@@ -8,8 +8,8 @@ import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ListElementAdder;
 import org.schemaanalyst.mutation.mutator.ListElementExchanger;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
-import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsSupplier;
-import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsWithAlternativesSupplier;
+import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsSupplier;
+import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 

@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
-import org.schemaanalyst.mutation.supplier.Supplier;
+import org.schemaanalyst.mutation.supplier.AbstractSupplier;
 import org.schemaanalyst.util.Duplicable;
 
 import static org.junit.Assert.*;
@@ -33,9 +33,8 @@ public class TestListElementRemover {
         }
     }
     
-    public class ListSupplier implements Supplier<MockOuterObject, List<Integer>> {
+    public class ListSupplier extends AbstractSupplier<MockOuterObject, List<Integer>> {
         
-        protected MockOuterObject originalArtefact, currentDuplicate;  
         boolean hasNext = true, haveCurrent = false;
         
         public boolean hasNext() {
@@ -58,30 +57,6 @@ public class TestListElementRemover {
 
         public void putComponentBackInDuplicate(List<Integer> elements) {
             currentDuplicate.elements = elements;         
-        }
-        
-        public String toString() {
-            return "ListSupplier";
-        }
-
-        @Override
-        public void initialise(MockOuterObject originalArtefact) {
-            this.originalArtefact = originalArtefact;
-        }
-
-        @Override
-        public MockOuterObject getOriginalArtefact() {
-            return originalArtefact;
-        }
-
-        @Override
-        public MockOuterObject makeDuplicate() {
-            currentDuplicate = originalArtefact.duplicate();
-            return currentDuplicate;
-        }
-
-        @Override
-        public void setDuplicate(MockOuterObject duplicate) {
         }
     }    
     

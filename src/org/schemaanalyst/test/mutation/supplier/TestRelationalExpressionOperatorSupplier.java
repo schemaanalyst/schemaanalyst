@@ -3,14 +3,14 @@
 package org.schemaanalyst.test.mutation.supplier;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.mutation.supplier.RelationalExpressionOperatorSupplier;
+import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionOperatorSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 import static org.junit.Assert.*;
+
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 

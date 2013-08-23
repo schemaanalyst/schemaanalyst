@@ -29,171 +29,115 @@ import org.schemaanalyst.util.Duplicable;
  */
 
 public abstract class IntermediaryIteratingSupplier<A extends Duplicable<A>, I, C>
-		implements Supplier<A, C> {
+        extends AbstractSupplier<A, C> {
+
+    private List<I> intermediaries, duplicateIntermediaries;
+    private int index;
 
     /**
-     * Instance of the <em>original artefact</em> being mutated. The original
-     * instance is unchanged, it is duplicates of this instance that are
-     * mutated.
+     * {@inheritDoc}
      */
-    protected A originalArtefact;
+    public void initialise(A originalArtefact) {
+        super.initialise(originalArtefact);
+        intermediaries = getIntermediaries(originalArtefact);
+        index = -1;
+    }
 
-    /**
-     * The current duplicate copy of <tt>originalArtefact</tt> which is to be
-     * mutated.
-     */
-    protected A currentDuplicate;    
-    
-	private List<I> intermediaries, duplicateIntermediaries;
-	private int index;
-	private boolean initialised, haveCurrent;
-
-	public IntermediaryIteratingSupplier() {
-		initialised = false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public void initialise(A originalArtefact) {
-	    this.originalArtefact = originalArtefact;
-		intermediaries = getIntermediaries(originalArtefact);
-		index = -1;
-		initialised = true;
-		haveCurrent = false;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public A getOriginalArtefact() {
-        return originalArtefact;
-    }	
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean hasNext() {
-		return initialised && index + 1 < intermediaries.size();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean haveCurrent() {
-		return initialised && haveCurrent;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public C getNextComponent() {
-		boolean hasNext = hasNext();
-		haveCurrent = hasNext;
-		index++;
-		if (hasNext) {
-			return getComponentFromIntermediary(originalArtefact,
-					intermediaries.get(index));
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public A makeDuplicate() {
-	    if (!haveCurrent()) {
-	        throw new MutationException(
-	                "There is no current component to mutate");
-	    }
-	    setDuplicate(originalArtefact.duplicate());
-		return currentDuplicate;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void setDuplicate(A currentDuplicate) {
-	    this.currentDuplicate = currentDuplicate;
-	    duplicateIntermediaries = getIntermediaries(currentDuplicate);
-	}
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public C getDuplicateComponent() {
-		if (!haveCurrent()) {
-			throw new MutationException("No current component to mutate");
-		}
-		return getComponentFromIntermediary(currentDuplicate,
-				duplicateIntermediaries.get(index));
-	}
-
-	/**
-	 * Gets the current intermediary item from the current duplicate.
-	 * 
-	 * @return The intermediary item.
-	 */
-	public I getDuplicateIntermediary() {
-		return duplicateIntermediaries.get(index);
-	}
-
-	/**
-	 * Gets the list of intermediary objects from an artefact - could be the
-	 * original artefact or a duplicate of it.
-	 * 
-	 * @param artefact
-	 *            the artefact from which to get the list of intermediary
-	 *            objects.
-	 */
-	protected abstract List<I> getIntermediaries(A artefact);
-
-	/**
-	 * Extracts the component for mutation from the current intermediary
-	 * (returned by {@link #getDuplicateIntermediary()}).
-	 * 
-	 * @param artefact
-	 *            the artefact from which to get the component.
-	 * @param intermediary
-	 *            the intermediary to be used.
-	 */
-	protected abstract C getComponentFromIntermediary(A artefact, I intermediary);
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public void putComponentBackInDuplicate(C component) {
-        if (!haveCurrent()) {
-            throw new MutationException("Cannot put component back in duplicate when there is no current duplicate");
-        }		
-		putComponentBackInIntermediary(getDuplicateIntermediary(), component);
-	}
-
-	/**
-	 * Puts the component back in the intermediary item.
-	 * 
-	 * @param intermediary
-	 *            the intermediary to be used.
-	 * @param component
-	 *            the component to put back.
-	 */
-	protected abstract void putComponentBackInIntermediary(I intermediary,
-			C Component);
-	
     /**
      * {@inheritDoc}
      */
     @Override
-    public String toString() {
-        return getClass().getSimpleName();
-    }	
+    public boolean hasNext() {
+        return initialised && index + 1 < intermediaries.size();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C getNextComponent() {
+        boolean hasNext = hasNext();
+        haveCurrent = hasNext;
+        index++;
+        if (hasNext) {
+            return getComponentFromIntermediary(originalArtefact,
+                    intermediaries.get(index));
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setDuplicate(A currentDuplicate) {
+        super.setDuplicate(currentDuplicate);
+        duplicateIntermediaries = getIntermediaries(currentDuplicate);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public C getDuplicateComponent() {
+        if (!haveCurrent()) {
+            throw new MutationException("No current component to mutate");
+        }
+        return getComponentFromIntermediary(currentDuplicate,
+                duplicateIntermediaries.get(index));
+    }
+
+    /**
+     * Gets the current intermediary item from the current duplicate.
+     * 
+     * @return The intermediary item.
+     */
+    public I getDuplicateIntermediary() {
+        return duplicateIntermediaries.get(index);
+    }
+
+    /**
+     * Gets the list of intermediary objects from an artefact - could be the
+     * original artefact or a duplicate of it.
+     * 
+     * @param artefact
+     *            the artefact from which to get the list of intermediary
+     *            objects.
+     */
+    protected abstract List<I> getIntermediaries(A artefact);
+
+    /**
+     * Extracts the component for mutation from the current intermediary
+     * (returned by {@link #getDuplicateIntermediary()}).
+     * 
+     * @param artefact
+     *            the artefact from which to get the component.
+     * @param intermediary
+     *            the intermediary to be used.
+     */
+    protected abstract C getComponentFromIntermediary(A artefact, I intermediary);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void putComponentBackInDuplicate(C component) {
+        if (!haveCurrent()) {
+            throw new MutationException(
+                    "Cannot put component back in duplicate when there is no current duplicate");
+        }
+        putComponentBackInIntermediary(getDuplicateIntermediary(), component);
+    }
+
+    /**
+     * Puts the component back in the intermediary item.
+     * 
+     * @param intermediary
+     *            the intermediary to be used.
+     * @param component
+     *            the component to put back.
+     */
+    protected abstract void putComponentBackInIntermediary(I intermediary,
+            C Component);
 }

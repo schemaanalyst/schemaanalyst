@@ -14,7 +14,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
-import org.schemaanalyst.mutation.supplier.Supplier;
+import org.schemaanalyst.mutation.supplier.AbstractSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -33,9 +33,8 @@ public class TestRelationalOperatorExchanger {
     /**
      * Mock implementation of a Supplier
      */
-    class MockSupplier implements Supplier<Expression, RelationalOperator> {
-
-        protected Expression originalArtefact, currentDuplicate;  
+    class MockSupplier extends AbstractSupplier<Expression, RelationalOperator> {
+  
         boolean hasNext = true, haveCurrent = false;
 
         @Override
@@ -64,26 +63,6 @@ public class TestRelationalOperatorExchanger {
         public void putComponentBackInDuplicate(RelationalOperator component) {
             ((RelationalExpression) currentDuplicate).setRelationalOperator(component);
         }
-        
-        @Override
-        public void initialise(Expression originalArtefact) {
-            this.originalArtefact = originalArtefact;
-        }
-
-        @Override
-        public Expression getOriginalArtefact() {
-            return originalArtefact;
-        }
-
-        @Override
-        public Expression makeDuplicate() {
-            currentDuplicate = originalArtefact.duplicate();
-            return currentDuplicate;
-        }      
-        
-        @Override
-        public void setDuplicate(Expression duplicate) {
-        }        
     }
 
     /**

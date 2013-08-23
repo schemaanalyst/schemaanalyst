@@ -4,13 +4,14 @@ package org.schemaanalyst.mutation.operator;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
 import org.schemaanalyst.mutation.supplier.ChainedSupplier;
-import org.schemaanalyst.mutation.supplier.CheckExpressionSupplier;
-import org.schemaanalyst.mutation.supplier.RelationalExpressionOperatorSupplier;
+import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionOperatorSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 

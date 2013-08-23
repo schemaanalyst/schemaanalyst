@@ -1,7 +1,8 @@
-package org.schemaanalyst.mutation.supplier;
+package org.schemaanalyst.mutation.supplier.schema;
 
 import java.util.List;
 
+import org.schemaanalyst.mutation.supplier.IntermediaryIteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;

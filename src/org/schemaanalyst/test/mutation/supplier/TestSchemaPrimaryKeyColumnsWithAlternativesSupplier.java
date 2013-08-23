@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.mutation.supplier.PrimaryKeyColumnsWithAlternativesSupplier;
+import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

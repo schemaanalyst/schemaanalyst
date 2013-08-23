@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.supplier;
+package org.schemaanalyst.mutation.supplier.schema;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
-public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIteratingSupplier<Pair<List<Column>>> {
+public class PrimaryKeyColumnsWithAlternativesSupplier extends TableIntermediaryIteratingSupplier<Pair<List<Column>>> {
 
     @Override
     protected Pair<List<Column>> getComponentFromIntermediary(Schema schema, Table table) {

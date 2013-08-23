@@ -6,7 +6,7 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ElementNullifier;
-import org.schemaanalyst.mutation.supplier.CheckExpressionSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
