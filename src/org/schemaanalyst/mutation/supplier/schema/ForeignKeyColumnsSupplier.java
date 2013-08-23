@@ -40,7 +40,6 @@ public class ForeignKeyColumnsSupplier extends IntermediaryIteratingSupplier<Sch
                 referenceColumns.add(columnPair.getSecond());
             }
 
-
             foreignKeyConstraint.setColumns(columns);
             foreignKeyConstraint.setReferenceColumns(referenceColumns);
         } else {
