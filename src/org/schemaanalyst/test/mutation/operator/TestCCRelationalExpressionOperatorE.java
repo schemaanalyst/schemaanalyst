@@ -28,7 +28,7 @@ public class TestCCRelationalExpressionOperatorE {
     Schema schema1 = new TestSchema1("schema");
     List<Mutant<Schema>> schema1Mutants = new CCRelationalExpressionOperatorE(schema1).mutate();
 
-    class TestSchema1 extends Schema {
+    private class TestSchema1 extends Schema {
 
         public TestSchema1(String name) {
             super(name);

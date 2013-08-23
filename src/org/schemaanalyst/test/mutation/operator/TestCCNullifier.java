@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
  */
 public class TestCCNullifier {
 
-    class TestSchemaNoConstraints extends Schema {
+    private class TestSchemaNoConstraints extends Schema {
 
         public TestSchemaNoConstraints(String name) {
             super(name);
@@ -43,7 +43,7 @@ public class TestCCNullifier {
                 0, mutants.size());
     }
 
-    class TestSchemaOneConstraint extends Schema {
+    private class TestSchemaOneConstraint extends Schema {
 
         public TestSchemaOneConstraint(String name) {
             super(name);
@@ -74,7 +74,7 @@ public class TestCCNullifier {
                 0, oneConstraintSchemaMutants.get(0).getMutatedArtefact().getCheckConstraints().size());
     }
 
-    class TestSchemaTwoConstraint extends Schema {
+    private class TestSchemaTwoConstraint extends Schema {
 
         public TestSchemaTwoConstraint(String name) {
             super(name);
@@ -136,7 +136,7 @@ public class TestCCNullifier {
                 expr, mutant.getCheckConstraints(t1).get(0).getExpression());
     }
 
-    class TestSchemaTwoTables extends Schema {
+    private class TestSchemaTwoTables extends Schema {
 
         public TestSchemaTwoTables(String name) {
             super(name);
@@ -193,7 +193,7 @@ public class TestCCNullifier {
     }
     
     @Test
-    public void testShemaTwoTablesMutantTwo() {
+    public void testSchemaTwoTablesMutantTwo() {
         Schema mutant = twoTablesSchemaMutants.get(1).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
         Column c1 = t1.getColumn("c1");

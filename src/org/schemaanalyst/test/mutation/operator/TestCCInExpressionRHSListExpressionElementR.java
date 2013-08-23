@@ -32,7 +32,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with one list, with 3 items
      */
-    class TestSchema3ListItems extends Schema {
+    private class TestSchema3ListItems extends Schema {
 
         public TestSchema3ListItems(String name) {
             super(name);
@@ -107,7 +107,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with one list, with 1 item
      */
-    class TestSchema1ListItem extends Schema {
+    private class TestSchema1ListItem extends Schema {
 
         public TestSchema1ListItem(String name) {
             super(name);
@@ -148,7 +148,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with one constraint, with two lists, with two items
      */
-    class TestSchemaMultipleLists extends Schema {
+    private class TestSchemaMultipleLists extends Schema {
 
         public TestSchemaMultipleLists(String name) {
             super(name);
@@ -278,7 +278,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
     /**
      * Schema with one table, with two constraints, with one list, with 1 item
      */
-    class TestSchemaMultipleChecks extends Schema {
+    private class TestSchemaMultipleChecks extends Schema {
 
         public TestSchemaMultipleChecks(String name) {
             super(name);

@@ -24,7 +24,7 @@ public class TestPKColumnARE {
     /**
      * Schema with single column PK and no spare columns
      */
-    class TestSchemaSinglePKNoExchange extends Schema {
+    private class TestSchemaSinglePKNoExchange extends Schema {
 
         public TestSchemaSinglePKNoExchange(String name) {
             super(name);
@@ -39,7 +39,7 @@ public class TestPKColumnARE {
     /**
      * Schema with single column PK and two spare columns
      */
-    class TestSchemaSinglePKTwoExchange extends Schema {
+    private class TestSchemaSinglePKTwoExchange extends Schema {
 
         public TestSchemaSinglePKTwoExchange(String name) {
             super(name);
@@ -58,7 +58,7 @@ public class TestPKColumnARE {
     /**
      * Schema with double column PK and no spare columns
      */
-    class TestSchemaDoublePKNoExchange extends Schema {
+    private class TestSchemaDoublePKNoExchange extends Schema {
 
         public TestSchemaDoublePKNoExchange(String name) {
             super(name);
@@ -75,7 +75,7 @@ public class TestPKColumnARE {
     /**
      * Schema with double column PK and two spare columns
      */
-    class TestSchemaDoublePKTwoExchange extends Schema {
+    private class TestSchemaDoublePKTwoExchange extends Schema {
 
         public TestSchemaDoublePKTwoExchange(String name) {
             super(name);
@@ -96,7 +96,7 @@ public class TestPKColumnARE {
     /**
      * Schema with two tables, both with PKs
      */
-    class TestSchemaTwoTable extends Schema {
+    private class TestSchemaTwoTable extends Schema {
 
         public TestSchemaTwoTable(String name) {
             super(name);
