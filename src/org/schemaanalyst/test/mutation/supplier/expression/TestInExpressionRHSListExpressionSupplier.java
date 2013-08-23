@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.mutation.supplier;
+package org.schemaanalyst.test.mutation.supplier.expression;
 
 import static org.junit.Assert.*;
 

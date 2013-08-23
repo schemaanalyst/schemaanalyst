@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.test.mutation.supplier;
+package org.schemaanalyst.test.mutation.supplier.expression;
 
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
