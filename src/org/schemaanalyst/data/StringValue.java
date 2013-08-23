@@ -1,7 +1,6 @@
 package org.schemaanalyst.data;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class StringValue extends Value
@@ -148,30 +147,42 @@ public class StringValue extends Value
 
         return get().compareTo(((StringValue) v).get());
     }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + characterDefault;
+        result = prime * result + characterMax;
+        result = prime * result + characterMin;
+        result = prime * result
+                + ((characters == null) ? 0 : characters.hashCode());
+        result = prime * result + maxLength;
+        return result;
+    }
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null) {
+        if (obj == null)
             return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
             return false;
-        }
-
         StringValue other = (StringValue) obj;
-        if (characters.size() != other.characters.size()) {
+        if (characterDefault != other.characterDefault)
             return false;
-        }
-        Iterator<NumericValue> thisCharactersIterator = characters.iterator();
-        Iterator<NumericValue> otherCharactersIterator = other.characters.iterator();
-        while (thisCharactersIterator.hasNext() && otherCharactersIterator.hasNext()) {
-            if (!thisCharactersIterator.next().equals(otherCharactersIterator.next())) {
+        if (characterMax != other.characterMax)
+            return false;
+        if (characterMin != other.characterMin)
+            return false;
+        if (characters == null) {
+            if (other.characters != null)
                 return false;
-            }
-        }
+        } else if (!characters.equals(other.characters))
+            return false;
+        if (maxLength != other.maxLength)
+            return false;
         return true;
     }
 

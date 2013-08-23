@@ -8,10 +8,10 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.ConstraintObjectiveFunctionFactory;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ConstraintEvaluator {
 
@@ -30,28 +30,31 @@ public class ConstraintEvaluator {
         data.addRow(table, row);
 
         // go through each of the schema's constraints and check the row
-            for (Constraint constraint : schema.getAllConstraints()) {
+        for (Constraint constraint : schema.getConstraints()) {
 
-                if (table.equals(constraint.getTable())) {
-    
-                    boolean[] satisfyConstraintModes = {true, false};
-    
-                    for (boolean satisfyConstraint : satisfyConstraintModes) {
-                        ObjectiveValue objVal = evaluateConstraint(constraint, data, satisfyConstraint);
-    
-                        if (objVal.isOptimal()) {
-                            SimpleConstraintGoalReport goalReport = new SimpleConstraintGoalReport(schema, constraint, satisfyConstraint);
-                            goalReport.setData(data);
-                            goalReport.setSuccess(true);
-                            report.addGoalReport(goalReport);
-                        }
+            if (constraint.getTable().equals(table)) {
+
+                boolean[] satisfyModes = {true, false};
+
+                for (boolean mode : satisfyModes) {
+                    ObjectiveValue objVal = evaluateConstraint(data, constraint, mode);
+
+                    if (objVal.isOptimal()) {
+                        //if (Configuration.debug){ 
+                        //	System.out.println("Covered "+constraint+ " " + mode);
+                        //}
+
+                        SimpleConstraintGoalReport goalReport = new SimpleConstraintGoalReport(constraint, mode);
+                        goalReport.setData(data);
+                        goalReport.setSuccess(true);
+                        report.addGoalReport(goalReport);
                     }
                 }
             }
-        
+        }
+
         // test if the row should go into the state
-        ObjectiveFunction<Data> objFun = 
-                new SchemaConstraintSystemObjectiveFunction(schema, state, null, null);
+        ObjectiveFunction<Data> objFun = new SchemaConstraintSystemObjectiveFunction(schema, state, null);
         ObjectiveValue objVal = objFun.evaluate(data);
 
         boolean success = objVal.isOptimal();
@@ -61,16 +64,15 @@ public class ConstraintEvaluator {
         return success;
     }
 
-    protected ObjectiveValue evaluateConstraint(Constraint constraint, Data data, boolean satisfyConstraint) {
+    protected ObjectiveValue evaluateConstraint(Data data, Constraint constraint, boolean satisfyConstraint) {
         boolean considerNull = satisfyConstraint;
 
         if (constraint instanceof PrimaryKeyConstraint) {
             considerNull = !considerNull;
         }
 
-        ConstraintObjectiveFunctionFactory factory = 
-                new ConstraintObjectiveFunctionFactory(
-                        constraint, state, satisfyConstraint, considerNull);
+        ConstraintObjectiveFunctionFactory factory = new ConstraintObjectiveFunctionFactory(
+                constraint, state, satisfyConstraint, considerNull);
 
         ObjectiveFunction<Data> objFun = factory.create();
 

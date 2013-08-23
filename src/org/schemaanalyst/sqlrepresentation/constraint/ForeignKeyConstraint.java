@@ -79,8 +79,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      *            Columns in the reference table paired with each column in
      *            columns
      */
-    public ForeignKeyConstraint(Table table, Iterable<Column> columns,
-            Table referenceTable, Iterable<Column> referenceColumns) {
+    public ForeignKeyConstraint(Table table, List<Column> columns,
+            Table referenceTable, List<Column> referenceColumns) {
         this(null, table, columns, referenceTable, referenceColumns);
     }
 
@@ -101,8 +101,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      *            columns
      */
     public ForeignKeyConstraint(String name, Table table,
-            Iterable<Column> columns, Table referenceTable,
-            Iterable<Column> referenceColumns) {
+            List<Column> columns, Table referenceTable,
+            List<Column> referenceColumns) {
         super(name, table, columns);
         this.referenceTable = referenceTable;
         setReferenceColumns(referenceColumns);
@@ -183,8 +183,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      */
     @Override
     public ForeignKeyConstraint duplicate() {
-        return new ForeignKeyConstraint(getName(), table, columns,
-                referenceTable, referenceColumns);
+        return new ForeignKeyConstraint(getName(), table, columns.toList(),
+                referenceTable, referenceColumns.toList());
     }
 
     @Override

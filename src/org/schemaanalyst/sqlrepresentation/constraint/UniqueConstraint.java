@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
+import java.util.List;
+
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -32,7 +34,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      * @param table The table that is the centre of the UNIQUE constraint. 
      * @param columns The columns involved in the UNIQUE constraint.
      */
-    public UniqueConstraint(Table table, Iterable<Column> columns) {
+    public UniqueConstraint(Table table, List<Column> columns) {
         super(null, table, columns);
     }
     
@@ -42,7 +44,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      * @param table The table that is the centre of the UNIQUE constraint.
      * @param columns The columns involved in the UNIQUE constraint.
      */
-    public UniqueConstraint(String name, Table table, Iterable<Column> columns) {
+    public UniqueConstraint(String name, Table table, List<Column> columns) {
         super(name, table, columns);
     }
     
@@ -62,7 +64,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      */
     @Override
     public UniqueConstraint duplicate() {
-        return new UniqueConstraint(getName(), table, columns);
+        return new UniqueConstraint(getName(), table, columns.toList());
     }
     
     /**

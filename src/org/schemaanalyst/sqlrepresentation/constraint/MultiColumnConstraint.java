@@ -37,7 +37,7 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param table The table that is the centre of the integrity constraint. 
      * @param columns The columns involved in the integrity constraint.
      */
-    public MultiColumnConstraint(String name, Table table, Iterable<Column> columns) {
+    public MultiColumnConstraint(String name, Table table, List<Column> columns) {
         super(name, table);
         setColumns(columns);
     }

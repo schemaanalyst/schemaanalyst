@@ -16,13 +16,14 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 public class ConstraintObjectiveFunctionFactory {
 
-    private Constraint constraint;
-    private Data state;
-    private boolean goalIsToSatisfy, allowNull;
+    protected Constraint constraint;
+    protected Data state;
+    protected boolean goalIsToSatisfy, allowNull;
 
-    public ConstraintObjectiveFunctionFactory(
-            Constraint constraint, Data state,
-            boolean goalIsToSatisfy, boolean allowNull) {
+    public ConstraintObjectiveFunctionFactory(Constraint constraint,
+                                              Data state,
+                                              boolean goalIsToSatisfy,
+                                              boolean allowNull) {
         this.constraint = constraint;
         this.state = state;
         this.goalIsToSatisfy = goalIsToSatisfy;
@@ -74,8 +75,11 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ExpressionColumnObjectiveFunction(
-                checkConstraint.getTable(), checkConstraint.getExpression(), 
-                makeDescription(), goalIsToSatisfy, constraintAllowNull);
+                    checkConstraint.getTable(),
+                    checkConstraint.getExpression(),
+                    makeDescription(),
+                    goalIsToSatisfy,
+                    constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForPrimaryKeyConstraint(PrimaryKeyConstraint primaryKeyConstraint) {
@@ -86,8 +90,12 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = false;
         
         return new UniqueColumnObjectiveFunction(
-        		primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), state,
-                makeDescription(), goalIsToSatisfy, constraintAllowNull);  
+                primaryKeyConstraint.getTable(),
+                primaryKeyConstraint.getColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                constraintAllowNull);  
     }
 
     protected ObjectiveFunction<Data> createForForeignKeyConstraint(ForeignKeyConstraint foreignKeyConstraint) {
@@ -95,16 +103,23 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new ReferenceColumnObjectiveFunction(
-        		foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), 
-                foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(),
-                state, makeDescription(), goalIsToSatisfy, constraintAllowNull);
+                foreignKeyConstraint.getTable(),
+                foreignKeyConstraint.getColumns(),
+                foreignKeyConstraint.getReferenceTable(),
+                foreignKeyConstraint.getReferenceColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                constraintAllowNull);
     }
 
     protected ObjectiveFunction<Data> createForNotNullConstraint(NotNullConstraint notNullConstraint) {
 
         return new NullColumnObjectiveFunction(
-                notNullConstraint.getTable(), notNullConstraint.getColumn(),
-                makeDescription(), !goalIsToSatisfy);
+                notNullConstraint.getTable(),
+                notNullConstraint.getColumn(),
+                makeDescription(),
+                !goalIsToSatisfy);
     }
 
     protected ObjectiveFunction<Data> createForUniqueConstraint(UniqueConstraint uniqueConstraint) {
@@ -112,8 +127,12 @@ public class ConstraintObjectiveFunctionFactory {
         boolean constraintAllowNull = allowNull && goalIsToSatisfy;
         
         return new UniqueColumnObjectiveFunction(
-                uniqueConstraint.getTable(), uniqueConstraint.getColumns(), state,
-                makeDescription(), goalIsToSatisfy, constraintAllowNull);
+                uniqueConstraint.getTable(),
+                uniqueConstraint.getColumns(),
+                state,
+                makeDescription(),
+                goalIsToSatisfy,
+                constraintAllowNull);
     }
 
     protected String makeDescription() {

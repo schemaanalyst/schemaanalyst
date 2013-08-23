@@ -13,7 +13,7 @@ public class ConstraintCoverageReport extends CoverageReport {
     public ConstraintCoverageReport(Schema schema) {
         super("Constraint coverage for " + schema.getName());
         this.schema = schema;
-        numConstraints = schema.getAllConstraints().size();
+        this.numConstraints = schema.getConstraints().size();
     }
 
     @Override
@@ -47,15 +47,6 @@ public class ConstraintCoverageReport extends CoverageReport {
     protected void appendSchemaToStringBuilder(StringBuilder sb) {
         SQLWriter sqlWriter = new SQLWriter();
 
-        /*
-        // comments removed from schema due to being abused!
-        List<String> comments = sqlWriter.writeComments(schema.getComments());
-        for (String comment : comments) {
-            sb.append(comment);
-            sb.append("\n");
-        }
-        */ 
-        
         List<String> statements = sqlWriter.writeDropTableStatements(schema, true);
         statements.addAll(sqlWriter.writeCreateTableStatements(schema));
         for (String statement : statements) {

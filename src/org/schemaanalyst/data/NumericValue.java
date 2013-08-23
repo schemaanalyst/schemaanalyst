@@ -70,16 +70,6 @@ public class NumericValue extends Value {
     }
 
     @Override
-    public void increment() {
-        value = value.add(getStepSize());
-    }
-
-    @Override
-    public void decrement() {
-        value = value.subtract(getStepSize());
-    }
-
-    @Override
     public void accept(ValueVisitor valueVisitor) {
         valueVisitor.visit(this);
     }

@@ -113,7 +113,7 @@ public class TestExpressions {
         NumericValue nv = new NumericValue(1);
         ConstantExpression exp1 = new ConstantExpression(nv);
         ConstantExpression exp2 = exp1.duplicate();
-        
+                
         assertNotSame(
                 "The duplicated ConstantExpression should not be the same as the original",
                 exp1, exp2);

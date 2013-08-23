@@ -63,11 +63,6 @@ public class Cell implements Duplicable<Cell> {
         return duplicate;
     }
 
-    @Deprecated
-    public Boolean valuesEqual3VL(Cell other) {
-        return Value.equals3VL(this.value, other.value);
-    }
-
     @Override
     public String toString() {
         String str = column + "(";

@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
+import java.util.List;
+
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -39,7 +41,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      * @param table The table on which the PRIMARY KEY is defined.
      * @param columns The columns involved in the primary key.
      */
-    public PrimaryKeyConstraint(Table table, Iterable<Column> columns) {
+    public PrimaryKeyConstraint(Table table, List<Column> columns) {
         super(null, table, columns);
     }    
     
@@ -50,7 +52,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      * @param table The table on which the PRIMARY KEY is defined. 
      * @param columns The columns involved in the PRIMARY KEY.
      */
-    public PrimaryKeyConstraint(String name, Table table, Iterable<Column> columns) {
+    public PrimaryKeyConstraint(String name, Table table, List<Column> columns) {
         super(name, table, columns);
     }
 
@@ -70,7 +72,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      */
     @Override
     public PrimaryKeyConstraint duplicate() {
-        return new PrimaryKeyConstraint(getName(), table, columns);
+        return new PrimaryKeyConstraint(getName(), table, columns.toList());
     }  
     
     /**

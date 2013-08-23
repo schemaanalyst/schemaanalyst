@@ -20,7 +20,9 @@ public abstract class Search<T extends Duplicable<T>> {
     protected TerminationCriterion terminationCriterion;
 
     /**
-     * Constructor.
+     * Constructor
+     *
+     * @param random The instance of random to use during the search.
      */
     public Search() {
         evaluationsCounter = new Counter("Number of evaluations");

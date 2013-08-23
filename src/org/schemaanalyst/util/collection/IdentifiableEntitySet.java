@@ -133,11 +133,7 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
     }
 
     public List<E> toList() {
-        List<E> list = new ArrayList<>();
-        for (E element : this) {
-            list.add(element);
-        }
-        return list;
+        return new ArrayList<>(this);
     }
 
     @Override

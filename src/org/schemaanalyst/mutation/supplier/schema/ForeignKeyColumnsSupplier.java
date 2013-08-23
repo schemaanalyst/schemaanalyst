@@ -12,7 +12,7 @@ public class ForeignKeyColumnsSupplier extends IntermediaryIteratingSupplier<Sch
 
     @Override
     protected List<ForeignKeyConstraint> getIntermediaries(Schema schema) {
-        return schema.getAllForeignKeyConstraints();
+        return schema.getForeignKeyConstraints();
     }
     
     @Override

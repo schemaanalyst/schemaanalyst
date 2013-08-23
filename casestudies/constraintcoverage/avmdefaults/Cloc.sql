@@ -18,15 +18,11 @@ CREATE TABLE t (
 	nScaled	INT
 );
 -- Coverage: 0/0 (0%) 
--- Time to generate: 1ms 
+-- Time to generate: 2ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 1ms 
-INSERT INTO metadata(timestamp, Project, elapsed_s) VALUES('', '', 0);
-INSERT INTO metadata(timestamp, Project, elapsed_s) VALUES('', '', 0);
-INSERT INTO t(Project, Language, File, nBlank, nComment, nCode, nScaled) VALUES('', '', '', 0, 0, 0, 0);
-INSERT INTO t(Project, Language, File, nBlank, nComment, nCode, nScaled) VALUES('', '', '', 0, 0, 0, 0);
+-- * Time: 2ms 
 -- * Number of objective function evaluations: 1
 -- * Number of restarts: 0
 

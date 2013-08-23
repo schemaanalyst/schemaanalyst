@@ -257,37 +257,37 @@ public class TestConstraints {
         assertEquals(schema1, schema2);
         
         assertNotSame(
-        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)), 
-        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)));        
+        		((CheckConstraint) schema1.getCheckConstraints().get(0)), 
+        		((CheckConstraint) schema2.getCheckConstraints().get(0)));        
 
         assertEquals(
-        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)), 
-        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)));         
+        		((CheckConstraint) schema1.getCheckConstraints().get(0)), 
+        		((CheckConstraint) schema2.getCheckConstraints().get(0)));         
         
         assertNotSame(
-        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression(), 
-        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression());
+        		((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression(), 
+        		((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression());
 
         assertEquals(
-        		((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression(), 
-        		((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression());
+        		((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression(), 
+        		((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression());
         
         
         assertNotSame(
-        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getLHS(), 
-        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getLHS());
+        		((RelationalExpression) ((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression()).getLHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression()).getLHS());
 
         assertEquals(
-        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getLHS(), 
-        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getLHS());
+        		((RelationalExpression) ((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression()).getLHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression()).getLHS());
         
         assertNotSame(
-        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getRHS(), 
-        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getRHS());        
+        		((RelationalExpression) ((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression()).getRHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression()).getRHS());        
         
         assertEquals(
-        		((RelationalExpression) ((CheckConstraint) schema1.getAllCheckConstraints().get(0)).getExpression()).getRHS(), 
-        		((RelationalExpression) ((CheckConstraint) schema2.getAllCheckConstraints().get(0)).getExpression()).getRHS());        
+        		((RelationalExpression) ((CheckConstraint) schema1.getCheckConstraints().get(0)).getExpression()).getRHS(), 
+        		((RelationalExpression) ((CheckConstraint) schema2.getCheckConstraints().get(0)).getExpression()).getRHS());        
         
     }
     

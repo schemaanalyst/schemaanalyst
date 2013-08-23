@@ -11,7 +11,7 @@ public class CheckExpressionSupplier extends IntermediaryIteratingSupplier<Schem
 
 	@Override
 	protected List<CheckConstraint> getIntermediaries(Schema schema) {
-		return schema.getAllCheckConstraints();
+		return schema.getCheckConstraints();
 	}
 
 	@Override

@@ -69,7 +69,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
                 new ConstantExpression(new NumericValue(3))),
                 false);
         assertEquals("The first mutant expression should have the first list element removed, leaving '(2, 3)'",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
                 new ConstantExpression(new NumericValue(3))),
                 false);
         assertEquals("The second mutant expression should have the second list element removed, leaving (1, 3)",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
 
     @Test
@@ -99,7 +99,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
                 new ConstantExpression(new NumericValue(2))),
                 false);
         assertEquals("The third mutant expression should have the third list element removed, leaving (1, 2)",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     Schema schema1ListItem = new TestSchema1ListItem("schema");
     List<Mutant<Schema>> schema1ListItemMutants = new CCInExpressionRHSListExpressionElementR(schema1ListItem).mutate();
@@ -140,7 +140,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
                 new ListExpression(),
                 false);
         assertEquals("The first mutant expression should have the first (and only) list element removed, leaving ()",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     Schema schemaMultipleLists = new TestSchemaMultipleLists("schema");
     List<Mutant<Schema>> schemaMultipleListsMutants = new CCInExpressionRHSListExpressionElementR(schemaMultipleLists).mutate();
@@ -200,7 +200,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The first mutant expression should have the first element"
                 + " of the  first list expression removed, leaving (2), and the"
                 + " second list left unchanged",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     
     @Test
@@ -223,7 +223,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The second mutant expression should have the second"
                 + " element of the first list expression removed, leaving (1), "
                 + "and the second list left unchanged",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     
     @Test
@@ -246,7 +246,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The third mutant expression should have the first element"
                 + " of the second  list expression removed, leaving (4), and "
                 + "the first list left unchanged",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     
     @Test
@@ -269,7 +269,7 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The fourth mutant expression should have the first "
                 + "element of the second  list expression removed, leaving (4),"
                 + " and the first list left unchanged",
-                expected, mutant.getAllCheckConstraints().get(0).getExpression());
+                expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     
     Schema schemaMultipleChecks = new TestSchemaMultipleChecks("schema");
@@ -325,10 +325,10 @@ public class TestCCInExpressionRHSListExpressionElementR {
                     false);
         assertEquals("The expression in the first check constraint should have "
                 + "the first (and only) element removed, leaving ()",
-                expectedExpr1, mutant.getAllCheckConstraints().get(0).getExpression());
+                expectedExpr1, mutant.getCheckConstraints().get(0).getExpression());
         assertEquals("The expression in the second check constraint should be "
                 + "unchanged, leaving (2)",
-                expectedExpr2, mutant.getAllCheckConstraints().get(1).getExpression());
+                expectedExpr2, mutant.getCheckConstraints().get(1).getExpression());
     }
     
     @Test
@@ -347,9 +347,9 @@ public class TestCCInExpressionRHSListExpressionElementR {
                     false);
         assertEquals("The expression in the second check constraint should have"
                 + "the first (and only) element removed, leaving ()",
-                expectedExpr2, mutant.getAllCheckConstraints().get(1).getExpression());
+                expectedExpr2, mutant.getCheckConstraints().get(1).getExpression());
         assertEquals("The expression in the first check constraint should be "
                 + "unchanged, leaving (1)",
-                expectedExpr1, mutant.getAllCheckConstraints().get(0).getExpression());
+                expectedExpr1, mutant.getCheckConstraints().get(0).getExpression());
     }
 }

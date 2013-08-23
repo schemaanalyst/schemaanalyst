@@ -52,30 +52,30 @@ public class TestCCRelationalExpressionOperatorE {
     @Test
     public void testSchema1Mutant1() {
         assertNotEquals("Mutation has not been applied in duplicate", "c1 < 5",
-                schema1Mutants.get(0).getMutatedArtefact().getAllCheckConstraints().get(0).getExpression().toString());
+                schema1Mutants.get(0).getMutatedArtefact().getCheckConstraints().get(0).getExpression().toString());
     }
 
     @Test
     public void testSchema1Mutant2() {
         assertNotEquals("Mutation has not been applied in duplicate", "c1 < 5",
-                schema1Mutants.get(1).getMutatedArtefact().getAllCheckConstraints().get(0).getExpression().toString());
+                schema1Mutants.get(1).getMutatedArtefact().getCheckConstraints().get(0).getExpression().toString());
     }
 
     @Test
     public void testSchema1Mutant3() {
         assertNotEquals("Mutation has not been applied in duplicate", "c1 < 5",
-                schema1Mutants.get(2).getMutatedArtefact().getAllCheckConstraints().get(0).getExpression().toString());
+                schema1Mutants.get(2).getMutatedArtefact().getCheckConstraints().get(0).getExpression().toString());
     }
     
     @Test
     public void testSchema1Mutant4() {
         assertNotEquals("Mutation has not been applied in duplicate", "c1 < 5",
-                schema1Mutants.get(3).getMutatedArtefact().getAllCheckConstraints().get(0).getExpression().toString());
+                schema1Mutants.get(3).getMutatedArtefact().getCheckConstraints().get(0).getExpression().toString());
     }
     
     @Test
     public void testSchema1Mutant5() {
         assertNotEquals("Mutation has not been applied in duplicate", "c1 < 5",
-                schema1Mutants.get(4).getMutatedArtefact().getAllCheckConstraints().get(0).getExpression().toString());
+                schema1Mutants.get(4).getMutatedArtefact().getCheckConstraints().get(0).getExpression().toString());
     }
 }

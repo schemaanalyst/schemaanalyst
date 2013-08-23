@@ -3,70 +3,61 @@
  **********************************/
 DROP TABLE IF EXISTS person;
 CREATE TABLE person (
-	id	INT	PRIMARY KEY	NOT NULL,
-	last_name	VARCHAR(45)	NOT NULL,
-	first_name	VARCHAR(45)	NOT NULL,
-	gender	VARCHAR(6)	NOT NULL,
-	date_of_birth	DATE	NOT NULL,
-	CHECK (gender IN ('Male', 'Female', 'Uknown'))
+	id	INT	CONSTRAINT null PRIMARY KEY	CONSTRAINT null NOT NULL,
+	last_name	VARCHAR(45)	CONSTRAINT null NOT NULL,
+	first_name	VARCHAR(45)	CONSTRAINT null NOT NULL,
+	gender	VARCHAR(6)	CONSTRAINT null NOT NULL,
+	date_of_birth	DATE	CONSTRAINT null NOT NULL,
+	CONSTRAINT null CHECK (gender IN ('Male', 'Female', 'Uknown'))
 );
 -- Coverage: 14/14 (100.00000%) 
--- Time to generate: 559ms 
+-- Time to generate: 589ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 303ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(1, '', '', 'Male', '1000-01-01');
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(0, '', '', 'Male', '1000-01-01');
+-- * Time: 330ms 
 -- * Number of objective function evaluations: 181
 -- * Number of restarts: 0
 
--- Negating "PRIMARY KEY[id]" on table "person"
+-- Negating "PRIMARY KEY{id}" on table "person"
 -- * Success: true
--- * Time: 73ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(0, '', '', 'Male', '1000-01-01');
+-- * Time: 65ms 
 -- * Number of objective function evaluations: 75
--- * Number of restarts: 0
-
--- Negating "NOT NULL(id)" on table "person"
--- * Success: true
--- * Time: 37ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(NULL, '', '', 'Male', '1000-01-01');
--- * Number of objective function evaluations: 73
--- * Number of restarts: 0
-
--- Negating "NOT NULL(last_name)" on table "person"
--- * Success: true
--- * Time: 41ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, NULL, '', 'Male', '1000-01-01');
--- * Number of objective function evaluations: 77
--- * Number of restarts: 0
-
--- Negating "NOT NULL(first_name)" on table "person"
--- * Success: true
--- * Time: 46ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', NULL, 'Male', '1000-01-01');
--- * Number of objective function evaluations: 77
--- * Number of restarts: 0
-
--- Negating "NOT NULL(gender)" on table "person"
--- * Success: true
--- * Time: 4ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', '', NULL, '1000-01-01');
--- * Number of objective function evaluations: 12
--- * Number of restarts: 0
-
--- Negating "NOT NULL(date_of_birth)" on table "person"
--- * Success: true
--- * Time: 53ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', '', 'Male', NULL);
--- * Number of objective function evaluations: 101
 -- * Number of restarts: 0
 
 -- Negating "CHECK[gender IN ('Male', 'Female', 'Uknown')]" on table "person"
 -- * Success: true
 -- * Time: 2ms 
-INSERT INTO person(id, last_name, first_name, gender, date_of_birth) VALUES(-1, '', '', '', '1000-01-01');
 -- * Number of objective function evaluations: 4
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(id)" on table "person"
+-- * Success: true
+-- * Time: 35ms 
+-- * Number of objective function evaluations: 73
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(last_name)" on table "person"
+-- * Success: true
+-- * Time: 53ms 
+-- * Number of objective function evaluations: 77
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(first_name)" on table "person"
+-- * Success: true
+-- * Time: 42ms 
+-- * Number of objective function evaluations: 77
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(gender)" on table "person"
+-- * Success: true
+-- * Time: 5ms 
+-- * Number of objective function evaluations: 12
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(date_of_birth)" on table "person"
+-- * Success: true
+-- * Time: 57ms 
+-- * Number of objective function evaluations: 101
 -- * Number of restarts: 0
 

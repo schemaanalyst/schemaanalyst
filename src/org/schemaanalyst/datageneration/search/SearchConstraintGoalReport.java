@@ -2,8 +2,6 @@ package org.schemaanalyst.datageneration.search;
 
 import org.schemaanalyst.datageneration.ConstraintGoalReport;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class SearchConstraintGoalReport extends ConstraintGoalReport {
@@ -11,8 +9,8 @@ public class SearchConstraintGoalReport extends ConstraintGoalReport {
     protected int numEvaluations, numRestarts;
     protected ObjectiveValue bestObjectiveValue;
 
-    public SearchConstraintGoalReport(Schema schema, Table table, Constraint constraint) {
-        super(schema, table, constraint);
+    public SearchConstraintGoalReport(Constraint constraint) {
+        super(constraint);
         numEvaluations = 0;
         numRestarts = 0;
     }

@@ -41,7 +41,7 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
         constraintEvaluator.initialize(schema);
         int totalNumTries = 0;
 
-        for (Table table : schema.getTablesInOrder()) {
+        for (Table table : schema.getTables()) {
             int successfulRows = 0;
             int numTries = 0;
 

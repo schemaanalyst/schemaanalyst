@@ -131,7 +131,7 @@ public class TestInExpressionRHSListExpressionSupplier {
         supplier.putComponentBackInDuplicate(mutantSubexpressions);
         
         Expression duplicateReferenceToExpression =
-                ((InExpression) duplicate.getAllCheckConstraints().get(0).getExpression()).getRHS().getSubexpressions().get(0); 
+                ((InExpression) duplicate.getCheckConstraints().get(0).getExpression()).getRHS().getSubexpressions().get(0); 
         assertSame(
                 "The mutant expression should have been inserted correctly and "
                 + "be the same as that in the duplicate",

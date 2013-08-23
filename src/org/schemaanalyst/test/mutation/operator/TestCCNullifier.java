@@ -71,7 +71,7 @@ public class TestCCNullifier {
     public void testSchemaOneConstraintMutant1() {
         assertEquals("The first mutant of a schema with one constraint should "
                 + "have no constraints remaining",
-                0, oneConstraintSchemaMutants.get(0).getMutatedArtefact().getAllCheckConstraints().size());
+                0, oneConstraintSchemaMutants.get(0).getMutatedArtefact().getCheckConstraints().size());
     }
 
     class TestSchemaTwoConstraint extends Schema {
@@ -182,14 +182,14 @@ public class TestCCNullifier {
                     new ConstantExpression(new NumericValue(10)));
         assertEquals("The first mutant of a schema with two tables that each "
                 + "have one constraint should contain one check",
-                1, mutant.getAllCheckConstraints().size());
+                1, mutant.getCheckConstraints().size());
         assertEquals("The table that has been mutated should have no checks",
                 0, mutant.getCheckConstraints(t1).size());
         assertEquals("The table that has not been mutated should have one check",
                 1, mutant.getCheckConstraints(t2).size());
         assertEquals("The expression of the first check in the first mutant "
                 + "should be the expression of the second check constraint",
-                expr, mutant.getAllCheckConstraints().get(0).getExpression());
+                expr, mutant.getCheckConstraints().get(0).getExpression());
     }
     
     @Test
@@ -205,13 +205,13 @@ public class TestCCNullifier {
                     new ConstantExpression(new NumericValue(5)));
         assertEquals("The second mutant of a schema with two tables that each "
                 + "have one constraint should contain one check",
-                1, mutant.getAllCheckConstraints().size());
+                1, mutant.getCheckConstraints().size());
         assertEquals("The table that has been mutated should have no checks",
                 0, mutant.getCheckConstraints(t2).size());
         assertEquals("The table that has not been mutated should have one check",
                 1, mutant.getCheckConstraints(t1).size());
         assertEquals("The expression of the first check in the second mutant "
                 + "should be the expression of the first check constraint",
-                expr, mutant.getAllCheckConstraints().get(0).getExpression());
+                expr, mutant.getCheckConstraints().get(0).getExpression());
     }
 }

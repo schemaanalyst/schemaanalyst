@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 public class ColumnExpression extends ExpressionLeaf {
@@ -58,18 +57,8 @@ public class ColumnExpression extends ExpressionLeaf {
         // sort out references) -- NOT to change the expression's
     	// table.
         if (table.equals(this.table)) {    	
-	    	// change the table
-	        this.table = table;
-	        
-	        // change the column
-	        Column counterpartColumn = table.getColumn(column.getName());
-	        if (!column.equals(counterpartColumn)) {
-	            throw new SQLRepresentationException(
-	                    "Cannot remap column \"" + column 
-	                    + "\" - an identical column does not exist in table \""
-	                    + table + "\"");                
-	        }            
-	        column = counterpartColumn;
+	        this.table = table;	        
+	        this.column = table.getColumn(column.getName());
         }
     }    
     
@@ -99,8 +88,7 @@ public class ColumnExpression extends ExpressionLeaf {
         if (table == null) {
             if (other.table != null)
                 return false;
-        // Avoid a full table comparison due to the possibility of an infinite recursion    
-        } else if (!table.getName().equalsIgnoreCase(other.table.getName()))
+        } else if (!table.equals(other.table))
             return false;
         return true;
     }

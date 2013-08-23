@@ -9,34 +9,29 @@ CREATE TABLE TEST12549 (
 	CONSTRAINT CND12549C CHECK (TNUM3 > 0)
 );
 -- Coverage: 6/6 (100.00000%) 
--- Time to generate: 31ms 
+-- Time to generate: 40ms 
 
 -- Satisfying all constraints
 -- * Success: true
--- * Time: 21ms 
-INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 1, 1);
-INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 0, 1);
+-- * Time: 25ms 
 -- * Number of objective function evaluations: 24
--- * Number of restarts: 0
-
--- Negating "NOT NULL(TNUM1)" on table "TEST12549"
--- * Success: true
--- * Time: 2ms 
-INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(NULL, NULL, NULL);
--- * Number of objective function evaluations: 4
--- * Number of restarts: 0
-
--- Negating "UNIQUE[TNUM2]" on table "TEST12549"
--- * Success: true
--- * Time: 5ms 
-INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, 0, NULL);
--- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
 -- Negating "CHECK[TNUM3 > 0]" on table "TEST12549"
 -- * Success: true
--- * Time: 3ms 
-INSERT INTO TEST12549(TNUM1, TNUM2, TNUM3) VALUES(0, NULL, 0);
+-- * Time: 5ms 
 -- * Number of objective function evaluations: 5
+-- * Number of restarts: 0
+
+-- Negating "NOT NULL(TNUM1)" on table "TEST12549"
+-- * Success: true
+-- * Time: 4ms 
+-- * Number of objective function evaluations: 4
+-- * Number of restarts: 0
+
+-- Negating "UNIQUE{TNUM2}" on table "TEST12549"
+-- * Success: true
+-- * Time: 6ms 
+-- * Number of objective function evaluations: 8
 -- * Number of restarts: 0
 
