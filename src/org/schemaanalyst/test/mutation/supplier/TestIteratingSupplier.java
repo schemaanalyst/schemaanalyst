@@ -1,28 +1,31 @@
 package org.schemaanalyst.test.mutation.supplier;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.mutation.supplier.schema.TableIntermediaryIteratingSupplier;
-import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 import static org.junit.Assert.*;
 
-public class TestIntermediaryIteratingSupplier {
+public class TestIteratingSupplier {
 
-	class MockTableIteratingSupplier extends TableIntermediaryIteratingSupplier<Column> {
+	class MockTableIteratingSupplier extends IteratingSupplier<Schema, Table> {
 
-		@Override
-		protected Column getComponentFromIntermediary(Schema schema, Table table) {
-			return new Column("dummy", new IntDataType());
-		}
+	    public MockTableIteratingSupplier() {
+	        super(new Schema.Duplicator());
+	    }
+	    
+        @Override
+        public void putComponentBackInDuplicate(Table component) {
+        }
 
-		@Override
-		public void putComponentBackInIntermediary(Table table, Column component) {
-			// TODO Auto-generated method stub			
-		}
+        @Override
+        protected List<Table> getComponents(Schema schema) {
+            return schema.getTables();
+        }
 	}
 
 	@Test 

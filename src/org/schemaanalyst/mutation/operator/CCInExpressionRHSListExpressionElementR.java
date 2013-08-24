@@ -8,9 +8,10 @@ import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
 import org.schemaanalyst.mutation.supplier.ChainedSupplier;
 import org.schemaanalyst.mutation.supplier.expression.InExpressionRHSListExpressionSupplier;
-import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
+import deprecated.mutation.supplier.schema.CheckExpressionSupplier;
 
 public class CCInExpressionRHSListExpressionElementR extends MutationPipeline<Schema> {
     

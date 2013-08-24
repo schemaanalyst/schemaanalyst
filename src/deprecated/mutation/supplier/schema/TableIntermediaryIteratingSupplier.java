@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.supplier.schema;
+package deprecated.mutation.supplier.schema;
 
 import java.util.List;
 

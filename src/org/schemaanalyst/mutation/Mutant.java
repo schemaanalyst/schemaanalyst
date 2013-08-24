@@ -19,6 +19,6 @@ public class Mutant<A> {
 	}
 	
 	public String toString() {
-	    return description + " " + artefact;
+	    return description + " on " + artefact;
 	}
 }

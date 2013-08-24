@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.MutationException;
-import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -14,6 +13,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
 import org.schemaanalyst.util.Pair;
 
+import deprecated.mutation.supplier.schema.PrimaryKeyColumnsWithAlternativesSupplier;
 import static org.junit.Assert.*;
 
 public class TestSchemaPrimaryKeyColumnsWithAlternativesSupplier {

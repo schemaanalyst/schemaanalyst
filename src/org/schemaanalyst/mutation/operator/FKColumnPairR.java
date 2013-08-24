@@ -5,7 +5,10 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
+import org.schemaanalyst.mutation.supplier.ChainedSupplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.mutation.supplier.schema.ForeignKeyColumnsSupplier;
+import org.schemaanalyst.mutation.supplier.schema.ForeignKeyConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
@@ -19,7 +22,13 @@ public class FKColumnPairR extends MutationPipeline<Schema> {
     }
     
     public List<Mutant<Schema>> mutate() {
-        ForeignKeyColumnsSupplier supplier = new ForeignKeyColumnsSupplier();
+        //ForeignKeyColumnsSupplier supplier = new ForeignKeyColumnsSupplier();
+        
+        Supplier<Schema, List<Pair<Column>>> supplier 
+            = new ChainedSupplier<>(
+                    new ForeignKeyConstraintSupplier(),
+                    new ForeignKeyColumnsSupplier());
+        
         supplier.initialise(schema);
         ListElementRemover<Schema, Pair<Column>> mutator = new ListElementRemover<>(supplier);
         return mutator.mutate();

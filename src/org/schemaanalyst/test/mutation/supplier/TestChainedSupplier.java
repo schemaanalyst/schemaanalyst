@@ -6,7 +6,6 @@ import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.mutation.supplier.ChainedSupplier;
 import org.schemaanalyst.mutation.supplier.expression.InExpressionRHSListExpressionSupplier;
-import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
@@ -14,6 +13,7 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
+import deprecated.mutation.supplier.schema.CheckExpressionSupplier;
 import static org.junit.Assert.*;
 
 public class TestChainedSupplier {

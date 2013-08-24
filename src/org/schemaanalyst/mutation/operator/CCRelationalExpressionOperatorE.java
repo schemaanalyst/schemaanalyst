@@ -11,9 +11,10 @@ import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
 import org.schemaanalyst.mutation.supplier.ChainedSupplier;
 import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionOperatorSupplier;
-import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
+import deprecated.mutation.supplier.schema.CheckExpressionSupplier;
 
 /**
  *

@@ -1,35 +1,18 @@
 package org.schemaanalyst.mutation.supplier.schema;
 
-import java.util.List;
-
-import org.schemaanalyst.mutation.supplier.IntermediaryIteratingSupplier;
-import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-public class CheckExpressionSupplier extends IntermediaryIteratingSupplier<Schema, CheckConstraint, Expression>{
+public class CheckExpressionSupplier extends SolitaryComponentSupplier<CheckConstraint, Expression> {
 
-    public CheckExpressionSupplier() {
-        super(new Schema.Duplicator());
-    }    
-    
-	@Override
-	protected List<CheckConstraint> getIntermediaries(Schema schema) {
-		return schema.getCheckConstraints();
-	}
+    @Override
+    public void putComponentBackInDuplicate(Expression expression) {
+        currentDuplicate.setExpression(expression);
+    }
 
-	@Override
-	protected Expression getComponentFromIntermediary(Schema schema,
-			CheckConstraint checkConstraint) {
-		return checkConstraint.getExpression();
-	}
-
-	@Override
-	public void putComponentBackInIntermediary(CheckConstraint checkConstraint, Expression expression) {
-		if (expression == null) {
-			currentDuplicate.removeCheckConstraint(checkConstraint);
-		} else {
-			checkConstraint.setExpression(expression);
-		}
-	}
+    @Override
+    protected Expression getComponent(CheckConstraint checkConstraint) {
+        return checkConstraint.getExpression();
+    }
 }

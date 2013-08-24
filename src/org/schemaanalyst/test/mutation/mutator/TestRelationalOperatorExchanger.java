@@ -14,7 +14,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
-import org.schemaanalyst.mutation.supplier.OneComponentSupplier;
+import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -33,7 +33,7 @@ public class TestRelationalOperatorExchanger {
     /**
      * Mock implementation of a Supplier
      */
-    class MockSupplier extends OneComponentSupplier<Expression, RelationalOperator> {
+    class MockSupplier extends SolitaryComponentSupplier<Expression, RelationalOperator> {
   
         public MockSupplier() {
             super(new Expression.Duplicator());

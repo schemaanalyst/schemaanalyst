@@ -1,7 +1,5 @@
 package org.schemaanalyst.test.sqlrepresentation.constraint;
 
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -21,12 +19,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import static org.junit.Assert.*;
 
 public class TestConstraints {
-
-    @Test(expected=SQLRepresentationException.class)
-    public void testMultiColumnConstraintNoColumns() {
-        new PrimaryKeyConstraint(new Table("test"), new ArrayList<Column>());
-    }
-
+    
     @Test
     public void testMultiColumnConstraintOneColumn() {
         Table table = new Table("test");

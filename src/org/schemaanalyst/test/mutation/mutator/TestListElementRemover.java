@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
-import org.schemaanalyst.mutation.supplier.OneComponentSupplier;
+import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.util.Duplicator;
 
 import static org.junit.Assert.*;
@@ -33,7 +33,7 @@ public class TestListElementRemover {
         }
     }
     
-    public class ListSupplier extends OneComponentSupplier<MockOuterObject, List<Integer>> {
+    public class ListSupplier extends SolitaryComponentSupplier<MockOuterObject, List<Integer>> {
         
         public ListSupplier() {
             super(new Duplicator<MockOuterObject>() {
