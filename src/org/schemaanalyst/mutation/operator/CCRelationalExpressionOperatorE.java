@@ -9,39 +9,42 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
-import org.schemaanalyst.mutation.supplier.ChainedSupplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
+import org.schemaanalyst.mutation.supplier.SupplyChain;
 import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionOperatorSupplier;
+import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-
-import deprecated.mutation.supplier.schema.CheckExpressionSupplier;
 
 /**
- *
+ * 
  * @author Chris J. Wright
  */
 public class CCRelationalExpressionOperatorE extends MutationPipeline<Schema> {
 
-    private Schema schema;
+	private Schema schema;
 
-    public CCRelationalExpressionOperatorE(Schema schema) {
-        this.schema = schema;
-    }
+	public CCRelationalExpressionOperatorE(Schema schema) {
+		this.schema = schema;
+	}
 
-    @Override
-    public List<Mutant<Schema>> mutate() {
-        List<Mutant<Schema>> mutants = new ArrayList<>();
+	@Override
+	public List<Mutant<Schema>> mutate() {
+		List<Mutant<Schema>> mutants = new ArrayList<>();
 
-        ChainedSupplier<Schema, Expression, RelationalOperator> supplier =
-                new ChainedSupplier<>(
-                new CheckExpressionSupplier(),
-                new RelationalExpressionOperatorSupplier());
-        supplier.initialise(schema);
+		Supplier<Schema, RelationalOperator> supplier = SupplyChain.chain(
+				new CheckConstraintSupplier(), 
+				new CheckExpressionSupplier(),
+				new RelationalExpressionSupplier(),
+				new RelationalExpressionOperatorSupplier());
 
-        RelationalOperatorExchanger<Schema> exchanger =
-                new RelationalOperatorExchanger<>(supplier);
-        mutants.addAll(exchanger.mutate());
+		supplier.initialise(schema);
 
-        return mutants;
-    }
+		RelationalOperatorExchanger<Schema> exchanger = new RelationalOperatorExchanger<>(
+				supplier);
+		mutants.addAll(exchanger.mutate());
+
+		return mutants;
+	}
 }

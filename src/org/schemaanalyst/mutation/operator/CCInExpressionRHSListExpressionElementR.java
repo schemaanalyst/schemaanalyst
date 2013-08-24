@@ -6,35 +6,39 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
-import org.schemaanalyst.mutation.supplier.ChainedSupplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
+import org.schemaanalyst.mutation.supplier.SupplyChain;
+import org.schemaanalyst.mutation.supplier.expression.InExpressionRHSListExpressionSubexpressionsSupplier;
 import org.schemaanalyst.mutation.supplier.expression.InExpressionRHSListExpressionSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier;
+import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-import deprecated.mutation.supplier.schema.CheckExpressionSupplier;
+public class CCInExpressionRHSListExpressionElementR extends
+		MutationPipeline<Schema> {
 
-public class CCInExpressionRHSListExpressionElementR extends MutationPipeline<Schema> {
-    
-    private Schema schema;
-    
-    public CCInExpressionRHSListExpressionElementR(Schema schema) {
-        this.schema = schema;
-    }
-    
-    public List<Mutant<Schema>> mutate() {
-        List<Mutant<Schema>> mutants = new ArrayList<>();
-        
-		ChainedSupplier<Schema, Expression, List<Expression>> supplier =
-				new ChainedSupplier<>(
-						new CheckExpressionSupplier(),
-						new InExpressionRHSListExpressionSupplier());
-        
-        supplier.initialise(schema);
-        
-        ListElementRemover<Schema, Expression> inExpressionListElementRemover = 
-                new ListElementRemover<>(supplier);        
-        mutants.addAll(inExpressionListElementRemover.mutate());        
-        
-        return mutants;
-    }
+	private Schema schema;
+
+	public CCInExpressionRHSListExpressionElementR(Schema schema) {
+		this.schema = schema;
+	}
+
+	public List<Mutant<Schema>> mutate() {
+		List<Mutant<Schema>> mutants = new ArrayList<>();
+
+		Supplier<Schema, List<Expression>> supplier = SupplyChain.chain(
+				new CheckConstraintSupplier(), 
+				new CheckExpressionSupplier(),
+				new InExpressionRHSListExpressionSupplier(),
+				new InExpressionRHSListExpressionSubexpressionsSupplier());
+
+		supplier.initialise(schema);
+
+		ListElementRemover<Schema, Expression> inExpressionListElementRemover = new ListElementRemover<>(
+				supplier);
+		mutants.addAll(inExpressionListElementRemover.mutate());
+
+		return mutants;
+	}
 }

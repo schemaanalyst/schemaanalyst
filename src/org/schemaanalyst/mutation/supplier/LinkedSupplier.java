@@ -3,7 +3,7 @@ package org.schemaanalyst.mutation.supplier;
 import org.schemaanalyst.mutation.MutationException;
 
 /**
- * Chains two suppliers together.  A "top level" supplier provides components which
+ * Links two suppliers together.  A "top level" supplier provides components which
  * become the artefacts for a "bottom level" which provides further sub-components.
  * The class is useful for re-using suppliers that operate at different levels of a
  * structure.
@@ -23,7 +23,7 @@ import org.schemaanalyst.mutation.MutationException;
  *            the type of the component to be mutated (e.g. a list of columns in
  *            a <tt>PRIMARY KEY</tt>)
  */
-public class ChainedSupplier<A, I, C> implements Supplier<A, C> {
+public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
 
 	private Supplier<A, I> topLevelSupplier;
 	private Supplier<I, C> bottomLevelSupplier;
@@ -37,7 +37,7 @@ public class ChainedSupplier<A, I, C> implements Supplier<A, C> {
      * that are full level artefacts for the bottom level
      * @param bottomLevelSupplier the "bottom level" supplier 
      */	
-	public ChainedSupplier(Supplier<A, I> topLevelSupplier, Supplier<I, C> bottomLevelSupplier) {
+	public LinkedSupplier(Supplier<A, I> topLevelSupplier, Supplier<I, C> bottomLevelSupplier) {
 		this.topLevelSupplier = topLevelSupplier;
 		this.bottomLevelSupplier = bottomLevelSupplier;		
 		initialised = false;

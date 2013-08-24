@@ -329,12 +329,16 @@ public class TestCCInExpressionRHSListExpressionElementR {
                     new ListExpression(
                     new ConstantExpression(new NumericValue(2))),
                     false);
+        // PSM: first check was second, but order got switched
+        assertEquals("The expression in the first check constraint should be "
+                + "unchanged, leaving (2)",
+                expectedExpr2, mutant.getCheckConstraints().get(0).getExpression());
+        // PSM: second check was first, but order got switched
+        // PSM: empty IN statements are syntax errors on Postgres, fine for SQLite
+        //      -- a quasi-mutant!
         assertEquals("The expression in the first check constraint should have "
                 + "the first (and only) element removed, leaving ()",
-                expectedExpr1, mutant.getCheckConstraints().get(0).getExpression());
-        assertEquals("The expression in the second check constraint should be "
-                + "unchanged, leaving (2)",
-                expectedExpr2, mutant.getCheckConstraints().get(1).getExpression());
+                expectedExpr1, mutant.getCheckConstraints().get(1).getExpression());
     }
     
     @Test
