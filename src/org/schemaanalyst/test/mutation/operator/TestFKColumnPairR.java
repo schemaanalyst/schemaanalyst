@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.operator.FKColumnPairR;
+import org.schemaanalyst.mutation.operator.FKCColumnPairR;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -56,7 +56,7 @@ public class TestFKColumnPairR {
         
     }
     TestSchemaNoFK schemaNoFK = new TestSchemaNoFK("schema");
-    List<Mutant<Schema>> schemaNoFKMutants = new FKColumnPairR(schemaNoFK).mutate();
+    List<Mutant<Schema>> schemaNoFKMutants = new FKCColumnPairR(schemaNoFK).mutate();
     
     @SuppressWarnings("serial")
     private class TestSchemaOneColFK extends TestSchemaBase {
@@ -67,7 +67,7 @@ public class TestFKColumnPairR {
         }
     }
     TestSchemaOneColFK schemaOneColFK = new TestSchemaOneColFK("schema");
-    List<Mutant<Schema>> schemaOneColFKMutants = new FKColumnPairR(schemaOneColFK).mutate();
+    List<Mutant<Schema>> schemaOneColFKMutants = new FKCColumnPairR(schemaOneColFK).mutate();
     
     @SuppressWarnings("serial")
     private class TestSchemaTwoColFK extends TestSchemaBase {
@@ -80,7 +80,7 @@ public class TestFKColumnPairR {
         }
     }
     TestSchemaTwoColFK schemaTwoColFK = new TestSchemaTwoColFK("schema");
-    List<Mutant<Schema>> schemaTwoColFKMutants = new FKColumnPairR(schemaTwoColFK).mutate();
+    List<Mutant<Schema>> schemaTwoColFKMutants = new FKCColumnPairR(schemaTwoColFK).mutate();
     
     @Test
     public void testSchemaNoFKMutantNumber() {

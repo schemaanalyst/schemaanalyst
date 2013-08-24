@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.MutationPipeline;
+import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.mutator.RelationalOperatorExchanger;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.mutation.supplier.SupplyChain;
@@ -21,7 +21,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
  * 
  * @author Chris J. Wright
  */
-public class CCRelationalExpressionOperatorE extends MutationPipeline<Schema> {
+public class CCRelationalExpressionOperatorE extends MutantProducer<Schema> {
 
 	private Schema schema;
 

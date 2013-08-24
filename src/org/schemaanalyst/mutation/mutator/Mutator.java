@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.MutationPipeline;
 import org.schemaanalyst.mutation.supplier.Supplier;
 
 /**
@@ -22,7 +21,7 @@ import org.schemaanalyst.mutation.supplier.Supplier;
  *            the type of component of the artefact which is to be mutated.
  */
 
-public abstract class Mutator<A, C> extends MutationPipeline<A> {
+public abstract class Mutator<A, C> {
 
 	/**
 	 * The supplier for this mutator.

@@ -10,7 +10,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.operator.PKColumnARE;
+import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -127,7 +127,7 @@ public class TestPKColumnARE {
     @Test
     public void testSinglePKNoExchange() {
         Schema schema = new TestSchemaSinglePKNoExchange("schema");
-        List<Mutant<Schema>> mutants = new PKColumnARE(schema).mutate();
+        List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 1 mutant for SinglePKNoExchange", 1, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
         for (Mutant<Schema> mutant : mutants) {
@@ -141,7 +141,7 @@ public class TestPKColumnARE {
     @Test
     public void testSinglePKTwoExchange() {
         Schema schema = new TestSchemaSinglePKTwoExchange("schema");
-        List<Mutant<Schema>> mutants = new PKColumnARE(schema).mutate();
+        List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 5 mutants for SinglePKTwoExchange", 5, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
         for (Mutant<Schema> mutant : mutants) {
@@ -155,7 +155,7 @@ public class TestPKColumnARE {
     @Test
     public void testDoublePKNoExchange() {
         Schema schema = new TestSchemaDoublePKNoExchange("schema");
-        List<Mutant<Schema>> mutants = new PKColumnARE(schema).mutate();
+        List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 2 mutants for DoublePKNoExchange", 2, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
         for (Mutant<Schema> mutant : mutants) {
@@ -169,7 +169,7 @@ public class TestPKColumnARE {
     @Test
     public void testDoublePKTwoExchange() {
         Schema schema = new TestSchemaDoublePKTwoExchange("schema");
-        List<Mutant<Schema>> mutants = new PKColumnARE(schema).mutate();
+        List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 8 mutants for DoublePKTwoExchange", 8, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
         for (Mutant<Schema> mutant : mutants) {
@@ -183,7 +183,7 @@ public class TestPKColumnARE {
     @Test
     public void testTwoTables() {
         Schema schema = new TestSchemaTwoTable("schema");
-        List<Mutant<Schema>> mutants = new PKColumnARE(schema).mutate();
+        List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 6 mutants for TestSchemaTwoTable", 6, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
         for (Mutant<Schema> mutant : mutants) {

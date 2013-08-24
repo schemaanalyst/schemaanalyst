@@ -6,7 +6,7 @@ import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
-public class PrimaryKeyColumnsSupplier extends SolitaryComponentSupplier<PrimaryKeyConstraint, List<Column>> {
+public class PrimaryKeyColumnSupplier extends SolitaryComponentSupplier<PrimaryKeyConstraint, List<Column>> {
     
     @Override
     public void putComponentBackInDuplicate(List<Column> columns) {

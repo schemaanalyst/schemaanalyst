@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.MutationPipeline;
+import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.mutation.supplier.SupplyChain;
@@ -16,7 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 public class CCInExpressionRHSListExpressionElementR extends
-		MutationPipeline<Schema> {
+		MutantProducer<Schema> {
 
 	private Schema schema;
 

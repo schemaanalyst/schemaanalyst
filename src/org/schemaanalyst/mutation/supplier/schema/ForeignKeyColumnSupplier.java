@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
-public class ForeignKeyColumnsSupplier extends
+public class ForeignKeyColumnSupplier extends
         SolitaryComponentSupplier<ForeignKeyConstraint, List<Pair<Column>>> {
 
     @Override
