@@ -20,7 +20,7 @@ public class NotNullConstraintMutator extends Mutator {
                 continue;
             }
 
-            mutants.add(makeMutant(table, column, !column.isNotNull()));
+            mutants.addProducer(makeMutant(table, column, !column.isNotNull()));
         }
     }
 

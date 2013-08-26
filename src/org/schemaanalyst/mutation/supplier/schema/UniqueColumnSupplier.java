@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
-public class PrimaryKeyColumnSupplier extends SolitaryComponentSupplier<PrimaryKeyConstraint, List<Column>> {
+public class UniqueColumnSupplier extends SolitaryComponentSupplier<UniqueConstraint, List<Column>> {
     
     @Override
     public void putComponentBackInDuplicate(List<Column> columns) {
@@ -14,7 +14,7 @@ public class PrimaryKeyColumnSupplier extends SolitaryComponentSupplier<PrimaryK
     }
 
     @Override
-    protected List<Column> getComponent(PrimaryKeyConstraint primaryKeyConstraint) {
-        return primaryKeyConstraint.getColumns();
+    protected List<Column> getComponent(UniqueConstraint uniqueConstraint) {
+        return uniqueConstraint.getColumns();
     }
 }

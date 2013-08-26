@@ -18,6 +18,16 @@ public class Mutant<A> {
 		return description;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return artefact.equals(obj);
+	}
+	
+	@Override
+	public int hashCode() {
+		return artefact.hashCode();
+	}
+	
 	public String toString() {
 	    return description + " on " + artefact;
 	}
