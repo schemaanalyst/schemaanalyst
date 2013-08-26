@@ -10,7 +10,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 
-public class NNCAR extends MutantProducer<Schema> {
+public class NNCAR implements MutantProducer<Schema> {
 
 	private Schema schema;
 

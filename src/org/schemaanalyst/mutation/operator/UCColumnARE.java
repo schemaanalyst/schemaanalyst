@@ -18,7 +18,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Pair;
 
-public class UCColumnARE extends MutantProducer<Schema> {
+public class UCColumnARE implements MutantProducer<Schema> {
 
 	private Schema schema;
 	

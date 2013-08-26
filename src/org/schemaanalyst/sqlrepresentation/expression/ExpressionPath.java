@@ -61,7 +61,7 @@ public class ExpressionPath {
     
     /**
      * Get the raw list of indices for this path.
-     * @return
+     * @return a raw list of indices for this path.
      */
     public List<Integer> getIndices() {
         return new ArrayList<>(indices);

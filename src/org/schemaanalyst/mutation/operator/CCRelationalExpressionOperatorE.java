@@ -21,7 +21,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
  * 
  * @author Chris J. Wright
  */
-public class CCRelationalExpressionOperatorE extends MutantProducer<Schema> {
+public class CCRelationalExpressionOperatorE implements MutantProducer<Schema> {
 
 	private Schema schema;
 

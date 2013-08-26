@@ -17,7 +17,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
 
-public class PKCColumnARE extends MutantProducer<Schema> {
+public class PKCColumnARE implements MutantProducer<Schema> {
 
 	private Schema schema;
 

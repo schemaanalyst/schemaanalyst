@@ -9,7 +9,7 @@ import org.schemaanalyst.mutation.MutationException;
  * SchemaAnalyst of 1) providing an algorithm underlying the mutation operator
  * (e.g. "removal elements one-by-one from a list") and 2) obtaining access to
  * the specific components in a duplicate of the original artefact that are
- * targeted for mutation (e.g. the primay key columns of a constraint, forming
+ * targeted for mutation (e.g. the primary key columns of a constraint, forming
  * part of a schema).
  * </p>
  * 
@@ -26,7 +26,7 @@ import org.schemaanalyst.mutation.MutationException;
  * </p>
  * 
  * <p>
- * Following construction, and a call to the {@link #initialise(Duplicable)
+ * Following construction, and a call to the {@link #initialise(Object)}
  * method to set the original artefact, {@link Supplier} is used as follows
  * (refer to the source code of
  * {@link org.schemaanalyst.mutation.mutator.Mutator#mutate()} for an actual
@@ -52,7 +52,6 @@ import org.schemaanalyst.mutation.MutationException;
  *            the type of component of the artefact being mutated (e.g. the
  *            columns of an integrity constraint)
  */
-
 public interface Supplier<A, C> {
 
     /**
@@ -66,7 +65,7 @@ public interface Supplier<A, C> {
 
     /**
      * Indicates whether there the supplier has been initialised (through a call
-     * to {@link #initialise(Duplicable)}
+     * to {@link #initialise(Object)}
      * 
      * @return True if the supplier has been initialised, else false;
      */
@@ -78,7 +77,7 @@ public interface Supplier<A, C> {
      * @return the original artefact.
      * @throws MutationException
      *             if the supplier has not been initialised (through a call to
-     *             {@link #initialise(Duplicable)}
+     *             {@link #initialise(Object)}
      */
     public A getOriginalArtefact();
 
@@ -89,7 +88,7 @@ public interface Supplier<A, C> {
      * @return True if there are more components, else false.
      * @throws MutationException
      *             if the supplier has not been initialised (through a call to
-     *             {@link #initialise(Duplicable)}
+     *             {@link #initialise(Object)}
      */
     public boolean hasNext();
 
@@ -102,7 +101,7 @@ public interface Supplier<A, C> {
      * @return The next component from the to be mutated.
      * @throws MutationException
      *             if the supplier has not been initialised (through a call to
-     *             {@link #initialise(Duplicable)}
+     *             {@link #initialise(Object)}
      */
     public C getNextComponent();
 
@@ -131,7 +130,7 @@ public interface Supplier<A, C> {
     /**
      * Instead of having the supplier make its own duplicate, a duplicate can be
      * set from another source instead using this method. The result of
-     * {@link #duplicateComponent()} is derived from the duplicate set rather
+     * {@link #getDuplicateComponent()} is derived from the duplicate set rather
      * than the duplicate made.
      * 
      * @throws MutationException
@@ -144,7 +143,7 @@ public interface Supplier<A, C> {
     /**
      * Extracts the component for mutation from the duplicate copy of the
      * original artefact that was last returned by {@link #makeDuplicate()}, or
-     * set using {@link #setDuplicate(Duplicable). If there is no current
+     * set using {@link #setDuplicate(Object)}. If there is no current
      * component to mutate (i.e. a call {@link #haveCurrent()} would return
      * false), the method throws a
      * {@link org.schemaanalyst.mutation.MutationException}.

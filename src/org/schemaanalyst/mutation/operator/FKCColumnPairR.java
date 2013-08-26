@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
 
-public class FKCColumnPairR extends MutantProducer<Schema> {
+public class FKCColumnPairR implements MutantProducer<Schema> {
 
     private Schema schema;
 

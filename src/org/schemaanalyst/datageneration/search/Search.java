@@ -23,7 +23,8 @@ public abstract class Search<T> {
     /**
      * Constructor
      *
-     * @param random The instance of random to use during the search.
+     * @param duplicator the duplicator instance responsible for producing
+     * duplicate solution instances.
      */
     public Search(Duplicator<T> duplicator) {
         this.duplicator = duplicator;

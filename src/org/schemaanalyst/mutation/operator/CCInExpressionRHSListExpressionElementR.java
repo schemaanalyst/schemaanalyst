@@ -15,7 +15,7 @@ import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-public class CCInExpressionRHSListExpressionElementR extends
+public class CCInExpressionRHSListExpressionElementR implements
 		MutantProducer<Schema> {
 
 	private Schema schema;

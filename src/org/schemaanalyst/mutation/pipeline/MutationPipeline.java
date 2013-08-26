@@ -7,7 +7,7 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.equivalence.EquivalenceReducer;
 
-public class MutationPipeline<A> extends MutantProducer<A> {
+public class MutationPipeline<A> implements MutantProducer<A> {
 
 	private List<MutantProducer<A>> producers;
 	private List<EquivalenceReducer<A>> reducers;

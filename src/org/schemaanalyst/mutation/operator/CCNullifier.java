@@ -13,7 +13,7 @@ import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-public class CCNullifier extends MutantProducer<Schema> {
+public class CCNullifier implements MutantProducer<Schema> {
 
 	private Schema schema;
 

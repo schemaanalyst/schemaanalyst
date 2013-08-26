@@ -157,7 +157,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     /**
      * Remaps the reference table columns to another table
      * 
-     * @param table
+     * @param referenceTable
      *            The table to remap reference columns to.
      */
     public void remapReferenceColumns(Table referenceTable) {
