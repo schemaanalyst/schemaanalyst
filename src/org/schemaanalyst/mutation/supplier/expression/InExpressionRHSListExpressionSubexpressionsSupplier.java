@@ -7,6 +7,11 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class InExpressionRHSListExpressionSubexpressionsSupplier extends
 		SolitaryComponentSupplier<InExpression, List<Expression>> {
 

@@ -4,6 +4,11 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class RelationalExpressionOperatorSupplier extends
 		SolitaryComponentSupplier<RelationalExpression, RelationalOperator> {
 

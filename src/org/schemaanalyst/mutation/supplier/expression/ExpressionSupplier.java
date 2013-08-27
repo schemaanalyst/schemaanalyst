@@ -9,6 +9,11 @@ import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilterWalker;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class ExpressionSupplier<E extends Expression> extends IteratingSupplier<Expression, E> {
 
 	private ExpressionFilter expressionFilter;

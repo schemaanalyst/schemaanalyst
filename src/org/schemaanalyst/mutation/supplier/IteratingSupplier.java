@@ -6,13 +6,14 @@ import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicator;
 
 /**
- * A supplier that provides components that are a part of some internal collection
- * in the original artefact.  For example, a schema may have multiple <tt>CHECK</tt> 
- * constraints, and as such {@link org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier}
+ * A supplier that provides components that are a part of some internal
+ * collection in the original artefact. For example, a schema may have multiple
+ * <tt>CHECK</tt> constraints, and as such
+ * {@link org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier}
  * extends this class.
  * 
  * @author Phil McMinn
- *
+ * 
  * @param <A>
  *            the type of artefact being mutated (e.g. a
  *            {@link org.schemaanalyst.sqlrepresentation.Schema}).
@@ -22,8 +23,8 @@ import org.schemaanalyst.util.Duplicator;
  */
 public abstract class IteratingSupplier<A, C> extends AbstractSupplier<A, C> {
 
-    private List<C> components, duplicateComponents;
-    private int index;
+	private List<C> components, duplicateComponents;
+	private int index;
 
 	/**
 	 * Parameterless constructor, with which there is no requirement to specify
@@ -33,9 +34,9 @@ public abstract class IteratingSupplier<A, C> extends AbstractSupplier<A, C> {
 	 * duplicate objects that have been created elsewhere.
 	 * 
 	 */
-    public IteratingSupplier() {
-        super();
-    }
+	public IteratingSupplier() {
+		super();
+	}
 
 	/**
 	 * Constructor.
@@ -45,66 +46,77 @@ public abstract class IteratingSupplier<A, C> extends AbstractSupplier<A, C> {
 	 *            the {@link #makeDuplicate()} method to be used to produce
 	 *            duplicates automatically for mutation.
 	 */
-    public IteratingSupplier(Duplicator<A> duplicator) {
-        super(duplicator);
-    }
-    
-    /**
-     * {@inheritDoc}
-     */
-    public void initialise(A originalArtefact) {
-        super.initialise(originalArtefact);
-        components = getComponents(originalArtefact);
-        index = -1;
-    }
+	public IteratingSupplier(Duplicator<A> duplicator) {
+		super(duplicator);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public boolean hasNext() {
-        return initialised && index + 1 < components.size();
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	public void initialise(A originalArtefact) {
+		super.initialise(originalArtefact);
+		components = getComponents(originalArtefact);
+		index = -1;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public C getNextComponent() {
-        boolean hasNext = hasNext();
-        haveCurrent = hasNext;
-        index++;
-        if (hasNext) {
-            return components.get(index);
-        } else {
-            return null;
-        }
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasNext() {
+		if (!isInitialised()) {
+			throw new MutationException("Supplier not initialised");
+		}
+		haveNext = index + 1 < components.size();
+		return haveNext;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void setDuplicate(A currentDuplicate) {
-        super.setDuplicate(currentDuplicate);
-        duplicateComponents = getComponents(currentDuplicate);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public C getNextComponent() {
+		boolean hasNext = hasNext();
+		haveCurrent = hasNext;
+		index++;
+		if (hasNext) {
+			currentDuplicate = null;
+			return components.get(index);
+		} else {
+			return null;
+		}
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public C getDuplicateComponent() {
-        if (!haveCurrent()) {
-            throw new MutationException("No current component to mutate");
-        }
-        return duplicateComponents.get(index);
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setDuplicate(A currentDuplicate) {
+		super.setDuplicate(currentDuplicate);
+		duplicateComponents = getComponents(currentDuplicate);
+	}
 
-    /**
-     * Gets the components from the artefact
-     * @param artefact the artefact to get the components from
-     * @return a list of the components
-     */
-    protected abstract List<C> getComponents(A artefact);
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public C getDuplicateComponent() {
+		if (!hasCurrent()) {
+			throw new MutationException("No current component to mutate");
+		}
+		if (currentDuplicate == null) {
+			throw new MutationException(
+					"Cannot get duplicate component if no duplicate artefact has been made");
+		}
+		return duplicateComponents.get(index);
+	}
+
+	/**
+	 * Gets the components from the artefact
+	 * 
+	 * @param artefact
+	 *            the artefact to get the components from
+	 * @return a list of the components
+	 */
+	protected abstract List<C> getComponents(A artefact);
 }

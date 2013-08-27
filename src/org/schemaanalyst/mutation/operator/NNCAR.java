@@ -10,6 +10,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class NNCAR implements MutantProducer<Schema> {
 
 	private Schema schema;

@@ -10,6 +10,13 @@ import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
+/**
+ * {@link ICST2013Pipeline} is an implementation of the mutation pipeline used in
+ * the original ICST 2013 paper.
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class ICST2013Pipeline extends MutationPipeline<Schema> {
 
 	public ICST2013Pipeline(Schema schema) {		

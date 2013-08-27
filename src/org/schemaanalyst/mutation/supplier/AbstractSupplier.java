@@ -41,6 +41,11 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	protected boolean initialised;
 
 	/**
+	 * Indicates whether there are more components for mutation.
+	 */
+	protected boolean haveNext;
+
+	/**
 	 * Indicates whether a current component is available for mutation or not.
 	 */
 	protected boolean haveCurrent;
@@ -67,6 +72,8 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	public AbstractSupplier(Duplicator<A> duplicator) {
 		this.duplicator = duplicator;
 		initialised = false;
+		haveNext = false;
+		haveCurrent = false;
 	}
 
 	/**
@@ -76,7 +83,6 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	public void initialise(A originalArtefact) {
 		this.originalArtefact = originalArtefact;
 		initialised = true;
-		haveCurrent = false;
 	}
 
 	/**
@@ -91,8 +97,22 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public boolean haveCurrent() {
-		return initialised && haveCurrent;
+	public boolean hasNext() {
+		if (!isInitialised()) {
+			throw new MutationException("Supplier has not been initialised");
+		}
+		return haveNext;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean hasCurrent() {
+		if (!isInitialised()) {
+			throw new MutationException("Supplier has not been initialised");
+		}
+		return haveCurrent;
 	}
 
 	/**
@@ -111,7 +131,7 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	 */
 	@Override
 	public A makeDuplicate() {
-		if (!haveCurrent()) {
+		if (!hasCurrent()) {
 			throw new MutationException(
 					"There is no current component to mutate");
 		}
@@ -128,7 +148,7 @@ public abstract class AbstractSupplier<A, C> implements Supplier<A, C> {
 	 */
 	@Override
 	public void setDuplicate(A currentDuplicate) {
-		if (!haveCurrent()) {
+		if (!hasCurrent()) {
 			throw new MutationException(
 					"There is no current component to mutate");
 		}

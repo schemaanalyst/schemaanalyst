@@ -6,7 +6,8 @@ import org.schemaanalyst.util.Duplicator;
 /**
  * A supplier that supplies only a single component for each artefact to be
  * mutated. For example, a <tt>CHECK</tt> constraint has only one component, and
- * as such {@link org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier}
+ * as such
+ * {@link org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier}
  * extends this class.
  * 
  * @author Phil McMinn
@@ -20,8 +21,6 @@ import org.schemaanalyst.util.Duplicator;
  */
 public abstract class SolitaryComponentSupplier<A, C> extends
 		AbstractSupplier<A, C> {
-
-	private boolean hasNext;
 
 	/**
 	 * Parameterless constructor, with which there is no requirement to specify
@@ -52,15 +51,7 @@ public abstract class SolitaryComponentSupplier<A, C> extends
 	@Override
 	public void initialise(A originalArtefact) {
 		super.initialise(originalArtefact);
-		hasNext = true;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean hasNext() {
-		return isInitialised() && hasNext;
+		haveNext = true;
 	}
 
 	/**
@@ -68,9 +59,10 @@ public abstract class SolitaryComponentSupplier<A, C> extends
 	 */
 	@Override
 	public C getNextComponent() {
-		if (hasNext) {
-			hasNext = false;
+		if (hasNext()) {
+			haveNext = false;
 			haveCurrent = true;
+			currentDuplicate = null;
 			return getComponent(originalArtefact);
 		} else {
 			haveCurrent = false;
@@ -80,19 +72,25 @@ public abstract class SolitaryComponentSupplier<A, C> extends
 
 	/**
 	 * {@inheritDoc}
-	 */	
+	 */
 	@Override
 	public C getDuplicateComponent() {
-        if (!haveCurrent()) {
-            throw new MutationException("No current component to mutate");
-        }		
+		if (!hasCurrent()) {
+			throw new MutationException("No current component to mutate");
+		}
+		if (currentDuplicate == null) {
+			throw new MutationException(
+					"Cannot get duplicate component if no duplicate artefact has been made");
+		}
 		return getComponent(currentDuplicate);
 	}
 
 	/**
-	 * Retrieves the component of interest from an artefact
-	 * (either the original or a duplicate). 
-	 * @param artefact the artefact from which to extract the component.
+	 * Retrieves the component of interest from an artefact (either the original
+	 * or a duplicate).
+	 * 
+	 * @param artefact
+	 *            the artefact from which to extract the component.
 	 * @return the artefact's component.
 	 */
 	protected abstract C getComponent(A artefact);

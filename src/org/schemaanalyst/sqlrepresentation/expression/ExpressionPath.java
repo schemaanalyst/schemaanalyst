@@ -75,6 +75,9 @@ public class ExpressionPath {
         return new ExpressionPath(indices);
     }
     
+    /**
+     * {@inheritDoc}
+     */
     @Override
 	public int hashCode() {
 		final int prime = 31;
@@ -83,6 +86,9 @@ public class ExpressionPath {
 		return result;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -100,6 +106,9 @@ public class ExpressionPath {
 		return true;
 	}
 
+    /**
+     * {@inheritDoc}
+     */
 	@Override
     public String toString() {
     	return indices.toString();

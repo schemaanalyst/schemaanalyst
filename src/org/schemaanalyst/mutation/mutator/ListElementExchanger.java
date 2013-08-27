@@ -6,6 +6,13 @@ import java.util.List;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Pair;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ * @param <A>
+ * @param <E>
+ */
 public class ListElementExchanger<A, E> extends Mutator<A, Pair<List<E>>> {
     
     private List<E> elements;

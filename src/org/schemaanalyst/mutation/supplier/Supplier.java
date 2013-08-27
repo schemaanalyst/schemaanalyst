@@ -110,19 +110,22 @@ public interface Supplier<A, C> {
      * (following a call to {@link #getNextComponent()}</tt>).
      * 
      * @return True if there is a current component, else false.
+     * @throws MutationException
+     *             if the supplier has not been initialised (through a call to
+     *             {@link #initialise(Object)} 
      */
-    public boolean haveCurrent();
+    public boolean hasCurrent();
 
     /**
      * Returns a duplicate of the original artefact. If there is no current
-     * component to mutate (i.e. a call to {@link #haveCurrent()} would return
+     * component to mutate (i.e. a call to {@link #hasCurrent()} would return
      * false), the method throws a
      * {@link org.schemaanalyst.mutation.MutationException}.
      * 
      * @return A duplicate of the original artefact.
      * @throws MutationException
      *             if there is no current component to mutate, i.e. the result
-     *             of {@link #haveCurrent()} before calling this method is
+     *             of {@link #hasCurrent()} before calling this method is
      *             false.
      */
     public A makeDuplicate();
@@ -135,7 +138,7 @@ public interface Supplier<A, C> {
      * 
      * @throws MutationException
      *             if there is no current component to mutate, i.e. the result
-     *             of {@link #haveCurrent()} before calling this method is
+     *             of {@link #hasCurrent()} before calling this method is
      *             false.
      */
     public void setDuplicate(A duplicate);
@@ -144,14 +147,14 @@ public interface Supplier<A, C> {
      * Extracts the component for mutation from the duplicate copy of the
      * original artefact that was last returned by {@link #makeDuplicate()}, or
      * set using {@link #setDuplicate(Object)}. If there is no current
-     * component to mutate (i.e. a call {@link #haveCurrent()} would return
+     * component to mutate (i.e. a call {@link #hasCurrent()} would return
      * false), the method throws a
      * {@link org.schemaanalyst.mutation.MutationException}.
      * 
      * @return The component from the last made duplicate.
      * @throws MutationException
      *             if there is no current component to mutate, i.e. the result
-     *             of {@link #haveCurrent()} before calling this method is
+     *             of {@link #hasCurrent()} before calling this method is
      *             false.
      */
     public C getDuplicateComponent();
@@ -164,7 +167,7 @@ public interface Supplier<A, C> {
      *            The mutated component.
      * @throws MutationException
      *             if there is no current component to mutate, i.e. the result
-     *             of {@link #haveCurrent()} before calling this method is
+     *             of {@link #hasCurrent()} before calling this method is
      *             false.
      */
     public void putComponentBackInDuplicate(C component);

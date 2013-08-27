@@ -9,8 +9,20 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
+/**
+ * Most DBMSs automatically add <tt>NOT NULL</tt> constraints to
+ * <tt>PRIMARY KEY</tt> columns.  This {@link EquivalenceReducer} removes
+ * those <tt>NOT NULL</tt> constraints -- if they are the result of a 
+ * mutation, the mutant will be impossible to kill.
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class PrimaryKeyColumnNotNullRemover extends EquivalenceReducer<Schema> {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public List<Mutant<Schema>> reduce(List<Mutant<Schema>> mutants) {
 		

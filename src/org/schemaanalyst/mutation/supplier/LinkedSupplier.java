@@ -28,7 +28,7 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
 	private Supplier<A, I> topLevelSupplier;
 	private Supplier<I, C> bottomLevelSupplier;
 	
-	private boolean initialised, bottomLevelInitialised, haveCurrent;
+	private boolean initialised, haveCurrent;
 	private I currentTopLevelComponentDuplicate;
 	
     /**
@@ -41,7 +41,6 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
 		this.topLevelSupplier = topLevelSupplier;
 		this.bottomLevelSupplier = bottomLevelSupplier;		
 		initialised = false;
-		bottomLevelInitialised = false;
 		haveCurrent = false;
 	}
 	
@@ -52,7 +51,6 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
 	public void initialise(A originalArtefact) {
 		topLevelSupplier.initialise(originalArtefact);
 		initialised = true;
-		bottomLevelInitialised = false;
 	}
         
     /**
@@ -62,15 +60,6 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
     public boolean isInitialised() {
         return initialised;
     }
-
-    /**
-     * Initialises the bottom level supplier with the component
-     * of the top level.
-     */
-    private void initialiseBottomLevel(I topLevelComponent) {
-		bottomLevelSupplier.initialise(topLevelComponent);
-		bottomLevelInitialised = true;		
-	}
 
     /**
      * {@inheritDoc}
@@ -85,7 +74,7 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
 	 * {@inheritDoc}
 	 */	
 	public A makeDuplicate() {
-		if (!haveCurrent()) {
+		if (!hasCurrent()) {
 			throw new MutationException(
 					"There is no current component to mutate");
 		}
@@ -109,12 +98,12 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
      */
 	@Override
 	public boolean hasNext() {
-		if (!initialised) {
-			return false;
+		if (!isInitialised()) {
+			throw new MutationException("Supplier has not been initialised");
 		}
 		
 		while (!bottomLevelHasNext() && topLevelSupplier.hasNext()) {
-			initialiseBottomLevel(topLevelSupplier.getNextComponent());			
+			bottomLevelSupplier.initialise(topLevelSupplier.getNextComponent());
 		}
 		
 		return bottomLevelHasNext();
@@ -124,7 +113,7 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
      * Checks if the bottom level supplier has another component
      */
 	private boolean bottomLevelHasNext() {
-		return bottomLevelInitialised && bottomLevelSupplier.hasNext();
+		return bottomLevelSupplier.isInitialised() && bottomLevelSupplier.hasNext();
 	}
 		
     /**
@@ -144,8 +133,11 @@ public class LinkedSupplier<A, I, C> implements Supplier<A, C> {
      * {@inheritDoc}
      */
 	@Override
-	public boolean haveCurrent() {
-		return initialised && haveCurrent;
+	public boolean hasCurrent() {
+		if (!isInitialised()) {
+			throw new MutationException("Supplier has not been initialised");
+		}		
+		return haveCurrent;
 	}
 
     /**

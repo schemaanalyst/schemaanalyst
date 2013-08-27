@@ -6,45 +6,52 @@ import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.Supplier;
 
+/**
+ * 
+ * @author Phil McMinn
+ * 
+ * @param <A>
+ * @param <E>
+ */
 public class ListElementRemover<A, E> extends Mutator<A, List<E>> {
-    
-    private List<E> elements;
-    private Iterator<E> iterator;
-    private String mutationDescription;
-    
-    public ListElementRemover(Supplier<A, List<E>> supplier) {
-        super(supplier);
-    }
 
-    @Override
-    protected void initialise(List<E> elements) {
-        this.elements = elements;
-        iterator = elements.iterator();
-    }
-    
-    @Override
-    protected boolean isMoreMutationToDo() {
-        return iterator.hasNext();
-    }
-    
-    @Override
-    protected List<E> performMutation(List<E> componentToMutate) {
-        E element = iterator.next();
-        mutationDescription = "Removed " + element;
-        
-        List<E> mutatedElements = new ArrayList<>();
-        
-        for (E duplicatedElement : elements) {
-            if (!duplicatedElement.equals(element)) {
-                mutatedElements.add(duplicatedElement);
-            }
-        }
-        
-        return mutatedElements;
-    }
-    
-    @Override
-    protected String getDescriptionOfLastMutation() {
-        return mutationDescription;
-    }
+	private List<E> elements;
+	private Iterator<E> iterator;
+	private String mutationDescription;
+
+	public ListElementRemover(Supplier<A, List<E>> supplier) {
+		super(supplier);
+	}
+
+	@Override
+	protected void initialise(List<E> elements) {
+		this.elements = elements;
+		iterator = elements.iterator();
+	}
+
+	@Override
+	protected boolean isMoreMutationToDo() {
+		return iterator.hasNext();
+	}
+
+	@Override
+	protected List<E> performMutation(List<E> componentToMutate) {
+		E element = iterator.next();
+		mutationDescription = "Removed " + element;
+
+		List<E> mutatedElements = new ArrayList<>();
+
+		for (E duplicatedElement : elements) {
+			if (!duplicatedElement.equals(element)) {
+				mutatedElements.add(duplicatedElement);
+			}
+		}
+
+		return mutatedElements;
+	}
+
+	@Override
+	protected String getDescriptionOfLastMutation() {
+		return mutationDescription;
+	}
 }

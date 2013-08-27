@@ -8,9 +8,18 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
+/**
+ * Supplies column pairs from
+ * from a {@link org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint}.
+ * @author Phil McMinn
+ *
+ */
 public class ForeignKeyColumnSupplier extends
         SolitaryComponentSupplier<ForeignKeyConstraint, List<Pair<Column>>> {
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void putComponentBackInDuplicate(List<Pair<Column>> columnPairs) {
         List<Column> columns = new ArrayList<>();
@@ -25,6 +34,9 @@ public class ForeignKeyColumnSupplier extends
         currentDuplicate.setReferenceColumns(referenceColumns);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     protected List<Pair<Column>> getComponent(ForeignKeyConstraint foreignKeyConstraint) {
         List<Column> columns = foreignKeyConstraint.getColumns();

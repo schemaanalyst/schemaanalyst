@@ -18,6 +18,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.Pair;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ */
 public class UCColumnARE implements MutantProducer<Schema> {
 
 	private Schema schema;

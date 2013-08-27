@@ -2,6 +2,13 @@ package org.schemaanalyst.mutation.mutator;
 
 import org.schemaanalyst.mutation.supplier.Supplier;
 
+/**
+ * 
+ * @author Phil McMinn
+ *
+ * @param <A>
+ * @param <E>
+ */
 public class ElementNullifier<A, E> extends Mutator<A, E> {
 
 	private boolean isMoreMuationToDo = false;

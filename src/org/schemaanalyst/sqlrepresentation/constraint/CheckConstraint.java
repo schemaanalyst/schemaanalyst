@@ -10,7 +10,7 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
  *
  */
 public class CheckConstraint extends Constraint {
-
+	
     private static final long serialVersionUID = 1112035994865637833L;
 
     private Expression expression;
