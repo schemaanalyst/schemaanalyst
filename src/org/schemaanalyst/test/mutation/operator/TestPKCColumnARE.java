@@ -21,7 +21,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestPKColumnARE {
+public class TestPKCColumnARE {
 
     /**
      * Schema with single column PK and no spare columns

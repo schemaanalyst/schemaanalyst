@@ -20,7 +20,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestFKColumnPairR {
+public class TestFKCColumnPairR {
 
     @SuppressWarnings("serial")
     private class TestSchemaBase extends Schema {
