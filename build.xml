@@ -1,4 +1,4 @@
-<project>
+<project xmlns:jacoco="antlib:org.jacoco.ant">
 	
 	<!-- SETUP VARIABLES AND PATHS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -19,6 +19,10 @@
 		<fileset dir="${lib_dir}" includes="*.jar"/>
 	</path>
 	
+	<!-- Jacoco path -->
+	<taskdef uri="antlib:org.jacoco.ant" resource="org/jacoco/ant/antlib.xml">
+		<classpath path="${lib_dir}/jacocoant.jar"/>
+	</taskdef>
 
 	<!-- BASIC TARGETS ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
 
@@ -30,6 +34,7 @@
 		<delete dir="${databases_dir}"/>
 		<delete dir="${results_dir}"/>
 		<delete dir="docs"/>
+		<delete dir="report"/>
 	</target>
 
 	<!-- COMPILING TASK - "ant compile" -->  
@@ -50,6 +55,37 @@
 			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
+	</target>
+
+	<!-- COVERAGE TASK - "ant coverage" -->
+	<target name="coverage" depends="compile">
+		<jacoco:coverage excludes="dbmonster.*">
+			<junit fork="true">
+				<test name="org.schemaanalyst.test.AllTests" />
+				<classpath refid="run_classpath" />
+				<formatter type="brief" usefile="false" />
+			</junit>
+		</jacoco:coverage>
+		<jacoco:report>
+			<executiondata>
+				<file file="jacoco.exec"/>
+			</executiondata>
+			<structure name="SchemaAnalyst">
+				<classfiles>
+					<fileset dir="build">
+						<exclude name="dbmonster/**" />
+						<exclude name="paper/**" />
+						<exclude name="parsedcasestudy/**" />
+						<exclude name="org/schemaanalyst/test/**" />
+					</fileset>
+				</classfiles>
+				<sourcefiles encoding="UTF-8">
+					<fileset dir="src"/>
+				</sourcefiles>
+			</structure>
+			<html destdir="report"/>
+		</jacoco:report>
+		<delete file="jacoco.exec"/>
 	</target>
 
 	<!-- BUNDLE TASK - "ant bundle" -->
