@@ -27,9 +27,9 @@ public class TestPKCColumnARE {
      * Schema with single column PK and no spare columns
      */
     @SuppressWarnings("serial")
-    private class TestSchemaSinglePKNoExchange extends Schema {
+    private class SchemaSinglePKNoExchange extends Schema {
 
-        public TestSchemaSinglePKNoExchange(String name) {
+        public SchemaSinglePKNoExchange(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -43,9 +43,9 @@ public class TestPKCColumnARE {
      * Schema with single column PK and two spare columns
      */
     @SuppressWarnings("serial")
-    private class TestSchemaSinglePKTwoExchange extends Schema {
+    private class SchemaSinglePKTwoExchange extends Schema {
 
-        public TestSchemaSinglePKTwoExchange(String name) {
+        public SchemaSinglePKTwoExchange(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -63,9 +63,9 @@ public class TestPKCColumnARE {
      * Schema with double column PK and no spare columns
      */
     @SuppressWarnings("serial")
-    private class TestSchemaDoublePKNoExchange extends Schema {
+    private class SchemaDoublePKNoExchange extends Schema {
 
-        public TestSchemaDoublePKNoExchange(String name) {
+        public SchemaDoublePKNoExchange(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -81,9 +81,9 @@ public class TestPKCColumnARE {
      * Schema with double column PK and two spare columns
      */
     @SuppressWarnings("serial")    
-    private class TestSchemaDoublePKTwoExchange extends Schema {
+    private class SchemaDoublePKTwoExchange extends Schema {
 
-        public TestSchemaDoublePKTwoExchange(String name) {
+        public SchemaDoublePKTwoExchange(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -103,9 +103,9 @@ public class TestPKCColumnARE {
      * Schema with two tables, both with PKs
      */
     @SuppressWarnings("serial")
-    private class TestSchemaTwoTable extends Schema {
+    private class SchemaTwoTable extends Schema {
 
-        public TestSchemaTwoTable(String name) {
+        public SchemaTwoTable(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -126,7 +126,7 @@ public class TestPKCColumnARE {
 
     @Test
     public void testSinglePKNoExchange() {
-        Schema schema = new TestSchemaSinglePKNoExchange("schema");
+        Schema schema = new SchemaSinglePKNoExchange("schema");
         List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 1 mutant for SinglePKNoExchange", 1, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
@@ -140,7 +140,7 @@ public class TestPKCColumnARE {
 
     @Test
     public void testSinglePKTwoExchange() {
-        Schema schema = new TestSchemaSinglePKTwoExchange("schema");
+        Schema schema = new SchemaSinglePKTwoExchange("schema");
         List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 5 mutants for SinglePKTwoExchange", 5, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
@@ -154,7 +154,7 @@ public class TestPKCColumnARE {
     
     @Test
     public void testDoublePKNoExchange() {
-        Schema schema = new TestSchemaDoublePKNoExchange("schema");
+        Schema schema = new SchemaDoublePKNoExchange("schema");
         List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 2 mutants for DoublePKNoExchange", 2, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
@@ -168,7 +168,7 @@ public class TestPKCColumnARE {
     
     @Test
     public void testDoublePKTwoExchange() {
-        Schema schema = new TestSchemaDoublePKTwoExchange("schema");
+        Schema schema = new SchemaDoublePKTwoExchange("schema");
         List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 8 mutants for DoublePKTwoExchange", 8, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();
@@ -182,7 +182,7 @@ public class TestPKCColumnARE {
     
     @Test
     public void testTwoTables() {
-        Schema schema = new TestSchemaTwoTable("schema");
+        Schema schema = new SchemaTwoTable("schema");
         List<Mutant<Schema>> mutants = new PKCColumnARE(schema).mutate();
         assertEquals("ARE should produce 6 mutants for TestSchemaTwoTable", 6, mutants.size());
         Set<Schema> mutantSet = new HashSet<>();

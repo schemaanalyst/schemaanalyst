@@ -31,9 +31,9 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 public class TestCCRelationalExpressionOperatorE {
 
     @SuppressWarnings("serial")
-    private class TestSchemaNoRelational extends Schema {
+    private class SchemaNoRelational extends Schema {
 
-        public TestSchemaNoRelational(String name) {
+        public SchemaNoRelational(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -45,7 +45,7 @@ public class TestCCRelationalExpressionOperatorE {
             this.addCheckConstraint(new CheckConstraint(t1, expr));
         }
     }
-    Schema schemaNoRelational = new TestSchemaNoRelational("schema");
+    Schema schemaNoRelational = new SchemaNoRelational("schema");
     List<Mutant<Schema>> schemaNoRelationalMutants = new CCRelationalExpressionOperatorE(schemaNoRelational).mutate();
 
     @Test
@@ -55,9 +55,9 @@ public class TestCCRelationalExpressionOperatorE {
     }
     
     @SuppressWarnings("serial")
-    private class TestSchemaOneRelational extends Schema {
+    private class SchemaOneRelational extends Schema {
 
-        public TestSchemaOneRelational(String name) {
+        public SchemaOneRelational(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -70,7 +70,7 @@ public class TestCCRelationalExpressionOperatorE {
             this.addCheckConstraint(new CheckConstraint(t1, expr));
         }
     }
-    Schema schemaOneRelational = new TestSchemaOneRelational("schema");
+    Schema schemaOneRelational = new SchemaOneRelational("schema");
     List<Mutant<Schema>> schemaOneRelationalMutants = new CCRelationalExpressionOperatorE(schemaOneRelational).mutate();
 
     @Test
@@ -121,9 +121,9 @@ public class TestCCRelationalExpressionOperatorE {
     }
 
     @SuppressWarnings("serial")
-    private class TestSchemaTwoRelational extends Schema {
+    private class SchemaTwoRelational extends Schema {
 
-        public TestSchemaTwoRelational(String name) {
+        public SchemaTwoRelational(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -141,7 +141,7 @@ public class TestCCRelationalExpressionOperatorE {
             this.addCheckConstraint(new CheckConstraint(t1, expr));
         }
     }
-    Schema schemaTwoRelational = new TestSchemaTwoRelational("schema");
+    Schema schemaTwoRelational = new SchemaTwoRelational("schema");
     List<Mutant<Schema>> schemaTwoRelationalMutants = new CCRelationalExpressionOperatorE(schemaTwoRelational).mutate();
 
     @Test

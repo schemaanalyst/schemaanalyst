@@ -28,16 +28,16 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
  */
 public class TestCCInExpressionRHSListExpressionElementR {
 
-    Schema schema3ListItems = new TestSchema3ListItems("schema");
+    Schema schema3ListItems = new Schema3ListItems("schema");
     List<Mutant<Schema>> schema3ListItemsMutants = new CCInExpressionRHSListExpressionElementR(schema3ListItems).mutate();
 
     /**
      * Schema with one table, with one constraint, with one list, with 3 items
      */
     @SuppressWarnings("serial")
-    private class TestSchema3ListItems extends Schema {
+    private class Schema3ListItems extends Schema {
 
-        public TestSchema3ListItems(String name) {
+        public Schema3ListItems(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -104,16 +104,16 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The third mutant expression should have the third list element removed, leaving (1, 2)",
                 expected, mutant.getCheckConstraints().get(0).getExpression());
     }
-    Schema schema1ListItem = new TestSchema1ListItem("schema");
+    Schema schema1ListItem = new Schema1ListItem("schema");
     List<Mutant<Schema>> schema1ListItemMutants = new CCInExpressionRHSListExpressionElementR(schema1ListItem).mutate();
 
     /**
      * Schema with one table, with one constraint, with one list, with 1 item
      */
     @SuppressWarnings("serial")
-    private class TestSchema1ListItem extends Schema {
+    private class Schema1ListItem extends Schema {
 
-        public TestSchema1ListItem(String name) {
+        public Schema1ListItem(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -146,16 +146,16 @@ public class TestCCInExpressionRHSListExpressionElementR {
         assertEquals("The first mutant expression should have the first (and only) list element removed, leaving ()",
                 expected, mutant.getCheckConstraints().get(0).getExpression());
     }
-    Schema schemaMultipleLists = new TestSchemaMultipleLists("schema");
+    Schema schemaMultipleLists = new SchemaMultipleLists("schema");
     List<Mutant<Schema>> schemaMultipleListsMutants = new CCInExpressionRHSListExpressionElementR(schemaMultipleLists).mutate();
 
     /**
      * Schema with one table, with one constraint, with two lists, with two items
      */
     @SuppressWarnings("serial")    
-    private class TestSchemaMultipleLists extends Schema {
+    private class SchemaMultipleLists extends Schema {
 
-        public TestSchemaMultipleLists(String name) {
+        public SchemaMultipleLists(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -277,16 +277,16 @@ public class TestCCInExpressionRHSListExpressionElementR {
                 expected, mutant.getCheckConstraints().get(0).getExpression());
     }
     
-    Schema schemaMultipleChecks = new TestSchemaMultipleChecks("schema");
+    Schema schemaMultipleChecks = new SchemaMultipleChecks("schema");
     List<Mutant<Schema>> schemaMultipleChecksMutants = new CCInExpressionRHSListExpressionElementR(schemaMultipleChecks).mutate();
     
     /**
      * Schema with one table, with two constraints, with one list, with 1 item
      */
     @SuppressWarnings("serial")    
-    private class TestSchemaMultipleChecks extends Schema {
+    private class SchemaMultipleChecks extends Schema {
 
-        public TestSchemaMultipleChecks(String name) {
+        public SchemaMultipleChecks(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());

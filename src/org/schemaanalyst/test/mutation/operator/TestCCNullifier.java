@@ -28,9 +28,9 @@ import static org.junit.Assert.*;
 public class TestCCNullifier {
 
     @SuppressWarnings("serial")
-    private class TestSchemaNoConstraints extends Schema {
+    private class SchemaNoConstraints extends Schema {
 
-        public TestSchemaNoConstraints(String name) {
+        public SchemaNoConstraints(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -41,15 +41,15 @@ public class TestCCNullifier {
 
     @Test
     public void testSchemaNoConstraintsMutantNumber() {
-        List<Mutant<Schema>> mutants = new CCNullifier(new TestSchemaNoConstraints("schema")).mutate();
+        List<Mutant<Schema>> mutants = new CCNullifier(new SchemaNoConstraints("schema")).mutate();
         assertEquals("No mutants should be produced for a schema with no checks",
                 0, mutants.size());
     }
 
     @SuppressWarnings("serial")
-    private class TestSchemaOneConstraint extends Schema {
+    private class SchemaOneConstraint extends Schema {
 
-        public TestSchemaOneConstraint(String name) {
+        public SchemaOneConstraint(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -62,7 +62,7 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t1, expr));
         }
     }
-    TestSchemaOneConstraint oneConstraintSchema = new TestSchemaOneConstraint("schema");
+    SchemaOneConstraint oneConstraintSchema = new SchemaOneConstraint("schema");
     List<Mutant<Schema>> oneConstraintSchemaMutants = new CCNullifier(oneConstraintSchema).mutate();
 
     @Test
@@ -79,9 +79,9 @@ public class TestCCNullifier {
     }
 
     @SuppressWarnings("serial")    
-    private class TestSchemaTwoConstraint extends Schema {
+    private class SchemaTwoConstraints extends Schema {
 
-        public TestSchemaTwoConstraint(String name) {
+        public SchemaTwoConstraints(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -99,7 +99,7 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t1, expr2));
         }
     }
-    TestSchemaTwoConstraint twoConstraintSchema = new TestSchemaTwoConstraint("schema");
+    SchemaTwoConstraints twoConstraintSchema = new SchemaTwoConstraints("schema");
     List<Mutant<Schema>> twoConstraintSchemaMutants = new CCNullifier(twoConstraintSchema).mutate();
 
     @Test
@@ -142,9 +142,9 @@ public class TestCCNullifier {
     }
 
     @SuppressWarnings("serial")
-    private class TestSchemaTwoTables extends Schema {
+    private class SchemaTwoTables extends Schema {
 
-        public TestSchemaTwoTables(String name) {
+        public SchemaTwoTables(String name) {
             super(name);
             Table t1 = new Table("t1");
             Column c1 = new Column("c1", new IntDataType());
@@ -166,7 +166,7 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t2, expr2));
         }
     }
-    TestSchemaTwoTables twoTablesSchema = new TestSchemaTwoTables("schema");
+    SchemaTwoTables twoTablesSchema = new SchemaTwoTables("schema");
     List<Mutant<Schema>> twoTablesSchemaMutants = new CCNullifier(twoTablesSchema).mutate();
 
     @Test
