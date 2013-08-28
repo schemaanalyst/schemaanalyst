@@ -46,18 +46,25 @@ public class TestFKCColumnPairR {
             addTable(t2);
         }
     }
-    
+
     @SuppressWarnings("serial")
     private class SchemaNoFK extends SchemaBase {
 
         public SchemaNoFK(String name) {
             super(name);
         }
-        
     }
-    SchemaNoFK schemaNoFK = new SchemaNoFK("schema");
-    List<Mutant<Schema>> schemaNoFKMutants = new FKCColumnPairR(schemaNoFK).mutate();
-    
+
+    @Test
+    public void testSchemaNoFKMutantNumber() {
+        SchemaNoFK schemaNoFK = new SchemaNoFK("schema");
+        List<Mutant<Schema>> schemaNoFKMutants = new FKCColumnPairR(schemaNoFK).mutate();
+        assertEquals("No mutants should be produced for a schema with no FKs",
+                0, schemaNoFKMutants.size());
+        assertEquals("The original schema given to the operator should be unchanged",
+                new SchemaNoFK("schema"), schemaNoFK);
+    }
+
     @SuppressWarnings("serial")
     private class SchemaOneColFK extends SchemaBase {
 
@@ -66,56 +73,62 @@ public class TestFKCColumnPairR {
             addForeignKeyConstraint(new ForeignKeyConstraint(t1, a, t2, d));
         }
     }
-    SchemaOneColFK schemaOneColFK = new SchemaOneColFK("schema");
-    List<Mutant<Schema>> schemaOneColFKMutants = new FKCColumnPairR(schemaOneColFK).mutate();
-    
-    @SuppressWarnings("serial")
-    private class SchemaTwoColFK extends SchemaBase {
+    SchemaOneColFK schemaOneColFK;
+    List<Mutant<Schema>> schemaOneColFKMutants;
 
-        public SchemaTwoColFK(String name) {
-            super(name);
-            List<Column> t1Cols = Arrays.asList(new Column[] {a, b});
-            List<Column> t2Cols = Arrays.asList(new Column[] {d, e});
-            addForeignKeyConstraint(new ForeignKeyConstraint(t1, t1Cols, t2, t2Cols));
-        }
+    public void initSchemaOneFK() {
+        schemaOneColFK = new SchemaOneColFK("schema");
+        schemaOneColFKMutants = new FKCColumnPairR(schemaOneColFK).mutate();
     }
-    SchemaTwoColFK schemaTwoColFK = new SchemaTwoColFK("schema");
-    List<Mutant<Schema>> schemaTwoColFKMutants = new FKCColumnPairR(schemaTwoColFK).mutate();
-    
-    @Test
-    public void testSchemaNoFKMutantNumber() {
-        assertEquals("No mutants should be produced for a schema with no FKs",
-                0, schemaNoFKMutants.size());
-        assertEquals("The original schema given to the operator should be unchanged",
-                new SchemaNoFK("schema"), schemaNoFK);
-    }
-    
+
     @Test
     public void testSchemaOneColFKMutantNumber() {
+        initSchemaOneFK();
         assertEquals("One mutant should be produced for a schema with one FK "
                 + "that contains one column pair", 1, schemaOneColFKMutants.size());
         assertEquals("The original schema given to the operator should be unchanged",
                 new SchemaOneColFK("schema"), schemaOneColFK);
     }
-    
+
     @Test
     public void testSchemaOneColFKMutant1() {
+        initSchemaOneFK();
         Schema mutant = schemaOneColFKMutants.get(0).getMutatedArtefact();
         assertEquals("The first mutant produced for a schema with one FK that "
                 + "contains one column pair should contain no FKs",
                 0, mutant.getForeignKeyConstraints().size());
     }
-    
+
+    @SuppressWarnings("serial")
+    private class SchemaTwoColFK extends SchemaBase {
+
+        public SchemaTwoColFK(String name) {
+            super(name);
+            List<Column> t1Cols = Arrays.asList(new Column[]{a, b});
+            List<Column> t2Cols = Arrays.asList(new Column[]{d, e});
+            addForeignKeyConstraint(new ForeignKeyConstraint(t1, t1Cols, t2, t2Cols));
+        }
+    }
+    SchemaTwoColFK schemaTwoColFK;
+    List<Mutant<Schema>> schemaTwoColFKMutants;
+
+    public void initSchemaTwoColFK() {
+        schemaTwoColFK = new SchemaTwoColFK("schema");
+        schemaTwoColFKMutants = new FKCColumnPairR(schemaTwoColFK).mutate();
+    }
+
     @Test
     public void testSchemaTwoColFKMutantNumber() {
+        initSchemaTwoColFK();
         assertEquals("Two mutants should be produced for a schema with one FK "
                 + "that contains two column pairs", 2, schemaTwoColFKMutants.size());
         assertEquals("The original schema given to the operator should be unchanged",
                 new SchemaTwoColFK("schema"), schemaTwoColFK);
     }
-    
+
     @Test
     public void testSchemaTwoColFKMutantNumber1() {
+        initSchemaTwoColFK();
         Schema mutant = schemaTwoColFKMutants.get(0).getMutatedArtefact();
         assertEquals("The first mutant produced for a schema with one FK that "
                 + "contains two column pairs should contain one FK",
@@ -130,9 +143,10 @@ public class TestFKCColumnPairR {
                 + "first column pair removed",
                 expected, mutant.getForeignKeyConstraints().get(0));
     }
-    
+
     @Test
     public void testSchemaTwoColFKMutantNumber2() {
+        initSchemaTwoColFK();
         Schema mutant = schemaTwoColFKMutants.get(1).getMutatedArtefact();
         assertEquals("The second mutant produced for a schema with one FK that "
                 + "contains two column pairs should contain one FK",
@@ -147,5 +161,4 @@ public class TestFKCColumnPairR {
                 + "second column pair removed",
                 expected, mutant.getForeignKeyConstraints().get(0));
     }
-    
 }

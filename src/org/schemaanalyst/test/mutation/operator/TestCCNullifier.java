@@ -62,23 +62,30 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t1, expr));
         }
     }
-    SchemaOneConstraint oneConstraintSchema = new SchemaOneConstraint("schema");
-    List<Mutant<Schema>> oneConstraintSchemaMutants = new CCNullifier(oneConstraintSchema).mutate();
+    SchemaOneConstraint oneConstraintSchema;
+    List<Mutant<Schema>> oneConstraintSchemaMutants;
+
+    private void initOneConstraintSchema() {
+        oneConstraintSchema = new SchemaOneConstraint("schema");
+        oneConstraintSchemaMutants = new CCNullifier(oneConstraintSchema).mutate();
+    }
 
     @Test
     public void testSchemaOneConstraintMutantNumber() {
+        initOneConstraintSchema();
         assertEquals("One mutant should be produced for a schema with one check",
                 1, oneConstraintSchemaMutants.size());
     }
 
     @Test
     public void testSchemaOneConstraintMutant1() {
+        initOneConstraintSchema();
         assertEquals("The first mutant of a schema with one constraint should "
                 + "have no constraints remaining",
                 0, oneConstraintSchemaMutants.get(0).getMutatedArtefact().getCheckConstraints().size());
     }
 
-    @SuppressWarnings("serial")    
+    @SuppressWarnings("serial")
     private class SchemaTwoConstraints extends Schema {
 
         public SchemaTwoConstraints(String name) {
@@ -99,11 +106,17 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t1, expr2));
         }
     }
-    SchemaTwoConstraints twoConstraintSchema = new SchemaTwoConstraints("schema");
-    List<Mutant<Schema>> twoConstraintSchemaMutants = new CCNullifier(twoConstraintSchema).mutate();
+    SchemaTwoConstraints twoConstraintSchema;
+    List<Mutant<Schema>> twoConstraintSchemaMutants;
+
+    public void initTwoConstraintSchema() {
+        twoConstraintSchema = new SchemaTwoConstraints("schema");
+        twoConstraintSchemaMutants = new CCNullifier(twoConstraintSchema).mutate();
+    }
 
     @Test
     public void testSchemaTwoConstraintMutantNumber() {
+        initTwoConstraintSchema();
         assertEquals("Two mutants should be produced for a schema with two "
                 + "checks",
                 2, twoConstraintSchemaMutants.size());
@@ -111,6 +124,7 @@ public class TestCCNullifier {
 
     @Test
     public void testSchemaTwoConstraintsMutant1() {
+        initTwoConstraintSchema();
         Schema mutant = twoConstraintSchemaMutants.get(0).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
         Column c1 = t1.getColumn("c1");
@@ -127,6 +141,7 @@ public class TestCCNullifier {
 
     @Test
     public void testSchemaTwoConstraintsMutant2() {
+        initTwoConstraintSchema();
         Schema mutant = twoConstraintSchemaMutants.get(1).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
         Column c1 = t1.getColumn("c1");
@@ -166,26 +181,33 @@ public class TestCCNullifier {
             this.addCheckConstraint(new CheckConstraint(t2, expr2));
         }
     }
-    SchemaTwoTables twoTablesSchema = new SchemaTwoTables("schema");
-    List<Mutant<Schema>> twoTablesSchemaMutants = new CCNullifier(twoTablesSchema).mutate();
+    SchemaTwoTables twoTablesSchema;
+    List<Mutant<Schema>> twoTablesSchemaMutants;
+
+    public void initTwoTablesSchema() {
+        twoTablesSchema = new SchemaTwoTables("schema");
+        twoTablesSchemaMutants = new CCNullifier(twoTablesSchema).mutate();
+    }
 
     @Test
     public void testSchemaTwoTablesMutantNumber() {
+        initTwoTablesSchema();
         assertEquals("Two mutants should be produced for a schema with two "
                 + "tables that each have one constraint",
                 2, twoTablesSchemaMutants.size());
     }
-    
+
     @Test
     public void testSchemaTwoTablesMutantOne() {
+        initTwoTablesSchema();
         Schema mutant = twoTablesSchemaMutants.get(0).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
         Table t2 = mutant.getTable("t2");
         Column c2 = t2.getColumn("c2");
         Expression expr = new RelationalExpression(
-                    new ColumnExpression(t2, c2),
-                    RelationalOperator.GREATER,
-                    new ConstantExpression(new NumericValue(10)));
+                new ColumnExpression(t2, c2),
+                RelationalOperator.GREATER,
+                new ConstantExpression(new NumericValue(10)));
         assertEquals("The first mutant of a schema with two tables that each "
                 + "have one constraint should contain one check",
                 1, mutant.getCheckConstraints().size());
@@ -197,18 +219,19 @@ public class TestCCNullifier {
                 + "should be the expression of the second check constraint",
                 expr, mutant.getCheckConstraints().get(0).getExpression());
     }
-    
+
     @Test
     public void testSchemaTwoTablesMutantTwo() {
+        initTwoTablesSchema();
         Schema mutant = twoTablesSchemaMutants.get(1).getMutatedArtefact();
         Table t1 = mutant.getTable("t1");
         Column c1 = t1.getColumn("c1");
         Table t2 = mutant.getTable("t2");
         t2.getColumn("c2");
         Expression expr = new RelationalExpression(
-                    new ColumnExpression(t1, c1),
-                    RelationalOperator.LESS,
-                    new ConstantExpression(new NumericValue(5)));
+                new ColumnExpression(t1, c1),
+                RelationalOperator.LESS,
+                new ConstantExpression(new NumericValue(5)));
         assertEquals("The second mutant of a schema with two tables that each "
                 + "have one constraint should contain one check",
                 1, mutant.getCheckConstraints().size());
