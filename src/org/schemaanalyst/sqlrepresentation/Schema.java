@@ -821,7 +821,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	 * @return the list of constraints defined on the table.
 	 */
 	public List<Constraint> getConstraints(Table table) {
-		List<Constraint> constraints = new ArrayList<Constraint>();
+		List<Constraint> constraints = new ArrayList<>();
 		if (hasPrimaryKeyConstraint(table)) {
 			constraints.add(getPrimaryKeyConstraint(table));
 		}
@@ -838,7 +838,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	 * @return a list of all constraints.
 	 */
 	public List<Constraint> getConstraints() {
-		List<Constraint> constraints = new ArrayList<Constraint>();
+		List<Constraint> constraints = new ArrayList<>();
 		constraints.addAll(primaryKeyConstraints);
 		constraints.addAll(checkConstraints);
 		constraints.addAll(foreignKeyConstraints);
@@ -864,7 +864,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 					+ "\" in this schema for constraint");
 		}
 
-		List<C> constraintsForTable = new ArrayList<C>();
+		List<C> constraintsForTable = new ArrayList<>();
 		for (C constraint : constraintSet) {
 			if (constraint.getTable().equals(table)) {
 				constraintsForTable.add(constraint);

@@ -57,7 +57,7 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param columns The columns involved in the integrity constraint.
      */
     public void setColumns(List<Column> columns) {
-        this.columns = new IdentifiableEntitySet<Column>();
+        this.columns = new IdentifiableEntitySet<>();
         for (Column column : columns) {
             if (!table.hasColumn(column)) {
                 throw new SQLRepresentationException(

@@ -27,7 +27,7 @@ public class Table extends IdentifiableEntity
                     "Table names cannot be null");
         }        
         setName(name);
-        columns = new IdentifiableEntitySet<Column>();
+        columns = new IdentifiableEntitySet<>();
     }
 
     /** 

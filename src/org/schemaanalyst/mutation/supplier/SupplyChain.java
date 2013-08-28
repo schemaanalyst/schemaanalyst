@@ -22,7 +22,7 @@ public class SupplyChain {
 			Supplier<A, B> supplier1,
 			Supplier<B, C> supplier2) {
 
-		return new LinkedSupplier<A, B, C>(
+		return new LinkedSupplier<>(
 				supplier1,
 				supplier2);
 	}	
@@ -42,9 +42,9 @@ public class SupplyChain {
 			Supplier<B, C> supplier2,
 			Supplier<C, D> supplier3) {
 
-		return new LinkedSupplier<A, B, D>(
+		return new LinkedSupplier<>(
 				supplier1,
-				new LinkedSupplier<B, C, D>(
+				new LinkedSupplier<>(
 						supplier2,
 						supplier3));	
 	}
@@ -66,11 +66,11 @@ public class SupplyChain {
 			Supplier<C, D> supplier3,
 			Supplier<D, E> supplier4) {
 
-		return new LinkedSupplier<A, B, E>(
+		return new LinkedSupplier<>(
 				supplier1,
-				new LinkedSupplier<B, C, E>(
+				new LinkedSupplier<>(
 						supplier2,
-						new LinkedSupplier<C, D, E>(
+						new LinkedSupplier<>(
 								supplier3,
 								supplier4)));
 	}	

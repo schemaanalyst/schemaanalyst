@@ -23,8 +23,8 @@ public class MutationPipeline<A> implements MutantProducer<A> {
 	private List<EquivalenceReducer<A>> reducers;
 	
 	public MutationPipeline() {
-		this.producers = new ArrayList<MutantProducer<A>>();
-		this.reducers = new ArrayList<EquivalenceReducer<A>>();
+		this.producers = new ArrayList<>();
+		this.reducers = new ArrayList<>();
 	}
 	
 	public void addProducer(MutantProducer<A> producer) {
@@ -37,7 +37,7 @@ public class MutationPipeline<A> implements MutantProducer<A> {
 		
 	@Override
 	public List<Mutant<A>> mutate() {
-		List<Mutant<A>> mutants = new ArrayList<Mutant<A>>();
+		List<Mutant<A>> mutants = new ArrayList<>();
 		for (MutantProducer<A> producer : producers) {
 			mutants.addAll(producer.mutate());
 		}		

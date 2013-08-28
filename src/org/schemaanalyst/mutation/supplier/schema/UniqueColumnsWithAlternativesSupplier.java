@@ -35,7 +35,7 @@ public class UniqueColumnsWithAlternativesSupplier extends
 	@Override
 	protected Pair<List<Column>> getComponent(UniqueConstraint uniqueConstraint) {
 		List<Column> columns = uniqueConstraint.getColumns();
-		List<Column> alternatives = new ArrayList<Column>();
+		List<Column> alternatives = new ArrayList<>();
 
 		for (Column column : uniqueConstraint.getTable().getColumns()) {
 			if (!columns.contains(column)) {

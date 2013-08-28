@@ -36,7 +36,7 @@ public class SchemaSQLRepairer extends Runner {
     	List<String> sqlLines = SQLRepairer.readLines(sqlFileInput);
 
 		// iterate through all of the lines of SQL and repair them so that they can be parsed correctly
-		ArrayList<String> sqlLinesRepaired = new ArrayList<String>();
+		ArrayList<String> sqlLinesRepaired = new ArrayList<>();
     	for(String sqlLine : sqlLines) {
 			String sqlNoSingleQuotes = SQLRepairer.replaceSingleQuotesWithDoubleQuotes(sqlLine);
 			String sqlNoDouble = SQLRepairer.replaceDoubleWithReal(sqlNoSingleQuotes);
@@ -52,12 +52,11 @@ public class SchemaSQLRepairer extends Runner {
 	  	// get the file; assuming that it will be stored in the casestudies directory
         File sqlFileOutput = new File(locationsConfiguration.getSchemaSrcDir() + File.separator + schemaOutput + ".sql");
 		try {
-			// write out the sql lines that have all been repaired
-			PrintWriter writer = new PrintWriter(sqlFileOutput);
-			for(String sqlLineRepaired : sqlLinesRepaired) {
-				writer.println(sqlLineRepaired);
-			}
-			writer.close();
+            try (PrintWriter writer = new PrintWriter(sqlFileOutput)) {
+                for(String sqlLineRepaired : sqlLinesRepaired) {
+                    writer.println(sqlLineRepaired);
+                }
+            }
 		}
 		catch(IOException e) {
 		 	throw new RuntimeException(e);

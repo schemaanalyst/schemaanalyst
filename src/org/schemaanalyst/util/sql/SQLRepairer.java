@@ -111,14 +111,14 @@ public class SQLRepairer {
 	 * @return The list of strings.
 	 */
 	public static List<String> readLines(File file) {
-		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> list = new ArrayList<>();
 		try {
-			BufferedReader br = new BufferedReader(new FileReader(file));
-			String line;
-			while ((line = br.readLine()) != null) {
-				list.add(line);
-			}
-			br.close();
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    list.add(line);
+                }
+            }
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

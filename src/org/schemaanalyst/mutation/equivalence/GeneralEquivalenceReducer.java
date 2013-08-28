@@ -41,6 +41,6 @@ public class GeneralEquivalenceReducer<A> extends EquivalenceReducer<A> {
 			mutantSet.remove(originalArtefact);
 		}
 		
-		return new ArrayList<Mutant<A>>();
+		return new ArrayList<>();
 	}
 }

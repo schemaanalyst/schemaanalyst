@@ -28,6 +28,6 @@ public class ICST2013Pipeline extends MutationPipeline<Schema> {
 		
 		addReducer(new PrimaryKeyColumnNotNullRemover());
 		addReducer(new PrimaryKeyColumnsUniqueRemover());
-		addReducer(new GeneralEquivalenceReducer<Schema>(schema));
+		addReducer(new GeneralEquivalenceReducer<>(schema));
 	}	
 }

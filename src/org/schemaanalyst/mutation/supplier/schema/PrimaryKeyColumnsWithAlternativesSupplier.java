@@ -36,7 +36,7 @@ public class PrimaryKeyColumnsWithAlternativesSupplier extends
 	protected Pair<List<Column>> getComponent(
 			PrimaryKeyConstraint primaryKeyConstraint) {
 		List<Column> columns = primaryKeyConstraint.getColumns();
-		List<Column> alternatives = new ArrayList<Column>();
+		List<Column> alternatives = new ArrayList<>();
 
 		for (Column column : primaryKeyConstraint.getTable().getColumns()) {
 			if (!columns.contains(column)) {
