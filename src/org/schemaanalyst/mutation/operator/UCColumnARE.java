@@ -16,64 +16,78 @@ import org.schemaanalyst.mutation.supplier.schema.UniqueConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.util.Pair;
 
 /**
- * 
+ *
  * @author Phil McMinn
  *
  */
 public class UCColumnARE implements MutantProducer<Schema> {
 
-	private Schema schema;
-	
-	public UCColumnARE(Schema schema) {
-		this.schema = schema;
-	}
-	
-	public List<Mutant<Schema>> mutate() {
-		// Create the collection in which to store created mutants.
-		List<Mutant<Schema>> mutants = new ArrayList<>();
+    private Schema schema;
 
-		for (Table table : schema.getTables()) {
-			for (Column column : table.getColumns()) {
+    public UCColumnARE(Schema schema) {
+        this.schema = schema;
+    }
 
-				// create a NOT NULL constraint on the column
-				Schema dupAddSchema = schema.duplicate();
-				Table dupAddTable = dupAddSchema.getTable(table.getName());
-				Column dupAddColumn = dupAddTable.getColumn(column.getName());
-				dupAddSchema.createNotNullConstraint(dupAddTable, dupAddColumn);
-				mutants.add(new Mutant<>(dupAddSchema,
-						"Added NOT NULL to column " + dupAddColumn
-								+ " in table " + dupAddTable));
-			}
-		}
-		
-		Supplier<Schema, List<Column>> columnsSupplier = SupplyChain.chain(
-				new UniqueConstraintSupplier(),
-				new UniqueColumnSupplier());
-		columnsSupplier.initialise(schema);
-		ListElementRemover<Schema, Column> columnRemover = new ListElementRemover<>(
-				columnsSupplier);
-		mutants.addAll(columnRemover.mutate());
+    public List<Mutant<Schema>> mutate() {
+        // Create the collection in which to store created mutants.
+        List<Mutant<Schema>> mutants = new ArrayList<>();
 
-		Supplier<Schema, Pair<List<Column>>> columnsWithAlternativesSupplier = 
-				SupplyChain.chain(
-						new UniqueConstraintSupplier(),
-						new UniqueColumnsWithAlternativesSupplier());
-		columnsWithAlternativesSupplier.initialise(schema);
-		ListElementAdder<Schema, Column> columnAdder = new ListElementAdder<>(
-				columnsWithAlternativesSupplier);
-		mutants.addAll(columnAdder.mutate());
+        for (Table table : schema.getTables()) {
+            for (Column column : table.getColumns()) {
+                if (!isUnique(column, schema)) {
+                    // create a NOT NULL constraint on the column
+                    Schema dupAddSchema = schema.duplicate();
+                    Table dupAddTable = dupAddSchema.getTable(table.getName());
+                    Column dupAddColumn = dupAddTable.getColumn(column.getName());
+                    dupAddSchema.createUniqueConstraint(dupAddTable, dupAddColumn);
+                    mutants.add(new Mutant<>(dupAddSchema,
+                            "Added UNIQUE to column " + dupAddColumn
+                            + " in table " + dupAddTable));
+                }
+            }
+        }
 
-		// restart the process
-		columnsWithAlternativesSupplier.initialise(schema); 
+        Supplier<Schema, List<Column>> columnsSupplier = SupplyChain.chain(
+                new UniqueConstraintSupplier(),
+                new UniqueColumnSupplier());
+        columnsSupplier.initialise(schema);
+        ListElementRemover<Schema, Column> columnRemover = new ListElementRemover<>(
+                columnsSupplier);
+        mutants.addAll(columnRemover.mutate());
 
-		ListElementExchanger<Schema, Column> columnExchanger = new ListElementExchanger<>(
-				columnsWithAlternativesSupplier);
-		mutants.addAll(columnExchanger.mutate());
-		
-		return mutants;
-	}
+        Supplier<Schema, Pair<List<Column>>> columnsWithAlternativesSupplier =
+                SupplyChain.chain(
+                new UniqueConstraintSupplier(),
+                new UniqueColumnsWithAlternativesSupplier());
+        columnsWithAlternativesSupplier.initialise(schema);
+        ListElementAdder<Schema, Column> columnAdder = new ListElementAdder<>(
+                columnsWithAlternativesSupplier);
+        mutants.addAll(columnAdder.mutate());
 
+        // restart the process
+        columnsWithAlternativesSupplier.initialise(schema);
+
+        ListElementExchanger<Schema, Column> columnExchanger = new ListElementExchanger<>(
+                columnsWithAlternativesSupplier);
+        mutants.addAll(columnExchanger.mutate());
+
+        return mutants;
+    }
+
+    private boolean isUnique(Column column, Schema schema) {
+        boolean found = false;
+        for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints()) {
+            if (uniqueConstraint.getNumColumns() == 1) {
+                if (uniqueConstraint.getColumns().get(0).equals(column)) {
+                    found = true;
+                    break;
+                }
+            }
+        }
+        return found;
+    }
 }
