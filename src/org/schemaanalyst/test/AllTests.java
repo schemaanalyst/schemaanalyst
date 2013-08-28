@@ -37,6 +37,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.operator.TestCCNullifier.class,
 	org.schemaanalyst.test.mutation.operator.TestCCRelationalExpressionOperatorE.class,
 	org.schemaanalyst.test.mutation.operator.TestFKCColumnPairR.class,
+    org.schemaanalyst.test.mutation.operator.TestNNCAR.class,
 	org.schemaanalyst.test.mutation.operator.TestPKCColumnARE.class,
 	org.schemaanalyst.test.mutation.supplier.TestAbstractSupplier.class,
 	org.schemaanalyst.test.mutation.supplier.TestIteratingSupplier.class,
