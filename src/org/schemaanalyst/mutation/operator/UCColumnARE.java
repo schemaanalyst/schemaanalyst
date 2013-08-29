@@ -39,7 +39,7 @@ public class UCColumnARE implements MutantProducer<Schema> {
         for (Table table : schema.getTables()) {
             for (Column column : table.getColumns()) {
                 if (!isUnique(column, schema)) {
-                    // create a NOT NULL constraint on the column
+                    // create a UNIQUE constraint on the column
                     Schema dupAddSchema = schema.duplicate();
                     Table dupAddTable = dupAddSchema.getTable(table.getName());
                     Column dupAddColumn = dupAddTable.getColumn(column.getName());
