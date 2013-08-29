@@ -2,6 +2,8 @@ package org.schemaanalyst.sqlrepresentation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.ListIterator;
@@ -872,6 +874,42 @@ public class Schema extends IdentifiableEntity implements Serializable {
 		}
 		return constraintsForTable;
 	}
+    
+    /**
+     * Tests whether the provided set of columns are currently part of a UNIQUE 
+     * constraint in the given table
+     * @param table The table
+     * @param column The columns
+     * @return Whether they have UNIQUE
+     */
+    public boolean isUnique(Table table, Column... column) {
+        boolean found = false;
+        HashSet<Column> columns = new HashSet<>(Arrays.asList(column));
+        for (UniqueConstraint uniqueConstraint: getUniqueConstraints(table)) {
+            HashSet<Column> ucColumns = new HashSet<>(uniqueConstraint.getColumns());
+            if (columns.size() == ucColumns.size() && columns.containsAll(ucColumns)) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+    
+    /**
+     * Tests whether the provided column currently has a NOT NULL constraint
+     * @param column The column
+     * @return Whether it has NOT NULL
+     */
+    public boolean isNotNull(Column column) {
+        boolean found = false;
+        for (NotNullConstraint constraint : getNotNullConstraints()) {
+            if (constraint.getColumn() == column) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
 
 	/**
 	 * {@inheritDoc}
