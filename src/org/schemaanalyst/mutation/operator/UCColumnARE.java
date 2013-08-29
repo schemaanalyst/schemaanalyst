@@ -38,7 +38,7 @@ public class UCColumnARE implements MutantProducer<Schema> {
 
         for (Table table : schema.getTables()) {
             for (Column column : table.getColumns()) {
-                if (!isUnique(column, schema)) {
+                if (!schema.isUnique(table, column)) {
                     // create a UNIQUE constraint on the column
                     Schema dupAddSchema = schema.duplicate();
                     Table dupAddTable = dupAddSchema.getTable(table.getName());
@@ -76,18 +76,5 @@ public class UCColumnARE implements MutantProducer<Schema> {
         mutants.addAll(columnExchanger.mutate());
 
         return mutants;
-    }
-
-    private boolean isUnique(Column column, Schema schema) {
-        boolean found = false;
-        for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints()) {
-            if (uniqueConstraint.getNumColumns() == 1) {
-                if (uniqueConstraint.getColumns().get(0).equals(column)) {
-                    found = true;
-                    break;
-                }
-            }
-        }
-        return found;
     }
 }

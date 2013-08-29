@@ -29,7 +29,7 @@ public class NNCAR implements MutantProducer<Schema> {
 
         for (Table table : schema.getTables()) {
             for (Column column : table.getColumns()) {
-                if (!hasNotNull(column, schema)) {
+                if (!schema.isNotNull(table, column)) {
                     // create a NOT NULL constraint on the column
                     Schema dupAddSchema = schema.duplicate();
                     Table dupAddTable = dupAddSchema.getTable(table.getName());
@@ -55,16 +55,5 @@ public class NNCAR implements MutantProducer<Schema> {
         }
 
         return mutants;
-    }
-
-    private boolean hasNotNull(Column column, Schema schema) {
-        boolean found = false;
-        for (NotNullConstraint constraint : schema.getNotNullConstraints()) {
-            if (constraint.getColumn() == column) {
-                found = true;
-                break;
-            }
-        }
-        return found;
     }
 }

@@ -897,12 +897,13 @@ public class Schema extends IdentifiableEntity implements Serializable {
     
     /**
      * Tests whether the provided column currently has a NOT NULL constraint
+     * @param table The table
      * @param column The column
      * @return Whether it has NOT NULL
      */
-    public boolean isNotNull(Column column) {
+    public boolean isNotNull(Table table, Column column) {
         boolean found = false;
-        for (NotNullConstraint constraint : getNotNullConstraints()) {
+        for (NotNullConstraint constraint : getNotNullConstraints(table)) {
             if (constraint.getColumn() == column) {
                 found = true;
                 break;
