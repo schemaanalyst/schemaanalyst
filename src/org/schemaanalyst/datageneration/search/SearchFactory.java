@@ -1,5 +1,6 @@
 package org.schemaanalyst.datageneration.search;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.schemaanalyst.data.Data;
@@ -26,7 +27,7 @@ public class SearchFactory {
                 try {
                     Object[] args = {randomSeed, maxEvaluations};
                     return (Search<Data>) m.invoke(null, args);
-                } catch (Exception e) {
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }

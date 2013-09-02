@@ -1,5 +1,6 @@
 package org.schemaanalyst.datageneration.cellrandomisation;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class CellRandomiserFactory {
                 try {
                     Object[] args = {random};
                     return (CellRandomiser) m.invoke(null, args);
-                } catch (Exception e) {
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }

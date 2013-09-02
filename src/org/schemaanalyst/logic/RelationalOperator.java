@@ -29,20 +29,21 @@ public enum RelationalOperator {
     }
 
     public static RelationalOperator getRelationalOperator(String string) {
-        if (string.equals("=")) {
-            return EQUALS;
-        } else if (string.equals("!=")) {
-            return NOT_EQUALS;
-        } else if (string.equals(">")) {
-            return GREATER;
-        } else if (string.equals(">=")) {
-            return GREATER_OR_EQUALS;
-        } else if (string.equals("<")) {
-            return LESS;
-        } else if (string.equals("<=")) {
-            return LESS_OR_EQUALS;
-        } else {
-            throw new RelationalOperatorException("\"" + string + "\" is not a valid relational operator");
+        switch (string) {
+            case "=":
+                return EQUALS;
+            case "!=":
+                return NOT_EQUALS;
+            case ">":
+                return GREATER;
+            case ">=":
+                return GREATER_OR_EQUALS;
+            case "<":
+                return LESS;
+            case "<=":
+                return LESS_OR_EQUALS;
+            default:
+                throw new RelationalOperatorException("\"" + string + "\" is not a valid relational operator");
         }
     }
 
