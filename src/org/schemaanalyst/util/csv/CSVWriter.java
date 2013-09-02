@@ -3,6 +3,7 @@
 package org.schemaanalyst.util.csv;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -55,6 +56,11 @@ public class CSVWriter {
      */
     public synchronized void write(CSVResult result) {
         boolean writeHeader = writeHeader();
+        File output = new File(path);
+        File parent = output.getParentFile();
+        if (parent != null) {
+            parent.mkdirs();
+        }
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(path, true)))) {
             if (writeHeader) {
                 writer.println(StringUtils.implode(result.getValues().keySet(), separator));

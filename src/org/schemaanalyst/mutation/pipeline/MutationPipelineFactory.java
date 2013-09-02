@@ -14,11 +14,11 @@ import org.apache.commons.lang3.reflect.ConstructorUtils;
  */
 public class MutationPipelineFactory {
 
-    public static <A> MutationPipeline<A> instantiate(String name, A artifact) throws  ClassNotFoundException,
-                                                                            InstantiationException,
-                                                                            IllegalAccessException,
-                                                                            NoSuchMethodException,
-                                                                            InvocationTargetException {
+    public static <A> MutationPipeline<A> instantiate(String name, A artifact) throws ClassNotFoundException,
+            InstantiationException,
+            IllegalAccessException,
+            NoSuchMethodException,
+            InvocationTargetException {
         if (!getPipelineChoices().contains(name)) {
             throw new RuntimeException("Pipeline \"" + name + "\" is "
                     + "unrecognised or not supported");
@@ -33,6 +33,7 @@ public class MutationPipelineFactory {
     public static List<String> getPipelineChoices() {
         List<String> choices = new ArrayList<>();
         choices.add("ICST2013");
+        choices.add("ICST2013NoReducers");
         return choices;
     }
 }
