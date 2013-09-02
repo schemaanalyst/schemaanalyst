@@ -76,13 +76,13 @@ class ConstraintMapper {
                         node.getColumnList());
                 break;
             case fake_auto_increment:
-                LOGGER.warning("Ignoring AUTO_INCREMENT -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.log(Level.WARNING, "Ignoring AUTO_INCREMENT -- \"{0}\" {1}", new Object[]{node, node.getLineNo()});
                 break;
             case default_value:
-                LOGGER.warning("Ignoring DEFAULT -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.log(Level.WARNING, "Ignoring DEFAULT -- \"{0}\" {1}", new Object[]{node, node.getLineNo()});
                 break;
             case key:
-                LOGGER.warning("Ignoring KEY -- \"" + node + "\" " + node.getLineNo());
+                LOGGER.log(Level.WARNING, "Ignoring KEY -- \"{0}\" {1}", new Object[]{node, node.getLineNo()});
                 break;
             default:
                 throw new UnsupportedSQLException(node);
