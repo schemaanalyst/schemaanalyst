@@ -1,6 +1,6 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis.technique;
 
 import java.io.File;
 import java.util.List;
@@ -22,7 +22,10 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
-import deprecated.mutation.mutators.ConstraintMutatorWithoutFK;
+import java.lang.reflect.InvocationTargetException;
+import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutationPipeline;
+import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 
 /**
  * Run the 'Original' style of mutation analysis. This requires that the result
@@ -37,8 +40,7 @@ import deprecated.mutation.mutators.ConstraintMutatorWithoutFK;
 @RequiredParameters("casestudy trial")
 public class Original extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(Original.class.getName());    
-    
+    private final static Logger LOGGER = Logger.getLogger(Original.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -62,8 +64,14 @@ public class Original extends Runner {
     /**
      * Whether to submit drop statements prior to running.
      */
-    @Parameter(value="Whether to submit drop statements prior to running.", valueAsSwitch = "true")
+    @Parameter(value = "Whether to submit drop statements prior to running.", valueAsSwitch = "true")
     protected boolean dropfirst = false;
+    /**
+     * The mutation pipeline to use to generate mutants.
+     */
+    @Parameter(value = "The mutation pipeline to use to generate mutants.",
+            choicesMethod = "org.schemaanalyst.mutation.pipeline.SchemaPipelineFactory.getPipelineChoices")
+    protected String mutationPipeline = "ICST2013";
 
     @Override
     public void task() {
@@ -74,7 +82,7 @@ public class Original extends Runner {
         if (outputfolder == null) {
             outputfolder = locationsConfiguration.getResultsDir() + File.separator;
         }
-        
+
         // Start results file
         CSVResult result = new CSVResult();
         result.addValue("technique", this.getClass().getName());
@@ -106,15 +114,20 @@ public class Original extends Runner {
 
         // Start mutation timing
         long startTime = System.currentTimeMillis();
-
-        // Create the mutant schemas
-        ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
-        List<Schema> mutants = cm.produceMutants(schema);
+        
+        // Get the mutation pipeline and generate mutants
+        MutationPipeline<Schema> pipeline;
+        try {
+            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+        List<Mutant<Schema>> mutants = pipeline.mutate();
 
         // Begin mutation analysis
         int killed = 0;
         for (int id = 0; id < mutants.size(); id++) {
-            Schema mutant = mutants.get(id);
+            Schema mutant = mutants.get(id).getMutatedArtefact();
 
             LOGGER.log(Level.INFO, "Mutant {0}", id);
 
