@@ -4,7 +4,6 @@ package org.schemaanalyst.mutation.analysis.technique;
 
 import java.io.File;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
@@ -23,6 +22,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;

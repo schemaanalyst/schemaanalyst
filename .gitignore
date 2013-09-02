@@ -6,3 +6,5 @@ dist/*.*
 config/*.local
 docs
 report
+database
+results

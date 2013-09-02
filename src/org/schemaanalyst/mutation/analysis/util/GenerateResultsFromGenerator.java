@@ -6,6 +6,7 @@ package org.schemaanalyst.mutation.analysis.util;
 import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.datageneration.ConstraintCovererFactory;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
@@ -85,26 +86,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      * @return The data generator.
      */
     private DataGenerator constructDataGenerator(Schema schema, DBMS dbms) {
-        Random random = new SimpleRandom(randomseed);
-        // TODO: Use DataGeneratorFactory
-        // return DataGeneratorFactory.instantiate(datagenerator, schema, dbms, random, CellRandomisationFactory.instantiate(randomprofile, random));
-        CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(randomprofile, random);
-        Search<Data> search = new AlternatingValueSearch(random,
-                new NoDataInitialization(),
-                new RandomDataInitializer(cellRandomiser));
-
-        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(search.getEvaluationsCounter(),
-                maxevaluations),
-                new OptimumTerminationCriterion<>(search));
-
-        search.setTerminationCriterion(terminationCriterion);
-
-        return new SearchConstraintCoverer(search,
-                schema,
-                dbms,
-                satisfyrows,
-                negaterows);
+        return ConstraintCovererFactory.alternatingValueDefaults(schema, dbms, randomprofile, randomseed, maxevaluations);
     }
 
     public static void main(String[] args) {

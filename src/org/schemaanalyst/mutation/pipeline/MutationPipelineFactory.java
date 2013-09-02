@@ -6,6 +6,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.reflect.ConstructorUtils;
 
 /**
  *
@@ -25,7 +26,7 @@ public class MutationPipelineFactory {
 
         String className = "org.schemaanalyst.mutation.pipeline." + name + "Pipeline";
         Class<MutationPipeline<A>> pipelineClass = (Class<MutationPipeline<A>>) Class.forName(className);
-        Constructor<MutationPipeline<A>> constructor = pipelineClass.getConstructor(artifact.getClass());
+        Constructor<MutationPipeline<A>> constructor = ConstructorUtils.getMatchingAccessibleConstructor(pipelineClass, artifact.getClass());
         return constructor.newInstance(artifact);
     }
 

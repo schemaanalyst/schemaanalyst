@@ -14,7 +14,7 @@ import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 public class ConstraintSQLWriter {
 
     protected ExpressionSQLWriter expressionSQLWriter;
-    
+
     public void setExpressionSQLWriter(ExpressionSQLWriter expressionSQLWriter) {
         this.expressionSQLWriter = expressionSQLWriter;
     }
@@ -64,7 +64,7 @@ public class ConstraintSQLWriter {
 
     public String writeCheck(CheckConstraint check) {
         Expression expression = check.getExpression();
-        return "CHECK (" + expressionSQLWriter.writeExpression(expression) + ")";        
+        return "CHECK (" + expressionSQLWriter.writeExpression(expression) + ")";
     }
 
     public String writeForeignKey(ForeignKeyConstraint foreignKey) {
@@ -98,7 +98,7 @@ public class ConstraintSQLWriter {
     }
 
     public String writeConstraintName(Constraint constraint) {
-        if (constraint.hasIdentifier()) {
+        if (constraint.hasIdentifier() && constraint.getName() != null) {
             return "CONSTRAINT " + constraint.getName() + " ";
         } else {
             return "";
