@@ -5,26 +5,12 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.ConstraintCovererFactory;
 import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.GoalReport;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
-import org.schemaanalyst.datageneration.search.Search;
-import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
-import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
-import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
-import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.random.Random;
-import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 
