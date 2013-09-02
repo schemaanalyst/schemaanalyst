@@ -10,8 +10,8 @@ import deprecated.mutation.MutantRecord;
 import deprecated.mutation.MutantReport;
 import deprecated.mutation.MutationTypeStatusSummary;
 import deprecated.mutation.MutationUtilities;
-import deprecated.mutation.SQLExecutionRecord;
-import deprecated.mutation.SQLExecutionReport;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 
 public class TestMutationReport {
 

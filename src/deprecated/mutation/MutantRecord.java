@@ -1,5 +1,7 @@
 package deprecated.mutation;
 
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
+
 /**
  * This class represents the two-tuple (SQL Statement, Return Code). Used
  * directly inside of the SchemaAnalyst mutation analysis process.

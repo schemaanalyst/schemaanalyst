@@ -20,8 +20,8 @@ import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
-import deprecated.mutation.SQLExecutionReport;
-import deprecated.mutation.SQLInsertRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import deprecated.mutation.mutators.ConstraintMutatorWithoutFK;
 
 /**

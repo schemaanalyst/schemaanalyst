@@ -1,4 +1,4 @@
-package deprecated.mutation;
+package org.schemaanalyst.mutation.analysis.result;
 
 import java.util.List;
 import java.util.ArrayList;

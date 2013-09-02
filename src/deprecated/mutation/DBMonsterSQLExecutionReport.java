@@ -1,5 +1,7 @@
 package deprecated.mutation;
 
+import org.schemaanalyst.mutation.analysis.result.SQLSelectRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import java.util.List;
 import java.util.ArrayList;
 import org.schemaanalyst.util.StringUtils;

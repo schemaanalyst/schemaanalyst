@@ -1,6 +1,6 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis.util;
 
 import java.io.BufferedReader;
 import java.io.File;

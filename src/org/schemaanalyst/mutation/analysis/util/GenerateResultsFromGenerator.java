@@ -1,6 +1,6 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis.util;
 
 
 import java.util.ArrayList;
@@ -71,7 +71,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         DataGenerator dataGenerator = constructDataGenerator(schema, dbms);
         CoverageReport coverageReport = dataGenerator.generate();
         for (GoalReport goalReport : coverageReport.getSuccessfulGoalReports()) {
-            List<String> stmts = sqlWriter.writeInsertStatements(goalReport.getData());
+            List<String> stmts = sqlWriter.writeInsertStatements(schema, goalReport.getData());
             insertStms.addAll(stmts);
         }
         return insertStms;

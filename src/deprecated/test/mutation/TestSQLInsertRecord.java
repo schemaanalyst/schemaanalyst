@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 import deprecated.mutation.MutantRecord;
-import deprecated.mutation.SQLExecutionRecord;
-import deprecated.mutation.SQLInsertRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 
 public class TestSQLInsertRecord {
 

@@ -1,6 +1,6 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis.util;
 
 import java.io.File;
 import java.util.List;
@@ -15,9 +15,9 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
-import deprecated.mutation.SQLExecutionRecord;
-import deprecated.mutation.SQLExecutionReport;
-import deprecated.mutation.SQLInsertRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 
 /**
  *
