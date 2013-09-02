@@ -359,7 +359,7 @@ public abstract class Runner {
         String name;
         String value = "";
         int startPos = LONG_OPTION_PREFIX.length();
-        int equalsPos = arg.indexOf("=");
+        int equalsPos = arg.indexOf('=');
         if (equalsPos == -1) {
             name = arg.substring(startPos);
         } else {
@@ -470,7 +470,7 @@ public abstract class Runner {
 
         String choicesMethod = parameters.get(name).choicesMethod();
         if (choicesMethod.length() > 0) {
-            int methodDot = choicesMethod.lastIndexOf(".");
+            int methodDot = choicesMethod.lastIndexOf('.');
             String className = choicesMethod.substring(0, methodDot);
             String methodName = choicesMethod.substring(methodDot + 1);
 

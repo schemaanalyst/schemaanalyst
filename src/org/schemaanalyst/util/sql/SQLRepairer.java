@@ -97,7 +97,7 @@ public class SQLRepairer {
 		}
 		
 		// get the last part of the string that the matcher will not find
-		int lastIndexOfSingleQuote = sql.lastIndexOf("'");
+		int lastIndexOfSingleQuote = sql.lastIndexOf('\'');
 		sb.append(sql.substring(lastIndexOfSingleQuote+1));
 
 		// return the fully transformed string
