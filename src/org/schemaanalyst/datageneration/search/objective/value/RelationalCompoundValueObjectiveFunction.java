@@ -109,7 +109,7 @@ public class RelationalCompoundValueObjectiveFunction extends RelationalValueObj
     }
 
     protected boolean addNoSubValuesPenalty() {
-        boolean noSubValues = lhsSubValues.size() == 0 && rhsSubValues.size() == 0;
+        boolean noSubValues = lhsSubValues.isEmpty() && rhsSubValues.isEmpty();
         boolean relevantOp = op == NOT_EQUALS || op == GREATER || op == LESS;
 
         if (noSubValues && relevantOp) {

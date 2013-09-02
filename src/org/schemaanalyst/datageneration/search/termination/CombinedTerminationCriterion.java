@@ -1,6 +1,7 @@
 package org.schemaanalyst.datageneration.search.termination;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class CombinedTerminationCriterion implements TerminationCriterion {
@@ -9,9 +10,7 @@ public class CombinedTerminationCriterion implements TerminationCriterion {
 
     public CombinedTerminationCriterion(TerminationCriterion... criteria) {
         this.criteria = new ArrayList<>();
-        for (TerminationCriterion criterion : criteria) {
-            this.criteria.add(criterion);
-        }
+        this.criteria.addAll(Arrays.asList(criteria));
     }
 
     @Override

@@ -34,7 +34,7 @@ public class StringValue extends Value
     }
 
     public String get() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         for (Value value : characters) {
             NumericValue singularValue = (NumericValue) value;
             int character = singularValue.get().intValue();

@@ -121,7 +121,7 @@ class ConstraintMapper {
         List<Column> columns = mapColumns(currentTable, currentColumn, columnNameObjectList);
         List<Column> referenceColumns = mapColumns(referenceTable, null, referenceColumnNameObjectList);
 
-        if (referenceColumns.size() == 0) {
+        if (referenceColumns.isEmpty()) {
             // no reference columns we have to map those of the primary key in the reference table by default
             referenceColumns = schema.getPrimaryKeyConstraint(referenceTable).getColumns();
         }

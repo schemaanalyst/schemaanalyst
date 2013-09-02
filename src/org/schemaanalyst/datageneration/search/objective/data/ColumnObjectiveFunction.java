@@ -44,7 +44,7 @@ public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
         
         loadRows(data);
         
-        if (dataRows.size() == 0) {
+        if (dataRows.isEmpty()) {
             description +=  "(no data rows)";
             return ObjectiveValue.worstObjectiveValue(description);
         }

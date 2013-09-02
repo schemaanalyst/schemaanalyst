@@ -94,7 +94,7 @@ public class ExpressionMapper {
                     subexpressions.add(getExpression(subNode));
                 }
 
-                return new ListExpression(subexpressions.toArray(new Expression[0]));
+                return new ListExpression(subexpressions.toArray(new Expression[subexpressions.size()]));
 
             // *** COMPARISON *** 		
             case simple_comparison_t:

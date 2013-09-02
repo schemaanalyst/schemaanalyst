@@ -34,7 +34,7 @@ public class JavaWriter {
     public String writeImportStatements() {
         StringBuilder java = new StringBuilder();
         for (String classToImport : imports) {
-            java.append("import " + classToImport + ";" + System.lineSeparator());
+            java.append("import ").append(classToImport).append(";").append(System.lineSeparator());
         }
         return java.toString();
     }

@@ -242,7 +242,7 @@ public class TestIdentifiableEntitySet {
         set.add(p2);
         set.add(p3);
         
-        Person[] array = set.toArray(new Person[0]);
+        Person[] array = set.toArray(new Person[set.size()]);
         assertEquals(3, set.size());
         assertEquals(3, array.length);
         assertSame(p1, array[0]);

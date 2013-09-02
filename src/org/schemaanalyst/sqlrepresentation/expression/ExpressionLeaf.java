@@ -11,7 +11,7 @@ public abstract class ExpressionLeaf implements Expression {
     @Override
     public Expression getSubexpression(ExpressionPath expressionPath) {
         List<Integer> indices = expressionPath.getIndices();
-        if (indices.size() == 0) {
+        if (indices.isEmpty()) {
             return null;
         } else {
             throw new NonExistentSubexpressionException(this, indices.get(0));

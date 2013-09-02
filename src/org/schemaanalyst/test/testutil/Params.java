@@ -1,6 +1,7 @@
 package org.schemaanalyst.test.testutil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Params {
@@ -24,12 +25,10 @@ public class Params {
                 if (row.length != rowLength) {
                     throw new RuntimeException("Row length mismatch for " + row);
                 }
-                for (Integer columnValue : row) {
-                    dataValues.add(columnValue);
-                }
+                dataValues.addAll(Arrays.asList(row));
             }
             
-            return dataValues.toArray(new Integer[0]);            
+            return dataValues.toArray(new Integer[dataValues.size()]);            
         } else {
             return new Integer[0];
         }
