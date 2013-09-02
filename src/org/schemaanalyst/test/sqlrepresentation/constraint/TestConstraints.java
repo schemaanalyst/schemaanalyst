@@ -157,8 +157,7 @@ public class TestConstraints {
     	
     	
     	assertFalse(
-    			"A constraint should never be equal to null",
-    			uc1.equals(null));
+    			"A constraint should never be equal to null", uc1 == null);
     	
     	PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint(t, c1, c2);
     	assertNotEquals(

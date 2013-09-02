@@ -26,8 +26,7 @@ public class TestValueEquality {
         assertFalse("BooleanValues should not be equal",
                 v1.equals(v2));
 
-        assertFalse("BooleanValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("BooleanValues should not be equal to null", v1 == null);
 
         assertFalse("BooleanValues should not be equal to values of other types",
                 v1.equals(new NumericValue(0)));
@@ -46,8 +45,7 @@ public class TestValueEquality {
         assertFalse("DateValues should not be equal",
                 v1.equals(v2));
 
-        assertFalse("DateValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("DateValues should not be equal to null", v1 == null);
 
         assertFalse("DateValues should not be equal to values of other types",
                 v1.equals(new DateTimeValue(2012, 9, 12, 0, 0, 0)));
@@ -64,8 +62,7 @@ public class TestValueEquality {
 
         assertFalse("DateTimeValues should not be equal", v1.equals(v2));
 
-        assertFalse("DateTimeValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("DateTimeValues should not be equal to null", v1 == null);
 
         assertFalse("DateTimeValues should not be equal to values of other types",
                 v1.equals(new DateValue(2012, 9, 12)));
@@ -82,8 +79,7 @@ public class TestValueEquality {
 
         assertFalse("NumericValues should not be equal", v1.equals(v2));
 
-        assertFalse("NumericValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("NumericValues should not be equal to null", v1 == null);
 
         assertFalse("NumericValues should not be equal to values of other types",
                 v1.equals(new TimestampValue(0)));
@@ -100,8 +96,7 @@ public class TestValueEquality {
 
         assertFalse("StringValues should not be equal", v1.equals(v2));
 
-        assertFalse("StringValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("StringValues should not be equal to null", v1 == null);
 
         assertFalse("StringValues should not be equal to values of other types",
                 v1.equals(new NumericValue(0)));
@@ -118,8 +113,7 @@ public class TestValueEquality {
 
         assertFalse("TimestampValues should not be equal", v1.equals(v2));
 
-        assertFalse("TimestampValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("TimestampValues should not be equal to null", v1 == null);
 
         assertFalse("TimestampValues should not be equal to values of other types",
                 v1.equals(new NumericValue(2000)));
@@ -136,8 +130,7 @@ public class TestValueEquality {
 
         assertFalse("TimeValues should not be equal", v1.equals(v2));
 
-        assertFalse("TimeValues should not be equal to null",
-                v1.equals(null));
+        assertFalse("TimeValues should not be equal to null", v1 == null);
 
         assertFalse("TimeValues should not be equal to values of other types",
                 v1.equals(new DateTimeValue(2012, 8, 12, 8, 23, 0)));
