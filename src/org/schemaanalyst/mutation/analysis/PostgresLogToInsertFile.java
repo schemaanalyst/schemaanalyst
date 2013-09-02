@@ -1,6 +1,6 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,7 +14,8 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
 /**
- *
+ * Convert a Postgres log file to a file of SQL INSERTs.
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("input output")
@@ -23,9 +24,15 @@ public class PostgresLogToInsertFile extends Runner {
     private final static String INSERT_PREFIX = "LOG:  execute <unnamed>: INSERT";
     private final static String ERROR_STATEMENT_PREFIX = "STATEMENT:  INSERT";
     private final static String ERROR_PREFIX = "ERROR:";
-    @Parameter
+    /**
+     * The input log file
+     */
+    @Parameter("The input log file")
     String input;
-    @Parameter
+    /**
+     * The output SQL INSERT file
+     */
+    @Parameter("The output SQL INSERT file")
     String output;
 
     @Override
