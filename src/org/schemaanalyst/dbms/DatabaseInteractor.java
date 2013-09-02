@@ -78,6 +78,7 @@ public abstract class DatabaseInteractor {
             // that there was a special failure in creating the schema
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
                 LOGGER.log(Level.FINE, "Create table failed: {0}", command);
+                LOGGER.log(Level.FINEST, "Create table failed because: ", e);
                 returnCount = CREATE_TABLE_ERROR;
             } else {
                 LOGGER.log(Level.FINE, "Statement failed: " + command, e);
@@ -119,6 +120,69 @@ public abstract class DatabaseInteractor {
             } else {
                 LOGGER.log(Level.FINE, "Statement failed: " + command, e);
             }
+        }
+        return returnCount;
+    }
+
+    public Integer executeUpdatesAsTransaction(String... commands) {
+        Integer returnCount = START;
+        try {
+            if (!initialized) {
+                initializeDatabaseConnection();
+            }
+            LOGGER.log(Level.FINE, "Starting transaction");
+            connection.setAutoCommit(false);
+
+            for (String command : commands) {
+                try {
+                    LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
+                    Statement statement = connection.createStatement();
+                    returnCount = statement.executeUpdate(command);
+                    LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
+                } catch (SQLException e) {
+                    LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                    returnCount = START;
+                    connection.rollback();
+                    break;
+                }
+            }
+            
+            LOGGER.log(Level.FINE, "Ending transaction");
+            connection.commit();
+            connection.setAutoCommit(true);
+
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Transaction failed: {0}", e.getMessage());
+        }
+        return returnCount;
+    }
+    
+    public Integer executeUpdatesAsBatch(String... commands) {
+        Integer returnCount = START;
+        try {
+            if (!initialized) {
+                initializeDatabaseConnection();
+            }
+
+            Statement statement = connection.createStatement();
+            for (String command : commands) {
+                try {
+                    LOGGER.log(Level.FINE, "Executing statement: {0} (in batch)", command);
+                    statement.addBatch(command);
+                } catch (SQLException e) {
+                    LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                }
+            }
+            int[] batchResults = statement.executeBatch();
+            for (int i : batchResults) {
+                if (i == 1) {
+                    returnCount = 1;
+                    break;
+                }
+            }
+            LOGGER.log(Level.FINE, "Batch succeeded: {0}", returnCount);
+        } catch (SQLException e) {
+            LOGGER.log(Level.INFO, "Batch failed: {0}", e.getMessage());
         }
         return returnCount;
     }
