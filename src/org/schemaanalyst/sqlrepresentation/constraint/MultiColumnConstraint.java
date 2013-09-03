@@ -117,19 +117,23 @@ public abstract class MultiColumnConstraint extends Constraint {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (!super.equals(obj))
+        }
+        if (!super.equals(obj)) {
             return false;
-//        System.out.println(getClass() + " " + obj.getClass());
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         MultiColumnConstraint other = (MultiColumnConstraint) obj;
         if (columns == null) {
-            if (other.columns != null)
+            if (other.columns != null) {
                 return false;
-        } else if (!columns.equals(other.columns))
+            }
+        } else if (!columns.equals(other.columns)) {
             return false;
+        }
         return true;
     }
 }
