@@ -5,6 +5,7 @@ package org.schemaanalyst.util.csv;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.schemaanalyst.util.StringUtils;
 
 /**
  * A single row to be stored for output in a CSV format.
@@ -40,5 +41,13 @@ public class CSVResult {
      */
     public Map<String, String> getValues() {
         return Collections.unmodifiableMap(results);
+    }
+    
+    @Override
+    /**
+     * {@inheritDoc}
+     */
+    public String toString() {
+        return StringUtils.implode(results.keySet(), ",");
     }
 }
