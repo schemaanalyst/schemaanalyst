@@ -48,6 +48,6 @@ public class CSVResult {
      * {@inheritDoc}
      */
     public String toString() {
-        return StringUtils.implode(results.keySet(), ",");
+        return StringUtils.implode(results.values(), ",");
     }
 }
