@@ -6,6 +6,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
@@ -70,6 +71,7 @@ public class ComparePipelines extends Runner {
         // Write results
         CSVWriter writer = new CSVWriter("results" + File.separator + casestudy + "-" + pipelineA + "-" + pipelineB + ".dat");
         for (CSVResult result : results) {
+            LOGGER.log(Level.FINE, result.toString());
             writer.write(result);
         }
     }
