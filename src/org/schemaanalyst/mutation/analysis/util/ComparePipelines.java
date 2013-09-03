@@ -4,6 +4,8 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +27,8 @@ import org.schemaanalyst.util.runner.Runner;
 public class ComparePipelines extends Runner {
 
     private final static Logger LOGGER = Logger.getLogger(ComparePipelines.class.getName());
-    @Parameter("The name of the schema to use.")
+    @Parameter("The name of the schema to use, or multiple case studies "
+            + "separated by the ':' character.")
     protected String casestudy;
     @Parameter("The first pipeline to compare.")
     protected String pipelineA;
@@ -36,30 +39,20 @@ public class ComparePipelines extends Runner {
 
     @Override
     protected void task() {
-        // Get the required schema class
-        Schema schema;
-        try {
-            schema = (Schema) Class.forName(casestudy).newInstance();
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
+        String[] casestudies = casestudy.split(":");
+        for (String schemaName : casestudies) {
+            if (!schemaName.isEmpty()) {
+                Schema schema = instantiateSchema(schemaName);
+                compareWithSchema(schema);
+            }
         }
+    }
 
+    private void compareWithSchema(Schema schema) {
         // Get the mutation pipelines and generate mutants
-        MutationPipeline<Schema> mutationPipelineA;
-        try {
-            mutationPipelineA = MutationPipelineFactory.<Schema>instantiate(pipelineA, schema);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-            throw new RuntimeException(ex);
-        }
+        MutationPipeline<Schema> mutationPipelineA = instantiatePipeline(schema, pipelineA);
+        MutationPipeline<Schema> mutationPipelineB = instantiatePipeline(schema, pipelineB);
         List<Mutant<Schema>> pipelineAMutants = mutationPipelineA.mutate();
-
-        // Get the mutation pipelines and generate mutants
-        MutationPipeline<Schema> mutationPipelineB;
-        try {
-            mutationPipelineB = MutationPipelineFactory.<Schema>instantiate(pipelineB, schema);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-            throw new RuntimeException(ex);
-        }
         List<Mutant<Schema>> pipelineBMutants = mutationPipelineB.mutate();
 
         // Perform comparisons
@@ -67,10 +60,37 @@ public class ComparePipelines extends Runner {
         pipelineBResult = new CSVResult();
 
         addResultColumn("pipeline", pipelineA, pipelineB);
+        addResultColumn("casestudy", schema, schema);
         addResultColumn("mutant count", pipelineAMutants.size(), pipelineBMutants.size());
+        List<Schema> pipelineAMutantArtifacts = new ArrayList<>(pipelineAMutants.size());
+        List<Schema> pipelineBMutantArtifacts = new ArrayList<>(pipelineBMutants.size());
+        for (Mutant<Schema> mutant : pipelineAMutants) {
+            pipelineAMutantArtifacts.add(mutant.getMutatedArtefact());
+        }
+        for (Mutant<Schema> mutant : pipelineBMutants) {
+            pipelineBMutantArtifacts.add(mutant.getMutatedArtefact());
+        }
+
+        HashSet<Schema> union = new HashSet<>();
+        union.addAll(pipelineAMutantArtifacts);
+        union.addAll(pipelineBMutantArtifacts);
+        addResultColumn("union", union.size(), union.size());
+
+        HashSet<Schema> intersection = new HashSet<>();
+        intersection.addAll(pipelineAMutantArtifacts);
+        intersection.retainAll(pipelineBMutantArtifacts);
+        addResultColumn("intersection", intersection.size(), intersection.size());
+
+        HashSet<Schema> differenceAB = new HashSet<>();
+        differenceAB.addAll(pipelineAMutantArtifacts);
+        differenceAB.removeAll(pipelineBMutantArtifacts);
+        HashSet<Schema> differenceBA = new HashSet<>();
+        differenceBA.addAll(pipelineBMutantArtifacts);
+        differenceBA.removeAll(pipelineAMutantArtifacts);
+        addResultColumn("difference", differenceAB.size(), differenceBA.size());
 
         // Write results
-        CSVWriter writer = new CSVWriter("results" + File.separator + casestudy + "-" + pipelineA + "-" + pipelineB + ".dat");
+        CSVWriter writer = new CSVWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat");
         LOGGER.log(Level.FINE, "PipelineA: {0}", pipelineAResult);
         LOGGER.log(Level.FINE, "PipelineB: {0}", pipelineBResult);
         writer.write(pipelineAResult);
@@ -88,5 +108,26 @@ public class ComparePipelines extends Runner {
 
     public static void main(String[] args) {
         new ComparePipelines().run(args);
+    }
+
+    private static Schema instantiateSchema(String name) throws RuntimeException {
+        Schema schema;
+        try {
+            schema = (Schema) Class.forName(name).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
+            throw new RuntimeException(ex);
+        }
+        return schema;
+    }
+
+    private MutationPipeline<Schema> instantiatePipeline(Schema schema, String pipeline) throws RuntimeException {
+        // Get the mutation pipelines and generate mutants
+        MutationPipeline<Schema> mutationPipeline;
+        try {
+            mutationPipeline = MutationPipelineFactory.<Schema>instantiate(pipeline, schema);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+        return mutationPipeline;
     }
 }
