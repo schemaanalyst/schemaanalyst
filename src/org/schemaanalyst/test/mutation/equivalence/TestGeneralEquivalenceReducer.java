@@ -68,6 +68,10 @@ public class TestGeneralEquivalenceReducer {
         List<Mutant<Schema>> reducedList = reducer.reduce(list);
         assertEquals("After GeneralEquivalenceReducer usage, the original list "
                 + "should be unchanged in length", 2, list.size());
+        assertTrue("After GeneralEquivalenceReducer usage, the first item in "
+                + "the original list should be the same object", mutant1 == list.get(0));
+        assertTrue("After GeneralEquivalenceReducer usage, the second item in "
+                + "the original list should be the same object", mutant2 == list.get(1));
         assertEquals("The list returned by the GeneralEquivalenceReducer when "
                 + "provided two mutants equal to the original should be empty",
                 0, reducedList.size());
@@ -95,6 +99,9 @@ public class TestGeneralEquivalenceReducer {
         assertEquals("The list returned by the GeneralEquivalenceReducer when "
                 + "provided one mutant equal to the original and one not equal "
                 + "should contain one item", 1, reducedList.size());
+        assertTrue("The first item of the list returned by the reducer when "
+                + "provided one mutant equal to the original and one not equal "
+                + "should be the latter mutant", mutant1 == reducedList.get(0));
     }
     
     @Test
