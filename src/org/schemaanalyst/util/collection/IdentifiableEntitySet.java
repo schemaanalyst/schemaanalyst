@@ -239,12 +239,8 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
             return false;
         if (getClass() != obj.getClass())
             return false;
-        
-        HashSet<E> elementSet = new HashSet<>(elements);
-        
-        @SuppressWarnings({ "unchecked", "rawtypes" })
-        HashSet<?> otherElementSet = new HashSet<>(((IdentifiableEntitySet) obj).elements);
-        return elementSet.equals(otherElementSet);
+        IdentifiableEntitySet other = ((IdentifiableEntitySet) obj);
+        return (size() == other.size() && (containsAll(other.elements)));
     }
 
     @Override

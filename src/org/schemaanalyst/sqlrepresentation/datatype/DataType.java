@@ -19,7 +19,7 @@ public abstract class DataType implements Serializable {
     
     @Override
     public int hashCode() {
-        return getClass().getCanonicalName().hashCode();
+        return getClass().hashCode();
     }
 
     @Override

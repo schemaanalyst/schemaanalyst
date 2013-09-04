@@ -30,11 +30,9 @@ public class UniqueConstraintSupplier extends
 	 */
 	@Override
 	public void putComponentBackInDuplicate(UniqueConstraint uniqueConstraint) {
-		if (uniqueConstraint.getNumColumns() == 0) {
-			currentDuplicate.removeUniqueConstraint(uniqueConstraint);
-		} else {
-			currentDuplicate.addUniqueConstraint(uniqueConstraint);
-		}
+		if (uniqueConstraint.getNumColumns() != 0) {
+            currentDuplicate.addUniqueConstraint(uniqueConstraint);
+        }
 	}
 
 	/**
@@ -42,6 +40,14 @@ public class UniqueConstraintSupplier extends
 	 */
 	@Override
 	protected List<UniqueConstraint> getComponents(Schema schema) {
-		return schema.getUniqueConstraints();
+        return schema.getUniqueConstraints();
 	}
+
+    // ONLY CALL ONCE
+    @Override
+    public UniqueConstraint getDuplicateComponent() {
+        UniqueConstraint cons = super.getDuplicateComponent();
+        currentDuplicate.removeUniqueConstraint(cons);
+        return super.getDuplicateComponent();
+    }
 }

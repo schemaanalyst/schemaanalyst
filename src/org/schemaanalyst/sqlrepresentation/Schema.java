@@ -932,8 +932,6 @@ public class Schema extends IdentifiableEntity implements Serializable {
                 return false;
             }
         } else if (!uniqueConstraints.equals(other.uniqueConstraints)) {
-            System.out.println("Schema: set comparison not equal");
-            System.out.println("Schema: are contents equal? " + (uniqueConstraints.iterator().next().equals(other.uniqueConstraints.iterator().next())));
             return false;
         }
         return true;
