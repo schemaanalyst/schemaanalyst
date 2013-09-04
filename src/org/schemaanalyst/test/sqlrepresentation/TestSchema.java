@@ -266,44 +266,6 @@ public class TestSchema {
                 "Table's UNIQUE  constraint should be the same as that passed",
                 s.getUniqueConstraints(t2).get(0), uc2);
     }
-    
-    @Test
-    public void testUniqueConstraintModification() {
-        Schema s = new Schema("schema");
-        Table t1 = s.createTable("t1");
-        Table t2 = s.createTable("t2");
-        Column a = t1.createColumn("a", new IntDataType());
-        Column b = t2.createColumn("b", new IntDataType());
-        UniqueConstraint unique = new UniqueConstraint(t1, a);
-        UniqueConstraint unique2 = new UniqueConstraint(t1, a);
-        assertEquals("Two identical uniques should be equal", unique, unique2);
-        assertEquals("The hashes of two uniques with the same columns should be"
-                + " equal", unique.hashCode(), unique2.hashCode());
-        s.addUniqueConstraint(unique);
-        assertEquals("Table should have one UNIQUE constraint",
-                1, s.getUniqueConstraints().size());
-        s.removeUniqueConstraint(unique);
-        assertEquals("Table should no UNIQUE constraints",
-                0, s.getUniqueConstraints().size());
-        s.addUniqueConstraint(unique);
-        assertEquals("Table should have one UNIQUE constraint",
-                1, s.getUniqueConstraints().size());
-        unique.setColumns(new ArrayList<Column>());
-        assertNotEquals("Two uniques with different columns should not be equal",
-                unique, unique2);
-        unique2.setColumns(new ArrayList<Column>());
-        assertEquals("Two uniques with the same column modifications should be "
-                + "equal", unique, unique2);
-        assertEquals("The hashes of two uniques with the same columns should be"
-                + " equal", unique.hashCode(), unique2.hashCode());
-        assertEquals("Table should have one UNIQUE constraint, even if it has "
-                + "been modified", 1, s.getUniqueConstraints().size());
-        System.out.println("This vvv");
-        s.removeUniqueConstraint(unique);
-        System.out.println("This ^^^");
-        assertEquals("Table should have no UNIQUE constraints after a modified "
-                + "constraint is removed", 0, s.getUniqueConstraints().size());
-    }
 
     @Test
     public void testDuplication() {
