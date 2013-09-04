@@ -13,7 +13,6 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.csv.CSVWriter;
 import org.schemaanalyst.util.runner.Parameter;
@@ -55,7 +54,7 @@ public class ComparePipelines extends Runner {
         MutationPipeline<Schema> mutationPipelineB = instantiatePipeline(schema, pipelineB);
         List<Mutant<Schema>> pipelineAMutants = mutationPipelineA.mutate();
         List<Mutant<Schema>> pipelineBMutants = mutationPipelineB.mutate();
-
+        
         // Perform comparisons
         pipelineAResult = new CSVResult();
         pipelineBResult = new CSVResult();
@@ -71,7 +70,7 @@ public class ComparePipelines extends Runner {
         for (Mutant<Schema> mutant : pipelineBMutants) {
             pipelineBMutantArtifacts.add(mutant.getMutatedArtefact());
         }
-
+        
         HashSet<Schema> union = new HashSet<>();
         union.addAll(pipelineAMutantArtifacts);
         union.addAll(pipelineBMutantArtifacts);
@@ -81,7 +80,7 @@ public class ComparePipelines extends Runner {
         intersection.addAll(pipelineAMutantArtifacts);
         intersection.retainAll(pipelineBMutantArtifacts);
         addResultColumn("intersection", intersection.size(), intersection.size());
-
+        
         HashSet<Schema> differenceAB = new HashSet<>();
         differenceAB.addAll(pipelineAMutantArtifacts);
         differenceAB.removeAll(pipelineBMutantArtifacts);
@@ -89,9 +88,9 @@ public class ComparePipelines extends Runner {
         differenceBA.addAll(pipelineBMutantArtifacts);
         differenceBA.removeAll(pipelineAMutantArtifacts);
         addResultColumn("difference", differenceAB.size(), differenceBA.size());
-
+        
         // Write results
-        CSVWriter writer = new CSVWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat");
+        CSVWriter writer = new CSVWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat", ",");
         LOGGER.log(Level.FINE, "PipelineA: {0}", pipelineAResult);
         LOGGER.log(Level.FINE, "PipelineB: {0}", pipelineBResult);
         writer.write(pipelineAResult);
