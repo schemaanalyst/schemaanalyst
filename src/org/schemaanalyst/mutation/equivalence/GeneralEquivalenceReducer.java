@@ -9,10 +9,16 @@ import org.schemaanalyst.mutation.Mutant;
 
 /**
  * The {@link GeneralEquivalenceReducer} reduces the mutant list by removing
- * mutants that are identical to eachother or the original artefact, according
- * to their equals method. The {@link #reduce(List)} method of this class should
- * be called after all other {@link EquivalenceReducer}s have been called, as a
- * final sweep-up operation.
+ * mutants that are identical to each other or the original artefact, according
+ * to their equals method.
+ * 
+ * See {@link OriginalEquivalenceReducer} and {@link RedundantMutantReducer} 
+ * for stand-alone implementations of the two reduction strategies employed by 
+ * this {@link EquivalenceReducer}.
+ * 
+ * The {@link #reduce(List)} method of this class should be called after all 
+ * other {@link EquivalenceReducer}s have been called, as a final sweep-up 
+ * operation.
  *
  * @author Phil McMinn.
  *
