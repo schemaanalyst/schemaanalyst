@@ -12,6 +12,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
 /**
@@ -131,5 +132,19 @@ public class TestGeneralEquivalenceReducer {
         assertEquals("The list returned by the GeneralEquivalenceReducer when "
                 + "provided two mutants different to the original but equal to "
                 + "each other should contain one item", 1, reducedList.size());
+    }
+    
+    @Test
+    public void TestUniqueOrderEquality() {
+        SchemaA original = new SchemaA();
+        SchemaA instance1 = new SchemaA();
+        original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
+        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.a, original.b));
+        GeneralEquivalenceReducer<Schema> reducer = new GeneralEquivalenceReducer<>((Schema)original);
+        List<Mutant<Schema>> list = new ArrayList<>();
+        list.add(new Mutant<>((Schema) instance1, ""));
+        List<Mutant<Schema>> reducedList = reducer.reduce(list);
+        assertEquals("The reduced list should contain no mutants",
+                0, reducedList.size());
     }
 }
