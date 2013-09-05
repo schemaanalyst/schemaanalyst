@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.equivalence;
+package org.schemaanalyst.mutation.redundancy;
 
 import java.util.List;
 
@@ -19,10 +19,10 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  *
  */
 
-public class PrimaryKeyColumnsUniqueRemover extends EquivalenceReducer<Schema> {
+public class PrimaryKeyColumnsUniqueRemover extends RedundantMutantRemover<Schema> {
 
 	@Override
-	public List<Mutant<Schema>> reduce(List<Mutant<Schema>> mutants) {
+	public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
 
 		for (Mutant<Schema> mutant : mutants) {
 			Schema schema = mutant.getMutatedArtefact();

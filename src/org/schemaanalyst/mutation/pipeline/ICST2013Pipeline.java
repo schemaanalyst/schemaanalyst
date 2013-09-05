@@ -1,13 +1,14 @@
 package org.schemaanalyst.mutation.pipeline;
 
-import org.schemaanalyst.mutation.equivalence.GeneralEquivalenceReducer;
-import org.schemaanalyst.mutation.equivalence.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.equivalence.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.mutation.operator.CCNullifier;
 import org.schemaanalyst.mutation.operator.FKCColumnPairR;
 import org.schemaanalyst.mutation.operator.NNCAR;
 import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
+import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
+import org.schemaanalyst.mutation.redundancy.IdenticalMutantRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
@@ -26,8 +27,9 @@ public class ICST2013Pipeline extends MutationPipeline<Schema> {
 		addProducer(new NNCAR(schema));
 		addProducer(new UCColumnARE(schema));
 		
-		addReducer(new PrimaryKeyColumnNotNullRemover());
-		addReducer(new PrimaryKeyColumnsUniqueRemover());
-		addReducer(new GeneralEquivalenceReducer<>(schema));
+		addRemover(new PrimaryKeyColumnNotNullRemover());
+		addRemover(new PrimaryKeyColumnsUniqueRemover());
+		addRemover(new IdenticalMutantRemover<Schema>());
+		addRemover(new EquivalentMutantRemover<Schema>(schema));
 	}	
 }

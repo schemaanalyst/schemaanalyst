@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.equivalence;
+package org.schemaanalyst.mutation.redundancy;
 
 import java.util.Iterator;
 import java.util.List;
@@ -6,13 +6,13 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 
 /**
- * The {@link OriginalEquivalenceReducer} reduces the mutant list by removing
+ * The {@link EquivalentMutantRemover} reduces the mutant list by removing
  * mutants that are identical to the original artefact, according to their 
  * equals method.
  *
  * @param <A> The class of the artefact being mutated.
  */
-public class OriginalEquivalenceReducer<A> extends EquivalenceReducer<A> {
+public class EquivalentMutantRemover<A> extends RedundantMutantRemover<A> {
 
     private A originalArtefact;
 
@@ -21,7 +21,7 @@ public class OriginalEquivalenceReducer<A> extends EquivalenceReducer<A> {
      *
      * @param originalArtefact the original artefact that was mutated.
      */
-    public OriginalEquivalenceReducer(A originalArtefact) {
+    public EquivalentMutantRemover(A originalArtefact) {
         this.originalArtefact = originalArtefact;
     }
 
@@ -29,7 +29,7 @@ public class OriginalEquivalenceReducer<A> extends EquivalenceReducer<A> {
      * {@inheritDoc}
      */
     @Override
-    public List<Mutant<A>> reduce(List<Mutant<A>> mutants) {
+    public List<Mutant<A>> removeMutants(List<Mutant<A>> mutants) {
         for (Iterator<Mutant<A>> it = mutants.iterator(); it.hasNext();) {
             Mutant<A> mutant = it.next();
             if (mutant.getMutatedArtefact().equals(originalArtefact)) {

@@ -231,7 +231,8 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
         return result;
     }
 
-    @Override
+	@Override
+	@SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -239,7 +240,7 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
             return false;
         if (getClass() != obj.getClass())
             return false;
-        IdentifiableEntitySet other = ((IdentifiableEntitySet) obj);
+        IdentifiableEntitySet<E> other = ((IdentifiableEntitySet<E>) obj);
         return (size() == other.size() && (containsAll(other.elements)));
     }
 
