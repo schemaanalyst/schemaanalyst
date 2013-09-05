@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.test.mutation.equivalence;
+package org.schemaanalyst.test.mutation.redundancy;
 
 import java.util.ArrayList;
 import java.util.List;

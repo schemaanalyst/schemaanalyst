@@ -31,7 +31,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalCompoundValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalNumericValueObjectiveFunction.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
-    org.schemaanalyst.test.mutation.equivalence.TestRedundancyRemovers.class,
+    org.schemaanalyst.test.mutation.redundancy.TestRedundancyRemovers.class,
 	org.schemaanalyst.test.mutation.mutator.TestListElementRemover.class,
 	org.schemaanalyst.test.mutation.mutator.TestRelationalOperatorExchanger.class,
 	org.schemaanalyst.test.mutation.operator.TestCCInExpressionRHSListExpressionElementR.class,
