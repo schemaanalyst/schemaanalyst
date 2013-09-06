@@ -1,4 +1,4 @@
-package org.schemaanalyst.util;
+package deprecated.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

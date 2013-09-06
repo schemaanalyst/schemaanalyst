@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.StringUtils;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 
@@ -79,7 +79,7 @@ public class JavaWriter {
     }
 
     public String writeArgsList(List<String> args) {
-        return StringUtils.implode(args);
+        return StringUtils.join(args, ", ");
     }
 
     /**

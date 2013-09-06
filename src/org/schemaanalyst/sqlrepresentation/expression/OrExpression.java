@@ -3,7 +3,7 @@ package org.schemaanalyst.sqlrepresentation.expression;
 import java.util.Arrays;
 import java.util.List;
 
-import org.schemaanalyst.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class OrExpression extends CompoundExpression {
 
@@ -27,6 +27,6 @@ public class OrExpression extends CompoundExpression {
     
     @Override
     public String toString() {
-        return StringUtils.implode(subexpressions, " OR ");        
+        return StringUtils.join(subexpressions, " OR ");        
     }
 }

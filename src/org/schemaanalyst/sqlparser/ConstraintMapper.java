@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.util.StringUtils;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
@@ -127,10 +127,10 @@ class ConstraintMapper {
         }
 
         LOGGER.log(Level.INFO, "-- columns in source table {0} are {1}", 
-        		new Object[]{currentTable, StringUtils.implode(columns)});
+        		new Object[]{currentTable, StringUtils.join(columns, ", ")});
         
         LOGGER.log(Level.INFO, "-- columns in reference table {0} are {1}", 
-                new Object[]{referenceTable, StringUtils.implode(referenceColumns)});
+                new Object[]{referenceTable, StringUtils.join(referenceColumns, ", ")});
                 
         schema.createForeignKeyConstraint(
                 constraintName, currentTable, columns, referenceTable, referenceColumns);

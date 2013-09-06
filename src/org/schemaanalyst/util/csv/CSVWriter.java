@@ -9,7 +9,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-import org.schemaanalyst.util.StringUtils;
+
+import deprecated.utils.StringUtils;
 
 /**
  * A simple writer for saving CSVResult objects to files.

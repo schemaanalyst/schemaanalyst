@@ -5,7 +5,8 @@ package org.schemaanalyst.util.csv;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.schemaanalyst.util.StringUtils;
+
+import deprecated.utils.StringUtils;
 
 /**
  * A single row to be stored for output in a CSV format.
