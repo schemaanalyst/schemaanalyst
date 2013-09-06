@@ -26,21 +26,23 @@ import java.util.logging.Level;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 
 /**
- * Run the 'Original' style of mutation analysis. This requires that the result
- * generation tool has been run, as it bases the mutation analysis on the
- * results produced by it.
+ * Run the 'Full Schemata' style of mutation analysis. This requires that the 
+ * result generation tool has been run, as it bases the mutation analysis on 
+ * the results produced by it.
  *
  * @author Chris J. Wright
  */
-@Description("Runs the 'Original' style of mutation analysis. This requires that"
-        + " the result generation tool has been run, as it bases the mutation "
-        + "analysis on the results produced by it.")
+@Description("Runs the 'Full Schemata' style of mutation analysis. This "
+        + "requires that the result generation tool has been run, as it bases "
+        + "the mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class Original extends Runner {
+public class FullSchemata extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(Original.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(FullSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -70,7 +72,7 @@ public class Original extends Runner {
      * The mutation pipeline to use to generate mutants.
      */
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
-            choicesMethod = "org.schemaanalyst.mutation.pipeline.SchemaPipelineFactory.getPipelineChoices")
+            choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
     protected String mutationPipeline = "ICST2013";
 
     @Override
@@ -123,6 +125,41 @@ public class Original extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
+        
+        // Schemata step: Rename the mutants
+        renameMutants(mutants);
+        
+        // Schemata step: Build single drop statement
+        StringBuilder dropBuilder = new StringBuilder();
+        for (Mutant<Schema> mutant : mutants) {
+            Schema mutantSchema = mutant.getMutatedArtefact();
+            for (String statement : sqlWriter.writeDropTableStatements(mutantSchema, true)) {
+                dropBuilder.append(statement);
+                dropBuilder.append("; ");
+                dropBuilder.append(System.lineSeparator());
+            }
+        }
+        String dropStmt = dropBuilder.toString();
+        
+        // Schemata step: Build single create statement
+        StringBuilder createBuilder = new StringBuilder();
+        for (Mutant<Schema> mutant : mutants) {
+            Schema mutantSchema = mutant.getMutatedArtefact();
+            for (String statement : sqlWriter.writeCreateTableStatements(mutantSchema)) {
+                createBuilder.append(statement);
+                createBuilder.append("; ");
+                createBuilder.append(System.lineSeparator());
+            }
+        }
+        String createStmt = createBuilder.toString();
+        
+        // Schemata step: Drop existing tables before iterating mutants
+        if (dropfirst) {
+            databaseInteractor.executeUpdate(dropStmt);
+        }
+
+        // Schemata step: Create table before iterating mutants
+        databaseInteractor.executeUpdate(createStmt);
 
         // Begin mutation analysis
         int killed = 0;
@@ -131,35 +168,26 @@ public class Original extends Runner {
 
             LOGGER.log(Level.INFO, "Mutant {0}", id);
 
-            // Drop existing tables
-            List<String> dropStmts = sqlWriter.writeDropTableStatements(mutant, true);
-            if (dropfirst) {
-                for (String stmt : dropStmts) {
-                    databaseInteractor.executeUpdate(stmt);
-                }
-            }
-
-            // Create the schema in the database
-            List<String> createStmts = sqlWriter.writeCreateTableStatements(mutant);
-            for (String stmt : createStmts) {
-                databaseInteractor.executeUpdate(stmt);
-            }
+            // Schemata step: Generate insert prefix string
+            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
 
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
-                int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
+
+                // Schemata step: Rewrite insert for mutant ID
+                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
+
+                int returnCount = databaseInteractor.executeUpdate(insertStmt);
                 if (returnCount != insertRecord.getReturnCode()) {
                     killed++;
                     break; // Stop once killed
                 }
             }
-
-            // Drop tables
-            for (String stmt : dropStmts) {
-                databaseInteractor.executeUpdate(stmt);
-            }
         }
+        
+        // Schemata step: Drop tables after iterating mutants
+        databaseInteractor.executeUpdate(dropStmt);
 
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
@@ -171,12 +199,25 @@ public class Original extends Runner {
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
     }
 
+    /**
+     * Prepends each mutant with the relevant mutation number
+     *
+     * @param mutants
+     */
+    private static void renameMutants(List<Mutant<Schema>> mutants) {
+        for (int i = 0; i < mutants.size(); i++) {
+            for (Table table : mutants.get(i).getMutatedArtefact().getTablesInOrder()) {
+                table.setName("mutant_" + (i + 1) + "_" + table.getName());
+            }
+        }
+    }
+
     @Override
     protected void validateParameters() {
         //TODO: Validate parameters
     }
 
     public static void main(String[] args) {
-        new Original().run(args);
+        new FullSchemata().run(args);
     }
 }

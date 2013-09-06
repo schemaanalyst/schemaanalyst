@@ -126,7 +126,9 @@ public class Original extends Runner {
 
         // Begin mutation analysis
         int killed = 0;
+        int quasi = 0;
         for (int id = 0; id < mutants.size(); id++) {
+            boolean quasiMutant = false;
             Schema mutant = mutants.get(id).getMutatedArtefact();
 
             LOGGER.log(Level.INFO, "Mutant {0}", id);
@@ -142,16 +144,27 @@ public class Original extends Runner {
             // Create the schema in the database
             List<String> createStmts = sqlWriter.writeCreateTableStatements(mutant);
             for (String stmt : createStmts) {
-                databaseInteractor.executeUpdate(stmt);
+                Integer res = databaseInteractor.executeUpdate(stmt);
+                if (res.intValue() == -1) {
+                    quasiMutant = true;
+                }
+            }
+            
+            // Don't continue if mutant is quasi
+            if (quasiMutant) {
+                quasi++;
+                killed++;
             }
 
             // Insert the test data
-            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
-            for (SQLInsertRecord insertRecord : insertStmts) {
-                int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
-                if (returnCount != insertRecord.getReturnCode()) {
-                    killed++;
-                    break; // Stop once killed
+            if (!quasiMutant) {
+                List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
+                for (SQLInsertRecord insertRecord : insertStmts) {
+                    int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
+                    if (returnCount != insertRecord.getReturnCode()) {
+                        killed++;
+                        break; // Stop once killed
+                    }
                 }
             }
 
@@ -160,7 +173,7 @@ public class Original extends Runner {
                 databaseInteractor.executeUpdate(stmt);
             }
         }
-
+        
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 

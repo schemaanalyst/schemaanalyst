@@ -6,6 +6,7 @@ import org.schemaanalyst.mutation.operator.CCNullifier;
 import org.schemaanalyst.mutation.operator.NNCAR;
 import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
+import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.IdenticalMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
@@ -27,8 +28,9 @@ public class Mutation2013Pipeline extends MutationPipeline<Schema> {
 		
 		addRemover(new PrimaryKeyColumnNotNullRemover());
 		addRemover(new PrimaryKeyColumnsUniqueRemover());
-		addRemover(new IdenticalMutantRemover<Schema>());
-		addRemover(new EquivalentMutantRemover<Schema>(schema));
+		addRemover(new PostgresRemover());
+        addRemover(new IdenticalMutantRemover<Schema>());
+		addRemover(new EquivalentMutantRemover<>(schema));
     }
     
 }
