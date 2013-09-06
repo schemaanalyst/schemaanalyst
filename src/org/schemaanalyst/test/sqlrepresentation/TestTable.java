@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
@@ -107,4 +108,51 @@ public class TestTable {
                 "Columns in t1 and t2 should be equal",
                 t1.getColumn("column2"), t2.getColumn("column2"));
     }
+    
+    @Test 
+    public void testRenameInSchema() {
+    	Schema schema = new Schema("test");
+    	Table table1 = schema.createTable("test1");
+    	schema.createTable("test2");
+    	
+    	table1.setName("test3");
+    	assertEquals(
+    			"The column's name should be changed as the new name is unique",
+    			"test3", table1.getName());
+    }
+    
+    @Test(expected=SQLRepresentationException.class)
+    public void testRenameInSchemaFail() {
+    	Schema schema = new Schema("test");
+    	Table table1 = schema.createTable("test1");
+    	schema.createTable("test2");
+    	table1.setName("test2");
+    }    
+    
+    @Test
+    public void testRenameInDuplicatedSchema() {
+    	Schema schema = new Schema("test");
+    	schema.createTable("test1");
+    	schema.createTable("test2");
+    	
+    	Schema duplicate = schema.duplicate();
+    	Table dupTab1 = duplicate.getTable("test1");
+    	Table dupTab2 = duplicate.getTable("test2");
+    	dupTab2.setName("test3");
+    	
+    	assertEquals(
+    			"The table's name should be changed as the new name is unique",
+    			"test3", dupTab2.getName());    	
+    	
+    	dupTab1.setName("test2");
+    	
+    	assertEquals(
+    			"The table's name should be changed as the new name is unique in the duplicated schema",
+    			"test2", dupTab1.getName());    	    	
+    	
+    	dupTab1.setName("test1");
+    	assertEquals(
+    			"The table's name should be changed as the new name is unique again in the duplicated schema",
+    			"test1", dupTab1.getName());    	
+    }    
 }

@@ -3,20 +3,30 @@ package org.schemaanalyst.util.collection;
 public abstract class IdentifiableEntity {
 
     private Identifier id;
+    private IdentifiableEntitySet<?> set;
     
     public IdentifiableEntity() {        
     }
     
-    public IdentifiableEntity(String str) {
-        setName(str);
+    public IdentifiableEntity(String name) {
+        setName(name);
     }
     
     public String getName() {
         return id.get();
     }
     
-    public void setName(String str) {
-        id = new Identifier(str);
+    public void setName(String name) {
+    	if (set != null) {
+    		if (set.contains(name)) {
+    			return;
+    		}
+    	}
+        id = new Identifier(name);
+    }
+    
+    void setBelongingSet(IdentifiableEntitySet<?> set) {
+    	this.set = set;
     }
     
     public boolean hasIdentifier() {
