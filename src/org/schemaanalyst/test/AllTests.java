@@ -48,6 +48,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.sqlrepresentation.TestColumn.class,
 	org.schemaanalyst.test.sqlrepresentation.TestSchema.class,
 	org.schemaanalyst.test.sqlrepresentation.TestTable.class,
+	org.schemaanalyst.test.sqlrepresentation.TestTableDependencyOrderer.class,
 	org.schemaanalyst.test.sqlrepresentation.constraint.TestConstraints.class,
 	org.schemaanalyst.test.sqlrepresentation.datatype.TestDataTypes.class,
 	org.schemaanalyst.test.sqlrepresentation.expression.TestExpression.class,

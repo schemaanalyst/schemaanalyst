@@ -387,6 +387,53 @@ public class TestSchema {
         		"Second UNIQUE constraint table should not be the same as duplicate",
         		s2.getUniqueConstraints().get(1).getTable(), t2);           
     }
+    
+    @Test
+    public void testConnectedTablesNoConnections() { 
+    	Schema s = new Schema("s");    	
+    	Table t1 = s.createTable("t1");
+    	assertTrue(
+    			"There should be no connected tables for t1",
+    			s.getConnectedTables(t1).isEmpty());
+    }	
+    	
+    @Test
+    public void testConnectedTables() {
+    	Schema s = new Schema("s");
+    	
+    	Table t1 = s.createTable("t1");
+    	Column c1 = t1.createColumn("c1", new IntDataType());
+    	
+    	Table t2 = s.createTable("t2");
+    	Column c2 = t2.createColumn("c2", new IntDataType());
+    	
+    	Table t3 = s.createTable("t3");
+    	Column c3 = t3.createColumn("c3", new IntDataType());
+
+    	Table t4 = s.createTable("t4");
+    	t4.createColumn("c4", new IntDataType());    	
+    	
+    	s.createForeignKeyConstraint(t1, c1, t2, c2);
+    	s.createForeignKeyConstraint(t2, c2, t3, c3);
+    	
+    	List<Table> tables = s.getConnectedTables(t1);
+    	
+    	assertFalse(
+    			"The list of connected tables should not include t1",
+    			tables.contains(t1));
+    	
+    	assertTrue(
+    			"The list of connected tables should include t2",
+    			tables.contains(t2));
+    	
+    	assertTrue(
+    			"The list of connected tables should include t3",
+    			tables.contains(t3));    	
+
+    	assertFalse(
+    			"The list of connected tables should not include t4",
+    			tables.contains(t4));    
+    }
 
     @Test
     public void testParsedCaseStudies() throws InstantiationException,
