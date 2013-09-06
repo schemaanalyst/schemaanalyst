@@ -39,6 +39,7 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
             return false;
         }
         elements.add(element);
+        element.setBelongingSet(this);
         return true;
     }
 

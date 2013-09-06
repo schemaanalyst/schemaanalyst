@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
@@ -38,4 +40,50 @@ public class TestColumn {
                 c1.hashCode(), c2.hashCode());              
     }
     
+    @Test 
+    public void testRenameInTable() {
+    	Table table = new Table("test");
+    	Column column1 = table.createColumn("test1", new IntDataType());
+    	table.createColumn("test2", new IntDataType());
+    	
+    	column1.setName("test3");
+    	assertEquals(
+    			"The column's name should be changed as the new name is unique",
+    			"test3", column1.getName());
+    }
+    
+    @Test(expected=SQLRepresentationException.class)
+    public void testRenameInTableFail() {
+    	Table table = new Table("test");
+    	Column column1 = table.createColumn("test1", new IntDataType());
+    	table.createColumn("test2", new IntDataType());
+    	column1.setName("test2");
+    }    
+    
+    @Test
+    public void testRenameInDuplicatedTable() {
+    	Table table = new Table("test");
+    	table.createColumn("test1", new IntDataType());
+    	table.createColumn("test2", new IntDataType());
+    	
+    	Table duplicate = table.duplicate();
+    	Column dupCol1 = duplicate.getColumn("test1");
+    	Column dupCol2 = duplicate.getColumn("test2");
+    	dupCol2.setName("test3");
+    	
+    	assertEquals(
+    			"The column's name should be changed as the new name is unique",
+    			"test3", dupCol2.getName());    	
+    	
+    	dupCol1.setName("test2");
+    	
+    	assertEquals(
+    			"The column's name should be changed as the new name is unique in the duplicated table",
+    			"test2", dupCol1.getName());    	    	
+    	
+    	dupCol1.setName("test1");
+    	assertEquals(
+    			"The column's name should be changed as the new name is unique again in the duplicated table",
+    			"test1", dupCol1.getName());    	
+    }
 }

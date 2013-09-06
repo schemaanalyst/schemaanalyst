@@ -331,5 +331,5 @@ public class TestSchema {
                     + " should equal its duplicate",
                     duplicate.equals(caseStudy));
         }
-    }
+    }    
 }

@@ -30,6 +30,23 @@ public class Column extends IdentifiableEntity
         setName(name);
         this.dataType = dataType;
     }
+    
+	/**
+	 * Sets the name of the column. If the column belongs to a table, and there
+	 * is a name-clash with another column, an {@link SQLRepresentationException}
+	 * will be thrown.
+	 * 
+	 * @param name
+	 *            The name of the table.
+	 */
+	public void setName(String name) {
+		super.setName(name);
+		if (!getName().equals(name)) {
+			throw new SQLRepresentationException("Cannot rename column to \""
+					+ name
+					+ "\" as another column in the table has the same name");
+		}
+	}    
 
     /**
      * Returns the data type of the column.
