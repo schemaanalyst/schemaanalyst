@@ -3,7 +3,7 @@ package org.schemaanalyst.sqlrepresentation.expression;
 import java.util.Arrays;
 import java.util.List;
 
-import org.schemaanalyst.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class AndExpression extends CompoundExpression {
 
@@ -27,6 +27,6 @@ public class AndExpression extends CompoundExpression {
     
     @Override
     public String toString() {
-        return StringUtils.implode(subexpressions, " AND ");
+        return StringUtils.join(subexpressions, " AND ");
     }
 }

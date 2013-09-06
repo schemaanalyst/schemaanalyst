@@ -1,5 +1,6 @@
 package org.schemaanalyst.sqlwriter;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
@@ -14,7 +15,6 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
-import org.schemaanalyst.util.StringUtils;
 
 public class ExpressionSQLWriter {
 
@@ -91,7 +91,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeAndExpression(AndExpression expression) {
-		return StringUtils.implode(expression.getSubexpressions(), " AND ");	
+		return StringUtils.join(expression.getSubexpressions(), " AND ");	
     }
 
     public String writeBetweenExpression(BetweenExpression expression) {
@@ -124,7 +124,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeListExpression(ListExpression expression) {
-        return "(" + StringUtils.implode(expression.getSubexpressions(), ", ") + ")";
+        return "(" + StringUtils.join(expression.getSubexpressions(), ", ") + ")";
     }
 
     public String writeNullExpression(NullExpression expression) {
@@ -138,7 +138,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeOrExpression(OrExpression expression) {
-		return StringUtils.implode(expression.getSubexpressions(), " OR ");	
+		return StringUtils.join(expression.getSubexpressions(), " OR ");	
     }
 
     public String writeParenthesisedExpression(ParenthesisedExpression expression) {

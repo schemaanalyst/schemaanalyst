@@ -2,7 +2,8 @@ package org.schemaanalyst.mutation.analysis.result;
 
 import java.util.List;
 import java.util.ArrayList;
-import org.schemaanalyst.util.StringUtils;
+
+import deprecated.utils.StringUtils;
 
 /**
  * Contains the results of executing CREATE TABLE and INSERT statements

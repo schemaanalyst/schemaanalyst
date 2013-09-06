@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.StringUtils;
 
 public class Row {
 
@@ -86,7 +86,7 @@ public class Row {
         StringBuilder sb = new StringBuilder();
         sb.append(table);
         sb.append(": ");
-		sb.append(StringUtils.implode(cells));
+		sb.append(StringUtils.join(cells, ", "));
         return sb.toString();
     }
 }

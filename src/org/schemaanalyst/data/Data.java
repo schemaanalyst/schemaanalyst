@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.StringUtils;
 
 /**
  * A class that represents data belonging to a series of tables.
@@ -268,7 +268,7 @@ public class Data  {
         if (tables != null) {
             for (Table table : tables) {
                 List<Row> rows = data.get(table);
-				sb.append(StringUtils.implode(rows, System.lineSeparator()));
+				sb.append(StringUtils.join(rows, System.lineSeparator()));
 				sb.append(System.lineSeparator());
             }
         }

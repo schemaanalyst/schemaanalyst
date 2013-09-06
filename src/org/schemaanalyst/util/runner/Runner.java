@@ -7,6 +7,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -18,7 +19,7 @@ import java.util.logging.LogManager;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key
@@ -284,7 +285,7 @@ public abstract class Runner {
             for (Annotation annotation : annotations) {
                 if (annotation instanceof RequiredParameters) {
                     String str = ((RequiredParameters) annotation).value();
-                    requiredParameterNames = StringUtils.explode(str, " ");
+                    requiredParameterNames = Arrays.asList(StringUtils.split(str));
                     return;
                 }
             }
@@ -582,7 +583,7 @@ public abstract class Runner {
 
         usage.append("USAGE: java ").append(getClass().getCanonicalName()).append(" ");
         if (haveRequired) {
-            usage.append(StringUtils.implode(requiredParameterNames, " ")).append(" ");
+            usage.append(StringUtils.join(requiredParameterNames, " ")).append(" ");
         }
         if (haveOptional) {
             usage.append("<options>");
@@ -667,7 +668,7 @@ public abstract class Runner {
 
         String description = parameter.value();
 
-        String choices = StringUtils.implode(acquireParameterChoices(name), " | ");
+        String choices = StringUtils.join(acquireParameterChoices(name), " | ");
 
         String defaultValue = "";
         if (!required) {
