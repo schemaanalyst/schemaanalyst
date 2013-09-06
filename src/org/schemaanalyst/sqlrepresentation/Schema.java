@@ -177,6 +177,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 
         for (Table table : tables) {
             Table duplicateTable = duplicateSchema.getTable(table.getName());
+            
             // PRIMARY KEY
             if (hasPrimaryKeyConstraint(table)) {
                 PrimaryKeyConstraint duplicatePrimaryKeyConstraint = getPrimaryKeyConstraint(
@@ -194,11 +195,17 @@ public class Schema extends IdentifiableEntity implements Serializable {
                 duplicateSchema.addCheckConstraint(duplicateCheckConstraint);
             }
 
-            // UNIQUE constraints
+            // FOREIGN KEY constraints
             for (ForeignKeyConstraint foreignKeyConstraint : getForeignKeyConstraints(table)) {
-                ForeignKeyConstraint duplicateForeignKeyConstraint = foreignKeyConstraint
+            	Table referenceTable = foreignKeyConstraint.getReferenceTable();
+            	Table duplicateReferenceTable = duplicateSchema.getTable(referenceTable.getName());
+            			
+            	ForeignKeyConstraint duplicateForeignKeyConstraint = foreignKeyConstraint
                         .duplicate();
-                duplicateForeignKeyConstraint.remap(duplicateTable);
+                
+            	duplicateForeignKeyConstraint.remap(duplicateTable);
+            	duplicateForeignKeyConstraint.remapReferenceColumns(duplicateReferenceTable);
+                
                 duplicateSchema
                         .addForeignKeyConstraint(duplicateForeignKeyConstraint);
             }

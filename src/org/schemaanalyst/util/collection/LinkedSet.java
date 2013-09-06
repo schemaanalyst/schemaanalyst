@@ -13,7 +13,8 @@ import org.schemaanalyst.util.StringUtils;
 
 /**
  * A collection backed by a {@link java.util.LinkedList} for small sets 
- * where the elements are mutable.
+ * where the elements need to be mutable (i.e., the dependency on hashCode
+ * becomes unreliable). 
  * @author Phil McMinn
  *
  * @param <E> The type of the element to put in the set
