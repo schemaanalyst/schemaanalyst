@@ -280,13 +280,15 @@ public class TestSchema {
         s1.createPrimaryKeyConstraint(t1, c1);
         s1.createPrimaryKeyConstraint(t2, c2);
 
-        Expression e = new ConstantExpression(new NumericValue(1));
-        s1.createCheckConstraint(t1, e);
-        s1.createCheckConstraint(t2, e);
+        s1.createCheckConstraint(t1, new ConstantExpression(new NumericValue(1)));
+        s1.createCheckConstraint(t2, new ConstantExpression(new NumericValue(1)));
 
         s1.createForeignKeyConstraint(t1, c1, t3, c3);
         s1.createForeignKeyConstraint(t2, c2, t3, c3);
 
+        s1.createNotNullConstraint(t1, c1);
+        s1.createNotNullConstraint(t2, c2);
+        
         s1.createUniqueConstraint(t1, c1);
         s1.createUniqueConstraint(t2, c2);
 
@@ -302,6 +304,88 @@ public class TestSchema {
         assertEquals(
                 "The duplicated schema should have the same hashcode as the original",
                 s1.hashCode(), s2.hashCode());
+        
+        // test PRIMARY KEY constraint remapping
+        assertEquals(
+        		"First PRIMARY KEY constraint table should be equal to duplicate",
+        		s2.getPrimaryKeyConstraints().get(0).getTable(), t1);
+        assertNotSame(
+        		"First PRIMARY KEY constraint table should not be the same as duplicate",
+        		s2.getPrimaryKeyConstraints().get(0).getTable(), t1);
+        assertEquals(
+        		"Second PRIMARY KEY constraint table should be equal to duplicate",
+        		s2.getPrimaryKeyConstraints().get(1).getTable(), t2);
+        assertNotSame(
+        		"Second PRIMARY KEY constraint table should not be the same as duplicate",
+        		s2.getPrimaryKeyConstraints().get(1).getTable(), t2);    
+        
+        // test CHECK constraint remapping
+        assertEquals(
+        		"First CHECK constraint table should be equal to duplicate",
+        		s2.getCheckConstraints().get(0).getTable(), t1);
+        assertNotSame(
+        		"First CHECK constraint table should not be the same as duplicate",
+        		s2.getCheckConstraints().get(0).getTable(), t1);
+        assertEquals(
+        		"Second CHECK constraint table should be equal to duplicate",
+        		s2.getCheckConstraints().get(1).getTable(), t2);
+        assertNotSame(
+        		"Second CHECK constraint table should not be the same as duplicate",
+        		s2.getCheckConstraints().get(1).getTable(), t2);        	
+
+        // test FOREIGN KEY constraint remapping
+        assertEquals(
+        		"First FOREIGN KEY constraint table should be equal to duplicate",
+        		s2.getForeignKeyConstraints().get(0).getTable(), t1);
+        assertNotSame(
+        		"First FOREIGN KEY constraint table should not be the same as duplicate",
+        		s2.getForeignKeyConstraints().get(0).getTable(), t1);
+        assertEquals(
+        		"First FOREIGN KEY constraint reference table should be equal to duplicate",
+        		s2.getForeignKeyConstraints().get(0).getReferenceTable(), t3);
+        assertNotSame(
+        		"First FOREIGN KEY constraint table should not be the same as duplicate",
+        		s2.getForeignKeyConstraints().get(0).getReferenceTable(), t3);
+        assertEquals(
+        		"Second FOREIGN KEY constraint table should be equal to duplicate",
+        		s2.getForeignKeyConstraints().get(1).getTable(), t2);
+        assertNotSame(
+        		"Second FOREIGN KEY constraint table should not be the same as duplicate",
+        		s2.getForeignKeyConstraints().get(1).getTable(), t2);            
+        assertEquals(
+        		"Second FOREIGN KEY constraint reference table should be equal to duplicate",
+        		s2.getForeignKeyConstraints().get(1).getReferenceTable(), t3);
+        assertNotSame(
+        		"Second FOREIGN KEY constraint table should not be the same as duplicate",
+        		s2.getForeignKeyConstraints().get(1).getReferenceTable(), t3);
+        
+        // test NOT NULL constraint remapping
+        assertEquals(
+        		"First NOT NULL constraint table should be equal to duplicate",
+        		s2.getNotNullConstraints().get(0).getTable(), t1);
+        assertNotSame(
+        		"First NOT NULL constraint table should not be the same as duplicate",
+        		s2.getNotNullConstraints().get(0).getTable(), t1);
+        assertEquals(
+        		"Second NOT NULL constraint table should be equal to duplicate",
+        		s2.getNotNullConstraints().get(1).getTable(), t2);
+        assertNotSame(
+        		"Second NOT NULL constraint table should not be the same as duplicate",
+        		s2.getNotNullConstraints().get(1).getTable(), t2);         
+     
+        // test UNIQUE constraint remapping
+        assertEquals(
+        		"First UNIQUE constraint table should be equal to duplicate",
+        		s2.getUniqueConstraints().get(0).getTable(), t1);
+        assertNotSame(
+        		"First UNIQUE constraint table should not be the same as duplicate",
+        		s2.getUniqueConstraints().get(0).getTable(), t1);
+        assertEquals(
+        		"Second UNIQUE constraint table should be equal to duplicate",
+        		s2.getUniqueConstraints().get(1).getTable(), t2);
+        assertNotSame(
+        		"Second UNIQUE constraint table should not be the same as duplicate",
+        		s2.getUniqueConstraints().get(1).getTable(), t2);           
     }
 
     @Test
