@@ -116,6 +116,7 @@ public abstract class DatabaseInteractor {
         } catch (SQLException e) {
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
                 LOGGER.log(Level.FINE, "Create table failed: {0}", command);
+                LOGGER.log(Level.FINEST, "Create table failed because: ", e);
                 returnCount = CREATE_TABLE_ERROR;
             } else {
                 LOGGER.log(Level.FINE, "Statement failed: " + command, e);

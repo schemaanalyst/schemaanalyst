@@ -135,7 +135,7 @@ public class TestRedundancyRemovers {
         SchemaA original = new SchemaA();
         SchemaA instance1 = new SchemaA();
         original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
-        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.a, original.b));
+        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
         IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
         EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
         List<Mutant<Schema>> list = new ArrayList<>();

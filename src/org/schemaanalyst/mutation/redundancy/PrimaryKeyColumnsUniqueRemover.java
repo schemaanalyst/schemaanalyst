@@ -3,6 +3,7 @@ package org.schemaanalyst.mutation.redundancy;
 import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
@@ -19,7 +20,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  *
  */
 
-public class PrimaryKeyColumnsUniqueRemover extends RedundantMutantRemover<Schema> {
+public class PrimaryKeyColumnsUniqueRemover extends MutantRemover<Schema> {
 
 	@Override
 	public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
