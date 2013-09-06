@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
  * The {@link IdenticalMutantRemover} reduces the mutant list by removing
@@ -14,7 +15,7 @@ import org.schemaanalyst.mutation.Mutant;
  *
  * @param <A> The class of the artefact being mutated.
  */
-public class IdenticalMutantRemover<A> extends RedundantMutantRemover<A> {
+public class IdenticalMutantRemover<A> extends MutantRemover<A> {
 
     /**
      * {@inheritDoc}

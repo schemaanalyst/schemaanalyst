@@ -3,6 +3,7 @@ package org.schemaanalyst.mutation.redundancy;
 import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -18,7 +19,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
  * @author Phil McMinn
  *
  */
-public class PrimaryKeyColumnNotNullRemover extends RedundantMutantRemover<Schema> {
+public class PrimaryKeyColumnNotNullRemover extends MutantRemover<Schema> {
 
 	/**
 	 * {@inheritDoc}
