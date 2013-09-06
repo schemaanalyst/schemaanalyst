@@ -138,23 +138,15 @@ public class TestConstraints {
     	
         UniqueConstraint uc1 = new UniqueConstraint(t, c1, c2);
         UniqueConstraint uc2 = new UniqueConstraint(t, c1, c2);
-    	UniqueConstraint uc3 = new UniqueConstraint(t, c2, c1);
     	
     	assertEquals(
     			"Identical constraints should be equal",
     			uc1, uc2);
-    	assertEquals(
-    			"Column order should not matter for the equals operator",
-    			uc2, uc3);
     	
     	UniqueConstraint uc4 = new UniqueConstraint("MyConstraint", t, c1, c2);
     	assertEquals(
     			"Identifying names should not be taken into account in the equals operator",
-    			uc1, uc4);
-    	assertEquals(
-    			"Identifying names and column ordershould not be taken into account in the equals operator",
-    			uc3, uc4);    	
-    	
+    			uc1, uc4);    	
     	
     	assertFalse(
     			"A constraint should never be equal to null", uc1 == null);
@@ -326,8 +318,23 @@ public class TestConstraints {
         Table table2 = new Table("test");
         Column column2 = table2.createColumn("column", new IntDataType());
         
-        ForeignKeyConstraint fk = new ForeignKeyConstraint("fk", table1, column1, table2, column1);
-        fk.remapReferenceColumns(table2);
+        ForeignKeyConstraint fk = new ForeignKeyConstraint("fk", table1, column1, table1, column1);
+        
+        
+        fk.remap(table2, table2);
+        
+        assertSame(
+                "The remapped table should be table2",
+                table2, fk.getReferenceTable());
+        
+        assertSame(
+                "The first column should be that from table after the remapping",
+                column2, fk.getColumns().get(0));
+
+
+        assertNotSame(
+                "The first column should not be the same as the original after the remapping",
+                column1, fk.getReferenceColumns().get(0));        
         
         assertSame(
                 "The remapped reference table should be table2",
@@ -351,7 +358,7 @@ public class TestConstraints {
         Table table2 = new Table("test");
         table2.createColumn("column", new DoubleDataType());
         
-         new ForeignKeyConstraint("fk", table1, column1, table2, column1).remapReferenceColumns(table2);
+         new ForeignKeyConstraint("fk", table1, column1, table1, column1).remap(table2, table2);
     }    
     
     @Test

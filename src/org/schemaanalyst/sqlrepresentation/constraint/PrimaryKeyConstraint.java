@@ -71,7 +71,7 @@ public class PrimaryKeyConstraint extends MultiColumnConstraint {
      */
     @Override
     public PrimaryKeyConstraint duplicate() {
-        return new PrimaryKeyConstraint(getName(), table, columns.toList());
+        return new PrimaryKeyConstraint(getName(), table, columns);
     }  
     
     /**

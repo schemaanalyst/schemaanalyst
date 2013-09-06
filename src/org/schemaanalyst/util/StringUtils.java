@@ -6,7 +6,9 @@ import java.util.List;
 
 /**
  * Utility class for String operations.
+ * @deprecated Please use Apache Commons library instead.
  */
+@Deprecated
 public class StringUtils {
 
     /**

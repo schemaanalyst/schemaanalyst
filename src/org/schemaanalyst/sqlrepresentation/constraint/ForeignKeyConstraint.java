@@ -7,7 +7,6 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Represents foreign key constraints.
@@ -19,7 +18,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
 
     private static final long serialVersionUID = 373214484205495500L;
     private Table referenceTable;
-    private IdentifiableEntitySet<Column> referenceColumns;
+    private List<Column> referenceColumns;
 
     /**
      * Constructor.
@@ -118,7 +117,7 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      */
     public void setReferenceColumns(Iterable<Column> referenceColumns) {
 
-        this.referenceColumns = new IdentifiableEntitySet<>();
+        this.referenceColumns = new ArrayList<>();
         for (Column referenceColumn : referenceColumns) {
             if (!referenceTable.hasColumn(referenceColumn)) {
                 throw new SQLRepresentationException("No such column \""
@@ -157,10 +156,13 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
     /**
      * Remaps the reference table columns to another table
      * 
+     * @param table
+     * 			  The table to remap columns to.
      * @param referenceTable
      *            The table to remap reference columns to.
      */
-    public void remapReferenceColumns(Table referenceTable) {
+    public void remap(Table table, Table referenceTable) {
+    	remap(table);
         this.referenceTable = referenceTable;
         setReferenceColumns(remapColumns(referenceTable, referenceColumns));
     }
@@ -183,8 +185,8 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      */
     @Override
     public ForeignKeyConstraint duplicate() {
-        return new ForeignKeyConstraint(getName(), table, columns.toList(),
-                referenceTable, referenceColumns.toList());
+        return new ForeignKeyConstraint(getName(), table, columns,
+                referenceTable, referenceColumns);
     }
 
     @Override

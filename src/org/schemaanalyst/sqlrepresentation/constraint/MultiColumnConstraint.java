@@ -7,7 +7,6 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Abstract superclass for integrity constrains that potentially involve
@@ -19,7 +18,7 @@ import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 public abstract class MultiColumnConstraint extends Constraint {
 
     private static final long serialVersionUID = 173815859465417000L;
-    protected IdentifiableEntitySet<Column> columns;
+    protected List<Column> columns;
 
     /**
      * Constructor.
@@ -57,7 +56,7 @@ public abstract class MultiColumnConstraint extends Constraint {
      * @param columns The columns involved in the integrity constraint.
      */
     public void setColumns(List<Column> columns) {
-        this.columns = new IdentifiableEntitySet<>();
+        this.columns = new ArrayList<>();
         for (Column column : columns) {
             if (!table.hasColumn(column)) {
                 throw new SQLRepresentationException(
