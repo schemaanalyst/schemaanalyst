@@ -70,7 +70,7 @@ public class Original extends Runner {
      * The mutation pipeline to use to generate mutants.
      */
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
-            choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
+            choicesMethod = "org.schemaanalyst.mutation.pipeline.SchemaPipelineFactory.getPipelineChoices")
     protected String mutationPipeline = "ICST2013";
 
     @Override
