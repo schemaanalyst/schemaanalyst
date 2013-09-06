@@ -64,7 +64,7 @@ public class UniqueConstraint extends MultiColumnConstraint {
      */
     @Override
     public UniqueConstraint duplicate() {
-        return new UniqueConstraint(getName(), table, columns.toList());
+        return new UniqueConstraint(getName(), table, columns);
     }
     
     /**

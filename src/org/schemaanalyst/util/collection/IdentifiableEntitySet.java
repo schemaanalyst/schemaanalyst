@@ -4,29 +4,18 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.schemaanalyst.util.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
- * {@link IdentifiableEntitySet} is a set where the elements are deemed to be
- * unique if they have a different {@link Identifier} instance.
+ * {@link IdentifiableEntitySet} is an ordered set of {@link IdentifiableEntity} instances
+ * with unique identifiers.   The set is maintained in order of element entry. 
  * </p>
- * 
- * <p>
- * The set is backed by an {#link List} to maintain a set with insertion-order,
- * making it similar to {#link java.util.LinkedHashSet} except key values
- * ({#linnk Identifier} instances) are mutatable. With all Java collections,
- * behaviour is undefined for mutatable key values in Map-backed sets, creating
- * havoc with the backing HashMap or TreeMap. The downside of using a list
- * backing is slower performance, but this collection is intended to be used to
- * manage table columns etc., whose sizes tend to be relatively small.
- * </p>
- * 
+ *
  * @author Phil McMinn
  * 
  * @param <E>
@@ -221,24 +210,14 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
 
     @Override
     public int hashCode() {
-        // we have to revert to a HashSet temporarily to get
-        // a hashcode that is not dependent on object order 
-        // in the set.
-    	
-    	// TODO PSM: wondering if we need to do this -- 
-    	// can't we just iterate through the list, and 
-    	// multiply hashcodes since the result will always
-    	// be the same
-    	
-        HashSet<E> elementSet = new HashSet<>(elements);
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + elementSet.hashCode();
-        return result;
+    	int result = 1;
+    	for (E element : elements) {
+    		result *= element.hashCode();
+    	}
+    	return result;
     }
 
 	@Override
-	@SuppressWarnings("unchecked")
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
@@ -246,12 +225,13 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
             return false;
         if (getClass() != obj.getClass())
             return false;
+    	@SuppressWarnings("unchecked")
         IdentifiableEntitySet<E> other = ((IdentifiableEntitySet<E>) obj);
         return (size() == other.size() && (containsAll(other.elements)));
     }
 
     @Override
     public String toString() {
-        return "{" + StringUtils.implode(elements) + "}";
+        return "{" + StringUtils.join(elements, ", ") + "}";
     }
 }

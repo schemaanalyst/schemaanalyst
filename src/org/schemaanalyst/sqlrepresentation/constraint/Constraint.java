@@ -1,12 +1,13 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
-import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
 /**
  * Abstract super class of all integrity constraints.
@@ -99,9 +100,9 @@ public abstract class Constraint extends IdentifiableEntity implements Serializa
 		return true;
 	}
 
-	protected static IdentifiableEntitySet<Column> remapColumns(
-            Table table, IdentifiableEntitySet<Column> columns) {
-        IdentifiableEntitySet<Column> remappedColumns = new IdentifiableEntitySet<>();
+	protected static List<Column> remapColumns(
+            Table table, List<Column> columns) {
+		List<Column> remappedColumns = new ArrayList<>();
         for (Column column : columns) {
             remappedColumns.add(remapColumn(table, column));
         }
