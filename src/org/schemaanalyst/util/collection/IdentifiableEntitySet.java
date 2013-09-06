@@ -224,6 +224,12 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
         // we have to revert to a HashSet temporarily to get
         // a hashcode that is not dependent on object order 
         // in the set.
+    	
+    	// TODO PSM: wondering if we need to do this -- 
+    	// can't we just iterate through the list, and 
+    	// multiply hashcodes since the result will always
+    	// be the same
+    	
         HashSet<E> elementSet = new HashSet<>(elements);
         final int prime = 31;
         int result = 1;
