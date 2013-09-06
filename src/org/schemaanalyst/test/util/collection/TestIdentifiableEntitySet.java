@@ -98,38 +98,16 @@ public class TestIdentifiableEntitySet {
     }
     
     @Test
-    public void testDuplication() {
-        IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
-        Person p1 = new Person("Phil", 21);
-        Person p2 = new Person("Greg", 22);        
-        Person p3 = new Person("Chris", 23);
-        
-        set1.add(p1); 
-        set1.add(p2);
-        set1.add(p3);
-        
-        IdentifiableEntitySet<Person> set2 = set1.duplicate();
-        
-        assertNotSame(set1, set2);
-        assertEquals(set1, set2);
-    }
-    
-    @Test
     public void testEquals() {
         IdentifiableEntitySet<Person> set1 = new IdentifiableEntitySet<>();
-        Person p1 = new Person("Phil", 21);
-        Person p2 = new Person("Greg", 22);        
-        Person p3 = new Person("Chris", 23);
-        
-        set1.add(p1); 
-        set1.add(p2);
-        set1.add(p3);
+        set1.add(new Person("Phil", 21)); 
+        set1.add(new Person("Greg", 22));
+        set1.add(new Person("Chris", 23));
         
         IdentifiableEntitySet<Person> set2 = new IdentifiableEntitySet<>();
-
-        set2.add(p3);
-        set2.add(p1);
-        set2.add(p2);
+        set2.add(new Person("Chris", 23));
+        set2.add(new Person("Phil", 21));
+        set2.add(new Person("Greg", 22));
         
         assertEquals(set1, set2);
         assertEquals(set1.hashCode(), set2.hashCode());

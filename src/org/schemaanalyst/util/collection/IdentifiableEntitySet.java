@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -13,9 +15,9 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * <p>
  * {@link IdentifiableEntitySet} is an ordered set of {@link IdentifiableEntity} instances
- * with unique identifiers.   The set is maintained in order of element entry. 
+ * with unique identifiers.   The set is maintained in order of element entry.
  * </p>
- *
+ * 
  * @author Phil McMinn
  * 
  * @param <E>
@@ -27,10 +29,12 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
 
     private static final long serialVersionUID = -20454495160065002L;
 
-    private List<E> elements;
+    private HashMap<Identifier, E> identifiers;
+    private LinkedList<E> elements;
 
     public IdentifiableEntitySet() {
-        elements = new ArrayList<>();
+    	identifiers = new HashMap<>();
+        elements = new LinkedList<>();
     }
 
     @Override
@@ -39,6 +43,7 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
             return false;
         }
         elements.add(element);
+        identifiers.put(element.getIdentifier(), element);
         element.setBelongingSet(this);
         return true;
     }
@@ -48,12 +53,7 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
     }
 
     public E get(Identifier identifier) {
-        for (E element : elements) {
-            if (element.getIdentifier().equals(identifier)) {
-                return element;
-            }
-        }
-        return null;
+    	return identifiers.get(identifier);
     }
 
     protected Identifier nameFor(Object o) {
@@ -67,18 +67,27 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
         return null;
     }
 
+    public boolean updateIdentifier(Identifier identifier) {
+    	if (!contains(identifier)) {
+    		return false;
+    	}
+    	E element = get(identifier);
+    	Identifier newIdentifier = element.getIdentifier();
+    	if (identifier.equals(newIdentifier)) {
+    		return false;
+    	}
+    	identifiers.remove(identifier);
+    	identifiers.put(newIdentifier, element);
+    	return true;
+    }
+    
     @Override
     public boolean contains(Object o) {
         Identifier identifier = nameFor(o);
         if (identifier == null) {
             return false;
         }
-        for (E element : elements) {
-            if (element.getIdentifier().equals(identifier)) {
-                return true;
-            }
-        }
-        return false;
+        return identifiers.containsKey(identifier);
     }
 
     @Override
@@ -87,27 +96,18 @@ public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
         if (identifier == null) {
             return false;
         }
-        for (int i = 0; i < elements.size(); i++) {
-            E element = elements.get(i);
-            if (element.getIdentifier().equals(identifier)) {
-                elements.remove(i);
-                return true;
-            }
-        }
-        return false;
+    	E element = identifiers.remove(identifier);
+    	if (element == null) {
+    		return false;
+    	} else {
+    		elements.remove(element);
+    		return true;
+    	}
     }
 
     @Override
     public Iterator<E> iterator() {
         return elements.iterator();
-    }
-
-    public IdentifiableEntitySet<E> duplicate() {
-        IdentifiableEntitySet<E> duplicate = new IdentifiableEntitySet<>();
-        for (E element : this) {
-            duplicate.add(element);
-        }
-        return duplicate;
     }
 
     @Override

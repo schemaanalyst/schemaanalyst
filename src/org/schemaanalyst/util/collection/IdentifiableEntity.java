@@ -20,12 +20,19 @@ public abstract class IdentifiableEntity {
     	if (set != null) {
     		if (set.contains(name)) {
     			return;
-    		}
+    		} 
     	}
+    	Identifier oldId = id;
         id = new Identifier(name);
+        if (set != null) {
+        	set.updateIdentifier(oldId);
+        }
     }
     
     void setBelongingSet(IdentifiableEntitySet<?> set) {
+    	if (this.set != null) {
+    		this.set.remove(this);
+    	}
     	this.set = set;
     }
     
