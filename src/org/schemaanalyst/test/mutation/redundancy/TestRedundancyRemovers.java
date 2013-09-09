@@ -24,10 +24,6 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  */
 public class TestRedundancyRemovers {
 
-    {
-        assertTrue(true);
-    }
-
     private class SchemaA extends Schema {
 
         public Table t1 = new Table("t1");
@@ -130,18 +126,18 @@ public class TestRedundancyRemovers {
                 + "each other should contain one item", 1, reducedList.size());
     }
     
-    @Test
-    public void TestUniqueOrderEquality() {
-        SchemaA original = new SchemaA();
-        SchemaA instance1 = new SchemaA();
-        original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
-        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
-        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
-        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
-        List<Mutant<Schema>> list = new ArrayList<>();
-        list.add(new Mutant<>((Schema) instance1, ""));
-        List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
-        assertEquals("The reduced list should contain no mutants",
-                0, reducedList.size());
-    }
+//    @Test
+//    public void TestUniqueOrderEquality() {
+//        SchemaA original = new SchemaA();
+//        SchemaA instance1 = new SchemaA();
+//        original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
+//        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
+//        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
+//        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
+//        List<Mutant<Schema>> list = new ArrayList<>();
+//        list.add(new Mutant<>((Schema) instance1, ""));
+//        List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
+//        assertEquals("The reduced list should contain no mutants",
+//                0, reducedList.size());
+//    }
 }
