@@ -82,7 +82,12 @@ public class TestRedundancyRemovers {
         assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
         MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
         MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
-        List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
+        System.out.println("Before MEO: " + list.size());
+        List<Mutant<Schema>> reducedList = reducer2.removeMutants(list);
+        System.out.println("After MEO: " + reducedList.size());
+        System.out.println("Before MEM: " + reducedList.size());
+        reducedList = reducer1.removeMutants(reducedList);
+        System.out.println("After MEM: " + reducedList.size());
         assertEquals("The list returned after removal when provided one "
                 + "mutant equal to the original and one not equal should "
                 + "contain one item", 1, reducedList.size());

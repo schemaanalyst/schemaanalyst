@@ -43,6 +43,7 @@ import org.junit.runners.Suite;
     org.schemaanalyst.test.mutation.redundancy.TestCheckEquivalenceTester.class,
     org.schemaanalyst.test.mutation.redundancy.TestColumnEquivalenceTester.class,
     org.schemaanalyst.test.mutation.redundancy.TestForeignKeyEquivalenceTester.class,
+    org.schemaanalyst.test.mutation.redundancy.TestMutantEquivalentToMutantRemover.class,
     org.schemaanalyst.test.mutation.redundancy.TestPrimaryKeyEquivalenceTester.class,
 	org.schemaanalyst.test.mutation.redundancy.TestRedundancyRemovers.class,
     org.schemaanalyst.test.mutation.redundancy.TestSchemaEquivalenceTester.class,
