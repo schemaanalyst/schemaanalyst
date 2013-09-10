@@ -32,6 +32,20 @@ public abstract class EquivalenceTester<T> {
      * @return Whether they contain equivalent elements
      */
     public boolean areEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
+        return internalAreEquivalent(iterableA, iterableB) && internalAreEquivalent(iterableB, iterableA);
+    }
+    
+    /**
+     * Internal implementation for 
+     * {@link #areEquivalent(java.lang.Iterable, java.lang.Iterable)} method, to
+     * allow iteration across both methods (therefore checking {@code iterableA}
+     *  is contained within {@code iterableB} and vice-versa).
+     * 
+     * @param iterableA
+     * @param iterableB
+     * @return 
+     */
+    private boolean internalAreEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
         for (Iterator<? extends T> iterA = iterableA.iterator(); iterA.hasNext();) {
             T a = iterA.next();
             boolean found = false;
