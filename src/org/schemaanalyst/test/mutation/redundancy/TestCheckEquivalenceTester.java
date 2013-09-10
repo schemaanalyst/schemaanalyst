@@ -95,6 +95,43 @@ public class TestCheckEquivalenceTester {
     }
     
     @Test
+    public void testDifferentIdentifier() {
+        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        Table t = new Table("t");
+        CheckConstraint cc1 = new CheckConstraint("cc1", t, new BetweenExpression(
+                new ConstantExpression(new NumericValue(3)),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        CheckConstraint cc2 = new CheckConstraint("cc2", t, new BetweenExpression(
+                new ConstantExpression(new NumericValue(3)),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        assertFalse("Two check constraints with different identifiers should "
+                + "not be equivalent", tester.areEquivalent(cc1, cc2));
+    }
+    
+    @Test
+    public void testDifferentTableIdentifier() {
+        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        Table t = new Table("t");
+        Table s = new Table("s");
+        CheckConstraint cc1 = new CheckConstraint(t, new BetweenExpression(
+                new ConstantExpression(new NumericValue(3)),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        CheckConstraint cc2 = new CheckConstraint(s, new BetweenExpression(
+                new ConstantExpression(new NumericValue(3)),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        assertFalse("Two check constraints on tables with different identifiers"
+                + " should not be equivalent", tester.areEquivalent(cc1, cc2));
+    }
+    
+    @Test
     public void testDifferentExpression() {
         CheckEquivalenceTester tester = new CheckEquivalenceTester();
         Table t1 = new Table("t");
