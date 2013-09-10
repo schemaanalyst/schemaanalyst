@@ -9,6 +9,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.redundancy.CheckEquivalenceTester;
 import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceTester;
 import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceTester;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceTester;
 import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceTester;
 import org.schemaanalyst.mutation.redundancy.TableEquivalenceTester;
@@ -16,6 +17,7 @@ import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceTester;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.*;
@@ -38,7 +40,8 @@ public class TestSchemaEquivalenceTester {
                 new PrimaryKeyEquivalenceTester(),
                 new ForeignKeyEquivalenceTester(),
                 new UniqueEquivalenceTester(),
-                new CheckEquivalenceTester());
+                new CheckEquivalenceTester(),
+                new NotNullEquivalenceTester());
         Schema s = new Schema("s");
         Table t = s.createTable("t");
         Column a = t.createColumn("a", new IntDataType());
@@ -328,5 +331,23 @@ public class TestSchemaEquivalenceTester {
                 new ConstantExpression(new NumericValue(0)))));
         assertTrue("Adding a check constraint should be able to make two "
                 + "otherwise identical schemas equivalent", tester.areEquivalent(s1, s2));
+    }
+    
+    @Test
+    public void testMissingNotNull() {
+        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        Schema s1 = new Schema("s");
+        Table t1 = s1.createTable("t");
+        Column a1 = t1.createColumn("a", new IntDataType());
+        s1.addNotNullConstraint(new NotNullConstraint(t1, a1));
+        Schema s2 = new Schema("s");
+        Table t2 = s2.createTable("t");
+        Column a2 = t2.createColumn("a", new IntDataType());
+        assertFalse("A schema with one not null constraint should not be "
+                + "equivalent to a schema without a check constraint",
+                tester.areEquivalent(s1, s2));
+        s2.addNotNullConstraint(new NotNullConstraint(t2, a2));
+        assertTrue("Adding a not null should be able to make two otherwise "
+                + "identical schemas equivalent", tester.areEquivalent(s1, s2));
     }
 }

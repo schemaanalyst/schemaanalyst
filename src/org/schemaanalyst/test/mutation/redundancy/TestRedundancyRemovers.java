@@ -9,8 +9,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
-import org.schemaanalyst.mutation.redundancy.IdenticalMutantRemover;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
+import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
+import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
+import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceTester;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -53,23 +55,17 @@ public class TestRedundancyRemovers {
         Schema original = new SchemaA();
         Schema instance1 = new SchemaA();
         Schema instance2 = new SchemaA();
-        assertEquals("Two unchanged instances of the same schema should be "
-                + "equal", original, instance1);
-        assertEquals("Two unchanged instances of the same schema should be "
-                + "equal", instance1, instance2);
         Mutant<Schema> mutant1 = new Mutant<>(instance1, "");
         Mutant<Schema> mutant2 = new Mutant<>(instance2, "");
         List<Mutant<Schema>> list = new ArrayList<>();
         list.add(mutant1);
         list.add(mutant2);
-        assertEquals("Prior to GeneralEquivalenceReducer usage, the input list "
-                + "should contain two items", 2, list.size());
-        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
-        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>(original);
+        assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
-        assertEquals("The list returned by the GeneralEquivalenceReducer when "
-                + "provided two mutants equal to the original should be empty",
-                0, reducedList.size());
+        assertEquals("The list returned by when provided two mutants equal to "
+                + "the original should be empty", 0, reducedList.size());
     }
 
     @Test
@@ -78,22 +74,19 @@ public class TestRedundancyRemovers {
         SchemaA instance1 = new SchemaA();
         SchemaA instance2 = new SchemaA();
         instance1.addNotNullConstraint(new NotNullConstraint(instance1.t1, instance1.a));
-        assertNotEquals("A changed schema should not be equal the the original",
-                original, instance1);
-        Mutant<Schema> mutant1 = new Mutant<>((Schema) instance1, "");
-        Mutant<Schema> mutant2 = new Mutant<>((Schema) instance2, "");
+        Mutant<Schema> mutant1 = new Mutant<>((Schema) instance1, "mutant1");
+        Mutant<Schema> mutant2 = new Mutant<>((Schema) instance2, "mutant2");
         List<Mutant<Schema>> list = new ArrayList<>();
         list.add(mutant1);
         list.add(mutant2);
-        assertEquals("Prior to GeneralEquivalenceReducer usage, the input list "
-                + "should contain two items", 2, list.size());
-        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
-        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
+        assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
-        assertEquals("The list returned by the GeneralEquivalenceReducer when "
-                + "provided one mutant equal to the original and one not equal "
-                + "should contain one item", 1, reducedList.size());
-        assertTrue("The first item of the list returned by the reducer when "
+        assertEquals("The list returned after removal when provided one "
+                + "mutant equal to the original and one not equal should "
+                + "contain one item", 1, reducedList.size());
+        assertTrue("The first item of the list returned by the remover when "
                 + "provided one mutant equal to the original and one not equal "
                 + "should be the latter mutant", mutant1 == reducedList.get(0));
     }
@@ -104,40 +97,32 @@ public class TestRedundancyRemovers {
         SchemaA instance1 = new SchemaA();
         SchemaA instance2 = new SchemaA();
         instance1.addNotNullConstraint(new NotNullConstraint(instance1.t1, instance1.a));
-        assertNotEquals("A changed schema should not be equal to the original",
-                original, instance1);
-        instance2.addNotNullConstraint(new NotNullConstraint(instance2.t1, instance1.a));
-        assertNotEquals("A changed schema should not be equal to the original",
-                original, instance2);
-        assertEquals("Two schemas with the same change should be equal to each "
-                + "other", instance1, instance2);
         Mutant<Schema> mutant1 = new Mutant<>((Schema) instance1, "");
         Mutant<Schema> mutant2 = new Mutant<>((Schema) instance2, "");
         List<Mutant<Schema>> list = new ArrayList<>();
         list.add(mutant1);
         list.add(mutant2);
-        assertEquals("Prior to GeneralEquivalenceReducer usage, the input list "
-                + "should contain two items", 2, list.size());
-        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
-        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
+        assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
-        assertEquals("The list returned by the GeneralEquivalenceReducer when "
-                + "provided two mutants different to the original but equal to "
+        assertEquals("The list returned after removal when provided two "
+                + "mutants different to the original but equal to "
                 + "each other should contain one item", 1, reducedList.size());
     }
     
-//    @Test
-//    public void TestUniqueOrderEquality() {
-//        SchemaA original = new SchemaA();
-//        SchemaA instance1 = new SchemaA();
-//        original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
-//        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
-//        IdenticalMutantRemover<Schema> reducer1 = new IdenticalMutantRemover<>();
-//        EquivalentMutantRemover<Schema> reducer2 = new EquivalentMutantRemover<>((Schema)original);
-//        List<Mutant<Schema>> list = new ArrayList<>();
-//        list.add(new Mutant<>((Schema) instance1, ""));
-//        List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
-//        assertEquals("The reduced list should contain no mutants",
-//                0, reducedList.size());
-//    }
+    @Test
+    public void TestUniqueOrderEquality() {
+        SchemaA original = new SchemaA();
+        SchemaA instance1 = new SchemaA();
+        original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
+        instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
+        List<Mutant<Schema>> list = new ArrayList<>();
+        list.add(new Mutant<>((Schema) instance1, ""));
+        List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
+        assertEquals("The reduced list should contain no mutants",
+                0, reducedList.size());
+    }
 }

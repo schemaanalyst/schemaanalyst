@@ -3,6 +3,7 @@ package org.schemaanalyst.mutation.redundancy;
 import java.util.List;
 
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
  * An {@link RedundantMutantRemover} takes a list of mutants and removes
@@ -13,7 +14,7 @@ import org.schemaanalyst.mutation.Mutant;
  *
  * @param <A> The class of the artefact being mutated.
  */
-public abstract class RedundantMutantRemover<A> {
+public abstract class RedundantMutantRemover<A> extends MutantRemover<A> {
 
 	/**
 	 * Produce a reduced list of mutants based on the notion of

@@ -5,6 +5,7 @@ package org.schemaanalyst.mutation.redundancy;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
@@ -31,6 +32,7 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
     protected EquivalenceTester<ForeignKeyConstraint> foreignKeyEquivalenceTester;
     protected EquivalenceTester<UniqueConstraint> uniqueEquivalenceTester;
     protected EquivalenceTester<CheckConstraint> checkEquivalenceTester;
+    protected EquivalenceTester<NotNullConstraint> notNullEquivalenceTester;
 
     /**
      * Constructor with specified equivalence testers for each sub-component of
@@ -42,14 +44,16 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
      * @param foreignKeyEquivalenceTester
      * @param uniqueEquivalenceTester
      * @param checkEquivalenceTester
+     * @param notNullEquivalenceTester
      */
-    public SchemaEquivalenceTester(TableEquivalenceTester tableEquivalenceTester, ColumnEquivalenceTester columnEquivalenceTester, PrimaryKeyEquivalenceTester primaryKeyEquivalenceTester, ForeignKeyEquivalenceTester foreignKeyEquivalenceTester, UniqueEquivalenceTester uniqueEquivalenceTester, CheckEquivalenceTester checkEquivalenceTester) {
+    public SchemaEquivalenceTester(TableEquivalenceTester tableEquivalenceTester, ColumnEquivalenceTester columnEquivalenceTester, PrimaryKeyEquivalenceTester primaryKeyEquivalenceTester, ForeignKeyEquivalenceTester foreignKeyEquivalenceTester, UniqueEquivalenceTester uniqueEquivalenceTester, CheckEquivalenceTester checkEquivalenceTester, NotNullEquivalenceTester notNullEquivalenceTester) {
         this.tableEquivalenceTester = tableEquivalenceTester;
         this.columnEquivalenceTester = columnEquivalenceTester;
         this.primaryKeyEquivalenceTester = primaryKeyEquivalenceTester;
         this.foreignKeyEquivalenceTester = foreignKeyEquivalenceTester;
         this.uniqueEquivalenceTester = uniqueEquivalenceTester;
         this.checkEquivalenceTester = checkEquivalenceTester;
+        this.notNullEquivalenceTester = notNullEquivalenceTester;
     }
 
     /**
@@ -64,6 +68,7 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
         this.foreignKeyEquivalenceTester = new ForeignKeyEquivalenceTester();
         this.uniqueEquivalenceTester = new UniqueEquivalenceTester();
         this.checkEquivalenceTester = new CheckEquivalenceTester();
+        this.notNullEquivalenceTester = new NotNullEquivalenceTester();
     }
 
     @Override
@@ -83,6 +88,8 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
         } else if (!uniqueEquivalenceTester.areEquivalent(a.getUniqueConstraints(), b.getUniqueConstraints())) {
             return false;
         } else if (!checkEquivalenceTester.areEquivalent(a.getCheckConstraints(), b.getCheckConstraints())) {
+            return false;
+        } else if (!notNullEquivalenceTester.areEquivalent(a.getNotNullConstraints(), b.getNotNullConstraints())) {
             return false;
         } else {
             return true;
