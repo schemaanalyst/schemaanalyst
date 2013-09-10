@@ -3,7 +3,13 @@
 package org.schemaanalyst.mutation.redundancy;
 
 import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.*;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 /**
  * Compares two {@link org.schemaanalyst.sqlrepresentation.Schema} objects and 
@@ -22,12 +28,12 @@ import org.schemaanalyst.sqlrepresentation.*;
  */
 public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
     
-    protected TableEquivalenceTester tableEquivalenceTester;
-    protected ColumnEquivalenceTester columnEquivalenceTester;
-    protected PrimaryKeyEquivalenceTester primaryKeyEquivalenceTester;
-    protected ForeignKeyEquivalenceTester foreignKeyEquivalenceTester;
-    protected UniqueEquivalenceTester uniqueEquivalenceTester;
-    protected CheckEquivalenceTester checkEquivalenceTester;
+    protected EquivalenceTester<Table> tableEquivalenceTester;
+    protected EquivalenceTester<Column> columnEquivalenceTester;
+    protected EquivalenceTester<PrimaryKeyConstraint> primaryKeyEquivalenceTester;
+    protected EquivalenceTester<ForeignKeyConstraint> foreignKeyEquivalenceTester;
+    protected EquivalenceTester<UniqueConstraint> uniqueEquivalenceTester;
+    protected EquivalenceTester<CheckConstraint> checkEquivalenceTester;
 
     /**
      * Constructor with specified equivalence testers for each sub-component of  
@@ -68,16 +74,26 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
         if (super.areEquivalent(a, b)) {
             return true;
         } else if (!a.getIdentifier().equals(b.getIdentifier())) {
-            return false; // Add easy case - count tables are same
+            return false;
+        } else if (a.getTables().size() != b.getTables().size()) {
+            return false;
         } else {
-            for (Iterator<Table> iter = a.getTablesInOrder().iterator(); iter.hasNext();) {
-                Table aTable = iter.next();
-                boolean tableFound = false;
-                // Make a set of tables in B
-                // Remove from set if they are equiv
-                // if set is empty -> all tables equiv (regardless of ordering)
+            Set<Table> bTables = new LinkedHashSet<>(b.getTablesInOrder());
+            for (Table aTable : a.getTablesInOrder()) {
+                boolean found = false;
+                Iterator<Table> iter = bTables.iterator();
+                while (!found && iter.hasNext()) {
+                    Table bTable = iter.next();
+                    if (tableEquivalenceTester.areEquivalent(aTable, bTable)) {
+                        iter.remove();
+                        found = true;
+                    }
+                }
+                if (!found) {
+                    return false;
+                }
             }
-            
+            return true;
         }
     }
     
