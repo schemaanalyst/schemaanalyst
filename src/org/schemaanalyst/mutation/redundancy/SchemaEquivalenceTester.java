@@ -3,8 +3,6 @@
 package org.schemaanalyst.mutation.redundancy;
 
 import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -12,22 +10,22 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 /**
- * Compares two {@link org.schemaanalyst.sqlrepresentation.Schema} objects and 
- * determines whether they are equivalent in terms of semantics, such that they 
+ * Compares two {@link org.schemaanalyst.sqlrepresentation.Schema} objects and
+ * determines whether they are equivalent in terms of semantics, such that they
  * may not be syntactically identical.
- * 
- * This class delegates much of the equivalence testing to a collection of 
- * classes that extend the 
- * {@link org.schemaanalyst.mutation.redundancy.EquivalenceTester} class, to 
- * compare each sub-component of a schema for equivalence. Altering this 
- * behaviour, e.g. for a specific DBMS that has different semantics, can be 
+ *
+ * This class delegates much of the equivalence testing to a collection of
+ * classes that extend the
+ * {@link org.schemaanalyst.mutation.redundancy.EquivalenceTester} class, to
+ * compare each sub-component of a schema for equivalence. Altering this
+ * behaviour, e.g. for a specific DBMS that has different semantics, can be
  * achieved by providing alternative
  * {@link org.schemaanalyst.mutation.redundancy.EquivalenceTester} classes.
- * 
+ *
  * @author Chris J. Wright
  */
 public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
-    
+
     protected EquivalenceTester<Table> tableEquivalenceTester;
     protected EquivalenceTester<Column> columnEquivalenceTester;
     protected EquivalenceTester<PrimaryKeyConstraint> primaryKeyEquivalenceTester;
@@ -36,15 +34,15 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
     protected EquivalenceTester<CheckConstraint> checkEquivalenceTester;
 
     /**
-     * Constructor with specified equivalence testers for each sub-component of  
+     * Constructor with specified equivalence testers for each sub-component of
      * a {@link org.schemaanalyst.sqlrepresentation.Schema} object.
-     * 
+     *
      * @param tableEquivalenceTester
      * @param columnEquivalenceTester
      * @param primaryKeyEquivalenceTester
      * @param foreignKeyEquivalenceTester
      * @param uniqueEquivalenceTester
-     * @param checkEquivalenceTester 
+     * @param checkEquivalenceTester
      */
     public SchemaEquivalenceTester(TableEquivalenceTester tableEquivalenceTester, ColumnEquivalenceTester columnEquivalenceTester, PrimaryKeyEquivalenceTester primaryKeyEquivalenceTester, ForeignKeyEquivalenceTester foreignKeyEquivalenceTester, UniqueEquivalenceTester uniqueEquivalenceTester, CheckEquivalenceTester checkEquivalenceTester) {
         this.tableEquivalenceTester = tableEquivalenceTester;
@@ -56,8 +54,8 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
     }
 
     /**
-     * Constructor that uses a default set of equivalence testers for each 
-     * sub-component of a {@link org.schemaanalyst.sqlrepresentation.Schema} 
+     * Constructor that uses a default set of equivalence testers for each
+     * sub-component of a {@link org.schemaanalyst.sqlrepresentation.Schema}
      * object.
      */
     public SchemaEquivalenceTester() {
@@ -77,24 +75,10 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
             return false;
         } else if (a.getTables().size() != b.getTables().size()) {
             return false;
+        } else if (!tableEquivalenceTester.areEquivalent(a.getTablesInOrder(), b.getTablesInOrder())) {
+            return false;
         } else {
-            Set<Table> bTables = new LinkedHashSet<>(b.getTablesInOrder());
-            for (Table aTable : a.getTablesInOrder()) {
-                boolean found = false;
-                Iterator<Table> iter = bTables.iterator();
-                while (!found && iter.hasNext()) {
-                    Table bTable = iter.next();
-                    if (tableEquivalenceTester.areEquivalent(aTable, bTable)) {
-                        iter.remove();
-                        found = true;
-                    }
-                }
-                if (!found) {
-                    return false;
-                }
-            }
             return true;
         }
     }
-    
 }
