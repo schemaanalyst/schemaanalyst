@@ -8,9 +8,9 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
- * A {@link MutantRemover} that removes mutants equivalent to other mutants, 
+ * A {@link MutantRemover} that removes mutants equivalent to other mutants,
  * according to a provided {@link EquivalenceTester}.
- * 
+ *
  * @author Chris J. Wright
  * @param <T> The type of the artefact being mutated.
  */
@@ -18,13 +18,13 @@ public class MutantEquivalentToMutantRemover<T> extends EquivalenceTesterMutantR
 
     /**
      * Constructor.
-     * 
+     *
      * @param tester The equivalence tester
      */
     public MutantEquivalentToMutantRemover(EquivalenceTester<T> tester) {
         super(tester);
     }
-    
+
     /**
      * {@inheritDoc}
      */
@@ -35,12 +35,10 @@ public class MutantEquivalentToMutantRemover<T> extends EquivalenceTesterMutantR
             Mutant<T> outer = mutants.get(i);
             boolean found = false;
             for (int j = i + 1; j < mutants.size(); j++) {
-                if (i != j) {
-                    Mutant<T> inner = mutants.get(j);
-                    if (tester.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
-                        found = true;
-                        break;
-                    }
+                Mutant<T> inner = mutants.get(j);
+                if (tester.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
+                    found = true;
+                    break;
                 }
             }
             if (!found) {
