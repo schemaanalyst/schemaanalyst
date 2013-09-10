@@ -2,7 +2,6 @@
  */
 package org.schemaanalyst.mutation.redundancy;
 
-import java.util.Iterator;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -76,6 +75,14 @@ public class SchemaEquivalenceTester extends EquivalenceTester<Schema> {
         } else if (a.getTables().size() != b.getTables().size()) {
             return false;
         } else if (!tableEquivalenceTester.areEquivalent(a.getTablesInOrder(), b.getTablesInOrder())) {
+            return false;
+        } else if (!primaryKeyEquivalenceTester.areEquivalent(a.getPrimaryKeyConstraints(), b.getPrimaryKeyConstraints())) {
+            return false;
+        } else if (!foreignKeyEquivalenceTester.areEquivalent(a.getForeignKeyConstraints(), b.getForeignKeyConstraints())) {
+            return false;
+        } else if (!uniqueEquivalenceTester.areEquivalent(a.getUniqueConstraints(), b.getUniqueConstraints())) {
+            return false;
+        } else if (!checkEquivalenceTester.areEquivalent(a.getCheckConstraints(), b.getCheckConstraints())) {
             return false;
         } else {
             return true;
