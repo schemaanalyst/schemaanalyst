@@ -20,10 +20,6 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
  */
 public class TestCheckEquivalenceTester {
 
-    {
-        assertTrue(true);
-    }
-
     @Test
     public void testSameInstance() {
         CheckEquivalenceTester tester = new CheckEquivalenceTester();
