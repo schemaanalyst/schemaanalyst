@@ -50,7 +50,7 @@ public abstract class EquivalenceChecker<T> {
      * @param iterableB The second iterable
      * @return A list of elements in A-B, according to equivalence
      */
-    public List<? extends T> subtract(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
+    public List<T> subtract(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
         List<T> result = new ArrayList<>();
         for (Iterator<? extends T> iterA = iterableA.iterator(); iterA.hasNext();) {
             T a = iterA.next();
