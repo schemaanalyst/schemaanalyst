@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

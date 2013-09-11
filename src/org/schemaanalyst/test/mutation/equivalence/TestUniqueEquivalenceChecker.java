@@ -1,11 +1,11 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.UniqueEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;

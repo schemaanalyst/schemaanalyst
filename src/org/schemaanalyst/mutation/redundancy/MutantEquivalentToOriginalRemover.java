@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.redundancy;
 
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 import java.util.Iterator;
 import java.util.List;
 import org.schemaanalyst.mutation.Mutant;

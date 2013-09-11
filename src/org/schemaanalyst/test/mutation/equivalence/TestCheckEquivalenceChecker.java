@@ -1,11 +1,11 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.mutation.redundancy.CheckEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.CheckEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;

@@ -2,6 +2,7 @@
  */
 package org.schemaanalyst.mutation.redundancy;
 
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.mutation.Mutant;

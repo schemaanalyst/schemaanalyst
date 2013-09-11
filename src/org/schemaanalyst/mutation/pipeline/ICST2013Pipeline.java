@@ -9,7 +9,7 @@ import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**

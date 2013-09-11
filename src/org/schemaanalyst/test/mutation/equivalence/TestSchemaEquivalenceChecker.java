@@ -1,19 +1,19 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.mutation.redundancy.CheckEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.TableEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.CheckEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.ColumnEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.ForeignKeyEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.NotNullEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.PrimaryKeyEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.TableEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.UniqueEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;

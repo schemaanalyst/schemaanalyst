@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.mutation.redundancy;
+package org.schemaanalyst.mutation.equivalence;
 
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -10,18 +10,21 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 /**
- * Compares two {@link org.schemaanalyst.sqlrepresentation.Schema} objects and
- * determines whether they are equivalent in terms of semantics, such that they
- * may not be syntactically identical.
+ * <p>
+ * An {@link EquivalenceChecker} that compares two {@link Schema} objects to 
+ * determine if they are equivalent.
+ * </p>
  *
+ * <p>
  * This class delegates much of the equivalence testing to a collection of
  * classes that extend the
- * {@link org.schemaanalyst.mutation.redundancy.EquivalenceChecker} class, to
+ * {@link org.schemaanalyst.mutation.equivalence.EquivalenceChecker} class, to
  * compare each sub-component of a schema for equivalence. Altering this
  * behaviour, e.g. for a specific DBMS that has different semantics, can be
  * achieved by providing alternative
- * {@link org.schemaanalyst.mutation.redundancy.EquivalenceChecker} classes.
- *
+ * {@link org.schemaanalyst.mutation.equivalence.EquivalenceChecker} classes.
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 public class SchemaEquivalenceChecker extends EquivalenceChecker<Schema> {

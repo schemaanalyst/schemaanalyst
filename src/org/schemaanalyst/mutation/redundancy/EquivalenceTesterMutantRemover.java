@@ -2,6 +2,8 @@
  */
 package org.schemaanalyst.mutation.redundancy;
 
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
+
 /**
  * <p>
  * A parent class for any {@link RedundantMutantRemover} that uses an 

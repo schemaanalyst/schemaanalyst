@@ -1,6 +1,6 @@
 /*
  */
-package org.schemaanalyst.mutation.redundancy;
+package org.schemaanalyst.mutation.equivalence;
 
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 

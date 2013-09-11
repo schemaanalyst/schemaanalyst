@@ -1,9 +1,9 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
-import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.ColumnEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import static org.junit.Assert.*;

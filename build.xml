@@ -98,7 +98,6 @@
 	<!-- JAVADOC TASK - "ant javadoc" -->
 	<target name="javadoc" depends="compile">
 		<javadoc packagenames="org.schemaanalyst.*"
-			sourcepath="src"
 			defaultexcludes="yes"
 			destdir="docs/api"
 			author="true"
@@ -106,6 +105,10 @@
 			use="true"
 			windowtitle="SchemaAnalyst Documentation">
 			<classpath refid="run_classpath"/>
+			<fileset dir="src" defaultexcludes="yes">
+				<include name="org/schemaanalyst/**"/>
+				<exclude name="org/schemaanalyst/test/**"/>
+			</fileset>
 		</javadoc>
 	</target>
 

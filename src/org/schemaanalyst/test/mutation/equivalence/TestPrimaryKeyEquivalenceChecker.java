@@ -1,11 +1,11 @@
 /*
  */
-package org.schemaanalyst.test.mutation.redundancy;
+package org.schemaanalyst.test.mutation.equivalence;
 
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.PrimaryKeyEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;

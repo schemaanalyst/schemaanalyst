@@ -12,7 +12,7 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
