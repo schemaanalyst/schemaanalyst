@@ -9,8 +9,13 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.supplier.Supplier;
 
 /**
- *
+ * <p>
+ * Given a {@link RelationalOperator}, this mutator returns mutants of each 
+ * alternative possible {@link RelationalOperator}.
+ * </p>
+ * 
  * @author Chris J. Wright
+ * @param <A> The artefact type
  */
 public class RelationalOperatorExchanger<A> extends Mutator<A, RelationalOperator>{
 

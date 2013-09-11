@@ -7,11 +7,15 @@ import java.util.List;
 import org.schemaanalyst.mutation.supplier.Supplier;
 
 /**
+ * <p>
+ * Given a list of elements this mutator returns mutants with each element 
+ * removed from the list in turn.
+ * </p>
  * 
  * @author Phil McMinn
  * 
- * @param <A>
- * @param <E>
+ * @param <A> The artefact type
+ * @param <E> The element type
  */
 public class ListElementRemover<A, E> extends Mutator<A, List<E>> {
 

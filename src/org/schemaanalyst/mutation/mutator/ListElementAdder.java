@@ -8,11 +8,15 @@ import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.Pair;
 
 /**
+ * <p>
+ * Given a list of elements and a list of alternative elements, this mutator 
+ * returns mutants with each alternative element added to the list in turn.
+ * </p>
  * 
  * @author Phil McMinn
  * 
- * @param <A>
- * @param <E>
+ * @param <A> The artefact type
+ * @param <E> The element type
  */
 public class ListElementAdder<A, E> extends Mutator<A, Pair<List<E>>> {
 

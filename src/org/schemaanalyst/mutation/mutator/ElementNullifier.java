@@ -3,11 +3,14 @@ package org.schemaanalyst.mutation.mutator;
 import org.schemaanalyst.mutation.supplier.Supplier;
 
 /**
+ * <p>
+ * Replaces an element of an artefact with {@code null}.
+ * </p>
  * 
  * @author Phil McMinn
  *
- * @param <A>
- * @param <E>
+ * @param <A> The artefact type
+ * @param <E> The element type
  */
 public class ElementNullifier<A, E> extends Mutator<A, E> {
 
