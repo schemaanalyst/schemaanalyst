@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
  *
  * @author Chris J. Wright
  */
-public class PrimaryKeyEquivalenceTester extends MultiColumnEquivalenceTester<PrimaryKeyConstraint> {
+public class PrimaryKeyEquivalenceChecker extends MultiColumnEquivalenceChecker<PrimaryKeyConstraint> {
 
     @Override
     public boolean areEquivalent(PrimaryKeyConstraint a, PrimaryKeyConstraint b) {

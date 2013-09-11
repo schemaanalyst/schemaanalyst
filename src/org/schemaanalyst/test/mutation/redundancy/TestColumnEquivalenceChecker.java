@@ -3,7 +3,7 @@
 package org.schemaanalyst.test.mutation.redundancy;
 
 import org.junit.Test;
-import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import static org.junit.Assert.*;
@@ -14,11 +14,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
  *
  * @author Chris J. Wright
  */
-public class TestColumnEquivalenceTester {
+public class TestColumnEquivalenceChecker {
     
     @Test
     public void testSameInstance() {
-        ColumnEquivalenceTester tester = new ColumnEquivalenceTester();
+        ColumnEquivalenceChecker tester = new ColumnEquivalenceChecker();
         Column a = new Column("a", new IntDataType());
         assertTrue("A column should be equivalent to itself",
                 tester.areEquivalent(a, a));
@@ -26,7 +26,7 @@ public class TestColumnEquivalenceTester {
     
     @Test
     public void testDifferentInstance() {
-        ColumnEquivalenceTester tester = new ColumnEquivalenceTester();
+        ColumnEquivalenceChecker tester = new ColumnEquivalenceChecker();
         Column a = new Column("a", new IntDataType());
         Column b = new Column("a", new IntDataType());
         assertTrue("Two identical columns should be equivalent",
@@ -35,7 +35,7 @@ public class TestColumnEquivalenceTester {
     
     @Test
     public void testDifferentName() {
-        ColumnEquivalenceTester tester = new ColumnEquivalenceTester();
+        ColumnEquivalenceChecker tester = new ColumnEquivalenceChecker();
         Column a = new Column("a", new IntDataType());
         Column b = new Column("b", new IntDataType());
         assertFalse("Two columns with different names should not be equivalent",
@@ -47,7 +47,7 @@ public class TestColumnEquivalenceTester {
     
     @Test
     public void testDifferentDatatype() {
-        ColumnEquivalenceTester tester = new ColumnEquivalenceTester();
+        ColumnEquivalenceChecker tester = new ColumnEquivalenceChecker();
         Column a = new Column("a", new IntDataType());
         Column b = new Column("a", new CharDataType());
         assertFalse("Two columns with different data types should not be "
@@ -59,7 +59,7 @@ public class TestColumnEquivalenceTester {
     
     @Test
     public void testSameDatatypeDifferentLength() {
-        ColumnEquivalenceTester tester = new ColumnEquivalenceTester();
+        ColumnEquivalenceChecker tester = new ColumnEquivalenceChecker();
         Column a = new Column("a", new VarCharDataType(10));
         Column b = new Column("a", new VarCharDataType(20));
         assertFalse("Two columns with different data types should not be "

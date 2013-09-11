@@ -5,7 +5,7 @@ package org.schemaanalyst.test.mutation.redundancy;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -15,11 +15,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestForeignKeyEquivalenceTester {
+public class TestForeignKeyEquivalenceChecker {
 
     @Test
     public void testSameInstance() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1 = new Table("t1");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t2");
@@ -31,7 +31,7 @@ public class TestForeignKeyEquivalenceTester {
 
     @Test
     public void testDifferentInstance() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1 = new Table("t1");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t2");
@@ -44,7 +44,7 @@ public class TestForeignKeyEquivalenceTester {
 
     @Test
     public void testDifferentTables() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1A = new Table("t1");
         t1A.addColumn(new Column("a", new IntDataType()));
         Table t2A = new Table("t2");
@@ -61,7 +61,7 @@ public class TestForeignKeyEquivalenceTester {
 
     @Test
     public void testNonEquivalentTables() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1A = new Table("t1");
         t1A.addColumn(new Column("a", new IntDataType()));
         t1A.addColumn(new Column("b", new IntDataType()));
@@ -79,7 +79,7 @@ public class TestForeignKeyEquivalenceTester {
 
     @Test
     public void testDifferentColumnCount() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1A = new Table("t1");
         t1A.addColumn(new Column("a", new IntDataType()));
         t1A.addColumn(new Column("b", new IntDataType()));
@@ -102,7 +102,7 @@ public class TestForeignKeyEquivalenceTester {
     
     @Test
     public void testDifferentReferenceTable() {
-        ForeignKeyEquivalenceTester tester = new ForeignKeyEquivalenceTester();
+        ForeignKeyEquivalenceChecker tester = new ForeignKeyEquivalenceChecker();
         Table t1A = new Table("t1");
         t1A.addColumn(new Column("a", new IntDataType()));
         Table t2A = new Table("t2");

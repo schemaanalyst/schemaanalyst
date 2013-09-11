@@ -12,7 +12,7 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -61,8 +61,8 @@ public class TestRedundancyRemovers {
         list.add(mutant1);
         list.add(mutant2);
         assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
-        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
-        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker());
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
         assertEquals("The list returned by when provided two mutants equal to "
                 + "the original should be empty", 0, reducedList.size());
@@ -80,8 +80,8 @@ public class TestRedundancyRemovers {
         list.add(mutant1);
         list.add(mutant2);
         assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
-        MutantRemover<Schema> mEquivO = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
-        MutantRemover<Schema> mEquivM = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
+        MutantRemover<Schema> mEquivO = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), original);
+        MutantRemover<Schema> mEquivM = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker());
         List<Mutant<Schema>> reducedList = mEquivM.removeMutants(list);
         reducedList = mEquivO.removeMutants(reducedList);
         assertEquals("The list returned after removal when provided one "
@@ -104,8 +104,8 @@ public class TestRedundancyRemovers {
         list.add(mutant1);
         list.add(mutant2);
         assertEquals("Prior to removal, the input list should contain two items", 2, list.size());
-        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
-        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker());
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));
         assertEquals("The list returned after removal when provided two "
                 + "mutants different to the original but equal to "
@@ -118,8 +118,8 @@ public class TestRedundancyRemovers {
         SchemaA instance1 = new SchemaA();
         original.addUniqueConstraint(new UniqueConstraint(original.t1, original.a, original.b));
         instance1.addUniqueConstraint(new UniqueConstraint(instance1.t1, original.b, original.a));
-        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), original);
-        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester());
+        MutantRemover<Schema> reducer1 = new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), original);
+        MutantRemover<Schema> reducer2 = new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker());
         List<Mutant<Schema>> list = new ArrayList<>();
         list.add(new Mutant<>((Schema) instance1, ""));
         List<Mutant<Schema>> reducedList = reducer1.removeMutants(reducer2.removeMutants(list));

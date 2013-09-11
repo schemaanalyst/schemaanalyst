@@ -5,7 +5,7 @@ package org.schemaanalyst.test.mutation.redundancy;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
@@ -15,11 +15,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestUniqueEquivalenceTester {
+public class TestUniqueEquivalenceChecker {
     
     @Test
     public void testSameInstance() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         UniqueConstraint u = new UniqueConstraint(t1, t1.getColumn("a"));
@@ -29,7 +29,7 @@ public class TestUniqueEquivalenceTester {
     
     @Test
     public void testDifferentInstance() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         UniqueConstraint u1 = new UniqueConstraint(t1, t1.getColumn("a"));
@@ -40,7 +40,7 @@ public class TestUniqueEquivalenceTester {
     
     @Test
     public void testDifferentNames() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         UniqueConstraint u1 = new UniqueConstraint("u1", t1, t1.getColumn("a"));
@@ -54,7 +54,7 @@ public class TestUniqueEquivalenceTester {
     
     @Test
     public void testDifferentTable() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         UniqueConstraint u1 = new UniqueConstraint(t1, t1.getColumn("a"));
@@ -67,7 +67,7 @@ public class TestUniqueEquivalenceTester {
     
     @Test
     public void testDifferentColumnCount() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         t1.addColumn(new Column("b", new IntDataType()));
@@ -85,7 +85,7 @@ public class TestUniqueEquivalenceTester {
     
     @Test
     public void testNonEquivalentTables() {
-        UniqueEquivalenceTester tester = new UniqueEquivalenceTester();
+        UniqueEquivalenceChecker tester = new UniqueEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         t1.addColumn(new Column("b", new IntDataType()));

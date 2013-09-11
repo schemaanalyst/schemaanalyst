@@ -6,14 +6,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.mutation.redundancy.CheckEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.TableEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.CheckEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.ForeignKeyEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.TableEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.UniqueEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
@@ -29,19 +29,19 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
  *
  * @author Chris J. Wright
  */
-public class TestSchemaEquivalenceTester {
+public class TestSchemaEquivalenceChecker {
     
     @Test
     public void testConstructor() {
-        SchemaEquivalenceTester tester1 = new SchemaEquivalenceTester();
-        SchemaEquivalenceTester tester2 = new SchemaEquivalenceTester(
-                new TableEquivalenceTester(new ColumnEquivalenceTester()),
-                new ColumnEquivalenceTester(),
-                new PrimaryKeyEquivalenceTester(),
-                new ForeignKeyEquivalenceTester(),
-                new UniqueEquivalenceTester(),
-                new CheckEquivalenceTester(),
-                new NotNullEquivalenceTester());
+        SchemaEquivalenceChecker tester1 = new SchemaEquivalenceChecker();
+        SchemaEquivalenceChecker tester2 = new SchemaEquivalenceChecker(
+                new TableEquivalenceChecker(new ColumnEquivalenceChecker()),
+                new ColumnEquivalenceChecker(),
+                new PrimaryKeyEquivalenceChecker(),
+                new ForeignKeyEquivalenceChecker(),
+                new UniqueEquivalenceChecker(),
+                new CheckEquivalenceChecker(),
+                new NotNullEquivalenceChecker());
         Schema s = new Schema("s");
         Table t = s.createTable("t");
         Column a = t.createColumn("a", new IntDataType());
@@ -54,7 +54,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testSameInstance() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s = new Schema("s");
         Table t = s.createTable("t");
         Column a = t.createColumn("a", new IntDataType());
@@ -64,7 +64,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testDifferentInstance() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -77,7 +77,7 @@ public class TestSchemaEquivalenceTester {
     
     @Test
     public void testDifferentIdentifiers() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("schemaOne");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -93,7 +93,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testDifferentTables() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -106,7 +106,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testDifferentTableCount() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Table u1 = s1.createTable("u");
@@ -123,7 +123,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testDifferentColumnsInTables() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new CharDataType());
@@ -139,7 +139,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testDifferentTableOrdering() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -154,7 +154,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMissingPrimaryKey() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -171,7 +171,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMultiplePrimaryKeys() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -194,7 +194,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMissingUnique() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -212,7 +212,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMultipleUniques() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -233,7 +233,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMissingForeignKey() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -254,7 +254,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMultipleForeignKeys() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -281,7 +281,7 @@ public class TestSchemaEquivalenceTester {
 
     @Test
     public void testMissingCheck() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -304,7 +304,7 @@ public class TestSchemaEquivalenceTester {
     
     @Test
     public void testMultipleChecks() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -335,7 +335,7 @@ public class TestSchemaEquivalenceTester {
     
     @Test
     public void testMissingNotNull() {
-        SchemaEquivalenceTester tester = new SchemaEquivalenceTester();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());

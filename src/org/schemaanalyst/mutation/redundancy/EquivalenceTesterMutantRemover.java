@@ -10,9 +10,9 @@ package org.schemaanalyst.mutation.redundancy;
  */
 public abstract class EquivalenceTesterMutantRemover<T> extends RedundantMutantRemover<T> {
 
-    EquivalenceTester<T> tester;
+    EquivalenceChecker<T> checker;
 
-    public EquivalenceTesterMutantRemover(EquivalenceTester<T> tester) {
-        this.tester = tester;
+    public EquivalenceTesterMutantRemover(EquivalenceChecker<T> checker) {
+        this.checker = checker;
     }
 }

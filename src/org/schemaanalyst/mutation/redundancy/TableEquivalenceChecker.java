@@ -9,12 +9,12 @@ import org.schemaanalyst.sqlrepresentation.Table;
  *
  * @author Chris J. Wright
  */
-public class TableEquivalenceTester extends EquivalenceTester<Table> {
+public class TableEquivalenceChecker extends EquivalenceChecker<Table> {
     
-    EquivalenceTester<Column> columnEquivalenceTester;
+    EquivalenceChecker<Column> columnEquivalenceChecker;
     
-    public TableEquivalenceTester(EquivalenceTester<Column> columnEquivalenceTester) {
-        this.columnEquivalenceTester = columnEquivalenceTester;
+    public TableEquivalenceChecker(EquivalenceChecker<Column> columnEquivalenceChecker) {
+        this.columnEquivalenceChecker = columnEquivalenceChecker;
     }
 
     @Override
@@ -29,7 +29,7 @@ public class TableEquivalenceTester extends EquivalenceTester<Table> {
             for (int i = 0; i < a.getColumns().size(); i++) {
                 Column aColumn = a.getColumns().get(i);
                 Column bColumn = b.getColumns().get(i);
-                if (!columnEquivalenceTester.areEquivalent(aColumn, bColumn)) {
+                if (!columnEquivalenceChecker.areEquivalent(aColumn, bColumn)) {
                     return false;
                 }
             }

@@ -5,7 +5,7 @@ package org.schemaanalyst.test.mutation.redundancy;
 import java.util.Arrays;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
@@ -16,11 +16,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestPrimaryKeyEquivalenceTester {
+public class TestPrimaryKeyEquivalenceChecker {
     
     @Test
     public void testSameInstance() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t = new Table("t");
         t.addColumn(new Column("a", new IntDataType()));
         PrimaryKeyConstraint pk = new PrimaryKeyConstraint(t, t.getColumn("a"));
@@ -30,7 +30,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testSameTableInstance() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t = new Table("t");
         t.addColumn(new Column("a", new IntDataType()));
         PrimaryKeyConstraint pk1 = new PrimaryKeyConstraint(t, t.getColumn("a"));
@@ -41,7 +41,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testDifferentTableInstance() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t");
@@ -55,7 +55,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testDifferentTableName() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t = new Table("t");
         t.addColumn(new Column("a", new IntDataType()));
         Table s = new Table("s");
@@ -71,7 +71,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testDifferentColumnName() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t");
@@ -87,7 +87,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testDifferentColumnNumber() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         t1.addColumn(new Column("b", new IntDataType()));
@@ -105,7 +105,7 @@ public class TestPrimaryKeyEquivalenceTester {
     
     @Test
     public void testDifferentColumnType() {
-        PrimaryKeyEquivalenceTester tester = new PrimaryKeyEquivalenceTester();
+        PrimaryKeyEquivalenceChecker tester = new PrimaryKeyEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t");

@@ -9,7 +9,7 @@ import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
-import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
@@ -30,7 +30,7 @@ public class ICST2013Pipeline extends MutationPipeline<Schema> {
 		
 		addRemover(new PrimaryKeyColumnNotNullRemover());
 		addRemover(new PrimaryKeyColumnsUniqueRemover());
-        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceTester(), schema));
-        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceTester()));
+        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), schema));
+        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker()));
 	}	
 }

@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
  *
  * @author Chris J. Wright
  */
-public class CheckEquivalenceTester extends EquivalenceTester<CheckConstraint>{
+public class CheckEquivalenceChecker extends EquivalenceChecker<CheckConstraint>{
 
     @Override
     public boolean areEquivalent(CheckConstraint a, CheckConstraint b) {

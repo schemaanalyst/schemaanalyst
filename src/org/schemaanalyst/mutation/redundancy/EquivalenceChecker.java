@@ -8,7 +8,7 @@ import java.util.Iterator;
  *
  * @author Chris J. Wright
  */
-public abstract class EquivalenceTester<T> {
+public abstract class EquivalenceChecker<T> {
 
     /**
      * Tests if two elements are equivalent, according to some equivalence test.

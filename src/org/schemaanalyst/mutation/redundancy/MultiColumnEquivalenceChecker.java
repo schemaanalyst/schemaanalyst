@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
  *
  * @author Chris J. Wright
  */
-public class MultiColumnEquivalenceTester<T extends MultiColumnConstraint> extends EquivalenceTester<T> {
+public class MultiColumnEquivalenceChecker<T extends MultiColumnConstraint> extends EquivalenceChecker<T> {
 
     @Override
     public boolean areEquivalent(T a, T b) {

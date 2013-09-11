@@ -5,7 +5,7 @@ package org.schemaanalyst.test.mutation.redundancy;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.mutation.redundancy.CheckEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.CheckEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -18,11 +18,11 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
  *
  * @author Chris J. Wright
  */
-public class TestCheckEquivalenceTester {
+public class TestCheckEquivalenceChecker {
 
     @Test
     public void testSameInstance() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t = new Table("t");
         CheckConstraint cc = new CheckConstraint(t, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -35,7 +35,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentInstance() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t = new Table("t");
         CheckConstraint cc1 = new CheckConstraint(t, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -53,7 +53,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentTables() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t1 = new Table("t");
         CheckConstraint cc1 = new CheckConstraint(t1, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -73,7 +73,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentButIdenticalTables() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t1 = new Table("t");
         CheckConstraint cc1 = new CheckConstraint(t1, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -92,7 +92,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentIdentifier() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t = new Table("t");
         CheckConstraint cc1 = new CheckConstraint("cc1", t, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -110,7 +110,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentTableIdentifier() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t = new Table("t");
         Table s = new Table("s");
         CheckConstraint cc1 = new CheckConstraint(t, new BetweenExpression(
@@ -129,7 +129,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testDifferentExpression() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t1 = new Table("t");
         CheckConstraint cc1 = new CheckConstraint(t1, new BetweenExpression(
                 new ConstantExpression(new NumericValue(3)),
@@ -148,7 +148,7 @@ public class TestCheckEquivalenceTester {
     
     @Test
     public void testSameExpressionDifferentInstances() {
-        CheckEquivalenceTester tester = new CheckEquivalenceTester();
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         CheckConstraint cc1 = new CheckConstraint(t1, new BetweenExpression(

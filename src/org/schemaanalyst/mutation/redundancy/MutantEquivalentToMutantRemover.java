@@ -19,10 +19,10 @@ public class MutantEquivalentToMutantRemover<T> extends EquivalenceTesterMutantR
     /**
      * Constructor.
      *
-     * @param tester The equivalence tester
+     * @param checker The equivalence checker
      */
-    public MutantEquivalentToMutantRemover(EquivalenceTester<T> tester) {
-        super(tester);
+    public MutantEquivalentToMutantRemover(EquivalenceChecker<T> checker) {
+        super(checker);
     }
 
     /**
@@ -36,7 +36,7 @@ public class MutantEquivalentToMutantRemover<T> extends EquivalenceTesterMutantR
             boolean found = false;
             for (int j = i + 1; j < mutants.size(); j++) {
                 Mutant<T> inner = mutants.get(j);
-                if (tester.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
+                if (checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
                     found = true;
                     break;
                 }

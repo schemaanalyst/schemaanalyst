@@ -4,8 +4,8 @@ package org.schemaanalyst.test.mutation.redundancy;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceTester;
-import org.schemaanalyst.mutation.redundancy.TableEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.ColumnEquivalenceChecker;
+import org.schemaanalyst.mutation.redundancy.TableEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.FloatDataType;
@@ -15,11 +15,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestTableEquivalenceTester {
+public class TestTableEquivalenceChecker {
 
     @Test
     public void testSameInstance() {
-        TableEquivalenceTester tester = new TableEquivalenceTester(new ColumnEquivalenceTester());
+        TableEquivalenceChecker tester = new TableEquivalenceChecker(new ColumnEquivalenceChecker());
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         assertTrue("A table should be equivalent to itself",
@@ -28,7 +28,7 @@ public class TestTableEquivalenceTester {
 
     @Test
     public void testDifferentInstance() {
-        TableEquivalenceTester tester = new TableEquivalenceTester(new ColumnEquivalenceTester());
+        TableEquivalenceChecker tester = new TableEquivalenceChecker(new ColumnEquivalenceChecker());
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t");
@@ -39,7 +39,7 @@ public class TestTableEquivalenceTester {
     
     @Test
     public void testDifferentName() {
-        TableEquivalenceTester tester = new TableEquivalenceTester(new ColumnEquivalenceTester());
+        TableEquivalenceChecker tester = new TableEquivalenceChecker(new ColumnEquivalenceChecker());
         Table t = new Table("t");
         t.addColumn(new Column("a", new IntDataType()));
         Table s = new Table("s");
@@ -50,7 +50,7 @@ public class TestTableEquivalenceTester {
     
     @Test
     public void testDifferentColumnCount() {
-        TableEquivalenceTester tester = new TableEquivalenceTester(new ColumnEquivalenceTester());
+        TableEquivalenceChecker tester = new TableEquivalenceChecker(new ColumnEquivalenceChecker());
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         t1.addColumn(new Column("b", new IntDataType()));
@@ -65,7 +65,7 @@ public class TestTableEquivalenceTester {
     
     @Test
     public void testDifferentColumnTypes() {
-        TableEquivalenceTester tester = new TableEquivalenceTester(new ColumnEquivalenceTester());
+        TableEquivalenceChecker tester = new TableEquivalenceChecker(new ColumnEquivalenceChecker());
         Table t1 = new Table("t");
         t1.addColumn(new Column("a", new IntDataType()));
         Table t2 = new Table("t");

@@ -4,7 +4,7 @@ package org.schemaanalyst.test.mutation.redundancy;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceTester;
+import org.schemaanalyst.mutation.redundancy.NotNullEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
@@ -14,11 +14,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
  *
  * @author Chris J. Wright
  */
-public class TestNotNullEquivalenceTester {
+public class TestNotNullEquivalenceChecker {
     
     @Test
     public void testSameInstance() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Column a1 = new Column("a", new IntDataType());
         Column b1 = new Column("b", new IntDataType());
@@ -31,7 +31,7 @@ public class TestNotNullEquivalenceTester {
     
     @Test
     public void testDifferentInstance() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Column a1 = new Column("a", new IntDataType());
         Column b1 = new Column("b", new IntDataType());
@@ -45,7 +45,7 @@ public class TestNotNullEquivalenceTester {
     
     @Test
     public void testDifferentTableInstance() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Table t2 = new Table("t");
         Column a1 = new Column("a", new IntDataType());
@@ -62,7 +62,7 @@ public class TestNotNullEquivalenceTester {
     
     @Test
     public void testDifferentColumn() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Column a1 = new Column("a", new IntDataType());
         Column b1 = new Column("b", new IntDataType());
@@ -79,7 +79,7 @@ public class TestNotNullEquivalenceTester {
     
     @Test
     public void testDifferentTable() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Table t2 = new Table("t2");
         Column a1 = new Column("a", new IntDataType());
@@ -94,7 +94,7 @@ public class TestNotNullEquivalenceTester {
     
     @Test
     public void testDifferentIdentifier() {
-        NotNullEquivalenceTester tester = new NotNullEquivalenceTester();
+        NotNullEquivalenceChecker tester = new NotNullEquivalenceChecker();
         Table t1 = new Table("t");
         Column a1 = new Column("a", new IntDataType());
         Column b1 = new Column("b", new IntDataType());

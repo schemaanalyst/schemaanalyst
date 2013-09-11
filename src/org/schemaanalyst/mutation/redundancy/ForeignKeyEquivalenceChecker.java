@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
  *
  * @author Chris J. Wright
  */
-public class ForeignKeyEquivalenceTester extends MultiColumnEquivalenceTester<ForeignKeyConstraint> {
+public class ForeignKeyEquivalenceChecker extends MultiColumnEquivalenceChecker<ForeignKeyConstraint> {
 
     @Override
     public boolean areEquivalent(ForeignKeyConstraint a, ForeignKeyConstraint b) {

@@ -19,11 +19,11 @@ public class MutantEquivalentToOriginalRemover<T> extends EquivalenceTesterMutan
     /**
      * Constructor.
      * 
-     * @param tester The equivalence tester
+     * @param checker The equivalence checker
      * @param originalArtefact The original artefact that was mutated
      */
-    public MutantEquivalentToOriginalRemover(EquivalenceTester<T> tester, T originalArtefact) {
-        super(tester);
+    public MutantEquivalentToOriginalRemover(EquivalenceChecker<T> checker, T originalArtefact) {
+        super(checker);
         this.originalArtefact = originalArtefact;
     }
     
@@ -34,7 +34,7 @@ public class MutantEquivalentToOriginalRemover<T> extends EquivalenceTesterMutan
     public List<Mutant<T>> removeMutants(List<Mutant<T>> mutants) {
         for (Iterator<Mutant<T>> it = mutants.iterator(); it.hasNext();) {
             Mutant<T> mutant = it.next();
-            if (tester.areEquivalent(originalArtefact, mutant.getMutatedArtefact())) {
+            if (checker.areEquivalent(originalArtefact, mutant.getMutatedArtefact())) {
                 it.remove();
             }
         }

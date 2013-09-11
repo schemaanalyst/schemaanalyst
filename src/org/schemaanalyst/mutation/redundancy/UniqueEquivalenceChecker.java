@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  *
  * @author Chris J. Wright
  */
-public class UniqueEquivalenceTester extends MultiColumnEquivalenceTester<UniqueConstraint> {
+public class UniqueEquivalenceChecker extends MultiColumnEquivalenceChecker<UniqueConstraint> {
 
     @Override
     public boolean areEquivalent(UniqueConstraint a, UniqueConstraint b) {
