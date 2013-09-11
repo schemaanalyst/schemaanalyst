@@ -2,7 +2,9 @@
  */
 package org.schemaanalyst.mutation.equivalence;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * <p>
@@ -37,20 +39,19 @@ public abstract class EquivalenceChecker<T> {
      * @return Whether they contain equivalent elements
      */
     public boolean areEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
-        return internalAreEquivalent(iterableA, iterableB) && internalAreEquivalent(iterableB, iterableA);
+        return (subtract(iterableA, iterableB).isEmpty()) && (subtract(iterableB, iterableA).isEmpty());
     }
     
     /**
-     * Internal implementation for 
-     * {@link #areEquivalent(java.lang.Iterable, java.lang.Iterable)} method, to
-     * allow iteration across both methods (therefore checking {@code iterableA}
-     *  is contained within {@code iterableB} and vice-versa).
+     * Returns a list of those elements in A that do not have equivalent 
+     * elements in B.
      * 
      * @param iterableA The first iterable
      * @param iterableB The second iterable
-     * @return Whether they contain equivalent elements
+     * @return A list of elements in A-B, according to equivalence
      */
-    private boolean internalAreEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
+    public List<? extends T> subtract(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
+        List<T> result = new ArrayList<>();
         for (Iterator<? extends T> iterA = iterableA.iterator(); iterA.hasNext();) {
             T a = iterA.next();
             boolean found = false;
@@ -58,14 +59,14 @@ public abstract class EquivalenceChecker<T> {
             while (!found && iterB.hasNext()) {
                 T b = iterB.next();
                 if (areEquivalent(a, b)) {
-                    iterB.remove();
                     found = true;
+                    break;
                 }
             }
             if (!found) {
-                return false;
+                result.add(a);
             }
         }
-        return true;
+        return result;
     }
 }
