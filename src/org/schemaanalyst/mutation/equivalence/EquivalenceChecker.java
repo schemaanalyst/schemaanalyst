@@ -8,10 +8,10 @@ import java.util.List;
 
 /**
  * <p>
- * Abstract base class for classes that compare two objects of the same class 
+ * Abstract base class for classes that compare two objects of the same class
  * for equivalence.
  * </p>
- * 
+ *
  * @author Chris J. Wright
  * @param <T> The type of object to test
  */
@@ -31,9 +31,9 @@ public abstract class EquivalenceChecker<T> {
     }
 
     /**
-     * Tests if the iterable elements contain equivalent items, disregarding 
+     * Tests if the iterable elements contain equivalent items, disregarding
      * ordering of elements.
-     * 
+     *
      * @param iterableA The first iterable
      * @param iterableB The second iterable
      * @return Whether they contain equivalent elements
@@ -41,11 +41,11 @@ public abstract class EquivalenceChecker<T> {
     public boolean areEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
         return (subtract(iterableA, iterableB).isEmpty()) && (subtract(iterableB, iterableA).isEmpty());
     }
-    
+
     /**
-     * Returns a list of those elements in A that do not have equivalent 
+     * Returns a list of those elements in A that do not have equivalent
      * elements in B.
-     * 
+     *
      * @param iterableA The first iterable
      * @param iterableB The second iterable
      * @return A list of elements in A-B, according to equivalence

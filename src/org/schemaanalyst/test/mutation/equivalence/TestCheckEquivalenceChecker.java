@@ -2,6 +2,8 @@
  */
 package org.schemaanalyst.test.mutation.equivalence;
 
+import java.util.Arrays;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
@@ -165,5 +167,33 @@ public class TestCheckEquivalenceChecker {
                 false, true));
         assertTrue("Two constraints referencing the same column in different "
                 + "tables should be equivalent", tester.areEquivalent(cc1, cc2));
+    }
+    
+    @Test
+    public void testSubtractSame() {
+        CheckEquivalenceChecker tester = new CheckEquivalenceChecker();
+        Table t1 = new Table("t");
+        t1.addColumn(new Column("a", new IntDataType()));
+        CheckConstraint cc1 = new CheckConstraint(t1, new BetweenExpression(
+                new ColumnExpression(t1, t1.getColumn("a")),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        Table t2 = new Table("t");
+        t2.addColumn(new Column("a", new IntDataType()));
+        CheckConstraint cc2 = new CheckConstraint(t2, new BetweenExpression(
+                new ColumnExpression(t2, t2.getColumn("a")),
+                new ConstantExpression(new NumericValue(1)),
+                new ConstantExpression(new NumericValue(5)),
+                false, true));
+        List<CheckConstraint> a = Arrays.asList(new CheckConstraint[]{cc1});
+        List<CheckConstraint> b = Arrays.asList(new CheckConstraint[]{cc2});
+        assertEquals("Subtracting two lists with equivalent elements should "
+                + "produce a list of length 0", 0, tester.subtract(a, b).size());
+        List<CheckConstraint> c = Arrays.asList(new CheckConstraint[]{});
+        assertEquals("Subtracting an empty list from a list of length 1 should "
+                + "produce a list of length 1", 1, tester.subtract(a, c).size());
+        assertEquals("Subtracting a list of length 1 from an empty list should "
+                + "produce an empty list", 0, tester.subtract(c, a).size());
     }
 }
