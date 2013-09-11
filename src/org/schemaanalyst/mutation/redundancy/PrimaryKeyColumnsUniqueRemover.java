@@ -9,12 +9,18 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 /**
- * If a <tt>UNIQUE</tt> constraint column is added, and the constraint shares 
- * the same columns as a table's <tt>PRIMARY KEY</tt> constraint, the resulting
- * mutant will be impossible to kill.  {@link PrimaryKeyColumnsUniqueRemover}
- * removes {@link org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint}s
- * from schema mutants that share the same columns as the table's
- *  {@link org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint}.
+ * <p>
+ * A {@link RedundantMutantRemover} that removes any {@link UniqueConstraint} 
+ * that has been added to a column already part of a 
+ * {@link PrimaryKeyConstraint}, where the {@code UNIQUE} constraint is 
+ * implied in most DBMSs.
+ * </p>
+ * 
+ * <p>
+ * The implied {@code UNIQUE} constraint on {@code PRIMARY KEY} fields means
+ *  that mutants with such a {@link UniqueConstraint} will be impossible to 
+ * kill, and therefore can be discarded.
+ * </p>
  * 
  * @author Phil McMinn
  *
@@ -22,6 +28,9 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 public class PrimaryKeyColumnsUniqueRemover extends MutantRemover<Schema> {
 
+    /**
+     * {@inheritDoc }
+     */
 	@Override
 	public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
 

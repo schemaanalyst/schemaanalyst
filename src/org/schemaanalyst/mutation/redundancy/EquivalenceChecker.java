@@ -5,8 +5,13 @@ package org.schemaanalyst.mutation.redundancy;
 import java.util.Iterator;
 
 /**
- *
+ * <p>
+ * Abstract base class for classes that compare two objects of the same class 
+ * for equivalence.
+ * </p>
+ * 
  * @author Chris J. Wright
+ * @param <T> The type of object to test
  */
 public abstract class EquivalenceChecker<T> {
 
@@ -41,9 +46,9 @@ public abstract class EquivalenceChecker<T> {
      * allow iteration across both methods (therefore checking {@code iterableA}
      *  is contained within {@code iterableB} and vice-versa).
      * 
-     * @param iterableA
-     * @param iterableB
-     * @return 
+     * @param iterableA The first iterable
+     * @param iterableB The second iterable
+     * @return Whether they contain equivalent elements
      */
     private boolean internalAreEquivalent(Iterable<? extends T> iterableA, Iterable<? extends T> iterableB) {
         for (Iterator<? extends T> iterA = iterableA.iterator(); iterA.hasNext();) {

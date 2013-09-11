@@ -11,10 +11,18 @@ import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 /**
- * Most DBMSs automatically add <tt>NOT NULL</tt> constraints to
- * <tt>PRIMARY KEY</tt> columns.  This {@link RedundantMutantRemover} removes
- * those <tt>NOT NULL</tt> constraints -- if they are the result of a 
- * mutation, the mutant will be impossible to kill.
+ * <p>
+ * A {@link RedundantMutantRemover} that removes any {@link NotNullConstraint} 
+ * that has been added to a column already part of a 
+ * {@link PrimaryKeyConstraint}, where the {@code NOT NULL} constraint is 
+ * implied in most DBMSs.
+ * </p>
+ * 
+ * <p>
+ * The implied {@code NOT NULL} constraint on {@code PRIMARY KEY} fields means
+ *  that mutants with such a {@link NotNullConstraint} will be impossible to 
+ * kill, and therefore can be discarded.
+ * </p>
  * 
  * @author Phil McMinn
  *

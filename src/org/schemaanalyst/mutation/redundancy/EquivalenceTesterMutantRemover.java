@@ -3,8 +3,10 @@
 package org.schemaanalyst.mutation.redundancy;
 
 /**
- * A parent class for a {@link RedundantMutantRemover} that uses an equivalence 
- * tester to determine which mutants to remove.
+ * <p>
+ * A parent class for any {@link RedundantMutantRemover} that uses an 
+ * {@link EquivalenceChecker} to determine which mutants to remove.
+ * </p>
  * 
  * @author Chris J. Wright
  */

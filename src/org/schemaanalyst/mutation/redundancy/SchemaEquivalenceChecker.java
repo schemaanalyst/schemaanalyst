@@ -71,6 +71,9 @@ public class SchemaEquivalenceChecker extends EquivalenceChecker<Schema> {
         this.notNullEquivalenceChecker = new NotNullEquivalenceChecker();
     }
 
+    /**
+     * {@inheritDoc }
+     */
     @Override
     public boolean areEquivalent(Schema a, Schema b) {
         if (super.areEquivalent(a, b)) {

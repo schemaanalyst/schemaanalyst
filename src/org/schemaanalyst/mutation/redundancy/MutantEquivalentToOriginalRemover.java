@@ -7,7 +7,7 @@ import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
  * A {@link MutantRemover} that removes mutants equivalent to the original 
- * artefact, according to a provided {@link EquivalenceTester}.
+ * artefact, according to a provided {@link EquivalenceChecker}.
  * 
  * @author Chris J. Wright
  * @param <T> The type of the artefact being mutated.
