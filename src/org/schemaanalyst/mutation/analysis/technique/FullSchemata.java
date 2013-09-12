@@ -27,12 +27,13 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 
 /**
- * Run the 'Full Schemata' style of mutation analysis. This requires that the 
- * result generation tool has been run, as it bases the mutation analysis on 
- * the results produced by it.
+ * <p>
+ * {@link Runner} for the 'Full Schemata' style of mutation analysis. This 
+ * requires that the result generation tool has been run, as it bases the 
+ * mutation analysis on the results produced by it.
+ * </p>
  *
  * @author Chris J. Wright
  */

@@ -28,9 +28,11 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 
 /**
- * Run the 'Original' style of mutation analysis. This requires that the result
- * generation tool has been run, as it bases the mutation analysis on the
- * results produced by it.
+ * <p>
+ * {@link Runner} for the 'Original' style of mutation analysis. This requires 
+ * that the result generation tool has been run, as it bases the mutation 
+ * analysis on the results produced by it.
+ * </p>
  *
  * @author Chris J. Wright
  */
