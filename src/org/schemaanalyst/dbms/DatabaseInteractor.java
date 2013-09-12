@@ -8,6 +8,13 @@ import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 
+/**
+ * <p>
+ * A DatabaseInteractor object is used to communicate with a database in some 
+ * DBMS. This encapsulates the various JDBC calls required to submit statements 
+ * to the database and handles the possible exceptions.
+ * </p>
+ */
 public abstract class DatabaseInteractor {
 
     private static final Logger LOGGER = Logger.getLogger(DatabaseInteractor.class.getName());
