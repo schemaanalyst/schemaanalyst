@@ -14,7 +14,13 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 
 /**
- *
+ * <p>
+ * An {@link EquivalenceChecker} that compares two {@link Schema} objects to 
+ * determine if they are equivalent, allowing {@link NotNullConstraint}s and 
+ * {@link Expression}s with {@link NullExpression}s to be equivalent. Otherwise,
+ * this class is equivalent to {@link SchemaEquivalenceChecker}.
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 public class SchemaEquivalanceWithNotNullCheckChecker extends SchemaEquivalenceChecker {
