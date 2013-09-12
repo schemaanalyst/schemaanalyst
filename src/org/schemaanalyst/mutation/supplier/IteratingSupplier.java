@@ -6,11 +6,13 @@ import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicator;
 
 /**
+ * <p>
  * A supplier that provides components that are a part of some internal
  * collection in the original artefact. For example, a schema may have multiple
  * <tt>CHECK</tt> constraints, and as such
  * {@link org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier}
  * extends this class.
+ * </p>
  * 
  * @author Phil McMinn
  * 

@@ -3,11 +3,16 @@ package org.schemaanalyst.mutation.supplier.expression;
 import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /**
+ * <p>
+ * A {@link Supplier} class that retrieves the {@link ListExpression} from the 
+ * RHS of a {@link InExpression}.
+ * </p>
  * 
  * @author Phil McMinn
  *

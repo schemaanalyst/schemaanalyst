@@ -4,12 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.IteratingSupplier;
+import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilterWalker;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
 
 /**
+ * <p>
+ * A {@link Supplier} class that uses an {@link ExpressionFilter} to determine 
+ * which subexpressions of an {@link Expression} to return.
+ * </p>
  * 
  * @author Phil McMinn
  *
