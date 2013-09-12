@@ -7,6 +7,13 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
+/**
+ * <p>
+ * Contains the various objects relating to interacting with a Derby DBMS that 
+ * is accessed over a network. This may be hosted on the local host or an 
+ * alternative address, according to the {@link DatabaseConfiguration}.
+ * </p>
+ */
 public class DerbyNetwork extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();

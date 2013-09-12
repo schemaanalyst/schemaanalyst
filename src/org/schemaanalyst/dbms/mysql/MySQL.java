@@ -6,6 +6,11 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
 
+/**
+ * <p>
+ * Contains the various objects relating to interacting with a MySQL DBMS.
+ * </p>
+ */
 public class MySQL extends DBMS {
 
     @Override

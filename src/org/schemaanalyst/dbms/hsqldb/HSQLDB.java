@@ -6,6 +6,11 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
 
+/**
+ * <p>
+ * Contains the various objects relating to interacting with a HSQLDB DBMS.
+ * </p>
+ */
 public class HSQLDB extends DBMS {
 
     private HSQLDBDatabaseInteractor databaseInteractor;

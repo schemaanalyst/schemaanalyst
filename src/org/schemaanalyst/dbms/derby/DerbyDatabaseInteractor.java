@@ -13,6 +13,12 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 
 import org.schemaanalyst.dbms.DatabaseInteractor;
 
+/**
+ * <p>
+ * A {@link DatabaseInteractor} object used to communicate with a database in a
+ * Derby database.
+ * </p>
+ */
 public class DerbyDatabaseInteractor extends DatabaseInteractor {
 
     private static final Logger LOGGER = Logger.getLogger(DerbyDatabaseInteractor.class.getName());

@@ -2,6 +2,12 @@ package org.schemaanalyst.dbms.sqlite;
 
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
+/**
+ * <p>
+ * An SQLWriter for converting the SchemaAnalyst internal representation of SQL 
+ * into SQL statements for the Derby DBMS.
+ * </p>
+ */
 public class SQLiteSQLWriter extends SQLWriter {
 
     @Override

@@ -14,6 +14,12 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
  * DBMS. This encapsulates the various JDBC calls required to submit statements 
  * to the database and handles the possible exceptions.
  * </p>
+ * 
+ * <p>
+ * This class can be used for most DBMSs with JDBC drivers, however specialised 
+ * subclasses are provided for some DBMSs where behaviour may need to be 
+ * handled differently.
+ * </p>
  */
 public abstract class DatabaseInteractor {
 

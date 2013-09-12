@@ -12,6 +12,12 @@ import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 
+/**
+ * <p>
+ * A {@link DatabaseInteractor} object used to communicate with a database in an 
+ * SQLite database.
+ * </p>
+ */
 public class SQLiteDatabaseInteractor extends DatabaseInteractor {
 
     private static final Logger LOGGER = Logger.getLogger(SQLiteDatabaseInteractor.class.getName());

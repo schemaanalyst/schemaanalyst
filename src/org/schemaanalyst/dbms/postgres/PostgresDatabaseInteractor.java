@@ -8,6 +8,11 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 
+/**
+ * <p>
+ * Contains the various objects relating to interacting with a Postgres DBMS.
+ * </p>
+ */
 public class PostgresDatabaseInteractor extends DatabaseInteractor {
 
     private static final Logger LOGGER = Logger.getLogger(PostgresDatabaseInteractor.class.getName());

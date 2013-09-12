@@ -7,6 +7,11 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
+/**
+ * <p>
+ * Contains the various objects relating to interacting with a Derby DBMS.
+ * </p>
+ */
 public class Derby extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();

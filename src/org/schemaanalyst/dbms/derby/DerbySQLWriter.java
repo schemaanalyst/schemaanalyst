@@ -3,6 +3,12 @@ package org.schemaanalyst.dbms.derby;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
+/**
+ * <p>
+ * An SQLWriter for converting the SchemaAnalyst internal representation of SQL 
+ * into SQL statements for the Derby DBMS.
+ * </p>
+ */
 public class DerbySQLWriter extends SQLWriter {
 
     @Override

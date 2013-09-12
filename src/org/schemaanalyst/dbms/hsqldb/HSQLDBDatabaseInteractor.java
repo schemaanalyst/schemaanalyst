@@ -12,6 +12,12 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 
 import org.schemaanalyst.dbms.DatabaseInteractor;
 
+/**
+ * <p>
+ * A {@link DatabaseInteractor} object used to communicate with a database in a 
+ * HSQLDB database.
+ * </p>
+ */
 public class HSQLDBDatabaseInteractor extends DatabaseInteractor {
 
     private static final Logger LOGGER = Logger.getLogger(HSQLDBDatabaseInteractor.class.getName());
