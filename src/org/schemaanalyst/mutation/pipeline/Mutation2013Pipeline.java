@@ -15,7 +15,11 @@ import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
- * 
+ * <p>
+ * A {@link MutationPipeline} that implements the pipeline used in the original
+ * Mutation 2013 paper, including removers for removing equivalent mutants and 
+ * Postgres quasi-mutants.
+ * </p>
  * 
  * @author Chris J. Wright
  */

@@ -7,10 +7,12 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 
 /**
+ * <p>
  * A {@link MutationPipeline} is something capable of using
  * a series of mutation operators to produce a series of mutants,
  * and then remove mutants by invoking
  * {@link org.schemaanalyst.mutation.pipeline.MutantRemover}s.
+ * </p>
  * 
  * @author Phil McMinn
  *

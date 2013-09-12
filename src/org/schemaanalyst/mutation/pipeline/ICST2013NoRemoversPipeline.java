@@ -8,15 +8,14 @@ import org.schemaanalyst.mutation.operator.UCColumnARE;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**
- * {@link ICST2013NoReducersPipeline} is an implementation of the mutation
- * pipeline used in the original ICST 2013 paper, without the reducers for 
- * removing equivalent mutants.
- * 
- *
+ * <p>
+ * A {@link MutationPipeline} that implements the pipeline used in the original 
+ * ICST 2013 paper, without the removers for removing equivalent mutants.
+ * </p>
  */
-public class ICST2013NoReducersPipeline extends MutationPipeline<Schema> {
+public class ICST2013NoRemoversPipeline extends MutationPipeline<Schema> {
 
-	public ICST2013NoReducersPipeline(Schema schema) {		
+	public ICST2013NoRemoversPipeline(Schema schema) {		
 		addProducer(new CCNullifier(schema));
 		addProducer(new FKCColumnPairR(schema));
 		addProducer(new PKCColumnARE(schema));

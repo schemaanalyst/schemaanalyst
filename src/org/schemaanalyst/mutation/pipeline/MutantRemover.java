@@ -6,9 +6,11 @@ import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 
 /**
+ * <p>
  * A {@link MutantRemover} takes a list of mutants and removes any not meeting
  * some criteria.
- *
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 public abstract class MutantRemover<A> {
