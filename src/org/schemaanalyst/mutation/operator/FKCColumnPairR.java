@@ -14,6 +14,10 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.Pair;
 
 /**
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by removing pairs of 
+ * {@link Column}s from each foreign key in turn.
+ * </p>
  * 
  * @author Phil McMinn
  *

@@ -16,8 +16,14 @@ import org.schemaanalyst.mutation.supplier.expression.RelationalExpressionSuppli
 import org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier;
 import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 
 /**
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by replacing each 
+ * {@link RelationalOperator} in the expression of each {@link CheckConstraint}
+ * in turn.
+ * </p>
  * 
  * @author Chris J. Wright
  */

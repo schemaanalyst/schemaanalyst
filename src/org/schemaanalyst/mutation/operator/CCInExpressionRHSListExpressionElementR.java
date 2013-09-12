@@ -13,10 +13,16 @@ import org.schemaanalyst.mutation.supplier.expression.InExpressionRHSListExpress
 import org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier;
 import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 
 /**
- * 
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by mutating the 
+ * expressions each {@link CheckConstraint}s containing {@link ListExpression}s,
+ * by removing each subelement in turn.
+ * </p>
  * @author Phil McMinn
  *
  */

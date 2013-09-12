@@ -11,7 +11,11 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 
 /**
- *
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by adding and removing 
+ * a {@link NotNullConstraint} to each column in turn.
+ * </p>
+ * 
  * @author Phil McMinn
  *
  */

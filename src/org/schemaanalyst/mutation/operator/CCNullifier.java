@@ -11,9 +11,14 @@ import org.schemaanalyst.mutation.supplier.SupplyChain;
 import org.schemaanalyst.mutation.supplier.schema.CheckConstraintSupplier;
 import org.schemaanalyst.mutation.supplier.schema.CheckExpressionSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 /**
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by removing each 
+ * {@link CheckConstraint} in turn.
+ * </p>
  * 
  * @author Phil McMinn
  *

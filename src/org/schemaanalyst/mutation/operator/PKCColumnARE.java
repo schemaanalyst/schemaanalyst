@@ -15,9 +15,14 @@ import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsWithAlternati
 import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.util.Pair;
 
 /**
+ * <p>
+ * A {@link MutantProducer} that mutates {@link Schema}s by adding, removing and 
+ * exchanging columns in each {@link PrimaryKeyConstraint} in turn.
+ * </p>
  * 
  * @author Phil McMinn
  *
