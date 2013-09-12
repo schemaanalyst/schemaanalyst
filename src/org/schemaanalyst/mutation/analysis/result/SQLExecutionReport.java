@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import deprecated.utils.StringUtils;
 
 /**
- * Contains the results of executing CREATE TABLE and INSERT statements
+ * <p>
+ * An SQLExecutionReport records the results of executing multiple CREATE TABLE 
+ * and INSERT statements, as {@link SQLExecutionRecord}s and 
+ * {@link SQLInsertRecord}s respectively.
+ * </p>
  */
 public class SQLExecutionReport {
 
@@ -19,34 +23,45 @@ public class SQLExecutionReport {
      */
     protected List<SQLInsertRecord> insertStatements;
 
+    /**
+     * Default constructor.
+     */
     public SQLExecutionReport() {
         createTableStatements = new ArrayList<>();
         insertStatements = new ArrayList<>();
     }
 
     /**
-     * Add a CREATE TABLE statement to the list
+     * Add the result of a CREATE TABLE statement to the report.
+     * 
+     * @param statement The result of the CREATE TABLE statement
      */
     public void addCreateTableStatement(SQLExecutionRecord statement) {
         createTableStatements.add(statement);
     }
 
     /**
-     * Return the list of CREATE TABLE statements
+     * Get the list of results of CREATE TABLE statements.
+     * 
+     * @return The results
      */
     public List<SQLExecutionRecord> getCreateTableStatements() {
         return createTableStatements;
     }
 
     /**
-     * Add an INSERT statement to the list
+     * Ad the result of an INSERT statement to the report.
+     * 
+     * @param statement The result of the INSERT statement
      */
     public void addInsertStatement(SQLInsertRecord statement) {
         insertStatements.add(statement);
     }
 
     /**
-     * Return the list of INSERT statements
+     * Get the list of results of INSERT statements.
+     * 
+     * @return The results
      */
     public List<SQLInsertRecord> getInsertStatements() {
         return insertStatements;

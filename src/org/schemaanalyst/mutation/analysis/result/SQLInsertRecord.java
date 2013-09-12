@@ -1,8 +1,10 @@
 package org.schemaanalyst.mutation.analysis.result;
 
 /**
- * Represents the two-tuple (SQL Statement, Return Code), specialized for Insert
- * statements.
+ * <p> 
+ * An SQLInsertRecord represents the tuple (SQL statement, Return code}, 
+ * specialised for INSERT statements.
+ * </p>
  */
 public class SQLInsertRecord extends SQLExecutionRecord {
 

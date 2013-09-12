@@ -1,7 +1,10 @@
 package org.schemaanalyst.mutation.analysis.result;
 
 /**
- * This class represents the two-tuple (SQL Statement, Return Code)
+ * <p> 
+ * An SQLSelectRecord represents the tuple (SQL statement, Return code}, 
+ * specialised for SELECT statements.
+ * </p>
  */
 public class SQLSelectRecord extends SQLExecutionRecord {
 

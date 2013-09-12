@@ -1,7 +1,9 @@
 package org.schemaanalyst.mutation.analysis.result;
 
 /**
- * This class represents the two-tuple (SQL Statement, Return Code)
+ * <p>
+ * An SQLExecutionRecord represents the tuple (SQL statement, Return code}.
+ * </p>
  */
 public class SQLExecutionRecord {
 
@@ -22,28 +24,57 @@ public class SQLExecutionRecord {
      */
     private static String DEFAULT_STATEMENT = "none";
 
+    /**
+     * Constructor, using the default return code and default statement.
+     */
     public SQLExecutionRecord() {
         returnCode = DEFAULT_RETURN_CODE;
         statement = DEFAULT_STATEMENT;
     }
 
+    /**
+     * Constructor, using the given return code and statement.
+     * 
+     * @param statement The statement
+     * @param returnCode The return code
+     */
     public SQLExecutionRecord(String statement, int returnCode) {
         this.statement = statement;
         this.returnCode = returnCode;
     }
 
+    /**
+     * Set the statement.
+     * 
+     * @param statement The statement
+     */
     public void setStatement(String statement) {
         this.statement = statement;
     }
 
+    /**
+     * Set the return code.
+     * 
+     * @param returnCode The return code
+     */
     public void setReturnCode(int returnCode) {
         this.returnCode = returnCode;
     }
 
+    /**
+     * Get the statement.
+     * 
+     * @return The statement
+     */
     public String getStatement() {
         return statement;
     }
 
+    /**
+     * Get the return code.
+     * 
+     * @return The return code
+     */
     public int getReturnCode() {
         return returnCode;
     }
