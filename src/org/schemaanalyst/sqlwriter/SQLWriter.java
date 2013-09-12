@@ -17,6 +17,18 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
+/**
+ * <p>
+ * An SQLWriter converts the SchemaAnalyst internal representation of SQL into 
+ * SQL statements. This includes writing CREATE, DROP and INSERT statements.
+ * </p>
+ * 
+ * <p>
+ * This class writes SQL suitable for numerous DBMSs, however specialised 
+ * classes are provided for specific DBMSs where it is necessary to format 
+ * statements differently.
+ * </p>
+ */
 public class SQLWriter {
 
     protected DataTypeSQLWriter dataTypeSQLWriter;

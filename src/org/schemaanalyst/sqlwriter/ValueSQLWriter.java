@@ -10,6 +10,17 @@ import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.ValueVisitor;
 
+/**
+ * <p>
+ * A ValueSQLWriter converts {@link Value} objects into their String 
+ * equivalents for use in SQL statements.
+ * </p>
+ * 
+ * <p>
+ * This class produces the format needed for most DBMSs, however specialised 
+ * subclasses may be provided where DBMSs required different formats.
+ * </p>
+ */
 public class ValueSQLWriter {
 
     public String writeValue(Value value) {
