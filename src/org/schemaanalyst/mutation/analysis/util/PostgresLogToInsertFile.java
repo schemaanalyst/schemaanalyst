@@ -14,7 +14,10 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
 /**
- * Convert a Postgres log file to a file of SQL INSERTs.
+ * <p>
+ * A {@link Runner} that extracts INSERT statements from a Postgres log file and
+ * writes them back to a file, for use in another {@link Runner}.
+ * </p>
  * 
  * @author Chris J. Wright
  */

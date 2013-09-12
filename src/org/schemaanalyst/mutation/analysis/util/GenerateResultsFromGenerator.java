@@ -13,9 +13,14 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
 
 /**
- *
+ * <p>
+ * {@link Runner} for acquiring data from a specified data generator, testing it
+ * against a non-mutant schema and persisting the results to file.
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy")

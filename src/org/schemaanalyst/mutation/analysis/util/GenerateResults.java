@@ -20,7 +20,11 @@ import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 
 /**
- *
+ * <p>
+ * An abstract {@link Runner} for acquiring data from some implemented source, 
+ * testing it against a non-mutant schema and persisting the results to file.
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy")

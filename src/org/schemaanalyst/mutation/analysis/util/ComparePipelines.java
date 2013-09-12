@@ -20,7 +20,10 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
 /**
- *
+ * <p>
+ * {@link Runner} for comparing two {@link MutationPipeline} objects. 
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy pipelineA pipelineB")

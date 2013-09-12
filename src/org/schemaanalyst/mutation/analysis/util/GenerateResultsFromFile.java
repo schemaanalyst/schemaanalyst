@@ -14,9 +14,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
 
 /**
- *
+ * <p>
+ * {@link Runner} for acquiring data from a file, testing it against a 
+ * non-mutant schema and persisting the results to file.
+ * </p>
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy input")
