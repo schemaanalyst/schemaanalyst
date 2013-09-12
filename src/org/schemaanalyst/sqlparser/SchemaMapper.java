@@ -20,6 +20,12 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 
+/**
+ * <p>
+ * Maps the representation used by The General SQL Parser to the representation 
+ * used by SchemaAnalyst.
+ * </p>
+ */
 public class SchemaMapper {
     
     private final static Logger LOGGER = Logger.getLogger(SchemaMapper.class.getName());    

@@ -25,6 +25,12 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
+/**
+ * <p>
+ * Maps the expression representation from the General SQL Parser to the 
+ * SchemaAnalyst expression representation.
+ * </p>
+ */
 public class ExpressionMapper {
 
     private Table currentTable;

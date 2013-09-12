@@ -6,6 +6,13 @@ import gudusoft.gsqlparser.nodes.TExpression;
 import gudusoft.gsqlparser.nodes.TParseTreeNode;
 import gudusoft.gsqlparser.nodes.TTypeName;
 
+/**
+ * <p>
+ * An SQLParseException caused by an unsupported SQL feature encountered when 
+ * mapping the General SQL Parser representation to the SchemaAnalyst 
+ * representation.
+ * </p>
+ */
 @SuppressWarnings("serial")
 public class UnsupportedSQLException extends SQLParseException {
 

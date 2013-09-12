@@ -7,6 +7,11 @@ import java.io.File;
 
 import org.schemaanalyst.dbms.DBMS;
 
+/**
+ * <p>
+ * Parses an SQL file to the representation used by The General SQL Parser.
+ * </p>
+ */
 public class Parser {
 
     private TGSqlParser sqlParser;
