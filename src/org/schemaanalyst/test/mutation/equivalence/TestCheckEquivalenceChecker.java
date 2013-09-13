@@ -186,8 +186,8 @@ public class TestCheckEquivalenceChecker {
                 new ConstantExpression(new NumericValue(1)),
                 new ConstantExpression(new NumericValue(5)),
                 false, true));
-        List<CheckConstraint> a = Arrays.asList(new CheckConstraint[]{cc1});
-        List<CheckConstraint> b = Arrays.asList(new CheckConstraint[]{cc2});
+        List<CheckConstraint> a = Arrays.asList(cc1);
+        List<CheckConstraint> b = Arrays.asList(cc2);
         assertEquals("Subtracting two lists with equivalent elements should "
                 + "produce a list of length 0", 0, tester.subtract(a, b).size());
         List<CheckConstraint> c = Arrays.asList(new CheckConstraint[]{});

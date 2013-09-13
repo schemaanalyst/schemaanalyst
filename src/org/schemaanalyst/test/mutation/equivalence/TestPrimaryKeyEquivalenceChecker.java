@@ -98,7 +98,7 @@ public class TestPrimaryKeyEquivalenceChecker {
         PrimaryKeyConstraint pk2 = new PrimaryKeyConstraint(t2, t2.getColumn("a"));
         assertFalse("Two primary keys with different numbers of columns should "
                 + "not be equivalent", tester.areEquivalent(pk1, pk2));
-        pk2.setColumns(Arrays.asList(new Column[] {t2.getColumn("a"), t2.getColumn("b")}));
+        pk2.setColumns(Arrays.asList(t2.getColumn("a"), t2.getColumn("b")));
         assertTrue("Adding a column to a primary key should be able to make "
                 + "two primary keys equivalent", tester.areEquivalent(pk1, pk2));
     }

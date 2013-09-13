@@ -87,8 +87,8 @@ public class TestForeignKeyEquivalenceChecker {
         t2A.addColumn(new Column("a", new IntDataType()));
         t2A.addColumn(new Column("b", new IntDataType()));
         ForeignKeyConstraint fkA = new ForeignKeyConstraint(
-                t1A, Arrays.asList(new Column[]{t1A.getColumn("a"), t1A.getColumn("b")}),
-                t2A, Arrays.asList(new Column[]{t2A.getColumn("a"), t2A.getColumn("b")}));
+                t1A, Arrays.asList(t1A.getColumn("a"), t1A.getColumn("b")),
+                t2A, Arrays.asList(t2A.getColumn("a"), t2A.getColumn("b")));
         Table t1B = new Table("t1");
         t1B.addColumn(new Column("a", new IntDataType()));
         t1B.addColumn(new Column("b", new IntDataType()));

@@ -78,7 +78,7 @@ public class TestUniqueEquivalenceChecker {
         UniqueConstraint u2 = new UniqueConstraint(t2, t2.getColumn("a"));
         assertFalse("Two unique constraints with different column counts should"
                 + " be equivalent", tester.areEquivalent(u1, u2));
-        u2.setColumns(Arrays.asList(new Column[]{t2.getColumn("a"), t2.getColumn("b")}));
+        u2.setColumns(Arrays.asList(t2.getColumn("a"), t2.getColumn("b")));
         assertTrue("Adding a column to a unique consraint should be able to "
                 + "make two constraints equivalent", tester.areEquivalent(u1, u2));
     }

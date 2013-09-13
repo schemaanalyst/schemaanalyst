@@ -2,6 +2,7 @@
  */
 package org.schemaanalyst.test.mutation.equivalence;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.Test;
@@ -33,8 +34,8 @@ public class TestEquivalenceChecker {
     @Test
     public void testAreEquivalentLists() {
         TestChecker tester = new TestChecker();
-        List<String> a = Arrays.asList(new String[]{"a","b","c"});
-        List<String> b = Arrays.asList(new String[]{"a","b","c"});
+        List<String> a = Arrays.asList("a","b","c");
+        List<String> b = Arrays.asList("a","b","c");
         assertTrue("Two identical lists should be equivalent",
                 tester.areEquivalent(a, b));
     }
@@ -42,8 +43,8 @@ public class TestEquivalenceChecker {
     @Test
     public void testSubtractSame() {
         TestChecker tester = new TestChecker();
-        List<String> a = Arrays.asList(new String[]{"a","b","c"});
-        List<String> b = Arrays.asList(new String[]{"a","b","c"});
+        List<String> a = Arrays.asList("a","b","c");
+        List<String> b = Arrays.asList("a","b","c");
         assertTrue("'a,b,c' subtract 'a,b,c' should result in an empty list",
                 tester.subtract(a, b).isEmpty());
     }
@@ -51,8 +52,8 @@ public class TestEquivalenceChecker {
     @Test
     public void testSubtractDifferent() {
         TestChecker tester = new TestChecker();
-        List<String> a = Arrays.asList(new String[]{"a","b","c"});
-        List<String> b = Arrays.asList(new String[]{"a","b"});
+        List<String> a = Arrays.asList("a","b","c");
+        List<String> b = Arrays.asList("a","b");
         assertEquals("'a,b,c' subtract 'a,b' should result in a list of length 1",
                 1, tester.subtract(a, b).size());
         assertEquals("'a,b' subtract 'a,b,c' should result in a list of length 0",
@@ -62,8 +63,8 @@ public class TestEquivalenceChecker {
     @Test
     public void testSubtractEmpty() {
         TestChecker tester = new TestChecker();
-        List<String> a = Arrays.asList(new String[]{"a","b","c"});
-        List<String> b = Arrays.asList(new String[]{});
+        List<String> a = Arrays.asList("a","b","c");
+        List<String> b = new ArrayList<>();
         assertEquals("Subtracting empty from a list of three should give a list"
                 + " of three", 3, tester.subtract(a, b).size());
         assertEquals("Subtracting a list of 3 from empty should give an empty "

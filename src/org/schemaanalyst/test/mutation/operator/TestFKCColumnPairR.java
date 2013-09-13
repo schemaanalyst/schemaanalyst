@@ -104,8 +104,8 @@ public class TestFKCColumnPairR {
 
         public SchemaTwoColFK(String name) {
             super(name);
-            List<Column> t1Cols = Arrays.asList(new Column[]{a, b});
-            List<Column> t2Cols = Arrays.asList(new Column[]{d, e});
+            List<Column> t1Cols = Arrays.asList(a, b);
+            List<Column> t2Cols = Arrays.asList(d, e);
             addForeignKeyConstraint(new ForeignKeyConstraint(t1, t1Cols, t2, t2Cols));
         }
     }
