@@ -56,6 +56,7 @@ public class MutationPipelineFactory {
         List<String> choices = new ArrayList<>();
         choices.add("ICST2013");
         choices.add("ICST2013NoRemovers");
+        choices.add("ICST2013NewSchema");
         choices.add("Mutation2013");
         return choices;
     }
