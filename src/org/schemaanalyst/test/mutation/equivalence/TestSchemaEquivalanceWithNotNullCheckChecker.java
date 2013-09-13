@@ -461,7 +461,6 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
         Column a1 = t1.createColumn("a", new IntDataType());
         Column b1 = t1.createColumn("b", new IntDataType());
         s1.addNotNullConstraint(new NotNullConstraint(t1, a1));
-        s1.addNotNullConstraint(new NotNullConstraint(t1, b1));
         Schema s2 = new Schema("s");
         Table t2 = s2.createTable("t");
         Column a2 = t2.createColumn("a", new IntDataType());
@@ -471,6 +470,11 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 new AndExpression(
                 new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, a2), true)),
                 new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, b2), true))))));
+        assertFalse("A schema with one not null constraint should not be "
+                + "equivalent to a schema with one check constraint with two "
+                + "not null expressions referring to two different columns",
+                tester.areEquivalent(s1, s2));
+        s1.addNotNullConstraint(new NotNullConstraint(t1, b1));
         assertTrue("A schema with two not null constraints should be equivalent "
                 + "to a schema with one check constraint with two null "
                 + "expressions referring to the same columns", tester.areEquivalent(s1, s2));
