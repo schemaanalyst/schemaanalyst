@@ -29,6 +29,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -38,7 +39,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
  * @author Chris J. Wright
  */
 public class TestSchemaEquivalanceWithNotNullCheckChecker {
-    
+
     @Test
     public void testNotNullWithCheckEquivalence() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -57,7 +58,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 + "with a check that enforces the same behaviour as the NOT "
                 + "NULL", tester.areEquivalent(s2, s1));
     }
-    
+
     @Test
     public void testNotNullWithParensCheckEquivalence() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -76,7 +77,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 + "with a check that enforces the same behaviour as the NOT "
                 + "NULL", tester.areEquivalent(s2, s1));
     }
-    
+
     @Test
     public void testNotNullWithInvalidCheckEquivalence() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -107,7 +108,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 + "schema with a check with a NULL expression if that NULL "
                 + "expression refers to the wrong table", tester.areEquivalent(s1, s2));
     }
-    
+
     @Test
     public void testNotNullWithCheckManyConstraints() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -131,7 +132,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 + "with a check that enforces the same behaviour as the NOT "
                 + "NULL", tester.areEquivalent(s1, s2));
     }
-    
+
     @Test
     public void testConstructor() {
         SchemaEquivalenceChecker tester1 = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -152,7 +153,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
                 + "EquivalenceTester classes as the defaults)",
                 tester1.areEquivalent(s, s), tester2.areEquivalent(s, s));
     }
-    
+
     @Test
     public void testSameInstance() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -175,7 +176,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
         assertTrue("Two schemas with the same tables and columns should be "
                 + "equivalent", tester.areEquivalent(s1, s2));
     }
-    
+
     @Test
     public void testDifferentIdentifiers() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -402,7 +403,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
         assertTrue("Adding a check constraint should be able to make two "
                 + "otherwise identical schemas equivalent", tester.areEquivalent(s1, s2));
     }
-    
+
     @Test
     public void testMultipleChecks() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -433,7 +434,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
         assertTrue("Adding a check constraint should be able to make two "
                 + "otherwise identical schemas equivalent", tester.areEquivalent(s1, s2));
     }
-    
+
     @Test
     public void testMissingNotNull() {
         SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
@@ -451,5 +452,48 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
         assertTrue("Adding a not null should be able to make two otherwise "
                 + "identical schemas equivalent", tester.areEquivalent(s1, s2));
     }
-    
+
+    @Test
+    public void testBooktownExample() {
+        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        Schema s1 = new Schema("s");
+        Table t1 = s1.createTable("t");
+        Column a1 = t1.createColumn("a", new IntDataType());
+        Column b1 = t1.createColumn("b", new IntDataType());
+        s1.addNotNullConstraint(new NotNullConstraint(t1, a1));
+        s1.addNotNullConstraint(new NotNullConstraint(t1, b1));
+        Schema s2 = new Schema("s");
+        Table t2 = s2.createTable("t");
+        Column a2 = t2.createColumn("a", new IntDataType());
+        Column b2 = t2.createColumn("b", new IntDataType());
+        s2.addCheckConstraint(new CheckConstraint(t2,
+                new ParenthesisedExpression(
+                new AndExpression(
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, a2), true)),
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, b2), true))))));
+        assertTrue("A schema with two not null constraints should be equivalent "
+                + "to a schema with one check constraint with two null "
+                + "expressions referring to the same columns", tester.areEquivalent(s1, s2));
+    }
+
+    @Test
+    public void testSimplify() {
+        SchemaEquivalanceWithNotNullCheckChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        Table t = new Table("t");
+        Column a = t.createColumn("a", new IntDataType());
+        Column b = t.createColumn("b", new IntDataType());
+        Expression expr1 = new NullExpression(new ColumnExpression(t, a), true);
+        Expression expr2 = new AndExpression(expr1, expr1);
+        Expression expr3 = new AndExpression(expr2, expr2);
+        Expression expr4 = new AndExpression(expr1, new ParenthesisedExpression(expr3));
+        Expression expr5 = new NullExpression(new ColumnExpression(t, b), true);
+        Expression expr6 = new AndExpression(expr1, new ParenthesisedExpression(expr5));
+        Expression expr7 = new ParenthesisedExpression(new AndExpression(new ParenthesisedExpression(new NullExpression(new ColumnExpression(t, a), true)), new ParenthesisedExpression(new NullExpression(new ColumnExpression(t, b), true))));
+        assertEquals(1, tester.flatten(expr1).size());
+        assertEquals(1, tester.flatten(expr2).size());
+        assertEquals(1, tester.flatten(expr3).size());
+        assertEquals(1, tester.flatten(expr4).size());
+        assertEquals(2, tester.flatten(expr6).size());
+        assertEquals(2, tester.flatten(expr7).size());
+    }
 }
