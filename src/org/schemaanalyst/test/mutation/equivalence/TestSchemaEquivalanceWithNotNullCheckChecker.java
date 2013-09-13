@@ -481,6 +481,37 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
     }
 
     @Test
+    public void testBooktownExample2() {
+        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        Schema s1 = new Schema("s");
+        Table t1 = s1.createTable("t");
+        Column a1 = t1.createColumn("a", new IntDataType());
+        Column b1 = t1.createColumn("b", new IntDataType());
+        s1.addNotNullConstraint(new NotNullConstraint(t1, a1));
+        s1.addCheckConstraint(new CheckConstraint(t1,
+                new ParenthesisedExpression(
+                new AndExpression(
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t1, a1), true)),
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t1, b1), true))))));
+        Schema s2 = new Schema("s");
+        Table t2 = s2.createTable("t");
+        Column a2 = t2.createColumn("a", new IntDataType());
+        Column b2 = t2.createColumn("b", new IntDataType());
+        s2.addCheckConstraint(new CheckConstraint(t2,
+                new ParenthesisedExpression(
+                new AndExpression(
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, a2), true)),
+                new ParenthesisedExpression(new NullExpression(new ColumnExpression(t2, b2), true))))));
+        assertTrue("If an origianl contains CHECK ((a NOT NULL) AND (b NOT NULL)) "
+                + "adding a NOT NULL on 'a' should make an equivalent mutant",
+                tester.areEquivalent(s1, s2));
+        s1.addNotNullConstraint(new NotNullConstraint(t1, b1));
+        assertTrue("If an origianl contains CHECK ((a NOT NULL) AND (b NOT NULL)) "
+                + "adding a NOT NULL on 'a' and 'b' should make an equivalent "
+                + "mutant", tester.areEquivalent(s1, s2));
+    }
+
+    @Test
     public void testSimplify() {
         SchemaEquivalanceWithNotNullCheckChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
         Table t = new Table("t");
