@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import deprecated.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A single row to be stored for output in a CSV format.
@@ -49,6 +49,6 @@ public class CSVResult {
      * {@inheritDoc}
      */
     public String toString() {
-        return StringUtils.implode(results.values(), ",");
+        return StringUtils.join(results.values(), ",");
     }
 }

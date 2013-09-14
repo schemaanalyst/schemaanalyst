@@ -3,7 +3,7 @@ package org.schemaanalyst.mutation.analysis.result;
 import java.util.List;
 import java.util.ArrayList;
 
-import deprecated.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -70,7 +70,7 @@ public class SQLExecutionReport {
     @Override
     public String toString() {
         return "SQLExecutionReport{"
-                + "createStatements=\n" + StringUtils.implode(createTableStatements,"\n") + "\n"
-                + "insertStatements=\n" + StringUtils.implode(insertStatements,"\n") + "\n}";
+                + "createStatements=\n" + StringUtils.join(createTableStatements,"\n") + "\n"
+                + "insertStatements=\n" + StringUtils.join(insertStatements,"\n") + "\n}";
     }
 }

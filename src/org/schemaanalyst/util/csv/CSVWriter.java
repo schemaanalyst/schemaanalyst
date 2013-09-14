@@ -10,7 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 
-import deprecated.utils.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * A simple writer for saving CSVResult objects to files.
@@ -64,9 +64,9 @@ public class CSVWriter {
         }
         try (PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(path, true)))) {
             if (writeHeader) {
-                writer.println(StringUtils.implode(result.getValues().keySet(), separator));
+                writer.println(StringUtils.join(result.getValues().keySet(), separator));
             }
-            writer.println(StringUtils.implode(result.getValues().values(), separator));
+            writer.println(StringUtils.join(result.getValues().values(), separator));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
