@@ -17,7 +17,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * <p>

@@ -24,7 +24,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.RelationalNumericValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 
 @RunWith(JUnitParamsRunner.class)

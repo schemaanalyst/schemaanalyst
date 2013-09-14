@@ -6,7 +6,7 @@ import java.util.List;
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * Supplies columns from a

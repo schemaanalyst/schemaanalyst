@@ -21,7 +21,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.util.JavaUtils;
+import org.schemaanalyst.util.java.JavaUtils;
 
 public class TestSchema {
 

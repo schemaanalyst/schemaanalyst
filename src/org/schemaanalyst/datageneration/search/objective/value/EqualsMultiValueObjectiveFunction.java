@@ -11,7 +11,7 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionExcept
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 public class EqualsMultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
 

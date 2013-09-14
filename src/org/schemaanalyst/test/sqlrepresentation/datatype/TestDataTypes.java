@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.DataTypeCategoryVisitor;
 import org.schemaanalyst.sqlrepresentation.datatype.LengthLimited;
 import org.schemaanalyst.sqlrepresentation.datatype.PrecisionedAndScaled;
 import org.schemaanalyst.sqlrepresentation.datatype.Signed;
-import org.schemaanalyst.util.JavaUtils;
+import org.schemaanalyst.util.java.JavaUtils;
 
 public class TestDataTypes {
     

@@ -13,7 +13,7 @@ import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilterWalker;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionWalker;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -54,7 +54,7 @@ public class TestExpressionFilterWalker {
 				
 		};
 		
-		ExpressionFilterWalker walker = new ExpressionFilterWalker(testExpression);
+		ExpressionWalker walker = new ExpressionWalker(testExpression);
 		List<ExpressionPath> paths = walker.filter(constantExpressionsFilter);
 		
 		assertEquals(3, paths.size());
@@ -81,7 +81,7 @@ public class TestExpressionFilterWalker {
 				
 		};
 		
-		ExpressionFilterWalker walker = new ExpressionFilterWalker(testExpression);
+		ExpressionWalker walker = new ExpressionWalker(testExpression);
 		List<ExpressionPath> paths = walker.filter(constantExpressionsFilter);
 		
 		assertEquals(1, paths.size());
@@ -106,7 +106,7 @@ public class TestExpressionFilterWalker {
 				
 		};
 		
-		ExpressionFilterWalker walker = new ExpressionFilterWalker(testExpression);
+		ExpressionWalker walker = new ExpressionWalker(testExpression);
 		List<ExpressionPath> paths = walker.filter(constantExpressionsFilter);
 		assertEquals(0, paths.size());
 	}		

@@ -11,7 +11,7 @@ import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.value.RelationalBooleanValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.*;
 

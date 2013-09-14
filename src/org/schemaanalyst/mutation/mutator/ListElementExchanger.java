@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.mutation.supplier.Supplier;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * <p>

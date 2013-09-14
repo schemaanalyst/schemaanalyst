@@ -13,7 +13,7 @@ import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 public abstract class RelationalValueObjectiveFunction<T> extends ObjectiveFunction<Pair<T>> {
 

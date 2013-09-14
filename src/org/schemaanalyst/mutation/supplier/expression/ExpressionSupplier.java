@@ -7,7 +7,7 @@ import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilterWalker;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionWalker;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
 
 /**
@@ -39,7 +39,7 @@ public class ExpressionSupplier<E extends Expression> extends IteratingSupplier<
 	@Override
 	@SuppressWarnings("unchecked")
 	protected List<E> getComponents(Expression expression) {
-        ExpressionFilterWalker expressionWalker = new ExpressionFilterWalker(
+        ExpressionWalker expressionWalker = new ExpressionWalker(
                 expression);
         List<ExpressionPath> paths = expressionWalker.filter(expressionFilter);
         List<E> expressions = new ArrayList<>();

@@ -11,7 +11,7 @@ import org.schemaanalyst.mutation.supplier.schema.ForeignKeyColumnSupplier;
 import org.schemaanalyst.mutation.supplier.schema.ForeignKeyConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.Pair;
+import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * <p>
