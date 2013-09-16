@@ -22,6 +22,13 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
@@ -31,20 +38,20 @@ import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 /**
  * <p>
- * {@link Runner} for the 'Full Schemata' style of mutation analysis. This 
+ * {@link Runner} for the 'Up-Front Schemata' style of mutation analysis. This 
  * requires that the result generation tool has been run, as it bases the 
  * mutation analysis on the results produced by it.
  * </p>
  *
  * @author Chris J. Wright
  */
-@Description("Runs the 'Full Schemata' style of mutation analysis. This "
+@Description("Runs the 'Up-Front Schemata' style of mutation analysis. This "
         + "requires that the result generation tool has been run, as it bases "
         + "the mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class FullSchemata extends Runner {
+public class UpFrontSchemata extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(FullSchemata.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(UpFrontSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -59,12 +66,12 @@ public class FullSchemata extends Runner {
      * The folder to retrieve the generated results.
      */
     @Parameter("The folder to retrieve the generated results.")
-    protected String inputfolder; // Default in validate
+    protected String inputfolder;
     /**
      * The folder to write the results.
      */
     @Parameter("The folder to write the results.")
-    protected String outputfolder; // Default in validate
+    protected String outputfolder;
     /**
      * Whether to submit drop statements prior to running.
      */
@@ -76,6 +83,11 @@ public class FullSchemata extends Runner {
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
             choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
     protected String mutationPipeline = "ICST2013";
+    /**
+     * How many threads to use for parallel execution.
+     */
+    @Parameter("How many threads to use for parallel execution.")
+    protected int threads = 8;
 
     @Override
     public void task() {
@@ -164,29 +176,24 @@ public class FullSchemata extends Runner {
         databaseInteractor.executeUpdate(createStmt);
 
         // Begin mutation analysis
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
         int killed = 0;
+        Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            Schema mutant = mutants.get(id).getMutatedArtefact();
-
-            LOGGER.log(Level.INFO, "Mutant {0}", id);
-
-            // Schemata step: Generate insert prefix string
-            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
-
-            // Insert the test data
-            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
-            for (SQLInsertRecord insertRecord : insertStmts) {
-
-                // Schemata step: Rewrite insert for mutant ID
-                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
-
-                int returnCount = databaseInteractor.executeUpdate(insertStmt);
-                if (returnCount != insertRecord.getReturnCode()) {
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, databaseInteractor, originalReport);
+            Future<Boolean> callResult = executor.submit(callable);
+            callResults.add(callResult);
+        }
+        for (Future<Boolean> future : callResults) {
+            try {
+                if (future.get()) {
                     killed++;
-                    break; // Stop once killed
                 }
+            } catch (ExecutionException | InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
         }
+        executor.shutdown();
         
         // Schemata step: Drop tables after iterating mutants
         databaseInteractor.executeUpdate(dropStmt);
@@ -227,6 +234,45 @@ public class FullSchemata extends Runner {
     }
 
     public static void main(String[] args) {
-        new FullSchemata().run(args);
+        new UpFrontSchemata().run(args);
+    }
+    
+    private class MutationAnalysisCallable implements Callable<Boolean> {
+        
+        int id;
+        DatabaseInteractor databaseInteractor;
+        SQLExecutionReport originalReport;
+
+        public MutationAnalysisCallable(int id, DatabaseInteractor databaseInteractor, SQLExecutionReport originalReport) {
+            this.id = id;
+            this.databaseInteractor = databaseInteractor;
+            this.originalReport = originalReport;
+        }
+        
+        @Override
+        public Boolean call() {
+            boolean killed = false;
+            LOGGER.log(Level.INFO, "Mutant {0}", id);
+            
+            // Schemata step: Generate insert prefix string
+            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
+            
+            // Insert the test data
+            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
+            for (SQLInsertRecord insertRecord : insertStmts) {
+
+                // Schemata step: Rewrite insert for mutant ID
+                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
+
+                int returnCount = databaseInteractor.executeUpdate(insertStmt);
+                if (returnCount != insertRecord.getReturnCode()) {
+                    killed = true;
+                    break; // Stop once killed
+                }
+            }
+
+            return killed;
+        }
+        
     }
 }

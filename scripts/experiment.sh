@@ -2,13 +2,14 @@
 
 CLASSPATH='lib/*:build/'
 
-while getopts a:c:t: option
+while getopts a:c:t:p: option
 do
 	case "${option}"
 		in
 		c) CASESTUDY=${OPTARG};;
 		t) TRIALS=${OPTARG};;
 		a) APPROACH=${OPTARG};;
+		p) PIPELINE=${OPTARG};;
 	esac
 done
 
@@ -20,5 +21,9 @@ fi
 java -Xmx3G -cp $CLASSPATH org.schemaanalyst.mutation.analysis.util.GenerateResultsFromGenerator $CASESTUDY
 
 for (( t=1; t<=$TRIALS; t++ )) do
-	java -Xmx3G -cp $CLASSPATH $APPROACH $CASESTUDY $t
+	if [ -z $PIPELINE ] ; then
+		java -Xmx3G -cp $CLASSPATH $APPROACH $CASESTUDY $t
+	else
+		java -Xmx3G -cp $CLASSPATH $APPROACH $CASESTUDY $t '--mutationPipeline='$PIPELINE
+	fi
 done
