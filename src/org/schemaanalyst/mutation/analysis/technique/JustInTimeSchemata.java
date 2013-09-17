@@ -147,7 +147,7 @@ public class JustInTimeSchemata extends Runner {
         int killed = 0;
         Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, schema, sqlWriter, databaseInteractor, originalReport, dropfirst);
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, mutants.get(id).getMutatedArtefact(), sqlWriter, databaseInteractor, originalReport, dropfirst);
             Future<Boolean> callResult = executor.submit(callable);
             callResults.add(callResult);
         }
