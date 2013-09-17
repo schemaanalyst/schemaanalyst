@@ -20,8 +20,8 @@ import org.schemaanalyst.mutation.MutantProducer;
  */
 public class MutationPipeline<A> implements MutantProducer<A> {
 
-	private List<MutantProducer<A>> producers;
-	private List<MutantRemover<A>> remover;
+	protected List<MutantProducer<A>> producers;
+	protected List<MutantRemover<A>> remover;
 	
 	public MutationPipeline() {
 		this.producers = new ArrayList<>();
