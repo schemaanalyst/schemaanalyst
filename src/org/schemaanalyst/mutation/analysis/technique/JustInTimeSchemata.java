@@ -1,17 +1,9 @@
 /*
  */
-package deprecated.mutation.analysis;
+package org.schemaanalyst.mutation.analysis.technique;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.schemaanalyst.dbms.DBMS;
@@ -19,7 +11,6 @@ import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.csv.CSVWriter;
@@ -30,23 +21,36 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
-import deprecated.mutation.mutators.ConstraintMutatorWithoutFK;
+import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.logging.Level;
+import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutationPipeline;
+import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 /**
- * Run the 'Just-in-Time' style of mutation analysis. This requires that the
- * result generation tool has been run, as it bases the mutation analysis on the
- * results produced by it.
+ * <p> {@link Runner} for the 'Just-in-Time Schemata' style of mutation
+ * analysis. This requires that the result generation tool has been run, as it
+ * bases the mutation analysis on the results produced by it.
+ * </p>
  *
  * @author Chris J. Wright
  */
-@Description("Runs the 'Just-in-time' style of mutation analysis. This requires "
-        + "that the result generation tool has been run, as it bases the "
-        + "mutation analysis on the results produced by it.")
+@Description("Runs the 'Just-in-Time Schemata' style of mutation analysis. This "
+        + "requires that the result generation tool has been run, as it bases "
+        + "the mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
 public class JustInTimeSchemata extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(JustInTimeSchemata.class.getName());    
-    
+    private final static Logger LOGGER = Logger.getLogger(JustInTimeSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -61,17 +65,23 @@ public class JustInTimeSchemata extends Runner {
      * The folder to retrieve the generated results.
      */
     @Parameter("The folder to retrieve the generated results.")
-    protected String inputfolder; // Default in validate
+    protected String inputfolder;
     /**
      * The folder to write the results.
      */
     @Parameter("The folder to write the results.")
-    protected String outputfolder; // Default in validate
+    protected String outputfolder;
     /**
      * Whether to submit drop statements prior to running.
      */
-    @Parameter(value="Whether to submit drop statements prior to running.", valueAsSwitch = "true")
+    @Parameter(value = "Whether to submit drop statements prior to running.", valueAsSwitch = "true")
     protected boolean dropfirst = false;
+    /**
+     * The mutation pipeline to use to generate mutants.
+     */
+    @Parameter(value = "The mutation pipeline to use to generate mutants.",
+            choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
+    protected String mutationPipeline = "ICST2013";
     /**
      * How many threads to use for parallel execution.
      */
@@ -87,7 +97,7 @@ public class JustInTimeSchemata extends Runner {
         if (outputfolder == null) {
             outputfolder = locationsConfiguration.getResultsDir() + File.separator;
         }
-        
+
         // Start results file
         CSVResult result = new CSVResult();
         result.addValue("technique", this.getClass().getName());
@@ -120,10 +130,15 @@ public class JustInTimeSchemata extends Runner {
         // Start mutation timing
         long startTime = System.currentTimeMillis();
 
-        // Create the mutant schemas
-        ConstraintMutatorWithoutFK cm = new ConstraintMutatorWithoutFK();
-        List<Schema> mutants = cm.produceMutants(schema);
-        
+        // Get the mutation pipeline and generate mutants
+        MutationPipeline<Schema> pipeline;
+        try {
+            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+            throw new RuntimeException(ex);
+        }
+        List<Mutant<Schema>> mutants = pipeline.mutate();
+
         // Schemata step: Rename the mutants
         renameMutants(mutants);
 
@@ -132,7 +147,7 @@ public class JustInTimeSchemata extends Runner {
         int killed = 0;
         Set<Future<Boolean>> callResults = new HashSet<>();
         for (int id = 0; id < mutants.size(); id++) {
-            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, mutants.get(id), sqlWriter, databaseInteractor, originalReport, dropfirst);
+            MutationAnalysisCallable callable = new MutationAnalysisCallable(id, mutants.get(id).getMutatedArtefact(), sqlWriter, databaseInteractor, originalReport, dropfirst);
             Future<Boolean> callResult = executor.submit(callable);
             callResults.add(callResult);
         }
@@ -146,7 +161,6 @@ public class JustInTimeSchemata extends Runner {
             }
         }
         executor.shutdown();
-        
 
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
@@ -157,16 +171,23 @@ public class JustInTimeSchemata extends Runner {
 
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
     }
-    
+
     /**
      * Prepends each mutant with the relevant mutation number
      *
      * @param mutants
      */
-    private static void renameMutants(List<Schema> mutants) {
+    private static void renameMutants(List<Mutant<Schema>> mutants) {
         for (int i = 0; i < mutants.size(); i++) {
-            for (Table table : mutants.get(i).getTablesInOrder()) {
+            Schema mutantSchema = mutants.get(i).getMutatedArtefact();
+            for (Table table : mutantSchema.getTablesInOrder()) {
                 table.setName("mutant_" + (i + 1) + "_" + table.getName());
+            }
+            for (Constraint constraint : mutantSchema.getConstraints()) {
+                if (constraint.hasIdentifier() && constraint.getIdentifier().get() != null) {
+                    String name = constraint.getIdentifier().get();
+                    constraint.setName("mutant_" + (i + 1) + "_" + name);
+                }
             }
         }
     }
@@ -179,7 +200,7 @@ public class JustInTimeSchemata extends Runner {
     public static void main(String[] args) {
         new JustInTimeSchemata().run(args);
     }
-    
+
     private class MutationAnalysisCallable implements Callable<Boolean> {
 
         int id;
@@ -197,16 +218,16 @@ public class JustInTimeSchemata extends Runner {
             this.originalReport = originalReport;
             this.dropFirst = dropFirst;
         }
-        
+
         @Override
         public Boolean call() throws Exception {
             boolean killed = false;
-            
+
             LOGGER.log(Level.INFO, "Mutant {0}", id);
-            
+
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
-            
+
             // Drop existing tables
             List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
             if (dropFirst) {
@@ -214,13 +235,13 @@ public class JustInTimeSchemata extends Runner {
                     databaseInteractor.executeUpdate(stmt);
                 }
             }
-            
+
             // Create the schema in the database
             List<String> createStmts = sqlWriter.writeCreateTableStatements(schema);
             for (String stmt : createStmts) {
                 databaseInteractor.executeUpdate(stmt);
             }
-            
+
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
@@ -234,14 +255,13 @@ public class JustInTimeSchemata extends Runner {
                     break; // Stop once killed
                 }
             }
-            
+
             // Drop tables
             for (String stmt : dropStmts) {
                 databaseInteractor.executeUpdate(stmt);
             }
-            
+
             return killed;
         }
-        
     }
 }
