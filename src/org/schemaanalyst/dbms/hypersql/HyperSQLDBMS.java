@@ -22,6 +22,11 @@ public class HyperSQLDBMS extends DBMS {
         }
         return databaseInteractor;
     }
+    
+    @Override
+    public String getName() {
+    	return "HyperSQL";
+    }        
 
     @Override
     public void accept(DBMSVisitor visitor) {

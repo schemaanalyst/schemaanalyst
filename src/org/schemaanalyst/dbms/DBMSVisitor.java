@@ -1,7 +1,7 @@
 package org.schemaanalyst.dbms;
 
 import org.schemaanalyst.dbms.derby.DerbyDBMS;
-import org.schemaanalyst.dbms.derby.DerbyNetwork;
+import org.schemaanalyst.dbms.derby.DerbyNetworkDBMS;
 import org.schemaanalyst.dbms.hypersql.HyperSQLDBMS;
 import org.schemaanalyst.dbms.mysql.MySQLDBMS;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
@@ -26,7 +26,7 @@ public interface DBMSVisitor {
      * 
      * @param dbms instance
      */
-    public void visit(DerbyNetwork dbms);
+    public void visit(DerbyNetworkDBMS dbms);
 
     /**
      * Visit a HSQLDB DBMS instance

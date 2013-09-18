@@ -24,6 +24,11 @@ public class PostgresDBMS extends DBMS {
     }
 
     @Override
+    public String getName() {
+    	return "Postgres";
+    }    
+    
+    @Override
     public void accept(DBMSVisitor visitor) {
         visitor.visit(this);
     }

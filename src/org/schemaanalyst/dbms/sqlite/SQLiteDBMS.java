@@ -22,6 +22,11 @@ public class SQLiteDBMS extends DBMS {
         }
         return databaseInteractor;
     }
+    
+    @Override
+    public String getName() {
+    	return "SQLite";
+    }
 
     @Override
     public void accept(DBMSVisitor visitor) {

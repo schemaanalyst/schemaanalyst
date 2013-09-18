@@ -5,7 +5,7 @@ import gudusoft.gsqlparser.EDbVendor;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.dbms.derby.DerbyDBMS;
-import org.schemaanalyst.dbms.derby.DerbyNetwork;
+import org.schemaanalyst.dbms.derby.DerbyNetworkDBMS;
 import org.schemaanalyst.dbms.hypersql.HyperSQLDBMS;
 import org.schemaanalyst.dbms.mysql.MySQLDBMS;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
@@ -25,7 +25,7 @@ class VendorResolver {
             }
 
             @Override
-            public void visit(DerbyNetwork dbms) {
+            public void visit(DerbyNetworkDBMS dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 

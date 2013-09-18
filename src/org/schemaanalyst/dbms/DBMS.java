@@ -24,6 +24,11 @@ public abstract class DBMS {
     }
 
     /**
+     * Gets the name of this DBMS
+     */
+    public abstract String getName();
+    
+    /**
      * Get the {@link SQLWriter} instance for this DBMS.
      * 
      * @return The SQLWriter

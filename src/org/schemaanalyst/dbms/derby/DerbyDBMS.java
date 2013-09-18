@@ -16,18 +16,34 @@ public class DerbyDBMS extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
     private DerbyDatabaseInteractor databaseInteractor;
-
+    private boolean useNetwork;
+    
+    public DerbyDBMS() {
+    	this(false);
+    }
+    
+    public DerbyDBMS(boolean useNetwork) {
+    	this.useNetwork = useNetwork;
+    }
+    
+    @Override
+    public String getName() {
+    	return "Derby";
+    }      
+    
     @Override
     public SQLWriter getSQLWriter() {
         return sqlWriter;
     }
-
-    @Override
+    
+        @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+        	return useNetwork 
+        			? new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration)
+        			: new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
-        return databaseInteractor;
+        return null;
     }
 
     @Override

@@ -33,6 +33,6 @@ public class TestSuiteJavaWriter {
 	}
 	
 	public static void main(String[] args) {
-		new TestSuiteJavaWriter(new Inventory(), new SQLiteDBMS(), null);
+		new TestSuiteJavaWriter(new Inventory(), new SQLiteDBMS(), null).writeTestSuite();;
 	}
 }

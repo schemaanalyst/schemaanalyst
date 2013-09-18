@@ -19,6 +19,11 @@ public class MySQLDBMS extends DBMS {
     }
 
     @Override
+    public String getName() {
+    	return "MySQL";
+    }        
+    
+    @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
