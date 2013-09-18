@@ -16,14 +16,14 @@ public class DerbyDBMS extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
     private DerbyDatabaseInteractor databaseInteractor;
-    private boolean useNetwork;
+    private boolean isLocal;
     
     public DerbyDBMS() {
     	this(false);
     }
     
-    public DerbyDBMS(boolean useNetwork) {
-    	this.useNetwork = useNetwork;
+    public DerbyDBMS(boolean isLocal) {
+    	this.isLocal = isLocal;
     }
     
     @Override
@@ -36,12 +36,12 @@ public class DerbyDBMS extends DBMS {
         return sqlWriter;
     }
     
-        @Override
+    @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-        	return useNetwork 
-        			? new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration)
-        			: new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+        	return isLocal 
+        			? new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration)
+        			: new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
         return null;
     }
