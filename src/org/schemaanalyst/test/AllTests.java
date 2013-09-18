@@ -31,6 +31,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalCompoundValueObjectiveFunction.class,
 	org.schemaanalyst.test.datageneration.search.objective.value.TestRelationalNumericValueObjectiveFunction.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
+    org.schemaanalyst.test.mutation.equivalence.TestChangedTableFinder.class,
 	org.schemaanalyst.test.mutation.equivalence.TestCheckEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestColumnEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestEquivalenceChecker.class,
