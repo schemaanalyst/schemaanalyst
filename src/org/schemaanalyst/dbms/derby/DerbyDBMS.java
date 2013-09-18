@@ -16,14 +16,14 @@ public class DerbyDBMS extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
     private DerbyDatabaseInteractor databaseInteractor;
-    private boolean isLocal;
+    private boolean useLocalFile;
     
     public DerbyDBMS() {
     	this(false);
     }
     
     public DerbyDBMS(boolean isLocal) {
-    	this.isLocal = isLocal;
+    	this.useLocalFile = isLocal;
     }
     
     @Override
@@ -39,7 +39,7 @@ public class DerbyDBMS extends DBMS {
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-        	return isLocal 
+        	return useLocalFile 
         			? new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration)
         			: new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }

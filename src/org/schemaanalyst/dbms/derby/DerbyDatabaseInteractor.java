@@ -43,7 +43,7 @@ public class DerbyDatabaseInteractor extends DatabaseInteractor {
     public void initializeDatabaseConnection() {
         try {
             Class.forName(databaseConfiguration.getDerbyDriver());
-            LOGGER.log(Level.INFO, "Loading HSQLDB driver: {0}", databaseConfiguration.getDerbyDriver());
+            LOGGER.log(Level.INFO, "Loading Derby driver: {0}", databaseConfiguration.getDerbyDriver());
 
             File derbyDirectory = new File(locationConfiguration.getDatabaseDir()
                     + File.separator + databaseConfiguration.getDerbyPath()
