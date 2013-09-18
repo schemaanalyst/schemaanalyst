@@ -76,6 +76,7 @@
 						<exclude name="dbmonster/**" />
 						<exclude name="paper/**" />
 						<exclude name="parsedcasestudy/**" />
+						<exclude name="generatedtest/**" />
 						<exclude name="org/schemaanalyst/test/**" />
 					</fileset>
 				</classfiles>
