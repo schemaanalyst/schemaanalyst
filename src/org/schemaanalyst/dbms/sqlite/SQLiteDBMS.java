@@ -11,7 +11,7 @@ import org.schemaanalyst.dbms.DBMSVisitor;
  * Contains the various objects relating to interacting with an SQLite DBMS.
  * </p>
  */
-public class SQLite extends DBMS {
+public class SQLiteDBMS extends DBMS {
 
     private SQLiteDatabaseInteractor databaseInteractor;
 

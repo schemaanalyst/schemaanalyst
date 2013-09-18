@@ -11,7 +11,7 @@ import org.schemaanalyst.dbms.DBMSVisitor;
  * Contains the various objects relating to interacting with a MySQL DBMS.
  * </p>
  */
-public class MySQL extends DBMS {
+public class MySQLDBMS extends DBMS {
 
     @Override
     public void accept(DBMSVisitor visitor) {

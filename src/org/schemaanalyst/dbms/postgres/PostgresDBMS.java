@@ -11,7 +11,7 @@ import org.schemaanalyst.dbms.DBMSVisitor;
  * Contains the various objects relating to interacting with a Postgres DBMS.
  * </p>
  */
-public class Postgres extends DBMS {
+public class PostgresDBMS extends DBMS {
 
     private PostgresDatabaseInteractor databaseInteractor;
 

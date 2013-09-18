@@ -1,31 +1,24 @@
-package org.schemaanalyst.dbms.derby;
+package org.schemaanalyst.dbms.hypersql;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**
  * <p>
- * Contains the various objects relating to interacting with a Derby DBMS.
+ * Contains the various objects relating to interacting with a HSQLDB DBMS.
  * </p>
  */
-public class Derby extends DBMS {
+public class HyperSQLDBMS extends DBMS {
 
-    private SQLWriter sqlWriter = new DerbySQLWriter();
-    private DerbyDatabaseInteractor databaseInteractor;
-
-    @Override
-    public SQLWriter getSQLWriter() {
-        return sqlWriter;
-    }
+    private HyperSQLDatabaseInteractor databaseInteractor;
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+            databaseInteractor = new HyperSQLDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
         return databaseInteractor;
     }

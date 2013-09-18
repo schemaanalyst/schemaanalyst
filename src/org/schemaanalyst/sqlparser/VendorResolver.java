@@ -4,12 +4,12 @@ import gudusoft.gsqlparser.EDbVendor;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
-import org.schemaanalyst.dbms.derby.Derby;
+import org.schemaanalyst.dbms.derby.DerbyDBMS;
 import org.schemaanalyst.dbms.derby.DerbyNetwork;
-import org.schemaanalyst.dbms.hsqldb.HSQLDB;
-import org.schemaanalyst.dbms.mysql.MySQL;
-import org.schemaanalyst.dbms.postgres.Postgres;
-import org.schemaanalyst.dbms.sqlite.SQLite;
+import org.schemaanalyst.dbms.hypersql.HyperSQLDBMS;
+import org.schemaanalyst.dbms.mysql.MySQLDBMS;
+import org.schemaanalyst.dbms.postgres.PostgresDBMS;
+import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 
 class VendorResolver {
 
@@ -20,7 +20,7 @@ class VendorResolver {
             EDbVendor vendor;
 
             @Override
-            public void visit(Derby dbms) {
+            public void visit(DerbyDBMS dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 
@@ -30,22 +30,22 @@ class VendorResolver {
             }
 
             @Override
-            public void visit(HSQLDB dbms) {
+            public void visit(HyperSQLDBMS dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
 
             @Override
-            public void visit(MySQL dbms) {
+            public void visit(MySQLDBMS dbms) {
                 vendor = EDbVendor.dbvmysql;
             }
 
             @Override
-            public void visit(Postgres dbms) {
+            public void visit(PostgresDBMS dbms) {
                 vendor = EDbVendor.dbvpostgresql;
             }
 
             @Override
-            public void visit(SQLite dbms) {
+            public void visit(SQLiteDBMS dbms) {
                 vendor = EDbVendor.dbvgeneric;
             }
         }
