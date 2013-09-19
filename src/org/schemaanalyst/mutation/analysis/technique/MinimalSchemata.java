@@ -135,18 +135,6 @@ public class MinimalSchemata extends Runner {
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
         
-//        System.out.println(mutants.get(17).getDescription());
-//        SQLWriter writer = new SQLWriter();
-//        System.out.println("Original:");
-//        for (String string : writer.writeCreateTableStatements(schema)) {
-//            System.out.println("\t" + string);
-//        }
-//        System.out.println("Mutant:");
-//        for (String string : writer.writeCreateTableStatements(mutants.get(17).getMutatedArtefact())) {
-//            System.out.println("\t" + string);
-//        }
-//        System.out.println("Changed: " + getChangedTable(mutants.get(17)));
-        
         // schemata step- rename constraints
         renameConstraints(mutants);
         
@@ -158,16 +146,8 @@ public class MinimalSchemata extends Runner {
             mutantCreateStatements.add(writeCreateStatement(mutant, i));
             mutantDropStatements.add(writeDropStatement(mutant, i));
             addToMutantTableMap(mutant, i);
-//            System.out.println(i + ": " + mutant.getDescription());
-//            System.out.println("\t changed: " + getChangedTable(mutant));
             i++;
         }
-        
-//        System.out.println("Mutant:");
-//        for (String string : writer.writeCreateTableStatements(mutants.get(17).getMutatedArtefact())) {
-//            System.out.println("\t" + string);
-//        }
-//        System.out.println("Changed: " + getChangedTable(mutants.get(17)));
 
         // Drop tables
         List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
@@ -201,10 +181,6 @@ public class MinimalSchemata extends Runner {
             for (String mutantTable : mutantTables.getMutants(affectedTable)) {
                 String mutantInsert = rewriteInsert(insert, affectedTable, mutantTable);
                 int mutantReturnCode = databaseInteractor.executeUpdate(mutantInsert);
-                if (mutantInsert.contains("17")) {
-//                    System.out.println(mutantInsert + ": " + mutantReturnCode);
-//                    System.out.println(insertRecord.getStatement() + ": " + "expected " + insertRecord.getReturnCode() + ", actual " + mutantReturnCode);
-                }
                 if (returnCode != mutantReturnCode) {
                     killed.add(getMutantNumber(mutantTable));
                 }
@@ -226,9 +202,6 @@ public class MinimalSchemata extends Runner {
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", killed.size());
         result.addValue("mutationscore_denominator", mutants.size());
-        
-        // Debug
-//        System.out.println("killed = " + killed);
 
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
     }

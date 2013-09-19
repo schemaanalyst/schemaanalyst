@@ -124,13 +124,6 @@ public class Original extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        
-        // debug : write mutants
-//        int i = 0;
-//        for (Mutant<Schema> mutant : mutants) {
-//            System.out.println(i + ": " + mutant.getDescription());
-//            i++;
-//        }
 
         // Begin mutation analysis
         int killed = 0;
@@ -169,11 +162,7 @@ public class Original extends Runner {
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
                     int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
-//                    if (id == 17) {
-//                        System.out.println(insertRecord.getStatement() + ": " + "expected " + insertRecord.getReturnCode() + ", actual " + returnCount);
-//                    }
                     if (returnCount != insertRecord.getReturnCode()) {
-//                        System.out.println(id);
                         killed++;
                         break; // Stop once killed
                     }
