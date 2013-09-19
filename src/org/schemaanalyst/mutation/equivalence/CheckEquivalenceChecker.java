@@ -30,6 +30,16 @@ import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
  */
 public class CheckEquivalenceChecker extends EquivalenceChecker<CheckConstraint>{
 
+    protected boolean ignoreName;
+
+    public CheckEquivalenceChecker() {
+        ignoreName = false;
+    }
+
+    public CheckEquivalenceChecker(boolean ignoreName) {
+        this.ignoreName = ignoreName;
+    }
+    
     /**
      * {@inheritDoc }
      */
@@ -37,7 +47,7 @@ public class CheckEquivalenceChecker extends EquivalenceChecker<CheckConstraint>
     public boolean areEquivalent(CheckConstraint a, CheckConstraint b) {
         if (super.areEquivalent(a, b)) {
             return true;
-        } else if (!a.getIdentifier().equals(b.getIdentifier())) {
+        } else if (!ignoreName && !a.getIdentifier().equals(b.getIdentifier())) {
             return false;
         } else if (!a.getTable().getIdentifier().equals(b.getTable().getIdentifier())) {
             return false;

@@ -34,22 +34,22 @@ public class ChangedTableFinder {
             return diff;
         }
 
-        Constraint diffC = findDifferent(new PrimaryKeyEquivalenceChecker(), first.getPrimaryKeyConstraints(), second.getPrimaryKeyConstraints());
+        Constraint diffC = findDifferent(new PrimaryKeyEquivalenceChecker(true), first.getPrimaryKeyConstraints(), second.getPrimaryKeyConstraints());
         if (diffC != null) {
             return diffC.getTable();
         }
 
-        diffC = findDifferent(new UniqueEquivalenceChecker(), first.getUniqueConstraints(), second.getUniqueConstraints());
+        diffC = findDifferent(new UniqueEquivalenceChecker(true), first.getUniqueConstraints(), second.getUniqueConstraints());
         if (diffC != null) {
             return diffC.getTable();
         }
 
-        diffC = findDifferent(new CheckEquivalenceChecker(), first.getCheckConstraints(), second.getCheckConstraints());
+        diffC = findDifferent(new CheckEquivalenceChecker(true), first.getCheckConstraints(), second.getCheckConstraints());
         if (diffC != null) {
             return diffC.getTable();
         }
 
-        diffC = findDifferent(new NotNullEquivalenceChecker(), first.getNotNullConstraints(), second.getNotNullConstraints());
+        diffC = findDifferent(new NotNullEquivalenceChecker(true), first.getNotNullConstraints(), second.getNotNullConstraints());
         if (diffC != null) {
             return diffC.getTable();
         }

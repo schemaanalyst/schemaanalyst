@@ -32,6 +32,16 @@ import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
  */
 public class MultiColumnEquivalenceChecker<T extends MultiColumnConstraint> extends EquivalenceChecker<T> {
 
+    protected boolean ignoreName;
+
+    public MultiColumnEquivalenceChecker() {
+        this.ignoreName = false;
+    }
+
+    public MultiColumnEquivalenceChecker(boolean ignoreName) {
+        this.ignoreName = ignoreName;
+    }
+    
     /**
      * {@inheritDoc }
      */
@@ -39,7 +49,7 @@ public class MultiColumnEquivalenceChecker<T extends MultiColumnConstraint> exte
     public boolean areEquivalent(T a, T b) {
         if (super.areEquivalent(a, b)) {
             return true;
-        } else if (!a.getIdentifier().equals(b.getIdentifier())) {
+        } else if (!ignoreName && !a.getIdentifier().equals(b.getIdentifier())) {
             return false;
         } else if (!a.getTable().getIdentifier().equals(b.getTable().getIdentifier())) {
             return false;

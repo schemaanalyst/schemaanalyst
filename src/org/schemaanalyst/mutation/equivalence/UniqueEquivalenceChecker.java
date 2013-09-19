@@ -32,6 +32,14 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  */
 public class UniqueEquivalenceChecker extends MultiColumnEquivalenceChecker<UniqueConstraint> {
 
+    public UniqueEquivalenceChecker(boolean ignoreName) {
+        super(ignoreName);
+    }
+
+    public UniqueEquivalenceChecker() {
+        this.ignoreName = false;
+    }
+    
     /**
      * {@inheritDoc }
      */

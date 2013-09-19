@@ -30,6 +30,16 @@ import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
  */
 public class NotNullEquivalenceChecker extends EquivalenceChecker<NotNullConstraint> {
     
+    protected boolean ignoreName;
+
+    public NotNullEquivalenceChecker() {
+        this.ignoreName = false;
+    }
+
+    public NotNullEquivalenceChecker(boolean ignoreName) {
+        this.ignoreName = ignoreName;
+    }
+    
     /**
      * {@inheritDoc }
      */
@@ -37,7 +47,7 @@ public class NotNullEquivalenceChecker extends EquivalenceChecker<NotNullConstra
     public boolean areEquivalent(NotNullConstraint a, NotNullConstraint b) {
         if (super.areEquivalent(a, b)) {
             return true;
-        } else if (!a.getIdentifier().equals(b.getIdentifier())) {
+        } else if (!ignoreName && !a.getIdentifier().equals(b.getIdentifier())) {
             return false;
         } else if (!a.getTable().getIdentifier().equals(b.getTable().getIdentifier())) {
             return false;

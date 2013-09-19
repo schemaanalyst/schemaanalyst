@@ -28,10 +28,9 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 
 /**
- * <p>
- * {@link Runner} for the 'Original' style of mutation analysis. This requires 
- * that the result generation tool has been run, as it bases the mutation 
- * analysis on the results produced by it.
+ * <p> {@link Runner} for the 'Original' style of mutation analysis. This
+ * requires that the result generation tool has been run, as it bases the
+ * mutation analysis on the results produced by it.
  * </p>
  *
  * @author Chris J. Wright
@@ -116,7 +115,7 @@ public class Original extends Runner {
 
         // Start mutation timing
         long startTime = System.currentTimeMillis();
-        
+
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
         try {
@@ -125,6 +124,13 @@ public class Original extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
+        
+        // debug : write mutants
+//        int i = 0;
+//        for (Mutant<Schema> mutant : mutants) {
+//            System.out.println(i + ": " + mutant.getDescription());
+//            i++;
+//        }
 
         // Begin mutation analysis
         int killed = 0;
@@ -151,7 +157,7 @@ public class Original extends Runner {
                     quasiMutant = true;
                 }
             }
-            
+
             // Don't continue if mutant is quasi
             if (quasiMutant) {
                 quasi++;
@@ -163,7 +169,11 @@ public class Original extends Runner {
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
                     int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
+//                    if (id == 17) {
+//                        System.out.println(insertRecord.getStatement() + ": " + "expected " + insertRecord.getReturnCode() + ", actual " + returnCount);
+//                    }
                     if (returnCount != insertRecord.getReturnCode()) {
+//                        System.out.println(id);
                         killed++;
                         break; // Stop once killed
                     }
@@ -175,7 +185,7 @@ public class Original extends Runner {
                 databaseInteractor.executeUpdate(stmt);
             }
         }
-        
+
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 

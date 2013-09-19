@@ -32,6 +32,14 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
  */
 public class PrimaryKeyEquivalenceChecker extends MultiColumnEquivalenceChecker<PrimaryKeyConstraint> {
 
+    public PrimaryKeyEquivalenceChecker(boolean ignoreName) {
+        super(ignoreName);
+    }
+
+    public PrimaryKeyEquivalenceChecker() {
+        this.ignoreName = false;
+    }
+    
     /**
      * {@inheritDoc }
      */
@@ -39,5 +47,4 @@ public class PrimaryKeyEquivalenceChecker extends MultiColumnEquivalenceChecker<
     public boolean areEquivalent(PrimaryKeyConstraint a, PrimaryKeyConstraint b) {
         return super.areEquivalent(a, b);
     }
-    
 }
