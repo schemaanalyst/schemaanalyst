@@ -41,13 +41,13 @@ public class ConstraintCovererFactory {
     /*                                                                                                                           */
     /*****************************************************************************************************************************/	
 	
-	public static DataGenerator instantiate(String name,
-                                            Schema schema,
-                                            DBMS dbms,
-                                            String cellRandomisationProfile,
-                                            long seed,
-                                            int maxEvaluations) {
-
+	@SuppressWarnings("unchecked")
+	public static DataGenerator<ConstraintGoal> instantiate(String name,
+                                            				Schema schema,
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations) {
         // get hold of the method objects of this class 
         Class<ConstraintCovererFactory> clazz = ConstraintCovererFactory.class;
         Method methods[] = clazz.getMethods();
@@ -62,7 +62,7 @@ public class ConstraintCovererFactory {
             if (m.getName().equals(name)) {                
                 Object[] args = {schema, dbms, cellRandomisationProfile, seed, maxEvaluations};
                 try {
-					return (DataGenerator) m.invoke(null, args);
+					return (DataGenerator<ConstraintGoal>) m.invoke(null, args);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					throw new RuntimeException(e);
 				}   
@@ -191,7 +191,7 @@ public class ConstraintCovererFactory {
         return new SearchConstraintCoverer(drs, schema, dbms, 
                                            DEFAULT_NUM_SATISFY_ROWS, 
                                            DEFAULT_NUM_NEGATE_ROWS);
-}    
+    }    
     
     public static NaiveRandomConstraintCoverer naiveRandom(Schema schema,
                                                            DBMS dbms,
@@ -205,5 +205,4 @@ public class ConstraintCovererFactory {
                                                 DEFAULT_NAIVE_RND_NUM_ROWS_PER_TABLE, 
                                                 maxEvaluations);
     }
-
 }
