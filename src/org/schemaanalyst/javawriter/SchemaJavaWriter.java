@@ -15,15 +15,15 @@ import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 public class SchemaJavaWriter {
 
     // schema we are writing Java for
-    protected Schema schema;
+    private Schema schema;
     // sub-writers
-    protected JavaWriter javaWriter;
-    protected ConstraintJavaWriter constraintJavaWriter;
-    protected DataTypeJavaWriter dataTypeJavaWriter;
-    protected ExpressionJavaWriter expressionJavaWriter;
-    protected ValueJavaWriter valueJavaWriter;
+    private JavaWriter javaWriter;
+    private ConstraintJavaWriter constraintJavaWriter;
+    private DataTypeJavaWriter dataTypeJavaWriter;
+    private ExpressionJavaWriter expressionJavaWriter;
+    private ValueJavaWriter valueJavaWriter;
     // for nice indented output
-    protected IndentableStringBuilder code;
+    private IndentableStringBuilder code;
 
     public SchemaJavaWriter(Schema schema) {
         this.schema = schema;

@@ -1,4 +1,4 @@
-package org.schemaanalyst.dbms.hsqldb;
+package org.schemaanalyst.dbms.hypersql;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,16 +18,16 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
  * HSQLDB database.
  * </p>
  */
-public class HSQLDBDatabaseInteractor extends DatabaseInteractor {
+public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
 
-    private static final Logger LOGGER = Logger.getLogger(HSQLDBDatabaseInteractor.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(HyperSQLDatabaseInteractor.class.getName());
     private static final String URL_SUFFIX = ";hsqldb.write_delay=false";
     /**
      * The database name.
      */
     private String databaseName;
 
-    HSQLDBDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
+    HyperSQLDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         super(databaseConfiguration, locationConfiguration);
         this.databaseName = databaseName;
     }

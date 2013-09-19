@@ -1,4 +1,4 @@
-package org.schemaanalyst.dbms.hsqldb;
+package org.schemaanalyst.dbms.sqlite;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -8,19 +8,24 @@ import org.schemaanalyst.dbms.DBMSVisitor;
 
 /**
  * <p>
- * Contains the various objects relating to interacting with a HSQLDB DBMS.
+ * Contains the various objects relating to interacting with an SQLite DBMS.
  * </p>
  */
-public class HSQLDB extends DBMS {
+public class SQLiteDBMS extends DBMS {
 
-    private HSQLDBDatabaseInteractor databaseInteractor;
+    private SQLiteDatabaseInteractor databaseInteractor;
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new HSQLDBDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+            databaseInteractor = new SQLiteDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
         return databaseInteractor;
+    }
+    
+    @Override
+    public String getName() {
+    	return "SQLite";
     }
 
     @Override

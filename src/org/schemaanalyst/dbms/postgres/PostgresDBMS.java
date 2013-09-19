@@ -1,4 +1,4 @@
-package org.schemaanalyst.dbms.sqlite;
+package org.schemaanalyst.dbms.postgres;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -8,21 +8,26 @@ import org.schemaanalyst.dbms.DBMSVisitor;
 
 /**
  * <p>
- * Contains the various objects relating to interacting with an SQLite DBMS.
+ * Contains the various objects relating to interacting with a Postgres DBMS.
  * </p>
  */
-public class SQLite extends DBMS {
+public class PostgresDBMS extends DBMS {
 
-    private SQLiteDatabaseInteractor databaseInteractor;
+    private PostgresDatabaseInteractor databaseInteractor;
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new SQLiteDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+            databaseInteractor = new PostgresDatabaseInteractor(databaseConfiguration, locationConfiguration);
         }
         return databaseInteractor;
     }
 
+    @Override
+    public String getName() {
+    	return "Postgres";
+    }    
+    
     @Override
     public void accept(DBMSVisitor visitor) {
         visitor.visit(this);

@@ -9,27 +9,41 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**
  * <p>
- * Contains the various objects relating to interacting with a Derby DBMS that 
- * is accessed over a network. This may be hosted on the local host or an 
- * alternative address, according to the {@link DatabaseConfiguration}.
+ * Contains the various objects relating to interacting with a Derby DBMS.
  * </p>
  */
-public class DerbyNetwork extends DBMS {
+public class DerbyDBMS extends DBMS {
 
     private SQLWriter sqlWriter = new DerbySQLWriter();
     private DerbyDatabaseInteractor databaseInteractor;
-
+    private boolean useLocalFile;
+    
+    public DerbyDBMS() {
+    	this(false);
+    }
+    
+    public DerbyDBMS(boolean isLocal) {
+    	this.useLocalFile = isLocal;
+    }
+    
+    @Override
+    public String getName() {
+    	return "Derby";
+    }      
+    
     @Override
     public SQLWriter getSQLWriter() {
         return sqlWriter;
     }
-
+    
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+        	return useLocalFile 
+        			? new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration)
+        			: new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
-        return databaseInteractor;
+        return null;
     }
 
     @Override

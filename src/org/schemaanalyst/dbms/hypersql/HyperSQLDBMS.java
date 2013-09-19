@@ -1,4 +1,4 @@
-package org.schemaanalyst.dbms.postgres;
+package org.schemaanalyst.dbms.hypersql;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -8,20 +8,25 @@ import org.schemaanalyst.dbms.DBMSVisitor;
 
 /**
  * <p>
- * Contains the various objects relating to interacting with a Postgres DBMS.
+ * Contains the various objects relating to interacting with a HSQLDB DBMS.
  * </p>
  */
-public class Postgres extends DBMS {
+public class HyperSQLDBMS extends DBMS {
 
-    private PostgresDatabaseInteractor databaseInteractor;
+    private HyperSQLDatabaseInteractor databaseInteractor;
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         if (databaseInteractor == null) {
-            databaseInteractor = new PostgresDatabaseInteractor(databaseConfiguration, locationConfiguration);
+            databaseInteractor = new HyperSQLDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
         }
         return databaseInteractor;
     }
+    
+    @Override
+    public String getName() {
+    	return "HyperSQL";
+    }        
 
     @Override
     public void accept(DBMSVisitor visitor) {
