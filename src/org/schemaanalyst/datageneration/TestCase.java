@@ -1,5 +1,6 @@
 package org.schemaanalyst.datageneration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.data.Data;
@@ -13,6 +14,7 @@ public class TestCase<E> {
 	
 	public TestCase(String description) {
 		this.description = description;
+		coveredElements = new ArrayList<>();
 		startTime = 0;
         endTime = 0;
         timeToGenerate = 0;

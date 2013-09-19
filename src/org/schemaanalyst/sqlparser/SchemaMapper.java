@@ -88,7 +88,7 @@ public class SchemaMapper {
         String columnName = stripQuotes(node.getColumnName());
 
         // log this event
-        LOGGER.log(Level.INFO, "Parsing column \"{0}\" one line {1}", new Object[]{columnName, node.getLineNo()});
+        LOGGER.log(Level.INFO, "Parsing column \"{0}\" on line {1}", new Object[]{columnName, node.getLineNo()});
 
         // get data type and add column to table
         DataType type = dataTypeMapper.getDataType(node.getDatatype(), node);
@@ -99,7 +99,7 @@ public class SchemaMapper {
     }
 
     private void analyseAlterTableStatement(TAlterTableStatement node) {
-        LOGGER.log(Level.INFO, "Parsing alter table statement \"{0}\" at line: {1}", new Object[]{node, node.getLineNo()});
+        LOGGER.log(Level.INFO, "Parsing alter table statement \"{0}\" on line: {1}", new Object[]{node, node.getLineNo()});
 
         String tableName = stripQuotes(node.getTableName());
         Table table = schema.getTable(tableName);

@@ -12,6 +12,7 @@ public class TestSuite<E> {
 	public TestSuite(String description) {
 		this.description = description;
 		testCases = new ArrayList<>();
+		usefulTestCases = new ArrayList<>();
 	}
 	
 	public void addTestCase(TestCase<E> testCase) {
@@ -19,6 +20,14 @@ public class TestSuite<E> {
 		if (testCase.getNumCoveredElements() > 0) {
 			usefulTestCases.add(testCase);
 		}
+	}
+	
+	public List<TestCase<E>> getTestCases() {
+		return new ArrayList<>(testCases);
+	}
+	
+	public List<TestCase<E>> getUsefulTestCases() {
+		return new ArrayList<>(usefulTestCases);
 	}
 	
 	public String getDescription() {
