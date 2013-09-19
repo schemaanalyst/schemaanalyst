@@ -5,15 +5,17 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.schemaanalyst.datageneration.ConstraintCovererFactory;
-import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.GoalReport;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
+import deprecated.report.CoverageReport;
+import deprecated.report.GoalReport;
 
 /**
  * <p>

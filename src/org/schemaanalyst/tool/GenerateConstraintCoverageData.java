@@ -2,7 +2,6 @@ package org.schemaanalyst.tool;
 
 import java.io.File;
 
-import org.schemaanalyst.datageneration.CoverageReport;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.ConstraintCovererFactory;
 import org.schemaanalyst.dbms.DBMS;
@@ -14,6 +13,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
+
+import deprecated.report.CoverageReport;
 
 @Description("Generates constraint covering data for a schema, printing the INSERTs to the screen.")
 @RequiredParameters("schema dbms datagenerator")

@@ -2,8 +2,6 @@ package org.schemaanalyst.datageneration.search;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
-import org.schemaanalyst.datageneration.SimpleConstraintGoalReport;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.constraint.ConstraintObjectiveFunctionFactory;
@@ -12,6 +10,9 @@ import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import deprecated.report.SimpleConstraintCoverageReport;
+import deprecated.report.SimpleConstraintGoalReport;
 
 public class ConstraintEvaluator {
 

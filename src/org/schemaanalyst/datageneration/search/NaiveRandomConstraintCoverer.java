@@ -6,11 +6,12 @@ import java.util.Map;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import deprecated.report.SimpleConstraintCoverageReport;
 
 public class NaiveRandomConstraintCoverer extends DataGenerator {
 
