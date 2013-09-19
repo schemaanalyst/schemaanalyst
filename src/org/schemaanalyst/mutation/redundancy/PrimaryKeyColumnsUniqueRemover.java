@@ -36,13 +36,15 @@ public class PrimaryKeyColumnsUniqueRemover extends MutantRemover<Schema> {
 
 		for (Mutant<Schema> mutant : mutants) {
 			Schema schema = mutant.getMutatedArtefact();
-			List<PrimaryKeyConstraint> primaryKeyConstraints = schema
-					.getPrimaryKeyConstraints();
-			
+			List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
+            int startCount = schema.getUniqueConstraints().size();
 			for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
 				schema.removeUniqueConstraint(
 						new UniqueConstraint(primaryKey.getTable(), primaryKey.getColumns()));
 			}
+            if (startCount != schema.getUniqueConstraints().size()) {
+                mutant.addRemoverApplied(this);
+            }
 		}
 
 		return mutants;

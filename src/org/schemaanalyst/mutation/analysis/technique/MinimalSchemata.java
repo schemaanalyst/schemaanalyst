@@ -5,7 +5,7 @@ package org.schemaanalyst.mutation.analysis.technique;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
@@ -29,6 +29,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -261,22 +262,26 @@ public class MinimalSchemata extends Runner {
      * @return The name of the table
      */
     private String getChangedTable(Mutant<Schema> mutant) {
-        Table table = ChangedTableFinder.getDifferentTable(schema, mutant.getMutatedArtefact());
+        // Reapply removers if needed
+        Schema modifiedSchema = schema.duplicate();
+        List<Mutant<Schema>> list = Arrays.asList(new Mutant<>(modifiedSchema, ""));
+        for (MutantRemover mutantRemover : mutant.getRemoversApplied()) {
+            list = mutantRemover.removeMutants(list);
+        }
+        if (list.size() != 1) {
+            throw new RuntimeException("Applying the MutantRemovers used for a "
+                    + "mutant on the original schema did not produce only 1 "
+                    + "schema (expected: 1, actual: " + list.size() + ")");
+        }
+        modifiedSchema = list.get(0).getMutatedArtefact();
+        
+        // Find the changed table
+        Table table = ChangedTableFinder.getDifferentTable(modifiedSchema, mutant.getMutatedArtefact());
         if (table != null) {
             return table.getName();
         } else {
-            throw new RuntimeException("Could not find changed table for mutant (" + mutant.getMutatedArtefact().getName() + ")");
+            throw new RuntimeException("Could not find changed table for mutant (" + mutant.getMutatedArtefact().getName() + ": " + mutant.getDescription() + ")");
         }
-        
-//        String table = changedTableMap.get(mutant);
-//        if (table == null) {
-//            table = ChangedTableFinder.getDifferentTable(schema, mutant.getMutatedArtefact()).getName();
-//            if (table == null) {
-//                throw new RuntimeException("Could not find changed table for mutant (" + mutant.getMutatedArtefact().getName() + ")");
-//            }
-//            changedTableMap.put(mutant, table);
-//        }
-//        return table;
     }
 
     /**

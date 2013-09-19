@@ -1,5 +1,9 @@
 package org.schemaanalyst.mutation;
 
+import java.util.LinkedList;
+import java.util.List;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
 /**
  * {@link Mutant} is a wrapper around a mutated object with a string 
  * description of the mutation.
@@ -12,6 +16,7 @@ public class Mutant<A> {
 
 	private A artefact;
 	private String description;
+    private List<MutantRemover> removersApplied;
 	
 	/**
 	 * Constructor
@@ -21,6 +26,7 @@ public class Mutant<A> {
 	public Mutant(A artefact, String description) {
 		this.artefact = artefact;
 		this.description = description;
+        removersApplied = new LinkedList<>();
 	}
 	
 	/**
@@ -38,6 +44,24 @@ public class Mutant<A> {
 	public String getDescription() {
 		return description;
 	}
+    
+    /**
+     * Returns a copy of the list of {@link MutantRemover} classes applied to 
+     * this mutant that have modified it with respect to the original artefact.
+     * @return The copied list
+     */
+    public List<MutantRemover> getRemoversApplied() {
+        return new LinkedList<>(removersApplied);
+    }
+    
+    /**
+     * Adds a remover that has been applied to this mutant and has modified it 
+     * with respect to the original artefact.
+     * @param remover The remover
+     */
+    public void addRemoverApplied(MutantRemover<A> remover) {
+        removersApplied.add(remover);
+    }
 	
 	/**
 	 * {@inheritDoc}
