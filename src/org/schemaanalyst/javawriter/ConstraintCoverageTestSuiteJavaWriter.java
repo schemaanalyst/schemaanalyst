@@ -1,5 +1,6 @@
 package org.schemaanalyst.javawriter;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -48,6 +49,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		
 		writeInitialiseMethod();
 		writeDataAcceptedTestMethod();
+		writeDataRejectedMethods();
 		writeCloseMethod();
 		
 		code.appendln(0, "}");
@@ -81,8 +83,8 @@ public class ConstraintCoverageTestSuiteJavaWriter {
         }		
 		        
         if (usefulTestCases.size() > 0) {
-        	TestCase<ConstraintGoal> satisfyingTestCase = usefulTestCases.get(0);
-        	Data data = satisfyingTestCase.getData();
+        	TestCase<ConstraintGoal> acceptedTestCase = usefulTestCases.get(0);
+        	Data data = acceptedTestCase.getData();
         	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
         	for (String statement : insertStatements) {
             	code.appendln(writeExecuteUpdate(statement));
@@ -111,7 +113,6 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 			code.appendln((writeTypes ? "ResultSet " : "") + "rs = " + writeExecuteQuery(selectSQLStatement));
 			code.appendln((writeTypes ? "ResultSet " : "") + "count = rs.getInt(1)");
 			code.appendln("assertEquals(\"The number of rows inserted into " + table.getName() + " should be 2\", 2, count);");
-
 			
 			first = false;
 		}
@@ -120,7 +121,15 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 	}
 	
 	private void writeDataRejectedMethods() {
-		
+		Iterator<TestCase<ConstraintGoal>> iterator = usefulTestCases.listIterator(1);
+		while (iterator.hasNext()) {
+			TestCase<ConstraintGoal> rejectedTestCase = usefulTestCases.get(0);
+	    	Data data = rejectedTestCase.getData();
+	    	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
+	    	for (String statement : insertStatements) {
+	        	code.appendln(writeExecuteUpdate(statement));
+	        }
+		}
 	}
 	
 	private String writeExecuteQuery(String sqlStatement) {
