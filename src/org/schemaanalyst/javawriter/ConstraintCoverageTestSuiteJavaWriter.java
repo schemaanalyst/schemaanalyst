@@ -22,6 +22,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 	private DBMS dbms;
 	private SQLWriter sqlWriter;
 	private TestSuite<ConstraintGoal> testSuite; 
+	private List<TestCase<ConstraintGoal>> usefulTestCases;
 	
 	private JavaWriter javaWriter;
 	private IndentableStringBuilder code;
@@ -31,6 +32,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		this.dbms = dbms;
 		this.testSuite = testSuite;
 		
+		usefulTestCases = testSuite.getUsefulTestCases();		
 		sqlWriter = dbms.getSQLWriter();
 	}
 	
@@ -77,9 +79,10 @@ public class ConstraintCoverageTestSuiteJavaWriter {
         for (String statement : createTableStatements) {
         	code.appendln(writeExecuteUpdate(statement));
         }		
-		
-        for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
-        	Data data = testCase.getData();
+		        
+        if (usefulTestCases.size() > 0) {
+        	TestCase<ConstraintGoal> satisfyingTestCase = usefulTestCases.get(0);
+        	Data data = satisfyingTestCase.getData();
         	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
         	for (String statement : insertStatements) {
             	code.appendln(writeExecuteUpdate(statement));
