@@ -135,10 +135,10 @@ public class MinimalSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        
+
         // schemata step- rename constraints
         renameConstraints(mutants);
-        
+
         // smart step- minimise the create/drops for each mutant
         List<String> mutantCreateStatements = new ArrayList<>();
         List<String> mutantDropStatements = new ArrayList<>();
@@ -159,49 +159,56 @@ public class MinimalSchemata extends Runner {
         }
 
         // Create original schema tables
+        boolean quasiSchema = false;
         for (String create : sqlWriter.writeCreateTableStatements(schema)) {
-            databaseInteractor.executeUpdate(create);
-        }
-        // Create mutant schema tables
-        for (String create : mutantCreateStatements) {
-            databaseInteractor.executeUpdate(create);
-        }
-
-        HashSet<String> killed = new HashSet<>();
-
-        // get the original mutant reports
-        List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
-        for (SQLInsertRecord insertRecord : insertStmts) {
-
-            String insert = insertRecord.getStatement();
-            String affectedTable = getAffectedTable(insert);
-            int returnCode = insertRecord.getReturnCode();
-            databaseInteractor.executeUpdate(insert);
-
-            // for each applicable mutant
-            for (String mutantTable : mutantTables.getMutants(affectedTable)) {
-                String mutantInsert = rewriteInsert(insert, affectedTable, mutantTable);
-                int mutantReturnCode = databaseInteractor.executeUpdate(mutantInsert);
-                if (returnCode != mutantReturnCode) {
-                    killed.add(getMutantNumber(mutantTable));
-                }
+            Integer res = databaseInteractor.executeUpdate(create);
+            if (res.intValue() == -1) {
+                quasiSchema = true;
             }
         }
 
-        // drop mutant schema tables
-        for (String drop : mutantDropStatements) {
-            databaseInteractor.executeUpdate(drop);
-        }
-        // drop original schema tables
-        for (String drop : dropStmts) {
-            databaseInteractor.executeUpdate(drop);
-        }
+        // Only do mutation analysis if the schema is valid
+        HashSet<String> killed = new HashSet<>();
+        if (!quasiSchema) {
+            // Create mutant schema tables
+            for (String create : mutantCreateStatements) {
+                databaseInteractor.executeUpdate(create);
+            }
 
+            // get the original mutant reports
+            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
+            for (SQLInsertRecord insertRecord : insertStmts) {
+
+                String insert = insertRecord.getStatement();
+                String affectedTable = getAffectedTable(insert);
+                int returnCode = insertRecord.getReturnCode();
+                databaseInteractor.executeUpdate(insert);
+
+                // for each applicable mutant
+                for (String mutantTable : mutantTables.getMutants(affectedTable)) {
+                    String mutantInsert = rewriteInsert(insert, affectedTable, mutantTable);
+                    int mutantReturnCode = databaseInteractor.executeUpdate(mutantInsert);
+                    if (returnCode != mutantReturnCode) {
+                        killed.add(getMutantNumber(mutantTable));
+                    }
+                }
+            }
+
+            // drop mutant schema tables
+            for (String drop : mutantDropStatements) {
+                databaseInteractor.executeUpdate(drop);
+            }
+            // drop original schema tables
+            for (String drop : dropStmts) {
+                databaseInteractor.executeUpdate(drop);
+            }
+        }
+        
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 
         result.addValue("mutationtime", totalTime);
-        result.addValue("mutationscore_numerator", killed.size());
+        result.addValue("mutationscore_numerator", (!quasiSchema) ? killed.size() : mutants.size());
         result.addValue("mutationscore_denominator", mutants.size());
 
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
@@ -253,7 +260,6 @@ public class MinimalSchemata extends Runner {
         }
         throw new RuntimeException("Could not find create table statement for mutant (" + mutant.getMutatedArtefact().getName() + ", table '" + changedTable + "')");
     }
-    
 
     /**
      * Retrieves the name of the changed table in a schema mutant.
@@ -274,7 +280,7 @@ public class MinimalSchemata extends Runner {
                     + "schema (expected: 1, actual: " + list.size() + ")");
         }
         modifiedSchema = list.get(0).getMutatedArtefact();
-        
+
         // Find the changed table
         Table table = ChangedTableFinder.getDifferentTable(modifiedSchema, mutant.getMutatedArtefact());
         if (table != null) {
@@ -326,7 +332,7 @@ public class MinimalSchemata extends Runner {
     private static String getMutantNumber(String mutantTable) {
         return mutantTable.split("_")[1];
     }
-    
+
     /**
      * Prepends each constraint in mutants with the relevant mutation number
      *

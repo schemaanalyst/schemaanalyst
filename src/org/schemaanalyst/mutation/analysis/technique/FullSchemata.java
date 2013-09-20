@@ -30,9 +30,8 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 /**
- * <p>
- * {@link Runner} for the 'Full Schemata' style of mutation analysis. This 
- * requires that the result generation tool has been run, as it bases the 
+ * <p> {@link Runner} for the 'Full Schemata' style of mutation analysis. This
+ * requires that the result generation tool has been run, as it bases the
  * mutation analysis on the results produced by it.
  * </p>
  *
@@ -118,7 +117,7 @@ public class FullSchemata extends Runner {
 
         // Start mutation timing
         long startTime = System.currentTimeMillis();
-        
+
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
         try {
@@ -127,10 +126,10 @@ public class FullSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        
+
         // Schemata step: Rename the mutants
         renameMutants(mutants);
-        
+
         // Schemata step: Build single drop statement
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
@@ -142,7 +141,7 @@ public class FullSchemata extends Runner {
             }
         }
         String dropStmt = dropBuilder.toString();
-        
+
         // Schemata step: Build single create statement
         StringBuilder createBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
@@ -154,40 +153,47 @@ public class FullSchemata extends Runner {
             }
         }
         String createStmt = createBuilder.toString();
-        
+
         // Schemata step: Drop existing tables before iterating mutants
         if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
         }
 
         // Schemata step: Create table before iterating mutants
-        databaseInteractor.executeUpdate(createStmt);
+        Integer res = databaseInteractor.executeUpdate(createStmt);
+        boolean quasiSchema = false;
+        if (res.intValue() == -1) {
+            quasiSchema = true;
+        }
 
-        // Begin mutation analysis
+        // Only do mutation analysis if the schema is valid
         int killed = 0;
-        for (int id = 0; id < mutants.size(); id++) {
-            Schema mutant = mutants.get(id).getMutatedArtefact();
+        if (!quasiSchema) {
+            // Begin mutation analysis
+            for (int id = 0; id < mutants.size(); id++) {
+                Schema mutant = mutants.get(id).getMutatedArtefact();
 
-            LOGGER.log(Level.INFO, "Mutant {0}", id);
+                LOGGER.log(Level.INFO, "Mutant {0}", id);
 
-            // Schemata step: Generate insert prefix string
-            String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
+                // Schemata step: Generate insert prefix string
+                String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
 
-            // Insert the test data
-            List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
-            for (SQLInsertRecord insertRecord : insertStmts) {
+                // Insert the test data
+                List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
+                for (SQLInsertRecord insertRecord : insertStmts) {
 
-                // Schemata step: Rewrite insert for mutant ID
-                String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
+                    // Schemata step: Rewrite insert for mutant ID
+                    String insertStmt = insertRecord.getStatement().replaceAll("INSERT INTO ", schemataPrefix);
 
-                int returnCount = databaseInteractor.executeUpdate(insertStmt);
-                if (returnCount != insertRecord.getReturnCode()) {
-                    killed++;
-                    break; // Stop once killed
+                    int returnCount = databaseInteractor.executeUpdate(insertStmt);
+                    if (returnCount != insertRecord.getReturnCode()) {
+                        killed++;
+                        break; // Stop once killed
+                    }
                 }
             }
         }
-        
+
         // Schemata step: Drop tables after iterating mutants
         databaseInteractor.executeUpdate(dropStmt);
 
@@ -195,7 +201,7 @@ public class FullSchemata extends Runner {
         long totalTime = endTime - startTime;
 
         result.addValue("mutationtime", totalTime);
-        result.addValue("mutationscore_numerator", killed);
+        result.addValue("mutationscore_numerator", (!quasiSchema) ? killed : mutants.size());
         result.addValue("mutationscore_denominator", mutants.size());
 
         new CSVWriter(outputfolder + casestudy + ".dat").write(result);
