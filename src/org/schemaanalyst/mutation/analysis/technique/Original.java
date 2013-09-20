@@ -151,12 +151,6 @@ public class Original extends Runner {
                 }
             }
 
-            // Don't continue if mutant is quasi
-            if (quasiMutant) {
-                quasi++;
-                killed++;
-            }
-
             // Insert the test data
             if (!quasiMutant) {
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
@@ -167,6 +161,10 @@ public class Original extends Runner {
                         break; // Stop once killed
                     }
                 }
+            } else {
+                // Don't continue if mutant is quasi
+                quasi++;
+                killed++;
             }
 
             // Drop tables
