@@ -228,7 +228,7 @@ public class MinimalSchemata extends Runner {
         String changedTable = getChangedTable(mutant);
         List<String> dropTableStatements = sqlWriter.writeDropTableStatements(mutant.getMutatedArtefact(), true);
         for (String statement : dropTableStatements) {
-            if (statement.startsWith("DROP TABLE IF EXISTS " + changedTable)) {
+            if (statement.equals("DROP TABLE IF EXISTS " + changedTable)) {
                 return statement.replace("DROP TABLE IF EXISTS " + changedTable, "DROP TABLE IF EXISTS mutant_" + id + "_" + changedTable);
             }
         }
