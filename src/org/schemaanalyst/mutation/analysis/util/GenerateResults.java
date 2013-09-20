@@ -18,6 +18,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
+import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * <p>
@@ -85,11 +86,13 @@ public abstract class GenerateResults extends Runner {
         }
 
         // Generate the test data
-        List<String> insertStmts = getInserts();
+        List<MixedPair<String,Boolean>> insertStmts = getInserts();
 
         // Insert the test data
-        for (String stmt : insertStmts) {
-            SQLInsertRecord record = new SQLInsertRecord(stmt, databaseInteractor.executeUpdate(stmt), false);
+        for (MixedPair<String,Boolean> pair : insertStmts) {
+            String stmt = pair.getFirst();
+            Boolean satisfying = pair.getSecond();
+            SQLInsertRecord record = new SQLInsertRecord(stmt, databaseInteractor.executeUpdate(stmt), satisfying);
             sqlReport.addInsertStatement(record);
         }
 
@@ -102,5 +105,5 @@ public abstract class GenerateResults extends Runner {
         XMLSerialiser.save(sqlReport, outputfolder + casestudy + ".xml");
     }
 
-    public abstract List<String> getInserts();
+    public abstract List<MixedPair<String,Boolean>> getInserts();
 }

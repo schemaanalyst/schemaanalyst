@@ -11,7 +11,7 @@ public class SQLInsertRecord extends SQLExecutionRecord {
     /**
      * Whether this SQL statement is trying to satisfy or negate constraints
      */
-    private boolean satisfying;
+    private Boolean satisfying;
 
     /**
      * Constructor. Defaults 'satisfying' to false.
@@ -20,7 +20,7 @@ public class SQLInsertRecord extends SQLExecutionRecord {
      * @param returnCode The return code of executing 'statement'
      */
     public SQLInsertRecord(String statement, Integer returnCode) {
-        this(statement, returnCode, false);
+        this(statement, returnCode, null);
     }
 
     /**
@@ -30,7 +30,7 @@ public class SQLInsertRecord extends SQLExecutionRecord {
      * @param returnCode The return code of executing 'statement'
      * @param satisfying Whether the Insert is satisfying a constraint
      */
-    public SQLInsertRecord(String statement, Integer returnCode, boolean satisfying) {
+    public SQLInsertRecord(String statement, Integer returnCode, Boolean satisfying) {
         super(statement, returnCode);
         this.satisfying = satisfying;
     }
@@ -40,7 +40,7 @@ public class SQLInsertRecord extends SQLExecutionRecord {
      *
      * @return satisfying
      */
-    public boolean isSatisfying() {
+    public Boolean isSatisfying() {
         return satisfying;
     }
 
@@ -49,7 +49,7 @@ public class SQLInsertRecord extends SQLExecutionRecord {
      *
      * @param isSatisfying satisfying
      */
-    public void setSatisfying(boolean isSatisfying) {
+    public void setSatisfying(Boolean isSatisfying) {
         this.satisfying = isSatisfying;
     }
 

@@ -17,6 +17,7 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.TestCase;
 import org.schemaanalyst.datageneration.TestSuite;
+import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * <p>
@@ -61,12 +62,15 @@ public class GenerateResultsFromGenerator extends GenerateResults {
     protected String datagenerator = "alternatingValue";
 
     @Override
-    public List<String> getInserts() {
-        List<String> insertStms = new ArrayList<>();
+    public List<MixedPair<String,Boolean>> getInserts() {
+        List<MixedPair<String,Boolean>> insertStms = new ArrayList<>();
         DataGenerator<ConstraintGoal> dataGenerator = constructDataGenerator(schema, dbms);
         TestSuite<ConstraintGoal> testSuite = dataGenerator.generate();
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
-            insertStms.addAll(sqlWriter.writeInsertStatements(schema, testCase.getData()));
+            for (String stmt : sqlWriter.writeInsertStatements(schema, testCase.getData())) {
+                MixedPair<String, Boolean> pair = new MixedPair<>(stmt, null); //TODO: Set satisfying variable (once found in new implementation)
+                insertStms.add(pair);
+            }
         }
         return insertStms;
     }
