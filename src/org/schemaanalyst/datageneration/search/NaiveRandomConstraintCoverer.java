@@ -5,14 +5,15 @@ import java.util.Map;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
-import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
+import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-public class NaiveRandomConstraintCoverer extends DataGenerator {
+public class NaiveRandomConstraintCoverer extends DataGenerator<ConstraintGoal> {
 
     protected Schema schema;
     protected ConstraintEvaluator constraintEvaluator;
@@ -37,7 +38,7 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
     }
 
     @Override
-    public SimpleConstraintCoverageReport generate() {
+    public TestSuite<ConstraintGoal> generate() {
         constraintEvaluator.initialize(schema);
         int totalNumTries = 0;
 
@@ -63,8 +64,7 @@ public class NaiveRandomConstraintCoverer extends DataGenerator {
             rowsAddedForEachTable.put(table, successfulRows);
         }
 
-        SimpleConstraintCoverageReport report = constraintEvaluator.getCoverageReport();
-        report.setNumAttempts(totalNumTries);
-        return report;
+        // TODO: return a proper test suite ...
+        return null;
     }
 }

@@ -1,16 +1,12 @@
 package org.schemaanalyst.javawriter;
 
-import static org.junit.Assert.assertEquals;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
-import org.junit.BeforeClass;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.datageneration.ConstraintGoal;
+import org.schemaanalyst.datageneration.TestCase;
+import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -20,20 +16,20 @@ import org.schemaanalyst.util.IndentableStringBuilder;
 
 import parsedcasestudy.Inventory;
 
-public class TestSuiteJavaWriter {
+public class ConstraintCoverageTestSuiteJavaWriter {
 
 	private Schema schema;
 	private DBMS dbms;
 	private SQLWriter sqlWriter;
-	private List<Data> data; 
+	private TestSuite<ConstraintGoal> testSuite; 
 	
 	private JavaWriter javaWriter;
 	private IndentableStringBuilder code;
 	
-	public TestSuiteJavaWriter(Schema schema, DBMS dbms, List<Data> data) {
+	public ConstraintCoverageTestSuiteJavaWriter(Schema schema, DBMS dbms, TestSuite<ConstraintGoal> testSuite) {
 		this.schema = schema;
 		this.dbms = dbms;
-		this.data = data;
+		this.testSuite = testSuite;
 		
 		sqlWriter = dbms.getSQLWriter();
 	}
@@ -43,7 +39,7 @@ public class TestSuiteJavaWriter {
         javaWriter = new JavaWriter();
         code = new IndentableStringBuilder();
 	    
-		code.appendln("public class Test" + schema.getName() + "With" + dbms.getName() + "{");
+		code.appendln("public class " + schema.getName() + "ConstraintCoverage" + dbms.getName() + "{");
 		code.appendln(1);
 		code.appendln("private static Connection connection;");
 		code.appendln("private static Statement statement;");
@@ -82,6 +78,14 @@ public class TestSuiteJavaWriter {
         	code.appendln(writeExecuteUpdate(statement));
         }		
 		
+        for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
+        	Data data = testCase.getData();
+        	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
+        	for (String statement : insertStatements) {
+            	code.appendln(writeExecuteUpdate(statement));
+            }		
+        }
+        
 		// create table SQL code
 		code.appendln(1, "}");		
 	}
@@ -147,6 +151,6 @@ public class TestSuiteJavaWriter {
 	}
 	
 	public static void main(String[] args) {
-		new TestSuiteJavaWriter(new Inventory(), new SQLiteDBMS(), null).writeTestSuite();;
+		new ConstraintCoverageTestSuiteJavaWriter(new Inventory(), new SQLiteDBMS(), null).writeTestSuite();;
 	}
 }

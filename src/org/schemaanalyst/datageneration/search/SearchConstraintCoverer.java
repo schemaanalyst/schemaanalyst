@@ -3,15 +3,17 @@ package org.schemaanalyst.datageneration.search;
 import java.util.List;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.ConstraintCoverageReport;
+import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
+import org.schemaanalyst.datageneration.TestCase;
+import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-public class SearchConstraintCoverer extends DataGenerator {
+public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
 
     protected Schema schema;
     protected Data state;
@@ -33,43 +35,43 @@ public class SearchConstraintCoverer extends DataGenerator {
     }
 
     @Override
-    public ConstraintCoverageReport generate() {
-        ConstraintCoverageReport report = new ConstraintCoverageReport(schema);
+    public TestSuite<ConstraintGoal> generate() {
+        TestSuite<ConstraintGoal> testSuite = new TestSuite<>("Constraint coverage for " + schema);
 
-        SearchConstraintGoalReport goalReport = satisfyAllConstraints();
-        report.addGoalReport(goalReport);
+        testSuite.addTestCase(satisfyAllConstraints());
 
         for (Constraint constraint : schema.getConstraints()) {
-            goalReport = negateConstraint(constraint);
-            report.addGoalReport(goalReport);
+        	testSuite.addTestCase(negateConstraint(constraint));
         }
 
-        return report;
+        return testSuite;
     }
 
-    protected SearchConstraintGoalReport satisfyAllConstraints() {
-        return generateData(null, schema.getTables(), satisfyRows);
+    protected TestCase<ConstraintGoal> satisfyAllConstraints() {
+        return generateData(new ConstraintGoal(null, true), schema.getTables(), satisfyRows);
     }
 
-    protected SearchConstraintGoalReport negateConstraint(Constraint constraint) {
+    protected TestCase<ConstraintGoal> negateConstraint(Constraint constraint) {
         Table constraintTable = constraint.getTable();
         List<Table> tables = schema.getConnectedTables(constraintTable);
         tables.add(constraintTable);
 
-        return generateData(constraint, tables, negateRows);
+        return generateData(new ConstraintGoal(constraint, false), tables, negateRows);
     }
 
-    protected SearchConstraintGoalReport generateData(Constraint constraint, List<Table> tables, int numRows) {
+    protected TestCase<ConstraintGoal> generateData(ConstraintGoal constraintGoal, List<Table> tables, int numRows) {
+    	Constraint constraint = constraintGoal.getConstraint();
+    	
         // create the appropriate data object
         Data data = new Data();
         data.addRows(tables, numRows, dbms.getValueFactory());
 
         // initialise everything needed for the search and perform it
         search.setObjectiveFunction(new SchemaConstraintSystemObjectiveFunction(schema, state, constraint));
-        SearchConstraintGoalReport goalReport = performSearch(constraint, data);
+        TestCase<ConstraintGoal> testCase = performSearch(constraintGoal, data);
 
         // add rows to the state
-        if (goalReport.wasSuccess()) {
+        if (testCase.getNumCoveredElements() != 0) {
             for (Table table : tables) {
                 if (constraint == null || !constraint.getTable().equals(table)) {
                     state.addRows(table, data.getRows(table));
@@ -77,27 +79,29 @@ public class SearchConstraintCoverer extends DataGenerator {
             }
         }
 
-        return goalReport;
+        return testCase;
     }
 
-    protected SearchConstraintGoalReport performSearch(Constraint constraint,
-            Data data) {
-        // create the report and start the clock ...
-        SearchConstraintGoalReport goalReport = new SearchConstraintGoalReport(constraint);
-        goalReport.startTimer();
+    protected TestCase<ConstraintGoal> performSearch(ConstraintGoal constraintGoal, Data data) {
+        // set up the test case and start the timer
+        SearchTestCase<ConstraintGoal> testCase = new SearchTestCase<>(constraintGoal.toString());
+        testCase.startTimer();
 
         // do the search
         search.initialize();
         search.search(data);
 
         // end the timer and add the necessary info to the report
-        goalReport.endTimer();
-        goalReport.setData(search.getBestCandidateSolution());
-        goalReport.setSuccess(search.getBestObjectiveValue().isOptimal());
-        goalReport.setNumEvaluations(search.getEvaluationsCounter().counter);
-        goalReport.setNumRestarts(search.getNumRestarts());
-        goalReport.setBestObjectiveValue(search.getBestObjectiveValue());
+        testCase.endTimer();
+        testCase.setData(search.getBestCandidateSolution());        
+        testCase.setNumEvaluations(search.getEvaluationsCounter().counter);
+        testCase.setNumRestarts(search.getNumRestarts());
+        testCase.setBestObjectiveValue(search.getBestObjectiveValue());
 
-        return goalReport;
+        if (search.getBestObjectiveValue().isOptimal()) {
+        	testCase.addCoveredElement(constraintGoal);
+        }
+        
+        return testCase;
     }
 }

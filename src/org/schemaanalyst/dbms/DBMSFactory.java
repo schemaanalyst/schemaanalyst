@@ -28,7 +28,7 @@ public class DBMSFactory {
         
         String dbmsClassName =
                 "org.schemaanalyst.dbms."
-                + name.toLowerCase() + "." + name;
+                + name.toLowerCase() + "." + name + "DBMS";
 
         Class<?> dbmsClass = Class.forName(dbmsClassName);
         DBMS dbms = (DBMS) dbmsClass.newInstance();

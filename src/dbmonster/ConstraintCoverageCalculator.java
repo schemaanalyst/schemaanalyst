@@ -20,11 +20,12 @@ import org.schemaanalyst.data.TimeValue;
 import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.ValueVisitor;
-import org.schemaanalyst.datageneration.SimpleConstraintCoverageReport;
 import org.schemaanalyst.datageneration.search.ConstraintEvaluator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import deprecated.report.SimpleConstraintCoverageReport;
 
 public class ConstraintCoverageCalculator extends ConstraintEvaluator {
 
