@@ -14,8 +14,9 @@ import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
-import deprecated.report.CoverageReport;
-import deprecated.report.GoalReport;
+import org.schemaanalyst.datageneration.ConstraintGoal;
+import org.schemaanalyst.datageneration.TestCase;
+import org.schemaanalyst.datageneration.TestSuite;
 
 /**
  * <p>
@@ -62,11 +63,10 @@ public class GenerateResultsFromGenerator extends GenerateResults {
     @Override
     public List<String> getInserts() {
         List<String> insertStms = new ArrayList<>();
-        DataGenerator dataGenerator = constructDataGenerator(schema, dbms);
-        CoverageReport coverageReport = dataGenerator.generate();
-        for (GoalReport goalReport : coverageReport.getSuccessfulGoalReports()) {
-            List<String> stmts = sqlWriter.writeInsertStatements(schema, goalReport.getData());
-            insertStms.addAll(stmts);
+        DataGenerator<ConstraintGoal> dataGenerator = constructDataGenerator(schema, dbms);
+        TestSuite<ConstraintGoal> testSuite = dataGenerator.generate();
+        for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
+            insertStms.addAll(sqlWriter.writeInsertStatements(schema, testCase.getData()));
         }
         return insertStms;
     }
@@ -78,8 +78,8 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      * @param dbms The DBMS in use.
      * @return The data generator.
      */
-    private DataGenerator constructDataGenerator(Schema schema, DBMS dbms) {
-        return ConstraintCovererFactory.alternatingValueDefaults(schema, dbms, randomprofile, randomseed, maxevaluations);
+    private DataGenerator<ConstraintGoal> constructDataGenerator(Schema schema, DBMS dbms) {
+        return ConstraintCovererFactory.instantiate("alternatingValueDefaults", schema, dbms, randomprofile, randomseed, maxevaluations);
     }
 
     public static void main(String[] args) {
