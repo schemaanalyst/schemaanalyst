@@ -12,6 +12,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
@@ -83,8 +84,8 @@ public class ConstraintCoverageTestSuiteJavaWriter {
         }		
 		        
         if (usefulTestCases.size() > 0) {
-        	TestCase<ConstraintGoal> acceptedTestCase = usefulTestCases.get(0);
-        	Data data = acceptedTestCase.getData();
+        	TestCase<ConstraintGoal> dataAcceptedTestCase = usefulTestCases.get(0);
+        	Data data = dataAcceptedTestCase.getData();
         	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
         	for (String statement : insertStatements) {
             	code.appendln(writeExecuteUpdate(statement));
@@ -121,17 +122,30 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 	}
 	
 	private void writeDataRejectedMethods() {
-		Iterator<TestCase<ConstraintGoal>> iterator = usefulTestCases.listIterator(1);
-		while (iterator.hasNext()) {
-			TestCase<ConstraintGoal> rejectedTestCase = usefulTestCases.get(0);
-	    	Data data = rejectedTestCase.getData();
+				
+		for (int i=1; i < usefulTestCases.size(); i++) {
+			
+			TestCase<ConstraintGoal> dataRejectedTestCase = usefulTestCases.get(i);
+			Data data = dataRejectedTestCase.getData();
+			List<ConstraintGoal> constraintGoals = dataRejectedTestCase.getCoveredElements();
+			String methodName = "testDataRejected" + i;
+			
+			code.appendln(1);
+			code.appendln("@Test");
+			code.appendln("public void " + methodName + " throws SQLException {");
+			
 	    	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
-	    	for (String statement : insertStatements) {
-	        	code.appendln(writeExecuteUpdate(statement));
+	    	for (String statement : insertStatements) {	    		
+	    		for (ConstraintGoal constraintGoal : constraintGoals) {
+	    			code.appendln(2, formatConstraintGoalComment(constraintGoal));
+	    		}	    		
+	        	code.appendln(2, writeExecuteUpdate(statement));
 	        }
+	    	
+	    	code.appendln(1, "}");
 		}
 	}
-	
+		
 	private String writeExecuteQuery(String sqlStatement) {
 		return "statement.executeQuery(" + formatSQLStatement(sqlStatement) + ");";
 	}	
@@ -150,6 +164,12 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		} else {
 			return "\"" + sqlStatement + "\"";
 		}
+	}
+	
+	private String formatConstraintGoalComment(ConstraintGoal constraintGoal) {
+		Constraint constraint = constraintGoal.getConstraint();
+		return "// " + (constraintGoal.getSatisfy() ? "Satisfying" : " Violating" 
+				+ " " + constraint + " on table " + constraint.getTable());
 	}
 	
 	private void writeCloseMethod() {
