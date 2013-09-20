@@ -4,8 +4,8 @@ dist/*.*
 .project
 .settings
 config/*.local
-docs
-report
-database
-results
+docs/
+report/
+database/
+results/
 /bin
