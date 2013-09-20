@@ -1,6 +1,5 @@
 package org.schemaanalyst.javawriter;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -9,41 +8,43 @@ import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.TestCase;
 import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
-import parsedcasestudy.Inventory;
-
 public class ConstraintCoverageTestSuiteJavaWriter {
 
 	private Schema schema;
-	private DBMS dbms;
-	private SQLWriter sqlWriter;
-	private TestSuite<ConstraintGoal> testSuite; 
+	private SQLWriter sqlWriter; 
 	private List<TestCase<ConstraintGoal>> usefulTestCases;
-	
-	private JavaWriter javaWriter;
 	private IndentableStringBuilder code;
 	
 	public ConstraintCoverageTestSuiteJavaWriter(Schema schema, DBMS dbms, TestSuite<ConstraintGoal> testSuite) {
 		this.schema = schema;
-		this.dbms = dbms;
-		this.testSuite = testSuite;
-		
-		usefulTestCases = testSuite.getUsefulTestCases();		
 		sqlWriter = dbms.getSQLWriter();
+		usefulTestCases = testSuite.getUsefulTestCases();				
 	}
 	
-	public void writeTestSuite() {
+	public String writeTestSuite(String packageName, String className) {
 		// initialise	
-        javaWriter = new JavaWriter();
         code = new IndentableStringBuilder();
 	    
-		code.appendln("public class " + schema.getName() + "ConstraintCoverage" + dbms.getName() + "{");
+        code.appendln("package " + packageName + ";");
+        code.appendln();
+		code.appendln("import java.sql.Connection;");
+		code.appendln("import java.sql.DriverManager;");
+		code.appendln("import java.sql.ResultSet;");
+		code.appendln("import java.sql.SQLException;");
+		code.appendln("import java.sql.Statement;");
+		code.appendln();
+		code.appendln("import org.junit.AfterClass;");
+		code.appendln("import org.junit.BeforeClass;");
+		code.appendln("import org.junit.Test;");		
+		code.appendln("import static org.junit.Assert.assertEquals;");        
+		code.appendln();
+		code.appendln("public class " + className + " {");
 		code.appendln(1);
 		code.appendln("private static Connection connection;");
 		code.appendln("private static Statement statement;");
@@ -54,7 +55,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		writeCloseMethod();
 		
 		code.appendln(0, "}");
-		System.out.println(code);
+		return code.toString();
 	}
 	
 	private void writeInitialiseMethod() {
@@ -65,7 +66,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		// DBMS specific code for creating a connection
 		code.appendln(2, "// load the SQLite JDBC driver");
 		code.appendln("Class.forName(\"org.sqlite.JDBC\");");
-		code.appendln("connection = DriverManager.getConnection(\"jdbc:sqlite:" + schema.getName() + ");");
+		code.appendln("connection = DriverManager.getConnection(\"jdbc:sqlite:" + schema.getName() + "\");");
 		
 		code.appendln();
 		code.appendln("// create the statement used by this test suite");
@@ -112,7 +113,7 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 			String selectSQLStatement = "SELECT COUNT(*) FROM " + table.getName();
 			code.appendln(2, "// check number of rows inserted into " + table.getName());
 			code.appendln((writeTypes ? "ResultSet " : "") + "rs = " + writeExecuteQuery(selectSQLStatement));
-			code.appendln((writeTypes ? "ResultSet " : "") + "count = rs.getInt(1)");
+			code.appendln((writeTypes ? "int " : "") + "count = rs.getInt(1);");
 			code.appendln("assertEquals(\"The number of rows inserted into " + table.getName() + " should be 2\", 2, count);");
 			
 			first = false;
@@ -131,8 +132,8 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 			String methodName = "testDataRejected" + i;
 			
 			code.appendln(1);
-			code.appendln("@Test");
-			code.appendln("public void " + methodName + " throws SQLException {");
+			code.appendln("@Test(expected=SQLException.class)");
+			code.appendln("public void " + methodName + "() throws SQLException {");
 			
 	    	List<String> insertStatements = sqlWriter.writeInsertStatements(schema, data);
 	    	for (String statement : insertStatements) {	    		
@@ -182,7 +183,4 @@ public class ConstraintCoverageTestSuiteJavaWriter {
 		code.appendln(1, "}");		
 	}
 	
-	public static void main(String[] args) {
-		new ConstraintCoverageTestSuiteJavaWriter(new Inventory(), new SQLiteDBMS(), null).writeTestSuite();;
-	}
 }

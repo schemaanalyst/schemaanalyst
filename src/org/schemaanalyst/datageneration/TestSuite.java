@@ -3,11 +3,11 @@ package org.schemaanalyst.datageneration;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSuite<E> {
+public class TestSuite<G> {
 	
 	private String description;
-	private List<TestCase<E>> testCases;
-	private List<TestCase<E>> usefulTestCases;
+	private List<TestCase<G>> testCases;
+	private List<TestCase<G>> usefulTestCases;
 	
 	public TestSuite(String description) {
 		this.description = description;
@@ -15,18 +15,18 @@ public class TestSuite<E> {
 		usefulTestCases = new ArrayList<>();
 	}
 	
-	public void addTestCase(TestCase<E> testCase) {
+	public void addTestCase(TestCase<G> testCase) {
 		testCases.add(testCase);
 		if (testCase.getNumCoveredElements() > 0) {
 			usefulTestCases.add(testCase);
 		}
 	}
 	
-	public List<TestCase<E>> getTestCases() {
+	public List<TestCase<G>> getTestCases() {
 		return new ArrayList<>(testCases);
 	}
 	
-	public List<TestCase<E>> getUsefulTestCases() {
+	public List<TestCase<G>> getUsefulTestCases() {
 		return new ArrayList<>(usefulTestCases);
 	}
 	

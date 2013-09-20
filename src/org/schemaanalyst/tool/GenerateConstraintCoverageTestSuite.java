@@ -1,6 +1,10 @@
 package org.schemaanalyst.tool;
 
+import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 
 import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
@@ -70,7 +74,24 @@ public class GenerateConstraintCoverageTestSuite extends Runner {
 			TestSuite<ConstraintGoal> testSuite = generator.generate();
 			ConstraintCoverageTestSuiteJavaWriter writer = new ConstraintCoverageTestSuiteJavaWriter(
 					schemaObject, dbmsObject, testSuite);
-			writer.writeTestSuite();
+			
+			// write JUnit test suite 
+			String packageName = "generatedtest"; // TODO: make parameter
+			String className = "Test" + schemaObject.getName() + "With" + dbmsObject.getName(); // TODO: make parameter
+			
+			String javaCode = writer.writeTestSuite(packageName, className);
+			
+	        File javaFile = new File(locationsConfiguration.getSrcDir()
+	                + "/" + packageName + "/" + className + JAVA_FILE_SUFFIX);
+	        try (PrintWriter fileOut = new PrintWriter(javaFile)) {
+	            fileOut.println(javaCode);
+	        } catch (FileNotFoundException e) {
+	            throw new RuntimeException(e);
+	        }
+	        out.println(javaCode);
+	        out.println("Java code for test suite written to "
+	                + javaFile.getAbsolutePath());
+			
 
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 			throw new RuntimeException(e);

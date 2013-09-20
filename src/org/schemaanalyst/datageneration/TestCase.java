@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.schemaanalyst.data.Data;
 
-public class TestCase<E> {
+public class TestCase<G> {
 	
 	private String description;
 	private Data data;
-	private List<E> coveredElements;
+	private List<G> coveredElements;
 	private long timeToGenerate, startTime, endTime;
 	
 	public TestCase(String description) {
@@ -41,11 +41,11 @@ public class TestCase<E> {
 		return data;
 	}
 
-	public void addCoveredElement(E element) {
+	public void addCoveredElement(G element) {
 		coveredElements.add(element);
 	}
 	
-	public List<E> getCoveredElements() {
+	public List<G> getCoveredElements() {
 		return coveredElements;
 	}
 	

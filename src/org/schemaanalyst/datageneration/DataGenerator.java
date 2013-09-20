@@ -1,6 +1,6 @@
 package org.schemaanalyst.datageneration;
 
-public abstract class DataGenerator<E> {
+public abstract class DataGenerator<G> {
 
-    public abstract TestSuite<E> generate();
+    public abstract TestSuite<G> generate();
 }
