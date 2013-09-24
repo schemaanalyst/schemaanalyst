@@ -12,7 +12,7 @@ import org.schemaanalyst.mutation.equivalence.ColumnEquivalenceChecker;
 import org.schemaanalyst.mutation.equivalence.ForeignKeyEquivalenceChecker;
 import org.schemaanalyst.mutation.equivalence.NotNullEquivalenceChecker;
 import org.schemaanalyst.mutation.equivalence.PrimaryKeyEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.SchemaEquivalanceWithNotNullCheckChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.mutation.equivalence.TableEquivalenceChecker;
 import org.schemaanalyst.mutation.equivalence.UniqueEquivalenceChecker;
@@ -38,11 +38,11 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
  *
  * @author Chris J. Wright
  */
-public class TestSchemaEquivalanceWithNotNullCheckChecker {
+public class TestSchemaEquivalenceWithNotNullCheckChecker {
 
     @Test
     public void testNotNullWithCheckEquivalence() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -61,7 +61,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testNotNullWithParensCheckEquivalence() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -80,7 +80,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testNotNullWithInvalidCheckEquivalence() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -111,7 +111,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testNotNullWithCheckManyConstraints() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -135,8 +135,8 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testConstructor() {
-        SchemaEquivalenceChecker tester1 = new SchemaEquivalanceWithNotNullCheckChecker();
-        SchemaEquivalenceChecker tester2 = new SchemaEquivalanceWithNotNullCheckChecker(
+        SchemaEquivalenceChecker tester1 = new SchemaEquivalenceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester2 = new SchemaEquivalenceWithNotNullCheckChecker(
                 new TableEquivalenceChecker(new ColumnEquivalenceChecker()),
                 new ColumnEquivalenceChecker(),
                 new PrimaryKeyEquivalenceChecker(),
@@ -156,7 +156,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testSameInstance() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s = new Schema("s");
         Table t = s.createTable("t");
         Column a = t.createColumn("a", new IntDataType());
@@ -166,7 +166,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentInstance() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -179,7 +179,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentIdentifiers() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("schemaOne");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -195,7 +195,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentTables() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -208,7 +208,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentTableCount() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Table u1 = s1.createTable("u");
@@ -225,7 +225,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentColumnsInTables() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new CharDataType());
@@ -241,7 +241,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testDifferentTableOrdering() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -256,7 +256,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMissingPrimaryKey() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -273,7 +273,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMultiplePrimaryKeys() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -296,7 +296,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMissingUnique() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -314,7 +314,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMultipleUniques() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -335,7 +335,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMissingForeignKey() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -356,7 +356,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMultipleForeignKeys() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -383,7 +383,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMissingCheck() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -406,7 +406,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMultipleChecks() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -437,7 +437,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testMissingNotNull() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -455,7 +455,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testBooktownExample() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -482,7 +482,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testBooktownExample2() {
-        SchemaEquivalenceChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Schema s1 = new Schema("s");
         Table t1 = s1.createTable("t");
         Column a1 = t1.createColumn("a", new IntDataType());
@@ -513,7 +513,7 @@ public class TestSchemaEquivalanceWithNotNullCheckChecker {
 
     @Test
     public void testSimplify() {
-        SchemaEquivalanceWithNotNullCheckChecker tester = new SchemaEquivalanceWithNotNullCheckChecker();
+        SchemaEquivalenceWithNotNullCheckChecker tester = new SchemaEquivalenceWithNotNullCheckChecker();
         Table t = new Table("t");
         Column a = t.createColumn("a", new IntDataType());
         Column b = t.createColumn("b", new IntDataType());

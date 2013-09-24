@@ -3,7 +3,7 @@
 
 package org.schemaanalyst.mutation.pipeline;
 
-import org.schemaanalyst.mutation.equivalence.SchemaEquivalanceWithNotNullCheckChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
 import org.schemaanalyst.mutation.operator.CCNullifier;
 import org.schemaanalyst.mutation.operator.FKCColumnPairR;
 import org.schemaanalyst.mutation.operator.NNCAR;
@@ -33,7 +33,7 @@ public class ICST2013NewSchemaPipeline extends MutationPipeline<Schema> {
 
         addRemover(new PrimaryKeyColumnNotNullRemover());
         addRemover(new PrimaryKeyColumnsUniqueRemover());
-        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalanceWithNotNullCheckChecker(), schema));
-        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalanceWithNotNullCheckChecker()));
+        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceWithNotNullCheckChecker(), schema));
+        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker()));
     }
 }
