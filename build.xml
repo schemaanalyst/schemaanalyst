@@ -73,6 +73,7 @@
 			<structure name="SchemaAnalyst">
 				<classfiles>
 					<fileset dir="build">
+						<exclude name="deprecated/**" />
 						<exclude name="dbmonster/**" />
 						<exclude name="paper/**" />
 						<exclude name="parsedcasestudy/**" />
