@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.schemaanalyst.configuration.ExperimentConfiguration;
 
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -20,7 +21,7 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
@@ -34,6 +35,7 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.util.csv.CSVDatabaseWriter;
 
 /**
  * <p> {@link Runner} for the 'Minimal Schemata' style of mutation analysis.
@@ -80,6 +82,16 @@ public class MinimalSchemata extends Runner {
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
             choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
     protected String mutationPipeline = "ICST2013";
+    /**
+     * Whether to write the results to a CSV file.
+     */
+    @Parameter(value = "Whether to write the results to a CSV file.")
+    protected boolean resultsToFile = false;
+    /**
+     * Whether to write the results to a database.
+     */
+    @Parameter(value = "Whether to write the results to a database.")
+    protected boolean resultsToDatabase = true;
     private MutantTableMap mutantTables = new MutantTableMap();
     private HashMap<Mutant<Schema>, String> changedTableMap = new HashMap<>();
     private SQLWriter sqlWriter;
@@ -97,7 +109,7 @@ public class MinimalSchemata extends Runner {
 
         // Start results file
         CSVResult result = new CSVResult();
-        result.addValue("technique", this.getClass().getName());
+        result.addValue("technique", this.getClass().getSimpleName());
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);
@@ -203,15 +215,21 @@ public class MinimalSchemata extends Runner {
                 databaseInteractor.executeUpdate(drop);
             }
         }
-        
+
         long endTime = System.currentTimeMillis();
         long totalTime = endTime - startTime;
 
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", (!quasiSchema) ? killed.size() : mutants.size());
         result.addValue("mutationscore_denominator", mutants.size());
+        result.addValue("mutationpipeline", mutationPipeline);
 
-        new CSVWriter(outputfolder + casestudy + ".dat").write(result);
+        if (resultsToFile) {
+            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+        }
+        if (resultsToDatabase) {
+            new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
+        }
     }
 
     @Override

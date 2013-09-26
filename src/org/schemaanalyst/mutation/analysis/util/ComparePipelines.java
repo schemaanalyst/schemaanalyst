@@ -14,7 +14,7 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -93,7 +93,7 @@ public class ComparePipelines extends Runner {
         addResultColumn("difference", differenceAB.size(), differenceBA.size());
         
         // Write results
-        CSVWriter writer = new CSVWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat", ",");
+        CSVFileWriter writer = new CSVFileWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat", ",");
         LOGGER.log(Level.FINE, "PipelineA: {0}", pipelineAResult);
         LOGGER.log(Level.FINE, "PipelineB: {0}", pipelineBResult);
         writer.write(pipelineAResult);

@@ -17,7 +17,7 @@ import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -75,7 +75,7 @@ public class HigherOrderMutationExperiment extends Runner {
         result.addValue("secondorder", nonReducedFinalMutants.size());
         result.addValue("secondorder-reduced", reducedFinalMutants.size());
         
-        CSVWriter writer = new CSVWriter("higherorder",",");
+        CSVFileWriter writer = new CSVFileWriter("higherorder",",");
         writer.write(result);
     }
 

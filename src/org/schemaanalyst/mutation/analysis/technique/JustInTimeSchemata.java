@@ -13,7 +13,7 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
@@ -30,11 +30,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.util.csv.CSVDatabaseWriter;
 
 /**
  * <p> {@link Runner} for the 'Just-in-Time Schemata' style of mutation
@@ -87,6 +89,16 @@ public class JustInTimeSchemata extends Runner {
      */
     @Parameter("How many threads to use for parallel execution.")
     protected int threads = 8;
+    /**
+     * Whether to write the results to a CSV file.
+     */
+    @Parameter(value = "Whether to write the results to a CSV file.")
+    protected boolean resultsToFile = true;
+    /**
+     * Whether to write the results to a database.
+     */
+    @Parameter(value = "Whether to write the results to a database.")
+    protected boolean resultsToDatabase = false;
 
     @Override
     public void task() {
@@ -100,7 +112,7 @@ public class JustInTimeSchemata extends Runner {
 
         // Start results file
         CSVResult result = new CSVResult();
-        result.addValue("technique", this.getClass().getName());
+        result.addValue("technique", this.getClass().getSimpleName());
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);
@@ -168,8 +180,14 @@ public class JustInTimeSchemata extends Runner {
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
+        result.addValue("mutationpipeline", mutationPipeline);
 
-        new CSVWriter(outputfolder + casestudy + ".dat").write(result);
+        if (resultsToFile) {
+            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+        }
+        if (resultsToDatabase) {
+            new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
+        }
     }
 
     /**

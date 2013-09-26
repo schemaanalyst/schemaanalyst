@@ -13,7 +13,7 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
@@ -30,16 +30,17 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.util.csv.CSVDatabaseWriter;
 
 /**
- * <p>
- * {@link Runner} for the 'Up-Front Schemata' style of mutation analysis. This 
- * requires that the result generation tool has been run, as it bases the 
+ * <p> {@link Runner} for the 'Up-Front Schemata' style of mutation analysis.
+ * This requires that the result generation tool has been run, as it bases the
  * mutation analysis on the results produced by it.
  * </p>
  *
@@ -88,6 +89,16 @@ public class UpFrontSchemata extends Runner {
      */
     @Parameter("How many threads to use for parallel execution.")
     protected int threads = 8;
+    /**
+     * Whether to write the results to a CSV file.
+     */
+    @Parameter(value = "Whether to write the results to a CSV file.")
+    protected boolean resultsToFile = true;
+    /**
+     * Whether to write the results to a database.
+     */
+    @Parameter(value = "Whether to write the results to a database.")
+    protected boolean resultsToDatabase = false;
 
     @Override
     public void task() {
@@ -101,7 +112,7 @@ public class UpFrontSchemata extends Runner {
 
         // Start results file
         CSVResult result = new CSVResult();
-        result.addValue("technique", this.getClass().getName());
+        result.addValue("technique", this.getClass().getSimpleName());
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("trial", trial);
@@ -130,7 +141,7 @@ public class UpFrontSchemata extends Runner {
 
         // Start mutation timing
         long startTime = System.currentTimeMillis();
-        
+
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
         try {
@@ -139,10 +150,10 @@ public class UpFrontSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        
+
         // Schemata step: Rename the mutants
         renameMutants(mutants);
-        
+
         // Schemata step: Build single drop statement
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
@@ -154,7 +165,7 @@ public class UpFrontSchemata extends Runner {
             }
         }
         String dropStmt = dropBuilder.toString();
-        
+
         // Schemata step: Build single create statement
         StringBuilder createBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
@@ -166,7 +177,7 @@ public class UpFrontSchemata extends Runner {
             }
         }
         String createStmt = createBuilder.toString();
-        
+
         // Schemata step: Drop existing tables before iterating mutants
         if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
@@ -194,7 +205,7 @@ public class UpFrontSchemata extends Runner {
             }
         }
         executor.shutdown();
-        
+
         // Schemata step: Drop tables after iterating mutants
         databaseInteractor.executeUpdate(dropStmt);
 
@@ -204,8 +215,14 @@ public class UpFrontSchemata extends Runner {
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
+        result.addValue("mutationpipeline", mutationPipeline);
 
-        new CSVWriter(outputfolder + casestudy + ".dat").write(result);
+        if (resultsToFile) {
+            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+        }
+        if (resultsToDatabase) {
+            new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
+        }
     }
 
     /**
@@ -236,9 +253,9 @@ public class UpFrontSchemata extends Runner {
     public static void main(String[] args) {
         new UpFrontSchemata().run(args);
     }
-    
+
     private class MutationAnalysisCallable implements Callable<Boolean> {
-        
+
         int id;
         DatabaseInteractor databaseInteractor;
         SQLExecutionReport originalReport;
@@ -248,15 +265,15 @@ public class UpFrontSchemata extends Runner {
             this.databaseInteractor = databaseInteractor;
             this.originalReport = originalReport;
         }
-        
+
         @Override
         public Boolean call() {
             boolean killed = false;
             LOGGER.log(Level.INFO, "Mutant {0}", id);
-            
+
             // Schemata step: Generate insert prefix string
             String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
-            
+
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
@@ -273,6 +290,5 @@ public class UpFrontSchemata extends Runner {
 
             return killed;
         }
-        
     }
 }
