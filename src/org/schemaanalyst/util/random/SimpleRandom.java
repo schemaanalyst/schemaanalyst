@@ -2,7 +2,6 @@ package org.schemaanalyst.util.random;
 
 public class SimpleRandom extends Random {
 
-    protected long seed;
     protected java.util.Random random;
 
     public SimpleRandom(long seed) {
