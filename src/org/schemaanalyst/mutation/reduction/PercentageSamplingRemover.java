@@ -29,7 +29,7 @@ public class PercentageSamplingRemover<T> extends MutantRemover<T> {
      * Constructor with a specified random number generator, used to randomly 
      * select the elements.
      * 
-     * @param percent
+     * @param percent The percentage to retain, out of 1
      * @param random 
      */
     public PercentageSamplingRemover(double percent, Random random) {
@@ -41,7 +41,7 @@ public class PercentageSamplingRemover<T> extends MutantRemover<T> {
      * Constructor with a default random number generator, used to randomly 
      * select the elements.
      * 
-     * @param count 
+     * @param percent The percentage to retain, out of 1
      */
     public PercentageSamplingRemover(double percent) {
         this.percent = percent;
