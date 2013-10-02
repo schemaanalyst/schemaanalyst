@@ -30,6 +30,7 @@ public class FKCColumnPairR implements MutantProducer<Schema> {
         this.schema = schema;
     }
 
+    @Override
     public List<Mutant<Schema>> mutate() {
 
         Supplier<Schema, List<Pair<Column>>> supplier = SupplyChain.chain(
@@ -39,7 +40,14 @@ public class FKCColumnPairR implements MutantProducer<Schema> {
         supplier.initialise(schema);
         ListElementRemover<Schema, Pair<Column>> mutator = new ListElementRemover<>(
                 supplier);
-        return mutator.mutate();
+        
+        List<Mutant<Schema>> mutants = mutator.mutate();
+        
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
+        
+        return mutants;
     }
 
 }

@@ -16,6 +16,7 @@ public class Mutant<A> {
 
 	private A artefact;
 	private String description;
+    private MutantProducer mutantProducer;
     private List<MutantRemover> removersApplied;
 	
 	/**
@@ -86,4 +87,18 @@ public class Mutant<A> {
 	public String toString() {
 	    return description + " on " + artefact;
 	}
+
+    /**
+     * @return the mutantProducer
+     */
+    public MutantProducer getMutantProducer() {
+        return mutantProducer;
+    }
+
+    /**
+     * @param mutantProducer the mutantProducer to set
+     */
+    public void setMutantProducer(MutantProducer mutantProducer) {
+        this.mutantProducer = mutantProducer;
+    }
 }

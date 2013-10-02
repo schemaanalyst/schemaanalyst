@@ -27,6 +27,7 @@ public class NNCAR implements MutantProducer<Schema> {
         this.schema = schema;
     }
 
+    @Override
     public List<Mutant<Schema>> mutate() {
         // Create the collection in which to store created mutants.
         List<Mutant<Schema>> mutants = new ArrayList<>();
@@ -56,6 +57,10 @@ public class NNCAR implements MutantProducer<Schema> {
                             + " in table " + dupRemoveTable));
                 }
             }
+        }
+        
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
         }
 
         return mutants;

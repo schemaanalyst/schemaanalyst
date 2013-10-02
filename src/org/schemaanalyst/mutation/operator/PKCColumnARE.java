@@ -35,6 +35,7 @@ public class PKCColumnARE implements MutantProducer<Schema> {
 		this.schema = schema;
 	}
 
+    @Override
 	public List<Mutant<Schema>> mutate() {
 		List<Mutant<Schema>> mutants = new ArrayList<>();
 
@@ -61,6 +62,10 @@ public class PKCColumnARE implements MutantProducer<Schema> {
 		ListElementExchanger<Schema, Column> columnExchanger = new ListElementExchanger<>(
 				columnsWithAlternativesSupplier);
 		mutants.addAll(columnExchanger.mutate());
+        
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
 
 		return mutants;
 	}
