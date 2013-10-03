@@ -166,6 +166,22 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
         }
         return pairs;
     }
+    
+    /**
+     * Sets the local and reference columns of the FOREIGN KEY using a list of pairs.
+     * 
+     * @param pairs A list containing the column pairings.
+     */
+    public void setColumnPairs(List<Pair<Column>> pairs) {
+        List<Column> local = new ArrayList<>(pairs.size());
+        List<Column> reference = new ArrayList<>(pairs.size());
+        for (Pair<Column> pair : pairs) {
+            local.add(pair.getFirst());
+            reference.add(pair.getSecond());
+        }
+        setColumns(local);
+        setReferenceColumns(reference);
+    }
 
     /**
      * Remaps the reference table columns to another table
