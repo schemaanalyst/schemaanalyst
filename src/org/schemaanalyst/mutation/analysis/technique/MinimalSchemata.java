@@ -87,14 +87,13 @@ public class MinimalSchemata extends Runner {
      * Whether to write the results to a CSV file.
      */
     @Parameter(value = "Whether to write the results to a CSV file.")
-    protected boolean resultsToFile = false;
+    protected boolean resultsToFile = true;
     /**
      * Whether to write the results to a database.
      */
     @Parameter(value = "Whether to write the results to a database.")
-    protected boolean resultsToDatabase = true;
+    protected boolean resultsToDatabase = false;
     private MutantTableMap mutantTables = new MutantTableMap();
-    private HashMap<Mutant<Schema>, String> changedTableMap = new HashMap<>();
     private SQLWriter sqlWriter;
     private Schema schema;
 
