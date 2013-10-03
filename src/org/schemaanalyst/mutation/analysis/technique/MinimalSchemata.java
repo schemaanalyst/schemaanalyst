@@ -202,6 +202,7 @@ public class MinimalSchemata extends Runner {
             createsStopWatch.suspend();
 
             // get the original mutant reports
+            insertsStopWatch.resume();
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
             for (SQLInsertRecord insertRecord : insertStmts) {
 
@@ -219,6 +220,7 @@ public class MinimalSchemata extends Runner {
                     }
                 }
             }
+            insertsStopWatch.suspend();
 
             // drop mutant schema tables
             dropsStopWatch.resume();

@@ -205,6 +205,7 @@ public class FullSchemata extends Runner {
                 String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
 
                 // Insert the test data
+                insertsStopWatch.resume();
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
 
@@ -217,6 +218,7 @@ public class FullSchemata extends Runner {
                         break; // Stop once killed
                     }
                 }
+                insertsStopWatch.suspend();
             }
         }
 
