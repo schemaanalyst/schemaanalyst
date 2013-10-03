@@ -17,7 +17,14 @@ import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * <p>
- *
+ * A {@link MutantProducer} that mutates {@link Schema}s by replacing column 
+ * pairs in foreign keys with other columns that have matching types.
+ * </p>
+ * 
+ * <p>
+ * Note that this means a relationship between {@code a int} and {@code b int} 
+ * may be replaced with a relationship between {@code a varchar} and {@code b 
+ * varchar}, for example.
  * </p>
  *
  * @author Chris J. Wright

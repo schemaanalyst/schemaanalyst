@@ -16,7 +16,13 @@ import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * <p>
- *
+ * Supplies pairs of columns from a {@link ForeignKeyConstraint} with possible 
+ * alternative pairs of columns for that key.
+ * </p>
+ * 
+ * <p>
+ * Note that this will not allow the creation of duplicated columns in a foreign
+ *  key, e.g. (a, b) references (b, c).
  * </p>
  *
  * @author Chris J. Wright
