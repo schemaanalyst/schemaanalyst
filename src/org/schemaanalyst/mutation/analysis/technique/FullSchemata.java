@@ -137,6 +137,7 @@ public class FullSchemata extends Runner {
         StopWatch insertsStopWatch = constructSuspendedStopWatch();
 
         // Get the mutation pipeline and generate mutants
+        mutantGenerationStopWatch.resume();
         MutationPipeline<Schema> pipeline;
         try {
             pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
@@ -144,6 +145,7 @@ public class FullSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
+        mutantGenerationStopWatch.stop();
 
         // Schemata step: Rename the mutants
         renameMutants(mutants);

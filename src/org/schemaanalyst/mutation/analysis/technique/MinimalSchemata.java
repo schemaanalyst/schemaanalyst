@@ -146,6 +146,7 @@ public class MinimalSchemata extends Runner {
 
         // Create the mutant schemas
         // Get the mutation pipeline and generate mutants
+        mutantGenerationStopWatch.resume();
         MutationPipeline<Schema> pipeline;
         try {
             pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
@@ -153,6 +154,7 @@ public class MinimalSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
+        mutantGenerationStopWatch.stop();
 
         // schemata step- rename constraints
         renameConstraints(mutants);
