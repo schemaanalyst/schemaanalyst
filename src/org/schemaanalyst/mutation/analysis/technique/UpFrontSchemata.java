@@ -163,6 +163,7 @@ public class UpFrontSchemata extends Runner {
         renameMutants(mutants);
 
         // Schemata step: Build single drop statement
+        dropsStopWatch.resume();
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
@@ -173,6 +174,7 @@ public class UpFrontSchemata extends Runner {
             }
         }
         String dropStmt = dropBuilder.toString();
+        dropsStopWatch.suspend();
 
         // Schemata step: Build single create statement
         StringBuilder createBuilder = new StringBuilder();
@@ -187,9 +189,11 @@ public class UpFrontSchemata extends Runner {
         String createStmt = createBuilder.toString();
 
         // Schemata step: Drop existing tables before iterating mutants
+        dropsStopWatch.resume();
         if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
         }
+        dropsStopWatch.suspend();
 
         // Schemata step: Create table before iterating mutants
         databaseInteractor.executeUpdate(createStmt);
@@ -215,7 +219,9 @@ public class UpFrontSchemata extends Runner {
         executor.shutdown();
 
         // Schemata step: Drop tables after iterating mutants
+        dropsStopWatch.resume();
         databaseInteractor.executeUpdate(dropStmt);
+        dropsStopWatch.suspend();
 
         stopWatch.stop();
         dropsStopWatch.stop();

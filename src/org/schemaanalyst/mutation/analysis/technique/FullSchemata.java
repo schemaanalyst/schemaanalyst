@@ -151,6 +151,7 @@ public class FullSchemata extends Runner {
         renameMutants(mutants);
 
         // Schemata step: Build single drop statement
+        dropsStopWatch.resume();
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
@@ -161,6 +162,7 @@ public class FullSchemata extends Runner {
             }
         }
         String dropStmt = dropBuilder.toString();
+        dropsStopWatch.suspend();
 
         // Schemata step: Build single create statement
         StringBuilder createBuilder = new StringBuilder();
@@ -175,9 +177,11 @@ public class FullSchemata extends Runner {
         String createStmt = createBuilder.toString();
 
         // Schemata step: Drop existing tables before iterating mutants
+        dropsStopWatch.resume();
         if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
         }
+        dropsStopWatch.suspend();
 
         // Schemata step: Create table before iterating mutants
         Integer res = databaseInteractor.executeUpdate(createStmt);
@@ -215,7 +219,9 @@ public class FullSchemata extends Runner {
         }
 
         // Schemata step: Drop tables after iterating mutants
+        dropsStopWatch.resume();
         databaseInteractor.executeUpdate(dropStmt);
+        dropsStopWatch.suspend();
 
         stopWatch.stop();
         dropsStopWatch.stop();
