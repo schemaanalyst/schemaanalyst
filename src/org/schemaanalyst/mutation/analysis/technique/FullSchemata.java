@@ -23,6 +23,7 @@ import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
@@ -128,7 +129,8 @@ public class FullSchemata extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        long startTime = System.currentTimeMillis();
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
 
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
@@ -209,8 +211,8 @@ public class FullSchemata extends Runner {
         // Schemata step: Drop tables after iterating mutants
         databaseInteractor.executeUpdate(dropStmt);
 
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
+        stopwatch.stop();
+        long totalTime = stopwatch.getTime();
 
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", (!quasiSchema) ? killed : mutants.size());

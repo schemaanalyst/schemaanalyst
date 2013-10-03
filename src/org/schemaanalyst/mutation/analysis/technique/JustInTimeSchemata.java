@@ -30,6 +30,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
@@ -140,7 +141,8 @@ public class JustInTimeSchemata extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        long startTime = System.currentTimeMillis();
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
 
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
@@ -174,8 +176,8 @@ public class JustInTimeSchemata extends Runner {
         }
         executor.shutdown();
 
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
+        stopwatch.stop();
+        long totalTime = stopwatch.getTime();
 
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", killed);

@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 
 import org.schemaanalyst.dbms.DBMS;
@@ -136,7 +137,8 @@ public class MinimalSchemata extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        long startTime = System.currentTimeMillis();
+        StopWatch stopwatch = new StopWatch();
+        stopwatch.start();
 
         // Create the mutant schemas
         // Get the mutation pipeline and generate mutants
@@ -216,8 +218,8 @@ public class MinimalSchemata extends Runner {
             }
         }
 
-        long endTime = System.currentTimeMillis();
-        long totalTime = endTime - startTime;
+        stopwatch.stop();
+        long totalTime = stopwatch.getTime();
 
         result.addValue("mutationtime", totalTime);
         result.addValue("mutationscore_numerator", (!quasiSchema) ? killed.size() : mutants.size());
