@@ -141,8 +141,12 @@ public class JustInTimeSchemata extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        StopWatch stopwatch = new StopWatch();
-        stopwatch.start();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        StopWatch mutantGenerationStopWatch = constructSuspendedStopWatch();
+        StopWatch dropsStopWatch = constructSuspendedStopWatch();
+        StopWatch createsStopWatch = constructSuspendedStopWatch();
+        StopWatch insertsStopWatch = constructSuspendedStopWatch();
 
         // Get the mutation pipeline and generate mutants
         MutationPipeline<Schema> pipeline;
@@ -176,13 +180,19 @@ public class JustInTimeSchemata extends Runner {
         }
         executor.shutdown();
 
-        stopwatch.stop();
-        long totalTime = stopwatch.getTime();
+        stopWatch.stop();
+        dropsStopWatch.stop();
+        createsStopWatch.stop();
+        insertsStopWatch.stop();
 
-        result.addValue("mutationtime", totalTime);
+        result.addValue("mutationtime", stopWatch.getTime());
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
         result.addValue("mutationpipeline", mutationPipeline);
+        result.addValue("dropstime", dropsStopWatch.getTime());
+        result.addValue("createstime", createsStopWatch.getTime());
+        result.addValue("insertstime", insertsStopWatch.getTime());
+        result.addValue("mutantgenerationtime", mutantGenerationStopWatch.getTime());
 
         if (resultsToFile) {
             new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
@@ -283,5 +293,12 @@ public class JustInTimeSchemata extends Runner {
 
             return killed;
         }
+    }
+    
+    private StopWatch constructSuspendedStopWatch() {
+        StopWatch dropsStopwatch = new StopWatch();
+        dropsStopwatch.start();
+        dropsStopwatch.suspend();
+        return dropsStopwatch;
     }
 }

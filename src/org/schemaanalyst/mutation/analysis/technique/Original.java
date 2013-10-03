@@ -127,10 +127,15 @@ public class Original extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        StopWatch stopwatch = new StopWatch();
-        stopwatch.start();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        StopWatch mutantGenerationStopWatch = constructSuspendedStopWatch();
+        StopWatch dropsStopWatch = constructSuspendedStopWatch();
+        StopWatch createsStopWatch = constructSuspendedStopWatch();
+        StopWatch insertsStopWatch = constructSuspendedStopWatch();
 
         // Get the mutation pipeline and generate mutants
+        mutantGenerationStopWatch.resume();
         MutationPipeline<Schema> pipeline;
         try {
             pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
@@ -138,6 +143,7 @@ public class Original extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
+        mutantGenerationStopWatch.stop();
 
         // Begin mutation analysis
         int killed = 0;
@@ -149,14 +155,17 @@ public class Original extends Runner {
             LOGGER.log(Level.INFO, "Mutant {0}", id);
 
             // Drop existing tables
+            dropsStopWatch.resume();
             List<String> dropStmts = sqlWriter.writeDropTableStatements(mutant, true);
             if (dropfirst) {
                 for (String stmt : dropStmts) {
                     databaseInteractor.executeUpdate(stmt);
                 }
             }
+            dropsStopWatch.suspend();
 
             // Create the schema in the database
+            createsStopWatch.resume();
             List<String> createStmts = sqlWriter.writeCreateTableStatements(mutant);
             for (String stmt : createStmts) {
                 Integer res = databaseInteractor.executeUpdate(stmt);
@@ -164,8 +173,10 @@ public class Original extends Runner {
                     quasiMutant = true;
                 }
             }
+            createsStopWatch.suspend();
 
             // Insert the test data
+            insertsStopWatch.resume();
             if (!quasiMutant) {
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
@@ -180,20 +191,29 @@ public class Original extends Runner {
                 quasi++;
                 killed++;
             }
+            insertsStopWatch.suspend();
 
             // Drop tables
+            dropsStopWatch.resume();
             for (String stmt : dropStmts) {
                 databaseInteractor.executeUpdate(stmt);
             }
+            dropsStopWatch.suspend();
         }
         
-        stopwatch.stop();
-        long totalTime = stopwatch.getTime();
+        stopWatch.stop();
+        dropsStopWatch.stop();
+        createsStopWatch.stop();
+        insertsStopWatch.stop();
 
-        result.addValue("mutationtime", totalTime);
+        result.addValue("mutationtime", stopWatch.getTime());
         result.addValue("mutationscore_numerator", killed);
         result.addValue("mutationscore_denominator", mutants.size());
         result.addValue("mutationpipeline", mutationPipeline);
+        result.addValue("dropstime", dropsStopWatch.getTime());
+        result.addValue("createstime", createsStopWatch.getTime());
+        result.addValue("insertstime", insertsStopWatch.getTime());
+        result.addValue("mutantgenerationtime", mutantGenerationStopWatch.getTime());
 
         if (resultsToFile) {
             new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
@@ -210,5 +230,12 @@ public class Original extends Runner {
 
     public static void main(String[] args) {
         new Original().run(args);
+    }
+
+    private StopWatch constructSuspendedStopWatch() {
+        StopWatch dropsStopwatch = new StopWatch();
+        dropsStopwatch.start();
+        dropsStopwatch.suspend();
+        return dropsStopwatch;
     }
 }
