@@ -171,14 +171,17 @@ public class MinimalSchemata extends Runner {
         }
 
         // Drop tables
+        dropsStopWatch.resume();
         List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
         if (dropfirst) {
             for (String drop : dropStmts) {
                 databaseInteractor.executeUpdate(drop);
             }
         }
+        dropsStopWatch.suspend();
 
         // Create original schema tables
+        createsStopWatch.resume();
         boolean quasiSchema = false;
         for (String create : sqlWriter.writeCreateTableStatements(schema)) {
             Integer res = databaseInteractor.executeUpdate(create);
@@ -186,14 +189,17 @@ public class MinimalSchemata extends Runner {
                 quasiSchema = true;
             }
         }
+        createsStopWatch.suspend();
 
         // Only do mutation analysis if the schema is valid
         HashSet<String> killed = new HashSet<>();
         if (!quasiSchema) {
             // Create mutant schema tables
+            createsStopWatch.resume();
             for (String create : mutantCreateStatements) {
                 databaseInteractor.executeUpdate(create);
             }
+            createsStopWatch.suspend();
 
             // get the original mutant reports
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
@@ -215,6 +221,7 @@ public class MinimalSchemata extends Runner {
             }
 
             // drop mutant schema tables
+            dropsStopWatch.resume();
             for (String drop : mutantDropStatements) {
                 databaseInteractor.executeUpdate(drop);
             }
@@ -222,6 +229,7 @@ public class MinimalSchemata extends Runner {
             for (String drop : dropStmts) {
                 databaseInteractor.executeUpdate(drop);
             }
+            dropsStopWatch.suspend();
         }
 
         stopWatch.stop();

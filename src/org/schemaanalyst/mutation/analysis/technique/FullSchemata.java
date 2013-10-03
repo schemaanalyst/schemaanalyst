@@ -184,11 +184,13 @@ public class FullSchemata extends Runner {
         dropsStopWatch.suspend();
 
         // Schemata step: Create table before iterating mutants
+        createsStopWatch.resume();
         Integer res = databaseInteractor.executeUpdate(createStmt);
         boolean quasiSchema = false;
         if (res.intValue() == -1) {
             quasiSchema = true;
         }
+        createsStopWatch.suspend();
 
         // Only do mutation analysis if the schema is valid
         int killed = 0;

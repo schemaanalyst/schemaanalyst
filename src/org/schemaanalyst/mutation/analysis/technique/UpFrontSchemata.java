@@ -196,7 +196,9 @@ public class UpFrontSchemata extends Runner {
         dropsStopWatch.suspend();
 
         // Schemata step: Create table before iterating mutants
+        createsStopWatch.resume();
         databaseInteractor.executeUpdate(createStmt);
+        createsStopWatch.suspend();
 
         // Begin mutation analysis
         ExecutorService executor = Executors.newFixedThreadPool(threads);
