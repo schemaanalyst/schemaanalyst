@@ -61,16 +61,20 @@ public class CSVDatabaseWriter extends CSVWriter {
             try {
                 Map<String, String> values = result.getValues();
                 PreparedStatement stmt = connection.prepareStatement("INSERT INTO " + experimentConfiguration.getTableName() + " "
-                        + "(technique,dbms,casestudy,trial,mutationtime,mutationscore_numerator,mutationscore_denominator,mutationpipeline) "
-                        + "VALUES (?,?,?,?,?,?,?,?)");
+                        + "(technique,dbms,casestudy,trial,totaltime,scorenumerator,scoredenominator,mutationpipeline,dropstime,createstime,insertstime,mutationtime) "
+                        + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
                 stmt.setString(1, values.get("technique"));
                 stmt.setString(2, values.get("dbms"));
                 stmt.setString(3, values.get("casestudy"));
                 stmt.setInt(4, Integer.valueOf(values.get("trial")));
-                stmt.setInt(5, Integer.valueOf(values.get("mutationtime")));
-                stmt.setInt(6, Integer.valueOf(values.get("mutationscore_numerator")));
-                stmt.setInt(7, Integer.valueOf(values.get("mutationscore_denominator")));
+                stmt.setInt(5, Integer.valueOf(values.get("totaltime")));
+                stmt.setInt(6, Integer.valueOf(values.get("scorenumerator")));
+                stmt.setInt(7, Integer.valueOf(values.get("scoredenominator")));
                 stmt.setString(8, values.get("mutationpipeline"));
+                stmt.setInt(9, Integer.valueOf(values.get("dropstime")));
+                stmt.setInt(10, Integer.valueOf(values.get("createstime")));
+                stmt.setInt(11, Integer.valueOf(values.get("insertstime")));
+                stmt.setInt(12, Integer.valueOf(values.get("mutationtime")));
                 stmt.execute();
             } catch (SQLException | NumberFormatException ex) {
                 Logger.getLogger(CSVDatabaseWriter.class.getName()).log(Level.SEVERE, "Failed to write CSVResult", ex);

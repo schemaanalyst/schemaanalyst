@@ -232,14 +232,14 @@ public class FullSchemata extends Runner {
         createsStopWatch.stop();
         insertsStopWatch.stop();
 
-        result.addValue("mutationtime", stopWatch.getTime());
-        result.addValue("mutationscore_numerator", (!quasiSchema) ? killed : mutants.size());
-        result.addValue("mutationscore_denominator", mutants.size());
+        result.addValue("totaltime", stopWatch.getTime());
+        result.addValue("scorenumerator", (!quasiSchema) ? killed : mutants.size());
+        result.addValue("scoredenominator", mutants.size());
         result.addValue("mutationpipeline", mutationPipeline);
         result.addValue("dropstime", dropsStopWatch.getTime());
         result.addValue("createstime", createsStopWatch.getTime());
         result.addValue("insertstime", insertsStopWatch.getTime());
-        result.addValue("mutantgenerationtime", mutantGenerationStopWatch.getTime());
+        result.addValue("mutationtime", mutantGenerationStopWatch.getTime());
 
         if (resultsToFile) {
             new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
