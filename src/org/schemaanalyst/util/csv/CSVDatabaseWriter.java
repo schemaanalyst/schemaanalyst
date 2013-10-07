@@ -61,8 +61,8 @@ public class CSVDatabaseWriter extends CSVWriter {
             try {
                 Map<String, String> values = result.getValues();
                 PreparedStatement stmt = connection.prepareStatement("INSERT INTO " + experimentConfiguration.getTableName() + " "
-                        + "(technique,dbms,casestudy,trial,totaltime,scorenumerator,scoredenominator,mutationpipeline,dropstime,createstime,insertstime,mutationtime) "
-                        + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)");
+                        + "(technique,dbms,casestudy,trial,totaltime,scorenumerator,scoredenominator,mutationpipeline,dropstime,createstime,insertstime,mutationtime,paralleltime) "
+                        + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)");
                 stmt.setString(1, values.get("technique"));
                 stmt.setString(2, values.get("dbms"));
                 stmt.setString(3, values.get("casestudy"));
@@ -75,6 +75,7 @@ public class CSVDatabaseWriter extends CSVWriter {
                 stmt.setInt(10, Integer.valueOf(values.get("createstime")));
                 stmt.setInt(11, Integer.valueOf(values.get("insertstime")));
                 stmt.setInt(12, Integer.valueOf(values.get("mutationtime")));
+                stmt.setInt(13, Integer.valueOf(values.get("paralleltime")));
                 stmt.execute();
             } catch (SQLException | NumberFormatException ex) {
                 Logger.getLogger(CSVDatabaseWriter.class.getName()).log(Level.SEVERE, "Failed to write CSVResult", ex);

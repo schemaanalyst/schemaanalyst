@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -129,15 +130,11 @@ public class FullSchemata extends Runner {
         SQLExecutionReport originalReport = XMLSerialiser.load(reportPath);
 
         // Start mutation timing
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        StopWatch mutantGenerationStopWatch = constructSuspendedStopWatch();
-        StopWatch dropsStopWatch = constructSuspendedStopWatch();
-        StopWatch createsStopWatch = constructSuspendedStopWatch();
-        StopWatch insertsStopWatch = constructSuspendedStopWatch();
+        ExperimentTimer timer = new ExperimentTimer();
+        timer.start(ExperimentTimer.TimingPoint.TOTAL_TIME);
 
         // Get the mutation pipeline and generate mutants
-        mutantGenerationStopWatch.resume();
+        timer.start(ExperimentTimer.TimingPoint.MUTATION_TIME);
         MutationPipeline<Schema> pipeline;
         try {
             pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
@@ -145,13 +142,13 @@ public class FullSchemata extends Runner {
             throw new RuntimeException(ex);
         }
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        mutantGenerationStopWatch.stop();
+        timer.stop(ExperimentTimer.TimingPoint.MUTATION_TIME);
 
         // Schemata step: Rename the mutants
         renameMutants(mutants);
 
         // Schemata step: Build single drop statement
-        dropsStopWatch.resume();
+        timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
@@ -162,9 +159,10 @@ public class FullSchemata extends Runner {
             }
         }
         String dropStmt = dropBuilder.toString();
-        dropsStopWatch.suspend();
+        timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Build single create statement
+        timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
         StringBuilder createBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
@@ -175,22 +173,23 @@ public class FullSchemata extends Runner {
             }
         }
         String createStmt = createBuilder.toString();
+        timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Schemata step: Drop existing tables before iterating mutants
-        dropsStopWatch.resume();
+        timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         if (dropfirst) {
             databaseInteractor.executeUpdate(dropStmt);
         }
-        dropsStopWatch.suspend();
+        timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Create table before iterating mutants
-        createsStopWatch.resume();
+        timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
         Integer res = databaseInteractor.executeUpdate(createStmt);
         boolean quasiSchema = false;
         if (res.intValue() == -1) {
             quasiSchema = true;
         }
-        createsStopWatch.suspend();
+        timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Only do mutation analysis if the schema is valid
         int killed = 0;
@@ -205,7 +204,7 @@ public class FullSchemata extends Runner {
                 String schemataPrefix = "INSERT INTO mutant_" + (id + 1) + "_";
 
                 // Insert the test data
-                insertsStopWatch.resume();
+                timer.start(ExperimentTimer.TimingPoint.INSERTS_TIME);
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
 
@@ -218,28 +217,27 @@ public class FullSchemata extends Runner {
                         break; // Stop once killed
                     }
                 }
-                insertsStopWatch.suspend();
+                timer.stop(ExperimentTimer.TimingPoint.INSERTS_TIME);
             }
         }
 
         // Schemata step: Drop tables after iterating mutants
-        dropsStopWatch.resume();
+        timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         databaseInteractor.executeUpdate(dropStmt);
-        dropsStopWatch.suspend();
+        timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
+        
+        timer.stopAll();
+        timer.finalise();
 
-        stopWatch.stop();
-        dropsStopWatch.stop();
-        createsStopWatch.stop();
-        insertsStopWatch.stop();
-
-        result.addValue("totaltime", stopWatch.getTime());
         result.addValue("scorenumerator", (!quasiSchema) ? killed : mutants.size());
         result.addValue("scoredenominator", mutants.size());
         result.addValue("mutationpipeline", mutationPipeline);
-        result.addValue("dropstime", dropsStopWatch.getTime());
-        result.addValue("createstime", createsStopWatch.getTime());
-        result.addValue("insertstime", insertsStopWatch.getTime());
-        result.addValue("mutationtime", mutantGenerationStopWatch.getTime());
+        result.addValue("totaltime", timer.getTime(ExperimentTimer.TimingPoint.TOTAL_TIME));
+        result.addValue("dropstime", timer.getTime(ExperimentTimer.TimingPoint.DROPS_TIME));
+        result.addValue("createstime", timer.getTime(ExperimentTimer.TimingPoint.CREATES_TIME));
+        result.addValue("insertstime", timer.getTime(ExperimentTimer.TimingPoint.INSERTS_TIME));
+        result.addValue("mutationtime", timer.getTime(ExperimentTimer.TimingPoint.MUTATION_TIME));
+        result.addValue("paralleltime", timer.getTime(ExperimentTimer.TimingPoint.PARALLEL_TIME));
 
         if (resultsToFile) {
             new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
@@ -276,12 +274,5 @@ public class FullSchemata extends Runner {
 
     public static void main(String[] args) {
         new FullSchemata().run(args);
-    }
-    
-    private StopWatch constructSuspendedStopWatch() {
-        StopWatch dropsStopwatch = new StopWatch();
-        dropsStopwatch.start();
-        dropsStopwatch.suspend();
-        return dropsStopwatch;
     }
 }
