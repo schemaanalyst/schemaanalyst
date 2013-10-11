@@ -3,32 +3,30 @@
 package org.schemaanalyst.mutation.analysis.technique;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlwriter.SQLWriter;
-import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVFileWriter;
-import org.schemaanalyst.util.runner.Description;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.xml.XMLSerialiser;
-
+import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import org.schemaanalyst.configuration.ExperimentConfiguration;
-import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVDatabaseWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
+import org.schemaanalyst.util.runner.Description;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
+import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
  * <p> {@link Runner} for the 'Original' style of mutation analysis. This

@@ -3,26 +3,9 @@
 package org.schemaanalyst.mutation.analysis.technique;
 
 import java.io.File;
-import java.util.List;
-import java.util.logging.Logger;
-
-import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DBMSFactory;
-import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlwriter.SQLWriter;
-import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVFileWriter;
-import org.schemaanalyst.util.runner.Description;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.xml.XMLSerialiser;
-
-import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
-import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -30,15 +13,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.logging.Level;
-import org.apache.commons.lang3.time.StopWatch;
+import java.util.logging.Logger;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DBMSFactory;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVDatabaseWriter;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
+import org.schemaanalyst.util.runner.Description;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
+import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
  * <p> {@link Runner} for the 'Just-in-Time Schemata' style of mutation

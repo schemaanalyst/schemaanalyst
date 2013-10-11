@@ -5,18 +5,16 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.schemaanalyst.datageneration.ConstraintCovererFactory;
+import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
+import org.schemaanalyst.datageneration.TestCase;
+import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-
-import org.schemaanalyst.datageneration.ConstraintGoal;
-import org.schemaanalyst.datageneration.TestCase;
-import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.util.tuple.MixedPair;
 
 /**

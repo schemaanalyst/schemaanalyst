@@ -4,21 +4,19 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.io.File;
 import java.util.List;
-
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
+import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
+import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.xml.XMLSerialiser;
-
-import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
-import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
-import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.util.tuple.MixedPair;
+import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
  * <p>
