@@ -65,8 +65,12 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         DataGenerator<ConstraintGoal> dataGenerator = constructDataGenerator(schema, dbms);
         TestSuite<ConstraintGoal> testSuite = dataGenerator.generate();
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
+            Boolean satisfying = null;
+            if (!testCase.getCoveredElements().isEmpty()) {
+                satisfying = testCase.getCoveredElements().get(0).getSatisfy();
+            }
             for (String stmt : sqlWriter.writeInsertStatements(schema, testCase.getData())) {
-                MixedPair<String, Boolean> pair = new MixedPair<>(stmt, null); //TODO: Set satisfying variable (once found in new implementation)
+                MixedPair<String, Boolean> pair = new MixedPair<>(stmt, satisfying);
                 insertStms.add(pair);
             }
         }
