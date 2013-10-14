@@ -184,6 +184,7 @@ public class JustInTimeSchemata extends Runner {
         result.addValue("scorenumerator", killed);
         result.addValue("scoredenominator", mutants.size());
         result.addValue("mutationpipeline", mutationPipeline);
+        result.addValue("threads", threads);
         result.addValue("totaltime", timer.getTime(ExperimentTimer.TimingPoint.TOTAL_TIME));
         result.addValue("dropstime", timer.getTime(ExperimentTimer.TimingPoint.DROPS_TIME));
         result.addValue("createstime", timer.getTime(ExperimentTimer.TimingPoint.CREATES_TIME));
