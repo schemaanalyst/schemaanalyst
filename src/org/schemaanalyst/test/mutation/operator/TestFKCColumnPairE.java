@@ -15,7 +15,6 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 
 public class TestFKCColumnPairE {
     
