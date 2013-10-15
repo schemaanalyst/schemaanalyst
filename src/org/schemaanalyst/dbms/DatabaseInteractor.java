@@ -10,15 +10,15 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 
 /**
  * <p>
- * A DatabaseInteractor object is used to communicate with a database in some 
- * DBMS. This encapsulates the various JDBC calls required to submit statements 
+ * A DatabaseInteractor object is used to communicate with a database in some
+ * DBMS. This encapsulates the various JDBC calls required to submit statements
  * to the database and handles the possible exceptions.
  * </p>
- * 
+ *
  * <p>
- * This class can be used for most DBMSs with JDBC drivers, however specialised 
- * subclasses are provided for some DBMSs where behaviour may need to be 
- * handled differently.
+ * This class can be used for most DBMSs with JDBC drivers, however specialised
+ * subclasses are provided for some DBMSs where behaviour may need to be handled
+ * differently.
  * </p>
  */
 public abstract class DatabaseInteractor {
@@ -83,7 +83,9 @@ public abstract class DatabaseInteractor {
             }
             LOGGER.log(Level.FINER, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
-            returnCount = statement.executeUpdate(command);
+            synchronized (this) {
+                returnCount = statement.executeUpdate(command);
+            }
             LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
         } catch (SQLException e) {
             // if this command is a create table statement and it through 
@@ -120,11 +122,13 @@ public abstract class DatabaseInteractor {
 
             // run the command and capture the number of modified
             // values or any other type of status return code
-            boolean result = statement.execute(command);
+            synchronized (this) {
+                boolean result = statement.execute(command);
 
-            // this is a U,I,D that has an update count
-            if (result == UPDATE_COUNT) {
-                returnCount = statement.getUpdateCount();
+                // this is a U,I,D that has an update count
+                if (result == UPDATE_COUNT) {
+                    returnCount = statement.getUpdateCount();
+                }
             }
         } catch (SQLException e) {
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
@@ -145,32 +149,34 @@ public abstract class DatabaseInteractor {
                 initializeDatabaseConnection();
             }
             LOGGER.log(Level.FINE, "Starting transaction");
-            connection.setAutoCommit(false);
+            synchronized (this) {
+                connection.setAutoCommit(false);
 
-            for (String command : commands) {
-                try {
-                    LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
-                    Statement statement = connection.createStatement();
-                    returnCount = statement.executeUpdate(command);
-                    LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
-                } catch (SQLException e) {
-                    LOGGER.log(Level.FINE, "Statement failed: " + command, e);
-                    returnCount = START;
-                    connection.rollback();
-                    break;
+                for (String command : commands) {
+                    try {
+                        LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
+                        Statement statement = connection.createStatement();
+                        returnCount = statement.executeUpdate(command);
+                        LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
+                    } catch (SQLException e) {
+                        LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                        returnCount = START;
+                        connection.rollback();
+                        break;
+                    }
                 }
+
+                LOGGER.log(Level.FINE, "Ending transaction");
+                connection.commit();
+                connection.setAutoCommit(true);
             }
-            
-            LOGGER.log(Level.FINE, "Ending transaction");
-            connection.commit();
-            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Transaction failed: {0}", e.getMessage());
         }
         return returnCount;
     }
-    
+
     public Integer executeUpdatesAsBatch(String... commands) {
         Integer returnCount = START;
         try {
@@ -187,11 +193,13 @@ public abstract class DatabaseInteractor {
                     LOGGER.log(Level.FINE, "Statement failed: " + command, e);
                 }
             }
-            int[] batchResults = statement.executeBatch();
-            for (int i : batchResults) {
-                if (i == 1) {
-                    returnCount = 1;
-                    break;
+            synchronized (this) {
+                int[] batchResults = statement.executeBatch();
+                for (int i : batchResults) {
+                    if (i == 1) {
+                        returnCount = 1;
+                        break;
+                    }
                 }
             }
             LOGGER.log(Level.FINE, "Batch succeeded: {0}", returnCount);
