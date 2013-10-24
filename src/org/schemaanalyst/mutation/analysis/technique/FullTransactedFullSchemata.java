@@ -44,9 +44,9 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
         + "requires that the result generation tool has been run, as it bases "
         + "the mutation analysis on the results produced by it.")
 @RequiredParameters("casestudy trial")
-public class TransactedFullSchemata extends Runner {
+public class FullTransactedFullSchemata extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(TransactedFullSchemata.class.getName());
+    private final static Logger LOGGER = Logger.getLogger(FullTransactedFullSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -148,42 +148,32 @@ public class TransactedFullSchemata extends Runner {
 
         // Schemata step: Build single drop statement
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-        StringBuilder dropBuilder = new StringBuilder();
+        ArrayList<String> dropStmts = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
-            for (String statement : sqlWriter.writeDropTableStatements(mutantSchema, true)) {
-                dropBuilder.append(statement);
-                dropBuilder.append("; ");
-                dropBuilder.append(System.lineSeparator());
-            }
+            dropStmts.addAll(sqlWriter.writeDropTableStatements(mutantSchema, true));
         }
-        String dropStmt = dropBuilder.toString();
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Build single create statement
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        StringBuilder createBuilder = new StringBuilder();
+        ArrayList<String> createStmts = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
-            for (String statement : sqlWriter.writeCreateTableStatements(mutantSchema)) {
-                createBuilder.append(statement);
-                createBuilder.append("; ");
-                createBuilder.append(System.lineSeparator());
-            }
+            createStmts.addAll(sqlWriter.writeCreateTableStatements(mutantSchema));
         }
-        String createStmt = createBuilder.toString();
         timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Schemata step: Drop existing tables before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         if (dropfirst) {
-            databaseInteractor.executeUpdate(dropStmt);
+            databaseInteractor.executeUpdatesAsTransaction(dropStmts);
         }
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Create table before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        Integer res = databaseInteractor.executeUpdate(createStmt);
+        Integer res = databaseInteractor.executeUpdatesAsTransaction(createStmts);
         boolean quasiSchema = false;
         if (res.intValue() == -1) {
             quasiSchema = true;
@@ -241,7 +231,7 @@ public class TransactedFullSchemata extends Runner {
 
         // Schemata step: Drop tables after iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-        databaseInteractor.executeUpdate(dropStmt);
+        databaseInteractor.executeUpdatesAsTransaction(dropStmts);
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         timer.stopAll();
@@ -292,6 +282,6 @@ public class TransactedFullSchemata extends Runner {
     }
 
     public static void main(String[] args) {
-        new TransactedFullSchemata().run(args);
+        new FullTransactedFullSchemata().run(args);
     }
 }
