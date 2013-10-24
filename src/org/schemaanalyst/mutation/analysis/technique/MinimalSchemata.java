@@ -191,6 +191,13 @@ public class MinimalSchemata extends Runner {
         // Only do mutation analysis if the schema is valid
         HashSet<String> killed = new HashSet<>();
         if (!quasiSchema) {
+            // Drop mutant schema tables
+            if (dropfirst) {
+                for (String drop : mutantDropStatements) {
+                    databaseInteractor.executeUpdate(drop);
+                }
+            }
+
             // Create mutant schema tables
             timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
             for (String create : mutantCreateStatements) {
