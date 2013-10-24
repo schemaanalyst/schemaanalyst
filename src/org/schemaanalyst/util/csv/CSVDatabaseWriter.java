@@ -59,24 +59,8 @@ public class CSVDatabaseWriter extends CSVWriter {
     public void write(CSVResult result) {
         if (initialized) {
             try {
-                Map<String, String> values = result.getValues();
-                PreparedStatement stmt = connection.prepareStatement("INSERT INTO " + experimentConfiguration.getTableName() + " "
-                        + "(technique,dbms,casestudy,trial,totaltime,scorenumerator,scoredenominator,mutationpipeline,threads,dropstime,createstime,insertstime,mutationtime,paralleltime) "
-                        + "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-                stmt.setString(1, values.get("technique"));
-                stmt.setString(2, values.get("dbms"));
-                stmt.setString(3, values.get("casestudy"));
-                stmt.setInt(4, Integer.valueOf(values.get("trial")));
-                stmt.setInt(5, Integer.valueOf(values.get("totaltime")));
-                stmt.setInt(6, Integer.valueOf(values.get("scorenumerator")));
-                stmt.setInt(7, Integer.valueOf(values.get("scoredenominator")));
-                stmt.setString(8, values.get("mutationpipeline"));
-                stmt.setInt(9, Integer.valueOf(values.get("threads")));
-                stmt.setInt(10, Integer.valueOf(values.get("dropstime")));
-                stmt.setInt(11, Integer.valueOf(values.get("createstime")));
-                stmt.setInt(12, Integer.valueOf(values.get("insertstime")));
-                stmt.setInt(13, Integer.valueOf(values.get("mutationtime")));
-                stmt.setInt(14, Integer.valueOf(values.get("paralleltime")));
+                PreparedStatement stmt = connection.prepareStatement(buildStatementString(result));
+                setStatementValues(result,stmt);
                 stmt.execute();
             } catch (SQLException | NumberFormatException ex) {
                 Logger.getLogger(CSVDatabaseWriter.class.getName()).log(Level.SEVERE, "Failed to write CSVResult", ex);
@@ -84,6 +68,11 @@ public class CSVDatabaseWriter extends CSVWriter {
         }
     }
 
+    /** 
+     * Initializes a connection to the database used for storing results.
+     * 
+     * @return True if the connection was successful, otherwise false
+     */
     private boolean initializeDatabaseConnection() {
         try {
             Class.forName(databaseConfiguration.getPostgresDriver());
@@ -94,5 +83,59 @@ public class CSVDatabaseWriter extends CSVWriter {
             Logger.getLogger(CSVDatabaseWriter.class.getName()).log(Level.SEVERE, "Failed to open database connection", ex);
         }
         return false;
+    }
+
+    /**
+     * Build the statement string needed to create the prepared statement.
+     * 
+     * @param result The result being stored
+     * @return The statement string
+     */
+    private String buildStatementString(CSVResult result) {
+        StringBuilder builder = new StringBuilder();
+        builder.append("INSERT INTO ");
+        builder.append(experimentConfiguration.getTableName());
+        builder.append(" (");
+        Map<String, Object> values = result.getValues();
+        boolean firstKey = true;
+        for (String key : values.keySet()) {
+            if (!firstKey) {
+                builder.append(',');
+            } else {
+                firstKey = false;
+            }
+            builder.append(key);
+        }
+        builder.append(") VALUES (");
+        boolean firstValue = true;
+        for (int i = 0; i < values.size(); i++) {
+            if (!firstValue) {
+                builder.append(',');
+            } else {
+                firstValue = false;
+            }
+            builder.append('?');
+        }
+        builder.append(')');
+        return builder.toString();
+    }
+
+    private void setStatementValues(CSVResult result, PreparedStatement stmt) throws SQLException {
+        Map<String, Object> values = result.getValues();
+        int i = 1;
+        for (String key : values.keySet()) {
+            Object value = values.get(key);
+            if (value.getClass().equals(Integer.class)) {
+                stmt.setInt(i++, (Integer)value);
+            } else if (value.getClass().equals(Long.class)) {
+                stmt.setLong(i++, (Long)value);
+            } else if (value.getClass().equals(Float.class)) {
+                stmt.setFloat(i++, (Float)value);
+            } else if (value.getClass().equals(Double.class)) {
+                stmt.setDouble(i++, (Double)value);
+            } else {
+                stmt.setString(i++, value.toString());
+            }
+        }
     }
 }
