@@ -117,8 +117,8 @@ public class DatabaseInteractorTimer extends Runner {
                 drops.add(drop);
             }
         }
-        databaseInteractor.executeUpdatesAsBatch(creates.toArray(new String[creates.size()]));
-        databaseInteractor.executeUpdatesAsBatch(drops.toArray(new String[drops.size()]));        
+        databaseInteractor.executeUpdatesAsBatch(creates);
+        databaseInteractor.executeUpdatesAsBatch(drops);        
     }
     
     private void transaction(Schema[] schemas, DatabaseInteractor databaseInteractor, SQLWriter sqlWriter) {
@@ -132,8 +132,8 @@ public class DatabaseInteractorTimer extends Runner {
                 drops.add(drop);
             }
         }
-        databaseInteractor.executeUpdatesAsTransaction(creates.toArray(new String[creates.size()]));
-        databaseInteractor.executeUpdatesAsTransaction(drops.toArray(new String[drops.size()]));        
+        databaseInteractor.executeUpdatesAsTransaction(creates);
+        databaseInteractor.executeUpdatesAsTransaction(drops);        
     }
 
     @Override

@@ -177,7 +177,7 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
-    public Integer executeUpdatesAsBatch(String... commands) {
+    public Integer executeUpdatesAsBatch(Iterable<String> commands) {
         Integer returnCount = START;
         try {
             if (!initialized) {
