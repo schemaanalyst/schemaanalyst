@@ -88,7 +88,7 @@ public class TransactedJustInTimeSchemata extends Runner {
      * How many threads to use for parallel execution.
      */
     @Parameter("How many threads to use for parallel execution.")
-    protected int threads = 2;
+    protected int threads = 8;
     /**
      * Whether to write the results to a CSV file.
      */
