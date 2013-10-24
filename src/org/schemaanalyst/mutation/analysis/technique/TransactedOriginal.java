@@ -180,7 +180,7 @@ public class TransactedOriginal extends Runner {
                         groupedStatements.add(insertRecord.getStatement());
                     } else {
                         if (!groupedStatements.isEmpty()) {
-                            int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements.toArray(new String[groupedStatements.size()]));
+                            int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements);
                             groupedStatements.clear();
                             if (returnCount == 0) {
                                 killed++;
@@ -195,7 +195,7 @@ public class TransactedOriginal extends Runner {
                     }
                 }
                 if (!groupedStatements.isEmpty()) {
-                    int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements.toArray(new String[groupedStatements.size()]));
+                    int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements);
                     groupedStatements.clear();
                     if (returnCount == 0) {
                         killed++;

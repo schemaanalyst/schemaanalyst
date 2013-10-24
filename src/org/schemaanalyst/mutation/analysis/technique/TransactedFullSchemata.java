@@ -214,7 +214,7 @@ public class TransactedFullSchemata extends Runner {
                         groupedStatements.add(insertStmt);
                     } else {
                         if (!groupedStatements.isEmpty()) {
-                            int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements.toArray(new String[groupedStatements.size()]));
+                            int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements);
                             groupedStatements.clear();
                             if (returnCount == 0) {
                                 killed++;
@@ -229,7 +229,7 @@ public class TransactedFullSchemata extends Runner {
                     }
                 }
                 if (!groupedStatements.isEmpty()) {
-                    int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements.toArray(new String[groupedStatements.size()]));
+                    int returnCount = databaseInteractor.executeUpdatesAsTransaction(groupedStatements);
                     groupedStatements.clear();
                     if (returnCount == 0) {
                         killed++;

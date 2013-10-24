@@ -142,7 +142,7 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
-    public Integer executeUpdatesAsTransaction(String... commands) {
+    public Integer executeUpdatesAsTransaction(Iterable<String> commands) {
         Integer returnCount = START;
         try {
             if (!initialized) {
