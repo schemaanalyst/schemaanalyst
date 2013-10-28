@@ -3,6 +3,7 @@ package org.schemaanalyst.dbms;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
@@ -142,6 +143,30 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
+    public Integer executeCreatesAsTransaction(List<String> commands, int transactionSize) {
+        return executeCreatesOrDropsAsTransaction(commands, transactionSize);
+    }
+    
+    public Integer executeDropsAsTransaction(List<String> commands, int transactionSize) {
+        return executeCreatesOrDropsAsTransaction(commands, transactionSize);
+    }
+    
+    protected Integer executeCreatesOrDropsAsTransaction(List<String> commands, int transactionSize) {
+        Integer result = START;
+        for (int i = 0; i * transactionSize < commands.size(); i++) {
+            int lower = i * transactionSize;
+            int upper = (i + 1) * transactionSize;
+            if (upper > commands.size()) {
+                upper = commands.size();
+            }
+            result = executeUpdatesAsTransaction(commands.subList(lower, upper));
+            if (result == 1) {
+                return result;
+            }
+        }
+        return result;
+    }
+    
     public Integer executeUpdatesAsTransaction(Iterable<String> commands) {
         Integer returnCount = START;
         try {

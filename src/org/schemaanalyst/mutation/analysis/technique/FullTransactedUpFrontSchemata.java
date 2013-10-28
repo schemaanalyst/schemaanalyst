@@ -178,13 +178,13 @@ public class FullTransactedUpFrontSchemata extends Runner {
         // Schemata step: Drop existing tables before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         if (dropfirst) {
-            databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
         }
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Create table before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        databaseInteractor.executeUpdatesAsTransaction(createStmts);
+        databaseInteractor.executeCreatesAsTransaction(dropStmts,500);
         timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Begin mutation analysis
@@ -211,7 +211,7 @@ public class FullTransactedUpFrontSchemata extends Runner {
 
         // Schemata step: Drop tables after iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-        databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+        databaseInteractor.executeDropsAsTransaction(dropStmts,500);
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         timer.stopAll();

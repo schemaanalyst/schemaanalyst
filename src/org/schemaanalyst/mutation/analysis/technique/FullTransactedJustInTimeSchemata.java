@@ -260,12 +260,12 @@ public class FullTransactedJustInTimeSchemata extends Runner {
             // Drop existing tables
             List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
             if (dropfirst) {
-                databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+                databaseInteractor.executeDropsAsTransaction(dropStmts,500);
             }
 
             // Create the schema in the database
             List<String> createStmts = sqlWriter.writeCreateTableStatements(schema);
-            databaseInteractor.executeUpdatesAsTransaction(createStmts);
+            databaseInteractor.executeCreatesAsTransaction(createStmts,500);
 
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
@@ -302,7 +302,7 @@ public class FullTransactedJustInTimeSchemata extends Runner {
             }
 
             // Drop tables
-            databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
 
             return killed;
 

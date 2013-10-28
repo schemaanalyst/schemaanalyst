@@ -189,12 +189,12 @@ public class PartTransactedMinimalSchemata extends Runner {
         if (!quasiSchema) {
             // Drop mutant schema tables
             if (dropfirst) {
-                databaseInteractor.executeUpdatesAsTransaction(mutantDropStatements);
+                databaseInteractor.executeDropsAsTransaction(dropStmts,500);
             }
 
             // Create mutant schema tables
             timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-            databaseInteractor.executeUpdatesAsTransaction(mutantCreateStatements);
+            databaseInteractor.executeCreatesAsTransaction(dropStmts,500);
             timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
             // get the original mutant reports
@@ -220,9 +220,9 @@ public class PartTransactedMinimalSchemata extends Runner {
 
             timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
             // drop mutant schema tables
-            databaseInteractor.executeUpdatesAsTransaction(mutantDropStatements);
+            databaseInteractor.executeDropsAsTransaction(mutantDropStatements,500);
             // drop original schema tables
-            databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
         }
 

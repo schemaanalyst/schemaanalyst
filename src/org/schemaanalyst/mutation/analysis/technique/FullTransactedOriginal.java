@@ -153,14 +153,14 @@ public class FullTransactedOriginal extends Runner {
             timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
             List<String> dropStmts = sqlWriter.writeDropTableStatements(mutant, true);
             if (dropfirst) {
-                databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+                databaseInteractor.executeDropsAsTransaction(dropStmts,500);
             }
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
             // Create the schema in the database
             timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
             List<String> createStmts = sqlWriter.writeCreateTableStatements(mutant);
-            Integer res = databaseInteractor.executeUpdatesAsTransaction(createStmts);
+            Integer res = databaseInteractor.executeCreatesAsTransaction(createStmts,500);
             if (res.intValue() == -1) {
                 quasiMutant = true;
             }
@@ -206,7 +206,7 @@ public class FullTransactedOriginal extends Runner {
 
             // Drop tables
             timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-            databaseInteractor.executeUpdatesAsTransaction(dropStmts);
+            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
         }
 
