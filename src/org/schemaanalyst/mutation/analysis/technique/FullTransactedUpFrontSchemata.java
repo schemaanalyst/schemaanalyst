@@ -184,7 +184,7 @@ public class FullTransactedUpFrontSchemata extends Runner {
 
         // Schemata step: Create table before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        databaseInteractor.executeCreatesAsTransaction(dropStmts,500);
+        databaseInteractor.executeCreatesAsTransaction(createStmts,500);
         timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Begin mutation analysis
