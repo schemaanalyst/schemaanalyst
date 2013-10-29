@@ -1,7 +1,9 @@
 package org.schemaanalyst.dbms.postgres;
 
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
@@ -57,6 +59,21 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor {
             initialized = true;
         } catch (ClassNotFoundException | SQLException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getTableCount() {
+        try {
+            if (!initialized) {
+                initializeDatabaseConnection();
+            }
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'");
+            resultSet.next();
+            return resultSet.getInt(1);
+        } catch (SQLException e) {
+            return -1;
         }
     }
 }

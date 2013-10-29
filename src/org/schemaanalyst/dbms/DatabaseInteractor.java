@@ -233,4 +233,12 @@ public abstract class DatabaseInteractor {
         }
         return returnCount;
     }
+    
+    /**
+     * @TODO This method should be removed and is for debugging only.
+     * @return The number of tables in a database
+     */
+    public int getTableCount() {
+        return 0;
+    }
 }
