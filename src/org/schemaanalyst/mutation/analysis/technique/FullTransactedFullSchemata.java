@@ -116,6 +116,10 @@ public class FullTransactedFullSchemata extends Runner {
         SQLWriter sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
+        if (databaseInteractor.getTableCount() != 0) {
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{""});
+        }
+
         // Get the required schema class
         Schema schema;
         try {
@@ -167,13 +171,13 @@ public class FullTransactedFullSchemata extends Runner {
         // Schemata step: Drop existing tables before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         if (dropfirst) {
-            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+            databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
         }
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Create table before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        Integer res = databaseInteractor.executeCreatesAsTransaction(createStmts,500);
+        Integer res = databaseInteractor.executeCreatesAsTransaction(createStmts, 500);
         boolean quasiSchema = false;
         if (res.intValue() == -1) {
             quasiSchema = true;
@@ -231,7 +235,7 @@ public class FullTransactedFullSchemata extends Runner {
 
         // Schemata step: Drop tables after iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-        databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+        databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         timer.stopAll();

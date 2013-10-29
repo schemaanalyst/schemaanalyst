@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -50,6 +52,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 @RequiredParameters("casestudy trial")
 public class PartTransactedMinimalSchemata extends Runner {
 
+    private final static Logger LOGGER = Logger.getLogger(PartTransactedMinimalSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -122,6 +125,10 @@ public class PartTransactedMinimalSchemata extends Runner {
         sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
+        if (databaseInteractor.getTableCount() != 0) {
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{""});
+        }
+
         // Get the required schema class
         try {
             schema = (Schema) Class.forName(casestudy).newInstance();
@@ -189,12 +196,12 @@ public class PartTransactedMinimalSchemata extends Runner {
         if (!quasiSchema) {
             // Drop mutant schema tables
             if (dropfirst) {
-                databaseInteractor.executeDropsAsTransaction(mutantDropStatements,500);
+                databaseInteractor.executeDropsAsTransaction(mutantDropStatements, 500);
             }
 
             // Create mutant schema tables
             timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-            databaseInteractor.executeCreatesAsTransaction(mutantCreateStatements,500);
+            databaseInteractor.executeCreatesAsTransaction(mutantCreateStatements, 500);
             timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
             // get the original mutant reports
@@ -220,9 +227,9 @@ public class PartTransactedMinimalSchemata extends Runner {
 
             timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
             // drop mutant schema tables
-            databaseInteractor.executeDropsAsTransaction(mutantDropStatements,500);
+            databaseInteractor.executeDropsAsTransaction(mutantDropStatements, 500);
             // drop original schema tables
-            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+            databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
         }
 

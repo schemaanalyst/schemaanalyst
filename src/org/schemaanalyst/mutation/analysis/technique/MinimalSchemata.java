@@ -11,6 +11,8 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -50,6 +52,7 @@ import org.schemaanalyst.util.xml.XMLSerialiser;
 @RequiredParameters("casestudy trial")
 public class MinimalSchemata extends Runner {
 
+    private final static Logger LOGGER = Logger.getLogger(MinimalSchemata.class.getName());
     /**
      * The name of the schema to use.
      */
@@ -121,6 +124,10 @@ public class MinimalSchemata extends Runner {
         }
         sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
+
+        if (databaseInteractor.getTableCount() != 0) {
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{""});
+        }
 
         // Get the required schema class
         try {

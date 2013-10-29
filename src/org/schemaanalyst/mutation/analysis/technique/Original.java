@@ -112,6 +112,10 @@ public class Original extends Runner {
         SQLWriter sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
+        if (databaseInteractor.getTableCount() != 0) {
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{""});
+        }
+        
         // Get the required schema class
         Schema schema;
         try {
