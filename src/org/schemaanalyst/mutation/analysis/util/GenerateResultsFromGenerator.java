@@ -57,7 +57,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      * The data generator.
      */
     @Parameter
-    protected String datagenerator = "alternatingValue";
+    protected String datagenerator = "alternatingValueDefaults";
 
     @Override
     public List<MixedPair<String,Boolean>> getInserts() {
@@ -85,7 +85,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      * @return The data generator.
      */
     private DataGenerator<ConstraintGoal> constructDataGenerator(Schema schema, DBMS dbms) {
-        return ConstraintCovererFactory.instantiate("alternatingValueDefaults", schema, dbms, randomprofile, randomseed, maxevaluations);
+        return ConstraintCovererFactory.instantiate(datagenerator, schema, dbms, randomprofile, randomseed, maxevaluations);
     }
 
     public static void main(String[] args) {
