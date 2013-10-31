@@ -143,12 +143,10 @@ public class Original extends Runner {
         List<Mutant<Schema>> mutants = pipeline.mutate();
         timer.stop(ExperimentTimer.TimingPoint.MUTATION_TIME);
 
-        System.out.println("Count at start of trial "+trial+": "+databaseInteractor.getTableCount());
         // Begin mutation analysis
         int killed = 0;
         int quasi = 0;
         for (int id = 0; id < mutants.size(); id++) {
-            System.out.println("Count at start of mutant "+id+": "+databaseInteractor.getTableCount());
             boolean quasiMutant = false;
             Schema mutant = mutants.get(id).getMutatedArtefact();
 
@@ -197,12 +195,9 @@ public class Original extends Runner {
             timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
             for (String stmt : dropStmts) {
                 int res = databaseInteractor.executeUpdate(stmt);
-                System.out.println("Trial: "+trial+" ID:"+id+" Drop: "+stmt+" Result: "+res);
             }
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
-            System.out.println("Count at end of mutant "+id+": "+databaseInteractor.getTableCount());
         }
-        System.out.println("Count at end of trial "+trial+": "+databaseInteractor.getTableCount());
         
         timer.stopAll();
         timer.finalise();
