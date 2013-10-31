@@ -150,7 +150,7 @@ public class JustInTimeSchemata extends Runner {
         timer.start(ExperimentTimer.TimingPoint.MUTATION_TIME);
         MutationPipeline<Schema> pipeline;
         try {
-            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
+            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema, databaseConfiguration.getDbms());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }

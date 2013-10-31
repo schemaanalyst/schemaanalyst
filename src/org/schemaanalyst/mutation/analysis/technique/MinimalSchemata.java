@@ -126,7 +126,7 @@ public class MinimalSchemata extends Runner {
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         if (databaseInteractor.getTableCount() != 0) {
-            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(),casestudy,trial});
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(), casestudy, trial});
         }
 
         // Get the required schema class
@@ -149,7 +149,7 @@ public class MinimalSchemata extends Runner {
         timer.start(ExperimentTimer.TimingPoint.MUTATION_TIME);
         MutationPipeline<Schema> pipeline;
         try {
-            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema);
+            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema, databaseConfiguration.getDbms());
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }

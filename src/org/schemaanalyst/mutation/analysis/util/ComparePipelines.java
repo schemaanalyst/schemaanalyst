@@ -127,7 +127,7 @@ public class ComparePipelines extends Runner {
         // Get the mutation pipelines and generate mutants
         MutationPipeline<Schema> mutationPipeline;
         try {
-            mutationPipeline = MutationPipelineFactory.<Schema>instantiate(pipeline, schema);
+            mutationPipeline = MutationPipelineFactory.<Schema>instantiate(pipeline, schema, "Postgres");
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
