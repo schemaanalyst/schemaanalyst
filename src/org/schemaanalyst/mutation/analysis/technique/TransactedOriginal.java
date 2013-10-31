@@ -114,7 +114,7 @@ public class TransactedOriginal extends Runner {
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         if (databaseInteractor.getTableCount() != 0) {
-            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{""});
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(),casestudy,trial});
         }
         
         // Get the required schema class
