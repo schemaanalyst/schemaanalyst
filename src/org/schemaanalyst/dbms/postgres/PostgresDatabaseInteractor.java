@@ -69,9 +69,11 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor {
                 initializeDatabaseConnection();
             }
             Statement statement = connection.createStatement();
-            ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'");
-            resultSet.next();
-            return resultSet.getInt(1);
+            try (ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'public'")) {
+                resultSet.next();
+                int result = resultSet.getInt(1);
+                return result;
+            }
         } catch (SQLException e) {
             return -1;
         }
