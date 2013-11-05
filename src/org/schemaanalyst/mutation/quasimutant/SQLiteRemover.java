@@ -25,14 +25,19 @@ public class SQLiteRemover extends MutantRemover<Schema>{
         for (Iterator<Mutant<Schema>> it = mutants.iterator(); it.hasNext();) {
             Schema schema = it.next().getMutatedArtefact();
             for (ForeignKeyConstraint fkey : schema.getForeignKeyConstraints()) {
+                boolean fUnique = isUnique(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 boolean fPrimary = isPrimary(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
-                if (!fPrimary) {
+                if (!fUnique && !fPrimary) {
                     it.remove();
                     break;
                 }
             }
         }
         return mutants;
+    }
+    
+    private boolean isUnique(Schema schema, Table table, List<Column> columns) {
+        return schema.isUnique(table, columns.toArray(new Column[columns.size()]));
     }
     
     private boolean isPrimary(Schema schema, Table table, List<Column> columns) {
