@@ -25,7 +25,6 @@ public class PostgresRemover extends MutantRemover<Schema>{
         for (Iterator<Mutant<Schema>> it = mutants.iterator(); it.hasNext();) {
             Schema schema = it.next().getMutatedArtefact();
             for (ForeignKeyConstraint fkey : schema.getForeignKeyConstraints()) {
-                isUnique(schema, fkey.getTable(), fkey.getColumns());
                 boolean fUnique = isUnique(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 boolean fPrimary = isPrimary(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 if (!fUnique && !fPrimary) {
