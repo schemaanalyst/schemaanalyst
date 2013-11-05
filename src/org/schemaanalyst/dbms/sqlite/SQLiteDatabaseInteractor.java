@@ -45,7 +45,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             File sqliteDirectory = new File(locationConfiguration.getDatabaseDir()
                     + File.separator + databaseConfiguration.getSqlitePath());
             if (sqliteDirectory.exists()) {
-                LOGGER.log(Level.WARNING, "Database folder already exists: {0}", sqliteDirectory.getPath());
+                LOGGER.log(Level.CONFIG, "Database folder already exists: {0}", sqliteDirectory.getPath());
             }
             Files.createDirectories(sqliteDirectory.toPath());
 
