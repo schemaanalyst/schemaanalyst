@@ -2,19 +2,11 @@
  */
 package org.schemaanalyst.mutation.analysis.technique;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.sax.SAXSource;
-import javax.xml.transform.sax.SAXTransformerFactory;
-import javax.xml.transform.stream.StreamResult;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -38,9 +30,7 @@ import org.schemaanalyst.util.runner.Description;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.xml.XMLFormatter;
 import org.schemaanalyst.util.xml.XMLSerialiser;
-import org.xml.sax.InputSource;
 
 /**
  * <p> {@link Runner} for the 'Original' style of mutation analysis. This
