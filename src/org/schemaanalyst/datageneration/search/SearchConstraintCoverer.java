@@ -104,4 +104,12 @@ public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
         
         return testCase;
     }
+    
+    public int getEvaluations() {
+        return search.getNumEvaluations();
+    }
+    
+    public int getRestarts() {
+        return search.getNumRestarts();
+    }
 }

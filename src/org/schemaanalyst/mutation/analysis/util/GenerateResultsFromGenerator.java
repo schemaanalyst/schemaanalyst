@@ -5,13 +5,18 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.datageneration.ConstraintCovererFactory;
 import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.TestCase;
 import org.schemaanalyst.datageneration.TestSuite;
+import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
+import org.schemaanalyst.util.csv.CSVWriter;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -58,12 +63,27 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      */
     @Parameter
     protected String datagenerator = "alternatingValueDefaults";
+    /**
+     * If a report should be written containing costs, if possible.
+     */
+    @Parameter(valueAsSwitch = "true")
+    protected boolean writeReport = false;
+    /**
+     * Where to write the costs report.
+     */
+    @Parameter
+    protected String reportLocation = "results/generationCosts.dat";
+    private StopWatch stopWatch;
+    
 
     @Override
     public List<MixedPair<String,Boolean>> getInserts() {
         List<MixedPair<String,Boolean>> insertStms = new ArrayList<>();
         DataGenerator<ConstraintGoal> dataGenerator = constructDataGenerator(schema, dbms);
+        stopWatch = new StopWatch();
+        stopWatch.start();
         TestSuite<ConstraintGoal> testSuite = dataGenerator.generate();
+        stopWatch.stop();
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
             Boolean satisfying = null;
             if (!testCase.getCoveredElements().isEmpty()) {
@@ -74,6 +94,10 @@ public class GenerateResultsFromGenerator extends GenerateResults {
                 insertStms.add(pair);
             }
         }
+        if (writeReport) {
+            writeReport(dataGenerator);
+        }
+        ((SearchConstraintCoverer)dataGenerator).getEvaluations();
         return insertStms;
     }
 
@@ -85,7 +109,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
      * @return The data generator.
      */
     private DataGenerator<ConstraintGoal> constructDataGenerator(Schema schema, DBMS dbms) {
-        return ConstraintCovererFactory.instantiate(datagenerator, schema, dbms, randomprofile, randomseed, maxevaluations);
+        return ConstraintCovererFactory.instantiate(datagenerator, schema, dbms, randomprofile, randomseed, maxevaluations, satisfyrows, negaterows);
     }
 
     public static void main(String[] args) {
@@ -106,5 +130,26 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         if (!randomprofile.equals("small") && !randomprofile.equals("large")) {
             exitWithArgumentException("randomProfile must be 'small' or 'large'");
         }
+    }
+
+    private void writeReport(DataGenerator<ConstraintGoal> dataGenerator) {
+        CSVResult result = new CSVResult();
+        result.addValue("casestudy", casestudy);
+        result.addValue("dataGenerator", this.datagenerator);
+        result.addValue("seed", randomseed);
+        result.addValue("randomprofile", randomprofile);
+        result.addValue("satisfyrows", satisfyrows);
+        result.addValue("negaterows", negaterows);
+        if (dataGenerator instanceof SearchConstraintCoverer) {
+            SearchConstraintCoverer searchDataGenerator = (SearchConstraintCoverer) dataGenerator;
+            result.addValue("evaluations", searchDataGenerator.getEvaluations());
+            result.addValue("restarts", searchDataGenerator.getRestarts());
+        } else {
+            result.addValue("evaluations", "NA");
+            result.addValue("restarts", "NA");
+        }
+        result.addValue("timetaken", stopWatch.getTime());
+        CSVWriter writer = new CSVFileWriter(reportLocation, ",");
+        writer.write(result);
     }
 }
