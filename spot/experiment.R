@@ -28,8 +28,8 @@ require(SPOT)
 # Define experiment variables
 DATABASE = "HSQLDB" # used for output location; doesn't alter SchemaAnalyst preferences (currently)
 # upper bounds during parameter tuning
-MAX_SATISFY_ROWS <- 5
-MAX_NEGATE_ROWS <- 4
+MAX_SATISFY_ROWS <- 6
+MAX_NEGATE_ROWS <- 1
 MAX_MAXEVALUATIONS <- 1000000
 
 # Define the configuration function (substitute for configuration files).
@@ -45,7 +45,7 @@ expConfig <- function(num_evals, use_generationtime=FALSE) {
 				   # note that the lower bounds for satisfy rows and negaterows are currently 1;
 				   # this is because it appears that, with f8eb607, if either equals 0, generation hangs
 				   lower = c(10, 1, 1, 1, 0), # minimum values
-				   upper = c(MAX_MAXEVALUATIONS, MAX_SATISFY_ROWS, MAX_NEGATE_ROWS, 2, 9999999), # max values
+				   upper = c(MAX_MAXEVALUATIONS, MAX_NEGATE_ROWS, MAX_SATISFY_ROWS, 2, 9999999), # max values
 				   type = c("INT", "INT", "INT", "FACTOR", "INT"), # variable types
 				   # inexplicably, variable labels cause an error (t.default(x) argument is not a matrix)
 				   # leave them out for now
@@ -77,6 +77,7 @@ expConfig <- function(num_evals, use_generationtime=FALSE) {
 							   " --randomprofile=", randomprofile, " --datagenerator=", generator, 
 							   " --randomseed=", randomseed, " --writeReport",
 							   " --reportLocation=spot/generationCosts.dat", sep = "")
+		print(genCallString)
 		system(genCallString, intern=FALSE)
 
 		# use Original mutation analysis on the resulting set of statements
