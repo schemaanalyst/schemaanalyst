@@ -5,27 +5,36 @@
 # parameters for GenerateResultsFromGenerator, while the user
 # specifies the case study and the generator. At this point,
 # the generation is run with the generated parameters. The
-# execution time of the generation is measured as an optional
-# optimization target.
+# execution time of the generation is used as an optional
+# secondary optimization target.
 #
 # Next, Original mutation analysis is run and the inverse
-# of the mutation score is recorded and returned as the first
+# of the mutation score is recorded and used as the first
 # (or only) optimization target.
 #
 # Usage:
-# config <- expConfig()
+# config <- expConfig(num_evaluations, use_generationtime)
 # res <- expRun(config, "schema_name", "datagenerator")
 #
 # To see the best parameter configurations, print
 # res$alg.currentBest
+#
 # To see all configurations, print
 # res$alg.currentResult
-
+#
 # import the SPOT package
 require(SPOT)
 
+# Define experiment variables
+DATABASE = "HSQLDB" # used for output location; doesn't alter SchemaAnalyst preferences (currently)
+# upper bounds during parameter tuning
+MAX_SATISFY_ROWS <- 5
+MAX_NEGATE_ROWS <- 4
+MAX_MAXEVALUATIONS <- 1000000
+
 # Define the configuration function (substitute for configuration files).
-expConfig <- function(){
+# -- Takes as a parameter the maximum number of evaluations for the SPOT experiment
+expConfig <- function(num_evals, use_generationtime=FALSE) {
 	# Set Region Of Interest; variables are as follows:
 	# X1 - maxevaluations
 	# X2 - negaterows
@@ -33,8 +42,10 @@ expConfig <- function(){
 	# X4 - randomprofile
 	# X5 - randomseed
 	roi <- spotROI(
-				   lower = c(10, 0, 0, 1, 0), # minimum values
-				   upper = c(10000000, 1000, 1000, 2, 100000000), # maximum values
+				   # note that the lower bounds for satisfy rows and negaterows are currently 1;
+				   # this is because it appears that, with f8eb607, if either equals 0, generation hangs
+				   lower = c(10, 1, 1, 1, 0), # minimum values
+				   upper = c(MAX_MAXEVALUATIONS, MAX_SATISFY_ROWS, MAX_NEGATE_ROWS, 2, 9999999), # max values
 				   type = c("INT", "INT", "INT", "FACTOR", "INT"), # variable types
 				   # inexplicably, variable labels cause an error (t.default(x) argument is not a matrix)
 				   # leave them out for now
@@ -58,42 +69,56 @@ expConfig <- function(){
 		# go up a directory to the project root in order for java calls to work
 		setwd("..")
 
+		# generate the set of INSERT statements using the current parameters
+		genCallString <- paste("java -Xmx3G -cp build/:lib/*",
+							   " org.schemaanalyst.mutation.analysis.util.GenerateResultsFromGenerator",
+							   " parsedcasestudy.", casestudy, " --maxevaluations=", maxeval , 
+							   " --negaterows=", negaterows, " --satisfyrows=", satisfyrows, 
+							   " --randomprofile=", randomprofile, " --datagenerator=", generator, 
+							   " --randomseed=", randomseed, " --writeReport",
+							   " --reportLocation=spot/generationCosts.dat", sep = "")
+		system(genCallString, intern=FALSE)
 
-		# generate the set of insert statements using the current parameters
-		genCallString <- paste("java -Xmx3G -cp build/:lib/* org.schemaanalyst.mutation.analysis.util.GenerateResultsFromGenerator parsedcasestudy.", casestudy, " --maxevaluations=", maxeval , " --negaterows=", negaterows, " --satisfyrows=", satisfyrows, " --randomprofile=", randomprofile, " --datagenerator=", generator, " --randomseed=", randomseed, sep = "")
-
-		# time the execution of the initial generation
-		exectime <- system.time(system(genCallString, intern=FALSE))
-		exectime <- exectime[3] # exectime is a proc.time object; [3] is elapsed time
-
-		# use standard analysis on the resulting set of statements
-		analysisCallString <- paste("java -Xmx3G -cp build/:lib/* org.schemaanalyst.mutation.analysis.technique.Original parsedcasestudy.", casestudy, " 1 ", "--outputfolder=", "spot/", sep = "")
+		# use Original mutation analysis on the resulting set of statements
+		analysisCallString <- paste("java -Xmx3G -cp build/:lib/*",
+									" org.schemaanalyst.mutation.analysis.technique.Original",
+									" parsedcasestudy.", casestudy, " 1", 
+									" --outputfolder=spot/", sep = "")
 		system(analysisCallString, intern=FALSE);
-		# this java code will output to a csv file; read in the most recent mutation score
-		scores <- read.csv(paste("spot/parsedcasestudy.", casestudy, ".dat", sep=""))
-		mutation_numerator <- tail(scores$scorenumerator, n=1)
-		mutation_denominator <- tail(scores$scoredenominator, n=1)
-		mutation_score <- as.numeric(as.character(mutation_numerator)) / as.numeric(as.character(mutation_denominator))
-		# invert the mutation score (optimiation minimizes this value
-		inverse_mutation_score <- 1 - mutation_score;
 
 		# return to the spot directory
 		setwd("spot")
 
-		# this line will use a multi-variable optimization target that includes
-		# both the mutation score and the execution time of AVM; however,
-		# SPOT seems to handle this a tad wonkily--for now, use only mut. score
-		#return(c(inverse_mutation_score,exectime))
-		return(inverse_mutation_score)
+		# the above java code will output to a csv file; read in the most recent mutation score
+		scores <- read.csv(paste("parsedcasestudy.", casestudy, ".dat", sep=""))
+		mutation_numerator <- tail(scores$scorenumerator, n=1)
+		mutation_denominator <- tail(scores$scoredenominator, n=1)
+		mutation_score <- mutation_numerator / mutation_denominator
+		# invert the mutation score (optimization minimizes this value)
+		inverse_mutation_score <- 1 - mutation_score
+
+		if (use_generationtime) {
+			# read in the generation execution time
+			generation_costs <- read.csv("generationCosts.dat")
+			gen_exec_time <- tail(generation_costs$timetaken, n=1)
+
+			# this line will return a multi-variable optimization target that includes
+			# both the mutation score and the execution time of AVM
+			return(c(inverse_mutation_score, gen_exec_time))
+		} 
+		else { # we'll only optimize the mutation score
+			return(inverse_mutation_score)
+		}
+
 	}
 
 	# set SPOT parameters
 	config <- list(
 				alg.func = fn,
-				alg.resultColumn=c("inverse-mutationscore"),
+				alg.resultColumn=c("inverse-mutationscore", "generation-time"),
 				alg.roi = roi,
 				# Total number of evaluations
-				auto.loop.nevals = 50,
+				auto.loop.nevals = num_evals, # expConfig() function parameter
 				init.design.func = "spotCreateDesignLhd",
 				# number of separate designs to check--
 				# bigger will get better results but take longer
@@ -110,13 +135,19 @@ expConfig <- function(){
 	return(config)
 }
 
-# make a function that takes experiment variables
-# example:
-# 	casestudy <- "NistDML183"
-# 	seed <- 1234
-# 	generator <- "alternatingValue"
-expRun <- function(config, casestudy, generator){
+# define a function that initiates a SPOT experiment
+# example arguments:
+# 	casestudy="NistDML183"
+# 	generator="alternatingValue"
+expRun <- function(config, casestudy, generator) {
+	# execute the SPOT experiment
 	res <- spot(spotConfig=config, casestudy=casestudy, generator=generator)
+
+	# save the results to a file
+	directory = paste("results/", DATABASE, "/", sep="")
+	filename = paste(casestudy, generator, config$auto.loop.nevals, ".RData", sep="-")
+	save(res, file=paste(directory, filename))
+
 	return(res)
 }
 
