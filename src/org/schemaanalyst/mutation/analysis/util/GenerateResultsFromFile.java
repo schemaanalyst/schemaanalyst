@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * <p>
@@ -32,13 +33,14 @@ public class GenerateResultsFromFile extends GenerateResults {
     String input;
 
     @Override
-    public List<String> getInserts() {
-        List<String> result = new ArrayList<>();
+    public List<MixedPair<String,Boolean>> getInserts() {
+        List<MixedPair<String,Boolean>> result = new ArrayList<>();
         File inputFile = new File(input);
         try (BufferedReader reader = Files.newBufferedReader(inputFile.toPath(), Charset.forName("UTF-8"))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                result.add(line);
+                MixedPair<String, Boolean> pair = new MixedPair<>(line,null);
+                result.add(pair);
             }
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, "Failed to read input file", ex);

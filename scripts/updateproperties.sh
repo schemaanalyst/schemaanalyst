@@ -15,9 +15,16 @@ if [ -z $FILE ] || [ -z $KEY ] || [ -z $VALUE ] ; then
 	exit 1
 fi
 
+# unamestr=`uname`
+# if [[ "$unamestr" == 'Linux' ]]; then
+#    sed -i "s|\($KEY = \)\(.*\)|\1$VALUE|" $FILE
+# elif [[ "$unamestr" == 'Darwin' ]]; then
+#    sed -i '' "s|\($KEY = \)\(.*\)|\1$VALUE|" $FILE
+# fi
+
 unamestr=`uname`
 if [[ "$unamestr" == 'Linux' ]]; then
-   sed -i "s|\($KEY = \)\(.*\)|\1$VALUE|" $FILE
+   sed -i "s|\($KEY[ ]*=[ ]*\)\(.*\)|\1$VALUE|" $FILE
 elif [[ "$unamestr" == 'Darwin' ]]; then
-   sed -i '' "s|\($KEY = \)\(.*\)|\1$VALUE|" $FILE
+   sed -i '' "s|\($KEY[ ]*=[ ]*\)\(.*\)|\1$VALUE|" $FILE
 fi

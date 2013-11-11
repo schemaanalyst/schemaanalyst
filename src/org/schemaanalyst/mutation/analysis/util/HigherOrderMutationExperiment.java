@@ -4,7 +4,7 @@ package org.schemaanalyst.mutation.analysis.util;
 import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.equivalence.SchemaEquivalanceWithNotNullCheckChecker;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
 import org.schemaanalyst.mutation.operator.CCNullifier;
 import org.schemaanalyst.mutation.operator.FKCColumnPairR;
 import org.schemaanalyst.mutation.operator.NNCAR;
@@ -16,8 +16,8 @@ import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
-import org.schemaanalyst.util.csv.CSVWriter;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -75,7 +75,7 @@ public class HigherOrderMutationExperiment extends Runner {
         result.addValue("secondorder", nonReducedFinalMutants.size());
         result.addValue("secondorder-reduced", reducedFinalMutants.size());
         
-        CSVWriter writer = new CSVWriter("higherorder",",");
+        CSVFileWriter writer = new CSVFileWriter("higherorder",",");
         writer.write(result);
     }
 
@@ -109,8 +109,8 @@ public class HigherOrderMutationExperiment extends Runner {
 
             addRemover(new PrimaryKeyColumnNotNullRemover());
             addRemover(new PrimaryKeyColumnsUniqueRemover());
-            addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalanceWithNotNullCheckChecker(), schema));
-            addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalanceWithNotNullCheckChecker()));
+            addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceWithNotNullCheckChecker(), schema));
+            addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker()));
         }
     }
     

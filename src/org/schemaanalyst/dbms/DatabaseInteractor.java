@@ -3,6 +3,7 @@ package org.schemaanalyst.dbms;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
@@ -10,15 +11,15 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 
 /**
  * <p>
- * A DatabaseInteractor object is used to communicate with a database in some 
- * DBMS. This encapsulates the various JDBC calls required to submit statements 
+ * A DatabaseInteractor object is used to communicate with a database in some
+ * DBMS. This encapsulates the various JDBC calls required to submit statements
  * to the database and handles the possible exceptions.
  * </p>
- * 
+ *
  * <p>
- * This class can be used for most DBMSs with JDBC drivers, however specialised 
- * subclasses are provided for some DBMSs where behaviour may need to be 
- * handled differently.
+ * This class can be used for most DBMSs with JDBC drivers, however specialised
+ * subclasses are provided for some DBMSs where behaviour may need to be handled
+ * differently.
  * </p>
  */
 public abstract class DatabaseInteractor {
@@ -83,7 +84,9 @@ public abstract class DatabaseInteractor {
             }
             LOGGER.log(Level.FINER, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
-            returnCount = statement.executeUpdate(command);
+            synchronized (this) {
+                returnCount = statement.executeUpdate(command);
+            }
             LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
         } catch (SQLException e) {
             // if this command is a create table statement and it through 
@@ -120,11 +123,13 @@ public abstract class DatabaseInteractor {
 
             // run the command and capture the number of modified
             // values or any other type of status return code
-            boolean result = statement.execute(command);
+            synchronized (this) {
+                boolean result = statement.execute(command);
 
-            // this is a U,I,D that has an update count
-            if (result == UPDATE_COUNT) {
-                returnCount = statement.getUpdateCount();
+                // this is a U,I,D that has an update count
+                if (result == UPDATE_COUNT) {
+                    returnCount = statement.getUpdateCount();
+                }
             }
         } catch (SQLException e) {
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
@@ -138,40 +143,66 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
-    public Integer executeUpdatesAsTransaction(String... commands) {
+    public Integer executeCreatesAsTransaction(List<String> commands, int transactionSize) {
+        return executeCreatesOrDropsAsTransaction(commands, transactionSize);
+    }
+    
+    public Integer executeDropsAsTransaction(List<String> commands, int transactionSize) {
+        return executeCreatesOrDropsAsTransaction(commands, transactionSize);
+    }
+    
+    protected Integer executeCreatesOrDropsAsTransaction(List<String> commands, int transactionSize) {
+        Integer result = START;
+        for (int i = 0; i * transactionSize < commands.size(); i++) {
+            int lower = i * transactionSize;
+            int upper = (i + 1) * transactionSize;
+            if (upper > commands.size()) {
+                upper = commands.size();
+            }
+            result = executeUpdatesAsTransaction(commands.subList(lower, upper));
+            if (result == 1) {
+                return result;
+            }
+        }
+        return result;
+    }
+    
+    public Integer executeUpdatesAsTransaction(Iterable<String> commands) {
         Integer returnCount = START;
         try {
             if (!initialized) {
                 initializeDatabaseConnection();
             }
             LOGGER.log(Level.FINE, "Starting transaction");
-            connection.setAutoCommit(false);
+            synchronized (this) {
+                connection.setAutoCommit(false);
 
-            for (String command : commands) {
-                try {
-                    LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
-                    Statement statement = connection.createStatement();
-                    returnCount = statement.executeUpdate(command);
-                    LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
-                } catch (SQLException e) {
-                    LOGGER.log(Level.FINE, "Statement failed: " + command, e);
-                    returnCount = START;
-                    connection.rollback();
-                    break;
+                for (String command : commands) {
+                    try {
+                        LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
+                        Statement statement = connection.createStatement();
+                        returnCount = statement.executeUpdate(command);
+                        LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
+                    } catch (SQLException e) {
+                        LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                        returnCount = START;
+                        connection.rollback();
+                        break;
+                    }
                 }
+
+                LOGGER.log(Level.FINE, "Ending transaction");
+                connection.commit();
+                connection.setAutoCommit(true);
             }
-            
-            LOGGER.log(Level.FINE, "Ending transaction");
-            connection.commit();
-            connection.setAutoCommit(true);
 
         } catch (SQLException e) {
             LOGGER.log(Level.INFO, "Transaction failed: {0}", e.getMessage());
         }
         return returnCount;
     }
-    
-    public Integer executeUpdatesAsBatch(String... commands) {
+
+    public Integer executeUpdatesAsBatch(Iterable<String> commands) {
         Integer returnCount = START;
         try {
             if (!initialized) {
@@ -187,11 +218,13 @@ public abstract class DatabaseInteractor {
                     LOGGER.log(Level.FINE, "Statement failed: " + command, e);
                 }
             }
-            int[] batchResults = statement.executeBatch();
-            for (int i : batchResults) {
-                if (i == 1) {
-                    returnCount = 1;
-                    break;
+            synchronized (this) {
+                int[] batchResults = statement.executeBatch();
+                for (int i : batchResults) {
+                    if (i == 1) {
+                        returnCount = 1;
+                        break;
+                    }
                 }
             }
             LOGGER.log(Level.FINE, "Batch succeeded: {0}", returnCount);
@@ -199,5 +232,13 @@ public abstract class DatabaseInteractor {
             LOGGER.log(Level.INFO, "Batch failed: {0}", e.getMessage());
         }
         return returnCount;
+    }
+    
+    /**
+     * @TODO This method should be removed and is for debugging only.
+     * @return The number of tables in a database
+     */
+    public int getTableCount() {
+        return 0;
     }
 }

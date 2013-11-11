@@ -73,6 +73,7 @@
 			<structure name="SchemaAnalyst">
 				<classfiles>
 					<fileset dir="build">
+						<exclude name="deprecated/**" />
 						<exclude name="dbmonster/**" />
 						<exclude name="paper/**" />
 						<exclude name="parsedcasestudy/**" />
@@ -91,7 +92,7 @@
 
 	<!-- BUNDLE TASK - "ant bundle" -->
 	<target name="bundle" depends="compile">
-		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" excludes="src/**, results/**, dist/**, config/*.local">
+		<zip destfile="${dist_dir}/${dist_name}Bundle.zip" basedir="" includes="build/**, lib/**,  scripts/**, config/*" excludes="config/*.local">
 			<exclude name="${dist_dir}/${dist_name}Bundle.zip"/>
 		</zip>
 	</target>

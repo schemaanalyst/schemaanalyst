@@ -35,6 +35,7 @@ public class CCInExpressionRHSListExpressionElementR implements
 		this.schema = schema;
 	}
 
+    @Override
 	public List<Mutant<Schema>> mutate() {
 		List<Mutant<Schema>> mutants = new ArrayList<>();
 
@@ -50,6 +51,10 @@ public class CCInExpressionRHSListExpressionElementR implements
 				supplier);
 		mutants.addAll(inExpressionListElementRemover.mutate());
 
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
+        
 		return mutants;
 	}
 }

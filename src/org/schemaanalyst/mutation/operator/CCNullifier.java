@@ -31,6 +31,7 @@ public class CCNullifier implements MutantProducer<Schema> {
 		this.schema = schema;
 	}
 
+    @Override
 	public List<Mutant<Schema>> mutate() {
 		List<Mutant<Schema>> mutants = new ArrayList<>();
 
@@ -44,6 +45,10 @@ public class CCNullifier implements MutantProducer<Schema> {
 				supplier);
 		mutants.addAll(nullifier.mutate());
 
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
+        
 		return mutants;
 	}
 }

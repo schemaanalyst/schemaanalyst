@@ -36,6 +36,7 @@ public class UCColumnARE implements MutantProducer<Schema> {
         this.schema = schema;
     }
 
+    @Override
     public List<Mutant<Schema>> mutate() {
         // Create the collection in which to store created mutants.
         List<Mutant<Schema>> mutants = new ArrayList<>();
@@ -79,6 +80,10 @@ public class UCColumnARE implements MutantProducer<Schema> {
                 columnsWithAlternativesSupplier);
         mutants.addAll(columnExchanger.mutate());
 
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
+        
         return mutants;
     }
 }

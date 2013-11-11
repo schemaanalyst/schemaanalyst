@@ -45,6 +45,7 @@ public class DBMSFactory {
         List<String> choices = new ArrayList<>();
         choices.add("Postgres");
         choices.add("SQLite");
+        choices.add("HyperSQL");
         return choices;
     }
 }

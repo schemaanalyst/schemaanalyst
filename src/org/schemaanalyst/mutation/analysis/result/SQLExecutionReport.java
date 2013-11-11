@@ -1,8 +1,7 @@
 package org.schemaanalyst.mutation.analysis.result;
 
-import java.util.List;
 import java.util.ArrayList;
-
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
 /**

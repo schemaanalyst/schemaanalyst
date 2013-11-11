@@ -35,6 +35,10 @@ public class MutationPipeline<A> implements MutantProducer<A> {
 	public void addRemover(MutantRemover<A> reducer) {
 		remover.add(reducer);
 	}
+    
+    protected void addRemoverToFront(MutantRemover<A> reducer) {
+        remover.add(0, reducer);
+    }
 		
 	@Override
 	public List<Mutant<A>> mutate() {

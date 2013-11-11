@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
@@ -48,6 +49,26 @@ public class ConstraintCovererFactory {
                                             				String cellRandomisationProfile,
                                             				long seed,
                                             				int maxEvaluations) {
+        return instantiate(name, schema, dbms, cellRandomisationProfile, seed, maxEvaluations, DEFAULT_NUM_SATISFY_ROWS, DEFAULT_NUM_NEGATE_ROWS);
+    }
+    
+    @SuppressWarnings("unchecked")
+	public static DataGenerator<ConstraintGoal> instantiate(String name,
+                                            				Schema schema,
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations,
+                                                            int satisfyRows,
+                                                            int negateRows) {
+        //TODO: Convert this method to use String switch rather than reflection
+        
+        // Emit warning message for ignored parameters
+        if (name.equals("naiveRandom")) {
+            Logger logger = Logger.getLogger(ConstraintCovererFactory.class.getName());
+            logger.warning("Values for 'satisfyRows' and 'negateRows' are ignored when using 'naiveRandom'");
+        }
+        
         // get hold of the method objects of this class 
         Class<ConstraintCovererFactory> clazz = ConstraintCovererFactory.class;
         Method methods[] = clazz.getMethods();
@@ -60,7 +81,7 @@ public class ConstraintCovererFactory {
         // find the method for instantiating the right data generator
         for (Method m : methods) {
             if (m.getName().equals(name)) {                
-                Object[] args = {schema, dbms, cellRandomisationProfile, seed, maxEvaluations};
+                Object[] args = {schema, dbms, cellRandomisationProfile, seed, maxEvaluations, satisfyRows, negateRows};
                 try {
 					return (DataGenerator<ConstraintGoal>) m.invoke(null, args);
 				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
@@ -91,10 +112,12 @@ public class ConstraintCovererFactory {
     /*****************************************************************************************************************************/
     
     public static SearchConstraintCoverer alternatingValue(Schema schema,
-                                                           DBMS dbms,
-                                                           String cellRandomisationProfile,
-                                                           long seed,
-                                                           int maxEvaluations) {
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations,
+                                                            int satisfyRows,
+                                                            int negateRows) {
     	Random random = new SimpleRandom(seed);    
     	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
     	
@@ -110,15 +133,17 @@ public class ConstraintCovererFactory {
         avs.setTerminationCriterion(terminationCriterion);
 
         return new SearchConstraintCoverer(avs, schema, dbms, 
-        		                           DEFAULT_NUM_SATISFY_ROWS, 
-        		                           DEFAULT_NUM_NEGATE_ROWS);
+        		                           satisfyRows, 
+        		                           negateRows);
     }
 
     public static SearchConstraintCoverer alternatingValueDefaults(Schema schema,
-                                                                   DBMS dbms,
-                                                                   String cellRandomisationProfile,
-                                                                   long seed,
-                                                                   int maxEvaluations) {
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations,
+                                                            int satisfyRows,
+                                                            int negateRows) {
     	Random random = new SimpleRandom(seed);    
     	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
     	
@@ -134,8 +159,8 @@ public class ConstraintCovererFactory {
         avs.setTerminationCriterion(terminationCriterion);
 
         return new SearchConstraintCoverer(avs, schema, dbms, 
-        		                           DEFAULT_NUM_SATISFY_ROWS, 
-        		                           DEFAULT_NUM_NEGATE_ROWS);
+        		                           satisfyRows, 
+        		                           negateRows);
     }
 
     
@@ -146,10 +171,12 @@ public class ConstraintCovererFactory {
     /*****************************************************************************************************************************/
     
     public static SearchConstraintCoverer random(Schema schema,
-                                                 DBMS dbms,
-                                                 String cellRandomisationProfile,
-                                                 long seed,
-                                                 int maxEvaluations) {
+                                                    DBMS dbms,
+                                                    String cellRandomisationProfile,
+                                                    long seed,
+                                                    int maxEvaluations,
+                                                    int satisfyRows,
+                                                    int negateRows) {
     	Random random = new SimpleRandom(seed);    
     	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
     	
@@ -163,15 +190,17 @@ public class ConstraintCovererFactory {
         rs.setTerminationCriterion(terminationCriterion);
 
         return new SearchConstraintCoverer(rs, schema, dbms, 
-        								   DEFAULT_NUM_SATISFY_ROWS, 
-        								   DEFAULT_NUM_NEGATE_ROWS);
+        								   satisfyRows, 
+        								   negateRows);
     }
     
     public static SearchConstraintCoverer directedRandom(Schema schema,
-                                                         DBMS dbms,
-                                                         String cellRandomisationProfile,
-                                                         long seed,
-                                                         int maxEvaluations) {
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations,
+                                                            int satisfyRows,
+                                                            int negateRows) {
         Random random = new SimpleRandom(seed);    
         CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
 
@@ -189,15 +218,17 @@ public class ConstraintCovererFactory {
         drs.setTerminationCriterion(terminationCriterion);
 
         return new SearchConstraintCoverer(drs, schema, dbms, 
-                                           DEFAULT_NUM_SATISFY_ROWS, 
-                                           DEFAULT_NUM_NEGATE_ROWS);
+                                           satisfyRows, 
+                                           negateRows);
     }    
     
     public static NaiveRandomConstraintCoverer naiveRandom(Schema schema,
-                                                           DBMS dbms,
-                                                           String cellRandomisationProfile,
-                                                           long seed,
-                                                           int maxEvaluations) {
+                                            				DBMS dbms,
+                                            				String cellRandomisationProfile,
+                                            				long seed,
+                                            				int maxEvaluations,
+                                                            int satisfyRows,
+                                                            int negateRows) {
     	Random random = new SimpleRandom(seed);    
     	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
     	

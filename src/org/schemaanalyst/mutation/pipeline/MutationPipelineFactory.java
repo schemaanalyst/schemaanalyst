@@ -4,9 +4,11 @@ package org.schemaanalyst.mutation.pipeline;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
+import org.apache.commons.lang3.reflect.MethodUtils;
 
 /**
  * <p>
@@ -24,6 +26,7 @@ public class MutationPipelineFactory {
      * @param <A> The type of artefact to be mutated
      * @param name The fully qualified pipeline class name
      * @param artifact The artefact to be mutated
+     * @param dbms The DBMS being used
      * @return The instantiated pipeline
      * @throws ClassNotFoundException
      * @throws InstantiationException
@@ -31,7 +34,7 @@ public class MutationPipelineFactory {
      * @throws NoSuchMethodException
      * @throws InvocationTargetException 
      */
-    public static <A> MutationPipeline<A> instantiate(String name, A artifact) throws ClassNotFoundException,
+    public static <A> MutationPipeline<A> instantiate(String name, A artifact, String dbms) throws ClassNotFoundException,
             InstantiationException,
             IllegalAccessException,
             NoSuchMethodException,
@@ -44,7 +47,12 @@ public class MutationPipelineFactory {
         String className = "org.schemaanalyst.mutation.pipeline." + name + "Pipeline";
         Class<MutationPipeline<A>> pipelineClass = (Class<MutationPipeline<A>>) Class.forName(className);
         Constructor<MutationPipeline<A>> constructor = ConstructorUtils.getMatchingAccessibleConstructor(pipelineClass, artifact.getClass());
-        return constructor.newInstance(artifact);
+        MutationPipeline<A> newInstance = constructor.newInstance(artifact);
+        Method dbmsSpecific = MethodUtils.getAccessibleMethod(pipelineClass, "addDBMSSpecificRemovers", String.class);
+        if (dbmsSpecific != null) {
+            dbmsSpecific.invoke(newInstance, dbms);
+        }
+        return newInstance;
     }
 
     /**

@@ -29,13 +29,13 @@ import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
  *
  * @author Chris J. Wright
  */
-public class SchemaEquivalanceWithNotNullCheckChecker extends SchemaEquivalenceChecker {
+public class SchemaEquivalenceWithNotNullCheckChecker extends SchemaEquivalenceChecker {
 
-    public SchemaEquivalanceWithNotNullCheckChecker() {
+    public SchemaEquivalenceWithNotNullCheckChecker() {
         super();
     }
 
-    public SchemaEquivalanceWithNotNullCheckChecker(TableEquivalenceChecker tableEquivalenceChecker, ColumnEquivalenceChecker columnEquivalenceChecker, PrimaryKeyEquivalenceChecker primaryKeyEquivalenceChecker, ForeignKeyEquivalenceChecker foreignKeyEquivalenceChecker, UniqueEquivalenceChecker uniqueEquivalenceChecker, CheckEquivalenceChecker checkEquivalenceChecker, NotNullEquivalenceChecker notNullEquivalenceChecker) {
+    public SchemaEquivalenceWithNotNullCheckChecker(TableEquivalenceChecker tableEquivalenceChecker, ColumnEquivalenceChecker columnEquivalenceChecker, PrimaryKeyEquivalenceChecker primaryKeyEquivalenceChecker, ForeignKeyEquivalenceChecker foreignKeyEquivalenceChecker, UniqueEquivalenceChecker uniqueEquivalenceChecker, CheckEquivalenceChecker checkEquivalenceChecker, NotNullEquivalenceChecker notNullEquivalenceChecker) {
         super(tableEquivalenceChecker, columnEquivalenceChecker, primaryKeyEquivalenceChecker, foreignKeyEquivalenceChecker, uniqueEquivalenceChecker, checkEquivalenceChecker, notNullEquivalenceChecker);
     }
 
@@ -100,7 +100,7 @@ public class SchemaEquivalanceWithNotNullCheckChecker extends SchemaEquivalenceC
      * 
      * @param a Schema a
      * @param b Schema b
-     * @return 
+     * @return If all excess NOT NULLs have equivalent CHECKs
      */
     private boolean hasEquivalentCheck(Schema a, Schema b) {
         // Find which direction the difference is in

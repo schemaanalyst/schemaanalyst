@@ -7,6 +7,8 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
@@ -14,7 +16,7 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 
 /**
  * <p>
- * A {@link DatabaseInteractor} object used to communicate with a database in an 
+ * A {@link DatabaseInteractor} object used to communicate with a database in an
  * SQLite database.
  * </p>
  */
@@ -43,7 +45,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             File sqliteDirectory = new File(locationConfiguration.getDatabaseDir()
                     + File.separator + databaseConfiguration.getSqlitePath());
             if (sqliteDirectory.exists()) {
-                LOGGER.log(Level.WARNING, "Database folder already exists: {0}", sqliteDirectory.getPath());
+                LOGGER.log(Level.CONFIG, "Database folder already exists: {0}", sqliteDirectory.getPath());
             }
             Files.createDirectories(sqliteDirectory.toPath());
 
@@ -68,6 +70,23 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             initialized = true;
         } catch (ClassNotFoundException | IOException | SQLException ex) {
             throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
+    public int getTableCount() {
+        try {
+            if (!initialized) {
+                initializeDatabaseConnection();
+            }
+            Statement statement = connection.createStatement();
+            try (ResultSet resultSet = statement.executeQuery("SELECT COUNT(*) FROM sqlite_master WHERE type='table';")) {
+                resultSet.next();
+                int result = resultSet.getInt(1);
+                return result;
+            }
+        } catch (SQLException ex) {
+            return -1;
         }
     }
 }

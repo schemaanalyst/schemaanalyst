@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author Chris J. Wright
  */
 public class CSVResult {
-    private LinkedHashMap<String, String> results;
+    private LinkedHashMap<String, Object> results;
 
     /**
      * Default constructor.
@@ -31,7 +31,7 @@ public class CSVResult {
      * @return The CSVResult for chaining.
      */
     public CSVResult addValue(String attribute, Object value) {
-        results.put(attribute, value.toString());
+        results.put(attribute, value);
         return this;
     }
     
@@ -40,7 +40,7 @@ public class CSVResult {
      * 
      * @return The values.
      */
-    public Map<String, String> getValues() {
+    public Map<String, Object> getValues() {
         return Collections.unmodifiableMap(results);
     }
     

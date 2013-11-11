@@ -7,6 +7,7 @@ import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.util.tuple.Pair;
 
 /**
  * Represents foreign key constraints.
@@ -151,6 +152,35 @@ public class ForeignKeyConstraint extends MultiColumnConstraint {
      */
     public List<Column> getReferenceColumns() {
         return new ArrayList<>(referenceColumns);
+    }
+    
+    /**
+     * Gets the pairs of columns of the FOREIGN KEY.
+     * 
+     * @return A list containing the column pairings.
+     */
+    public List<Pair<Column>> getColumnPairs() {
+        List<Pair<Column>> pairs = new ArrayList<>(columns.size());
+        for (int i = 0; i < columns.size(); i++) {
+            pairs.add(new Pair<>(columns.get(i), referenceColumns.get(i)));
+        }
+        return pairs;
+    }
+    
+    /**
+     * Sets the local and reference columns of the FOREIGN KEY using a list of pairs.
+     * 
+     * @param pairs A list containing the column pairings.
+     */
+    public void setColumnPairs(List<Pair<Column>> pairs) {
+        List<Column> local = new ArrayList<>(pairs.size());
+        List<Column> reference = new ArrayList<>(pairs.size());
+        for (Pair<Column> pair : pairs) {
+            local.add(pair.getFirst());
+            reference.add(pair.getSecond());
+        }
+        setColumns(local);
+        setReferenceColumns(reference);
     }
 
     /**

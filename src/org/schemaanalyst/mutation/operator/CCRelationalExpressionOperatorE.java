@@ -51,6 +51,10 @@ public class CCRelationalExpressionOperatorE implements MutantProducer<Schema> {
 				supplier);
 		mutants.addAll(exchanger.mutate());
 
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
+        
 		return mutants;
 	}
 }
