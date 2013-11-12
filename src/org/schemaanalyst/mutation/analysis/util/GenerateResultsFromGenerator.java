@@ -84,6 +84,9 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         stopWatch.start();
         TestSuite<ConstraintGoal> testSuite = dataGenerator.generate();
         stopWatch.stop();
+        int satisfyInserts = 0;
+        int negateInserts = 0;
+        int unknownInserts = 0;
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
             Boolean satisfying = null;
             if (!testCase.getCoveredElements().isEmpty()) {
@@ -92,10 +95,17 @@ public class GenerateResultsFromGenerator extends GenerateResults {
             for (String stmt : sqlWriter.writeInsertStatements(schema, testCase.getData())) {
                 MixedPair<String, Boolean> pair = new MixedPair<>(stmt, satisfying);
                 insertStms.add(pair);
+                if (satisfying == null) {
+                    unknownInserts++;
+                } else if (satisfying) {
+                    satisfyInserts++;
+                } else {
+                    negateInserts++;
+                }
             }
         }
         if (writeReport) {
-            writeReport(dataGenerator);
+            writeReport(dataGenerator, insertStms, satisfyInserts, negateInserts, unknownInserts);
         }
         ((SearchConstraintCoverer)dataGenerator).getEvaluations();
         return insertStms;
@@ -132,7 +142,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         }
     }
 
-    private void writeReport(DataGenerator<ConstraintGoal> dataGenerator) {
+    private void writeReport(DataGenerator<ConstraintGoal> dataGenerator, List<MixedPair<String,Boolean>> insertStmts, int satisfyInserts, int negateInserts, int unknownInserts) {
         CSVResult result = new CSVResult();
         result.addValue("casestudy", casestudy);
         result.addValue("dataGenerator", this.datagenerator);
@@ -148,6 +158,10 @@ public class GenerateResultsFromGenerator extends GenerateResults {
             result.addValue("evaluations", "NA");
             result.addValue("restarts", "NA");
         }
+        result.addValue("inserts", insertStmts.size());
+        result.addValue("satisfyinserts", satisfyInserts);
+        result.addValue("negateinserts", negateInserts);
+        result.addValue("unknowninserts", unknownInserts);
         result.addValue("timetaken", stopWatch.getTime());
         CSVWriter writer = new CSVFileWriter(reportLocation, ",");
         writer.write(result);
