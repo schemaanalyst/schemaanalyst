@@ -87,7 +87,15 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         int satisfyInserts = 0;
         int negateInserts = 0;
         int unknownInserts = 0;
+        int evaluations = 0;
+        int restarts = 0;
+        int i = 0;
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
+            System.out.println("testCase "+i++);
+            System.out.println("\ttestCase.getNumEvaluations() = " + testCase.getNumEvaluations());
+            System.out.println("\ttestCase.getNumRestarts() = " + testCase.getNumRestarts());
+            evaluations += testCase.getNumEvaluations();
+            restarts += testCase.getNumRestarts();
             Boolean satisfying = null;
             if (!testCase.getCoveredElements().isEmpty()) {
                 satisfying = testCase.getCoveredElements().get(0).getSatisfy();
@@ -105,9 +113,8 @@ public class GenerateResultsFromGenerator extends GenerateResults {
             }
         }
         if (writeReport) {
-            writeReport(dataGenerator, insertStms, satisfyInserts, negateInserts, unknownInserts);
+            writeReport(insertStms, satisfyInserts, negateInserts, unknownInserts, evaluations, restarts);
         }
-        ((SearchConstraintCoverer)dataGenerator).getEvaluations();
         return insertStms;
     }
 
@@ -142,7 +149,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         }
     }
 
-    private void writeReport(DataGenerator<ConstraintGoal> dataGenerator, List<MixedPair<String,Boolean>> insertStmts, int satisfyInserts, int negateInserts, int unknownInserts) {
+    private void writeReport(List<MixedPair<String,Boolean>> insertStmts, int satisfyInserts, int negateInserts, int unknownInserts, int numEvaluations, int numRestarts) {
         CSVResult result = new CSVResult();
         result.addValue("casestudy", casestudy);
         result.addValue("dataGenerator", this.datagenerator);
@@ -150,14 +157,8 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         result.addValue("randomprofile", randomprofile);
         result.addValue("satisfyrows", satisfyrows);
         result.addValue("negaterows", negaterows);
-        if (dataGenerator instanceof SearchConstraintCoverer) {
-            SearchConstraintCoverer searchDataGenerator = (SearchConstraintCoverer) dataGenerator;
-            result.addValue("evaluations", searchDataGenerator.getEvaluations());
-            result.addValue("restarts", searchDataGenerator.getRestarts());
-        } else {
-            result.addValue("evaluations", "NA");
-            result.addValue("restarts", "NA");
-        }
+        result.addValue("evaluations", numEvaluations);
+        result.addValue("restarts", numRestarts);
         result.addValue("inserts", insertStmts.size());
         result.addValue("satisfyinserts", satisfyInserts);
         result.addValue("negateinserts", negateInserts);
