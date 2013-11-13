@@ -89,13 +89,7 @@ public class GenerateResultsFromGenerator extends GenerateResults {
         int unknownInserts = 0;
         int evaluations = 0;
         int restarts = 0;
-        int i = 0;
         for (TestCase<ConstraintGoal> testCase : testSuite.getUsefulTestCases()) {
-            System.out.println("testCase "+i++);
-            System.out.println("\ttestCase.getNumEvaluations() = " + testCase.getNumEvaluations());
-            System.out.println("\ttestCase.getNumRestarts() = " + testCase.getNumRestarts());
-            evaluations += testCase.getNumEvaluations();
-            restarts += testCase.getNumRestarts();
             Boolean satisfying = null;
             if (!testCase.getCoveredElements().isEmpty()) {
                 satisfying = testCase.getCoveredElements().get(0).getSatisfy();
@@ -111,6 +105,10 @@ public class GenerateResultsFromGenerator extends GenerateResults {
                     negateInserts++;
                 }
             }
+        }
+        for (TestCase<ConstraintGoal> testCase : testSuite.getTestCases()) {
+            evaluations += testCase.getNumEvaluations();
+            restarts += testCase.getNumRestarts();
         }
         if (writeReport) {
             writeReport(insertStms, satisfyInserts, negateInserts, unknownInserts, evaluations, restarts);
