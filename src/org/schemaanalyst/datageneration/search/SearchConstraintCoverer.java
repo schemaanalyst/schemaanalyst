@@ -79,6 +79,9 @@ public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
             }
         }
 
+        testCase.setNumEvaluations(search.getNumEvaluations());
+        testCase.setNumRestarts(search.getNumRestarts());
+        
         return testCase;
     }
 
@@ -103,13 +106,5 @@ public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
         }
         
         return testCase;
-    }
-    
-    public int getEvaluations() {
-        return search.getNumEvaluations();
-    }
-    
-    public int getRestarts() {
-        return search.getNumRestarts();
     }
 }

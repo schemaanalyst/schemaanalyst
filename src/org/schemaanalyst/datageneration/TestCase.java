@@ -11,6 +11,7 @@ public class TestCase<G> {
 	private Data data;
 	private List<G> coveredElements;
 	private long timeToGenerate, startTime, endTime;
+	private int numEvaluations, numRestarts; 
 	
 	public TestCase(String description) {
 		this.description = description;
@@ -55,5 +56,21 @@ public class TestCase<G> {
 	
 	public String getDescription() {
 		return description;
-	}	
+	}
+
+	public int getNumEvaluations() {
+		return numEvaluations;
+	}
+
+	public void setNumEvaluations(int numEvaluations) {
+		this.numEvaluations = numEvaluations;
+	}
+
+	public int getNumRestarts() {
+		return numRestarts;
+	}
+
+	public void setNumRestarts(int numRestarts) {
+		this.numRestarts = numRestarts;
+	}
 }
