@@ -54,8 +54,6 @@ public class IntDataType extends DataType implements Signed {
         if (getClass() != obj.getClass())
             return false;
         IntDataType other = (IntDataType) obj;
-        if (signed != other.signed)
-            return false;
-        return true;
+        return signed == other.signed;
     }
 }

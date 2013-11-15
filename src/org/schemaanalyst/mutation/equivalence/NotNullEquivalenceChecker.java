@@ -51,11 +51,7 @@ public class NotNullEquivalenceChecker extends EquivalenceChecker<NotNullConstra
             return false;
         } else if (!a.getTable().getIdentifier().equals(b.getTable().getIdentifier())) {
             return false;
-        } else if (!a.getColumn().getIdentifier().equals(b.getColumn().getIdentifier())) {
-            return false;
-        } else {
-            return true;
-        }
+        } else return a.getColumn().getIdentifier().equals(b.getColumn().getIdentifier());
     }
     
 }

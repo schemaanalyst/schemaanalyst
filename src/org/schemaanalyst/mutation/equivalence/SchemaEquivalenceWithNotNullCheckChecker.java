@@ -61,12 +61,7 @@ public class SchemaEquivalenceWithNotNullCheckChecker extends SchemaEquivalenceC
         } else if (!checkEquivalenceChecker.areEquivalent(a.getCheckConstraints(), b.getCheckConstraints())
                 && !hasEquivalentNotNull(a, b)) {
             return false;
-        } else if (!notNullEquivalenceChecker.areEquivalent(a.getNotNullConstraints(), b.getNotNullConstraints())
-                && !hasEquivalentCheck(a, b)) {
-            return false;
-        } else {
-            return true;
-        }
+        } else return notNullEquivalenceChecker.areEquivalent(a.getNotNullConstraints(), b.getNotNullConstraints()) || hasEquivalentCheck(a, b);
     }
 
     /**

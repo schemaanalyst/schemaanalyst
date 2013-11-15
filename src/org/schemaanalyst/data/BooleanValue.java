@@ -54,9 +54,7 @@ public class BooleanValue extends Value {
         if (getClass() != obj.getClass())
             return false;
         BooleanValue other = (BooleanValue) obj;
-        if (value != other.value)
-            return false;
-        return true;
+        return value == other.value;
     }
 
     @Override

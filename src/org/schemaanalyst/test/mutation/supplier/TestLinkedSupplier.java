@@ -50,9 +50,7 @@ public class TestLinkedSupplier {
 					return false;
 			} else if (!label.equals(other.label))
 				return false;
-			if (mutated != other.mutated)
-				return false;
-			return true;
+			return mutated == other.mutated;
 		}
 
 		public String toString() {

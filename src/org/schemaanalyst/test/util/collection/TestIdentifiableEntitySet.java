@@ -41,9 +41,7 @@ public class TestIdentifiableEntitySet {
             if (getClass() != obj.getClass())
                 return false;
             Person other = (Person) obj;
-            if (age != other.age)
-                return false;
-            return true;
+            return age == other.age;
         }
     }
     

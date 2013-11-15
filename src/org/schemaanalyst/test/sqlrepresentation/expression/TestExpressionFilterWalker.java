@@ -46,10 +46,7 @@ public class TestExpressionFilterWalker {
 	
 			@Override
 			public boolean accept(Expression expression) {
-				if (expression instanceof ConstantExpression) {
-					return true;
-				}
-				return false;
+				return expression instanceof ConstantExpression;
 			}
 				
 		};

@@ -45,11 +45,7 @@ public class SQLiteRemover extends MutantRemover<Schema>{
         if (pkey != null) {
             List<Column> pkeyColumns = pkey.getColumns();
             if (columns.size() == pkeyColumns.size()) {
-                if (pkeyColumns.containsAll(columns)) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return pkeyColumns.containsAll(columns);
             } else {
                 return false;
             }

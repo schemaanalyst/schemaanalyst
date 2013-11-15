@@ -63,10 +63,7 @@ public class TimestampValue extends NumericValue {
         if (!super.equals(obj)) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        return true;
+        return getClass() == obj.getClass();
     }
 
     @Override

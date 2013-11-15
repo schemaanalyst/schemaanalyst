@@ -181,9 +181,7 @@ public class StringValue extends Value
                 return false;
         } else if (!characters.equals(other.characters))
             return false;
-        if (maxLength != other.maxLength)
-            return false;
-        return true;
+        return maxLength == other.maxLength;
     }
 
     @Override

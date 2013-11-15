@@ -141,9 +141,7 @@ public class BetweenExpression extends ExpressionTree {
                 return false;
         } else if (!subject.equals(other.subject))
             return false;
-        if (symmetric != other.symmetric)
-            return false;
-        return true;
+        return symmetric == other.symmetric;
     }
 
     @Override

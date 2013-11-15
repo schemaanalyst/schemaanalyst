@@ -95,10 +95,6 @@ public class SchemaEquivalenceChecker extends EquivalenceChecker<Schema> {
             return false;
         } else if (!checkEquivalenceChecker.areEquivalent(a.getCheckConstraints(), b.getCheckConstraints())) {
             return false;
-        } else if (!notNullEquivalenceChecker.areEquivalent(a.getNotNullConstraints(), b.getNotNullConstraints())) {
-            return false;
-        } else {
-            return true;
-        }
+        } else return notNullEquivalenceChecker.areEquivalent(a.getNotNullConstraints(), b.getNotNullConstraints());
     }
 }

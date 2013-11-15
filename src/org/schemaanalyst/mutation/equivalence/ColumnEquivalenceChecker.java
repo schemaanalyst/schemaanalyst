@@ -37,11 +37,7 @@ public class ColumnEquivalenceChecker extends EquivalenceChecker<Column> {
             return true;
         } else if (!a.getIdentifier().equals(b.getIdentifier())) {
             return false;
-        } else if (!a.getDataType().equals(b.getDataType())) {
-            return false;
-        } else {
-            return true;
-        }
+        } else return a.getDataType().equals(b.getDataType());
     }
     
 }
