@@ -37,7 +37,7 @@ public class TestNSelectiveRemover {
     @Test
     public void testNoMutantsNoRemoval() {
         NSelectiveRemover<Integer> remover = new NSelectiveRemover<>(0);
-        List<Mutant<Integer>> result = remover.removeMutants(new ArrayList<Mutant<Integer>>());
+        List<Mutant<Integer>> result = remover.removeMutants(new ArrayList<>());
         assertEquals("Removing mutants from 0 mutators should produce 0 mutants"
                 + " if the list of mutants is empty", 0, result.size());
     }
@@ -45,7 +45,7 @@ public class TestNSelectiveRemover {
     @Test
     public void testNoMutantsOneRemoval() {
         NSelectiveRemover<Integer> remover = new NSelectiveRemover<>(1);
-        List<Mutant<Integer>> result = remover.removeMutants(new ArrayList<Mutant<Integer>>());
+        List<Mutant<Integer>> result = remover.removeMutants(new ArrayList<>());
         assertEquals("Removing mutants from 1 mutator should produce 0 mutants"
                 + " if the list of mutants is empty", 0, result.size());
     }

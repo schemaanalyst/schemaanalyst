@@ -13,7 +13,7 @@ public class TableDependencyOrderer {
         this.schema = schema;
         order = new ArrayList<>();
         for (Table table : tables) {
-            orderFrom(table, new ArrayList<Table>());
+            orderFrom(table, new ArrayList<>());
         }
         return order;
     }

@@ -148,7 +148,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
 
             Cell cell = row.getCell(column);
             String value = values[i].trim();
-            if (treatEmptyStringAsNull && value.equals("")) {
+            if (treatEmptyStringAsNull && value.isEmpty()) {
                 cell.setNull(true);
             } else {
                 setCellValue(cell, value.substring(1, value.length() - 1));
@@ -194,7 +194,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
 
             @Override
             public void visit(NumericValue value) {
-                if (valueString.equals("")) {
+                if (valueString.isEmpty()) {
                     fail = "Could not parse NumericValue \"" + valueString + "\"";
                 } else {
                     value.set(new BigDecimal(valueString));
@@ -232,7 +232,7 @@ public class ConstraintCoverageCalculator extends ConstraintEvaluator {
             }
         }
 
-        if (treatEmptyStringAsNull && valueString.equals("")) {
+        if (treatEmptyStringAsNull && valueString.isEmpty()) {
             cell.setNull(true);
         } else {
             ValueDispatcher vd = new ValueDispatcher();
