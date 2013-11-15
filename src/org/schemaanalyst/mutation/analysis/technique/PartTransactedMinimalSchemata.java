@@ -238,7 +238,7 @@ public class PartTransactedMinimalSchemata extends Runner {
 
         result.addValue("scorenumerator", (!quasiSchema) ? killed.size() : mutants.size());
         result.addValue("scoredenominator", mutants.size());
-        result.addValue("mutationpipeline", mutationPipeline);
+        result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("threads", 1);
         result.addValue("totaltime", timer.getTime(ExperimentTimer.TimingPoint.TOTAL_TIME));
         result.addValue("dropstime", timer.getTime(ExperimentTimer.TimingPoint.DROPS_TIME));

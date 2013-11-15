@@ -225,7 +225,7 @@ public class TransactedOriginal extends Runner {
 
         result.addValue("scorenumerator", killed);
         result.addValue("scoredenominator", mutants.size());
-        result.addValue("mutationpipeline", mutationPipeline);
+        result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("threads", 1);
         result.addValue("totaltime", timer.getTime(ExperimentTimer.TimingPoint.TOTAL_TIME));
         result.addValue("dropstime", timer.getTime(ExperimentTimer.TimingPoint.DROPS_TIME));

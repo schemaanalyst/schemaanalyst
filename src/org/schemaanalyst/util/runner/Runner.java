@@ -397,6 +397,10 @@ public abstract class Runner {
             for (String choice : choices) {
                 if (choice.equals(value)) {
                     foundMatch = true;
+                } else if (value.contains(":")) {
+                    if (value.split(":")[0].equals(choice)) {
+                        foundMatch = true;
+                    }
                 }
             }
             check(foundMatch,

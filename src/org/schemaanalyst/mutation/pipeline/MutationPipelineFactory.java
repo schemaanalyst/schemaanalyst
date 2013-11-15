@@ -20,9 +20,9 @@ import org.apache.commons.lang3.reflect.MethodUtils;
 public class MutationPipelineFactory {
 
     /**
-     * Instantiate a pipeline class with the given name, with a constructor 
+     * Instantiate a pipeline class with the given name, with a constructor
      * accepting the artefact instance to mutate.
-     * 
+     *
      * @param <A> The type of artefact to be mutated
      * @param name The fully qualified pipeline class name
      * @param artifact The artefact to be mutated
@@ -32,22 +32,32 @@ public class MutationPipelineFactory {
      * @throws InstantiationException
      * @throws IllegalAccessException
      * @throws NoSuchMethodException
-     * @throws InvocationTargetException 
+     * @throws InvocationTargetException
      */
     public static <A> MutationPipeline<A> instantiate(String name, A artifact, String dbms) throws ClassNotFoundException,
             InstantiationException,
             IllegalAccessException,
             NoSuchMethodException,
             InvocationTargetException {
-        if (!getPipelineChoices().contains(name)) {
+        if (!getPipelineChoices().contains(name) && !name.startsWith("Programmatic")) {
             throw new RuntimeException("Pipeline \"" + name + "\" is "
                     + "unrecognised or not supported");
         }
-
-        String className = "org.schemaanalyst.mutation.pipeline." + name + "Pipeline";
-        Class<MutationPipeline<A>> pipelineClass = (Class<MutationPipeline<A>>) Class.forName(className);
-        Constructor<MutationPipeline<A>> constructor = ConstructorUtils.getMatchingAccessibleConstructor(pipelineClass, artifact.getClass());
-        MutationPipeline<A> newInstance = constructor.newInstance(artifact);
+        MutationPipeline<A> newInstance;
+        Class<MutationPipeline<A>> pipelineClass;
+        if (name.startsWith("Programmatic")) {
+            String[] splitName = name.split(":");
+            String className = "org.schemaanalyst.mutation.pipeline." + splitName[0] + "Pipeline";
+            String producers = splitName[1];
+            pipelineClass = (Class<MutationPipeline<A>>) Class.forName(className);
+            Constructor<MutationPipeline<A>> constructor = ConstructorUtils.getMatchingAccessibleConstructor(pipelineClass, artifact.getClass(), String.class);
+            newInstance = constructor.newInstance(artifact, producers);
+        } else {
+            String className = "org.schemaanalyst.mutation.pipeline." + name + "Pipeline";
+            pipelineClass = (Class<MutationPipeline<A>>) Class.forName(className);
+            Constructor<MutationPipeline<A>> constructor = ConstructorUtils.getMatchingAccessibleConstructor(pipelineClass, artifact.getClass());
+            newInstance = constructor.newInstance(artifact);
+        }
         Method dbmsSpecific = MethodUtils.getAccessibleMethod(pipelineClass, "addDBMSSpecificRemovers", String.class);
         if (dbmsSpecific != null) {
             dbmsSpecific.invoke(newInstance, dbms);
@@ -57,7 +67,7 @@ public class MutationPipelineFactory {
 
     /**
      * Get a list of the permitted pipeline choices.
-     * 
+     *
      * @return The list of permitted pipeline choices
      */
     public static List<String> getPipelineChoices() {
@@ -66,6 +76,7 @@ public class MutationPipelineFactory {
         choices.add("ICST2013NoRemovers");
         choices.add("ICST2013NewSchema");
         choices.add("Mutation2013");
+        choices.add("Programmatic");
         return choices;
     }
 }
