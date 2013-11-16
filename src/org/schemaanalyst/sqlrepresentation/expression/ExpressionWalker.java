@@ -38,7 +38,7 @@ public class ExpressionWalker {
 	 */
 	public List<ExpressionPath> filter(ExpressionFilter filter) {
 		return filter(expression, filter, new ExpressionPath(),
-				new ArrayList<>());
+				new ArrayList<ExpressionPath>());
 	}
 
 	private List<ExpressionPath> filter(Expression expression,

@@ -11,6 +11,7 @@ import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
 import org.schemaanalyst.datageneration.TestCase;
 import org.schemaanalyst.datageneration.TestSuite;
+import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.csv.CSVFileWriter;
