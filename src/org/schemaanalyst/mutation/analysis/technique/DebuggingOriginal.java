@@ -33,9 +33,10 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * <p> {@link Runner} for the 'Original' style of mutation analysis. This
- * requires that the result generation tool has been run, as it bases the
- * mutation analysis on the results produced by it.
+ * <p>
+ * {@link Runner} for the 'Original' style of mutation analysis. This requires
+ * that the result generation tool has been run, as it bases the mutation
+ * analysis on the results produced by it.
  * </p>
  *
  * @author Chris J. Wright
@@ -88,9 +89,14 @@ public class DebuggingOriginal extends Runner {
      */
     @Parameter(value = "Whether to write the results to a database.")
     protected boolean resultsToDatabase = false;
-    
+    /**
+     * Whether to output the details of each mutant not killed.
+     */
+    @Parameter(value = "Whether to output the details of each mutant not killed.")
+    protected boolean outputNotKilled = false;
+
     @Override
-    public void task() {        
+    public void task() {
         // Setup
         if (inputfolder == null) {
             inputfolder = locationsConfiguration.getResultsDir() + File.separator + "generatedresults" + File.separator;
@@ -117,9 +123,9 @@ public class DebuggingOriginal extends Runner {
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         if (databaseInteractor.getTableCount() != 0) {
-            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(),casestudy,trial});
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(), casestudy, trial});
         }
-        
+
         // Get the required schema class
         Schema schema;
         try {
@@ -154,9 +160,9 @@ public class DebuggingOriginal extends Runner {
         for (int id = 0; id < mutants.size(); id++) {
             boolean quasiMutant = false;
             Schema mutant = mutants.get(id).getMutatedArtefact();
-            
+
             Mutant<Schema> mutantObject = mutants.get(id);
-            MutantReport mutantReport = new MutantReport(mutantObject.getDescription(), ChangedTableFinder.getDifferentTable(schema, mutant).getName());
+            MutantReport mutantReport = new MutantReport(mutantObject.getDescription(), ChangedTableFinder.getDifferentTable(schema, mutant).getName()); //TODO: Add null handling
             mutantReport.setMutantStatus(MutantReport.MutantStatus.ALIVE);
             mutationReport.addMutantReport(mutantReport);
             LOGGER.log(Level.INFO, "Mutant {0}", id);
@@ -186,6 +192,7 @@ public class DebuggingOriginal extends Runner {
             // Insert the test data
             timer.start(ExperimentTimer.TimingPoint.INSERTS_TIME);
             if (!quasiMutant) {
+                int killedStart = killed;
                 List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
                 for (SQLInsertRecord insertRecord : insertStmts) {
                     int returnCount = databaseInteractor.executeUpdate(insertRecord.getStatement());
@@ -195,6 +202,9 @@ public class DebuggingOriginal extends Runner {
                         mutantReport.setMutantStatus(MutantReport.MutantStatus.KILLED);
                         break; // Stop once killed
                     }
+                }
+                if (outputNotKilled && killed == killedStart) {
+                    System.out.printf("%s,%s,%s,%s,%s,%n", mutationPipeline, casestudy, databaseConfiguration.getDbms(), mutantObject.getSimpleDescription(), mutantObject.getDescription());
                 }
             } else {
                 // Don't continue if mutant is quasi
@@ -211,7 +221,7 @@ public class DebuggingOriginal extends Runner {
             }
             timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
         }
-        
+
         timer.stopAll();
         timer.finalise();
 
@@ -232,7 +242,7 @@ public class DebuggingOriginal extends Runner {
         if (resultsToDatabase) {
             new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
         }
-        
+
         String debugOutputPath = locationsConfiguration.getResultsDir() + File.separator + "debugresults" + File.separator + casestudy + "_" + trial + ".xml";
         XMLSerialiser.save(mutationReport, debugOutputPath);
     }

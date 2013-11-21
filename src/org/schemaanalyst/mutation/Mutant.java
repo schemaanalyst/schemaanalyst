@@ -16,6 +16,7 @@ public class Mutant<A> {
 
 	private A artefact;
 	private String description;
+        private String simpleDescription;
     private MutantProducer mutantProducer;
     private List<MutantRemover> removersApplied;
 	
@@ -100,5 +101,13 @@ public class Mutant<A> {
      */
     public void setMutantProducer(MutantProducer mutantProducer) {
         this.mutantProducer = mutantProducer;
+    }
+
+    public String getSimpleDescription() {
+        return simpleDescription;
+    }
+
+    public void setSimpleDescription(String simpleDescription) {
+        this.simpleDescription = simpleDescription;
     }
 }
