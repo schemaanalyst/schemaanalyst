@@ -12,7 +12,7 @@ do
 	esac
 done
 
-if [ -z $CASESTUDY ] || [ -z $SATIFIES ] || [ -z $NEGATES ] ; then
+if [ -z $CASESTUDIES ] || [ -z $SATIFIES ] || [ -z $NEGATES ] ; then
 	echo "Experiment failed - requires -c CASESTUDIES -s SATIFIES -n NEGATES"
 	exit 1
 fi
