@@ -5,7 +5,9 @@ package org.schemaanalyst.mutation.analysis.util;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,9 +23,9 @@ import org.schemaanalyst.util.runner.Runner;
 
 /**
  * <p>
- * {@link Runner} for comparing two {@link MutationPipeline} objects. 
+ * {@link Runner} for comparing two {@link MutationPipeline} objects.
  * </p>
- * 
+ *
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy pipelineA pipelineB")
@@ -57,7 +59,7 @@ public class ComparePipelines extends Runner {
         MutationPipeline<Schema> mutationPipelineB = instantiatePipeline(schema, pipelineB);
         List<Mutant<Schema>> pipelineAMutants = mutationPipelineA.mutate();
         List<Mutant<Schema>> pipelineBMutants = mutationPipelineB.mutate();
-        
+
         // Perform comparisons
         pipelineAResult = new CSVResult();
         pipelineBResult = new CSVResult();
@@ -73,7 +75,63 @@ public class ComparePipelines extends Runner {
         for (Mutant<Schema> mutant : pipelineBMutants) {
             pipelineBMutantArtifacts.add(mutant.getMutatedArtefact());
         }
-        
+        HashSet<Schema> pipelineAMutantArtifactsSet = new HashSet<>(pipelineAMutantArtifacts);
+        HashSet<Schema> pipelineBMutantArtifactsSet = new HashSet<>(pipelineBMutantArtifacts);
+        addResultColumn("unique mutant count", pipelineAMutantArtifactsSet.size(), pipelineBMutantArtifactsSet.size());
+
+//        System.out.println("A mutant count: " + pipelineAMutantArtifacts.size());
+//        System.out.println("A mutant count (uniques): " + new HashSet<>(pipelineAMutantArtifacts).size());
+//        System.out.println("B mutant count: " + pipelineBMutantArtifacts.size());
+//        System.out.println("B mutant count: (uniques): " + new HashSet<>(pipelineBMutantArtifacts).size());
+//        System.out.println("Artifact lists disjoint? " + Collections.disjoint(pipelineAMutantArtifacts, pipelineBMutantArtifacts));
+//        
+//        List<Schema> unionList = new ArrayList<>();
+//        unionList.addAll(pipelineAMutantArtifacts);
+//        for (Schema bArtifact : pipelineBMutantArtifacts) {
+//            if (!unionList.contains(bArtifact)) {
+//                unionList.add(bArtifact);
+//            }
+//        }
+//        System.out.println("UnionList size: " + unionList.size());
+//
+//        HashSet<Integer> aHashes = new HashSet<>();
+//        for (Schema aArtifact : pipelineAMutantArtifacts) {
+//            aHashes.add(aArtifact.hashCode());
+//        }
+//        HashSet<Integer> bHashes = new HashSet<>();
+//        for (Schema bArtifact : pipelineBMutantArtifacts) {
+//            bHashes.add(bArtifact.hashCode());
+//        }
+//        System.out.println("aHashes.size() = " + aHashes.size());
+//        System.out.println("bHashes.size() = " + bHashes.size());
+//        System.out.println("aHashes disjoint bHashes? = " + Collections.disjoint(aHashes, bHashes));
+//
+//        int equalsAndHash = 0;
+//        int equals = 0;
+//        int hash = 0;
+//        for (int i = 0; i < pipelineAMutantArtifacts.size(); i++) {
+//            for (int j = 0; j < pipelineAMutantArtifacts.size(); j++) {
+//                if (i != j) {
+//                    Schema one = pipelineAMutantArtifacts.get(i);
+//                    Schema two = pipelineAMutantArtifacts.get(j);
+//                    if (one.equals(two) && one.hashCode() == two.hashCode()) {
+//                        equalsAndHash++;
+////                        System.out.println("Both match");
+//                    } else if (one.equals(two)) {
+////                        equals++;
+////                        System.out.println("Equals match");
+//                    } else if (one.hashCode() == two.hashCode()) {
+//                        hash++;
+////                        System.out.println("Hashes match");
+//                    }
+//                }
+//            }
+//        }
+//        
+//        System.out.println("equalsAndHash = " + equalsAndHash);
+//        System.out.println("equals = " + equals);
+//        System.out.println("hash = " + hash);
+
         HashSet<Schema> union = new HashSet<>();
         union.addAll(pipelineAMutantArtifacts);
         union.addAll(pipelineBMutantArtifacts);
@@ -83,7 +141,7 @@ public class ComparePipelines extends Runner {
         intersection.addAll(pipelineAMutantArtifacts);
         intersection.retainAll(pipelineBMutantArtifacts);
         addResultColumn("intersection", intersection.size(), intersection.size());
-        
+
         HashSet<Schema> differenceAB = new HashSet<>();
         differenceAB.addAll(pipelineAMutantArtifacts);
         differenceAB.removeAll(pipelineBMutantArtifacts);
@@ -91,7 +149,7 @@ public class ComparePipelines extends Runner {
         differenceBA.addAll(pipelineBMutantArtifacts);
         differenceBA.removeAll(pipelineAMutantArtifacts);
         addResultColumn("difference", differenceAB.size(), differenceBA.size());
-        
+
         // Write results
         CSVFileWriter writer = new CSVFileWriter("results" + File.separator + pipelineA + "-" + pipelineB + ".dat", ",");
         LOGGER.log(Level.FINE, "PipelineA: {0}", pipelineAResult);

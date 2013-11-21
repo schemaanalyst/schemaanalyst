@@ -77,6 +77,8 @@ public class MutationPipelineFactory {
         choices.add("ICST2013NewSchema");
         choices.add("Mutation2013");
         choices.add("Programmatic");
+        choices.add("ProgrammaticDBMSRemovers");
+        choices.add("ProgrammaticNoRemovers");
         return choices;
     }
 }
