@@ -19,7 +19,7 @@ fi
 
 IFS=',' read -ra NEGATE <<< "$NEGATES"
 IFS=',' read -ra SATISFY <<< "$SATIFIES"
-IFS=',' read -ra CASESTUDY <<< "$CASESTUDIES"
+IFS=':' read -ra CASESTUDY <<< "$CASESTUDIES"
 
 for c in "${CASESTUDY[@]}"; do
 	for s in "${SATISFY[@]}"; do
