@@ -22,6 +22,7 @@ import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.csv.CSVDatabaseWriter;
 import org.schemaanalyst.util.csv.CSVFileWriter;
@@ -162,7 +163,8 @@ public class DebuggingOriginal extends Runner {
             Schema mutant = mutants.get(id).getMutatedArtefact();
 
             Mutant<Schema> mutantObject = mutants.get(id);
-            MutantReport mutantReport = new MutantReport(mutantObject.getDescription(), ChangedTableFinder.getDifferentTable(schema, mutant).getName()); //TODO: Add null handling
+            Table changedTable = ChangedTableFinder.getDifferentTable(schema, mutant);
+            MutantReport mutantReport = new MutantReport(mutantObject.getDescription(), changedTable == null ? "" : changedTable.getName());
             mutantReport.setMutantStatus(MutantReport.MutantStatus.ALIVE);
             mutationReport.addMutantReport(mutantReport);
             LOGGER.log(Level.INFO, "Mutant {0}", id);
