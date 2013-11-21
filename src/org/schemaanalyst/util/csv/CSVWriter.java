@@ -19,4 +19,9 @@ public abstract class CSVWriter {
      */
     public abstract void write(CSVResult result);
 
+    public void write(Iterable<CSVResult> results) {
+        for (CSVResult result : results) {
+            write(result);
+        }
+    }
 }
