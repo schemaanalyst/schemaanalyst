@@ -39,9 +39,10 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * <p> {@link Runner} for the 'Just-in-Time Schemata' style of mutation
- * analysis. This requires that the result generation tool has been run, as it
- * bases the mutation analysis on the results produced by it.
+ * <p>
+ * {@link Runner} for the 'Just-in-Time Schemata' style of mutation analysis.
+ * This requires that the result generation tool has been run, as it bases the
+ * mutation analysis on the results produced by it.
  * </p>
  *
  * @author Chris J. Wright
@@ -99,6 +100,11 @@ public class FullTransactedJustInTimeSchemata extends Runner {
      */
     @Parameter(value = "Whether to write the results to a database.")
     protected boolean resultsToDatabase = false;
+    /**
+     * Whether to write results to one CSV file.
+     */
+    @Parameter(value = "Whether to write results to one CSV file.", valueAsSwitch = "true")
+    protected boolean resultsToOneFile = false;
 
     @Override
     public void task() {
@@ -126,11 +132,11 @@ public class FullTransactedJustInTimeSchemata extends Runner {
         }
         SQLWriter sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
-        
+
         if (databaseInteractor.getTableCount() != 0) {
-            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(),casestudy,trial});
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(), casestudy, trial});
         }
-        
+
         // Get the required schema class
         Schema schema;
         try {
@@ -198,7 +204,11 @@ public class FullTransactedJustInTimeSchemata extends Runner {
         result.addValue("paralleltime", timer.getTime(ExperimentTimer.TimingPoint.PARALLEL_TIME));
 
         if (resultsToFile) {
-            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            if (resultsToOneFile) {
+                new CSVFileWriter(outputfolder + "mutationanalysis.dat").write(result);
+            } else {
+                new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            }
         }
         if (resultsToDatabase) {
             new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
@@ -264,12 +274,12 @@ public class FullTransactedJustInTimeSchemata extends Runner {
             // Drop existing tables
             List<String> dropStmts = sqlWriter.writeDropTableStatements(schema, true);
             if (dropfirst) {
-                databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+                databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
             }
 
             // Create the schema in the database
             List<String> createStmts = sqlWriter.writeCreateTableStatements(schema);
-            databaseInteractor.executeCreatesAsTransaction(createStmts,500);
+            databaseInteractor.executeCreatesAsTransaction(createStmts, 500);
 
             // Insert the test data
             List<SQLInsertRecord> insertStmts = originalReport.getInsertStatements();
@@ -306,7 +316,7 @@ public class FullTransactedJustInTimeSchemata extends Runner {
             }
 
             // Drop tables
-            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+            databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
 
             return killed;
 

@@ -39,8 +39,9 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * <p> {@link Runner} for the 'Minimal Schemata' style of mutation analysis.
- * This requires that the result generation tool has been run, as it bases the
+ * <p>
+ * {@link Runner} for the 'Minimal Schemata' style of mutation analysis. This
+ * requires that the result generation tool has been run, as it bases the
  * mutation analysis on the results produced by it.
  * </p>
  *
@@ -94,6 +95,11 @@ public class MinimalSchemata extends Runner {
      */
     @Parameter(value = "Whether to write the results to a database.")
     protected boolean resultsToDatabase = false;
+    /**
+     * Whether to write results to one CSV file.
+     */
+    @Parameter(value = "Whether to write results to one CSV file.", valueAsSwitch = "true")
+    protected boolean resultsToOneFile = false;
     private MutantTableMap mutantTables = new MutantTableMap();
     private SQLWriter sqlWriter;
     private Schema schema;
@@ -260,7 +266,11 @@ public class MinimalSchemata extends Runner {
         result.addValue("paralleltime", timer.getTime(ExperimentTimer.TimingPoint.PARALLEL_TIME));
 
         if (resultsToFile) {
-            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            if (resultsToOneFile) {
+                new CSVFileWriter(outputfolder + "mutationanalysis.dat").write(result);
+            } else {
+                new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            }
         }
         if (resultsToDatabase) {
             new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);

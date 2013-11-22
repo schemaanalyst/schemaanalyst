@@ -95,6 +95,11 @@ public class DebuggingOriginal extends Runner {
      */
     @Parameter(value = "Whether to output the details of each mutant not killed.")
     protected boolean outputNotKilled = false;
+    /**
+     * Whether to write results to one CSV file.
+     */
+    @Parameter(value = "Whether to write results to one CSV file.", valueAsSwitch = "true")
+    protected boolean resultsToOneFile = false;
 
     @Override
     public void task() {
@@ -239,7 +244,11 @@ public class DebuggingOriginal extends Runner {
         result.addValue("paralleltime", timer.getTime(ExperimentTimer.TimingPoint.PARALLEL_TIME));
 
         if (resultsToFile) {
-            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            if (resultsToOneFile) {
+                new CSVFileWriter(outputfolder + "mutationanalysis.dat").write(result);
+            } else {
+                new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            }
         }
         if (resultsToDatabase) {
             new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);

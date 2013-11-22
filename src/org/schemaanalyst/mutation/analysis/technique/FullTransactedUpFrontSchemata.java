@@ -39,8 +39,9 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
 
 /**
- * <p> {@link Runner} for the 'Up-Front Schemata' style of mutation analysis.
- * This requires that the result generation tool has been run, as it bases the
+ * <p>
+ * {@link Runner} for the 'Up-Front Schemata' style of mutation analysis. This
+ * requires that the result generation tool has been run, as it bases the
  * mutation analysis on the results produced by it.
  * </p>
  *
@@ -99,6 +100,11 @@ public class FullTransactedUpFrontSchemata extends Runner {
      */
     @Parameter(value = "Whether to write the results to a database.")
     protected boolean resultsToDatabase = false;
+    /**
+     * Whether to write results to one CSV file.
+     */
+    @Parameter(value = "Whether to write results to one CSV file.", valueAsSwitch = "true")
+    protected boolean resultsToOneFile = false;
 
     @Override
     public void task() {
@@ -128,9 +134,9 @@ public class FullTransactedUpFrontSchemata extends Runner {
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         if (databaseInteractor.getTableCount() != 0) {
-            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(),casestudy,trial});
+            LOGGER.log(Level.SEVERE, "Potential dirty database detected: technique={0}, casestudy={1}, trial={2}", new Object[]{this.getClass().getSimpleName(), casestudy, trial});
         }
-        
+
         // Get the required schema class
         Schema schema;
         try {
@@ -182,13 +188,13 @@ public class FullTransactedUpFrontSchemata extends Runner {
         // Schemata step: Drop existing tables before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         if (dropfirst) {
-            databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+            databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
         }
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         // Schemata step: Create table before iterating mutants
         timer.start(ExperimentTimer.TimingPoint.CREATES_TIME);
-        databaseInteractor.executeCreatesAsTransaction(createStmts,500);
+        databaseInteractor.executeCreatesAsTransaction(createStmts, 500);
         timer.stop(ExperimentTimer.TimingPoint.CREATES_TIME);
 
         // Begin mutation analysis
@@ -215,7 +221,7 @@ public class FullTransactedUpFrontSchemata extends Runner {
 
         // Schemata step: Drop tables after iterating mutants
         timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
-        databaseInteractor.executeDropsAsTransaction(dropStmts,500);
+        databaseInteractor.executeDropsAsTransaction(dropStmts, 500);
         timer.stop(ExperimentTimer.TimingPoint.DROPS_TIME);
 
         timer.stopAll();
@@ -233,7 +239,11 @@ public class FullTransactedUpFrontSchemata extends Runner {
         result.addValue("paralleltime", timer.getTime(ExperimentTimer.TimingPoint.PARALLEL_TIME));
 
         if (resultsToFile) {
-            new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            if (resultsToOneFile) {
+                new CSVFileWriter(outputfolder + "mutationanalysis.dat").write(result);
+            } else {
+                new CSVFileWriter(outputfolder + casestudy + ".dat").write(result);
+            }
         }
         if (resultsToDatabase) {
             new CSVDatabaseWriter(databaseConfiguration, new ExperimentConfiguration()).write(result);
