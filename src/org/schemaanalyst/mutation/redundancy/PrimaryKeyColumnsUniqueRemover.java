@@ -10,44 +10,43 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 /**
  * <p>
- * A {@link RedundantMutantRemover} that removes any {@link UniqueConstraint} 
- * that has been added to a column already part of a 
- * {@link PrimaryKeyConstraint}, where the {@code UNIQUE} constraint is 
- * implied in most DBMSs.
+ * A {@link RedundantMutantRemover} that removes any {@link UniqueConstraint}
+ * that has been added to a column already part of a
+ * {@link PrimaryKeyConstraint}, where the {@code UNIQUE} constraint is implied
+ * in most DBMSs.
  * </p>
- * 
+ *
  * <p>
  * The implied {@code UNIQUE} constraint on {@code PRIMARY KEY} fields means
- *  that mutants with such a {@link UniqueConstraint} will be impossible to 
- * kill, and therefore can be discarded.
+ * that mutants with such a {@link UniqueConstraint} will be impossible to kill,
+ * and therefore can be discarded.
  * </p>
- * 
+ *
  * @author Phil McMinn
  *
  */
-
 public class PrimaryKeyColumnsUniqueRemover extends MutantRemover<Schema> {
 
     /**
      * {@inheritDoc }
      */
-	@Override
-	public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
+    @Override
+    public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
 
-		for (Mutant<Schema> mutant : mutants) {
-			Schema schema = mutant.getMutatedArtefact();
-			List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
+        for (Mutant<Schema> mutant : mutants) {
+            Schema schema = mutant.getMutatedArtefact();
+            List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
             int startCount = schema.getUniqueConstraints().size();
-			for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
-				schema.removeUniqueConstraint(
-						new UniqueConstraint(primaryKey.getTable(), primaryKey.getColumns()));
-			}
+            for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
+                schema.removeUniqueConstraint(
+                        new UniqueConstraint(primaryKey.getTable(), primaryKey.getColumns()));
+            }
             if (startCount != schema.getUniqueConstraints().size()) {
                 mutant.addRemoverApplied(this);
             }
-		}
+        }
 
-		return mutants;
-	}
+        return mutants;
+    }
 
 }

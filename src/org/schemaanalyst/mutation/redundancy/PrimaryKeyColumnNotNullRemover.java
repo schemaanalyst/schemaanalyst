@@ -12,43 +12,43 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 
 /**
  * <p>
- * A {@link RedundantMutantRemover} that removes any {@link NotNullConstraint} 
- * that has been added to a column already part of a 
- * {@link PrimaryKeyConstraint}, where the {@code NOT NULL} constraint is 
+ * A {@link RedundantMutantRemover} that removes any {@link NotNullConstraint}
+ * that has been added to a column already part of a
+ * {@link PrimaryKeyConstraint}, where the {@code NOT NULL} constraint is
  * implied in most DBMSs.
  * </p>
- * 
+ *
  * <p>
  * The implied {@code NOT NULL} constraint on {@code PRIMARY KEY} fields means
- *  that mutants with such a {@link NotNullConstraint} will be impossible to 
+ * that mutants with such a {@link NotNullConstraint} will be impossible to
  * kill, and therefore can be discarded.
  * </p>
- * 
+ *
  * @author Phil McMinn
  *
  */
 public class PrimaryKeyColumnNotNullRemover extends MutantRemover<Schema> {
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
-		
-		for (Mutant<Schema> mutant : mutants) {
-			Schema schema = mutant.getMutatedArtefact();
-			List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
+
+        for (Mutant<Schema> mutant : mutants) {
+            Schema schema = mutant.getMutatedArtefact();
+            List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
             int startCount = schema.getNotNullConstraints().size();
-			for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
-				Table table = primaryKey.getTable();
-				for (Column column : primaryKey.getColumns()) {
-					schema.removeNotNullConstraint(new NotNullConstraint(table, column));
-				}
-			}
+            for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
+                Table table = primaryKey.getTable();
+                for (Column column : primaryKey.getColumns()) {
+                    schema.removeNotNullConstraint(new NotNullConstraint(table, column));
+                }
+            }
             if (startCount != schema.getNotNullConstraints().size()) {
                 mutant.addRemoverApplied(this);
             }
-		}		
-		return mutants;
-	}	
+        }
+        return mutants;
+    }
 }
