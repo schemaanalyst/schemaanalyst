@@ -20,10 +20,10 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
         addProducer(new CCNullifier(schema));
         addProducer(new CCInExpressionRHSListExpressionElementR(schema));
         addProducer(new CCRelationalExpressionOperatorE(schema));
+        addProducer(new FKCColumnPairA(schema));
         addProducer(new FKCColumnPairR(schema));
-//        addProducer(new FKCColumnPairE(schema)); // Currently has a bug with NistDML183 causing null pointer
-        // Implement FKCColumnPairA
-        // Implement FKCColumnE ('one sided')
+        addProducer(new FKCColumnPairE(schema));
+        // Implement FKCColumnE ('one sided')?
         addProducer(new PKCColumnA(schema));
         addProducer(new PKCColumnR(schema));
         addProducer(new PKCColumnE(schema));
