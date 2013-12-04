@@ -5,9 +5,7 @@ package org.schemaanalyst.mutation.supplier.schema;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -28,15 +26,12 @@ import org.schemaanalyst.util.tuple.Pair;
  * @author Chris J. Wright
  */
 public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSupplier<ForeignKeyConstraint, Pair<List<Pair<Column>>>> {
-
-    Queue<List<Pair<Column>>> queue = new LinkedList<>();
     
     @Override
     protected List<Pair<List<Pair<Column>>>> getComponents(ForeignKeyConstraint fkey) {
         List<Pair<List<Pair<Column>>>> components = new ArrayList<>();
         for (Pair<Column> pair : fkey.getColumnPairs()) {
             List<Pair<Column>> original = Arrays.asList(pair);
-            queue.add(original);
             List<Pair<Column>> alternatives = getAlternatives(fkey, pair);
             components.add(new Pair<>(original, alternatives));
         }
@@ -53,7 +48,10 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
             for (Column referenceReplacement : referenceTable.getColumns()) {
                 if (!referenceReplacement.equals(reference) || !localReplacement.equals(local)) {
                     if (localReplacement.getDataType().equals(referenceReplacement.getDataType())) {
-                        alternatives.add(new Pair<>(localReplacement, referenceReplacement));
+                        Pair<Column> pair = new Pair<>(localReplacement, referenceReplacement);
+                        if (!fkey.getColumnPairs().contains(pair)) {
+                            alternatives.add(pair);
+                        }
                     }
                 }
             }

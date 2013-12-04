@@ -47,6 +47,9 @@ public class FKCColumnPairE implements MutantProducer<Schema> {
         supplier.initialise(schema);
         ListElementExchanger<Schema, Pair<Column>> columnExchanger = new ListElementExchanger<>(supplier);
         mutants.addAll(columnExchanger.mutate());
+        for (Mutant<Schema> mutant : mutants) {
+            mutant.setMutantProducer(this);
+        }
         return mutants;
     }
 }

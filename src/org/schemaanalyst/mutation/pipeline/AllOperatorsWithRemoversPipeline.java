@@ -43,8 +43,6 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
         switch (dbms) {
             case "Postgres":
                 addRemoverToFront(new PostgresRemover());
-                addRemoverToFront(new PrimaryKeyColumnsUniqueRemover());
-                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());

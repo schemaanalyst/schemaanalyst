@@ -53,20 +53,47 @@ public class AnalysePipeline extends Runner {
         initialise();
         List<CSVResult> results = new ArrayList<>();
         List<Mutant<Schema>> mutants = pipeline.mutate();
-        HashMap<String, Integer> map = new HashMap<>();
+        calculateProduced(results);
+        calculateRemoved(results);
+        calculateRetained(mutants, results);
+        CSVFileWriter writer = new CSVFileWriter(outputfolder + "analysepipeline.dat", ",");
+        writer.write(results);
+    }
+
+    private void calculateProduced(List<CSVResult> results) {
+        for (Map.Entry<Class, Integer> entry : pipeline.getProducerCounts().entrySet()) {
+            CSVResult result = initialiseResult();
+            result.addValue("type", "produced");
+            result.addValue("operator", entry.getKey().getSimpleName());
+            result.addValue("count", entry.getValue());
+            results.add(result);
+        }
+    }
+
+    private void calculateRemoved(List<CSVResult> results) {
+        for (Map.Entry<Class, Integer> entry : pipeline.getRemoverCounts().entrySet()) {
+            CSVResult result = initialiseResult();
+            result.addValue("type", "removed");
+            result.addValue("operator", entry.getKey().getSimpleName());
+            result.addValue("count", entry.getValue());
+            results.add(result);
+        }
+    }
+
+    private void calculateRetained(List<Mutant<Schema>> mutants, List<CSVResult> results) {
+        HashMap<String, Integer> producerMap = new HashMap<>();
         for (Mutant<Schema> mutant : mutants) {
             String opName = mutant.getSimpleDescription();
-            int count = map.containsKey(opName) ? map.get(opName) : 0;
-            map.put(opName, count + 1);
+            int count = producerMap.containsKey(opName) ? producerMap.get(opName) : 0;
+            producerMap.put(opName, count + 1);
         }
-        for (Map.Entry<String, Integer> entry : map.entrySet()) {
+        for (Map.Entry<String, Integer> entry : producerMap.entrySet()) {
             CSVResult result = initialiseResult();
+            result.addValue("type", "retained");
             result.addValue("operator", entry.getKey());
             result.addValue("count", entry.getValue());
             results.add(result);
         }
-        CSVFileWriter writer = new CSVFileWriter(outputfolder + "analysepipeline.dat", ",");
-        writer.write(results);
     }
 
     protected void initialise() {
