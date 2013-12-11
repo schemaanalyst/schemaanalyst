@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+import org.schemaanalyst.util.DataCapturer;
 
 /**
  * A {@link MutantRemover} that removes mutants equivalent to other mutants,
@@ -38,6 +39,7 @@ public class MutantEquivalentToMutantRemover<T> extends EquivalenceTesterMutantR
             for (int j = i + 1; j < mutants.size(); j++) {
                 Mutant<T> inner = mutants.get(j);
                 if (checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
+                    DataCapturer.capture("removedmutants", "redundant", outer.getMutatedArtefact() + "-" + outer.getSimpleDescription());
                     found = true;
                     break;
                 }

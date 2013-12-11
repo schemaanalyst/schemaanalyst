@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+import org.schemaanalyst.util.DataCapturer;
 
 /**
  * A {@link MutantRemover} that removes mutants equivalent to the original 
@@ -39,9 +40,11 @@ public class MutantEquivalentToOriginalRemover<T> extends EquivalenceTesterMutan
         for (Iterator<Mutant<T>> it = mutants.iterator(); it.hasNext();) {
             Mutant<T> mutant = it.next();
             if (checker.areEquivalent(originalArtefact, mutant.getMutatedArtefact())) {
+                DataCapturer.capture("removedmutants", "equivalent", mutant.getMutatedArtefact() + "-" + mutant.getSimpleDescription());
                 it.remove();
             } else if (hasDuplicateMethod(originalArtefact.getClass())) {
                 if (checker.areEquivalent(applyRemoversToOriginal(originalArtefact, mutant), mutant.getMutatedArtefact())) {
+                    DataCapturer.capture("removedmutants", "equivalent", mutant.getMutatedArtefact() + "-" + mutant.getSimpleDescription());
                     it.remove();
                 }
             }

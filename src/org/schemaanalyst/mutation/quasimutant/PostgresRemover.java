@@ -11,6 +11,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.util.DataCapturer;
 
 /**
  * Removes those mutant schemas that will be rejected by the Postgres DBMS, but 
@@ -23,11 +24,13 @@ public class PostgresRemover extends MutantRemover<Schema>{
     @Override
     public List<Mutant<Schema>> removeMutants(List<Mutant<Schema>> mutants) {
         for (Iterator<Mutant<Schema>> it = mutants.iterator(); it.hasNext();) {
-            Schema schema = it.next().getMutatedArtefact();
+            Mutant<Schema> mutant = it.next();
+            Schema schema = mutant.getMutatedArtefact();
             for (ForeignKeyConstraint fkey : schema.getForeignKeyConstraints()) {
                 boolean fUnique = isUnique(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 boolean fPrimary = isPrimary(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 if (!fUnique && !fPrimary) {
+                    DataCapturer.capture("removedmutants", "quasimutant", schema + "-" + mutant.getSimpleDescription());
                     it.remove();
                     break;
                 }
