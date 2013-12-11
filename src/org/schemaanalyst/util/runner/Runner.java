@@ -20,6 +20,7 @@ import java.util.logging.LogManager;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.configuration.DataCapturerConfiguration;
 
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key
@@ -66,6 +67,9 @@ public abstract class Runner {
     
     /** The databases configuration field. */
     protected DatabaseConfiguration databaseConfiguration;
+    
+    /** The data capture configuration field. */
+    protected DataCapturerConfiguration capturerConfiguration;
     
     /** Parameter/field/defaults introspection information. */    
     protected List<String> requiredParameterNames;
@@ -180,6 +184,7 @@ public abstract class Runner {
         // load configurations wrt locations and databases
         locationsConfiguration = new LocationsConfiguration();
         databaseConfiguration = new DatabaseConfiguration();
+        capturerConfiguration = new DataCapturerConfiguration();
         loadLoggingConfiguration();
     }
 

@@ -34,7 +34,7 @@ public class CSVFileWriter extends CSVWriter {
      * @param path The path to the file.
      */
     public CSVFileWriter(String path) {
-        this(path, ", ");
+        this(path, ",");
     }
 
     /**
