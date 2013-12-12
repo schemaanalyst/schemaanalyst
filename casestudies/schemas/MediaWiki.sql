@@ -1132,8 +1132,8 @@ CREATE TABLE searchindex (
 ) ENGINE=MyISAM;
 
 CREATE UNIQUE INDEX /*i*/si_page ON searchindex (si_page);
-CREATE FULLTEXT INDEX /*i*/si_title ON searchindex (si_title);
-CREATE FULLTEXT INDEX /*i*/si_text ON searchindex (si_text);
+-- CREATE FULLTEXT INDEX /*i*/si_title ON searchindex (si_title);
+-- CREATE FULLTEXT INDEX /*i*/si_text ON searchindex (si_text);
 
 
 --

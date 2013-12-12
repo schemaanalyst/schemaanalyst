@@ -1,5 +1,6 @@
 package org.schemaanalyst.sqlparser;
 
+import gudusoft.gsqlparser.EIndexType;
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
 import java.util.logging.Logger;
@@ -10,28 +11,34 @@ import gudusoft.gsqlparser.nodes.TAlterTableOption;
 import gudusoft.gsqlparser.nodes.TAlterTableOptionList;
 import gudusoft.gsqlparser.nodes.TColumnDefinition;
 import gudusoft.gsqlparser.nodes.TColumnDefinitionList;
+import gudusoft.gsqlparser.nodes.TObjectName;
+import gudusoft.gsqlparser.nodes.TOrderByItemList;
 import gudusoft.gsqlparser.stmt.TAlterTableStatement;
+import gudusoft.gsqlparser.stmt.TCreateIndexSqlStatement;
 import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
+import java.util.ArrayList;
+import java.util.List;
 
 import java.util.logging.Level;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 
 /**
  * <p>
- * Maps the representation used by The General SQL Parser to the representation 
+ * Maps the representation used by The General SQL Parser to the representation
  * used by SchemaAnalyst.
  * </p>
  */
 public class SchemaMapper {
-    
-    private final static Logger LOGGER = Logger.getLogger(SchemaMapper.class.getName());    
 
-    private Schema schema;        
-    
+    private final static Logger LOGGER = Logger.getLogger(SchemaMapper.class.getName());
+
+    private Schema schema;
+
     private ConstraintMapper constraintMapper;
     private DataTypeMapper dataTypeMapper;
     private ExpressionMapper expressionMapper;
@@ -58,6 +65,9 @@ public class SchemaMapper {
                 break;
             case sstaltertable:
                 analyseAlterTableStatement((TAlterTableStatement) node);
+                break;
+            case sstcreateindex:
+                analyseCreateIndexStatement((TCreateIndexSqlStatement) node);
                 break;
             default:
                 // only CREATE TABLE and ALTER TABLE are handled
@@ -116,11 +126,30 @@ public class SchemaMapper {
 
     private void analyseAlterTableOption(Table currentTable, TAlterTableOption node) {
         switch (node.getOptionType()) {
-            case AddTableConstraint: 
+            case AddTableConstraint:
                 constraintMapper.mapConstraint(schema, currentTable, null, node.getTableConstraint());
                 break;
             default:
                 throw new UnsupportedSQLException(node);
+        }
+    }
+
+    private void analyseCreateIndexStatement(TCreateIndexSqlStatement node) {
+        if (node.getIndexType().equals(EIndexType.itUnique)) {
+            Table table = schema.getTable(stripQuotes(node.getTableName()));
+            List<Column> columns = new ArrayList<>();
+            TObjectName indexName = node.getIndexName();
+            TOrderByItemList columnNameList = node.getColumnNameList();
+            for (String columnName : columnNameList.toString().split(",")) {
+                columns.add(table.getColumn(stripQuotes(columnName.trim())));
+            }
+            if (indexName == null) {
+                schema.addUniqueConstraint(new UniqueConstraint(table, columns));
+            } else {
+                schema.addUniqueConstraint(new UniqueConstraint(stripQuotes(indexName.toString()), table, columns));
+            }
+        } else {
+            LOGGER.log(Level.WARNING, "Ignored statement \"{0}\" on line {1}", new Object[]{node, node.getLineNo()});
         }
     }
 }

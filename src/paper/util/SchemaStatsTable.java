@@ -67,8 +67,8 @@ public class SchemaStatsTable {
         table.append("Cols");
         table.append(columnSeparator);
 
-        table.append("Col. types");
-        table.append(columnSeparator);
+//        table.append("Col. types");
+//        table.append(columnSeparator);
 
         table.append("Checks");
         table.append(columnSeparator);
