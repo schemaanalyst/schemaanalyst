@@ -1,3 +1,4 @@
+-- http://www.ars.usda.gov/Services/docs.htm?docid=6382
 CREATE TABLE DATA_SRC (DataSrc_ID DECIMAL, Authors TEXT, Title TEXT, Year DECIMAL, Journal TEXT, Vol TEXT, Start_Page TEXT, End_Page TEXT);
 CREATE TABLE DATSRCLN (NDB_No TEXT, Nutr_No TEXT, DataSrc_ID DECIMAL);
 CREATE TABLE FOOD_DES (NDB_No TEXT, FdGrp_Cd TEXT, Long_Desc TEXT);
