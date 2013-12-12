@@ -1,0 +1,61 @@
+Schema,Source,Real World,Previous Study,ICST2013,Mutation2013
+AdmissionsPatient,MS Access sample,No,No,No,No
+ArtistSimilarity,MillionSong - made for research,Yes,Yes,No,No
+ArtistTerm,MillionSong - made for research,Yes,Yes,No,No
+BankAccount,,,No,Yes,No
+BioSQL,Biological database,Yes,No,No,No
+BookTown,PG sample,No,No,Yes,No
+Campaign,MS Access sample,No,No,No,No
+Cloc,LOC counter export format,Yes,No,Yes,Yes
+CoffeeOrders,Textbook example,No,No,Yes,No
+Crafts2002,Textbook example,No,No,No,No
+CustomerOrder,Textbook example,No,No,Yes,No
+DHDBookstore,Textbook example,No,No,No,No
+DellStore,PG sample,No,No,Yes,No
+Employee,,,No,Yes,No
+Examination,,,No,Yes,No
+FACAData1997,US Federal DB,Yes,No,No,No
+Factory2000,MS Access sample,No,No,No,No
+Flav_R03-1,USDA flavanoids,Yes,No,No,No
+Flights,,,No,Yes,No
+FrenchTowns,PG sample,No,No,Yes,No
+GeoMetadb,Gene expression,Yes,No,No,No
+Gitlab,Version control,Yes,No,No,No
+H1EFileFY2007,US Visa applications,Yes,No,No,No
+HR_30,Oracle sample,No,No,No,No
+Hydat,Canadian water monitoring,Yes,No,No,No
+Inventory,,,No,Yes,No
+Iso3166,PG sample,No,No,Yes,No
+IsoFlav_R2,USDA isofalvone,Yes,No,Yes,No
+iTrust,,,No,No,No
+JWhoisServer,WHOIS server,Yes,Yes,Yes,Yes
+MediaWiki,Wiki engine,Yes,No,No,No
+Mxm,MillionSong - made for research,Yes,Yes,No,No
+NistDML181,NIST,No,Yes,Yes,No
+NistDML182,NIST,No,Yes,Yes,Yes
+NistDML183,NIST,No,Yes,Yes,Yes
+NistWeather,NIST,No,Yes,Yes,No
+NistXTS748,NIST,No,Yes,Yes,No
+NistXTS749,NIST,No,Yes,Yes,No
+Northwind,MS Access sample,No,No,No,No
+Pagila,PG sample,No,No,No,No
+PagilaPrime,PG sample,No,No,No,No
+Person,Textbook,No,No,Yes,No
+ProductSales,MS Access sample,No,No,No,No
+Products,Textbook,No,No,Yes,No
+RiskIt,Risk assessment,Yes,Yes,Yes,Yes
+SH_30,Oracle sample,No,No,No,No
+SRAMetadb,Gene sequencing,Yes,No,No,No
+SongTrackMetadata,MillionSong - made for research,Yes,Yes,No,No
+Spree,E-commerce application,Yes,No,No,No
+StackOverflow,Old SO schema,Yes,No,No,No
+StudentResidence,,,No,Yes,No
+TweetComplete,Greg's Twitter teaching,, No,No,No
+University,Textbook,No,No,No,No
+UnixUsage,Tracking Unix commands,Yes,Yes,Yes,Yes
+Usda,PG sample,No,No,Yes,No
+Voc,MonetDB sample,No,No,No,No
+WordNet,Graph visualiser for Wordnet,Yes,No,No,No
+World,MySQL sample,No,No,No,No
+Writers,Student schema,, No,No,No
+WwWordNet,Student schema,, No,No,No
