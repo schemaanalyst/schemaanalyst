@@ -23,7 +23,6 @@ public class SchemaSQLToJava extends SchemaSQLParser {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-        out.println(javaCode);
         out.println("Java code for schema written to "
                 + javaFile.getAbsolutePath());
     }
