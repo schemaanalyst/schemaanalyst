@@ -16,9 +16,9 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         new CoffeeOrders(),
         new FACAData1997Repaired(),
         new Flav_R03_1Repaired(),
+        new Flights(),
         new GeoMetadb(),
         new H1EFileFY2007Repaired(),
-        new HydatRepaired(),
         new IsoFlav_R2Repaired(),
         new JWhoisServer(),
         new Mxm(),
@@ -30,7 +30,6 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         new NistXTS749(),
         new RiskIt(),
         new SongTrackMetadata(),
-        new SRAMetadb(),
         new StackOverflow(),
         new UnixUsage(),
         new WordNet()
