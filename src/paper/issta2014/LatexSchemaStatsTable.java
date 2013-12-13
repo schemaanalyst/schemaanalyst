@@ -14,8 +14,12 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         new BookTown(),
         new Cloc(),
         new CoffeeOrders(),
-        new GeoMetaDB(),
+        new FACAData1997Repaired(),
+        new Flav_R03_1Repaired(),
+        new GeoMetadb(),
         new H1EFileFY2007Repaired(),
+        new HydatRepaired(),
+        new IsoFlav_R2Repaired(),
         new JWhoisServer(),
         new Mxm(),
         new NistDML181(),
@@ -42,13 +46,13 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
 //    }
     @Override
     protected void writeFooter(StringBuffer table,
-            int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
-            int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls,
-            int totalNumPrimaryKeys, int totalNumUniques) {
+        int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
+        int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls,
+        int totalNumPrimaryKeys, int totalNumUniques) {
         table.append("\\midrule \n");
 
         writeRow(table, "{\\bf Total}", totalNumTables, totalNumColumns, // totalUniqueColumnTypes, 
-                totalNumChecks, totalNumForeignKeys, totalNumNotNulls, totalNumPrimaryKeys, totalNumUniques);
+            totalNumChecks, totalNumForeignKeys, totalNumNotNulls, totalNumPrimaryKeys, totalNumUniques);
     }
 
     public static void main(String[] args) {
