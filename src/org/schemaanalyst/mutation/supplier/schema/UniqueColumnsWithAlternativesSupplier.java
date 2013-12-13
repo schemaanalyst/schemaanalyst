@@ -46,7 +46,6 @@ public class UniqueColumnsWithAlternativesSupplier extends
                 alternatives.add(column);
             }
         }
-        System.out.println("Columns: " + columns + " Alternatives: " + alternatives);
         return new Pair<>(columns, alternatives);
     }
 
