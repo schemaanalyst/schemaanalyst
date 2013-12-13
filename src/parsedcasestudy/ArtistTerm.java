@@ -6,7 +6,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * ArtistTerm schema.
- * Java code originally generated: 2013/12/12 14:27:30
+ * Java code originally generated: 2013/12/13 10:00:45
  *
  */
 

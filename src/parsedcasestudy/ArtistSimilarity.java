@@ -6,7 +6,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * ArtistSimilarity schema.
- * Java code originally generated: 2013/12/12 14:23:57
+ * Java code originally generated: 2013/12/13 10:00:43
  *
  */
 

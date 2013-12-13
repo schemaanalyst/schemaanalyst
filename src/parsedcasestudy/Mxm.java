@@ -7,7 +7,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * Mxm schema.
- * Java code originally generated: 2013/12/12 15:11:12
+ * Java code originally generated: 2013/12/13 10:00:52
  *
  */
 

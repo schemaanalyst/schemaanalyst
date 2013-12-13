@@ -8,16 +8,16 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
- * GeoMetaDB schema.
- * Java code originally generated: 2013/12/12 14:58:37
+ * GeoMetadb schema.
+ * Java code originally generated: 2013/12/13 10:00:48
  *
  */
 
 @SuppressWarnings("serial")
-public class GeoMetaDB extends Schema {
+public class GeoMetadb extends Schema {
 
-	public GeoMetaDB() {
-		super("GeoMetaDB");
+	public GeoMetadb() {
+		super("GeoMetadb");
 
 		Table tableGds = this.createTable("gds");
 		tableGds.createColumn("ID", new RealDataType());

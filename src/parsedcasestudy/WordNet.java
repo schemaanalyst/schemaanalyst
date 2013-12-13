@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * WordNet schema.
- * Java code originally generated: 2013/12/12 15:14:42
+ * Java code originally generated: 2013/12/13 10:00:57
  *
  */
 

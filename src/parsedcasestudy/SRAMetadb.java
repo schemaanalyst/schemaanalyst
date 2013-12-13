@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 
 /*
  * SRAMetadb schema.
- * Java code originally generated: 2013/12/12 15:13:41
+ * Java code originally generated: 2013/12/13 10:00:55
  *
  */
 

@@ -8,7 +8,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * SongTrackMetadata schema.
- * Java code originally generated: 2013/12/12 15:11:57
+ * Java code originally generated: 2013/12/13 10:00:54
  *
  */
 

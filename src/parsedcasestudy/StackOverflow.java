@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * StackOverflow schema.
- * Java code originally generated: 2013/12/12 15:14:21
+ * Java code originally generated: 2013/12/13 10:00:56
  *
  */
 
