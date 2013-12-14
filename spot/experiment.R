@@ -28,43 +28,40 @@ require(SPOT)
 # Define experiment variables
 DATABASE = "HSQLDB" # used for output location; doesn't alter SchemaAnalyst preferences (currently)
 # upper bounds during parameter tuning
-MAX_SATISFY_ROWS <- 6
-MAX_NEGATE_ROWS <- 1
-MAX_MAXEVALUATIONS <- 1000000
+MAX_SATISFY_ROWS <- 10 
+MAX_NEGATE_ROWS <- 10
 
 # Define the configuration function (substitute for configuration files).
 # -- Takes as a parameter the maximum number of evaluations for the SPOT experiment
 expConfig <- function(num_evals, use_generationtime=FALSE) {
 	# Set Region Of Interest; variables are as follows:
-	# X1 - maxevaluations
-	# X2 - negaterows
-	# X3 - satisfyrows
-	# X4 - randomprofile
-	# X5 - randomseed
+	# X1 - negaterows
+	# X2 - satisfyrows
+	# X3 - randomprofile
+	# X4 - randomseed
 	roi <- spotROI(
 				   # note that the lower bounds for satisfy rows and negaterows are currently 1;
-				   # this is because it appears that, with f8eb607, if either equals 0, generation hangs
-				   lower = c(10, 1, 1, 1, 0), # minimum values
-				   upper = c(MAX_MAXEVALUATIONS, MAX_NEGATE_ROWS, MAX_SATISFY_ROWS, 2, 9999999), # max values
-				   type = c("INT", "INT", "INT", "FACTOR", "INT"), # variable types
+				   # this is because it if either equals 0, generation hangs
+				   lower = c(1, 1, 1, 0), # minimum values
+				   upper = c(MAX_NEGATE_ROWS, MAX_SATISFY_ROWS, 2, 9999999), # max values
+				   type = c("INT", "INT", "FACTOR", "INT"), # variable types
 				   # inexplicably, variable labels cause an error (t.default(x) argument is not a matrix)
 				   # leave them out for now
-				   #varnames = c("maxeval", "negaterows", "satisfyrows", "randomprofile", "randomseed"), # variable labels
-				   dimROI = 5
+				   #varnames = c("negaterows", "satisfyrows", "randomprofile", "randomseed"), # variable labels
+				   dimROI = 4
 				)
 
 	# define the target function
 	fn <- function(pars, casestudy, seed, generator){
 		# assign the SPOT-determined parameters
-		maxeval <- pars[1]
-		negaterows <- pars[2]
-		satisfyrows <- pars[3]
+		negaterows <- pars[1]
+		satisfyrows <- pars[2]
 		# translate the FACTOR type value into categorical variable
-		switch (as.character(pars[4]),
+		switch (as.character(pars[3]),
 			"1" = (randomprofile = "small"),
 			"2" = (randomprofile = "large")
 		)
-		randomseed = pars[5]
+		randomseed = pars[4]
 
 		# go up a directory to the project root in order for java calls to work
 		setwd("..")
@@ -72,7 +69,7 @@ expConfig <- function(num_evals, use_generationtime=FALSE) {
 		# generate the set of INSERT statements using the current parameters
 		genCallString <- paste("java -Xmx3G -cp build/:lib/*",
 							   " org.schemaanalyst.mutation.analysis.util.GenerateResultsFromGenerator",
-							   " parsedcasestudy.", casestudy, " --maxevaluations=", maxeval , 
+							   " parsedcasestudy.", casestudy, 
 							   " --negaterows=", negaterows, " --satisfyrows=", satisfyrows, 
 							   " --randomprofile=", randomprofile, " --datagenerator=", generator, 
 							   " --randomseed=", randomseed, " --writeReport",
@@ -113,10 +110,17 @@ expConfig <- function(num_evals, use_generationtime=FALSE) {
 
 	}
 
+	# set SPOT result column titles according to whether we're using multiple optimization targets
+	if (use_generationtime) {
+		resultColumn <- c("inverse-mutation-score", "generation-time")
+	}
+	else
+		resultColumn <- "inverse-mutation-score"
+
 	# set SPOT parameters
 	config <- list(
 				alg.func = fn,
-				alg.resultColumn=c("inverse-mutationscore", "generation-time"),
+				alg.resultColumn=resultColumn, # defined conditionally above
 				alg.roi = roi,
 				# Total number of evaluations
 				auto.loop.nevals = num_evals, # expConfig() function parameter
@@ -147,7 +151,7 @@ expRun <- function(config, casestudy, generator) {
 	# save the results to a file
 	directory = paste("results/", DATABASE, "/", sep="")
 	filename = paste(casestudy, generator, config$auto.loop.nevals, ".RData", sep="-")
-	save(res, file=paste(directory, filename))
+	save(res, file=paste(directory, filename, sep=""))
 
 	return(res)
 }
