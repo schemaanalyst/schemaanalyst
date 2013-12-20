@@ -69,6 +69,7 @@ DATABASE = "HSQLDB" # used for output location; doesn't alter SchemaAnalyst pref
 # upper bounds during parameter tuning
 MAX_SATISFY_ROWS <- 10 
 MAX_NEGATE_ROWS <- 10
+MAX_EVALUATIONS <- 1000000 # statically defined to be high; not part of SPOT's optimization work
 
 # Define the configuration function (substitute for configuration files).
 # -- Takes as a parameter the maximum number of evaluations for the SPOT experiment
@@ -105,7 +106,7 @@ expConfig <- function(numEvals, useGenerationTime=FALSE) {
 		# generate the set of database interaction statements using the current parameters
 		genCallString <- paste("java -Xmx3G -cp build/:lib/*",
 							   " org.schemaanalyst.mutation.analysis.util.GenerateResultsFromGenerator",
-							   " parsedcasestudy.", casestudy, 
+							   " parsedcasestudy.", casestudy, " --maxevaluations=", MAX_EVALUATIONS,
 							   " --negaterows=", negaterows, " --satisfyrows=", satisfyrows, 
 							   " --randomprofile=", randomprofile, " --datagenerator=", generator, 
 							   " --randomseed=", randomseed, " --writeReport",
@@ -145,10 +146,10 @@ expConfig <- function(numEvals, useGenerationTime=FALSE) {
 
 	# set SPOT result column titles according to whether we're using multiple optimization targets
 	if (useGenerationTime) {
-		resultColumn <- c("inverse-mutation-score", "generation-time")
+		resultColumn <- c("InverseMutationScore", "GenerationTime")
 	}
 	else
-		resultColumn <- "inverse-mutation-score"
+		resultColumn <- "InverseMutationScore"
 
 	# set SPOT parameters
 	config <- list(
