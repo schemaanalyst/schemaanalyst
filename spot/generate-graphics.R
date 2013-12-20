@@ -38,7 +38,9 @@ generateGraphics <- function(resultsDirectory) {
 	# store all importance values in order to analyze later
 	# TODO: prevent the row of NAs that this initialization causes
 	mutScoreImportances = as.data.frame(matrix(ncol = 4))
+	colnames(mutScoreImportances) <- c("SatisfyRows", "NegateRows", "RandomProfile", "RandomSeed")
 	genTimeImportances = as.data.frame(matrix(ncol = 4))
+	colnames(genTimeImportances) <- c("SatisfyRows", "NegateRows", "RandomProfile", "RandomSeed")
 
 	# iterate through the results files
 	for (fileName in list.files(resultsDirectory)) {
@@ -67,7 +69,6 @@ generateGraphics <- function(resultsDirectory) {
 
 		# generate a base filename for file (image) output from the following tools
 		outBaseName <- sub(".RData", "", fileName) # strip .RData from result file name
-		outputPath <- 
 
 		# gather experiment details from file name
 		schemaName <- unlist(strsplit(fileName, "-"))[1] # extract schema from file name
@@ -84,44 +85,34 @@ generateGraphics <- function(resultsDirectory) {
 		# Generate classification tree. Leave out RandomSeed from this to prevent unwanted breaks.
 		mutScoreFit <- rpart(MutationScore ~ SatisfyRows + NegateRows + RandomProfile, data=curRes)
 
-		postscript(file=paste0(outputDir,outBaseName,"-MutScore-ClassTree.ps")) # output to postscript
+		pdf(file=paste0(outputDir,outBaseName,"-MutScore-ClassTree.pdf")) # output to PDF 
 		plot(mutScoreFit, uniform=FALSE, main="SchemaAnalyst Parameters Classification Tree",
 			sub=paste0("Schema: ",schemaName,", Generator: ", generatorName))
 		text(mutScoreFit, use.n=TRUE, all=TRUE, cex=.8)
-		dev.off() # close open PS file
+		dev.off() # close open PDF file
 
 		# Generate conditional inference tree. Leave out RandomSeed from this to prevent unwanted breaks.
 		mutScoreFit <- ctree(MutationScore ~ SatisfyRows + NegateRows + RandomProfile, data=curRes)
 
-		postscript(file=paste0(outputDir,outBaseName,"-MutScore-CondInfTree.ps")) # output to a postscript
+		pdf(file=paste0(outputDir,outBaseName,"-MutScore-CondInfTree.pdf")) # output to PDF
 		plot(mutScoreFit, main="SchemaAnalyst Parameters Conditional Inference Tree",
 			sub=paste0("Schema: ",schemaName,", Generator: ", generatorName))
-		dev.off() # close open PS file
+		dev.off() # close open PDF file
 	}
 
 	print(paste0("Saving generated visualizations to '",outputDir,"'."))
-
-	# strip NA values from the importances data frames, but only if there are more than
-	# two rows; otherwise, we cannot assign column labels
-	if ( (nrow(mutScoreImportances) > 2) && (nrow(genTimeImportances) > 2) ) {
-		mutScoreImportances <- mutScoreImportances[!is.na(mutScoreImportances)]
-		genTimeImportances <- genTimeImportances[!is.na(genTimeImportances)]
-	}
-	# add column labels
-	colnames(mutScoreImportances) <- c("SatisfyRows", "NegateRows", "RandomProfile", "RandomSeed")
-	colnames(genTimeImportances) <- c("SatisfyRows", "NegateRows", "RandomProfile", "RandomSeed")
 
 	# provide collected data related to parameter importance on mutation score
 	plot <- qplot(variable, value, data=melt(mutScoreImportances), geom="boxplot", colour=variable, legend=FALSE) +
 				xlab("Parameter") + ylab("Importance on Mutation Score") + # add axis labels
 				theme(legend.position="none") + # hide the graph legend
-				labs(title=paste0("Parameter Importance on Mutation Score\n",nrow(mutScoreImportances)," Schemas"))
-	ggsave(filename=paste0(outputDir,"mutation-score-importance.ps"))
+				labs(title=paste0("Parameter Importance on Mutation Score\n",nrow(mutScoreImportances)-1," Result Sets")) # add title & subtitle (use size-1 to account for NA row)
+	ggsave(filename=paste0(outputDir,"mutation-score-importance.pdf"))
 
 	# provide collected data related to parameter importance on generation time
 	plot <- qplot(variable, value, data=melt(genTimeImportances), geom="boxplot", colour=variable) +
 				xlab("Parameter") + ylab("Importance on Generation Time") + # add axis labels
 				theme(legend.position="none") + # hide the graph legend
-				labs(title=paste0("Parameter Importance on Generation Time\n",nrow(genTimeImportances)," Schemas"))
-	ggsave(filename=paste0(outputDir,"generation-time-importance.ps"))
+				labs(title=paste0("Parameter Importance on Generation Time\n",nrow(genTimeImportances)-1," Result Sets")) # add title & subtitle (use size-1 to account for NA row)
+	ggsave(filename=paste0(outputDir,"generation-time-importance.pdf"))
 }
