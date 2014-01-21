@@ -17,7 +17,7 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         new FACAData1997Repaired(),
         new Flav_R03_1Repaired(),
         new Flights(),
-        new GeoMetadb(),
+        new GeoMetaDB(),
         new H1EFileFY2007Repaired(),
         new IsoFlav_R2Repaired(),
         new JWhoisServer(),

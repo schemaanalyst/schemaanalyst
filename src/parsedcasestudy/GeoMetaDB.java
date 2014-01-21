@@ -14,10 +14,10 @@ import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
  */
 
 @SuppressWarnings("serial")
-public class GeoMetadb extends Schema {
+public class GeoMetaDB extends Schema {
 
-	public GeoMetadb() {
-		super("GeoMetadb");
+	public GeoMetaDB() {
+		super("GeoMetaDB");
 
 		Table tableGds = this.createTable("gds");
 		tableGds.createColumn("ID", new RealDataType());
