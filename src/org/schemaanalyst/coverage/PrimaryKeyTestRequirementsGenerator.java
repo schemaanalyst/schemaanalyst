@@ -34,27 +34,34 @@ public class PrimaryKeyTestRequirementsGenerator extends TestRequirementsGenerat
             List<Column> columns = primaryKeyConstraint.getColumns();
             DefaultPredicateGenerator predicateGenerator = new DefaultPredicateGenerator();
 
-            // generate test requirements where each individual column is unique once
+            // (1) generate test requirements where each individual column is unique once
+
             for (Column column : columns) {
                 List<Column> remainingColumns = new ArrayList<>(columns);
                 remainingColumns.remove(column);
 
+                // generate predicate and remove old clause for PK
                 Predicate predicate = predicateGenerator.generatePredicate(schema, table);
-                Clause clause = predicate.getClause(primaryKeyConstraint);
+                predicate.removeClause(primaryKeyConstraint);
 
-                clause.setFunctions(
-                        new DistinctFunction(table, column),
-                        new MatchesFunction(table, remainingColumns)
-                );
+                // generate new clause
+                predicate.addClause(primaryKeyConstraint, new DistinctFunction(table, column));
+                predicate.addClause(primaryKeyConstraint, new MatchesFunction(table, remainingColumns));
+
+                // add new clause
                 predicates.add(predicate);
             }
 
-            // generate test requirement where there is a collision of values
+            // (2) generate test requirement where there is a collision of values
+
+            // generate predicate and remove old clause for PK
             Predicate predicate = predicateGenerator.generatePredicate(schema, table);
-            Clause clause = predicate.getClause(primaryKeyConstraint);
-            clause.setFunctions(
-                    new MatchesFunction(table, columns)
-            );
+            predicate.removeClause(primaryKeyConstraint);
+
+            // generate new clause
+            predicate.addClause(primaryKeyConstraint, new MatchesFunction(table, columns));
+
+            // add new clause
             predicates.add(predicate);
         }
 

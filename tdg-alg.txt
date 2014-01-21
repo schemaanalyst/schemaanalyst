@@ -1,0 +1,22 @@
+POSITIVE TESTS
+
+* Generate 1 row to satisfy all constraints for each table.
+  -- add not nulls for all columns.
+
+NEGATIVE TESTS
+(reset tables each time)
+
+* PK--UNIQUE tests
+	add not null for unique col
+
+* NULL tests
+	adds a null for the col concerns
+
+* Fk tests
+	adds a not null for cols -- not necessary as won't find a match?
+
+* UNIQUE col tests
+    true and false, add not null for col
+
+
+For each new tests, try all of the old ones to see if they satisfy predicate already.

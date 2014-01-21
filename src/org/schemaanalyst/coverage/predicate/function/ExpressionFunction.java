@@ -15,4 +15,8 @@ public class ExpressionFunction extends Function {
         this.expression = expression;
     }
 
+    public String toString() {
+        return "exp(" + expression + ")";
+    }
+
 }

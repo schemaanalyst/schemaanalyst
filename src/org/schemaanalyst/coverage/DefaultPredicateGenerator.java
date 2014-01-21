@@ -10,6 +10,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,19 +18,27 @@ import java.util.List;
  */
 class DefaultPredicateGenerator {
 
+    class ClauseGenerator implements ConstraintVisitor {
 
-    class FunctionSetter implements ConstraintVisitor {
+        Predicate predicate;
+
+        void addClauses(Predicate predicate, Constraint constraint) {
+            this.predicate = predicate;
+            constraint.accept(this);
+        }
 
         @Override
         public void visit(CheckConstraint constraint) {
-            clause.setFunctions(
+            predicate.addClause(
+                    constraint,
                     new ExpressionFunction(constraint.getTable(), constraint.getExpression())
             );
         }
 
         @Override
         public void visit(ForeignKeyConstraint constraint) {
-            clause.setFunctions(
+            predicate.addClause(
+                    constraint,
                     new MatchesFunction(
                             constraint.getTable(), constraint.getColumns(),
                             constraint.getReferenceTable(), constraint.getReferenceColumns())
@@ -38,37 +47,36 @@ class DefaultPredicateGenerator {
 
         @Override
         public void visit(NotNullConstraint constraint) {
-            clause.setFunctions(
+            predicate.addClause(
+                    constraint,
                     new NotNullFunction(constraint.getTable(), constraint.getColumn())
             );
         }
 
         @Override
         public void visit(PrimaryKeyConstraint constraint) {
-            clause.setFunctions(
+            predicate.addClause(
+                    constraint,
                     new DistinctFunction(constraint.getTable(), constraint.getColumns())
             );
         }
 
         @Override
         public void visit(UniqueConstraint constraint) {
-            clause.setFunctions(
+            predicate.addClause(
+                    constraint,
                     new DistinctFunction(constraint.getTable(), constraint.getColumns())
             );
         }
     }
 
-    Clause clause;
-
     Predicate generatePredicate(Schema schema, Table table) {
-        FunctionSetter functionSetter = new FunctionSetter();
+        ClauseGenerator clauseGenerator = new ClauseGenerator();
         Predicate predicate = new Predicate();
         List<Constraint> constraints = schema.getConstraints(table);
 
         for (Constraint constraint : constraints) {
-            clause = new Clause();
-            constraint.accept(functionSetter);
-            predicate.addClause(constraint, clause);
+            clauseGenerator.addClauses(predicate, constraint);
         }
 
         return predicate;

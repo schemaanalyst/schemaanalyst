@@ -6,15 +6,15 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import java.util.Arrays;
 
 /**
- * Created by phil on 21/01/2014.
+ * Created by phil on 19/01/2014.
  */
-public class NotNullFunction extends Function {
+public class NullFunction extends Function {
 
-    public NotNullFunction(Table table, Column column) {
+    public NullFunction(Table table, Column column) {
         super(table, Arrays.asList(column));
     }
 
     public String toString() {
-        return "notNull(" + columns.get(0) + ")";
+        return "null(" + columns.get(0) + ")";
     }
 }

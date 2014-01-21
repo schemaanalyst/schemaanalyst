@@ -1,5 +1,6 @@
 package org.schemaanalyst.coverage.predicate;
 
+import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.coverage.predicate.function.Function;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
@@ -12,17 +13,28 @@ import java.util.List;
  */
 public class Clause {
 
-    private List<Function> functions;
+    private Constraint relatedConstraint;
+    private Function function;
 
-    public Clause() {
-        functions = Collections.emptyList();
+    public Clause(Constraint relatedConstraint, Function function) {
+        this.relatedConstraint = relatedConstraint;
+        this.function = function;
     }
 
-    public void setFunctions(Function... functions) {
-        this.functions = Arrays.asList(functions);
+    public Constraint getRelatedConstraint() {
+        return relatedConstraint;
     }
 
     public String toString() {
-        return "";
+        String str = "";
+        if (relatedConstraint != null) {
+            str += "{" + relatedConstraint + " ";
+        }
+        str += function.toString();
+
+        if (relatedConstraint != null) {
+            str += "}";
+        }
+        return str;
     }
 }
