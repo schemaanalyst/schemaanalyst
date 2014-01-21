@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage;
+package org.schemaanalyst.coverage.requirements;
 
 import org.schemaanalyst.coverage.predicate.Clause;
 import org.schemaanalyst.coverage.predicate.Predicate;

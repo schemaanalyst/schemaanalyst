@@ -1,8 +1,8 @@
-package org.schemaanalyst.coverage;
+package org.schemaanalyst.coverage.requirements;
 
-import org.schemaanalyst.coverage.predicate.Clause;
 import org.schemaanalyst.coverage.predicate.Predicate;
 import org.schemaanalyst.coverage.predicate.function.NullFunction;
+import org.schemaanalyst.coverage.requirements.DefaultPredicateGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -13,12 +13,12 @@ import java.util.List;
 /**
  * Created by phil on 21/01/2014.
  */
-public class NullTestRequirementsGenerator {
+public class NullColumn {
 
     private Schema schema;
     private Table table;
 
-    public NullTestRequirementsGenerator(Schema schema, Table table) {
+    public NullColumn(Schema schema, Table table) {
         this.schema = schema;
         this.table = table;
     }

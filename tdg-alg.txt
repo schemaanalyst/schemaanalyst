@@ -7,16 +7,18 @@ NEGATIVE TESTS
 (reset tables each time)
 
 * PK--UNIQUE tests
-	add not null for unique col
+	useful tests plus additionally adds a not null for unique col
 
 * NULL tests
-	adds a null for the col concerns
+	adds a null for the col concerned
 
-* Fk tests
-	adds a not null for cols -- not necessary as won't find a match?
+* FK tests
+	useful tests plus additionally adds a not null for unique col
 
 * UNIQUE col tests
-    true and false, add not null for col
+    unique / matches (unique and non-unique), additionally adds a not null for unique col
 
+* EXPR tests
+	negates expression.
 
 For each new tests, try all of the old ones to see if they satisfy predicate already.

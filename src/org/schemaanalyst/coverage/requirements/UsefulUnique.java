@@ -1,9 +1,10 @@
-package org.schemaanalyst.coverage;
+package org.schemaanalyst.coverage.requirements;
 
-import org.schemaanalyst.coverage.predicate.Clause;
 import org.schemaanalyst.coverage.predicate.Predicate;
 import org.schemaanalyst.coverage.predicate.function.DistinctFunction;
 import org.schemaanalyst.coverage.predicate.function.MatchesFunction;
+import org.schemaanalyst.coverage.requirements.DefaultPredicateGenerator;
+import org.schemaanalyst.coverage.requirements.RequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -14,14 +15,14 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
- * Created by phil on 19/01/2014.
+ * Created by phil on 21/01/2014.
  */
-public class PrimaryKeyTestRequirementsGenerator extends TestRequirementsGenerator {
+public class UsefulUnique extends RequirementsGenerator {
 
     private Schema schema;
     private Table table;
 
-    public PrimaryKeyTestRequirementsGenerator(Schema schema, Table table) {
+    public UsefulUnique(Schema schema, Table table) {
         this.schema = schema;
         this.table = table;
     }
@@ -68,3 +69,4 @@ public class PrimaryKeyTestRequirementsGenerator extends TestRequirementsGenerat
         return predicates;
     }
 }
+

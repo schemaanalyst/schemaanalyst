@@ -1,6 +1,9 @@
 package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.predicate.Predicate;
+import org.schemaanalyst.coverage.requirements.NullColumn;
+import org.schemaanalyst.coverage.requirements.UniqueColumn;
+import org.schemaanalyst.coverage.requirements.primarykey.primarykey;
 import parsedcasestudy.Flights;
 
 import java.util.LinkedHashSet;
@@ -14,7 +17,7 @@ public class Test {
 
         Flights flights = new Flights();
 
-        PrimaryKeyTestRequirementsGenerator reqGen1 = new PrimaryKeyTestRequirementsGenerator(
+        primarykey.PrimaryKeyTestRequirementsGenerator reqGen1 = new primarykey.PrimaryKeyTestRequirementsGenerator(
                 flights, flights.getTable("flights")
         );
 
@@ -23,7 +26,7 @@ public class Test {
             System.out.println(p);
         }
 
-        NullTestRequirementsGenerator reqGen2 = new NullTestRequirementsGenerator(
+        NullColumn reqGen2 = new NullColumn(
                 flights, flights.getTable("flights")
         );
 
@@ -32,7 +35,7 @@ public class Test {
             System.out.println(p);
         }
 
-        UniqueColumnTestRequirementsGenerator reqGen3 = new UniqueColumnTestRequirementsGenerator(
+        UniqueColumn reqGen3 = new UniqueColumn(
                 flights, flights.getTable("flights")
         );
 

@@ -1,9 +1,9 @@
-package org.schemaanalyst.coverage;
+package org.schemaanalyst.coverage.requirements;
 
 import org.schemaanalyst.coverage.predicate.Predicate;
 import org.schemaanalyst.coverage.predicate.function.DistinctFunction;
 import org.schemaanalyst.coverage.predicate.function.MatchesFunction;
-import org.schemaanalyst.coverage.predicate.function.NullFunction;
+import org.schemaanalyst.coverage.requirements.DefaultPredicateGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -14,12 +14,12 @@ import java.util.List;
 /**
  * Created by phil on 21/01/2014.
  */
-public class UniqueColumnTestRequirementsGenerator {
+public class UniqueColumn {
 
     private Schema schema;
     private Table table;
 
-    public UniqueColumnTestRequirementsGenerator(Schema schema, Table table) {
+    public UniqueColumn(Schema schema, Table table) {
         this.schema = schema;
         this.table = table;
     }
