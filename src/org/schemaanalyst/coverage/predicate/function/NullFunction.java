@@ -10,11 +10,18 @@ import java.util.Arrays;
  */
 public class NullFunction extends Function {
 
+    private Column column;
+
     public NullFunction(Table table, Column column) {
-        super(table, Arrays.asList(column));
+        super(table);
+        this.column = column;
     }
 
     public String getName() {
         return "Null";
+    }
+
+    protected String argumentsToString() {
+        return column.toString();
     }
 }

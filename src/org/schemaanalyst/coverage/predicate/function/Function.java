@@ -13,26 +13,18 @@ import java.util.List;
 public abstract class Function {
 
     protected Table table;
-    protected List<Column> columns;
 
-    public Function(Table table, List<Column> columns) {
+    public Function(Table table) {
         this.table = table;
-        this.columns = new ArrayList<>(columns);
     }
 
     public Table getTable() {
         return table;
     }
 
-    public List<Column> getColumns() {
-        return new ArrayList<>(columns);
-    }
-
     public abstract String getName();
 
-    public String argumentsToString() {
-        return StringUtils.join(columns, ",");
-    }
+    protected abstract String argumentsToString();
 
     public String toString() {
         return getName() + "(" + argumentsToString() + ")";

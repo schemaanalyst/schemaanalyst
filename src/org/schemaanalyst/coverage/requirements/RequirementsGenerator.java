@@ -2,15 +2,16 @@ package org.schemaanalyst.coverage.requirements;
 
 import org.schemaanalyst.coverage.predicate.Predicate;
 import org.schemaanalyst.coverage.predicate.TestRequirements;
-import org.schemaanalyst.coverage.predicate.function.DistinctFunction;
+import org.schemaanalyst.coverage.predicate.function.UniqueFunction;
 import org.schemaanalyst.coverage.predicate.function.ExpressionFunction;
-import org.schemaanalyst.coverage.predicate.function.MatchesFunction;
+import org.schemaanalyst.coverage.predicate.function.MatchFunction;
 import org.schemaanalyst.coverage.predicate.function.NotNullFunction;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 
-import java.util.LinkedHashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,9 +38,11 @@ public abstract class RequirementsGenerator {
         @Override
         public void visit(ForeignKeyConstraint constraint) {
             predicate.addClause(
-                    constraint, new MatchesFunction(
-                    constraint.getTable(), constraint.getColumns(),
-                    constraint.getReferenceTable(), constraint.getReferenceColumns())
+                    constraint,
+                    new MatchFunction(
+                        constraint.getTable(), constraint.getColumns(), new ArrayList<Column>(),
+                        constraint.getReferenceTable(), constraint.getReferenceColumns(), new ArrayList<Column>()
+                    )
             );
         }
 
@@ -53,14 +56,14 @@ public abstract class RequirementsGenerator {
         @Override
         public void visit(PrimaryKeyConstraint constraint) {
             predicate.addClause(
-                    constraint, new DistinctFunction(constraint.getTable(), constraint.getColumns())
+                    constraint, new UniqueFunction(constraint.getTable(), constraint.getColumns())
             );
         }
 
         @Override
         public void visit(UniqueConstraint constraint) {
             predicate.addClause(
-                    constraint, new DistinctFunction(constraint.getTable(), constraint.getColumns())
+                    constraint, new UniqueFunction(constraint.getTable(), constraint.getColumns())
             );
         }
     }

@@ -10,11 +10,18 @@ import java.util.Arrays;
  */
 public class NotNullFunction extends Function {
 
+    private Column column;
+
     public NotNullFunction(Table table, Column column) {
-        super(table, Arrays.asList(column));
+        super(table);
+        this.column = column;
     }
 
     public String getName() {
         return "NotNull";
+    }
+
+    protected String argumentsToString() {
+        return column.toString();
     }
 }

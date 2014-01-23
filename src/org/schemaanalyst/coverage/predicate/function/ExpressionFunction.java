@@ -11,7 +11,7 @@ public class ExpressionFunction extends Function {
     private Expression expression;
 
     public ExpressionFunction(Table table, Expression expression) {
-        super(table, expression.getColumnsInvolved());
+        super(table);
         this.expression = expression;
     }
 
@@ -19,7 +19,7 @@ public class ExpressionFunction extends Function {
         return "Exp";
     }
 
-    public String argumentsToString() {
+    protected String argumentsToString() {
         return expression.toString();
     }
 }

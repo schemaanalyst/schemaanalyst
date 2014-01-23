@@ -1,15 +1,11 @@
 package org.schemaanalyst.coverage;
 
-import org.schemaanalyst.coverage.predicate.Predicate;
-import org.schemaanalyst.coverage.requirements.ConstrainedCrossTableRequirementsGenerator;
-import org.schemaanalyst.coverage.requirements.NullColumnRequirementsGenerator;
-import org.schemaanalyst.coverage.requirements.UniqueColumnRequirementsGenerator;
+import org.schemaanalyst.coverage.requirements.MatchRequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import parsedcasestudy.Flights;
 
-import java.util.LinkedHashSet;
 import java.util.List;
 
 /**
@@ -24,7 +20,7 @@ public class Test {
         PrimaryKeyConstraint pkConstraint = flights.getPrimaryKeyConstraint(flightsTable);
         List<Column> pkColumns = pkConstraint.getColumns();
 
-        ConstrainedCrossTableRequirementsGenerator reqGen1 = new ConstrainedCrossTableRequirementsGenerator(
+        MatchRequirementsGenerator reqGen1 = new MatchRequirementsGenerator(
                 flights,
                 flightsTable, pkConstraint,
                 pkColumns
@@ -32,6 +28,7 @@ public class Test {
 
         System.out.println(reqGen1.generateRequirements());
 
+        /*
         NullColumnRequirementsGenerator reqGen2 = new NullColumnRequirementsGenerator(
                 flights, flights.getTable("flights")
         );
@@ -43,6 +40,7 @@ public class Test {
         );
 
         System.out.println(reqGen3.generateRequirements());
+        */
     }
 
 }
