@@ -14,7 +14,7 @@ public class NullFunction extends Function {
         super(table, Arrays.asList(column));
     }
 
-    public String toString() {
-        return "null(" + columns.get(0) + ")";
+    public String getName() {
+        return "Null";
     }
 }

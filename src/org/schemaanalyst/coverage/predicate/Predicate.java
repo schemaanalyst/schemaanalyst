@@ -6,7 +6,6 @@ import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 /**
  * Created by phil on 19/01/2014.
@@ -14,8 +13,10 @@ import java.util.List;
 public class Predicate {
 
     private LinkedHashSet<Clause> clauses;
+    private String purpose;
 
-    public Predicate() {
+    public Predicate(String description) {
+        this.purpose = description;
         clauses = new LinkedHashSet<>();
     }
 
@@ -23,25 +24,19 @@ public class Predicate {
         clauses.add(clause);
     }
 
-    public void addClauses(List<Clause> clausesToAdd) {
-        for (Clause clause : clausesToAdd) {
-            addClause(clause);
-        }
-    }
-
     public void addClause(Function function) {
         addClause(null, function);
     }
 
-    public void addClause(Constraint relatedConstraint, Function function) {
-        addClause(new Clause(relatedConstraint, function));
+    public void addClause(Constraint underpinningConstraint, Function function) {
+        addClause(new Clause(underpinningConstraint, function));
     }
 
-    public boolean removeClause(Constraint relatedConstraint) {
+    public boolean removeClause(Constraint underpinningConstraint) {
         boolean success = false;
         Iterator<Clause> it = clauses.iterator();
         while (it.hasNext()) {
-            if (relatedConstraint.equals(it.next().getRelatedConstraint())) {
+            if (underpinningConstraint.equals(it.next().getUnderpinningConstraint())) {
                 it.remove();
                 success = true;
             }
@@ -49,7 +44,11 @@ public class Predicate {
         return success;
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
     public String toString() {
-        return StringUtils.join(clauses, " /\\ ");
+        return StringUtils.join(clauses, " \u2227 ");
     }
 }

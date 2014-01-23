@@ -14,7 +14,7 @@ public class NotNullFunction extends Function {
         super(table, Arrays.asList(column));
     }
 
-    public String toString() {
-        return "notNull(" + columns.get(0) + ")";
+    public String getName() {
+        return "NotNull";
     }
 }

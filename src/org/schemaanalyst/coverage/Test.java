@@ -1,12 +1,16 @@
 package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.predicate.Predicate;
-import org.schemaanalyst.coverage.requirements.NullColumn;
-import org.schemaanalyst.coverage.requirements.UniqueColumn;
-import org.schemaanalyst.coverage.requirements.primarykey.primarykey;
+import org.schemaanalyst.coverage.requirements.ConstrainedCrossTableRequirementsGenerator;
+import org.schemaanalyst.coverage.requirements.NullColumnRequirementsGenerator;
+import org.schemaanalyst.coverage.requirements.UniqueColumnRequirementsGenerator;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import parsedcasestudy.Flights;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Created by phil on 21/01/2014.
@@ -16,33 +20,29 @@ public class Test {
     public static void main(String[] args) {
 
         Flights flights = new Flights();
+        Table flightsTable = flights.getTable("flights");
+        PrimaryKeyConstraint pkConstraint = flights.getPrimaryKeyConstraint(flightsTable);
+        List<Column> pkColumns = pkConstraint.getColumns();
 
-        primarykey.PrimaryKeyTestRequirementsGenerator reqGen1 = new primarykey.PrimaryKeyTestRequirementsGenerator(
+        ConstrainedCrossTableRequirementsGenerator reqGen1 = new ConstrainedCrossTableRequirementsGenerator(
+                flights,
+                flightsTable, pkConstraint,
+                pkColumns
+        );
+
+        System.out.println(reqGen1.generateRequirements());
+
+        NullColumnRequirementsGenerator reqGen2 = new NullColumnRequirementsGenerator(
                 flights, flights.getTable("flights")
         );
 
-        LinkedHashSet<Predicate> predicates1 = reqGen1.generateRequirements();
-        for (Predicate p : predicates1) {
-            System.out.println(p);
-        }
+        System.out.println(reqGen2.generateRequirements());
 
-        NullColumn reqGen2 = new NullColumn(
+        UniqueColumnRequirementsGenerator reqGen3 = new UniqueColumnRequirementsGenerator(
                 flights, flights.getTable("flights")
         );
 
-        LinkedHashSet<Predicate> predicates2 = reqGen2.generateRequirements();
-        for (Predicate p : predicates2) {
-            System.out.println(p);
-        }
-
-        UniqueColumn reqGen3 = new UniqueColumn(
-                flights, flights.getTable("flights")
-        );
-
-        LinkedHashSet<Predicate> predicates3 = reqGen3.generateRequirements();
-        for (Predicate p : predicates3) {
-            System.out.println(p);
-        }
+        System.out.println(reqGen3.generateRequirements());
     }
 
 }

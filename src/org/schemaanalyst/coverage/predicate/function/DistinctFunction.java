@@ -1,49 +1,32 @@
 package org.schemaanalyst.coverage.predicate.function;
 
-import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by phil on 19/01/2014.
  */
-public class DistinctFunction extends Function {
-
-    private Table otherTable;
-    private List<Column> otherColumns;
+public class DistinctFunction extends RowCompareFunction {
 
     public DistinctFunction(Table table, Column... columns) {
-        this(table, Arrays.asList(columns));
+        super(Type.FOR_ALL_ROWS, table, columns);
     }
 
     public DistinctFunction(Table table, List<Column> columns) {
-        this(table, columns, table, columns);
+        super(Type.FOR_ALL_ROWS, table, columns);
     }
 
-    public DistinctFunction(Table table, List<Column> columns,
-                            Table otherTable, List<Column> otherColumns) {
-        super(table, columns);
-        this.otherTable = otherTable;
-        this.otherColumns = new ArrayList<>(otherColumns);
+    public DistinctFunction(Table table, Column column, Table otherTable, Column otherColumn) {
+        super(Type.FOR_ALL_ROWS, table, column, otherTable, otherColumn);
     }
 
-    public String toString() {
-        StringBuffer sb = new StringBuffer("distinct(");
-        sb.append(table + ": ");
-        sb.append(StringUtils.join(columns));
-
-        if (!table.equals(otherTable)) {
-            sb.append(" -> ");
-            sb.append(otherTable + ": ");
-            sb.append(StringUtils.join(otherColumns));
-        }
-
-        sb.append(")");
-        return sb.toString();
+    public DistinctFunction(Table table, List<Column> columns, Table otherTable, List<Column> otherColumns) {
+        super(Type.FOR_ALL_ROWS, table, columns, otherTable, otherColumns);
     }
 
+    public String getName() {
+        return "Distinct";
+    }
 }
