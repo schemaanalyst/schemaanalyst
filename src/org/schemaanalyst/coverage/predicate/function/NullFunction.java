@@ -11,14 +11,24 @@ import java.util.Arrays;
 public class NullFunction extends Function {
 
     private Column column;
+    private boolean satisfy;
 
-    public NullFunction(Table table, Column column) {
+    public NullFunction(Table table, Column column, boolean satisfy) {
         super(table);
         this.column = column;
+        this.satisfy = satisfy;
+    }
+
+    public Column getColumn() {
+        return column;
+    }
+
+    public boolean getSatisfy() {
+        return satisfy;
     }
 
     public String getName() {
-        return "Null";
+        return (!satisfy ? "\u00AC" : "") + "Null";
     }
 
     protected String argumentsToString() {

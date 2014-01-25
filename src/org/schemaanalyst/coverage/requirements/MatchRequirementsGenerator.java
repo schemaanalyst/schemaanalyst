@@ -58,7 +58,8 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                             remainingCols,
                             referenceTable,
                             Arrays.asList(refCol),
-                            refRemainingCols)
+                            refRemainingCols,
+                            MatchFunction.Mode.AND)
             );
 
             // add new clause
@@ -68,7 +69,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
         // (2) generate test requirement where there is a collision of values
 
         // generate predicate and remove old clause for underpinning constraint
-        Predicate predicate = generatePredicate("-- Test all columns equal for " + constraint);
+        Predicate predicate = generatePredicate("-- Test all columns not equal for " + constraint);
 
         // generate new clause
         predicate.addClause(
@@ -79,7 +80,8 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                         columns,
                         referenceTable,
                         new ArrayList<Column>(),
-                        referenceColumns)
+                        referenceColumns,
+                        MatchFunction.Mode.AND)
         );
 
         // add new clause

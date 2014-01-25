@@ -18,21 +18,70 @@ import java.util.List;
  */
 public class MatchFunction extends Function {
 
+    public enum Mode {
+        AND, OR;
+
+        public String toString() {
+            return (this == AND) ? "\u2227" : "\u2228";
+        }
+    }
+
+    private Mode mode;
     private Table refTable;
     private List<Column> notEqualCols, equalCols, notEqualRefCols, equalRefCols;
 
-    public MatchFunction(Table table, List<Column> equalCols, List<Column> notEqualCols,
-                         Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols) {
+    public MatchFunction(Table table, List<Column> equalCols, List<Column> notEqualCols, Mode mode) {
+        this(table, equalCols, notEqualCols, table, equalCols, notEqualCols, mode);
+    }
 
+    public MatchFunction(Table table, List<Column> equalCols, List<Column> notEqualCols,
+                         Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols, Mode mode) {
         super(table);
 
         this.equalCols = new ArrayList<>(equalCols);
         this.notEqualCols = new ArrayList<>(notEqualCols);
 
         this.refTable = refTable;
-
         this.equalRefCols = new ArrayList<>(equalRefCols);
         this.notEqualRefCols = new ArrayList<>(notEqualRefCols);
+
+        this.mode = mode;
+    }
+
+    public List<Column> getColumns() {
+        ArrayList<Column> cols = new ArrayList<>(equalCols);
+        cols.addAll(notEqualCols);
+        return cols;
+    }
+
+    public List<Column> getEqualColumns() {
+        return new ArrayList<>(equalCols);
+    }
+
+    public List<Column> getNotEqualColumns() {
+        return new ArrayList<>(notEqualCols);
+    }
+
+    public Table getReferenceTable() {
+        return refTable;
+    }
+
+    public List<Column> getReferenceColumns() {
+        ArrayList<Column> cols = new ArrayList<>(equalRefCols);
+        cols.addAll(notEqualRefCols);
+        return cols;
+    }
+
+    public List<Column> getEqualRefColumns() {
+        return new ArrayList<>(equalRefCols);
+    }
+
+    public List<Column> getNotEqualRefColumns() {
+        return new ArrayList<>(notEqualRefCols);
+    }
+
+    public boolean isAndMode() {
+        return mode == Mode.AND;
     }
 
     private String colsToString(List<Column> cols, List<Column> refCols) {
@@ -70,6 +119,6 @@ public class MatchFunction extends Function {
     }
 
     public String getName() {
-        return "MatchFunction";
+        return mode + "Match";
     }
 }

@@ -9,14 +9,24 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 public class ExpressionFunction extends Function {
 
     private Expression expression;
+    private boolean satisfy;
 
-    public ExpressionFunction(Table table, Expression expression) {
+    public ExpressionFunction(Table table, Expression expression, boolean satisfy) {
         super(table);
         this.expression = expression;
+        this.satisfy = satisfy;
+    }
+
+    public Expression getExpression() {
+        return expression;
+    }
+
+    public boolean getSatisfy() {
+        return satisfy;
     }
 
     public String getName() {
-        return "Exp";
+        return (!satisfy ? "\u00AC" : "") + "Exp";
     }
 
     protected String argumentsToString() {

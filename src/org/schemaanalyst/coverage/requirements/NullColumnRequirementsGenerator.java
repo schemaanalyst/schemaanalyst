@@ -2,13 +2,13 @@ package org.schemaanalyst.coverage.requirements;
 
 import org.schemaanalyst.coverage.predicate.Predicate;
 import org.schemaanalyst.coverage.predicate.TestRequirements;
-import org.schemaanalyst.coverage.predicate.function.NullFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.LinkedHashSet;
 import java.util.List;
+
+import static org.schemaanalyst.coverage.predicate.function.FunctionFactory.isNull;
 
 /**
  * Created by phil on 21/01/2014.
@@ -25,7 +25,7 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
             Predicate predicate = generatePredicate("-- Testing " + column + " as null");
-            predicate.addClause(new NullFunction(table, column));
+            predicate.addClause(isNull(table, column));
             requirements.add(predicate);
         }
 
