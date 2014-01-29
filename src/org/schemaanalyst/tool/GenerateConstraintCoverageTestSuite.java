@@ -32,10 +32,10 @@ public class GenerateConstraintCoverageTestSuite extends Runner {
 	@Parameter(value = "The identification string of the DBMS to be used", choicesMethod = "org.schemaanalyst.dbms.DBMSFactory.getDBMSChoices")
 	private String dbms;
 
-	@Parameter(value = "The identification string of the data generator to be used", choicesMethod = "org.schemaanalyst.datageneration.ConstraintCovererFactory.getConstraintCovererChoices")
+	@Parameter(value = "The identification string of the data generator to be used", choicesMethod = "org.schemaanalyst.testgeneration.ConstraintCovererFactory.getConstraintCovererChoices")
 	private String datagenerator;
 
-	@Parameter(value = "The identification string of the cell randomisation profile to be used", choicesMethod = "org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory.getCellRandomiserChoices")
+	@Parameter(value = "The identification string of the cell randomisation profile to be used", choicesMethod = "org.schemaanalyst.testgeneration.cellrandomisation.CellRandomiserFactory.getCellRandomiserChoices")
 	private String cellrandomisationprofile = "Small";
 
 	@Parameter("The random seed to start the search algorithm")

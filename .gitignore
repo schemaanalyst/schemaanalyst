@@ -10,3 +10,7 @@
 /results/
 /bin
 !/src/deprecated/report/
+SchemaAnalyst.iml
+.DS_Store
+/.idea/
+/out/
