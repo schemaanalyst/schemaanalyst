@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
-import org.schemaanalyst.coverage.predicate.function.NullFunction;
+import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
@@ -11,16 +11,16 @@ import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiv
  */
 public class NullObjectiveFunction extends ObjectiveFunction<Row> {
 
-    private NullFunction nullFunction;
+    private NullClause nullClause;
 
-    public NullObjectiveFunction(NullFunction nullFunction) {
-        this.nullFunction = nullFunction;
+    public NullObjectiveFunction(NullClause nullClause) {
+        this.nullClause = nullClause;
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
         return NullValueObjectiveFunction.compute(
-                row.getCell(nullFunction.getColumn()).getValue(),
-                nullFunction.getSatisfy());
+                row.getCell(nullClause.getColumn()).getValue(),
+                nullClause.getSatisfy());
     }
 }

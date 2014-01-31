@@ -4,7 +4,7 @@ import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.schemaanalyst.coverage.predicate.function.MatchFunction;
+import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.coverage.search.objectivefunction.MatchObjectiveFunction;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
@@ -29,27 +29,27 @@ public class TestMatchObjectiveFunction {
 
     Object[] testValues() {
         return $(
-                $(r(1, 1), d(r(1, 1)), true, true, MatchFunction.Mode.AND, true),
-                $(r(1, 2), d(r(3, 4)), true, true, MatchFunction.Mode.AND, false),
+                $(r(1, 1), d(r(1, 1)), true, true, MatchClause.Mode.AND, true),
+                $(r(1, 2), d(r(3, 4)), true, true, MatchClause.Mode.AND, false),
 
-                $(r(1, 1), d(r(1, 1)), false, false, MatchFunction.Mode.AND, false),
-                $(r(1, 1), d(r(2, 2)), false, false, MatchFunction.Mode.AND, true),
+                $(r(1, 1), d(r(1, 1)), false, false, MatchClause.Mode.AND, false),
+                $(r(1, 1), d(r(2, 2)), false, false, MatchClause.Mode.AND, true),
 
-                $(r(1, 1), d(r(1, 1)), false, true, MatchFunction.Mode.AND, false),
-                $(r(1, 2), d(r(2, 2)), false, true, MatchFunction.Mode.AND, true),
+                $(r(1, 1), d(r(1, 1)), false, true, MatchClause.Mode.AND, false),
+                $(r(1, 2), d(r(2, 2)), false, true, MatchClause.Mode.AND, true),
 
-                $(r(1, 1), d(r(1, 1)), false, false, MatchFunction.Mode.AND, false),
-                $(r(1, 2), d(r(3, 4)), false, false, MatchFunction.Mode.AND, true),
+                $(r(1, 1), d(r(1, 1)), false, false, MatchClause.Mode.AND, false),
+                $(r(1, 2), d(r(3, 4)), false, false, MatchClause.Mode.AND, true),
 
-                $(r(NULL, 1), d(r(1, 1)), false, true, MatchFunction.Mode.AND, true),
-                $(r(NULL, NULL), d(r(1, 1)), false, true, MatchFunction.Mode.AND, true)
+                $(r(NULL, 1), d(r(1, 1)), false, true, MatchClause.Mode.AND, true),
+                $(r(NULL, NULL), d(r(1, 1)), false, true, MatchClause.Mode.AND, true)
         );
     }
 
     @Test
     @Parameters(method = "testValues")
     public void test(Integer[] rowValues, Integer[] stateValues,
-                     boolean firstEqual, boolean secondEqual, MatchFunction.Mode mode,
+                     boolean firstEqual, boolean secondEqual, MatchClause.Mode mode,
                      boolean success) {
         TwoColumnMockDatabase database = new TwoColumnMockDatabase();
 
@@ -75,7 +75,7 @@ public class TestMatchObjectiveFunction {
             notEqualCols.add(database.column2);
         }
 
-        MatchFunction mf = new MatchFunction(database.table, equalCols, notEqualCols, mode);
+        MatchClause mf = new MatchClause(database.table, equalCols, notEqualCols, mode);
 
         MatchObjectiveFunction mof = new MatchObjectiveFunction(mf, state);
         ObjectiveValue objVal = mof.evaluate(row);

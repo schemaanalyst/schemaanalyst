@@ -1,15 +1,19 @@
-package org.schemaanalyst.coverage.predicate;
+package org.schemaanalyst.coverage.criterion.requirements;
 
+import org.schemaanalyst.coverage.criterion.Predicate;
+
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Created by phil on 22/01/2014.
  */
-public class TestRequirements {
+public class Requirements {
 
     LinkedHashSet<Predicate> requirementsSet;
 
-    public TestRequirements() {
+    public Requirements() {
         requirementsSet = new LinkedHashSet<>();
     }
 
@@ -17,8 +21,16 @@ public class TestRequirements {
         requirementsSet.add(predicate);
     }
 
-    public void add(TestRequirements testRequirements) {
-        requirementsSet.addAll(testRequirements.requirementsSet);
+    public void add(Requirements requirements) {
+        requirementsSet.addAll(requirements.requirementsSet);
+    }
+
+    public List<Predicate> getRequirements() {
+        return new ArrayList<>(requirementsSet);
+    }
+
+    public int size() {
+        return requirementsSet.size();
     }
 
     public String toString() {

@@ -1,14 +1,13 @@
-package org.schemaanalyst.coverage.requirements;
+package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.schemaanalyst.coverage.predicate.Predicate;
-import org.schemaanalyst.coverage.predicate.TestRequirements;
+import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.List;
 
-import static org.schemaanalyst.coverage.predicate.function.FunctionFactory.isNull;
+import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNull;
 
 /**
  * Created by phil on 21/01/2014.
@@ -19,8 +18,8 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
         super(schema, table);
     }
 
-    public TestRequirements generateRequirements() {
-        TestRequirements requirements = new TestRequirements();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {

@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Created by phil on 24/01/2014.
  */
-public class Statistics {
+public class StatisticStore {
 
     private HashMap<String, String> stats;
 

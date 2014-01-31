@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class TestSuite extends Statistics {
+public class TestSuite extends StatisticStore {
 
     private List<TestCase> testCases;
 

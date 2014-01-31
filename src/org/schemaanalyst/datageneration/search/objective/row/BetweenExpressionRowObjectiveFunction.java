@@ -13,8 +13,8 @@ import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 
 /**
  *  Evaluates a BetweenExpression by considering:  
- *  - X BETWEEN Y AND Z as the raw predicate ((X >= Y) AND (X <= Z)) -- the so-called "True Form"
- *  - X NOT BETWEEN Y AND Z as the raw predicate ((X < Y) OR (X > Z)) -- the so-called "False Form".
+ *  - X BETWEEN Y AND Z as the raw clause ((X >= Y) AND (X <= Z)) -- the so-called "True Form"
+ *  - X NOT BETWEEN Y AND Z as the raw clause ((X < Y) OR (X > Z)) -- the so-called "False Form".
  *  
  *  where:
  *  - X is the result of the BetweenExpression's subjectExpression
@@ -32,7 +32,7 @@ public class BetweenExpressionRowObjectiveFunction extends ObjectiveFunction<Row
     // the relational operators for the LHS and RHS comparisons (i.e. >= or < for lhsOp)
     private RelationalOperator lhsOp, rhsOp;
     
-    // "evaluateTrueForm" is true when the satisfaction goal is the raw predicate ((X >= Y) AND (X <= Z))
+    // "evaluateTrueForm" is true when the satisfaction goal is the raw clause ((X >= Y) AND (X <= Z))
     // else false for its counterpart ((X < Y) OR (X > Z))
     private boolean evaluateTrueForm;
     

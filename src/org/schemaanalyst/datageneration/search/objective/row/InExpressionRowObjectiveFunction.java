@@ -20,10 +20,10 @@ import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
 /**
  * Evaluates an InExpression by considering:
 
- * - X IN (A, B, C, ...) as the raw predicate 
+ * - X IN (A, B, C, ...) as the raw clause
  *   ((X = A) OR (X = B) OR (X = C) OR ...) -- the so-called "True Form"
 
- * - X NOT IN (A, B, C, ...) as the raw predicate 
+ * - X NOT IN (A, B, C, ...) as the raw clause
  * ((X != A) AND (X != B) AND (X != C) AND ...) -- the so-called "False Form"
  * 
  * where 
@@ -59,7 +59,7 @@ public class InExpressionRowObjectiveFunction extends ObjectiveFunction<Row> {
         // whether to evaluate the true form or not
         this.evaluateTrueForm = (goalIsToSatisfy != expression.isNotIn());
         
-        // is NULL allowed for the predicate to be trivially true?
+        // is NULL allowed for the clause to be trivially true?
         this.allowNull = allowNull;
         
         // set up the subexpression evaluators...

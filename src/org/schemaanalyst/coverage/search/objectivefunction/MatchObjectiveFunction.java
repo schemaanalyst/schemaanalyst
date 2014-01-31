@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
-import org.schemaanalyst.coverage.predicate.function.MatchFunction;
+import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
@@ -17,18 +17,18 @@ import java.util.List;
  */
 public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
 
-    private MatchFunction matchFunction;
+    private MatchClause matchClause;
     private Data state;
 
-    public MatchObjectiveFunction(MatchFunction matchFunction, Data state) {
-        this.matchFunction = matchFunction;
+    public MatchObjectiveFunction(MatchClause matchClause, Data state) {
+        this.matchClause = matchClause;
         this.state = state;
     }
 
     @Override
     public ObjectiveValue evaluate(Row row) {
         BestOfMultiObjectiveValue objVal = new BestOfMultiObjectiveValue();
-        List<Row> stateRows = state.getRows(matchFunction.getReferenceTable());
+        List<Row> stateRows = state.getRows(matchClause.getReferenceTable());
 
         for (Row stateRow : stateRows) {
             objVal.add(compareRows(row, stateRow));
@@ -39,23 +39,23 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
 
     protected ObjectiveValue compareRows(Row row, Row stateRow) {
         MultiObjectiveValue objVal =
-                matchFunction.isAndMode()
+                matchClause.isAndMode()
                         ? new SumOfMultiObjectiveValue()
                         : new BestOfMultiObjectiveValue();
 
         evaluateColumnLists(
                 row,
                 stateRow,
-                matchFunction.getEqualColumns(),
-                matchFunction.getEqualRefColumns(),
+                matchClause.getEqualColumns(),
+                matchClause.getEqualRefColumns(),
                 RelationalOperator.EQUALS,
                 objVal);
 
         evaluateColumnLists(
                 row,
                 stateRow,
-                matchFunction.getNotEqualColumns(),
-                matchFunction.getNotEqualRefColumns(),
+                matchClause.getNotEqualColumns(),
+                matchClause.getNotEqualRefColumns(),
                 RelationalOperator.NOT_EQUALS,
                 objVal);
 

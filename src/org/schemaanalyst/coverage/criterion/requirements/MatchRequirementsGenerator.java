@@ -1,14 +1,19 @@
-package org.schemaanalyst.coverage.requirements;
+package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.schemaanalyst.coverage.predicate.Predicate;
-import org.schemaanalyst.coverage.predicate.TestRequirements;
-import org.schemaanalyst.coverage.predicate.function.MatchFunction;
+import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by phil on 22/01/2014.
@@ -18,21 +23,30 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
     private Table referenceTable;
     private List<Column> columns, referenceColumns;
 
-    public MatchRequirementsGenerator(Schema schema, Table table, Constraint constraint, List<Column> columns) {
-        this(schema, table, constraint, columns, table, columns);
+    public MatchRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
+        super(schema, table, constraint);
+        this.columns = constraint.getColumns();
+        this.referenceTable = table;
+        this.referenceColumns = columns;
     }
 
-    public MatchRequirementsGenerator(Schema schema, Table table, Constraint constraint,
-                                      List<Column> columns, Table referenceTable, List<Column> referenceColumns) {
+    public MatchRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
         super(schema, table, constraint);
-        this.columns = columns;
-        this.referenceTable = referenceTable;
-        this.referenceColumns = referenceColumns;
+        this.columns = constraint.getColumns();
+        this.referenceTable = table;
+        this.referenceColumns = columns;
+    }
+
+    public MatchRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
+        super(schema, table, constraint);
+        this.columns = constraint.getColumns();
+        this.referenceTable = constraint.getReferenceTable();
+        this.referenceColumns = constraint.getReferenceColumns();
     }
 
     @Override
-    public TestRequirements generateRequirements() {
-        TestRequirements requirements = new TestRequirements();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         // (1) generate test requirements where each individual column is distinct once
         Iterator<Column> colsIt = columns.iterator();
@@ -48,18 +62,17 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             List<Column> refRemainingCols = new ArrayList<>(columns);
             refRemainingCols.remove(refCol);
 
-            // generate new predicate
+            // generate new clause
             Predicate predicate = generatePredicate("-- Test " + col + " not equal for " + constraint);
             predicate.addClause(
-                    constraint,
-                    new MatchFunction(
+                    new MatchClause(
                             table,
                             Arrays.asList(col),
                             remainingCols,
                             referenceTable,
                             Arrays.asList(refCol),
                             refRemainingCols,
-                            MatchFunction.Mode.AND)
+                            MatchClause.Mode.AND)
             );
 
             // add new clause
@@ -68,20 +81,19 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
 
         // (2) generate test requirement where there is a collision of values
 
-        // generate predicate and remove old clause for underpinning constraint
+        // generate clause and remove old clause for underpinning constraint
         Predicate predicate = generatePredicate("-- Test all columns not equal for " + constraint);
 
         // generate new clause
         predicate.addClause(
-                constraint,
-                new MatchFunction(
+                new MatchClause(
                         table,
                         new ArrayList<Column>(),
                         columns,
                         referenceTable,
                         new ArrayList<Column>(),
                         referenceColumns,
-                        MatchFunction.Mode.AND)
+                        MatchClause.Mode.AND)
         );
 
         // add new clause

@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
-import org.schemaanalyst.coverage.predicate.function.ExpressionFunction;
+import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
@@ -11,17 +11,17 @@ import org.schemaanalyst.datageneration.search.objective.row.ExpressionRowObject
  */
 public class ExpressionObjectiveFunction extends ObjectiveFunction<Row> {
 
-    private ExpressionFunction expressionFunction;
+    private ExpressionClause expressionClause;
 
-    public ExpressionObjectiveFunction(ExpressionFunction expressionFunction) {
-        this.expressionFunction = expressionFunction;
+    public ExpressionObjectiveFunction(ExpressionClause expressionClause) {
+        this.expressionClause = expressionClause;
     }
 
     @Override
     public ObjectiveValue evaluate(Row candidateSolution) {
         return new ExpressionRowObjectiveFunctionFactory(
-                expressionFunction.getExpression(),
-                expressionFunction.getSatisfy(),
+                expressionClause.getExpression(),
+                expressionClause.getSatisfy(),
                 true).create().evaluate(candidateSolution);
     }
 }

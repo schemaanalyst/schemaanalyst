@@ -12,6 +12,13 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 public class Row {
 
+    public static class Duplicator implements org.schemaanalyst.util.Duplicator<Row> {
+        @Override
+        public Row duplicate(Row row) {
+            return row.duplicate();
+        }
+    }
+
     protected Table table;
     protected List<Cell> cells;
 

@@ -1,23 +1,25 @@
 package org.schemaanalyst.coverage.testgeneration;
 
-import org.schemaanalyst.coverage.predicate.Predicate;
+import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class TestCase extends Statistics {
+public class TestCase extends StatisticStore {
 
-    private Data data;
+    private Row row;
     private List<Predicate> predicates;
 
-    public TestCase(Data data) {
-        this.data = data;
-        predicates = new ArrayList<>();
+    public TestCase(Row row, Predicate... predicates) {
+        this.row = row;
+        this.predicates = Arrays.asList(predicates);
     }
 
     public void addPredicate(Predicate predicate) {
@@ -28,7 +30,11 @@ public class TestCase extends Statistics {
         return new ArrayList<>(predicates);
     }
 
-    public Data getData() {
-        return data;
+    public Row getRow() {
+        return row;
+    }
+
+    public String toString() {
+        return StringUtils.join(predicates, "\n") + "\n" + row;
     }
 }
