@@ -75,7 +75,7 @@ public class TestMatchObjectiveFunction {
             notEqualCols.add(database.column2);
         }
 
-        MatchClause mf = new MatchClause(database.table, equalCols, notEqualCols, mode);
+        MatchClause mf = new MatchClause(database.table, equalCols, notEqualCols, mode, false);
 
         MatchObjectiveFunction mof = new MatchObjectiveFunction(mf, state);
         ObjectiveValue objVal = mof.evaluate(row);

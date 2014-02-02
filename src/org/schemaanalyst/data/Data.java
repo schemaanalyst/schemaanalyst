@@ -266,10 +266,15 @@ public class Data  {
         Set<Table> tables = data.keySet();
 
         if (tables != null) {
+            boolean first = true;
             for (Table table : tables) {
+                if (first) {
+                    first = false;
+                } else {
+                    sb.append(System.lineSeparator());
+                }
                 List<Row> rows = data.get(table);
 				sb.append(StringUtils.join(rows, System.lineSeparator()));
-				sb.append(System.lineSeparator());
             }
         }
         return sb.toString();

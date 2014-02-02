@@ -18,7 +18,7 @@ public class Predicate {
 
     public Predicate(String purpose) {
         this.purpose = purpose;
-        clauses = new LinkedHashSet<>();
+        this.clauses = new LinkedHashSet<>();
     }
 
     public void addClause(Clause clause) {

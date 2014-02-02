@@ -1,5 +1,8 @@
 package org.schemaanalyst.coverage.testgeneration;
 
+import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.data.Data;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,10 @@ public class TestSuite extends StatisticStore {
 
     public TestSuite() {
         testCases = new ArrayList<>();
+    }
+
+    public void addTestCase(TestCase testCase) {
+        testCases.add(testCase);
     }
 
     public List<TestCase> getTestCases() {

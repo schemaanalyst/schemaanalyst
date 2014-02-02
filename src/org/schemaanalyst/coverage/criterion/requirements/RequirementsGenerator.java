@@ -51,14 +51,14 @@ public abstract class RequirementsGenerator {
         @Override
         public void visit(PrimaryKeyConstraint constraint) {
             predicate.addClause(
-                    unique(constraint.getTable(), constraint.getColumns())
+                    unique(constraint.getTable(), constraint.getColumns(), false)
             );
         }
 
         @Override
         public void visit(UniqueConstraint constraint) {
             predicate.addClause(
-                    unique(constraint.getTable(), constraint.getColumns())
+                    unique(constraint.getTable(), constraint.getColumns(), false)
             );
         }
     }

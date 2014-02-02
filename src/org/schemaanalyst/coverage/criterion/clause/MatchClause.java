@@ -26,16 +26,21 @@ public class MatchClause extends Clause {
         }
     }
 
-    private Mode mode;
     private Table refTable;
     private List<Column> notEqualCols, equalCols, notEqualRefCols, equalRefCols;
+    private Mode mode;
+    private boolean requiresComparisonRow;
 
-    public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols, Mode mode) {
-        this(table, equalCols, notEqualCols, table, equalCols, notEqualCols, mode);
+    public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
+                       Mode mode, boolean requiresComparisonRow) {
+        this(table, equalCols, notEqualCols,
+             table, equalCols, notEqualCols,
+             mode, requiresComparisonRow);
     }
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
-                       Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols, Mode mode) {
+                       Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols,
+                       Mode mode, boolean requiresComparisonRow) {
         super(table);
 
         this.equalCols = new ArrayList<>(equalCols);
@@ -46,6 +51,7 @@ public class MatchClause extends Clause {
         this.notEqualRefCols = new ArrayList<>(notEqualRefCols);
 
         this.mode = mode;
+        this.requiresComparisonRow = requiresComparisonRow;
     }
 
     public List<Column> getColumns() {
@@ -82,6 +88,10 @@ public class MatchClause extends Clause {
 
     public boolean isAndMode() {
         return mode == Mode.AND;
+    }
+
+    public boolean requiresComparisonRow() {
+        return requiresComparisonRow;
     }
 
     private String colsToString(List<Column> cols, List<Column> refCols) {

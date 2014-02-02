@@ -26,12 +26,12 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
         for (Column column : columns) {
 
             // (1) Unique column entry
-            Predicate predicate1 = generatePredicate("-- Testing " + column + " as unique");
-            predicate1.addClause(unique(table, column));
+            Predicate predicate1 = generatePredicate("Test " + column + " as unique");
+            predicate1.addClause(unique(table, column, true));
             requirements.add(predicate1);
 
             // (2) Non-unique column entry
-            Predicate predicate2 = generatePredicate("-- Testing " + column + " as non-unique (matching)");
+            Predicate predicate2 = generatePredicate("Test " + column + " as non-unique (matching)");
             predicate2.addClause(notUnique(table, column));
             requirements.add(predicate2);
         }

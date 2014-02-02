@@ -17,6 +17,8 @@ public abstract class Clause {
         return table;
     }
 
+    public abstract boolean requiresComparisonRow();
+
     public abstract String getName();
 
     protected abstract String paramsToString();

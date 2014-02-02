@@ -46,6 +46,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
 
     @Override
     public Requirements generateRequirements() {
+        boolean requiresComparisonRow = table.equals(referenceTable);
         Requirements requirements = new Requirements();
 
         // (1) generate test requirements where each individual column is distinct once
@@ -63,7 +64,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             refRemainingCols.remove(refCol);
 
             // generate new clause
-            Predicate predicate = generatePredicate("-- Test " + col + " not equal for " + constraint);
+            Predicate predicate = generatePredicate("Test " + col + " only equal for " + constraint);
             predicate.addClause(
                     new MatchClause(
                             table,
@@ -72,7 +73,8 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                             referenceTable,
                             Arrays.asList(refCol),
                             refRemainingCols,
-                            MatchClause.Mode.AND)
+                            MatchClause.Mode.AND,
+                            requiresComparisonRow)
             );
 
             // add new clause
@@ -82,7 +84,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
         // (2) generate test requirement where there is a collision of values
 
         // generate clause and remove old clause for underpinning constraint
-        Predicate predicate = generatePredicate("-- Test all columns not equal for " + constraint);
+        Predicate predicate = generatePredicate("Test all columns not equal for " + constraint);
 
         // generate new clause
         predicate.addClause(
@@ -93,7 +95,8 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                         referenceTable,
                         new ArrayList<Column>(),
                         referenceColumns,
-                        MatchClause.Mode.AND)
+                        MatchClause.Mode.AND,
+                        requiresComparisonRow)
         );
 
         // add new clause

@@ -29,20 +29,21 @@ public class ClauseFactory {
                 true);
     }
 
-    public static Clause unique(Table table, Column... columns) {
-        return unique(table, Arrays.asList(columns));
+    public static Clause unique(Table table, Column column, boolean requiresComparisonRow) {
+        return unique(table, Arrays.asList(column), requiresComparisonRow);
     }
 
-    public static Clause unique(Table table, List<Column> columns) {
+    public static Clause unique(Table table, List<Column> columns, boolean requiresComparisonRow) {
         return new MatchClause(
                 table,
                 EMPTY_COLUMN_LIST,
                 columns,
-                MatchClause.Mode.OR);
+                MatchClause.Mode.OR,
+                requiresComparisonRow);
     }
 
-    public static Clause notUnique(Table table, Column... columns) {
-        return notUnique(table, Arrays.asList(columns));
+    public static Clause notUnique(Table table, Column column) {
+        return notUnique(table, Arrays.asList(column));
     }
 
     public static Clause notUnique(Table table, List<Column> columns) {
@@ -50,7 +51,8 @@ public class ClauseFactory {
                 table,
                 columns,
                 EMPTY_COLUMN_LIST,
-                MatchClause.Mode.AND);
+                MatchClause.Mode.AND,
+                true);
     }
 
     public static Clause references(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
@@ -61,7 +63,8 @@ public class ClauseFactory {
                 refTable,
                 refCols,
                 EMPTY_COLUMN_LIST,
-                MatchClause.Mode.AND);
+                MatchClause.Mode.AND,
+                false);
     }
 
     public static Clause notReferences(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
@@ -72,7 +75,8 @@ public class ClauseFactory {
                 refTable,
                 EMPTY_COLUMN_LIST,
                 refCols,
-                MatchClause.Mode.OR);
+                MatchClause.Mode.OR,
+                false);
     }
 
     public static Clause expression(Table table, Expression expression) {

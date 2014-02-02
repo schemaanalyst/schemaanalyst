@@ -1,10 +1,14 @@
 package org.schemaanalyst.coverage;
 
+import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.RestrictedActiveClauseCoverage;
 import org.schemaanalyst.coverage.search.AlternatingValueSearch;
 import org.schemaanalyst.coverage.search.cellinitialization.NoCellInitialization;
 import org.schemaanalyst.coverage.search.cellinitialization.RandomCellInitializer;
-import org.schemaanalyst.coverage.testgeneration.DataGenerator;
+import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.coverage.testgeneration.TestCase;
+import org.schemaanalyst.coverage.testgeneration.TestSuite;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
@@ -41,42 +45,30 @@ public class Test {
 
         avs.setTerminationCriterion(terminationCriterion);
 
-        DataGenerator dg = new DataGenerator(
+        TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
                 new RestrictedActiveClauseCoverage(),
                 new PostgresDBMS(),
                 avs);
 
-        dg.generate();
+        TestSuite testSuite = dg.generate();
 
-        /*
-        Table flightsTable = flights.getTable("flights");
-        PrimaryKeyConstraint pkConstraint = flights.getPrimaryKeyConstraint(flightsTable);
-        List<Column> pkColumns = pkConstraint.getColumns();
-
-        MatchRequirementsGenerator reqGen1 = new MatchRequirementsGenerator(
-                flights,
-                flightsTable, pkConstraint,
-                pkColumns
-        );
-
-
-        System.out.println(reqGen1.generateRequirements());
-        */
-
-        /*
-        NullColumnRequirementsGenerator reqGen2 = new NullColumnRequirementsGenerator(
-                flights, flights.getTable("flights")
-        );
-
-        System.out.println(reqGen2.generateRequirements());
-
-        UniqueColumnRequirementsGenerator reqGen3 = new UniqueColumnRequirementsGenerator(
-                flights, flights.getTable("flights")
-        );
-
-        System.out.println(reqGen3.generateRequirements());
-        */
+        boolean first = true;
+        for (TestCase testCase : testSuite.getTestCases()) {
+            if (first) {
+                System.out.println();
+            } else {
+                first = false;
+            }
+            for (Predicate predicate : testCase.getPredicates()) {
+                System.out.println("PURPOSE:   " + predicate.getPurpose());
+                System.out.println("PREDICATE: " + predicate);
+            }
+            Data state = testCase.getState();
+            if (state.getCells().size() > 0) {
+                System.out.println("STATE:     " + testCase.getState());
+            }
+            System.out.println("ROW:       " + testCase.getRow());
+        }
     }
-
 }

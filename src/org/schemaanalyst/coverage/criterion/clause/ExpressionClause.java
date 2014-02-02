@@ -21,6 +21,10 @@ public class ExpressionClause extends Clause {
         return expression;
     }
 
+    public boolean requiresComparisonRow() {
+        return false;
+    }
+
     public boolean getSatisfy() {
         return satisfy;
     }

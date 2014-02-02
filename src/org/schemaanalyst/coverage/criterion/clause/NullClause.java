@@ -21,6 +21,10 @@ public class NullClause extends Clause {
         return column;
     }
 
+    public boolean requiresComparisonRow() {
+        return false;
+    }
+
     public boolean getSatisfy() {
         return satisfy;
     }

@@ -2,6 +2,8 @@ package org.schemaanalyst.coverage.testgeneration;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.clause.Clause;
+import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
@@ -17,7 +19,7 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class DataGenerator {
+public class TestSuiteGenerator {
 
     private Schema schema;
     private Criterion criterion;
@@ -27,10 +29,10 @@ public class DataGenerator {
 
     private TestSuite testSuite;
 
-    public DataGenerator(Schema schema,
-                         Criterion criterion,
-                         DBMS dbms,
-                         Search<Row> search) {
+    public TestSuiteGenerator(Schema schema,
+                              Criterion criterion,
+                              DBMS dbms,
+                              Search<Row> search) {
         this.schema = schema;
         this.criterion = criterion;
         this.dbms = dbms;
@@ -51,38 +53,54 @@ public class DataGenerator {
             for (Predicate predicate : requirements.getRequirements()) {
                 TestCase testCase = generateTestCase(table, predicate);
                 initialRows.put(table, testCase.getRow());
-
-                System.out.println(testCase);
+                testSuite.addTestCase(testCase);
             }
         }
     }
 
     private void generateOtherTestCases() {
         for (Table table : schema.getTablesInOrder()) {
-            Requirements reqs = criterion.generateOtherRequirements(schema, table);
-            //System.out.println(reqs);
-            //System.out.println(reqs.size() + 2);
+            Requirements requirements = criterion.generateOtherRequirements(schema, table);
+            for (Predicate predicate : requirements.getRequirements()) {
+                TestCase testCase = generateTestCase(table, predicate);
+                testSuite.addTestCase(testCase);
+            }
         }
     }
 
     private TestCase generateTestCase(Table table, Predicate predicate) {
         Row row = new Row(table, dbms.getValueFactory());
-        Data state = constructState(table);
+        Data state = constructState(table, predicate);
 
         search.setObjectiveFunction(new PredicateObjectiveFunction(predicate, state));
         search.initialize();
         search.search(row);
 
-        return new TestCase(row, predicate);
+        return new TestCase(row, state, predicate);
     }
 
-    private Data constructState(Table table) {
+    private Data constructState(Table table, Predicate predicate) {
         Data state = new Data();
-        List<Table> linkedTables = schema.getConnectedTables(table);
 
+        // add rows for tables linked via foreign keys
+        List<Table> linkedTables = schema.getConnectedTables(table);
         for (Table linkedTable : linkedTables) {
+            // a row should always have been previously-generated for a
+            // linked table
             Row row = initialRows.get(linkedTable);
             state.addRow(linkedTable, row);
+        }
+
+        // add 'comparison' row for this table, if it is needed
+        boolean requiresComparisonRow = false;
+        for (Clause clause : predicate.getClauses()) {
+            if (clause.requiresComparisonRow()) {
+                requiresComparisonRow = true;
+            }
+        }
+        if (requiresComparisonRow) {
+            Row row = initialRows.get(table);
+            state.addRow(table, row);
         }
 
         return state;

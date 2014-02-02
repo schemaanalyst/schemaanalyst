@@ -23,7 +23,7 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
-            Predicate predicate = generatePredicate("-- Testing " + column + " as null");
+            Predicate predicate = generatePredicate("Test " + column + " as null");
             predicate.addClause(isNull(table, column));
             requirements.add(predicate);
         }

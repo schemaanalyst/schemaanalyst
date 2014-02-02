@@ -15,11 +15,21 @@ import java.util.List;
 public class TestCase extends StatisticStore {
 
     private Row row;
+    private Data state;
     private List<Predicate> predicates;
 
-    public TestCase(Row row, Predicate... predicates) {
+    public TestCase(Row row, Data state, Predicate... predicates) {
         this.row = row;
+        this.state = state;
         this.predicates = Arrays.asList(predicates);
+    }
+
+    public Row getRow() {
+        return row;
+    }
+
+    public Data getState() {
+        return state;
     }
 
     public void addPredicate(Predicate predicate) {
@@ -28,10 +38,6 @@ public class TestCase extends StatisticStore {
 
     public List<Predicate> getPredicates() {
         return new ArrayList<>(predicates);
-    }
-
-    public Row getRow() {
-        return row;
     }
 
     public String toString() {

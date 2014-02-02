@@ -22,7 +22,7 @@ public class ValidNotNullRequirementsGenerator extends RequirementsGenerator {
     public Requirements generateRequirements() {
         Requirements requirements = new Requirements();
 
-        Predicate predicate = generatePredicate("-- Testing valid data for table " + table);
+        Predicate predicate = generatePredicate("Test valid data for table " + table);
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {

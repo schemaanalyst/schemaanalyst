@@ -25,7 +25,7 @@ public class ExpressionRequirementsGenerator extends RequirementsGenerator {
 
         // TO DO: break out expressions .... (handle INs and BETWEENs separately ???)
 
-        Predicate predicate = generatePredicate("Testing " + expression + " as false");
+        Predicate predicate = generatePredicate("Test " + expression + " evaluating to false");
         predicate.addClause(new ExpressionClause(table, expression, false));
 
         return reqs;
