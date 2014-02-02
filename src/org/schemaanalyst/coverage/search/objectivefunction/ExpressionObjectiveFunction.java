@@ -1,15 +1,19 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.row.ExpressionRowObjectiveFunctionFactory;
+
+import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class ExpressionObjectiveFunction extends ObjectiveFunction<Row> {
+public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
 
     private ExpressionClause expressionClause;
 
@@ -18,10 +22,20 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Row> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Row candidateSolution) {
-        return new ExpressionRowObjectiveFunctionFactory(
-                expressionClause.getExpression(),
-                expressionClause.getSatisfy(),
-                true).create().evaluate(candidateSolution);
+    public ObjectiveValue evaluate(Data data) {
+        List<Row> rows = data.getRows(expressionClause.getTable());
+
+        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+
+        for (Row row : rows) {
+            objVal.add(
+                    new ExpressionRowObjectiveFunctionFactory(
+                            expressionClause.getExpression(),
+                            expressionClause.getSatisfy(),
+                            true).create().evaluate(row)
+            );
+        }
+
+        return objVal;
     }
 }

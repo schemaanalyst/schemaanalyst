@@ -36,6 +36,16 @@ public class Data  {
     }
 
     /**
+     * Appends the data from another data object to this
+     * @param other Another data object whose data is to be appended to this instance.
+     */
+    public void appendData(Data other) {
+        for (Table table : other.getTables()) {
+            addRows(table, other.getRows(table));
+        }
+    }
+
+    /**
      * Creates a row of data values for a table. The data values are initialized
      * to defaults as dictated by the ValueFactory.
      * @param table The table for which to create the row for.

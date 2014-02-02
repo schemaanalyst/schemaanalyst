@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
  */
 public abstract class Criterion {
 
-    public abstract Requirements generateValidDataRequirements(Schema schema, Table table);
+    public abstract Predicate generateInitialTablePredicate(Schema schema, Table table);
 
-    public abstract Requirements generateOtherRequirements(Schema schema, Table table);
+    public abstract Requirements generateRemainingRequirements(Schema schema, Table table);
 }

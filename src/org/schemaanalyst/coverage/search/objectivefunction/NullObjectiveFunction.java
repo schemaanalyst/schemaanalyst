@@ -1,15 +1,19 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
+
+import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class NullObjectiveFunction extends ObjectiveFunction<Row> {
+public class NullObjectiveFunction extends ObjectiveFunction<Data> {
 
     private NullClause nullClause;
 
@@ -18,9 +22,19 @@ public class NullObjectiveFunction extends ObjectiveFunction<Row> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Row row) {
-        return NullValueObjectiveFunction.compute(
-                row.getCell(nullClause.getColumn()).getValue(),
-                nullClause.getSatisfy());
+    public ObjectiveValue evaluate(Data data) {
+        List<Row> rows = data.getRows(nullClause.getTable());
+
+        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+
+        for (Row row : rows) {
+            objVal.add(
+                    NullValueObjectiveFunction.compute(
+                        row.getCell(nullClause.getColumn()).getValue(),
+                        nullClause.getSatisfy())
+            );
+        }
+
+        return objVal;
     }
 }

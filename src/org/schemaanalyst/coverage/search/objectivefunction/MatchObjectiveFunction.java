@@ -8,36 +8,60 @@ import org.schemaanalyst.datageneration.search.objective.*;
 import org.schemaanalyst.datageneration.search.objective.value.RelationalValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
+public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     private MatchClause matchClause;
     private Data state;
+    private Table table, referenceTable;
 
     public MatchObjectiveFunction(MatchClause matchClause, Data state) {
         this.matchClause = matchClause;
         this.state = state;
+        this.table = matchClause.getTable();
+        this.referenceTable = matchClause.getReferenceTable();
     }
 
     @Override
-    public ObjectiveValue evaluate(Row row) {
-        BestOfMultiObjectiveValue objVal = new BestOfMultiObjectiveValue();
-        List<Row> stateRows = state.getRows(matchClause.getReferenceTable());
+    public ObjectiveValue evaluate(Data data) {
+        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
 
-        for (Row stateRow : stateRows) {
-            objVal.add(compareRows(row, stateRow));
+        List<Row> rows = data.getRows(matchClause.getTable());
+        ListIterator<Row> rowsIterator = rows.listIterator();
+
+        while (rowsIterator.hasNext()) {
+            BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
+
+            int index = rowsIterator.nextIndex();
+            Row row = rowsIterator.next();
+            for (Row compareRow : getCompareRows(data, index)) {
+                rowObjVal.add(compareRows(row, compareRow));
+            }
+
+            objVal.add(rowObjVal);
         }
 
         return objVal;
     }
 
-    protected ObjectiveValue compareRows(Row row, Row stateRow) {
+    protected List<Row> getCompareRows(Data data, int index) {
+        List<Row> compareRows = data.getRows(matchClause.getReferenceTable());
+        if (table.equals(referenceTable)) {
+            compareRows = compareRows.subList(0, index);
+        }
+        compareRows.addAll(state.getRows(matchClause.getReferenceTable()));
+        return compareRows;
+    }
+
+    protected ObjectiveValue compareRows(Row row, Row compareRow) {
         MultiObjectiveValue objVal =
                 matchClause.isAndMode()
                         ? new SumOfMultiObjectiveValue()
@@ -45,7 +69,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
 
         evaluateColumnLists(
                 row,
-                stateRow,
+                compareRow,
                 matchClause.getEqualColumns(),
                 matchClause.getEqualRefColumns(),
                 RelationalOperator.EQUALS,
@@ -53,7 +77,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
 
         evaluateColumnLists(
                 row,
-                stateRow,
+                compareRow,
                 matchClause.getNotEqualColumns(),
                 matchClause.getNotEqualRefColumns(),
                 RelationalOperator.NOT_EQUALS,
@@ -69,12 +93,12 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Row> {
                                        RelationalOperator op,
                                        MultiObjectiveValue objVal) {
 
-        Iterator<Column> colIt = cols.iterator();
-        Iterator<Column> refColIt = refCols.iterator();
+        Iterator<Column> colsIterator = cols.iterator();
+        Iterator<Column> refColsIterator = refCols.iterator();
 
-        while (colIt.hasNext()) {
-            Column col = colIt.next();
-            Column refCol = refColIt.next();
+        while (colsIterator.hasNext()) {
+            Column col = colsIterator.next();
+            Column refCol = refColsIterator.next();
 
             Value colValue = row.getCell(col).getValue();
             Value refColValue = stateRow.getCell(refCol).getValue();

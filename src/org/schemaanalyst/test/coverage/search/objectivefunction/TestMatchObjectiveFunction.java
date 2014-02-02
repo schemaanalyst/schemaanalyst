@@ -26,7 +26,7 @@ import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.ass
 
 @RunWith(JUnitParamsRunner.class)
 public class TestMatchObjectiveFunction {
-
+/*
     Object[] testValues() {
         return $(
                 $(r(1, 1), d(r(1, 1)), true, true, MatchClause.Mode.AND, true),
@@ -86,5 +86,5 @@ public class TestMatchObjectiveFunction {
             assertNonOptimal(objVal);
         }
     }
-
+*/
 }

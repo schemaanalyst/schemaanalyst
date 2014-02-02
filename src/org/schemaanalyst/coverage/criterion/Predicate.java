@@ -25,6 +25,10 @@ public class Predicate {
         clauses.add(clause);
     }
 
+    public void addClauses(Predicate predicate) {
+        clauses.addAll(predicate.clauses);
+    }
+
     public List<Clause> getClauses() {
         return new ArrayList<>(clauses);
     }

@@ -14,18 +14,18 @@ import java.util.List;
  */
 public class TestCase extends StatisticStore {
 
-    private Row row;
+    private Data data;
     private Data state;
     private List<Predicate> predicates;
 
-    public TestCase(Row row, Data state, Predicate... predicates) {
-        this.row = row;
+    public TestCase(Data data, Data state, Predicate... predicates) {
+        this.data = data;
         this.state = state;
         this.predicates = Arrays.asList(predicates);
     }
 
-    public Row getRow() {
-        return row;
+    public Data getData() {
+        return data;
     }
 
     public Data getState() {
@@ -41,6 +41,6 @@ public class TestCase extends StatisticStore {
     }
 
     public String toString() {
-        return StringUtils.join(predicates, "\n") + "\n" + row;
+        return StringUtils.join(predicates, "\n") + "\n" + data;
     }
 }

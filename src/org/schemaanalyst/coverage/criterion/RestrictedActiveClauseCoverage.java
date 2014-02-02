@@ -13,12 +13,13 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  */
 public class RestrictedActiveClauseCoverage extends Criterion {
     @Override
-    public Requirements generateValidDataRequirements(Schema schema, Table table) {
-        return new ValidNotNullRequirementsGenerator(schema, table).generateRequirements();
+    public Predicate generateInitialTablePredicate(Schema schema, Table table) {
+        // TODO: refactor
+        return new ValidNotNullRequirementsGenerator(schema, table).generateRequirements().getRequirements().get(0);
     }
 
     @Override
-    public Requirements generateOtherRequirements(Schema schema, Table table) {
+    public Requirements generateRemainingRequirements(Schema schema, Table table) {
         Requirements requirements = new Requirements();
 
         if (schema.hasPrimaryKeyConstraint(table)) {

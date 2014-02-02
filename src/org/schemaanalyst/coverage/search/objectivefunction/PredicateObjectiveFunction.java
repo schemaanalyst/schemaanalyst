@@ -14,11 +14,11 @@ import java.util.List;
 /**
  * Created by phil on 31/01/2014.
  */
-public class PredicateObjectiveFunction extends ObjectiveFunction<Row> {
+public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
     private Predicate predicate;
     private Data state;
-    private List<ObjectiveFunction<Row>> objectiveFunctions;
+    private List<ObjectiveFunction<Data>> objectiveFunctions;
 
     public PredicateObjectiveFunction(Predicate predicate, Data state) {
 
@@ -53,11 +53,11 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Row> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Row candidateSolution) {
+    public ObjectiveValue evaluate(Data data) {
         SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue("Predicate " + predicate);
 
-        for (ObjectiveFunction<Row> objFun : objectiveFunctions) {
-            objVal.add(objFun.evaluate(candidateSolution));
+        for (ObjectiveFunction<Data> objFun : objectiveFunctions) {
+            objVal.add(objFun.evaluate(data));
         }
 
         return objVal;
