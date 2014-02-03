@@ -17,25 +17,26 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class TestCaseDataGenerator {
+public class TestSuiteGenerator {
 
     private Schema schema;
     private Criterion criterion;
     private DBMS dbms;
-    private Search<Data> search;
+    private TestCaseGenerator testCaseGenerator;
+
     private HashMap<Table, Predicate> initialTablePredicates;
     private HashMap<Table, Data> initialTableData;
 
     private TestSuite testSuite;
 
-    public TestCaseDataGenerator(Schema schema,
-                                 Criterion criterion,
-                                 DBMS dbms,
-                                 Search<Data> search) {
+    public TestSuiteGenerator(Schema schema,
+                              Criterion criterion,
+                              DBMS dbms,
+                              TestCaseGenerator testCaseGenerator) {
         this.schema = schema;
         this.criterion = criterion;
         this.dbms = dbms;
-        this.search = search;
+        this.testCaseGenerator = testCaseGenerator;
 
         this.initialTablePredicates = new HashMap<>();
         this.initialTableData = new HashMap<>();
@@ -105,13 +106,7 @@ public class TestCaseDataGenerator {
         // add the row
         data.addRow(table, valueFactory);
 
-        search.setObjectiveFunction(new PredicateObjectiveFunction(predicate, state));
-        search.initialize();
-        search.search(data);
-
-        TestCase testCase = new TestCase(data, state, predicate);
-        testCase.addInfo("objval", search.getBestObjectiveValue());
-
-        return testCase;
+        // generate the test case
+        return testCaseGenerator.generate(data, state, predicate);
     }
 }

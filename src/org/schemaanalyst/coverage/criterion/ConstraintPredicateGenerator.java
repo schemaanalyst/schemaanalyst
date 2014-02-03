@@ -34,7 +34,7 @@ public class ConstraintPredicateGenerator implements ConstraintVisitor {
 
         for (Constraint tableConstraint : constraints) {
             if (!tableConstraint.equals(constraint)) {
-                constraint.accept(this);
+                tableConstraint.accept(this);
             }
         }
 

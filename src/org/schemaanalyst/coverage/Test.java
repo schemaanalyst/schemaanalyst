@@ -1,56 +1,48 @@
 package org.schemaanalyst.coverage;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.ConstraintRACC;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.testgeneration.TestCaseDataGenerator;
+import org.schemaanalyst.coverage.search.AVSTestCaseGenerator;
+import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
+import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 
-import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
-import org.schemaanalyst.datageneration.search.Search;
-import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
-import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
-import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
-import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
-import org.schemaanalyst.util.random.Random;
-import org.schemaanalyst.util.random.SimpleRandom;
+import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
+import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by phil on 21/01/2014.
  */
-public class Test {
+public class Test extends Runner {
 
-    public static void main(String[] args) {
+    private final static Logger LOGGER = Logger.getLogger(Test.class.getName());
+
+
+    @Override
+    protected void task() {
+
+        LOGGER.log(Level.SEVERE,"Please work...");
 
         Flights flights = new Flights();
 
-        Random random = new SimpleRandom(0);
-        CellRandomiser cellRandomiser = CellRandomiserFactory.small(random);
-
-        Search<Data> avs = new AlternatingValueSearch(random,
-                new NoDataInitialization(),
-                new RandomDataInitializer(cellRandomiser));
-
-        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(avs.getEvaluationsCounter(), 100000),
-                new OptimumTerminationCriterion<>(avs));
-
-        avs.setTerminationCriterion(terminationCriterion);
-
-        TestCaseDataGenerator dg = new TestCaseDataGenerator(
+        TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
                 new ConstraintRACC(),
                 new PostgresDBMS(),
-                avs);
+                new AVSTestCaseGenerator());
 
         TestSuite testSuite = dg.generate();
+
+        TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
         boolean first = true;
         for (TestCase testCase : testSuite.getTestCases()) {
@@ -69,6 +61,18 @@ public class Test {
             }
             System.out.println("DATA:      " + testCase.getData());
             //System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
+
+
+            executor.execute(testCase);
         }
+    }
+
+    @Override
+    protected void validateParameters() {
+
+    }
+
+    public static void main(String... args) {
+        new Test().run(args);
     }
 }

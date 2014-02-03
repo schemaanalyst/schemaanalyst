@@ -15,14 +15,15 @@ import java.util.List;
  */
 public class TestCase {
 
-    private Data data;
-    private Data state;
+    private Data data, state;
+    private List<Boolean> dbmsResults;
     private List<Predicate> predicates;
     private HashMap<String, Object> info;
 
     public TestCase(Data data, Data state, Predicate... predicates) {
         this.data = data;
         this.state = state;
+        this.dbmsResults = new ArrayList<>();
         this.predicates = Arrays.asList(predicates);
         this.info = new HashMap<>();
     }
@@ -41,6 +42,14 @@ public class TestCase {
 
     public List<Predicate> getPredicates() {
         return new ArrayList<>(predicates);
+    }
+
+    public void setDBMSResults(List<Boolean> dbmsResults) {
+        this.dbmsResults = new ArrayList<>(dbmsResults);
+    }
+
+    public List<Boolean> getDBMSResults() {
+        return new ArrayList<>(dbmsResults);
     }
 
     public void addInfo(String key, Object infoObject) {
