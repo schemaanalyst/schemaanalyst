@@ -1,18 +1,20 @@
 package org.schemaanalyst.coverage.testgeneration;
 
+import org.schemaanalyst.coverage.criterion.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
-import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.HashMap;
 import java.util.List;
+
+import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
 
 /**
  * Created by phil on 24/01/2014.
@@ -23,8 +25,6 @@ public class TestSuiteGenerator {
     private Criterion criterion;
     private DBMS dbms;
     private TestCaseGenerator testCaseGenerator;
-
-    private HashMap<Table, Predicate> initialTablePredicates;
     private HashMap<Table, Data> initialTableData;
 
     private TestSuite testSuite;
@@ -38,29 +38,38 @@ public class TestSuiteGenerator {
         this.dbms = dbms;
         this.testCaseGenerator = testCaseGenerator;
 
-        this.initialTablePredicates = new HashMap<>();
-        this.initialTableData = new HashMap<>();
+        initialTableData = new HashMap<>();
     }
 
     public TestSuite generate() {
         testSuite = new TestSuite();
-        generateInitialTestCases();
-        generateRemainingTestCases();
+        generateInitialTableData();
+        generateTestCases();
         return testSuite;
     }
 
-    private void generateInitialTestCases() {
-        for (Table table : schema.getTablesInOrder()) {
-            Predicate predicate = criterion.generateInitialTablePredicate(schema, table);
-            initialTablePredicates.put(table, predicate);
+    private Predicate generateInitialTablePredicate(Schema schema, Table table) {
 
+        Predicate predicate = new ConstraintPredicateGenerator(schema, table).generate(
+                "Test valid data for table " + table);
+
+        List<Column> columns = table.getColumns();
+        for (Column column : columns) {
+            predicate.addClause(isNotNull(table, column));
+        }
+
+        return predicate;
+    }
+
+    private void generateInitialTableData() {
+        for (Table table : schema.getTablesInOrder()) {
+            Predicate predicate = generateInitialTablePredicate(schema, table);
             TestCase testCase = generateTestCase(table, predicate);
             initialTableData.put(table, testCase.getData());
-            testSuite.addTestCase(testCase);
         }
     }
 
-    private void generateRemainingTestCases() {
+    private void generateTestCases() {
         for (Table table : schema.getTablesInOrder()) {
             List<Predicate> requirements = criterion.generateRequirements(schema, table);
             for (Predicate predicate : requirements) {
@@ -99,7 +108,7 @@ public class TestSuiteGenerator {
             // add foreign key rows to the data
             for (Table linkedTable : linkedTables) {
                 data.addRow(linkedTable, valueFactory);
-                predicate.addClauses(initialTablePredicates.get(linkedTable));
+                predicate.addClauses(generateInitialTablePredicate(schema, linkedTable));
             }
         }
 

@@ -2,8 +2,12 @@ package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.coverage.criterion.ConstraintRACC;
+import org.schemaanalyst.coverage.criterion.Criterion;
+import org.schemaanalyst.coverage.criterion.MultiCriterion;
+import org.schemaanalyst.coverage.criterion.types.ConstraintRestrictedActiveClauseCoverage;
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
+import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.AVSTestCaseGenerator;
 import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
@@ -16,9 +20,6 @@ import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 /**
  * Created by phil on 21/01/2014.
  */
@@ -29,9 +30,15 @@ public class Test extends Runner {
 
         Flights flights = new Flights();
 
+        Criterion criterion = new MultiCriterion(
+                new ConstraintRestrictedActiveClauseCoverage(),
+                new NullColumnCoverage(),
+                new UniqueColumnCoverage()
+        );
+
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
-                new ConstraintRACC(),
+                criterion,
                 new PostgresDBMS(),
                 new AVSTestCaseGenerator());
 
