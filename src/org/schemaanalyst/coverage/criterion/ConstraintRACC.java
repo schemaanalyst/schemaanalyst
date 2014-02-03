@@ -23,7 +23,6 @@ public class ConstraintRACC extends Criterion {
     public List<Predicate> generateRequirements(Schema schema, Table table) {
         List<Predicate> requirements = new ArrayList<>();
 
-        /*
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, primaryKeyConstraint);
@@ -44,7 +43,6 @@ public class ConstraintRACC extends Criterion {
             ExpressionRequirementsGenerator generator = new ExpressionRequirementsGenerator(schema, table, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
-        */
 
         return requirements;
     }

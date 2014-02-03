@@ -50,13 +50,8 @@ public class AVSTestCaseGenerator extends TestCaseGenerator {
         avs.initialize();
         avs.search(data);
 
-        System.out.println("1 Tables are " + data.getTables());
-
         TestCase testCase = new TestCase(data, state, predicate);
         testCase.addInfo("objval", avs.getBestObjectiveValue());
-
-        System.out.println("2 Tables are " + testCase.getData().getTables());
-
 
         return testCase;
     }

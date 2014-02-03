@@ -24,13 +24,8 @@ import java.util.logging.Logger;
  */
 public class Test extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(Test.class.getName());
-
-
     @Override
     protected void task() {
-
-        LOGGER.log(Level.SEVERE,"Please work...");
 
         Flights flights = new Flights();
 
@@ -62,8 +57,8 @@ public class Test extends Runner {
             System.out.println("DATA:      " + testCase.getData());
             //System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
 
-
             executor.execute(testCase);
+            System.out.println("RESULTS:   " + testCase.getDBMSResults());
         }
     }
 
