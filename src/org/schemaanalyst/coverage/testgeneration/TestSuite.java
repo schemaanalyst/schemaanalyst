@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class TestSuite extends StatisticStore {
+public class TestSuite {
 
     private List<TestCase> testCases;
 

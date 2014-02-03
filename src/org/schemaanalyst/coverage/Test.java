@@ -1,7 +1,7 @@
 package org.schemaanalyst.coverage;
 
+import org.schemaanalyst.coverage.criterion.ConstraintRACC;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.RestrictedActiveClauseCoverage;
 import org.schemaanalyst.coverage.testgeneration.TestCaseDataGenerator;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
@@ -39,14 +39,14 @@ public class Test {
                 new RandomDataInitializer(cellRandomiser));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(avs.getEvaluationsCounter(), 1000),
+                new CounterTerminationCriterion(avs.getEvaluationsCounter(), 100000),
                 new OptimumTerminationCriterion<>(avs));
 
         avs.setTerminationCriterion(terminationCriterion);
 
         TestCaseDataGenerator dg = new TestCaseDataGenerator(
                 flights,
-                new RestrictedActiveClauseCoverage(),
+                new ConstraintRACC(),
                 new PostgresDBMS(),
                 avs);
 
@@ -67,7 +67,8 @@ public class Test {
             if (state.getCells().size() > 0) {
                 System.out.println("STATE:     " + testCase.getState());
             }
-            System.out.println("DATA:       " + testCase.getData());
+            System.out.println("DATA:      " + testCase.getData());
+            System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
         }
     }
 }

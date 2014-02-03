@@ -27,7 +27,7 @@ public class MatchClause extends Clause {
     }
 
     private Table refTable;
-    private List<Column> notEqualCols, equalCols, notEqualRefCols, equalRefCols;
+    private List<Column> equalCols, notEqualCols, equalRefCols, notEqualRefCols;
     private Mode mode;
     private boolean requiresComparisonRow;
 

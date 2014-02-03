@@ -64,7 +64,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             refRemainingCols.remove(refCol);
 
             // generate new clause
-            Predicate predicate = generatePredicate("Test " + col + " only equal for " + constraint);
+            Predicate predicate = generatePredicate("Test " + col + " only equal for " + table + "'s " + constraint);
             predicate.addClause(
                     new MatchClause(
                             table,
@@ -84,7 +84,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
         // (2) generate test requirement where there is a collision of values
 
         // generate clause and remove old clause for underpinning constraint
-        Predicate predicate = generatePredicate("Test all columns not equal for " + constraint);
+        Predicate predicate = generatePredicate("Test all columns not equal for " + table + "'s " + constraint);
 
         // generate new clause
         predicate.addClause(

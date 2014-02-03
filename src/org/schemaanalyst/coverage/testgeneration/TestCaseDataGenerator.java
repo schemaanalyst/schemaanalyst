@@ -110,6 +110,9 @@ public class TestCaseDataGenerator {
         search.initialize();
         search.search(data);
 
-        return new TestCase(data, state, predicate);
+        TestCase testCase = new TestCase(data, state, predicate);
+        testCase.addInfo("objval", search.getBestObjectiveValue());
+
+        return testCase;
     }
 }

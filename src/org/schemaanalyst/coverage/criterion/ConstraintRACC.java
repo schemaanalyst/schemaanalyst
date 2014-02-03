@@ -11,7 +11,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 /**
  * Created by phil on 31/01/2014.
  */
-public class RestrictedActiveClauseCoverage extends Criterion {
+public class ConstraintRACC extends Criterion {
     @Override
     public Predicate generateInitialTablePredicate(Schema schema, Table table) {
         // TODO: refactor
@@ -29,6 +29,7 @@ public class RestrictedActiveClauseCoverage extends Criterion {
             requirements.add(primaryKeyConstraintRequirements);
         }
 
+        /*
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, uniqueConstraint);
             Requirements uniqueConstraintRequirements = generator.generateRequirements();
@@ -46,6 +47,7 @@ public class RestrictedActiveClauseCoverage extends Criterion {
             Requirements checkConstraintRequirements = generator.generateRequirements();
             requirements.add(checkConstraintRequirements);
         }
+        */
 
         // TO DO: cover not nulls.
 

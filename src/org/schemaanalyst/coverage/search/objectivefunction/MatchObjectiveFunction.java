@@ -32,21 +32,25 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue("Data rows");
 
         List<Row> rows = data.getRows(matchClause.getTable());
         ListIterator<Row> rowsIterator = rows.listIterator();
 
         while (rowsIterator.hasNext()) {
-            BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
-
             int index = rowsIterator.nextIndex();
             Row row = rowsIterator.next();
-            for (Row compareRow : getCompareRows(data, index)) {
-                rowObjVal.add(compareRows(row, compareRow));
-            }
+            List<Row> compareRows = getCompareRows(data, index);
 
-            objVal.add(rowObjVal);
+            if (compareRows.size() > 0) {
+                BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue("Compare rows");
+
+                for (Row compareRow : compareRows) {
+                    rowObjVal.add(compareRows(row, compareRow));
+                }
+
+                objVal.add(rowObjVal);
+            }
         }
 
         return objVal;
