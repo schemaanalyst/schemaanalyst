@@ -5,6 +5,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.notUnique;
@@ -19,24 +20,23 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
         super(schema, table);
     }
 
-    public Requirements generateRequirements() {
-        Requirements requirements = new Requirements();
+    public List<Predicate> generateRequirements() {
+        List<Predicate> requirements = new ArrayList<>();
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
 
-            // (1) Unique column entry
-            Predicate predicate1 = generatePredicate("Test " + column + " as unique");
-            predicate1.addClause(unique(table, column, true));
-            requirements.add(predicate1);
+            // UNIQUE column requirement
+            Predicate uniquePredicate = predicateGenerator.generate("Test " + column + " as unique");
+            uniquePredicate.addClause(unique(table, column, true));
+            requirements.add(uniquePredicate);
 
-            // (2) Non-unique column entry
-            Predicate predicate2 = generatePredicate("Test " + column + " as non-unique (matching)");
-            predicate2.addClause(notUnique(table, column));
-            requirements.add(predicate2);
+            // NOT UNIQUE column requirement
+            Predicate notUniquePredicate = predicateGenerator.generate("Test " + column + " as non-unique (matching)");
+            notUniquePredicate.addClause(notUnique(table, column));
+            requirements.add(notUniquePredicate);
         }
 
         return requirements;
     }
-
 }

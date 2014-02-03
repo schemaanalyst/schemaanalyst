@@ -5,10 +5,11 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNull;
-
+import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
 /**
  * Created by phil on 21/01/2014.
  */
@@ -18,14 +19,21 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
         super(schema, table);
     }
 
-    public Requirements generateRequirements() {
-        Requirements requirements = new Requirements();
+    public List<Predicate> generateRequirements() {
+        List<Predicate> requirements = new ArrayList<>();
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
-            Predicate predicate = generatePredicate("Test " + column + " as null");
-            predicate.addClause(isNull(table, column));
-            requirements.add(predicate);
+
+            // Column IS NULL requirement
+            Predicate isNullPredicate = predicateGenerator.generate("Test " + column + " as null");
+            isNullPredicate.addClause(isNull(table, column));
+            requirements.add(isNullPredicate);
+
+            // Column IS NOT NULL requirement
+            Predicate isNotNullPredicate = predicateGenerator.generate("Test " + column + " as null");
+            isNotNullPredicate.addClause(isNotNull(table, column));
+            requirements.add(isNotNullPredicate);
         }
 
         return requirements;

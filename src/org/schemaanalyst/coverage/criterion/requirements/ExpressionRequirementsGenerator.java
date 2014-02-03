@@ -1,11 +1,15 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
+import org.schemaanalyst.coverage.criterion.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by phil on 31/01/2014.
@@ -20,14 +24,21 @@ public class ExpressionRequirementsGenerator extends RequirementsGenerator {
     }
 
     @Override
-    public Requirements generateRequirements() {
-        Requirements reqs = new Requirements();
+    public List<Predicate> generateRequirements() {
+        List<Predicate> requirements = new ArrayList<>();
 
         // TO DO: break out expressions .... (handle INs and BETWEENs separately ???)
 
-        Predicate predicate = generatePredicate("Test " + expression + " evaluating to false");
-        predicate.addClause(new ExpressionClause(table, expression, false));
+        // Expression is TRUE requirement
+        Predicate truePredicate = predicateGenerator.generate(
+                "Test " + expression + " evaluating to true");
+        truePredicate.addClause(new ExpressionClause(table, expression, true));
 
-        return reqs;
+        // Expression is FALSE requirement
+        Predicate falsePredicate = predicateGenerator.generate(
+                "Test " + expression + " evaluating to false");
+        falsePredicate.addClause(new ExpressionClause(table, expression, false));
+
+        return requirements;
     }
 }

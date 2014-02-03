@@ -1,6 +1,7 @@
 package org.schemaanalyst.coverage.criterion;
 
 import org.schemaanalyst.coverage.criterion.requirements.*;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -8,48 +9,40 @@ import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
+
 /**
  * Created by phil on 31/01/2014.
  */
 public class ConstraintRACC extends Criterion {
-    @Override
-    public Predicate generateInitialTablePredicate(Schema schema, Table table) {
-        // TODO: refactor
-        return new ValidNotNullRequirementsGenerator(schema, table).generateRequirements().getRequirements().get(0);
-    }
 
     @Override
-    public Requirements generateRemainingRequirements(Schema schema, Table table) {
-        Requirements requirements = new Requirements();
+    public List<Predicate> generateRequirements(Schema schema, Table table) {
+        List<Predicate> requirements = new ArrayList<>();
 
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, primaryKeyConstraint);
-            Requirements primaryKeyConstraintRequirements = generator.generateRequirements();
-            requirements.add(primaryKeyConstraintRequirements);
+            requirements.addAll(generator.generateRequirements());
         }
 
-        /*
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, uniqueConstraint);
-            Requirements uniqueConstraintRequirements = generator.generateRequirements();
-            requirements.add(uniqueConstraintRequirements);
+            requirements.addAll(generator.generateRequirements());
         }
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, foreignKeyConstraint);
-            Requirements foreignKeyConstraintRequirements = generator.generateRequirements();
-            requirements.add(foreignKeyConstraintRequirements);
+            requirements.addAll(generator.generateRequirements());
         }
 
         for (CheckConstraint checkConstraint : schema.getCheckConstraints()) {
             ExpressionRequirementsGenerator generator = new ExpressionRequirementsGenerator(schema, table, checkConstraint);
-            Requirements checkConstraintRequirements = generator.generateRequirements();
-            requirements.add(checkConstraintRequirements);
+            requirements.addAll(generator.generateRequirements());
         }
-        */
-
-        // TO DO: cover not nulls.
 
         return requirements;
     }

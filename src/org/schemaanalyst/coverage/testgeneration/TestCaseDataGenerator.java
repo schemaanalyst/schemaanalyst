@@ -3,7 +3,6 @@ package org.schemaanalyst.coverage.testgeneration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
-import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
@@ -62,8 +61,8 @@ public class TestCaseDataGenerator {
 
     private void generateRemainingTestCases() {
         for (Table table : schema.getTablesInOrder()) {
-            Requirements requirements = criterion.generateRemainingRequirements(schema, table);
-            for (Predicate predicate : requirements.getRequirements()) {
+            List<Predicate> requirements = criterion.generateRequirements(schema, table);
+            for (Predicate predicate : requirements) {
                 TestCase testCase = generateTestCase(table, predicate);
                 testSuite.addTestCase(testCase);
             }

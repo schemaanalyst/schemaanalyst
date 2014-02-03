@@ -45,11 +45,14 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
     }
 
     @Override
-    public Requirements generateRequirements() {
+    public List<Predicate> generateRequirements() {
         boolean requiresComparisonRow = table.equals(referenceTable);
-        Requirements requirements = new Requirements();
+        List<Predicate> requirements = new ArrayList<>();
 
-        // (1) generate test requirements where each individual column is distinct once
+        /***************************************************
+         * Columns is EQUALS-ONCE requirement              *
+         * (where each individual column is distinct once) *
+         ***************************************************/
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = referenceColumns.iterator();
 
@@ -64,7 +67,8 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             refRemainingCols.remove(refCol);
 
             // generate new clause
-            Predicate predicate = generatePredicate("Test " + col + " only equal for " + table + "'s " + constraint);
+            Predicate predicate = predicateGenerator.generate(
+                    "Test " + col + " only equal for " + table + "'s " + constraint);
             predicate.addClause(
                     new MatchClause(
                             table,
@@ -81,10 +85,12 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             requirements.add(predicate);
         }
 
-        // (2) generate test requirement where there is a collision of values
-
+        /***************************************************
+         * Columns are NOT-EQUAL requirement               *
+         ***************************************************/
         // generate clause and remove old clause for underpinning constraint
-        Predicate predicate = generatePredicate("Test all columns not equal for " + table + "'s " + constraint);
+        Predicate predicate = predicateGenerator.generate(
+                "Test all columns not equal for " + table + "'s " + constraint);
 
         // generate new clause
         predicate.addClause(

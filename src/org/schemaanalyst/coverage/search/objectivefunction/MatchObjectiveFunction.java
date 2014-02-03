@@ -32,7 +32,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue("Data rows");
+        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
 
         List<Row> rows = data.getRows(matchClause.getTable());
         ListIterator<Row> rowsIterator = rows.listIterator();
@@ -43,7 +43,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
             List<Row> compareRows = getCompareRows(data, index);
 
             if (compareRows.size() > 0) {
-                BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue("Compare rows");
+                BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
 
                 for (Row compareRow : compareRows) {
                     rowObjVal.add(compareRows(row, compareRow));

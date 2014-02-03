@@ -68,7 +68,7 @@ public class Test {
                 System.out.println("STATE:     " + testCase.getState());
             }
             System.out.println("DATA:      " + testCase.getData());
-            System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
+            //System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
         }
     }
 }
