@@ -1,0 +1,21 @@
+Schema            , Location                               , Format      , Quantity
+BookTown          , schemaanalyst/casestudies/originaldata , TSV in COPY , 500
+Iso3166           , schemaanalyst/casestudies/originaldata , CSV in COPY , 4000
+TweetComplete     , schemaanalyst/casestudies/originaldata , INSERT      , 750
+World             , schemaanalyst/casestudies/originaldata , TSV in COPY , 5000
+FACAData1997      , databases/data.gov/FACA                , INSERT      , 60000
+Flav_R03-1        , databases/data.gov/Flav                , INSERT      , 40000
+H1EFileFY2007     , databases/data.gov/H1                  , INSERT      , 425000
+IsoFlav_R2        , databases/data.gov/IsoFlav             , INSERT      , 9000
+University        , databases/db-book                      , INSERT      , 35000
+Wordnet           , databases/Wordnet                      , INSERT      , 900000
+AdmissionsPatient , databases/dhdurso                      , INSERT      , 25
+DHDBookstore      , databasess/dhdurso                     , INSERT      , 300
+Factory2000       , databases/dhdurso                      , INSERT      , 25
+ProductSales      , databases/dhdurso                      , INSERT      , 45
+GeoMetaDB         , databases/GEOmetadb                    , INSERT      , 6900000
+Crafts2002        , databases/HelenFeddema                 , INSERT      , 450
+Hydat             , databases/Hydat                        , INSERT      , 2800000
+Northwind         , databases/Northwind                    , INSERT      , 400
+Voc               , databases/Voc                          , INSERT      , 29000
+WwWordnet         , databases/WwWordnet                    , INSERT      , 860000
