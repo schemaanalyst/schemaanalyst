@@ -26,17 +26,20 @@ public class TestSuiteGenerator {
     private DBMS dbms;
     private TestCaseGenerationAlgorithm testCaseGenerator;
     private HashMap<Table, Data> initialTableData;
+    private boolean generateIndividualTestCases;
 
     private TestSuite testSuite;
 
     public TestSuiteGenerator(Schema schema,
                               Criterion criterion,
                               DBMS dbms,
-                              TestCaseGenerationAlgorithm testCaseGenerator) {
+                              TestCaseGenerationAlgorithm testCaseGenerator,
+                              boolean generateIndividualTestCases) {
         this.schema = schema;
         this.criterion = criterion;
         this.dbms = dbms;
         this.testCaseGenerator = testCaseGenerator;
+        this.generateIndividualTestCases = generateIndividualTestCases;
 
         initialTableData = new HashMap<>();
     }
@@ -74,11 +77,17 @@ public class TestSuiteGenerator {
             List<Predicate> requirements = criterion.generateRequirements(schema, table);
             for (Predicate predicate : requirements) {
 
-                TestCase testCase = testCaseGenerator.checkIfTestCaseExists(predicate, testSuite);
-                if (testCase != null) {
-                    testCase.addPredicate(predicate);
-                } else {
-                    testCase = generateTestCase(table, predicate);
+                boolean haveTestCase = false;
+                if (!generateIndividualTestCases) {
+                    TestCase testCase = testCaseGenerator.checkIfTestCaseExists(predicate, testSuite);
+                    if (testCase != null) {
+                        testCase.addPredicate(predicate);
+                        haveTestCase = true;
+                    }
+                }
+
+                if (!haveTestCase) {
+                    TestCase testCase = generateTestCase(table, predicate);
                     testSuite.addTestCase(testCase);
                 }
             }

@@ -60,10 +60,8 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
     @Override
     public TestCase checkIfTestCaseExists(Predicate predicate, TestSuite testSuite) {
 
-        PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate);
-
         for (TestCase testCase : testSuite.getTestCases()) {
-            objFun.setState(testCase.getState());
+            PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate, testCase.getState());
             ObjectiveValue objVal = objFun.evaluate(testCase.getData());
             if (objVal.isOptimal()) {
                 return testCase;
@@ -72,5 +70,4 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
 
         return null;
     }
-
 }

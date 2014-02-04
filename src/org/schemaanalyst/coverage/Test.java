@@ -41,11 +41,14 @@ public class Test extends Runner {
                 flights,
                 criterion,
                 new PostgresDBMS(),
-                new AVSTestCaseGenerationAlgorithm());
+                new AVSTestCaseGenerationAlgorithm(),
+                true);
 
         TestSuite testSuite = dg.generate();
 
         TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
+
+        System.out.println("Number of test cases " + testSuite.getTestCases().size());
 
         boolean first = true;
         for (TestCase testCase : testSuite.getTestCases()) {

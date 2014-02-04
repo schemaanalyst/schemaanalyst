@@ -90,17 +90,17 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
          ***************************************************/
         // generate clause and remove old clause for underpinning constraint
         Predicate predicate = predicateGenerator.generate(
-                "Test all columns not equal for " + table + "'s " + constraint);
+                "Test all columns are equal for " + table + "'s " + constraint);
 
         // generate new clause
         predicate.addClause(
                 new MatchClause(
                         table,
-                        new ArrayList<Column>(),
                         columns,
-                        referenceTable,
                         new ArrayList<Column>(),
+                        referenceTable,
                         referenceColumns,
+                        new ArrayList<Column>(),
                         MatchClause.Mode.AND,
                         requiresComparisonRow)
         );
