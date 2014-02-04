@@ -1,5 +1,7 @@
-package org.schemaanalyst.coverage.criterion;
+package org.schemaanalyst.coverage.criterion.types;
 
+import org.schemaanalyst.coverage.criterion.Criterion;
+import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.*;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -17,13 +19,12 @@ import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNul
 /**
  * Created by phil on 31/01/2014.
  */
-public class ConstraintRACC extends Criterion {
+public class ConstraintRestrictedActiveClauseCoverage extends Criterion {
 
     @Override
     public List<Predicate> generateRequirements(Schema schema, Table table) {
         List<Predicate> requirements = new ArrayList<>();
 
-        /*
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
             MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, primaryKeyConstraint);
@@ -44,7 +45,6 @@ public class ConstraintRACC extends Criterion {
             ExpressionRequirementsGenerator generator = new ExpressionRequirementsGenerator(schema, table, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
-        */
 
         return requirements;
     }

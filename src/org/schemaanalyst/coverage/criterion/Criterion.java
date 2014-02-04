@@ -13,18 +13,5 @@ import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNul
  */
 public abstract class Criterion {
 
-    public Predicate generateInitialTablePredicate(Schema schema, Table table) {
-
-        Predicate predicate = new ConstraintPredicateGenerator(schema, table).generate(
-                "Test valid data for table " + table);
-
-        List<Column> columns = table.getColumns();
-        for (Column column : columns) {
-            predicate.addClause(isNotNull(table, column));
-        }
-
-        return predicate;
-    }
-
     public abstract List<Predicate> generateRequirements(Schema schema, Table table);
 }

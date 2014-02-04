@@ -24,7 +24,7 @@ public class TestCase {
         this.data = data;
         this.state = state;
         this.dbmsResults = new ArrayList<>();
-        this.predicates = Arrays.asList(predicates);
+        this.predicates = new ArrayList<>(Arrays.asList(predicates));
         this.info = new HashMap<>();
     }
 

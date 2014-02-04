@@ -2,43 +2,46 @@ package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.coverage.criterion.ConstraintRACC;
+import org.schemaanalyst.coverage.criterion.Criterion;
+import org.schemaanalyst.coverage.criterion.MultiCriterion;
+import org.schemaanalyst.coverage.criterion.types.ConstraintRestrictedActiveClauseCoverage;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.search.AVSTestCaseGenerator;
+import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
+import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
+import org.schemaanalyst.coverage.search.AVSTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.data.Data;
 
+import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
-
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Created by phil on 21/01/2014.
  */
 public class Test extends Runner {
 
-    private final static Logger LOGGER = Logger.getLogger(Test.class.getName());
-
-
     @Override
     protected void task() {
 
-        LOGGER.log(Level.SEVERE,"Please work...");
-
         Flights flights = new Flights();
+
+        Criterion criterion = new MultiCriterion(
+                new ConstraintRestrictedActiveClauseCoverage(),
+                new NullColumnCoverage(),
+                new UniqueColumnCoverage()
+        );
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
-                new ConstraintRACC(),
+                criterion,
                 new PostgresDBMS(),
-                new AVSTestCaseGenerator());
+                new AVSTestCaseGenerationAlgorithm());
 
         TestSuite testSuite = dg.generate();
 
@@ -60,10 +63,17 @@ public class Test extends Runner {
                 System.out.println("STATE:     " + testCase.getState());
             }
             System.out.println("DATA:      " + testCase.getData());
-            //System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
 
+            ObjectiveValue objVal = (ObjectiveValue) testCase.getInfo("objval");
+            boolean optimal = objVal.isOptimal();
+            System.out.println("SUCCESS:   " + optimal);
 
-            executor.execute(testCase);
+            if (optimal) {
+                executor.execute(testCase);
+                System.out.println("RESULTS:   " + testCase.getDBMSResults());
+            } else {
+                System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
+            }
         }
     }
 

@@ -196,6 +196,20 @@ public class SQLWriter {
         return statements;
     }
 
+    public List<String> writeDeleteFromTableStatements(Schema schema) {
+        List<String> statements = new ArrayList<>();
+
+        List<Table> tables = schema.getTablesInReverseOrder();
+        for (Table table : tables) {
+            statements.add(writeDeleteFromTableStatement(table));
+        }
+        return statements;
+    }
+
+    public String writeDeleteFromTableStatement(Table table) {
+        return "DELETE FROM " + table;
+    }
+
     public List<String> writeDropTableStatements(Schema schema) {
         return writeDropTableStatements(schema, false);
     }
@@ -209,6 +223,7 @@ public class SQLWriter {
         }
         return statements;
     }
+
 
     public String writeDropTableStatement(Table table) {
         return writeDropTableStatement(table, false);

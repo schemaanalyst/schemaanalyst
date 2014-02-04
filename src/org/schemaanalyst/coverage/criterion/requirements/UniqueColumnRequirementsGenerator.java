@@ -8,6 +8,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
 import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.notUnique;
 import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.unique;
 
@@ -29,11 +30,13 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
             // UNIQUE column requirement
             Predicate uniquePredicate = predicateGenerator.generate("Test " + column + " as unique");
             uniquePredicate.addClause(unique(table, column, true));
+            uniquePredicate.addClause(isNotNull(table, column));
             requirements.add(uniquePredicate);
 
             // NOT UNIQUE column requirement
             Predicate notUniquePredicate = predicateGenerator.generate("Test " + column + " as non-unique (matching)");
             notUniquePredicate.addClause(notUnique(table, column));
+            notUniquePredicate.addClause(isNotNull(table, column));
             requirements.add(notUniquePredicate);
         }
 
