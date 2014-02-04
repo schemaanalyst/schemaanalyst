@@ -8,13 +8,14 @@ import org.schemaanalyst.coverage.criterion.types.ConstraintRestrictedActiveClau
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
-import org.schemaanalyst.coverage.search.AVSTestCaseGenerator;
+import org.schemaanalyst.coverage.search.AVSTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.data.Data;
 
+import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Runner;
@@ -40,7 +41,7 @@ public class Test extends Runner {
                 flights,
                 criterion,
                 new PostgresDBMS(),
-                new AVSTestCaseGenerator());
+                new AVSTestCaseGenerationAlgorithm());
 
         TestSuite testSuite = dg.generate();
 
@@ -62,10 +63,17 @@ public class Test extends Runner {
                 System.out.println("STATE:     " + testCase.getState());
             }
             System.out.println("DATA:      " + testCase.getData());
-            //System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
 
-            executor.execute(testCase);
-            System.out.println("RESULTS:   " + testCase.getDBMSResults());
+            ObjectiveValue objVal = (ObjectiveValue) testCase.getInfo("objval");
+            boolean optimal = objVal.isOptimal();
+            System.out.println("SUCCESS:   " + optimal);
+
+            if (optimal) {
+                executor.execute(testCase);
+                System.out.println("RESULTS:   " + testCase.getDBMSResults());
+            } else {
+                System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
+            }
         }
     }
 

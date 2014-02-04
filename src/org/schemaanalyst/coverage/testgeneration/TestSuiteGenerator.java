@@ -24,7 +24,7 @@ public class TestSuiteGenerator {
     private Schema schema;
     private Criterion criterion;
     private DBMS dbms;
-    private TestCaseGenerator testCaseGenerator;
+    private TestCaseGenerationAlgorithm testCaseGenerator;
     private HashMap<Table, Data> initialTableData;
 
     private TestSuite testSuite;
@@ -32,7 +32,7 @@ public class TestSuiteGenerator {
     public TestSuiteGenerator(Schema schema,
                               Criterion criterion,
                               DBMS dbms,
-                              TestCaseGenerator testCaseGenerator) {
+                              TestCaseGenerationAlgorithm testCaseGenerator) {
         this.schema = schema;
         this.criterion = criterion;
         this.dbms = dbms;
@@ -73,8 +73,14 @@ public class TestSuiteGenerator {
         for (Table table : schema.getTablesInOrder()) {
             List<Predicate> requirements = criterion.generateRequirements(schema, table);
             for (Predicate predicate : requirements) {
-                TestCase testCase = generateTestCase(table, predicate);
-                testSuite.addTestCase(testCase);
+
+                TestCase testCase = testCaseGenerator.checkIfTestCaseExists(predicate, testSuite);
+                if (testCase != null) {
+                    testCase.addPredicate(predicate);
+                } else {
+                    testCase = generateTestCase(table, predicate);
+                    testSuite.addTestCase(testCase);
+                }
             }
         }
     }
@@ -116,6 +122,6 @@ public class TestSuiteGenerator {
         data.addRow(table, valueFactory);
 
         // generate the test case
-        return testCaseGenerator.generate(data, state, predicate);
+        return testCaseGenerator.generateTestCase(data, state, predicate);
     }
 }

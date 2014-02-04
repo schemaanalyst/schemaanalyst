@@ -20,6 +20,10 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
     private Data state;
     private List<ObjectiveFunction<Data>> objectiveFunctions;
 
+    public PredicateObjectiveFunction(Predicate predicate) {
+        this(predicate, new Data());
+    }
+
     public PredicateObjectiveFunction(Predicate predicate, Data state) {
 
         this.predicate = predicate;
@@ -50,6 +54,10 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
         for (Clause clause : predicate.getClauses()) {
             clause.accept(visitor);
         }
+    }
+
+    public void setState(Data state) {
+        this.state = state;
     }
 
     @Override
