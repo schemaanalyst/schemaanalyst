@@ -38,7 +38,7 @@ public class ClauseFactory {
                 table,
                 EMPTY_COLUMN_LIST,
                 columns,
-                ColumnMode.OR,
+                MatchClause.Mode.OR,
                 requiresComparisonRow);
     }
 
@@ -51,7 +51,7 @@ public class ClauseFactory {
                 table,
                 columns,
                 EMPTY_COLUMN_LIST,
-                ColumnMode.AND,
+                MatchClause.Mode.AND,
                 true);
     }
 
@@ -63,7 +63,7 @@ public class ClauseFactory {
                 refTable,
                 refCols,
                 EMPTY_COLUMN_LIST,
-                ColumnMode.AND,
+                MatchClause.Mode.AND,
                 false);
     }
 
@@ -75,7 +75,7 @@ public class ClauseFactory {
                 refTable,
                 EMPTY_COLUMN_LIST,
                 refCols,
-                ColumnMode.OR,
+                MatchClause.Mode.OR,
                 false);
     }
 

@@ -25,16 +25,19 @@ public class NullObjectiveFunction extends ObjectiveFunction<Data> {
     public ObjectiveValue evaluate(Data data) {
         List<Row> rows = data.getRows(nullClause.getTable());
 
-        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+        if (rows.size() > 0) {
+            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
 
-        for (Row row : rows) {
-            objVal.add(
-                    NullValueObjectiveFunction.compute(
-                        row.getCell(nullClause.getColumn()).getValue(),
-                        nullClause.getSatisfy())
-            );
+            for (Row row : rows) {
+                objVal.add(
+                        NullValueObjectiveFunction.compute(
+                                row.getCell(nullClause.getColumn()).getValue(),
+                                nullClause.getSatisfy())
+                );
+            }
+            return objVal;
         }
 
-        return objVal;
+        return ObjectiveValue.worstObjectiveValue();
     }
 }

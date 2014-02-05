@@ -2,8 +2,8 @@ package org.schemaanalyst.coverage.criterion.types;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.requirements.*;
-import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.coverage.criterion.requirements.ExpressionRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.MatchRequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -13,8 +13,6 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
 
 /**
  * Created by phil on 31/01/2014.

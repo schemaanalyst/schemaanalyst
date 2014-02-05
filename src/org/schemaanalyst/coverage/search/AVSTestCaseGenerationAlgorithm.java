@@ -87,7 +87,7 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
         for (Predicate predicate : requirements) {
             for (TestCase testCase : testSuite.getUsefulTestCases()) {
                 if (testCaseSatisfiesPredicate(testCase, predicate)) {
-                    covered ++;
+                    covered++;
                     break;
                 }
             }

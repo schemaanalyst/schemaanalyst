@@ -4,7 +4,7 @@ import org.schemaanalyst.coverage.criterion.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 import java.util.List;
 

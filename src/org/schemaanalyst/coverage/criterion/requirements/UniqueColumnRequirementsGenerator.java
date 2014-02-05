@@ -8,9 +8,6 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.notUnique;
-import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.unique;
-
 /**
  * Created by phil on 21/01/2014.
  */

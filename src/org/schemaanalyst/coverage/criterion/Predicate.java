@@ -9,7 +9,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -70,9 +69,9 @@ public class Predicate {
             List<Column> referenceColumns = matchClause.getReferenceColumns();
 
             // if (matchClause.isAndMode()) {
-                // AND-move -- remove exact clause or reduce it
+            // AND-move -- remove exact clause or reduce it
 
-                // TO DO ... not sure if this condition will ever be needed.
+            // TO DO ... not sure if this condition will ever be needed.
 
             //} else {
             //    // OR-mode -- remove exact clause

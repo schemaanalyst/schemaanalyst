@@ -25,17 +25,21 @@ public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
     public ObjectiveValue evaluate(Data data) {
         List<Row> rows = data.getRows(expressionClause.getTable());
 
-        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+        if (rows.size() > 0) {
+            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
 
-        for (Row row : rows) {
-            objVal.add(
-                    new ExpressionRowObjectiveFunctionFactory(
-                            expressionClause.getExpression(),
-                            expressionClause.getSatisfy(),
-                            true).create().evaluate(row)
-            );
+            for (Row row : rows) {
+                objVal.add(
+                        new ExpressionRowObjectiveFunctionFactory(
+                                expressionClause.getExpression(),
+                                expressionClause.getSatisfy(),
+                                true).create().evaluate(row)
+                );
+            }
+
+            return objVal;
         }
 
-        return objVal;
+        return ObjectiveValue.worstObjectiveValue();
     }
 }

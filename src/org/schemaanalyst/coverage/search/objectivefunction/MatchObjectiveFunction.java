@@ -32,28 +32,32 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
-
         List<Row> rows = data.getRows(matchClause.getTable());
-        ListIterator<Row> rowsIterator = rows.listIterator();
 
-        while (rowsIterator.hasNext()) {
-            int index = rowsIterator.nextIndex();
-            Row row = rowsIterator.next();
-            List<Row> compareRows = getCompareRows(data, index);
+        if (rows.size() > 0) {
+            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+            ListIterator<Row> rowsIterator = rows.listIterator();
 
-            if (compareRows.size() > 0) {
-                BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
+            while (rowsIterator.hasNext()) {
+                int index = rowsIterator.nextIndex();
+                Row row = rowsIterator.next();
+                List<Row> compareRows = getCompareRows(data, index);
 
-                for (Row compareRow : compareRows) {
-                    rowObjVal.add(compareRows(row, compareRow));
+                if (compareRows.size() > 0) {
+                    BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
+
+                    for (Row compareRow : compareRows) {
+                        rowObjVal.add(compareRows(row, compareRow));
+                    }
+
+                    objVal.add(rowObjVal);
                 }
-
-                objVal.add(rowObjVal);
             }
+
+            return objVal;
         }
 
-        return objVal;
+        return ObjectiveValue.worstObjectiveValue();
     }
 
     protected List<Row> getCompareRows(Data data, int index) {

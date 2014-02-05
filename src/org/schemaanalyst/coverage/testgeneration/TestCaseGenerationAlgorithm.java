@@ -1,9 +1,7 @@
 package org.schemaanalyst.coverage.testgeneration;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 import java.util.List;
 

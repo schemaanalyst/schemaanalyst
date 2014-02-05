@@ -3,7 +3,6 @@ package org.schemaanalyst.coverage.search.objectivefunction;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.*;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;

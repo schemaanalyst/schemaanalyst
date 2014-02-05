@@ -8,31 +8,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * Scenario: We have one current row "C" to compare with a set of other rows "R", 1-r.
  * This function checks C is not equal to all R, 1-r, except for one row according the
  * columns individually in the lists "equalsCols" and "notEqualsCols" (with optional references).
  *
  * @author Phil McMinn
- *
  */
 public class MatchClause extends Clause {
 
+    public enum Mode {
+        AND, OR;
+
+        public boolean isAndMode() {
+            return this == AND;
+        }
+
+        public boolean isOrMode() {
+            return this == OR;
+        }
+
+        public String toString() {
+            return isAndMode() ? "\u2227" : "\u2228";
+        }
+    }
+
     private Table refTable;
     private List<Column> equalCols, notEqualCols, equalRefCols, notEqualRefCols;
-    private ColumnMode mode;
+    private Mode mode;
     private boolean requiresComparisonRow;
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
-                       ColumnMode mode, boolean requiresComparisonRow) {
+                       Mode mode, boolean requiresComparisonRow) {
         this(table, equalCols, notEqualCols,
-             table, equalCols, notEqualCols,
-             mode, requiresComparisonRow);
+                table, equalCols, notEqualCols,
+                mode, requiresComparisonRow);
     }
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
                        Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols,
-                       ColumnMode mode, boolean requiresComparisonRow) {
+                       Mode mode, boolean requiresComparisonRow) {
         super(table);
 
         this.equalCols = new ArrayList<>(equalCols);
