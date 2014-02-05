@@ -33,11 +33,13 @@ public class ExpressionRequirementsGenerator extends RequirementsGenerator {
         Predicate truePredicate = predicateGenerator.generate(
                 "Test " + expression + " evaluating to true");
         truePredicate.addClause(new ExpressionClause(table, expression, true));
+        //requirements.add(truePredicate);
 
         // Expression is FALSE requirement
         Predicate falsePredicate = predicateGenerator.generate(
                 "Test " + expression + " evaluating to false");
         falsePredicate.addClause(new ExpressionClause(table, expression, false));
+        //requirements.add(falsePredicate);
 
         return requirements;
     }

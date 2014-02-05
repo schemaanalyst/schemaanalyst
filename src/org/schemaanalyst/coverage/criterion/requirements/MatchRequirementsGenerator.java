@@ -1,6 +1,7 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.clause.ColumnMode;
 import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -79,7 +80,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                             referenceTable,
                             Arrays.asList(refCol),
                             refRemainingCols,
-                            MatchClause.Mode.AND,
+                            ColumnMode.AND,
                             requiresComparisonRow)
             );
             addNotNulls(predicate);
@@ -99,7 +100,7 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                         referenceTable,
                         referenceColumns,
                         new ArrayList<Column>(),
-                        MatchClause.Mode.AND,
+                        ColumnMode.AND,
                         requiresComparisonRow)
         );
         addNotNulls(predicate);

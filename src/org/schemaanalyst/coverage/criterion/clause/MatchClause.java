@@ -18,21 +18,13 @@ import java.util.List;
  */
 public class MatchClause extends Clause {
 
-    public enum Mode {
-        AND, OR;
-
-        public String toString() {
-            return (this == AND) ? "\u2227" : "\u2228";
-        }
-    }
-
     private Table refTable;
     private List<Column> equalCols, notEqualCols, equalRefCols, notEqualRefCols;
-    private Mode mode;
+    private ColumnMode mode;
     private boolean requiresComparisonRow;
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
-                       Mode mode, boolean requiresComparisonRow) {
+                       ColumnMode mode, boolean requiresComparisonRow) {
         this(table, equalCols, notEqualCols,
              table, equalCols, notEqualCols,
              mode, requiresComparisonRow);
@@ -40,7 +32,7 @@ public class MatchClause extends Clause {
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
                        Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols,
-                       Mode mode, boolean requiresComparisonRow) {
+                       ColumnMode mode, boolean requiresComparisonRow) {
         super(table);
 
         this.equalCols = new ArrayList<>(equalCols);
@@ -94,7 +86,7 @@ public class MatchClause extends Clause {
     }
 
     public boolean isAndMode() {
-        return mode == Mode.AND;
+        return mode.isAndMode();
     }
 
     public boolean requiresComparisonRow() {
