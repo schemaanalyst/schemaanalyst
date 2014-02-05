@@ -33,14 +33,14 @@ public class Test extends Runner {
         Flights flights = new Flights();
 
         Criterion criterion = new MultiCriterion(
-                new ConstraintCoverage()
-                //new NullColumnCoverage(),
-                //new UniqueColumnCoverage()
+                new ConstraintRACCoverage(),
+                new NullColumnCoverage(),
+                new UniqueColumnCoverage()
         );
 
         SearchBasedTestCaseGenerationAlgorithm testCaseGenerator =
                 new SearchBasedTestCaseGenerationAlgorithm(
-                        SearchFactory.regularAlternatingValue(0L, 100000));
+                        SearchFactory.avsRandomStart(0L, 100000));
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,

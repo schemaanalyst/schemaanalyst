@@ -36,7 +36,7 @@ public class SearchFactory {
         throw new SearchException("Unknown search \"" + searchName + "\"");
     }
 
-    public static Search<Data> regularAlternatingValue(long randomSeed, int maxEvaluations) {
+    public static Search<Data> avsDefaults(long randomSeed, int maxEvaluations) {
         Random random = new SimpleRandom(randomSeed);
         CellRandomiser randomizer = CellRandomiserFactory.small(random);
 
@@ -55,7 +55,25 @@ public class SearchFactory {
         return search;
     }
 
-    public static Search<Data> regularRandom(long randomSeed, int maxEvaluations) {
+    public static Search<Data> avsRandomStart(long randomSeed, int maxEvaluations) {
+        Random random = new SimpleRandom(randomSeed);
+        CellRandomiser randomizer = CellRandomiserFactory.small(random);
+
+        Search<Data> search = new AlternatingValueSearch(
+                random,
+                new RandomDataInitializer(randomizer),
+                new RandomDataInitializer(randomizer));
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
+                new OptimumTerminationCriterion<>(search));
+
+        search.setTerminationCriterion(terminationCriterion);
+
+        return search;
+    }
+
+    public static Search<Data> random(long randomSeed, int maxEvaluations) {
         Random random = new SimpleRandom(randomSeed);
         CellRandomiser profile = CellRandomiserFactory.small(random);
         RandomSearch search = new RandomSearch(profile);
