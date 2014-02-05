@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by phil on 31/01/2014.
  */
-public class ExpressionRequirementsGenerator extends RequirementsGenerator {
+public class CheckConstraintRequirementsGenerator extends RequirementsGenerator {
 
     private Expression expression;
 
-    public ExpressionRequirementsGenerator(Schema schema, Table table, CheckConstraint checkConstraint) {
+    public CheckConstraintRequirementsGenerator(Schema schema, Table table, CheckConstraint checkConstraint) {
         super(schema, table, checkConstraint);
         this.expression = checkConstraint.getExpression();
     }

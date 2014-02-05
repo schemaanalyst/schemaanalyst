@@ -5,6 +5,7 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
 import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
@@ -31,9 +32,9 @@ public class Test extends Runner {
         Flights flights = new Flights();
 
         Criterion criterion = new MultiCriterion(
-                new ConstraintRACCoverage(),
-                new NullColumnCoverage(),
-                new UniqueColumnCoverage()
+                new ConstraintCoverage()
+                //new NullColumnCoverage(),
+                //new UniqueColumnCoverage()
         );
 
 
@@ -80,7 +81,15 @@ public class Test extends Runner {
         }
 
         System.out.println("Number of test cases " + testSuite.getUsefulTestCases().size());
-        System.out.println("Coverage: " + testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(flights)));
+
+        Criterion secondaryCriterion = new MultiCriterion(
+                new ConstraintRACCoverage(),
+                new NullColumnCoverage(),
+                new UniqueColumnCoverage()
+        );
+
+        System.out.println("Criterion Coverage: " + testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(flights)));
+        System.out.println("Secondary Criterion Coverage: " + testCaseGenerator.computeCoverage(testSuite, secondaryCriterion.generateRequirements(flights)));
     }
 
     @Override
