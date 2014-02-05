@@ -37,11 +37,14 @@ public class Test extends Runner {
                 new UniqueColumnCoverage()
         );
 
+
+        AVSTestCaseGenerationAlgorithm testCaseGenerator = new AVSTestCaseGenerationAlgorithm();
+
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
                 criterion,
                 new PostgresDBMS(),
-                new AVSTestCaseGenerationAlgorithm(),
+                testCaseGenerator,
                 false);
 
         TestSuite testSuite = dg.generate();
@@ -77,8 +80,8 @@ public class Test extends Runner {
             }
         }
 
-        System.out.println("Number of test cases " + testSuite.getAllTestCases().size());
-        System.out.println("Coverage: " + testSuite.getCoverage());
+        System.out.println("Number of test cases " + testSuite.getUsefulTestCases().size());
+        System.out.println("Coverage: " + testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(flights)));
     }
 
     @Override

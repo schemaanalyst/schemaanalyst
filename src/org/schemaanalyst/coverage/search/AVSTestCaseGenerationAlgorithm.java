@@ -19,6 +19,8 @@ import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 
+import java.util.List;
+
 /**
  * Created by phil on 03/02/2014.
  */
@@ -61,16 +63,36 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
     }
 
     @Override
-    public TestCase checkIfTestCaseExists(Predicate predicate, TestSuite testSuite) {
-
-        for (TestCase testCase : testSuite.getAllTestCases()) {
-            PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate, testCase.getState());
-            ObjectiveValue objVal = objFun.evaluate(testCase.getData());
-            if (objVal.isOptimal()) {
+    public TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite) {
+        for (TestCase testCase : testSuite.getUsefulTestCases()) {
+            if (testCaseSatisfiesPredicate(testCase, predicate)) {
                 return testCase;
             }
         }
 
         return null;
     }
+
+    @Override
+    public boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate) {
+        PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate, testCase.getState());
+        ObjectiveValue objVal = objFun.evaluate(testCase.getData());
+        return objVal.isOptimal();
+    }
+
+    @Override
+    public double computeCoverage(TestSuite testSuite, List<Predicate> requirements) {
+        int covered = 0;
+        int total = requirements.size();
+        for (Predicate predicate : requirements) {
+            for (TestCase testCase : testSuite.getUsefulTestCases()) {
+                if (testCaseSatisfiesPredicate(testCase, predicate)) {
+                    covered ++;
+                    break;
+                }
+            }
+        }
+        return covered / (double) total;
+    }
+
 }

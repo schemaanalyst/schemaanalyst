@@ -77,8 +77,4 @@ public class TestCase {
     public Object getInfo(String key) {
         return info.get(key);
     }
-
-    public boolean isUseful() {
-        return satisfiesOriginalPredicate || additionalPredicates.size() > 0;
-    }
 }

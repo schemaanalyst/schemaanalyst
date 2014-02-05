@@ -11,11 +11,8 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.isNotNull;
 
 /**
  * Created by phil on 24/01/2014.
@@ -52,35 +49,37 @@ public class TestSuiteGenerator {
         return testSuite;
     }
 
-    private Predicate generateInitialTablePredicate(Schema schema, Table table) {
-
-        Predicate predicate = new ConstraintPredicateGenerator(schema, table).generate(
-                "Test valid data for table " + table);
-
-        List<Column> columns = table.getColumns();
-        for (Column column : columns) {
-            predicate.addClause(isNotNull(table, column));
-        }
-
-        return predicate;
-    }
 
     private void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
             Predicate predicate = generateInitialTablePredicate(schema, table);
             TestCase testCase = generateTestCase(table, predicate);
-            initialTableData.put(table, testCase.getData());
+            if (testCase.satisfiesOriginalPredicate()) {
+                initialTableData.put(table, testCase.getData());
+            }
         }
     }
 
+    private Predicate generateInitialTablePredicate(Schema schema, Table table) {
+        Predicate predicate = new ConstraintPredicateGenerator(schema, table).generate(
+                "Test valid data for table " + table);
+
+        List<Column> columns = table.getColumns();
+        for (Column column : columns) {
+            predicate.setColumnNullStatus(table, column, false);
+        }
+
+        return predicate;
+    }
+
     private void generateTestCases() {
-        for (Table table : schema.getTablesInOrder()) {
+        for (Table table : schema.getTablesInReverseOrder()) {
             List<Predicate> requirements = criterion.generateRequirements(schema, table);
             for (Predicate predicate : requirements) {
 
                 boolean haveTestCase = false;
                 if (!generateIndividualTestCases) {
-                    TestCase testCase = testCaseGenerator.checkIfTestCaseExists(predicate, testSuite);
+                    TestCase testCase = testCaseGenerator.testCaseThatSatisfiesPredicate(predicate, testSuite);
                     if (testCase != null) {
                         testCase.addPredicate(predicate);
                         haveTestCase = true;

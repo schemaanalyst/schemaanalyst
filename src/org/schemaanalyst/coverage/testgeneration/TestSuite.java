@@ -25,28 +25,10 @@ public class TestSuite {
     public List<TestCase> getUsefulTestCases() {
         List<TestCase> usefulTestCases = new ArrayList<>();
         for (TestCase testCase : testCases) {
-            if (testCase.isUseful()) {
+            if (testCase.satisfiesOriginalPredicate()) {
                 usefulTestCases.add(testCase);
             }
         }
         return usefulTestCases;
-    }
-
-    public double getCoverage() {
-        int numPredicates = 0;
-        int numSatisfiedPredicates = 0;
-
-        for (TestCase testCase : testCases) {
-            int numTestCasePredicates = testCase.getPredicates().size();
-
-            numPredicates += numTestCasePredicates;
-            numSatisfiedPredicates += numTestCasePredicates;
-
-            if (numTestCasePredicates > 0 && !testCase.satisfiesOriginalPredicate()) {
-                numSatisfiedPredicates --;
-            }
-        }
-
-        return numSatisfiedPredicates / (double) numPredicates;
     }
 }

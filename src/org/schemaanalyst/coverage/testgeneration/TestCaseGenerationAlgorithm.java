@@ -1,7 +1,9 @@
 package org.schemaanalyst.coverage.testgeneration;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
 import java.util.List;
 
@@ -12,5 +14,9 @@ public abstract class TestCaseGenerationAlgorithm {
 
     public abstract TestCase generateTestCase(Data data, Data state, Predicate predicate);
 
-    public abstract TestCase checkIfTestCaseExists(Predicate predicate, TestSuite testSuite);
+    public abstract TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite);
+
+    public abstract boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate);
+
+    public abstract double computeCoverage(TestSuite testSuite, List<Predicate> requirements);
 }
