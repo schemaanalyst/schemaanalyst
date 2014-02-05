@@ -23,10 +23,11 @@ public class NullObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
+        String description = nullClause.toString();
         List<Row> rows = data.getRows(nullClause.getTable());
 
         if (rows.size() > 0) {
-            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
 
             for (Row row : rows) {
                 objVal.add(
@@ -38,6 +39,6 @@ public class NullObjectiveFunction extends ObjectiveFunction<Data> {
             return objVal;
         }
 
-        return ObjectiveValue.worstObjectiveValue();
+        return ObjectiveValue.worstObjectiveValue(description);
     }
 }

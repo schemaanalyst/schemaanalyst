@@ -108,13 +108,7 @@ public class MatchClause extends Clause {
     }
 
     private String colsToString(List<Column> cols, List<Column> refCols) {
-        String colsStr = "(";
-
-        if (!table.equals(refTable)) {
-            colsStr += table + ": ";
-        }
-
-        colsStr += StringUtils.join(cols, ",");
+        String colsStr = "(" + table + ": " + StringUtils.join(cols, ",");
 
         if (!table.equals(refTable)) {
             colsStr += " -> ";

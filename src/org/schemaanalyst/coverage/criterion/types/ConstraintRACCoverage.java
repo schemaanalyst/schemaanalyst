@@ -3,7 +3,7 @@ package org.schemaanalyst.coverage.criterion.types;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.ExpressionRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.MatchRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintRACRequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -17,7 +17,7 @@ import java.util.List;
 /**
  * Created by phil on 31/01/2014.
  */
-public class ConstraintRestrictedActiveClauseCoverage extends Criterion {
+public class ConstraintRACCoverage extends Criterion {
 
     @Override
     public List<Predicate> generateRequirements(Schema schema, Table table) {
@@ -25,17 +25,17 @@ public class ConstraintRestrictedActiveClauseCoverage extends Criterion {
 
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
-            MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, primaryKeyConstraint);
+            MultiColumnConstraintRACRequirementsGenerator generator = new MultiColumnConstraintRACRequirementsGenerator(schema, table, primaryKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
-            MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, uniqueConstraint);
+            MultiColumnConstraintRACRequirementsGenerator generator = new MultiColumnConstraintRACRequirementsGenerator(schema, table, uniqueConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
-            MatchRequirementsGenerator generator = new MatchRequirementsGenerator(schema, table, foreignKeyConstraint);
+            MultiColumnConstraintRACRequirementsGenerator generator = new MultiColumnConstraintRACRequirementsGenerator(schema, table, foreignKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 

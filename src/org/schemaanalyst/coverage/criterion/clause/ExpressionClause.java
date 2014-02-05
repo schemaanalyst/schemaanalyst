@@ -34,7 +34,7 @@ public class ExpressionClause extends Clause {
     }
 
     protected String paramsToString() {
-        return expression.toString();
+        return table + " " + expression.toString();
     }
 
     public void accept(ClauseVisitor visitor) {

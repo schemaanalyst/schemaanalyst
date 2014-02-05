@@ -5,7 +5,7 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.types.ConstraintRestrictedActiveClauseCoverage;
+import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.AVSTestCaseGenerationAlgorithm;
@@ -31,7 +31,7 @@ public class Test extends Runner {
         Flights flights = new Flights();
 
         Criterion criterion = new MultiCriterion(
-                new ConstraintRestrictedActiveClauseCoverage(),
+                new ConstraintRACCoverage(),
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
         );
@@ -44,7 +44,7 @@ public class Test extends Runner {
                 criterion,
                 new PostgresDBMS(),
                 testCaseGenerator,
-                false);
+                true);
 
         TestSuite testSuite = dg.generate();
 

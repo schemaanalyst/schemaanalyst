@@ -34,7 +34,7 @@ public class NullClause extends Clause {
     }
 
     protected String paramsToString() {
-        return column.toString();
+        return table + ": " + column.toString();
     }
 
     public void accept(ClauseVisitor visitor) {

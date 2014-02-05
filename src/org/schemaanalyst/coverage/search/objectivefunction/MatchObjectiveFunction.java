@@ -32,10 +32,11 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     @Override
     public ObjectiveValue evaluate(Data data) {
+        String description = matchClause.toString();
         List<Row> rows = data.getRows(matchClause.getTable());
 
         if (rows.size() > 0) {
-            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue();
+            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
             ListIterator<Row> rowsIterator = rows.listIterator();
 
             while (rowsIterator.hasNext()) {
@@ -57,7 +58,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
             return objVal;
         }
 
-        return ObjectiveValue.worstObjectiveValue();
+        return ObjectiveValue.worstObjectiveValue(description);
     }
 
     protected List<Row> getCompareRows(Data data, int index) {

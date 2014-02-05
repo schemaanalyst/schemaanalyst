@@ -17,26 +17,26 @@ import java.util.List;
 /**
  * Created by phil on 22/01/2014.
  */
-public class MatchRequirementsGenerator extends RequirementsGenerator {
+public class MultiColumnConstraintRACRequirementsGenerator extends RequirementsGenerator {
 
     private Table referenceTable;
     private List<Column> columns, referenceColumns;
 
-    public MatchRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
+    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = table;
         this.referenceColumns = columns;
     }
 
-    public MatchRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
+    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = table;
         this.referenceColumns = columns;
     }
 
-    public MatchRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
+    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = constraint.getReferenceTable();
@@ -82,7 +82,10 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                             MatchClause.Mode.AND,
                             requiresComparisonRow)
             );
-            addNotNulls(predicate);
+
+            // NOT NULL clauses are only added to original columns,
+            // as we are not in control of column values of the reference row.
+            addNotNulls(predicate, table, columns);
             requirements.add(predicate);
         }
     }
@@ -102,41 +105,34 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                         MatchClause.Mode.AND,
                         requiresComparisonRow)
         );
-        addNotNulls(predicate);
+
+        // NOT NULL clauses are only added to original columns,
+        // as we are not in control of column values of the reference row.
+        addNotNulls(predicate, table, columns);
+
         requirements.add(predicate);
     }
 
     private void addNullOnceRequirements(List<Predicate> requirements) {
-        Iterator<Column> colsIt = columns.iterator();
-        Iterator<Column> refColsIt = referenceColumns.iterator();
+        // NULL-ONCE specifies that the original columns should be
+        // NULL although technically it could be original and/or
+        // reference column. However, test generation is concentrated
+        // on rows of the original table, not the reference, which is
+        // already generated (with NOT NULL values) and out of our control.
+        // So we demand the change in the original row only.
 
-        while (colsIt.hasNext()) {
-            Column col = colsIt.next();
-            Column refCol = refColsIt.next();
+        for (Column col : columns) {
+
+            Predicate predicate = predicateGenerator.generate(
+                    "Test " + col + " is NULL for " + table + "'s " + constraint);
+            predicate.setColumnNullStatus(table, col, true);
 
             List<Column> remainingCols = new ArrayList<>(columns);
             remainingCols.remove(col);
-
-            List<Column> refRemainingCols = new ArrayList<>(columns);
-            refRemainingCols.remove(refCol);
-
-            Predicate predicate = predicateGenerator.generate(
-                    "Test " + col + " only NULL for " + table + "'s " + constraint);
-
-            // TO DO: this should be an OR-NULL:
-            predicate.setColumnNullStatus(table, col, true);
-            predicate.setColumnNullStatus(referenceTable, refCol, true);
-
             addNotNulls(predicate, table, remainingCols);
-            addNotNulls(predicate, referenceTable, refRemainingCols);
 
             requirements.add(predicate);
         }
-    }
-
-    private void addNotNulls(Predicate predicate) {
-        addNotNulls(predicate, table, columns);
-        addNotNulls(predicate, referenceTable, referenceColumns);
     }
 
     private void addNotNulls(Predicate predicate, Table table, List<Column> columns) {
