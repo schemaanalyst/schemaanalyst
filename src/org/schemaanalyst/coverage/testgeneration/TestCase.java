@@ -16,15 +16,22 @@ import java.util.List;
 public class TestCase {
 
     private Data data, state;
+    private Predicate originalPredicate;
+    private boolean satisfiesOriginalPredicate;
+
+    private List<Predicate> additionalPredicates;
     private List<Boolean> dbmsResults;
-    private List<Predicate> predicates;
+
     private HashMap<String, Object> info;
 
-    public TestCase(Data data, Data state, Predicate... predicates) {
+    public TestCase(Data data, Data state, Predicate predicate, boolean satisfies) {
         this.data = data;
         this.state = state;
         this.dbmsResults = new ArrayList<>();
-        this.predicates = new ArrayList<>(Arrays.asList(predicates));
+        this.originalPredicate = predicate;
+        this.satisfiesOriginalPredicate = satisfies;
+
+        this.additionalPredicates = new ArrayList<>();
         this.info = new HashMap<>();
     }
 
@@ -36,12 +43,23 @@ public class TestCase {
         return state;
     }
 
+    public Predicate getOriginalPredicate() {
+        return originalPredicate;
+    }
+
+    public boolean satisfiesOriginalPredicate() {
+        return satisfiesOriginalPredicate;
+    }
+
     public void addPredicate(Predicate predicate) {
-        predicates.add(predicate);
+        additionalPredicates.add(predicate);
     }
 
     public List<Predicate> getPredicates() {
-        return new ArrayList<>(predicates);
+        List<Predicate> allPredicates = new ArrayList<>();
+        allPredicates.add(originalPredicate);
+        allPredicates.addAll(additionalPredicates);
+        return allPredicates;
     }
 
     public void setDBMSResults(List<Boolean> dbmsResults) {
@@ -60,7 +78,7 @@ public class TestCase {
         return info.get(key);
     }
 
-    public String toString() {
-        return StringUtils.join(predicates, "\n") + "\n" + data;
+    public boolean isUseful() {
+        return satisfiesOriginalPredicate || additionalPredicates.size() > 0;
     }
 }

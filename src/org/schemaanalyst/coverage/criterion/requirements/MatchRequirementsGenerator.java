@@ -5,7 +5,6 @@ import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
@@ -49,10 +48,14 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
         boolean requiresComparisonRow = table.equals(referenceTable);
         List<Predicate> requirements = new ArrayList<>();
 
-        /***************************************************
-         * Columns is EQUALS-ONCE requirement              *
-         * (where each individual column is distinct once) *
-         ***************************************************/
+        addEqualsOnceRequirements(requirements, requiresComparisonRow);
+        addAllNotEqualRequirement(requirements, requiresComparisonRow);
+        addNullOnceRequirements(requirements);
+
+        return requirements;
+    }
+
+    private void addEqualsOnceRequirements(List<Predicate> requirements, boolean requiresComparisonRow) {
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = referenceColumns.iterator();
 
@@ -66,7 +69,6 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
             List<Column> refRemainingCols = new ArrayList<>(columns);
             refRemainingCols.remove(refCol);
 
-            // generate new clause
             Predicate predicate = predicateGenerator.generate(
                     "Test " + col + " only equal for " + table + "'s " + constraint);
             predicate.addClause(
@@ -80,19 +82,15 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                             MatchClause.Mode.AND,
                             requiresComparisonRow)
             );
-
-            // add new clause
+            addNotNulls(predicate);
             requirements.add(predicate);
         }
+    }
 
-        /***************************************************
-         * Columns are NOT-EQUAL requirement               *
-         ***************************************************/
-        // generate clause and remove old clause for underpinning constraint
+    private void addAllNotEqualRequirement(List<Predicate> requirements, boolean requiresComparisonRow) {
         Predicate predicate = predicateGenerator.generate(
-                "Test all columns are equal for " + table + "'s " + constraint);
+                "Test all columns are not equal for " + table + "'s " + constraint);
 
-        // generate new clause
         predicate.addClause(
                 new MatchClause(
                         table,
@@ -104,10 +102,46 @@ public class MatchRequirementsGenerator extends RequirementsGenerator {
                         MatchClause.Mode.AND,
                         requiresComparisonRow)
         );
-
-        // add new clause
+        addNotNulls(predicate);
         requirements.add(predicate);
+    }
 
-        return requirements;
+    private void addNullOnceRequirements(List<Predicate> requirements) {
+        Iterator<Column> colsIt = columns.iterator();
+        Iterator<Column> refColsIt = referenceColumns.iterator();
+
+        while (colsIt.hasNext()) {
+            Column col = colsIt.next();
+            Column refCol = refColsIt.next();
+
+            List<Column> remainingCols = new ArrayList<>(columns);
+            remainingCols.remove(col);
+
+            List<Column> refRemainingCols = new ArrayList<>(columns);
+            refRemainingCols.remove(refCol);
+
+            Predicate predicate = predicateGenerator.generate(
+                    "Test " + col + " only NULL for " + table + "'s " + constraint);
+
+            // TO DO: this should be an OR-NULL:
+            predicate.setColumnNullStatus(table, col, true);
+            predicate.setColumnNullStatus(table, refCol, true);
+
+            addNotNulls(predicate, table, remainingCols);
+            addNotNulls(predicate, referenceTable, refRemainingCols);
+
+            requirements.add(predicate);
+        }
+    }
+
+    private void addNotNulls(Predicate predicate) {
+        addNotNulls(predicate, table, columns);
+        addNotNulls(predicate, referenceTable, referenceColumns);
+    }
+
+    private void addNotNulls(Predicate predicate, Table table, List<Column> columns) {
+        for (Column column : columns) {
+            predicate.setColumnNullStatus(table, column, false);
+        }
     }
 }

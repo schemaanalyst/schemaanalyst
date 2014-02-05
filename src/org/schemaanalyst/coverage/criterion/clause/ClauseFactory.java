@@ -15,25 +15,25 @@ public class ClauseFactory {
 
     static final List<Column> EMPTY_COLUMN_LIST = new ArrayList<>();
 
-    public static Clause isNotNull(Table table, Column column) {
+    public static NullClause isNotNull(Table table, Column column) {
         return new NullClause(
                 table,
                 column,
                 false);
     }
 
-    public static Clause isNull(Table table, Column column) {
+    public static NullClause isNull(Table table, Column column) {
         return new NullClause(
                 table,
                 column,
                 true);
     }
 
-    public static Clause unique(Table table, Column column, boolean requiresComparisonRow) {
+    public static MatchClause unique(Table table, Column column, boolean requiresComparisonRow) {
         return unique(table, Arrays.asList(column), requiresComparisonRow);
     }
 
-    public static Clause unique(Table table, List<Column> columns, boolean requiresComparisonRow) {
+    public static MatchClause unique(Table table, List<Column> columns, boolean requiresComparisonRow) {
         return new MatchClause(
                 table,
                 EMPTY_COLUMN_LIST,
@@ -42,11 +42,11 @@ public class ClauseFactory {
                 requiresComparisonRow);
     }
 
-    public static Clause notUnique(Table table, Column column) {
+    public static MatchClause notUnique(Table table, Column column) {
         return notUnique(table, Arrays.asList(column));
     }
 
-    public static Clause notUnique(Table table, List<Column> columns) {
+    public static MatchClause notUnique(Table table, List<Column> columns) {
         return new MatchClause(
                 table,
                 columns,
@@ -55,7 +55,7 @@ public class ClauseFactory {
                 true);
     }
 
-    public static Clause references(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
+    public static MatchClause references(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
         return new MatchClause(
                 table,
                 columns,
@@ -67,7 +67,7 @@ public class ClauseFactory {
                 false);
     }
 
-    public static Clause notReferences(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
+    public static MatchClause notReferences(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
         return new MatchClause(
                 table,
                 EMPTY_COLUMN_LIST,
@@ -79,14 +79,14 @@ public class ClauseFactory {
                 false);
     }
 
-    public static Clause expression(Table table, Expression expression) {
+    public static ExpressionClause expression(Table table, Expression expression) {
         return new ExpressionClause(
                 table,
                 expression,
                 true);
     }
 
-    public static Clause notExpression(Table table, Expression expression) {
+    public static ExpressionClause notExpression(Table table, Expression expression) {
         return new ExpressionClause(
                 table,
                 expression,

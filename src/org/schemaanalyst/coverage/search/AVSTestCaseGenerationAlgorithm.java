@@ -51,8 +51,11 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
         avs.initialize();
         avs.search(data);
 
-        TestCase testCase = new TestCase(data, state, predicate);
-        testCase.addInfo("objval", avs.getBestObjectiveValue());
+        ObjectiveValue bestObjectiveValue = avs.getBestObjectiveValue();
+        boolean success = bestObjectiveValue.isOptimal();
+
+        TestCase testCase = new TestCase(data, state, predicate, success);
+        testCase.addInfo("objval", bestObjectiveValue);
 
         return testCase;
     }
@@ -60,7 +63,7 @@ public class AVSTestCaseGenerationAlgorithm extends TestCaseGenerationAlgorithm 
     @Override
     public TestCase checkIfTestCaseExists(Predicate predicate, TestSuite testSuite) {
 
-        for (TestCase testCase : testSuite.getTestCases()) {
+        for (TestCase testCase : testSuite.getAllTestCases()) {
             PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate, testCase.getState());
             ObjectiveValue objVal = objFun.evaluate(testCase.getData());
             if (objVal.isOptimal()) {

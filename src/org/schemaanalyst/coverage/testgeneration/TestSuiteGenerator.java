@@ -11,6 +11,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

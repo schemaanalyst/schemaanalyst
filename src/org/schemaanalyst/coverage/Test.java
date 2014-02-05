@@ -42,16 +42,14 @@ public class Test extends Runner {
                 criterion,
                 new PostgresDBMS(),
                 new AVSTestCaseGenerationAlgorithm(),
-                true);
+                false);
 
         TestSuite testSuite = dg.generate();
 
         TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
-        System.out.println("Number of test cases " + testSuite.getTestCases().size());
-
         boolean first = true;
-        for (TestCase testCase : testSuite.getTestCases()) {
+        for (TestCase testCase : testSuite.getAllTestCases()) {
             if (first) {
                 System.out.println();
             } else {
@@ -78,6 +76,9 @@ public class Test extends Runner {
                 System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
             }
         }
+
+        System.out.println("Number of test cases " + testSuite.getAllTestCases().size());
+        System.out.println("Coverage: " + testSuite.getCoverage());
     }
 
     @Override

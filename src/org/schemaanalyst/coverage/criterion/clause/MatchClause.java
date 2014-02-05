@@ -52,6 +52,13 @@ public class MatchClause extends Clause {
 
         this.mode = mode;
         this.requiresComparisonRow = requiresComparisonRow;
+
+        boolean sameNumberOfEqualsCols = equalCols.size() == equalRefCols.size();
+        boolean sameNumberOfNotEqualsCols = notEqualCols.size() == notEqualRefCols.size();
+
+        if (!sameNumberOfEqualsCols || !sameNumberOfNotEqualsCols) {
+            throw new ClauseConfigurationException("Number of columns and reference columns are not equal");
+        }
     }
 
     public List<Column> getColumns() {
@@ -129,7 +136,8 @@ public class MatchClause extends Clause {
     }
 
     public String getName() {
-        return mode + "Match";
+        int numCols = equalCols.size() + notEqualCols.size();
+        return (numCols > 1 ? mode : "") + "Match";
     }
 
     public void accept(ClauseVisitor visitor) {
