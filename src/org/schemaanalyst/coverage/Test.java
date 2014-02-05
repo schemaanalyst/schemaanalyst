@@ -9,12 +9,13 @@ import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
 import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
-import org.schemaanalyst.coverage.search.AVSTestCaseGenerationAlgorithm;
+import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
@@ -37,8 +38,9 @@ public class Test extends Runner {
                 //new UniqueColumnCoverage()
         );
 
-
-        AVSTestCaseGenerationAlgorithm testCaseGenerator = new AVSTestCaseGenerationAlgorithm();
+        SearchBasedTestCaseGenerationAlgorithm testCaseGenerator =
+                new SearchBasedTestCaseGenerationAlgorithm(
+                        SearchFactory.regularAlternatingValue(0L, 100000));
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
