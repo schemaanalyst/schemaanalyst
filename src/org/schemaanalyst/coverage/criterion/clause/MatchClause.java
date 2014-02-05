@@ -5,6 +5,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -19,16 +20,8 @@ public class MatchClause extends Clause {
     public enum Mode {
         AND, OR;
 
-        public boolean isAndMode() {
-            return this == AND;
-        }
-
-        public boolean isOrMode() {
-            return this == OR;
-        }
-
         public String toString() {
-            return isAndMode() ? "\u2227" : "\u2228";
+            return this == AND ? "\u2227" : "\u2228";
         }
     }
 
@@ -99,8 +92,8 @@ public class MatchClause extends Clause {
         return new ArrayList<>(notEqualRefCols);
     }
 
-    public boolean isAndMode() {
-        return mode.isAndMode();
+    public Mode getMode() {
+        return mode;
     }
 
     public boolean requiresComparisonRow() {

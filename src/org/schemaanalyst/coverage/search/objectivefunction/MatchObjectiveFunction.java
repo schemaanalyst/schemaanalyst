@@ -72,7 +72,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
 
     protected ObjectiveValue compareRows(Row row, Row compareRow) {
         MultiObjectiveValue objVal =
-                matchClause.isAndMode()
+                matchClause.getMode() == MatchClause.Mode.AND
                         ? new SumOfMultiObjectiveValue()
                         : new BestOfMultiObjectiveValue();
 

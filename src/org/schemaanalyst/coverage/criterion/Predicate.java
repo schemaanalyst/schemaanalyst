@@ -65,23 +65,21 @@ public class Predicate {
                     matchClause.getTable().equals(table) &&
                             matchClause.getReferenceTable().equals(table);
 
-            List<Column> columns = matchClause.getColumns();
-            List<Column> referenceColumns = matchClause.getReferenceColumns();
+            if (sameTable) {
+                List<Column> equalCols = matchClause.getEqualColumns();
+                List<Column> notEqualCols = matchClause.getNotEqualColumns();
 
-            // if (matchClause.isAndMode()) {
-            // AND-move -- remove exact clause or reduce it
+                boolean foundCol = equalCols.remove(column);
+                foundCol = foundCol || notEqualCols.remove(column);
 
-            // TO DO ... not sure if this condition will ever be needed.
+                if (foundCol) {
+                    clauses.remove(matchClause);
 
-            //} else {
-            //    // OR-mode -- remove exact clause
-            boolean sameColumn = columns.size() == 1 && columns.get(0).equals(column) &&
-                    referenceColumns.size() == 1 && referenceColumns.get(0).equals(column);
-
-            if (sameTable && sameColumn) {
-                clauses.remove(matchClause);
+                    clauses.add(new MatchClause(
+                            table, equalCols, notEqualCols,
+                            matchClause.getMode(), matchClause.requiresComparisonRow()));
+                }
             }
-            // }
         }
 
         if (isUnique) {
