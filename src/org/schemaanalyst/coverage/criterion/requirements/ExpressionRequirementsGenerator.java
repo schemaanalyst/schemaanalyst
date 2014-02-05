@@ -26,20 +26,26 @@ public class ExpressionRequirementsGenerator extends RequirementsGenerator {
     public List<Predicate> generateRequirements() {
         List<Predicate> requirements = new ArrayList<>();
 
-        // TO DO: break out expressions .... (handle INs and BETWEENs separately ???)
-
         // Expression is TRUE requirement
-        Predicate truePredicate = predicateGenerator.generate(
-                "Test " + expression + " evaluating to true");
-        truePredicate.addClause(new ExpressionClause(table, expression, true));
-        //requirements.add(truePredicate);
+        addTrueRequirement(requirements);
 
         // Expression is FALSE requirement
-        Predicate falsePredicate = predicateGenerator.generate(
-                "Test " + expression + " evaluating to false");
-        falsePredicate.addClause(new ExpressionClause(table, expression, false));
-        //requirements.add(falsePredicate);
+        addFalseRequirement(requirements);
 
         return requirements;
+    }
+
+    private void addFalseRequirement(List<Predicate> requirements) {
+        Predicate predicate = predicateGenerator.generate(
+                "Test " + expression + " evaluating to false");
+        predicate.addClause(new ExpressionClause(table, expression, false));
+        requirements.add(predicate);
+    }
+
+    private void addTrueRequirement(List<Predicate> requirements) {
+        Predicate predicate = predicateGenerator.generate(
+                "Test " + expression + " evaluating to true");
+        predicate.addClause(new ExpressionClause(table, expression, true));
+        requirements.add(predicate);
     }
 }

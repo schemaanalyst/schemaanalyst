@@ -44,7 +44,7 @@ public class Test extends Runner {
                 criterion,
                 new PostgresDBMS(),
                 testCaseGenerator,
-                true);
+                false);
 
         TestSuite testSuite = dg.generate();
 

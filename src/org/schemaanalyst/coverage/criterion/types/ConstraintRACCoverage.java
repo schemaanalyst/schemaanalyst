@@ -39,7 +39,7 @@ public class ConstraintRACCoverage extends Criterion {
             requirements.addAll(generator.generateRequirements());
         }
 
-        for (CheckConstraint checkConstraint : schema.getCheckConstraints()) {
+        for (CheckConstraint checkConstraint : schema.getCheckConstraints(table)) {
             ExpressionRequirementsGenerator generator = new ExpressionRequirementsGenerator(schema, table, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
