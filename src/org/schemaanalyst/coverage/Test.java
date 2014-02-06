@@ -17,7 +17,6 @@ import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
@@ -32,7 +31,13 @@ public class Test extends Runner {
 
         Flights flights = new Flights();
 
-        Criterion criterion = new MultiCriterion(
+        Criterion constraintCoverage = new MultiCriterion(
+                new ConstraintCoverage(),
+                new NullColumnCoverage(),    // these are supplementary (not part of ICST criterion we used) and can be commented out
+                new UniqueColumnCoverage()   // these are supplementary (not part of ICST criterion we used) and can be commented out
+        );
+
+        Criterion constraintRACCoverage = new MultiCriterion(
                 new ConstraintRACCoverage(),
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
@@ -40,19 +45,27 @@ public class Test extends Runner {
 
         SearchBasedTestCaseGenerationAlgorithm testCaseGenerator =
                 new SearchBasedTestCaseGenerationAlgorithm(
-                        SearchFactory.avsRandomStart(0L, 100000));
+                        // can be changed to a different search, e.g. avsRandomStart
+                        SearchFactory.avsDefaults(0L, 100000));
+
+        // setting this to false re-uses test cases that cover multiple test requirements, i.e. "squashing" the test suite.
+        // set to true to "unsquash".
+        boolean oneTestPerRequirement = false;
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
-                criterion,
-                new PostgresDBMS(),
+                constraintCoverage,
+                new SQLiteDBMS(),
                 testCaseGenerator,
-                false);
+                oneTestPerRequirement);
 
+        // generate the test suite
         TestSuite testSuite = dg.generate();
 
+        // execute each test to see what the DBMS thinks... :-)
         TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
+        // print out each test case
         boolean first = true;
         for (TestCase testCase : testSuite.getAllTestCases()) {
             if (first) {
@@ -84,19 +97,14 @@ public class Test extends Runner {
 
         System.out.println("Number of test cases " + testSuite.getUsefulTestCases().size());
 
-        Criterion secondaryCriterion = new MultiCriterion(
-                new ConstraintRACCoverage(),
-                new NullColumnCoverage(),
-                new UniqueColumnCoverage()
-        );
-
-        System.out.println("Criterion Coverage: " + testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(flights)));
-        System.out.println("Secondary Criterion Coverage: " + testCaseGenerator.computeCoverage(testSuite, secondaryCriterion.generateRequirements(flights)));
+        System.out.println("Coverage: ");
+        System.out.println("Constraint Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(flights)));
+        System.out.println("Constraint RAC Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(flights)));
     }
 
     @Override
     protected void validateParameters() {
-
+       // no params to validate
     }
 
     public static void main(String... args) {
