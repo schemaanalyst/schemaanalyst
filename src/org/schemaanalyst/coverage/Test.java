@@ -66,13 +66,9 @@ public class Test extends Runner {
         TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
         // print out each test case
-        boolean first = true;
         for (TestCase testCase : testSuite.getAllTestCases()) {
-            if (first) {
-                System.out.println();
-            } else {
-                first = false;
-            }
+            System.out.println();
+                
             for (Predicate predicate : testCase.getPredicates()) {
                 System.out.println("PURPOSE:   " + predicate.getPurpose());
                 System.out.println("PREDICATE: " + predicate);
