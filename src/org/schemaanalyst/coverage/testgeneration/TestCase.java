@@ -59,7 +59,7 @@ public class TestCase {
         return allPredicates;
     }
 
-    public int getNumPredicates() {
+    public int getNumSatisfiedPredicates() {
         return (satisfiesOriginalPredicate ? 1 : 0) + additionalPredicates.size();
     }
 
