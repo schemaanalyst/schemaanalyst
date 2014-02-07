@@ -1,12 +1,13 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
+
+import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionRACPredicatesGenerator.generateTruePredicates;
+import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionRACPredicatesGenerator.generateFalsePredicates;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,19 +28,13 @@ public class CheckConstraintRACRequirementsGenerator extends RequirementsGenerat
     public List<Predicate> generateRequirements() {
         List<Predicate> requirements = new ArrayList<>();
 
-        Predicate predicate = generatePredicate("Testing " + expression);
-        if (expression instanceof InExpression) {
-            InExpression inExpression = (InExpression) expression;
-            InExpressionRACRequirementsGenerator requirementsGenerator = new InExpressionRACRequirementsGenerator(schema, table, predicate, inExpression);
-            requirements.addAll(requirementsGenerator.generateRequirements());
-        } else {
-            // fall back on normal coverage until have broken out other types of constraints....
-            Predicate truePredicate = generatePredicate("Test " + expression + " evaluating to false");
-            truePredicate.addClause(new ExpressionClause(table, expression, false));
-            requirements.add(truePredicate);
-            Predicate falsePredicate = generatePredicate("Test " + expression + " evaluating to true");
-            falsePredicate.addClause(new ExpressionClause(table, expression, true));
-            requirements.add(falsePredicate);
+        List<Predicate> expressionPredicates = generateTruePredicates(table, expression);
+        expressionPredicates.addAll(generateFalsePredicates(table, expression));
+
+        for (Predicate expressionPredicate : expressionPredicates) {
+            Predicate predicate = generatePredicate(expressionPredicate.getPurpose());
+            predicate.addClauses(expressionPredicate);
+            requirements.add(predicate);
         }
 
         return requirements;

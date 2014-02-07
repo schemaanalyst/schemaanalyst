@@ -20,6 +20,10 @@ public class Predicate {
     private String purpose;
     private LinkedHashSet<Clause> clauses;
 
+    public Predicate() {
+        this(null);
+    }
+
     public Predicate(String purpose) {
         this.purpose = purpose;
         this.clauses = new LinkedHashSet<>();
