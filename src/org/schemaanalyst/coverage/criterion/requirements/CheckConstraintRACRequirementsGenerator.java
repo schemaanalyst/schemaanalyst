@@ -1,6 +1,8 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.clause.Clause;
+import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -34,6 +36,16 @@ public class CheckConstraintRACRequirementsGenerator extends RequirementsGenerat
         for (Predicate expressionPredicate : expressionPredicates) {
             Predicate predicate = generatePredicate(expressionPredicate.getPurpose());
             predicate.addClauses(expressionPredicate);
+
+            // Explicitly set the column NULL status for NullClauses, to avoid infeasible predicates
+            // if the column was required to be the opposite NULL status previously in the predicate
+            for (Clause clause : expressionPredicate.getClauses()) {
+                if (clause instanceof NullClause) {
+                    NullClause nullClause = (NullClause) clause;
+                    predicate.setColumnNullStatus(nullClause.getTable(), nullClause.getColumn(), nullClause.getSatisfy());
+                }
+            }
+
             requirements.add(predicate);
         }
 

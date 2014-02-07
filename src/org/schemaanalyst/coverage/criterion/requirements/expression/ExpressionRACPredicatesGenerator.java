@@ -61,7 +61,7 @@ public abstract class ExpressionRACPredicatesGenerator {
             // TODO: needed
             @Override
             public void visit(NullExpression expression) {
-
+                expressionRACPredicatesGenerator = new NullExpressionRACPredicatesGenerator(table, expression);
             }
 
             // TODO: might be needed one day
