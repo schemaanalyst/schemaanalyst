@@ -2,10 +2,7 @@ package org.schemaanalyst.coverage.criterion.types;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.requirements.CheckConstraintRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintRACRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.NotNullConstraintRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.RequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
@@ -39,7 +36,7 @@ public class ConstraintRACCoverage extends Criterion {
         }
 
         for (CheckConstraint checkConstraint : schema.getCheckConstraints(table)) {
-            RequirementsGenerator generator = new CheckConstraintRequirementsGenerator(schema, table, checkConstraint);
+            RequirementsGenerator generator = new CheckConstraintRACRequirementsGenerator(schema, table, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 

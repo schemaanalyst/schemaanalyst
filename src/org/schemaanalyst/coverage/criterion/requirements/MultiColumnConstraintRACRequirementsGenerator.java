@@ -69,8 +69,7 @@ public class MultiColumnConstraintRACRequirementsGenerator extends RequirementsG
             List<Column> refRemainingCols = new ArrayList<>(columns);
             refRemainingCols.remove(refCol);
 
-            Predicate predicate = predicateGenerator.generate(
-                    "Test " + col + " only equal for " + table + "'s " + constraint);
+            Predicate predicate = generatePredicate("Test " + col + " only equal for " + table + "'s " + constraint);
             predicate.addClause(
                     new MatchClause(
                             table,
@@ -91,8 +90,7 @@ public class MultiColumnConstraintRACRequirementsGenerator extends RequirementsG
     }
 
     private void addAllNotEqualRequirement(List<Predicate> requirements, boolean requiresComparisonRow) {
-        Predicate predicate = predicateGenerator.generate(
-                "Test all columns are not equal for " + table + "'s " + constraint);
+        Predicate predicate = generatePredicate("Test all columns are not equal for " + table + "'s " + constraint);
 
         predicate.addClause(
                 new MatchClause(
@@ -123,8 +121,7 @@ public class MultiColumnConstraintRACRequirementsGenerator extends RequirementsG
 
         for (Column col : columns) {
 
-            Predicate predicate = predicateGenerator.generate(
-                    "Test " + col + " is NULL for " + table + "'s " + constraint);
+            Predicate predicate = generatePredicate("Test " + col + " is NULL for " + table + "'s " + constraint);
             predicate.setColumnNullStatus(table, col, true);
 
             List<Column> remainingCols = new ArrayList<>(columns);

@@ -34,14 +34,14 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
     }
 
     private void addNotUniqueColumnRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = predicateGenerator.generate("Test " + column + " as non-unique (matching)");
+        Predicate predicate = generatePredicate("Test " + column + " as non-unique (matching)");
         predicate.setColumnUniqueStatus(table, column, false);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
     }
 
     private void addUniqueColumnRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = predicateGenerator.generate("Test " + column + " as unique");
+        Predicate predicate = generatePredicate("Test " + column + " as unique");
         predicate.setColumnUniqueStatus(table, column, true);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);

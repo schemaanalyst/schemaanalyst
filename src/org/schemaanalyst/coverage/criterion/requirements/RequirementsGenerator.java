@@ -16,7 +16,8 @@ public abstract class RequirementsGenerator {
     protected Schema schema;
     protected Table table;
     protected Constraint constraint;
-    protected ConstraintPredicateGenerator predicateGenerator;
+
+    private ConstraintPredicateGenerator predicateGenerator;
 
     public RequirementsGenerator(Schema schema, Table table) {
         this(schema, table, null);
@@ -31,4 +32,8 @@ public abstract class RequirementsGenerator {
     }
 
     public abstract List<Predicate> generateRequirements();
+
+    protected Predicate generatePredicate(String purpose) {
+        return predicateGenerator.generate(purpose);
+    }
 }

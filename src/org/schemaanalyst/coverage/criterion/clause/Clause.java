@@ -25,6 +25,8 @@ public abstract class Clause {
 
     public abstract void accept(ClauseVisitor visitor);
 
+    public abstract Clause duplicate();
+
     public String toString() {
         return getName() + "(" + paramsToString() + ")";
     }

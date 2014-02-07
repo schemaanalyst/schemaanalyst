@@ -100,16 +100,9 @@ public class MatchClause extends Clause {
         return requiresComparisonRow;
     }
 
-    private String colsToString(List<Column> cols, List<Column> refCols) {
-        String colsStr = "(" + table + ": " + StringUtils.join(cols, ",");
-
-        if (!table.equals(refTable)) {
-            colsStr += " -> ";
-            colsStr += refTable + ": ";
-            colsStr += StringUtils.join(refCols, ",");
-        }
-
-        return colsStr + ")";
+    public String getName() {
+        int numCols = equalCols.size() + notEqualCols.size();
+        return (numCols > 1 ? mode : "") + "Match";
     }
 
     protected String paramsToString() {
@@ -128,9 +121,27 @@ public class MatchClause extends Clause {
         return str;
     }
 
-    public String getName() {
-        int numCols = equalCols.size() + notEqualCols.size();
-        return (numCols > 1 ? mode : "") + "Match";
+    private String colsToString(List<Column> cols, List<Column> refCols) {
+        String colsStr = "(" + table + ": " + StringUtils.join(cols, ",");
+
+        if (!table.equals(refTable)) {
+            colsStr += " -> ";
+            colsStr += refTable + ": ";
+            colsStr += StringUtils.join(refCols, ",");
+        }
+
+        return colsStr + ")";
+    }
+
+    public MatchClause duplicate() {
+        return new MatchClause(
+                table,
+                new ArrayList<>(equalCols),
+                new ArrayList<>(notEqualCols),
+                refTable,
+                new ArrayList<>(equalRefCols),
+                new ArrayList<>(notEqualRefCols),
+                mode, requiresComparisonRow);
     }
 
     public void accept(ClauseVisitor visitor) {

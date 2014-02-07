@@ -51,8 +51,7 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     }
 
     private void addOneColumnNotEqualRequirement(List<Predicate> requirements) {
-        Predicate predicate = predicateGenerator.generate(
-                "Test at least one column not equal for " + constraint);
+        Predicate predicate = generatePredicate("Test at least one column not equal for " + constraint);
         predicate.addClause(
                 new MatchClause(
                         table, emptyList, cols,
@@ -63,8 +62,7 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     }
 
     private void addAllColumnsEqualRequirement(List<Predicate> requirements) {
-        Predicate predicate = predicateGenerator.generate(
-                "Test all columns equal for " + constraint);
+        Predicate predicate = generatePredicate("Test all columns equal for " + constraint);
         predicate.addClause(
                 new MatchClause(
                         table, cols, emptyList,

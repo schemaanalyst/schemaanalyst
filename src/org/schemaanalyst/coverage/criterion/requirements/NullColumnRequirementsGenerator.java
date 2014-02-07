@@ -33,13 +33,13 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
     }
 
     private void addIsNotNullRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = predicateGenerator.generate("Test " + column + " as not null");
+        Predicate predicate = generatePredicate("Test " + column + " as not null");
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
     }
 
     private void addIsNullRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = predicateGenerator.generate("Test " + column + " as null");
+        Predicate predicate = generatePredicate("Test " + column + " as null");
         predicate.setColumnNullStatus(table, column, true);
         requirements.add(predicate);
     }

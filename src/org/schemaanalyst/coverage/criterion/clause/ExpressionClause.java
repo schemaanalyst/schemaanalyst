@@ -37,6 +37,11 @@ public class ExpressionClause extends Clause {
         return table + " " + expression.toString();
     }
 
+    public ExpressionClause duplicate() {
+        Expression duplicateExpression = expression.duplicate();
+        return new ExpressionClause(table, duplicateExpression, satisfy);
+    }
+
     public void accept(ClauseVisitor visitor) {
         visitor.visit(this);
     }

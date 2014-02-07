@@ -25,6 +25,14 @@ public class Predicate {
         this.clauses = new LinkedHashSet<>();
     }
 
+    public String getPurpose() {
+        return purpose;
+    }
+
+    public void setPurpose(String purpose) {
+        this.purpose = purpose;
+    }
+
     public void addClause(Clause clause) {
         clauses.add(clause);
     }
@@ -93,8 +101,12 @@ public class Predicate {
         return new ArrayList<>(clauses);
     }
 
-    public String getPurpose() {
-        return purpose;
+    public Predicate duplicate() {
+        Predicate duplicate = new Predicate(purpose);
+        for (Clause clause : clauses) {
+            duplicate.addClause(clause.duplicate());
+        }
+        return duplicate;
     }
 
     public String toString() {

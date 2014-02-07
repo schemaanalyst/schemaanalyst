@@ -36,15 +36,13 @@ public class CheckConstraintRequirementsGenerator extends RequirementsGenerator 
     }
 
     private void addFalseRequirement(List<Predicate> requirements) {
-        Predicate predicate = predicateGenerator.generate(
-                "Test " + expression + " evaluating to false");
+        Predicate predicate = generatePredicate("Test " + expression + " evaluating to false");
         predicate.addClause(new ExpressionClause(table, expression, false));
         requirements.add(predicate);
     }
 
     private void addTrueRequirement(List<Predicate> requirements) {
-        Predicate predicate = predicateGenerator.generate(
-                "Test " + expression + " evaluating to true");
+        Predicate predicate = generatePredicate("Test " + expression + " evaluating to true");
         predicate.addClause(new ExpressionClause(table, expression, true));
         requirements.add(predicate);
     }

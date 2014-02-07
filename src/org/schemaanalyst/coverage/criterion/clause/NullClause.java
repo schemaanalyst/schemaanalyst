@@ -37,6 +37,10 @@ public class NullClause extends Clause {
         return table + ": " + column.toString();
     }
 
+    public NullClause duplicate() {
+        return new NullClause(table, column, satisfy);
+    }
+
     public void accept(ClauseVisitor visitor) {
         visitor.visit(this);
     }
