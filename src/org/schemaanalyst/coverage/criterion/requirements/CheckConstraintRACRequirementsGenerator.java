@@ -1,6 +1,7 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
 import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
@@ -31,6 +32,14 @@ public class CheckConstraintRACRequirementsGenerator extends RequirementsGenerat
             InExpression inExpression = (InExpression) expression;
             InExpressionRACRequirementsGenerator requirementsGenerator = new InExpressionRACRequirementsGenerator(schema, table, predicate, inExpression);
             requirements.addAll(requirementsGenerator.generateRequirements());
+        } else {
+            // fall back on normal coverage until have broken out other types of constraints....
+            Predicate truePredicate = generatePredicate("Test " + expression + " evaluating to false");
+            truePredicate.addClause(new ExpressionClause(table, expression, false));
+            requirements.add(truePredicate);
+            Predicate falsePredicate = generatePredicate("Test " + expression + " evaluating to true");
+            falsePredicate.addClause(new ExpressionClause(table, expression, true));
+            requirements.add(falsePredicate);
         }
 
         return requirements;
