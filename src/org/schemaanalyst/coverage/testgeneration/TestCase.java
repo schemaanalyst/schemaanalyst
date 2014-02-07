@@ -59,6 +59,10 @@ public class TestCase {
         return allPredicates;
     }
 
+    public int getNumPredicates() {
+        return (satisfiesOriginalPredicate ? 1 : 0) + additionalPredicates.size();
+    }
+
     public void setDBMSResults(List<Boolean> dbmsResults) {
         this.dbmsResults = new ArrayList<>(dbmsResults);
     }

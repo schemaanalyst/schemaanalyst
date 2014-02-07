@@ -54,7 +54,7 @@ public class Test extends Runner {
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
-                constraintCoverage,
+                constraintRACCoverage,
                 new SQLiteDBMS(),
                 testCaseGenerator,
                 oneTestPerRequirement);

@@ -25,7 +25,7 @@ public class TestSuite {
     public List<TestCase> getUsefulTestCases() {
         List<TestCase> usefulTestCases = new ArrayList<>();
         for (TestCase testCase : testCases) {
-            if (testCase.satisfiesOriginalPredicate()) {
+            if (testCase.getNumPredicates() > 0) {
                 usefulTestCases.add(testCase);
             }
         }
