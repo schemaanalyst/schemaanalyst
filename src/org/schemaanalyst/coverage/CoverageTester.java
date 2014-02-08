@@ -62,7 +62,7 @@ public class CoverageTester extends Runner {
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", criterion);
         result.addValue("reuse", reuse);
-        result.addValue("tests", testSuite.getUsefulTestCases().size());
+        result.addValue("tests", testSuite.getTestCases().size());
         result.addValue("coverage", testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(schema)));
         result.addValue("raccoverage", testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(schema)));
         CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "coveragetester.dat");

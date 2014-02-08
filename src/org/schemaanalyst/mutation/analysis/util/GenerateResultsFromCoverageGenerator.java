@@ -64,7 +64,7 @@ public class GenerateResultsFromCoverageGenerator extends GenerateResults {
                 oneTestPerRequirement
         );
         TestSuite testSuite = generator.generate();
-        for (TestCase testCase : testSuite.getUsefulTestCases()) {
+        for (TestCase testCase : testSuite.getTestCases()) {
             boolean satisfying = testCase.satisfiesOriginalPredicate();
             // Add state inserts
             for (String insert : sqlWriter.writeInsertStatements(schema, testCase.getState())) {

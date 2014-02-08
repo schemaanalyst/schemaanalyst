@@ -50,14 +50,14 @@ public class Test extends Runner {
 
         // setting this to false re-uses test cases that cover multiple test requirements, i.e. "squashing" the test suite.
         // set to true to "unsquash".
-        boolean oneTestPerRequirement = false;
+        boolean reuseTestCases = true;
 
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 flights,
-                constraintRACCoverage,
+                constraintCoverage,
                 new SQLiteDBMS(),
                 testCaseGenerator,
-                oneTestPerRequirement);
+                reuseTestCases);
 
         // generate the test suite
         TestSuite testSuite = dg.generate();
@@ -66,7 +66,7 @@ public class Test extends Runner {
         TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
         // print out each test case
-        for (TestCase testCase : testSuite.getAllTestCases()) {
+        for (TestCase testCase : testSuite.getTestCases()) {
             System.out.println();
                 
             for (Predicate predicate : testCase.getPredicates()) {
@@ -91,7 +91,7 @@ public class Test extends Runner {
             }
         }
 
-        System.out.println("Number of test cases: " + testSuite.getUsefulTestCases().size());
+        System.out.println("Number of test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
         System.out.println("Constraint Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(flights)));
         System.out.println("Constraint RAC Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(flights)));

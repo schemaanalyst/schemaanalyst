@@ -18,23 +18,17 @@ public class TestSuite {
         testCases.add(testCase);
     }
 
-    public List<TestCase> getAllTestCases() {
+    public List<TestCase> getTestCases() {
         return new ArrayList<>(testCases);
     }
 
-    public List<TestCase> getUsefulTestCases() {
-        List<TestCase> usefulTestCases = new ArrayList<>();
-        for (TestCase testCase : testCases) {
-            if (testCase.getNumSatisfiedPredicates() > 0) {
-                usefulTestCases.add(testCase);
-            }
-        }
-        return usefulTestCases;
+    public int getNumTestCases() {
+        return testCases.size();
     }
 
     public int getNumInserts() {
         int total = 0;
-        for (TestCase testCase : getUsefulTestCases()) {
+        for (TestCase testCase : getTestCases()) {
             total += testCase.getNumInserts();
         }
         return total;

@@ -46,7 +46,7 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
 
     @Override
     public TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite) {
-        for (TestCase testCase : testSuite.getUsefulTestCases()) {
+        for (TestCase testCase : testSuite.getTestCases()) {
             if (testCaseSatisfiesPredicate(testCase, predicate)) {
                 return testCase;
             }
@@ -66,7 +66,7 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
         int covered = 0;
         int total = requirements.size();
         for (Predicate predicate : requirements) {
-            for (TestCase testCase : testSuite.getUsefulTestCases()) {
+            for (TestCase testCase : testSuite.getTestCases()) {
                 if (testCaseSatisfiesPredicate(testCase, predicate)) {
                     covered ++;
                     break;
