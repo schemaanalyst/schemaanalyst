@@ -10,26 +10,31 @@ import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
-import org.schemaanalyst.coverage.testgeneration.TestCase;
-import org.schemaanalyst.coverage.testgeneration.TestCaseExecutor;
-import org.schemaanalyst.coverage.testgeneration.TestSuite;
-import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.coverage.testgeneration.*;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
+import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
 /**
  * Created by phil on 21/01/2014.
  */
-public class Test extends Runner {
+public class GenerateSchemaCoverage extends Runner {
 
     @Override
     protected void task() {
 
-        Flights flights = new Flights();
+        Schema schema = new Flights();
 
         Criterion constraintCoverage = new MultiCriterion(
                 new ConstraintCoverage(),
@@ -52,10 +57,12 @@ public class Test extends Runner {
         // set to true to "unsquash".
         boolean reuseTestCases = true;
 
+        DBMS dbms = new SQLiteDBMS();
+
         TestSuiteGenerator dg = new TestSuiteGenerator(
-                flights,
+                schema,
                 constraintCoverage,
-                new SQLiteDBMS(),
+                dbms,
                 testCaseGenerator,
                 reuseTestCases);
 
@@ -63,12 +70,12 @@ public class Test extends Runner {
         TestSuite testSuite = dg.generate();
 
         // execute each test to see what the DBMS thinks... :-)
-        TestCaseExecutor executor = new TestCaseExecutor(flights, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
+        TestCaseExecutor executor = new TestCaseExecutor(schema, new SQLiteDBMS(), new DatabaseConfiguration(), new LocationsConfiguration());
 
         // print out each test case
         for (TestCase testCase : testSuite.getTestCases()) {
             System.out.println();
-                
+
             for (Predicate predicate : testCase.getPredicates()) {
                 System.out.println("PURPOSE:   " + predicate.getPurpose());
                 System.out.println("PREDICATE: " + predicate);
@@ -93,16 +100,34 @@ public class Test extends Runner {
 
         System.out.println("Number of test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
-        System.out.println("Constraint Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(flights)));
-        System.out.println("Constraint RAC Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(flights)));
+        System.out.println("Constraint Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(schema)));
+        System.out.println("Constraint RAC Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(schema)));
+
+        writeTestSuite(schema, dbms, testSuite, "generatedtest");
+        System.out.println("JUnit test suite written");
+    }
+
+    private void writeTestSuite(Schema schema, DBMS dbms, TestSuite testSuite, String packageName) {
+        String className = "Test" + schema.getName();
+
+        String javaCode = new TestSuiteJavaWriter(schema, dbms, testSuite)
+                .writeTestSuite(packageName, className);
+
+        File javaFile = new File(locationsConfiguration.getSrcDir()
+                + "/" + packageName + "/" + className + JAVA_FILE_SUFFIX);
+        try (PrintWriter fileOut = new PrintWriter(javaFile)) {
+            fileOut.println(javaCode);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
     protected void validateParameters() {
-       // no params to validate
+        // no params to validate
     }
 
     public static void main(String... args) {
-        new Test().run(args);
+        new GenerateSchemaCoverage().run(args);
     }
 }
