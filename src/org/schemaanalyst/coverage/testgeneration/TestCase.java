@@ -78,4 +78,8 @@ public class TestCase {
     public Object getInfo(String key) {
         return info.get(key);
     }
+
+    public int getNumInserts() {
+        return state.getNumRows() + data.getNumRows();
+    }
 }

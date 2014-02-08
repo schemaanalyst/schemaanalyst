@@ -31,4 +31,12 @@ public class TestSuite {
         }
         return usefulTestCases;
     }
+
+    public int getNumInserts() {
+        int total = 0;
+        for (TestCase testCase : getUsefulTestCases()) {
+            total += testCase.getNumInserts();
+        }
+        return total;
+    }
 }

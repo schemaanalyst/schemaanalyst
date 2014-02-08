@@ -91,9 +91,8 @@ public class Test extends Runner {
             }
         }
 
-        System.out.println("Number of test cases " + testSuite.getUsefulTestCases().size());
-
-        System.out.println("Coverage: ");
+        System.out.println("Number of test cases: " + testSuite.getUsefulTestCases().size());
+        System.out.println("Number of inserts: " + testSuite.getNumInserts());
         System.out.println("Constraint Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(flights)));
         System.out.println("Constraint RAC Coverage: " + testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(flights)));
     }
