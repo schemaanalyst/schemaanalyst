@@ -3,8 +3,8 @@ package org.schemaanalyst.coverage;
 import java.io.File;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
+import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
+import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
@@ -36,7 +36,7 @@ public class CoverageTester extends Runner {
         final Schema schema = instantiateSchema(casestudy);
         final Criterion constraintCoverage = instantiateCriterion(criterion);
         final Criterion constraintRACCoverage = new MultiCriterion(
-                new ConstraintRACCoverage(),
+                new AmplifiedConstraintCACCoverage(),
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
         );
@@ -83,18 +83,18 @@ public class CoverageTester extends Runner {
         final Criterion result;
         switch (criterion) {
             case "constraint":
-                result = new ConstraintCoverage();
+                result = new ConstraintCACCoverage();
                 break;
             case "constraintnullunique":
                 result = new MultiCriterion(
-                        new ConstraintCoverage(),
+                        new ConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );
                 break;
             case "rac":
                 result = new MultiCriterion(
-                        new ConstraintRACCoverage(),
+                        new AmplifiedConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );

@@ -17,26 +17,26 @@ import java.util.List;
 /**
  * Created by phil on 22/01/2014.
  */
-public class MultiColumnConstraintRACRequirementsGenerator extends RequirementsGenerator {
+public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsGenerator {
 
     private Table referenceTable;
     private List<Column> columns, referenceColumns;
 
-    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
+    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = table;
         this.referenceColumns = columns;
     }
 
-    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
+    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = table;
         this.referenceColumns = columns;
     }
 
-    public MultiColumnConstraintRACRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
+    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
         super(schema, table, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = constraint.getReferenceTable();

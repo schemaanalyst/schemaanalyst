@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class AndExpressionRACPredicatesGenerator extends ExpressionRACPredicatesGenerator {
+public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
     private AndExpression andExpression;
     private List<Expression> subexpressions;
 
-    public AndExpressionRACPredicatesGenerator(Table table, AndExpression andExpression) {
+    public AndExpressionCACPredicatesGenerator(Table table, AndExpression andExpression) {
         super(table);
         this.andExpression = andExpression;
         subexpressions = andExpression.getSubexpressions();

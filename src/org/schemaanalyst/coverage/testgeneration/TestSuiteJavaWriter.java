@@ -70,6 +70,9 @@ public class TestSuiteJavaWriter {
         code.appendln();
         code.appendln("public class " + className + " {");
         code.appendln(1);
+        code.appendln("private static final String JDBC_CLASS = \"org.sqlite.JDBC\";");
+        code.appendln("private static final String CONNECTION_URL = \"jdbc:sqlite:" + schema.getName() + "\";");
+        code.appendln();
         code.appendln("private static Connection connection;");
         code.appendln("private static Statement statement;");
     }
@@ -80,12 +83,9 @@ public class TestSuiteJavaWriter {
         code.appendln("public static void initialise() throws ClassNotFoundException, SQLException {");
 
         // DBMS specific code for creating a connection
-        code.appendln(2, "// load the JDBC driver");
-        code.appendln("Class.forName(\"org.sqlite.JDBC\");");
-        code.appendln("connection = DriverManager.getConnection(\"jdbc:sqlite:" + schema.getName() + "\");");
-
-        code.appendln();
-        code.appendln("// create the statement object used by this test suite");
+        code.appendln(2, "// load the JDBC driver and create the connection and statement object used by this test suite");
+        code.appendln("Class.forName(JDBC_CLASS);");
+        code.appendln("connection = DriverManager.getConnection(CONNECTION_URL);");
         code.appendln("statement = connection.createStatement();");
 
         code.appendln();

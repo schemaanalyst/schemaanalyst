@@ -5,8 +5,8 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
 import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
+import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
+import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
@@ -37,13 +37,13 @@ public class GenerateSchemaCoverage extends Runner {
         Schema schema = new Flights();
 
         Criterion constraintCoverage = new MultiCriterion(
-                new ConstraintCoverage(),
+                new ConstraintCACCoverage(),
                 new NullColumnCoverage(),    // these are supplementary (not part of ICST criterion we used) and can be commented out
                 new UniqueColumnCoverage()   // these are supplementary (not part of ICST criterion we used) and can be commented out
         );
 
         Criterion constraintRACCoverage = new MultiCriterion(
-                new ConstraintRACCoverage(),
+                new AmplifiedConstraintCACCoverage(),
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
         );
