@@ -129,10 +129,12 @@ public class TestSuiteJavaWriter {
 
         Data state = testCase.getState();
         List<String> insertStatements = sqlWriter.writeInsertStatements(schema, state);
-        code.appendln();
-        code.appendln("// prepare the database state");
-        for (String statement : insertStatements) {
-            code.appendln(2, "assertEquals(1, " + writeExecuteUpdate(statement) + ");");
+        if (insertStatements.size() > 0) {
+            code.appendln();
+            code.appendln("// prepare the database state");
+            for (String statement : insertStatements) {
+                code.appendln(2, "assertEquals(1, " + writeExecuteUpdate(statement) + ");");
+            }
         }
 
         Data data = testCase.getData();

@@ -263,8 +263,6 @@ public class TestFlights {
 	public void test7() throws SQLException {
 		// Test MEAL IN ('B', 'L', 'D', 'S') evaluating to false
 
-		// prepare the database state
-
 		// execute INSERT statements for the test case
 		try {
 			statement.executeUpdate(
@@ -280,8 +278,6 @@ public class TestFlights {
 	@Test
 	public void test8() throws SQLException {
 		// Test NOT NULL for FLIGHT_ID evaluating to FALSE (is NULL)
-
-		// prepare the database state
 
 		// execute INSERT statements for the test case
 		try {
@@ -299,8 +295,6 @@ public class TestFlights {
 	public void test9() throws SQLException {
 		// Test NOT NULL for SEGMENT_NUMBER evaluating to FALSE (is NULL)
 
-		// prepare the database state
-
 		// execute INSERT statements for the test case
 		try {
 			statement.executeUpdate(
@@ -316,8 +310,6 @@ public class TestFlights {
 	@Test
 	public void test10() throws SQLException {
 		// Test NOT NULL for MEAL evaluating to FALSE (is NULL)
-
-		// prepare the database state
 
 		// execute INSERT statements for the test case
 		try {
