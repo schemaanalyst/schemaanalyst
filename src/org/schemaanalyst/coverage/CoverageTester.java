@@ -34,8 +34,8 @@ public class CoverageTester extends Runner {
     @Override
     protected void task() {
         final Schema schema = instantiateSchema(casestudy);
-        final Criterion constraintCoverage = instantiateCriterion(criterion);
-        final Criterion constraintRACCoverage = new MultiCriterion(
+        final Criterion constraintCACCoverage = instantiateCriterion(criterion);
+        final Criterion amplifiedConstraintCACCoverage = new MultiCriterion(
                 new AmplifiedConstraintCACCoverage(),
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
@@ -47,13 +47,12 @@ public class CoverageTester extends Runner {
                         SearchFactory.avsDefaults(0L, 100000));
 
         // Generate tests
-        boolean oneTestPerRequirement = !reuse;
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                constraintCoverage,
+                constraintCACCoverage,
                 new SQLiteDBMS(),
                 testCaseGenerator,
-                oneTestPerRequirement
+                reuse
         );
         TestSuite testSuite = generator.generate();
         
@@ -63,8 +62,8 @@ public class CoverageTester extends Runner {
         result.addValue("criterion", criterion);
         result.addValue("reuse", reuse);
         result.addValue("tests", testSuite.getTestCases().size());
-        result.addValue("coverage", testCaseGenerator.computeCoverage(testSuite, constraintCoverage.generateRequirements(schema)));
-        result.addValue("raccoverage", testCaseGenerator.computeCoverage(testSuite, constraintRACCoverage.generateRequirements(schema)));
+        result.addValue("coverage", testCaseGenerator.computeCoverage(testSuite, constraintCACCoverage.generateRequirements(schema)));
+        result.addValue("amplifiedcaccoverage", testCaseGenerator.computeCoverage(testSuite, amplifiedConstraintCACCoverage.generateRequirements(schema)));
         CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "coveragetester.dat");
         writer.write(result);
     }
@@ -82,17 +81,17 @@ public class CoverageTester extends Runner {
     protected Criterion instantiateCriterion(String criterion) {
         final Criterion result;
         switch (criterion) {
-            case "constraint":
+            case "constraintcac":
                 result = new ConstraintCACCoverage();
                 break;
-            case "constraintnullunique":
+            case "constraintcacnullunique":
                 result = new MultiCriterion(
                         new ConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );
                 break;
-            case "rac":
+            case "amplifiedconstraintcac":
                 result = new MultiCriterion(
                         new AmplifiedConstraintCACCoverage(),
                         new NullColumnCoverage(),

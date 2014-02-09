@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.search;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestCaseGenerationAlgorithm;

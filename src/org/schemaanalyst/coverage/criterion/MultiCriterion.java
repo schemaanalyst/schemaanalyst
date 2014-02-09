@@ -1,5 +1,6 @@
 package org.schemaanalyst.coverage.criterion;
 
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -15,7 +16,24 @@ public class MultiCriterion extends Criterion {
     private List<Criterion> criteria;
 
     public MultiCriterion(Criterion... criteria) {
+        super(null);
         this.criteria = Arrays.asList(criteria);
+    }
+
+    public String getName() {
+        if (name == null) {
+            name = "";
+            boolean first = true;
+            for (Criterion criterion : criteria) {
+                if (first) {
+                    first = false;
+                } else {
+                    name += " + ";
+                }
+                name += criterion.getName();
+            }
+        }
+        return name;
     }
 
     @Override

@@ -1,17 +1,14 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
-import org.schemaanalyst.coverage.criterion.clause.ClauseFactory;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**

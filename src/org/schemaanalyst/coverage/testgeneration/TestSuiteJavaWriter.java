@@ -1,9 +1,8 @@
 package org.schemaanalyst.coverage.testgeneration;
 
 import org.apache.commons.lang3.StringUtils;
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;

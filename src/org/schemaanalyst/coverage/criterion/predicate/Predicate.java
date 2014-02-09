@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.criterion;
+package org.schemaanalyst.coverage.criterion.predicate;
 
 import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.coverage.criterion.clause.Clause;

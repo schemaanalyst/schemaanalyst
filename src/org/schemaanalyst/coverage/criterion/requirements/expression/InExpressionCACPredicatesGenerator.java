@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Table;

@@ -1,5 +1,6 @@
 package org.schemaanalyst.coverage.criterion;
 
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -11,6 +12,16 @@ import java.util.List;
  */
 public abstract class Criterion {
 
+    protected String name;
+
+    public Criterion(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     public List<Predicate> generateRequirements(Schema schema) {
         List<Predicate> requirements = new ArrayList<>();
         for (Table table : schema.getTablesInOrder()) {
@@ -20,4 +31,8 @@ public abstract class Criterion {
     }
 
     public abstract List<Predicate> generateRequirements(Schema schema, Table table);
+
+    public String toString() {
+        return name;
+    }
 }

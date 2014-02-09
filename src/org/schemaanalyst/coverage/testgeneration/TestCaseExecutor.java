@@ -53,6 +53,12 @@ public class TestCaseExecutor {
         }
     }
 
+    public void execute(TestSuite testSuite) {
+        for (TestCase testCase : testSuite.getTestCases()) {
+            execute(testCase);
+        }
+    }
+
     public void execute(TestCase testCase) {
 
         // clear tables

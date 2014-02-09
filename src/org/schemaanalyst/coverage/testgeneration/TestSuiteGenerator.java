@@ -1,8 +1,8 @@
 package org.schemaanalyst.coverage.testgeneration;
 
-import org.schemaanalyst.coverage.criterion.ConstraintPredicateGenerator;
+import org.schemaanalyst.coverage.criterion.predicate.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;

@@ -1,7 +1,7 @@
 package org.schemaanalyst.coverage.criterion.types;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -14,6 +14,10 @@ import java.util.List;
  * Created by phil on 31/01/2014.
  */
 public class AmplifiedConstraintCACCoverage extends Criterion {
+
+    public AmplifiedConstraintCACCoverage() {
+        super("Amplified constraint CAC coverage");
+    }
 
     @Override
     public List<Predicate> generateRequirements(Schema schema, Table table) {
