@@ -2,7 +2,10 @@ package org.schemaanalyst.coverage.criterion.types;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
-import org.schemaanalyst.coverage.criterion.requirements.*;
+import org.schemaanalyst.coverage.criterion.requirements.CheckConstraintRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.NotNullConstraintRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.RequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;

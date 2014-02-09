@@ -4,17 +4,15 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
-import org.schemaanalyst.coverage.criterion.types.*;
+import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.*;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.SearchFactory;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.Flights;
 

@@ -1,6 +1,5 @@
 package org.schemaanalyst.coverage;
 
-import java.io.File;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
 import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
@@ -18,6 +17,8 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
+import java.io.File;
 
 @RequiredParameters("casestudy criterion")
 public class CoverageTester extends Runner {
@@ -44,7 +45,7 @@ public class CoverageTester extends Runner {
         // Initialise test case generator
         final SearchBasedTestCaseGenerationAlgorithm testCaseGenerator
                 = new SearchBasedTestCaseGenerationAlgorithm(
-                        SearchFactory.avsDefaults(0L, 100000));
+                SearchFactory.avsDefaults(0L, 100000));
 
         // Generate tests
         TestSuiteGenerator generator = new TestSuiteGenerator(
@@ -55,7 +56,7 @@ public class CoverageTester extends Runner {
                 reuse
         );
         TestSuite testSuite = generator.generate();
-        
+
         // Write results
         CSVResult result = new CSVResult();
         result.addValue("casestudy", casestudy);

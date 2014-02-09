@@ -68,7 +68,7 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
         for (Predicate predicate : requirements) {
             for (TestCase testCase : testSuite.getTestCases()) {
                 if (testCaseSatisfiesPredicate(testCase, predicate)) {
-                    covered ++;
+                    covered++;
                     break;
                 }
             }

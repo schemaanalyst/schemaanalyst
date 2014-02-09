@@ -1,18 +1,18 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateTruePredicates;
-import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateFalsePredicates;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateFalsePredicates;
+import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateTruePredicates;
 
 /**
  * Created by phil on 07/02/2014.
