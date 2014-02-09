@@ -78,12 +78,32 @@ public class TestFlights {
 		// Test NOT NULL for MEAL evaluating to TRUE (is NOT NULL)
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
-		assertEquals(1, statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', 0, '1000-01-01', 0, 0, 0)"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO FlightAvailable(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+			") VALUES (" + 
+			"	'', 0, '1000-01-01', 0, 0, 0" + 
+			")"));
 
 		// execute INSERT statements for the test case
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('a', 0, '', '00:00:00', '', '00:00:00', 'B')"));
-		assertEquals(1, statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('a', 0, '1000-01-01', 0, 0, 0)"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'a', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO FlightAvailable(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+			") VALUES (" + 
+			"	'a', 0, '1000-01-01', 0, 0, 0" + 
+			")"));
 	}
 	
 	@Test
@@ -91,13 +111,33 @@ public class TestFlights {
 		// Test all columns equal for PRIMARY KEY[FLIGHT_ID, SEGMENT_NUMBER]
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
-		assertEquals(1, statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', 0, '1000-01-01', 0, 0, 0)"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO FlightAvailable(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+			") VALUES (" + 
+			"	'', 0, '1000-01-01', 0, 0, 0" + 
+			")"));
 
 		// execute INSERT statements for the test case
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('a', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'a', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 		try {
-			statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', 0, '1000-01-01', 0, 0, 0)");
+			statement.executeUpdate(
+				"INSERT INTO FlightAvailable(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+				") VALUES (" + 
+				"	'', 0, '1000-01-01', 0, 0, 0" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -107,10 +147,20 @@ public class TestFlights {
 		// Test all columns equal for FOREIGN KEY[FLIGHT_ID, SEGMENT_NUMBER]
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 
 		// execute INSERT statements for the test case
-		assertEquals(1, statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', 0, '1000-01-01', 0, 0, 0)"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO FlightAvailable(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+			") VALUES (" + 
+			"	'', 0, '1000-01-01', 0, 0, 0" + 
+			")"));
 	}
 	
 	@Test
@@ -118,11 +168,21 @@ public class TestFlights {
 		// Test NOT NULL for FLIGHT_ID evaluating to FALSE (is NULL)
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES(NULL, 0, '1000-01-01', 0, 0, 0)");
+			statement.executeUpdate(
+				"INSERT INTO FlightAvailable(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+				") VALUES (" + 
+				"	NULL, 0, '1000-01-01', 0, 0, 0" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -132,11 +192,21 @@ public class TestFlights {
 		// Test NOT NULL for SEGMENT_NUMBER evaluating to FALSE (is NULL)
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', NULL, '1000-01-01', 0, 0, 0)");
+			statement.executeUpdate(
+				"INSERT INTO FlightAvailable(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+				") VALUES (" + 
+				"	'', NULL, '1000-01-01', 0, 0, 0" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -146,11 +216,21 @@ public class TestFlights {
 		// Test NOT NULL for FLIGHT_DATE evaluating to FALSE (is NULL)
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO FlightAvailable(FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN) VALUES('', 0, NULL, 0, 0, 0)");
+			statement.executeUpdate(
+				"INSERT INTO FlightAvailable(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, FLIGHT_DATE, ECONOMY_SEATS_TAKEN, BUSINESS_SEATS_TAKEN, FIRSTCLASS_SEATS_TAKEN" + 
+				") VALUES (" + 
+				"	'', 0, NULL, 0, 0, 0" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -160,11 +240,21 @@ public class TestFlights {
 		// Test all columns equal for PRIMARY KEY[FLIGHT_ID, SEGMENT_NUMBER]
 
 		// prepare the database state
-		assertEquals(1, statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')"));
+		assertEquals(1, statement.executeUpdate(
+			"INSERT INTO Flights(" + 
+			"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+			") VALUES (" + 
+			"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+			")"));
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', 'B')");
+			statement.executeUpdate(
+				"INSERT INTO Flights(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+				") VALUES (" + 
+				"	'', 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -177,7 +267,12 @@ public class TestFlights {
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', '')");
+			statement.executeUpdate(
+				"INSERT INTO Flights(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+				") VALUES (" + 
+				"	'', 0, '', '00:00:00', '', '00:00:00', ''" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -190,7 +285,12 @@ public class TestFlights {
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES(NULL, 0, '', '00:00:00', '', '00:00:00', 'B')");
+			statement.executeUpdate(
+				"INSERT INTO Flights(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+				") VALUES (" + 
+				"	NULL, 0, '', '00:00:00', '', '00:00:00', 'B'" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -203,7 +303,12 @@ public class TestFlights {
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', NULL, '', '00:00:00', '', '00:00:00', 'B')");
+			statement.executeUpdate(
+				"INSERT INTO Flights(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+				") VALUES (" + 
+				"	'', NULL, '', '00:00:00', '', '00:00:00', 'B'" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}
@@ -216,7 +321,12 @@ public class TestFlights {
 
 		// execute INSERT statements for the test case
 		try {
-			statement.executeUpdate("INSERT INTO Flights(FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL) VALUES('', 0, '', '00:00:00', '', '00:00:00', NULL)");
+			statement.executeUpdate(
+				"INSERT INTO Flights(" + 
+				"	FLIGHT_ID, SEGMENT_NUMBER, ORIG_AIRPORT, DEPART_TIME, DEST_AIRPORT, ARRIVE_TIME, MEAL" + 
+				") VALUES (" + 
+				"	'', 0, '', '00:00:00', '', '00:00:00', NULL" + 
+				")");
 			fail("Expected constraint violation did not occur");
 		} catch (SQLException e) { /* expected exception thrown and caught */ }
 	}

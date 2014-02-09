@@ -17,7 +17,7 @@ import org.schemaanalyst.util.runner.Runner;
 import static org.schemaanalyst.util.java.JavaUtils.*;
 
 @Description("Generates a complete test suite from individual test classes")
-public class GenerateTestSuite extends Runner {
+public class GenerateSchemaAnalystsTestSuite extends Runner {
 
     @Parameter("The name of the class name to put the test suite")
     private String classname = "AllTests";
@@ -89,6 +89,6 @@ public class GenerateTestSuite extends Runner {
     }
 
     public static void main(String[] args) {
-        new GenerateTestSuite().run(args);
+        new GenerateSchemaAnalystsTestSuite().run(args);
     }
 }

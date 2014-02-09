@@ -149,8 +149,11 @@ public class TestSuiteJavaWriter {
                 code.appendln("assertEquals(1, " + writeExecuteUpdate(statement) + ");");
             } else {
                 code.appendln(2, "try {");
-                code.appendln(3, writeExecuteUpdate(statement) + ";");
-                code.appendln(3, "fail(\"Expected constraint violation did not occur\");");
+
+                code.setIndentLevel(3);
+                code.appendln(writeExecuteUpdate(statement) + ";");
+                code.appendln("fail(\"Expected constraint violation did not occur\");");
+
                 code.appendln(2, "} catch (SQLException e) { /* expected exception thrown and caught */ }");
             }
         }
@@ -167,9 +170,10 @@ public class TestSuiteJavaWriter {
     }
 
     private String formatSQLStatement(String sqlStatement) {
+        int indentLevel = code.getIndentLevel();
         if (sqlStatement.contains("\n")) {
             String[] substrings = StringUtils.split(sqlStatement, "\n");
-            String indent = StringUtils.repeat("\t", 3) + "\"";
+            String indent = StringUtils.repeat("\t", indentLevel + 1) + "\"";
             String separator = "\" + \n" + indent;
 
             return "\n" + indent + StringUtils.join(substrings, separator) + "\"";
