@@ -1,8 +1,7 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
-import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
@@ -12,11 +11,11 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class RelationalExpressionRACPredicatesGenerator extends ExpressionRACPredicatesGenerator {
+public class RelationalExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
     private RelationalExpression relationalExpression;
 
-    public RelationalExpressionRACPredicatesGenerator(Table table,
+    public RelationalExpressionCACPredicatesGenerator(Table table,
                                                       RelationalExpression relationalExpression) {
         super(table);
         this.relationalExpression = relationalExpression;

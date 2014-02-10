@@ -1,9 +1,9 @@
 package org.schemaanalyst.coverage.testgeneration;
 
-import org.schemaanalyst.coverage.criterion.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
+import org.schemaanalyst.coverage.criterion.predicate.ConstraintPredicateGenerator;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
@@ -11,6 +11,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,31 +25,37 @@ public class TestSuiteGenerator {
     private DBMS dbms;
     private TestCaseGenerationAlgorithm testCaseGenerator;
     private HashMap<Table, Data> initialTableData;
-    private boolean generateIndividualTestCases;
+    private boolean reuseTestCases;
 
     private TestSuite testSuite;
+    private List<TestCase> failedTestCases;
 
     public TestSuiteGenerator(Schema schema,
                               Criterion criterion,
                               DBMS dbms,
                               TestCaseGenerationAlgorithm testCaseGenerator,
-                              boolean generateIndividualTestCases) {
+                              boolean reuseTestCases) {
         this.schema = schema;
         this.criterion = criterion;
         this.dbms = dbms;
         this.testCaseGenerator = testCaseGenerator;
-        this.generateIndividualTestCases = generateIndividualTestCases;
+        this.reuseTestCases = reuseTestCases;
 
         initialTableData = new HashMap<>();
     }
 
     public TestSuite generate() {
         testSuite = new TestSuite();
+        failedTestCases = new ArrayList<>();
+
         generateInitialTableData();
         generateTestCases();
         return testSuite;
     }
 
+    public List<TestCase> getFailedTestCases() {
+        return new ArrayList<>(failedTestCases);
+    }
 
     private void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
@@ -78,7 +85,7 @@ public class TestSuiteGenerator {
             for (Predicate predicate : requirements) {
 
                 boolean haveTestCase = false;
-                if (!generateIndividualTestCases) {
+                if (reuseTestCases) {
                     TestCase testCase = testCaseGenerator.testCaseThatSatisfiesPredicate(predicate, testSuite);
                     if (testCase != null) {
                         testCase.addPredicate(predicate);
@@ -88,7 +95,11 @@ public class TestSuiteGenerator {
 
                 if (!haveTestCase) {
                     TestCase testCase = generateTestCase(table, predicate);
-                    testSuite.addTestCase(testCase);
+                    if (testCase.satisfiesOriginalPredicate()) {
+                        testSuite.addTestCase(testCase);
+                    } else {
+                        failedTestCases.add(testCase);
+                    }
                 }
             }
         }

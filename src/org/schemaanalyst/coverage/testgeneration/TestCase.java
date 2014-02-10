@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.testgeneration;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 
 import java.util.ArrayList;
@@ -77,5 +77,9 @@ public class TestCase {
 
     public Object getInfo(String key) {
         return info.get(key);
+    }
+
+    public int getNumInserts() {
+        return state.getNumRows() + data.getNumRows();
     }
 }

@@ -1,7 +1,7 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class BetweenExpressionRACPredicatesGenerator extends ExpressionRACPredicatesGenerator {
+public class BetweenExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
     private BetweenExpression betweenExpression;
 
-    public BetweenExpressionRACPredicatesGenerator(Table table, BetweenExpression betweenExpression) {
+    public BetweenExpressionCACPredicatesGenerator(Table table, BetweenExpression betweenExpression) {
         super(table);
         this.betweenExpression = betweenExpression;
     }

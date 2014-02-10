@@ -1,7 +1,7 @@
 package org.schemaanalyst.coverage.search.objectivefunction;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.*;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
@@ -43,6 +43,12 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
             @Override
             public void visit(NullClause clause) {
                 objectiveFunctions.add(new NullObjectiveFunction(clause));
+            }
+
+            @Override
+            public void visit(OrClause clause) {
+                // TODO: too tired to complete this right now ...
+                objectiveFunctions.add(null);
             }
         };
 

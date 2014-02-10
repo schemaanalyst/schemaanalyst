@@ -162,9 +162,14 @@ public class SQLWriter {
     }
 
     public String writeInsertStatement(Table table, List<Column> columns, List<String> values) {
-        return "INSERT INTO " + table.getName()
-                + "(" + SQLWriter.writeColumnList(columns) + ") "
-                + "VALUES(" + SQLWriter.writeSeparatedList(values) + ")";
+
+        IndentableStringBuilder sql = new IndentableStringBuilder();
+        sql.appendln("INSERT INTO " + table.getName() + "(");
+        sql.appendln(1, SQLWriter.writeColumnList(columns));
+        sql.appendln(0, ") VALUES (");
+        sql.appendln(1, SQLWriter.writeSeparatedList(values));
+        sql.appendln(0, ")");
+        return sql.toString();
     }
 
     public String writeInsertStatement(Row row) {

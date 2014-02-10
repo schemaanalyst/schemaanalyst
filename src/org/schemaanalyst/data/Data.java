@@ -159,6 +159,19 @@ public class Data  {
     }
 
     /**
+     * Returns the total number of rows in this data instance,
+     * for all tables.
+     * @return The number of rows in this data instance.
+     */
+    public int getNumRows() {
+        int numRows = 0;
+        for (Table table : data.keySet()) {
+            numRows += data.get(table).size();
+        }
+        return numRows;
+    }
+
+    /**
      * Gets a specific data cell (a column value for a particular row of a
      * table).
      * @param table The table containing the cell.

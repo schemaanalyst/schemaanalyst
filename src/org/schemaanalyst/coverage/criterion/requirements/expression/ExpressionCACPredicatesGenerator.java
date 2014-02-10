@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.*;
 
@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public abstract class ExpressionRACPredicatesGenerator {
+public abstract class ExpressionCACPredicatesGenerator {
 
     protected Table table;
 
-    public ExpressionRACPredicatesGenerator(Table table) {
+    public ExpressionCACPredicatesGenerator(Table table) {
         this.table = table;
     }
 
@@ -30,13 +30,13 @@ public abstract class ExpressionRACPredicatesGenerator {
         return createPredicateGenerator(table, expression).generateFalsePredicates();
     }
 
-    public static ExpressionRACPredicatesGenerator createPredicateGenerator(Table table, Expression expression) {
+    public static ExpressionCACPredicatesGenerator createPredicateGenerator(Table table, Expression expression) {
         class ExpressionRACPredicatesGeneratorCreator extends ExpressionAdapter {
 
             Table table;
-            ExpressionRACPredicatesGenerator expressionRACPredicatesGenerator;
+            ExpressionCACPredicatesGenerator expressionRACPredicatesGenerator;
 
-            ExpressionRACPredicatesGenerator create(Table table, Expression expression) {
+            ExpressionCACPredicatesGenerator create(Table table, Expression expression) {
                 this.table = table;
                 expressionRACPredicatesGenerator = null;
                 expression.accept(this);
@@ -45,23 +45,23 @@ public abstract class ExpressionRACPredicatesGenerator {
 
             @Override
             public void visit(AndExpression expression) {
-                expressionRACPredicatesGenerator = new AndExpressionRACPredicatesGenerator(table, expression);
+                expressionRACPredicatesGenerator = new AndExpressionCACPredicatesGenerator(table, expression);
             }
 
             @Override
             public void visit(BetweenExpression expression) {
-                expressionRACPredicatesGenerator = new BetweenExpressionRACPredicatesGenerator(table, expression);
+                expressionRACPredicatesGenerator = new BetweenExpressionCACPredicatesGenerator(table, expression);
             }
 
             @Override
             public void visit(InExpression expression) {
-                expressionRACPredicatesGenerator = new InExpressionRACPredicatesGenerator(table, expression);
+                expressionRACPredicatesGenerator = new InExpressionCACPredicatesGenerator(table, expression);
             }
 
             // TODO: needed
             @Override
             public void visit(NullExpression expression) {
-                expressionRACPredicatesGenerator = new NullExpressionRACPredicatesGenerator(table, expression);
+                expressionRACPredicatesGenerator = new NullExpressionCACPredicatesGenerator(table, expression);
             }
 
             // TODO: might be needed one day
@@ -72,7 +72,7 @@ public abstract class ExpressionRACPredicatesGenerator {
 
             @Override
             public void visit(RelationalExpression expression) {
-                expressionRACPredicatesGenerator = new RelationalExpressionRACPredicatesGenerator(table, expression);
+                expressionRACPredicatesGenerator = new RelationalExpressionCACPredicatesGenerator(table, expression);
             }
         }
 

@@ -1,8 +1,7 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import com.thoughtworks.xstream.mapper.Mapper;
-import org.schemaanalyst.coverage.criterion.Predicate;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 
@@ -12,11 +11,11 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class NullExpressionRACPredicatesGenerator extends ExpressionRACPredicatesGenerator {
+public class NullExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
     private NullExpression nullExpression;
 
-    public NullExpressionRACPredicatesGenerator(Table table, NullExpression nullExpression) {
+    public NullExpressionCACPredicatesGenerator(Table table, NullExpression nullExpression) {
         super(table);
         this.nullExpression = nullExpression;
     }

@@ -11,4 +11,5 @@ public interface ClauseVisitor {
 
     public void visit(NullClause clause);
 
+    public void visit(OrClause clause);
 }

@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.search;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestCaseGenerationAlgorithm;
@@ -46,7 +46,7 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
 
     @Override
     public TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite) {
-        for (TestCase testCase : testSuite.getUsefulTestCases()) {
+        for (TestCase testCase : testSuite.getTestCases()) {
             if (testCaseSatisfiesPredicate(testCase, predicate)) {
                 return testCase;
             }
@@ -66,9 +66,9 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
         int covered = 0;
         int total = requirements.size();
         for (Predicate predicate : requirements) {
-            for (TestCase testCase : testSuite.getUsefulTestCases()) {
+            for (TestCase testCase : testSuite.getTestCases()) {
                 if (testCaseSatisfiesPredicate(testCase, predicate)) {
-                    covered ++;
+                    covered++;
                     break;
                 }
             }

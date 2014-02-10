@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.criterion;
+package org.schemaanalyst.coverage.criterion.predicate;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

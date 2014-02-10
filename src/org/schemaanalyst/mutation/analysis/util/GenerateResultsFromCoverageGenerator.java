@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
+import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
+import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
@@ -15,6 +15,7 @@ import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.datageneration.search.SearchFactory;
+import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -58,12 +59,12 @@ public class GenerateResultsFromCoverageGenerator extends GenerateResults {
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 constraintCoverage,
-                dbms,
+                new SQLiteDBMS(),
                 testCaseGenerator,
                 oneTestPerRequirement
         );
         TestSuite testSuite = generator.generate();
-        for (TestCase testCase : testSuite.getAllTestCases()) {
+        for (TestCase testCase : testSuite.getTestCases()) {
             boolean satisfying = testCase.satisfiesOriginalPredicate();
             // Add state inserts
             for (String insert : sqlWriter.writeInsertStatements(schema, testCase.getState())) {
@@ -84,18 +85,18 @@ public class GenerateResultsFromCoverageGenerator extends GenerateResults {
         final Criterion result;
         switch (criterion) {
             case "constraint":
-                result = new ConstraintCoverage();
+                result = new ConstraintCACCoverage();
                 break;
             case "constraintnullunique":
                 result = new MultiCriterion(
-                        new ConstraintCoverage(),
+                        new ConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );
                 break;
             case "rac":
                 result = new MultiCriterion(
-                        new ConstraintRACCoverage(),
+                        new AmplifiedConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );

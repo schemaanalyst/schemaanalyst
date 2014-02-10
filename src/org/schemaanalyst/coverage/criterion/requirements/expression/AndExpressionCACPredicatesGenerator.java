@@ -1,6 +1,6 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
-import org.schemaanalyst.coverage.criterion.Predicate;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
@@ -11,12 +11,12 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class AndExpressionRACPredicatesGenerator extends ExpressionRACPredicatesGenerator {
+public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
     private AndExpression andExpression;
     private List<Expression> subexpressions;
 
-    public AndExpressionRACPredicatesGenerator(Table table, AndExpression andExpression) {
+    public AndExpressionCACPredicatesGenerator(Table table, AndExpression andExpression) {
         super(table);
         this.andExpression = andExpression;
         subexpressions = andExpression.getSubexpressions();
