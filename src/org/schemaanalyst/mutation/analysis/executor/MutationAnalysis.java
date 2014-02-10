@@ -86,6 +86,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", criterion);
         result.addValue("reuse", reuse);
+        result.addValue("tests", suite.getNumTestCases());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", killed);
         result.addValue("scoredenominator", mutants.size());
@@ -96,7 +97,7 @@ public class MutationAnalysis extends Runner {
 //            System.out.println("Killed: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
         }
         for (Mutant<Schema> mutant : liveMutants) {
-            System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
+//            System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
         }
     }
 
@@ -123,13 +124,12 @@ public class MutationAnalysis extends Runner {
         final SearchBasedTestCaseGenerationAlgorithm testCaseGenerator
                 = new SearchBasedTestCaseGenerationAlgorithm(
                         SearchFactory.avsDefaults(0L, 100000));
-        boolean oneTestPerRequirement = !reuse;
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 instantiateCriterion(criterion),
                 dbms,
                 testCaseGenerator,
-                oneTestPerRequirement
+                reuse
         );
         // Generate suite and return
         return generator.generate();
