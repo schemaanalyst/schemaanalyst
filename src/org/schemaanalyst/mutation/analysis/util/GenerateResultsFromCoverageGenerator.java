@@ -15,7 +15,6 @@ import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.datageneration.search.SearchFactory;
-import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -59,12 +58,12 @@ public class GenerateResultsFromCoverageGenerator extends GenerateResults {
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 constraintCoverage,
-                new SQLiteDBMS(),
+                dbms,
                 testCaseGenerator,
                 oneTestPerRequirement
         );
         TestSuite testSuite = generator.generate();
-        for (TestCase testCase : testSuite.getUsefulTestCases()) {
+        for (TestCase testCase : testSuite.getAllTestCases()) {
             boolean satisfying = testCase.satisfiesOriginalPredicate();
             // Add state inserts
             for (String insert : sqlWriter.writeInsertStatements(schema, testCase.getState())) {

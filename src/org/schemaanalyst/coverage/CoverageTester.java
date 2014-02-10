@@ -79,7 +79,7 @@ public class CoverageTester extends Runner {
         }
     }
 
-    protected Criterion instantiateCriterion(String criterion) {
+    protected static Criterion instantiateCriterion(String criterion) {
         final Criterion result;
         switch (criterion) {
             case "constraint":
@@ -93,6 +93,9 @@ public class CoverageTester extends Runner {
                 );
                 break;
             case "rac":
+                result = new ConstraintRACCoverage();
+                break;
+            case "racnullunique":
                 result = new MultiCriterion(
                         new ConstraintRACCoverage(),
                         new NullColumnCoverage(),
