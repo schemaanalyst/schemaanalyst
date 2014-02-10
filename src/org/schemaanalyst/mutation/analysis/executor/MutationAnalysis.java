@@ -87,6 +87,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("criterion", criterion);
         result.addValue("reuse", reuse);
         result.addValue("tests", suite.getNumTestCases());
+        result.addValue("inserts", suite.getNumInserts());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", killed);
         result.addValue("scoredenominator", mutants.size());
