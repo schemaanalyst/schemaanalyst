@@ -14,7 +14,7 @@ public class TestSuiteExecutor {
 
     public List<MixedPair<TestCase, TestCaseResult>> executeTestSuite(TestCaseExecutor executor, TestSuite suite) {
         List<MixedPair<TestCase, TestCaseResult>> result = new ArrayList<>();
-        for (TestCase testCase : suite.getUsefulTestCases()) {
+        for (TestCase testCase : suite.getTestCases()) {
             result.add(new MixedPair<>(testCase, executor.executeTestCase(testCase)));
         }
         return result;

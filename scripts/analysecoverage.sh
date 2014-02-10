@@ -18,10 +18,12 @@ fi
 
 IFS=':' read -ra CRITERIA <<< "$CRITERION"
 IFS=':' read -ra SCHEMA <<< "$SCHEMAS"
+IFS=':' read -ra REUSE <<< "true:false"
 
 for c in "${CRITERIA[@]}"; do
 	for s in "${SCHEMA[@]}"; do
-		java -cp $CLASSPATH org.schemaanalyst.coverage.CoverageTester parsedcasestudy.$s $c --reuse=true
-		java -cp $CLASSPATH org.schemaanalyst.coverage.CoverageTester parsedcasestudy.$s $c --reuse=false
+		for r in "${REUSE[@]}"; do
+			java -cp $CLASSPATH org.schemaanalyst.coverage.CoverageTester parsedcasestudy.$s $c --reuse=$r
+		done
 	done
 done

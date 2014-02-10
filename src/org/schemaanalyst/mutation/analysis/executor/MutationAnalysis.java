@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.MultiCriterion;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintRACCoverage;
+import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
+import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
 import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
 import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
@@ -163,22 +163,19 @@ public class MutationAnalysis extends Runner {
     protected static Criterion instantiateCriterion(String criterion) {
         final Criterion result;
         switch (criterion) {
-            case "constraint":
-                result = new ConstraintCoverage();
+            case "constraintcac":
+                result = new ConstraintCACCoverage();
                 break;
-            case "constraintnullunique":
+            case "constraintcacnullunique":
                 result = new MultiCriterion(
-                        new ConstraintCoverage(),
+                        new ConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );
                 break;
-            case "rac":
-                result = new ConstraintRACCoverage();
-                break;
-            case "racnullunique":
+            case "amplifiedconstraintcac":
                 result = new MultiCriterion(
-                        new ConstraintRACCoverage(),
+                        new AmplifiedConstraintCACCoverage(),
                         new NullColumnCoverage(),
                         new UniqueColumnCoverage()
                 );
