@@ -62,6 +62,10 @@ public abstract class DatabaseInteractor {
      * Whether the connection has been made yet.
      */
     protected boolean initialized = false;
+    protected long totalInteractions = 0;
+    protected long createInteractions = 0;
+    protected long dropInteractions = 0;
+    protected long insertInteractions = 0;
 
     public DatabaseInteractor(DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         this.databaseConfiguration = databaseConfiguration;
@@ -84,6 +88,7 @@ public abstract class DatabaseInteractor {
             }
             LOGGER.log(Level.FINER, "Executing statement: {0}", command);
             Statement statement = connection.createStatement();
+            recordInteraction(command);
             synchronized (this) {
                 returnCount = statement.executeUpdate(command);
             }
@@ -123,7 +128,9 @@ public abstract class DatabaseInteractor {
 
             // run the command and capture the number of modified
             // values or any other type of status return code
+            recordInteraction(command);
             synchronized (this) {
+                
                 boolean result = statement.execute(command);
 
                 // this is a U,I,D that has an update count
@@ -181,6 +188,7 @@ public abstract class DatabaseInteractor {
                     try {
                         LOGGER.log(Level.FINER, "Executing statement: {0} (in transaction)", command);
                         Statement statement = connection.createStatement();
+                        recordInteraction(command);
                         returnCount = statement.executeUpdate(command);
                         LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
                     } catch (SQLException e) {
@@ -218,6 +226,8 @@ public abstract class DatabaseInteractor {
                     LOGGER.log(Level.FINE, "Statement failed: " + command, e);
                 }
             }
+            // Only one "interaction" is made. Classify based on first item
+            recordInteraction(commands.iterator().next());
             synchronized (this) {
                 int[] batchResults = statement.executeBatch();
                 for (int i : batchResults) {
@@ -240,5 +250,41 @@ public abstract class DatabaseInteractor {
      */
     public int getTableCount() {
         return 0;
+    }
+    
+    /**
+     * Increments the appropriate counter to record the database interaction.
+     * 
+     * @param stmt The statement executed
+     */
+    protected synchronized void recordInteraction(String stmt) {
+        totalInteractions++;
+        // Identify subtotal to increment
+        String statement = stmt.toLowerCase();
+        if (statement.startsWith("insert")) {
+            insertInteractions++;
+        } else if (statement.startsWith("create")) {
+            createInteractions++;
+        } else if (statement.startsWith("drop")) {
+            dropInteractions++;
+        } else {
+            LOGGER.log(Level.WARNING,"Unclassified database interaction: {0}", stmt); 
+        }
+    }
+    
+    public long getTotalInteractions() {
+        return totalInteractions;
+    }
+
+    public long getCreateInteractions() {
+        return createInteractions;
+    }
+
+    public long getDropInteractions() {
+        return dropInteractions;
+    }
+
+    public long getInsertInteractions() {
+        return insertInteractions;
     }
 }
