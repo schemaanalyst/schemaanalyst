@@ -1,11 +1,6 @@
 package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.MultiCriterion;
-import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
-import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
-import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
@@ -17,8 +12,8 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-
 import java.io.File;
+import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 
 @RequiredParameters("casestudy criterion")
 public class CoverageTester extends Runner {
@@ -35,12 +30,8 @@ public class CoverageTester extends Runner {
     @Override
     protected void task() {
         final Schema schema = instantiateSchema(casestudy);
-        final Criterion constraintCACCoverage = instantiateCriterion(criterion);
-        final Criterion amplifiedConstraintCACCoverage = new MultiCriterion(
-                new AmplifiedConstraintCACCoverage(),
-                new NullColumnCoverage(),
-                new UniqueColumnCoverage()
-        );
+        final Criterion chosenCriterion = CriterionFactory.instantiate(criterion);
+        final Criterion amplifiedConstraintCACCoverage = CriterionFactory.amplifiedConstraintCACWithNullAndUniqueColumnCoverage();
 
         // Initialise test case generator
         final SearchBasedTestCaseGenerationAlgorithm testCaseGenerator
@@ -50,7 +41,7 @@ public class CoverageTester extends Runner {
         // Generate tests
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                constraintCACCoverage,
+                chosenCriterion,
                 new SQLiteDBMS(),
                 testCaseGenerator,
                 reuse
@@ -64,7 +55,7 @@ public class CoverageTester extends Runner {
         result.addValue("reuse", reuse);
         result.addValue("tests", testSuite.getTestCases().size());
         result.addValue("inserts", testSuite.getNumInserts());
-        result.addValue("coverage", testCaseGenerator.computeCoverage(testSuite, constraintCACCoverage.generateRequirements(schema)));
+        result.addValue("coverage", testCaseGenerator.computeCoverage(testSuite, chosenCriterion.generateRequirements(schema)));
         result.addValue("amplifiedcaccoverage", testCaseGenerator.computeCoverage(testSuite, amplifiedConstraintCACCoverage.generateRequirements(schema)));
         CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "coveragetester.dat");
         writer.write(result);
@@ -78,32 +69,6 @@ public class CoverageTester extends Runner {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    protected Criterion instantiateCriterion(String criterion) {
-        final Criterion result;
-        switch (criterion) {
-            case "constraintcac":
-                result = new ConstraintCACCoverage();
-                break;
-            case "constraintcacnullunique":
-                result = new MultiCriterion(
-                        new ConstraintCACCoverage(),
-                        new NullColumnCoverage(),
-                        new UniqueColumnCoverage()
-                );
-                break;
-            case "amplifiedconstraintcac":
-                result = new MultiCriterion(
-                        new AmplifiedConstraintCACCoverage(),
-                        new NullColumnCoverage(),
-                        new UniqueColumnCoverage()
-                );
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown criterion: " + criterion);
-        }
-        return result;
     }
 
     @Override
