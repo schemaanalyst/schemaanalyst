@@ -14,6 +14,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
+/**
+ * <p>Executes {@link TestCase}s with a given {@link Schema} and {@link DBMS}.</p>
+ * 
+ * @author Chris J. Wright
+ */
 public class TestCaseExecutor {
 
     final private Schema schema;
@@ -21,6 +26,13 @@ public class TestCaseExecutor {
     final private DatabaseInteractor databaseInteractor;
     final private SQLWriter sqlWriter;
 
+    /**
+     * Construct an executor.
+     * 
+     * @param schema The schema
+     * @param dbms The DBMS
+     * @param databaseInteractor The interactor for the DBMS
+     */
     public TestCaseExecutor(Schema schema, DBMS dbms, DatabaseInteractor databaseInteractor) {
         this.schema = schema;
         tables = schema.getTablesInOrder();
@@ -64,6 +76,13 @@ public class TestCaseExecutor {
         }
     }
 
+    /**
+     * Execute a {@link TestCase} with the {@link Schema} and {@link DBMS} given 
+     * in the constructor.
+     * 
+     * @param testCase The test case
+     * @return The result obtained
+     */
     public TestCaseResult executeTestCase(TestCase testCase) {
         TestCaseResult result;
         try {

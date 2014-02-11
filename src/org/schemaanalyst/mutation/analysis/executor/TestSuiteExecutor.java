@@ -7,7 +7,8 @@ import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
- *
+ * <p>Executes each {@link TestCase} of a {@link TestSuite} using a {@link TestCaseExecutor}.</p>
+ * 
  * @author Chris J. Wright
  */
 public class TestSuiteExecutor {

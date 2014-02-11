@@ -4,7 +4,9 @@ import java.util.Objects;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
 
 /**
- *
+ * <p>The result of executing a test case - either indicating success or 
+ * providing the resulting exception.</p>
+ * 
  * @author Chris J. Wright
  */
 public class TestCaseResult {
