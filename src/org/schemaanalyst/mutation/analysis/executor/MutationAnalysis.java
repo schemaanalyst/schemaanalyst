@@ -4,12 +4,7 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
-import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.MultiCriterion;
-import org.schemaanalyst.coverage.criterion.types.AmplifiedConstraintCACCoverage;
-import org.schemaanalyst.coverage.criterion.types.ConstraintCACCoverage;
-import org.schemaanalyst.coverage.criterion.types.NullColumnCoverage;
-import org.schemaanalyst.coverage.criterion.types.UniqueColumnCoverage;
+import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
@@ -31,29 +26,69 @@ import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
- *
+ * An alternative implementation of mutation analysis, using the 
+ * {@link org.schemaanalyst.mutation.analysis.technique.Original}
+ * technique, inserting data from a {@link TestSuite}.
+ * 
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy criterion")
 public class MutationAnalysis extends Runner {
 
+    /**
+     * The name of the schema to use.
+     */
     @Parameter("The name of the schema to use.")
+    /**
+     * The name of the schema to use.
+     */
     protected String casestudy;
+    /**
+     * The coverage criterion to use to generate data.
+     */
     @Parameter("The coverage criterion to use to generate data.")
     protected String criterion;
-    @Parameter
+    /**
+     * The maximum fitness evaluations when generating data.
+     */
+    @Parameter("The maximum fitness evaluations when generating data.")
     protected int maxevaluations = 100000;
-    @Parameter
+    /**
+     * The random seed.
+     */
+    @Parameter("The random seed.")
     protected long randomseed = 0;
+    /**
+     * Whether to re-use test cases.
+     */
     @Parameter("Whether to re-use test cases.")
     protected boolean reuse = false;
+    /**
+     * The mutation pipeline to use to generate mutants.
+     */
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
             choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
     protected String mutationPipeline = "AllOperatorsWithRemovers";
-
+    /**
+     * Whether to print live mutants.
+     */
+    @Parameter("Whether to print live mutants.")
+    protected boolean printLive = false;
+    /**
+     * The instantiated schema.
+     */
     protected Schema schema;
+    /**
+     * The instantiated DBMS.
+     */
     protected DBMS dbms;
+    /**
+     * The writer for the DBMS.
+     */
     protected SQLWriter sqlWriter;
+    /**
+     * The interactor for the DBMS.
+     */
     protected DatabaseInteractor databaseInteractor;
 
     @Override
@@ -69,11 +104,9 @@ public class MutationAnalysis extends Runner {
         List<Mutant<Schema>> mutants = generateMutants();
         int killed = 0;
         List<Mutant<Schema>> liveMutants = new ArrayList<>();
-        List<Mutant<Schema>> killedMutants = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
             List<MixedPair<TestCase, TestCaseResult>> mutantResults = executeTestSuite(mutant.getMutatedArtefact(), suite);
             if (!originalResults.equals(mutantResults)) {
-                killedMutants.add(mutant);
                 killed++;
             } else {
                 liveMutants.add(mutant);
@@ -93,15 +126,16 @@ public class MutationAnalysis extends Runner {
         result.addValue("scoredenominator", mutants.size());
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
         
-        // Print mutants (debug)
-        for (Mutant<Schema> mutant : killedMutants) {
-//            System.out.println("Killed: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
-        }
-        for (Mutant<Schema> mutant : liveMutants) {
-//            System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
+        if (printLive) {
+            for (Mutant<Schema> mutant : liveMutants) {
+                System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
+            }
         }
     }
 
+    /**
+     * Instantiates the DBMS class, SQL writer and interactor.
+     */
     private void instantiateParameters() {
         // Get the required DBMS class, writer and interactor
         try {
@@ -120,6 +154,11 @@ public class MutationAnalysis extends Runner {
         }
     }
 
+    /**
+     * Generates the test suite according to the algorithm and criterion.
+     * 
+     * @return The test suite
+     */
     private TestSuite generateTestSuite() {
         // Initialise test case generator
         final SearchBasedTestCaseGenerationAlgorithm testCaseGenerator
@@ -127,7 +166,7 @@ public class MutationAnalysis extends Runner {
                         SearchFactory.avsDefaults(0L, 100000));
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                instantiateCriterion(criterion),
+                CriterionFactory.instantiate(criterion),
                 dbms,
                 testCaseGenerator,
                 reuse
@@ -136,12 +175,24 @@ public class MutationAnalysis extends Runner {
         return generator.generate();
     }
 
+    /**
+     * Executes all {@link TestCase}s in a {@link TestSuite} for a given {@link Schema}.
+     * 
+     * @param schema The schema
+     * @param suite The test suite
+     * @return The execution results
+     */
     private List<MixedPair<TestCase, TestCaseResult>> executeTestSuite(Schema schema, TestSuite suite) {
         TestCaseExecutor caseExecutor = new TestCaseExecutor(schema, dbms, databaseInteractor);
         TestSuiteExecutor suiteExecutor = new TestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
+    /**
+     * Generates mutants of the instantiated schema using the named pipeline.
+     * 
+     * @return The mutants
+     */
     private List<Mutant<Schema>> generateMutants() {
         MutationPipeline<Schema> pipeline;
         try {
@@ -159,32 +210,6 @@ public class MutationAnalysis extends Runner {
 
     public static void main(String[] args) {
         new MutationAnalysis().run(args);
-    }
-
-    protected static Criterion instantiateCriterion(String criterion) {
-        final Criterion result;
-        switch (criterion) {
-            case "constraintcac":
-                result = new ConstraintCACCoverage();
-                break;
-            case "constraintcacnullunique":
-                result = new MultiCriterion(
-                        new ConstraintCACCoverage(),
-                        new NullColumnCoverage(),
-                        new UniqueColumnCoverage()
-                );
-                break;
-            case "amplifiedconstraintcac":
-                result = new MultiCriterion(
-                        new AmplifiedConstraintCACCoverage(),
-                        new NullColumnCoverage(),
-                        new UniqueColumnCoverage()
-                );
-                break;
-            default:
-                throw new IllegalArgumentException("Unknown criterion: " + criterion);
-        }
-        return result;
     }
 
 }
