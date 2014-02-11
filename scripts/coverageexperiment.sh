@@ -31,6 +31,7 @@ IFS=':' read -ra SCHEMA <<< "$SCHEMAS"
 IFS=':' read -ra REUSE <<< "true:false"
 
 for s in "${SCHEMA[@]}"; do
+	echo $s
 	for c in "${CRITERIA[@]}"; do
 		for r in "${REUSE[@]}"; do
 			java -Xmx3G -cp $CLASSPATH $APPROACH parsedcasestudy.$s $c --reuse=$r
