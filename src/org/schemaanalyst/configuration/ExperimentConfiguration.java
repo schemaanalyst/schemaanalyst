@@ -4,9 +4,8 @@
 package org.schemaanalyst.configuration;
 
 /**
- * <p>
- * 
- * </p>
+ * Contains the properties describing how to connect to the experimental 
+ * results database.
  *
  * @author Chris J. Wright
  */

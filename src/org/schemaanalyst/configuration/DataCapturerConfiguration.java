@@ -3,7 +3,8 @@ package org.schemaanalyst.configuration;
 import org.schemaanalyst.util.DataCapturer;
 
 /**
- *
+ * Contains the properties describing which data capturers should be enabled.
+ * 
  * @author Chris J. Wright
  */
 public class DataCapturerConfiguration extends Configuration {
