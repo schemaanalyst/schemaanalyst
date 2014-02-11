@@ -12,7 +12,6 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-
 import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
 import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
