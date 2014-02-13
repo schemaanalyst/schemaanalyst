@@ -10,10 +10,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by phil on 09/02/2014.
+ * Instantiates a {@link Criterion} for use in data generation.
+ *
+ * @author Phil
  */
 public class CriterionFactory {
 
+    /**
+     * Instantiate a {@link Criterion} instance given the name.
+     * 
+     * @param criterionName The name
+     * @return The criterion
+     */
     @SuppressWarnings("unchecked")
     public static Criterion instantiate(String criterionName) {
         Class<CriterionFactory> c = CriterionFactory.class;
@@ -32,6 +40,11 @@ public class CriterionFactory {
         throw new CoverageException("Unknown criterion \"" + criterionName + "\"");
     }
 
+    /**
+     * Returns a list of all data generation {@link Criterion}.
+     * 
+     * @return All criterion
+     */
     public static List<Criterion> allCriteria() {
         List<Criterion> criteria = new ArrayList<>();
         Class<CriterionFactory> c = CriterionFactory.class;
@@ -71,5 +84,13 @@ public class CriterionFactory {
                 new NullColumnCoverage(),
                 new UniqueColumnCoverage()
         );
+    }
+
+    public static Criterion nullCoverage() {
+        return new NullColumnCoverage();
+    }
+
+    public static Criterion uniqueCoverage() {
+        return new UniqueColumnCoverage();
     }
 }
