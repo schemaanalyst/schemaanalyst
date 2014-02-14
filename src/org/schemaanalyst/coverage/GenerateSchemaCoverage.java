@@ -31,9 +31,9 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new BookTown();
+        Schema schema = new Flights();
         DBMS dbms = new SQLiteDBMS();
-        Criterion criterion = CriterionFactory.instantiate("constraintCACCoverage");
+        Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACCoverage");
         boolean reuseTestCases = true;
         Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
 

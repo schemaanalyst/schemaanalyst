@@ -1,6 +1,8 @@
 package org.schemaanalyst.coverage.testgeneration;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.derby.iapi.util.StringUtil;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.dbms.DBMS;
@@ -8,6 +10,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -174,14 +177,21 @@ public class TestSuiteJavaWriter {
     private String formatSQLStatement(String sqlStatement) {
         int indentLevel = code.getIndentLevel();
         if (sqlStatement.contains("\n")) {
-            String[] substrings = StringUtils.split(sqlStatement, "\n");
-            String indent = StringUtils.repeat("\t", indentLevel + 1) + "\"";
-            String separator = "\" + \n" + indent;
+            String indent = StringUtils.repeat("\t", indentLevel + 1);
 
-            return "\n" + indent + StringUtils.join(substrings, separator) + "\"";
+            List<String> substatements = new ArrayList<>();
+            for (String substring : StringUtils.split(sqlStatement, "\n")) {
+                substatements.add("\n" + indent + formatOneLineStatement(substring));
+            }
+            return StringUtils.join(substatements, " + ");
         } else {
-            return "\"" + sqlStatement + "\"";
+            return formatOneLineStatement(sqlStatement);
         }
+    }
+
+    private String formatOneLineStatement(String sqlStatement) {
+        String tabsToSpaces = sqlStatement.replace("\t", "    ");
+        return "\"" + StringEscapeUtils.escapeJava(tabsToSpaces) + "\"";
     }
 
     private void writeAfterClassMethod() {

@@ -71,6 +71,11 @@ public abstract class ExpressionCACPredicatesGenerator {
             // }
 
             @Override
+            public void visit(ParenthesisedExpression expression) {
+                expression.getSubexpression().accept(this);
+            }
+
+            @Override
             public void visit(RelationalExpression expression) {
                 expressionRACPredicatesGenerator = new RelationalExpressionCACPredicatesGenerator(table, expression);
             }
