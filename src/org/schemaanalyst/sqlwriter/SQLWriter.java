@@ -85,7 +85,7 @@ public class SQLWriter {
 
         IndentableStringBuilder sql = new IndentableStringBuilder();
         sql.append("CREATE TABLE ");
-        sql.append(table.getName());
+        sql.append(quoteIdentifier(table.getName()));
         sql.appendln(" (");
 
         boolean first = true;
@@ -97,7 +97,7 @@ public class SQLWriter {
             }
 
             // write column name
-            sql.append(1, column.getName());
+            sql.append(1, quoteIdentifier(column.getName()));
 
             // write column type			
             sql.appendTabbed(dataTypeSQLWriter.writeDataType(column));
@@ -164,7 +164,7 @@ public class SQLWriter {
     public String writeInsertStatement(Table table, List<Column> columns, List<String> values) {
 
         IndentableStringBuilder sql = new IndentableStringBuilder();
-        sql.appendln("INSERT INTO " + table.getName() + "(");
+        sql.appendln("INSERT INTO " + quoteIdentifier(table.getName()) + "(");
         sql.appendln(1, SQLWriter.writeColumnList(columns));
         sql.appendln(0, ") VALUES (");
         sql.appendln(1, SQLWriter.writeSeparatedList(values));
@@ -212,7 +212,7 @@ public class SQLWriter {
     }
 
     public String writeDeleteFromTableStatement(Table table) {
-        return "DELETE FROM " + table;
+        return "DELETE FROM " + quoteIdentifier(table.getName());
     }
 
     public List<String> writeDropTableStatements(Schema schema) {
@@ -243,6 +243,10 @@ public class SQLWriter {
         return sql;
     }
 
+    public static String quoteIdentifier(String identifier) {
+        return "\"" + identifier + "\"";
+    }
+
     public static String writeSeparatedList(List<String> values) {
         StringBuilder sql = new StringBuilder();
         boolean first = true;
@@ -260,7 +264,7 @@ public class SQLWriter {
     public static String writeColumnList(List<Column> columns) {
         List<String> columnStrings = new ArrayList<>();
         for (Column column : columns) {
-            columnStrings.add(column.getName());
+            columnStrings.add(quoteIdentifier(column.getName()));
         }
         return SQLWriter.writeSeparatedList(columnStrings);
     }

@@ -9,6 +9,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
+import static org.schemaanalyst.sqlwriter.SQLWriter.quoteIdentifier;
 import static org.schemaanalyst.sqlwriter.SQLWriter.writeColumnList;
 
 public class ConstraintSQLWriter {
@@ -99,7 +100,7 @@ public class ConstraintSQLWriter {
 
     public String writeConstraintName(Constraint constraint) {
         if (constraint.hasIdentifier() && constraint.getName() != null) {
-            return "CONSTRAINT " + constraint.getName() + " ";
+            return "CONSTRAINT " + quoteIdentifier(constraint.getName()) + " ";
         } else {
             return "";
         }
