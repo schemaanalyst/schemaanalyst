@@ -297,7 +297,7 @@ public class Data  {
                     sb.append(System.lineSeparator());
                 }
                 List<Row> rows = data.get(table);
-				sb.append(StringUtils.join(rows, System.lineSeparator()));
+				sb.append("* " + StringUtils.join(rows, System.lineSeparator()));
             }
         }
         return sb.toString();

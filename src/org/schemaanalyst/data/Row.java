@@ -67,6 +67,15 @@ public class Row {
         throw new DataException("Unknown column \"" + column + "\"");
     }
 
+    public boolean hasColumn(Column column) {
+        for (Cell cell : cells) {
+            if (column.equals(cell.getColumn())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void copyValues(Row other) {
         Iterator<Cell> thisIterator = cells.iterator();
         Iterator<Cell> otherIterator = other.cells.iterator();

@@ -110,14 +110,18 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
             Column refCol = refColsIterator.next();
 
             Value colValue = row.getCell(col).getValue();
-            Value refColValue = stateRow.getCell(refCol).getValue();
 
-            ObjectiveValue compareObjVal =
-                    RelationalValueObjectiveFunction.compute(
-                            colValue,
-                            op,
-                            refColValue,
-                            true);
+            ObjectiveValue compareObjVal = ObjectiveValue.worstObjectiveValue();
+            if (stateRow.hasColumn(refCol)) {
+                Value refColValue = stateRow.getCell(refCol).getValue();
+
+                compareObjVal =
+                        RelationalValueObjectiveFunction.compute(
+                                colValue,
+                                op,
+                                refColValue,
+                                true);
+            }
 
             objVal.add(compareObjVal);
         }

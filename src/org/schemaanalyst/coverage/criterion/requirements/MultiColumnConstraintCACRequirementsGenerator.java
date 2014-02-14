@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by phil on 22/01/2014.
@@ -66,7 +67,7 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
             List<Column> remainingCols = new ArrayList<>(columns);
             remainingCols.remove(col);
 
-            List<Column> refRemainingCols = new ArrayList<>(columns);
+            List<Column> refRemainingCols = new ArrayList<>(referenceColumns);
             refRemainingCols.remove(refCol);
 
             Predicate predicate = generatePredicate("Test " + col + " only equal for " + table + "'s " + constraint);

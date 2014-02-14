@@ -3,7 +3,6 @@ package org.schemaanalyst.coverage;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.*;
@@ -14,7 +13,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.Flights;
+import parsedcasestudy.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,7 +31,7 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new Flights();
+        Schema schema = new StudentResidence();
         DBMS dbms = new SQLiteDBMS();
         Criterion criterion = CriterionFactory.instantiate("constraintCACCoverage");
         boolean reuseTestCases = true;
@@ -90,20 +89,7 @@ public class GenerateSchemaCoverage extends Runner {
     private void printTestCase(TestCase testCase, boolean success) {
         System.out.println();
 
-        // print purposes and predicates attempted/satisfied by this test case
-        for (Predicate predicate : testCase.getPredicates()) {
-            System.out.println("PURPOSE:   " + predicate.getPurpose());
-            System.out.println("PREDICATE: " + predicate);
-        }
-
-        // print the contents of the state
-        Data state = testCase.getState();
-        if (state.getCells().size() > 0) {
-            System.out.println("STATE:     " + testCase.getState());
-        }
-
-        // print the contents of the test case data
-        System.out.println("DATA:      " + testCase.getData());
+        System.out.println(testCase);
 
         // print whether the test case successfully satisfies its predicate(s)
         System.out.println("SUCCESS:   " + success);
