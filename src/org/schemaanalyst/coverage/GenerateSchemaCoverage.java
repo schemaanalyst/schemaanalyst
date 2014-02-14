@@ -87,19 +87,11 @@ public class GenerateSchemaCoverage extends Runner {
     }
 
     private void printTestCase(TestCase testCase, boolean success) {
-        System.out.println();
+        System.out.println("\n" + testCase);
 
-        System.out.println(testCase);
-
-        // print whether the test case successfully satisfies its predicate(s)
-        System.out.println("SUCCESS:   " + success);
-
-        if (success) {
-            // print whether the data rows are accepted by the DBMS
-            System.out.println("RESULTS:   " + testCase.getDBMSResults());
-        } else {
+        if (!success) {
             // print details of the objective value computed by the search
-            System.out.println("OBJ VAL:   " + testCase.getInfo("objval"));
+            System.out.println("FAIL – OBJ VAL:\n" + testCase.getInfo("objval"));
         }
     }
 

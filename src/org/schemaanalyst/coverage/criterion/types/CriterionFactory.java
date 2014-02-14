@@ -7,6 +7,8 @@ import org.schemaanalyst.coverage.criterion.MultiCriterion;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -59,6 +61,14 @@ public class CriterionFactory {
                 }
             }
         }
+
+        Collections.sort(criteria, new Comparator<Criterion>() {
+            @Override
+            public int compare(Criterion c1, Criterion c2) {
+                return c1.getName().compareTo(c2.getName());
+            }
+        });
+
         return criteria;
     }
 

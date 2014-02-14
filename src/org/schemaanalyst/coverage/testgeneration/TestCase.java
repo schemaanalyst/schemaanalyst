@@ -88,18 +88,22 @@ public class TestCase {
 
         // print purposes and predicates attempted/satisfied by this test case
         for (Predicate predicate : getPredicates()) {
-            str += "PURPOSE:   " + predicate.getPurpose() + "\n";
-            str += "PREDICATE: " + predicate + "\n";
+            str += "PURPOSE:   " + predicate.getPurpose();
+            str += "\nPREDICATE: " + predicate;
         }
 
         // print the contents of the state
         Data state = getState();
         if (state.getCells().size() > 0) {
-            str += "STATE:\n" + getState() + "\n";
+            str += "\nSTATE:\n" + getState();
         }
 
         // print the contents of the test case data
-        str += "DATA:\n" + getData();
+        str += "\nDATA:\n" + getData();
+
+        if (dbmsResults.size() > 0) {
+            str += "\nRESULTS:\n " + dbmsResults;
+        }
 
         return str;
     }
