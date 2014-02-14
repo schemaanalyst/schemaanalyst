@@ -130,8 +130,10 @@ public class TestSuiteGenerator {
         for (Table linkedTable : linkedTables) {
             // a row should always have been previously-generated
             // for a linked table
-            Data initialData = initialTableData.get(linkedTable);
-            state.appendData(initialData);
+            if (!linkedTable.equals(table)) {
+                Data initialData = initialTableData.get(linkedTable);
+                state.appendData(initialData);
+            }
         }
 
         // check if a 'comparison' row is required for this table
