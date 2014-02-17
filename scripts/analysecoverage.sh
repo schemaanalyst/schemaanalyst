@@ -21,8 +21,10 @@ IFS=':' read -ra SCHEMA <<< "$SCHEMAS"
 IFS=':' read -ra REUSE <<< "true:false"
 
 for s in "${SCHEMA[@]}"; do
+	echo $s
 	for c in "${CRITERIA[@]}"; do
 		for r in "${REUSE[@]}"; do
+			echo $r
 			java -cp $CLASSPATH org.schemaanalyst.coverage.CoverageTester parsedcasestudy.$s $c --reuse=$r
 		done
 	done
