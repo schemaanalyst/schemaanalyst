@@ -1,14 +1,10 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.List;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
-import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.datageneration.search.SearchFactory;
@@ -16,9 +12,8 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
+import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
+import org.schemaanalyst.mutation.analysis.executor.technique.OriginalTechnique;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -79,11 +74,6 @@ public class MutationAnalysis extends Runner {
     @Parameter("Whether to print live mutants.")
     protected boolean printLive = false;
     /**
-     * Whether to use DELETE statements.
-     */
-    @Parameter("Whether to use DELETE statements.")
-    protected boolean useDelete = false;
-    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -105,22 +95,10 @@ public class MutationAnalysis extends Runner {
         // Instantiate fields from parameters
         instantiateParameters();
 
-        // Generate test suite and apply to original schema
+        // Generate test suite and mutants, apply mutation analysis technique
         TestSuite suite = generateTestSuite();
-        TestSuiteResult originalResults = executeTestSuite(schema, suite);
-
-        // Generate mutants and apply test suite
         List<Mutant<Schema>> mutants = generateMutants();
-        int killed = 0;
-        List<Mutant<Schema>> liveMutants = new ArrayList<>();
-        for (Mutant<Schema> mutant : mutants) {
-            TestSuiteResult mutantResults = executeTestSuite(mutant.getMutatedArtefact(), suite);
-            if (!originalResults.equals(mutantResults)) {
-                killed++;
-            } else {
-                liveMutants.add(mutant);
-            }
-        }
+        AnalysisResult analysisResult = new OriginalTechnique(schema, mutants, suite, dbms, databaseInteractor).analyse();
 
         // Write results
         CSVResult result = new CSVResult();
@@ -131,12 +109,12 @@ public class MutationAnalysis extends Runner {
         result.addValue("tests", suite.getNumTestCases());
         result.addValue("inserts", suite.getNumInserts());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
-        result.addValue("scorenumerator", killed);
+        result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
 
         if (printLive) {
-            for (Mutant<Schema> mutant : liveMutants) {
+            for (Mutant<Schema> mutant : analysisResult.getLive()) {
                 System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
             }
         }
@@ -182,26 +160,6 @@ public class MutationAnalysis extends Runner {
         );
         // Generate suite and return
         return generator.generate();
-    }
-
-    /**
-     * Executes all {@link TestCase}s in a {@link TestSuite} for a given
-     * {@link Schema}.
-     *
-     * @param schema The schema
-     * @param suite The test suite
-     * @return The execution results
-     */
-    private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
-        if (!useDelete) {
-            TestCaseExecutor caseExecutor = new TestCaseExecutor(schema, dbms, databaseInteractor);
-            TestSuiteExecutor suiteExecutor = new TestSuiteExecutor();
-            return suiteExecutor.executeTestSuite(caseExecutor, suite);
-        } else {
-            TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
-            TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
-            return suiteExecutor.executeTestSuite(caseExecutor, suite);
-        }
     }
 
     /**
