@@ -14,7 +14,7 @@ import org.schemaanalyst.util.tuple.MixedPair;
  * @author Chris J. Wright
  */
 public class TestSuiteResult {
-    private List<MixedPair<TestCase, TestCaseResult>> result;
+    private final List<MixedPair<TestCase, TestCaseResult>> result;
 
     public TestSuiteResult() {
         result = new ArrayList<>();
