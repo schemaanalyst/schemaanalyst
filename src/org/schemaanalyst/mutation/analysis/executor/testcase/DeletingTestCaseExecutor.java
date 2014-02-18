@@ -4,7 +4,6 @@ import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.mutation.analysis.executor.TestCaseResult;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
 import org.schemaanalyst.sqlrepresentation.Schema;
 

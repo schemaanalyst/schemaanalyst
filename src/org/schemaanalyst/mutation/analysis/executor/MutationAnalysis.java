@@ -18,6 +18,7 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -27,7 +28,6 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -107,14 +107,14 @@ public class MutationAnalysis extends Runner {
 
         // Generate test suite and apply to original schema
         TestSuite suite = generateTestSuite();
-        List<MixedPair<TestCase, TestCaseResult>> originalResults = executeTestSuite(schema, suite);
+        TestSuiteResult originalResults = executeTestSuite(schema, suite);
 
         // Generate mutants and apply test suite
         List<Mutant<Schema>> mutants = generateMutants();
         int killed = 0;
         List<Mutant<Schema>> liveMutants = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
-            List<MixedPair<TestCase, TestCaseResult>> mutantResults = executeTestSuite(mutant.getMutatedArtefact(), suite);
+            TestSuiteResult mutantResults = executeTestSuite(mutant.getMutatedArtefact(), suite);
             if (!originalResults.equals(mutantResults)) {
                 killed++;
             } else {
@@ -192,7 +192,7 @@ public class MutationAnalysis extends Runner {
      * @param suite The test suite
      * @return The execution results
      */
-    private List<MixedPair<TestCase, TestCaseResult>> executeTestSuite(Schema schema, TestSuite suite) {
+    private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
         if (!useDelete) {
             TestCaseExecutor caseExecutor = new TestCaseExecutor(schema, dbms, databaseInteractor);
             TestSuiteExecutor suiteExecutor = new TestSuiteExecutor();

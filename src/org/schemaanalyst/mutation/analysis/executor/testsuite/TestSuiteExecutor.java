@@ -1,12 +1,8 @@
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
-import java.util.ArrayList;
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
-import org.schemaanalyst.mutation.analysis.executor.TestCaseResult;
-import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * <p>Executes each {@link TestCase} of a {@link TestSuite} using a {@link TestCaseExecutor}.</p>
@@ -15,10 +11,10 @@ import org.schemaanalyst.util.tuple.MixedPair;
  */
 public class TestSuiteExecutor {
 
-    public List<MixedPair<TestCase, TestCaseResult>> executeTestSuite(TestCaseExecutor executor, TestSuite suite) {
-        List<MixedPair<TestCase, TestCaseResult>> result = new ArrayList<>();
+    public TestSuiteResult executeTestSuite(TestCaseExecutor executor, TestSuite suite) {
+        TestSuiteResult result = new TestSuiteResult();
         for (TestCase testCase : suite.getTestCases()) {
-            result.add(new MixedPair<>(testCase, executor.executeTestCase(testCase)));
+            result.add(testCase, executor.executeTestCase(testCase));
         }
         return result;
     }

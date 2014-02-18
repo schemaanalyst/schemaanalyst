@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.analysis.executor;
+package org.schemaanalyst.mutation.analysis.executor.testcase;
 
 import java.util.Objects;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
