@@ -239,7 +239,7 @@ public class SQLWriter {
         if (addIfExists) {
             sql += "IF EXISTS ";
         }
-        sql += table.getName();
+        sql += quoteIdentifier(table.getName());
         return sql;
     }
 

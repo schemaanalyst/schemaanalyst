@@ -73,7 +73,7 @@ public class ConstraintSQLWriter {
         if (foreignKey.hasMultipleColumns()) {
             sql += "FOREIGN KEY (" + writeColumnList(foreignKey.getColumns()) + ")";
         }
-        sql += " REFERENCES " + foreignKey.getReferenceTable().getName()
+        sql += " REFERENCES " + quoteIdentifier(foreignKey.getReferenceTable().getName())
                 + " (" + SQLWriter.writeColumnList(foreignKey.getReferenceColumns()) + ")";
         return sql;
     }
