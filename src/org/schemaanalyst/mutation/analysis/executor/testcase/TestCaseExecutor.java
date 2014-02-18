@@ -22,10 +22,10 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
  */
 public class TestCaseExecutor {
 
-    final private Schema schema;
-    final private List<Table> tables;
-    final private DatabaseInteractor databaseInteractor;
-    final private SQLWriter sqlWriter;
+    final protected Schema schema;
+    final protected List<Table> tables;
+    final protected DatabaseInteractor databaseInteractor;
+    final protected SQLWriter sqlWriter;
 
     /**
      * Construct an executor.
@@ -41,7 +41,7 @@ public class TestCaseExecutor {
         this.databaseInteractor = databaseInteractor;
     }
 
-    private void executeCreates() throws CreateStatementException {
+    public void executeCreates() throws CreateStatementException {
         List<String> createStatements = sqlWriter.writeCreateTableStatements(schema);
         for (String statement : createStatements) {
             Integer result = databaseInteractor.executeUpdate(statement);
@@ -51,7 +51,7 @@ public class TestCaseExecutor {
         }
     }
 
-    private void executeDrops() throws DropStatementException {
+    public void executeDrops() throws DropStatementException {
         List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
         for (String statement : dropTableStatements) {
             Integer result = databaseInteractor.executeUpdate(statement);
@@ -61,7 +61,7 @@ public class TestCaseExecutor {
         }
     }
     
-    private void executeInserts(Data data) {
+    public void executeInserts(Data data) {
         List<Table> stateTables = data.getTables();
         for (Table table : tables) {
             if (stateTables.contains(table)) {

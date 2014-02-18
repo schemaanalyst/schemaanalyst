@@ -66,6 +66,7 @@ public abstract class DatabaseInteractor {
     protected long createInteractions = 0;
     protected long dropInteractions = 0;
     protected long insertInteractions = 0;
+    protected long deleteInteractions = 0;
 
     public DatabaseInteractor(DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         this.databaseConfiguration = databaseConfiguration;
@@ -130,7 +131,7 @@ public abstract class DatabaseInteractor {
             // values or any other type of status return code
             recordInteraction(command);
             synchronized (this) {
-                
+
                 boolean result = statement.execute(command);
 
                 // this is a U,I,D that has an update count
@@ -153,11 +154,11 @@ public abstract class DatabaseInteractor {
     public Integer executeCreatesAsTransaction(List<String> commands, int transactionSize) {
         return executeCreatesOrDropsAsTransaction(commands, transactionSize);
     }
-    
+
     public Integer executeDropsAsTransaction(List<String> commands, int transactionSize) {
         return executeCreatesOrDropsAsTransaction(commands, transactionSize);
     }
-    
+
     protected Integer executeCreatesOrDropsAsTransaction(List<String> commands, int transactionSize) {
         Integer result = START;
         for (int i = 0; i * transactionSize < commands.size(); i++) {
@@ -173,7 +174,7 @@ public abstract class DatabaseInteractor {
         }
         return result;
     }
-    
+
     public Integer executeUpdatesAsTransaction(Iterable<String> commands) {
         Integer returnCount = START;
         try {
@@ -243,7 +244,7 @@ public abstract class DatabaseInteractor {
         }
         return returnCount;
     }
-    
+
     /**
      * @TODO This method should be removed and is for debugging only.
      * @return The number of tables in a database
@@ -251,10 +252,10 @@ public abstract class DatabaseInteractor {
     public int getTableCount() {
         return 0;
     }
-    
+
     /**
      * Increments the appropriate counter to record the database interaction.
-     * 
+     *
      * @param stmt The statement executed
      */
     protected synchronized void recordInteraction(String stmt) {
@@ -267,11 +268,13 @@ public abstract class DatabaseInteractor {
             createInteractions++;
         } else if (statement.startsWith("drop")) {
             dropInteractions++;
+        } else if (statement.startsWith("delete")) {
+            deleteInteractions++;
         } else {
-            LOGGER.log(Level.WARNING,"Unclassified database interaction: {0}", stmt); 
+            LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", stmt);
         }
     }
-    
+
     public long getTotalInteractions() {
         return totalInteractions;
     }
@@ -286,5 +289,9 @@ public abstract class DatabaseInteractor {
 
     public long getInsertInteractions() {
         return insertInteractions;
+    }
+
+    public long getDeleteInteractions() {
+        return deleteInteractions;
     }
 }
