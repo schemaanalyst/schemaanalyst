@@ -25,6 +25,7 @@ public class TestCaseExecutor {
     final protected List<Table> tables;
     final protected DatabaseInteractor databaseInteractor;
     final protected SQLWriter sqlWriter;
+    final protected DBMS dbms;
 
     /**
      * Construct an executor.
@@ -36,6 +37,7 @@ public class TestCaseExecutor {
     public TestCaseExecutor(Schema schema, DBMS dbms, DatabaseInteractor databaseInteractor) {
         this.schema = schema;
         tables = schema.getTablesInOrder();
+        this.dbms = dbms;
         sqlWriter = dbms.getSQLWriter();
         this.databaseInteractor = databaseInteractor;
     }

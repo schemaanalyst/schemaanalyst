@@ -13,7 +13,8 @@ import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
-import org.schemaanalyst.mutation.analysis.executor.technique.OriginalTechnique;
+import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
+import org.schemaanalyst.mutation.analysis.executor.technique.TechniqueFactory;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -74,6 +75,11 @@ public class MutationAnalysis extends Runner {
     @Parameter("Whether to print live mutants.")
     protected boolean printLive = false;
     /**
+     * Which mutation analysis technique to use.
+     */
+    @Parameter("Which mutation analysis technique to use.")
+    protected String technique = "original";
+    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -98,7 +104,8 @@ public class MutationAnalysis extends Runner {
         // Generate test suite and mutants, apply mutation analysis technique
         TestSuite suite = generateTestSuite();
         List<Mutant<Schema>> mutants = generateMutants();
-        AnalysisResult analysisResult = new OriginalTechnique(schema, mutants, suite, dbms, databaseInteractor).analyse();
+        Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
+        AnalysisResult analysisResult = mutTechnique.analyse();
 
         // Write results
         CSVResult result = new CSVResult();
@@ -139,6 +146,10 @@ public class MutationAnalysis extends Runner {
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             throw new RuntimeException(ex);
         }
+    }
+    
+    private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
     }
 
     /**
