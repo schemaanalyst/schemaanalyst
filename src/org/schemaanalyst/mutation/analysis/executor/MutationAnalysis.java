@@ -101,12 +101,18 @@ public class MutationAnalysis extends Runner {
         // Instantiate fields from parameters
         instantiateParameters();
 
+        // Start timing
+        long startTime = System.currentTimeMillis();
+        
         // Generate test suite and mutants, apply mutation analysis technique
         TestSuite suite = generateTestSuite();
         List<Mutant<Schema>> mutants = generateMutants();
         Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
         AnalysisResult analysisResult = mutTechnique.analyse();
 
+        // Stop timing
+        long timeTaken = System.currentTimeMillis() - startTime;
+        
         // Write results
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
@@ -118,6 +124,8 @@ public class MutationAnalysis extends Runner {
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
+        result.addValue("timetaken", timeTaken);
+        result.addValue("technique", technique);
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
 
         if (printLive) {
