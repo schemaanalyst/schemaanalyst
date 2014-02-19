@@ -49,10 +49,12 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             }
             Files.createDirectories(sqliteDirectory.toPath());
 
-            // create a database url; note that in this case for
-            // SQLite, you are connecting to a file on the file
-            // system, thus the used of Configuration.project
-            String databaseUrl = "jdbc:sqlite:" + sqliteDirectory.getAbsolutePath() + File.separator + databaseName;
+            String databaseUrl;
+            if (!databaseConfiguration.getSqliteInMemory()) {
+                databaseUrl = "jdbc:sqlite:" + sqliteDirectory.getAbsolutePath() + File.separator + databaseName;
+            } else {
+                databaseUrl = "jdbc:sqlite::memory:";
+            }
             LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
             // enforce the foreign keys that are specified in the

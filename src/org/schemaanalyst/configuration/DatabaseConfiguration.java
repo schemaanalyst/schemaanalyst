@@ -47,6 +47,10 @@ public class DatabaseConfiguration extends Configuration {
      */
     private String sqlite_driver;
     /**
+     * Whether to use 'in-memory' mode.
+     */
+    private boolean sqlite_in_memory;
+    /**
      * The HSQLDB username.
      */
     private String hsqldb_username;
@@ -174,6 +178,15 @@ public class DatabaseConfiguration extends Configuration {
      */
     public String getSqliteDriver() {
         return sqlite_driver;
+    }
+    
+    /**
+     * Whether to use 'in-memory' mode for SQLite.
+     * 
+     * @return the sqlite_in_memory
+     */
+    public boolean getSqliteInMemory() {
+        return sqlite_in_memory;
     }
 
     /**
