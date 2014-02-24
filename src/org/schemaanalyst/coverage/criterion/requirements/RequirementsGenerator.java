@@ -20,22 +20,39 @@ public abstract class RequirementsGenerator {
     private ConstraintPredicateGenerator predicateGenerator;
 
     public RequirementsGenerator(Schema schema, Table table) {
+        this(schema, table, true);
+    }
+
+    public RequirementsGenerator(Schema schema, Table table, boolean generateFullPredicate) {
         this.schema = schema;
         this.table = table;
         this.constraint = null;
-        predicateGenerator = new ConstraintPredicateGenerator(schema, table);
+
+        if (generateFullPredicate) {
+            predicateGenerator = new ConstraintPredicateGenerator(schema, table);
+        }
     }
 
     public RequirementsGenerator(Schema schema, Constraint constraint) {
+        this(schema, constraint, true);
+    }
+
+
+    public RequirementsGenerator(Schema schema, Constraint constraint, boolean generateFullPredicate) {
         this.schema = schema;
         this.table = constraint.getTable();
         this.constraint = constraint;
-        predicateGenerator = new ConstraintPredicateGenerator(schema, constraint);
+
+        if (generateFullPredicate) {
+            predicateGenerator = new ConstraintPredicateGenerator(schema, constraint);
+        }
     }
 
     public abstract List<Predicate> generateRequirements();
 
     protected Predicate generatePredicate(String purpose) {
-        return predicateGenerator.generate(purpose);
+        return predicateGenerator == null
+                ? new Predicate(purpose)
+                : predicateGenerator.generate(purpose);
     }
 }

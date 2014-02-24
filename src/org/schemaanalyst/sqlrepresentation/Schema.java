@@ -360,7 +360,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	public ForeignKeyConstraint createForeignKeyConstraint(String name,
 			Table table, List<Column> columns, Table referenceTable,
 			List<Column> referenceColumns) {
-		ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
 				name, table, columns, referenceTable, referenceColumns);
 		addForeignKeyConstraint(foreignKeyConstraint);
 		return foreignKeyConstraint;
@@ -382,10 +382,10 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	public ForeignKeyConstraint createForeignKeyConstraint(Table table,
 			List<Column> columns, Table referenceTable,
 			List<Column> referenceColumns) {
-		ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
+        ForeignKeyConstraint foreignKeyConstraint = new ForeignKeyConstraint(
 				table, columns, referenceTable, referenceColumns);
 		addForeignKeyConstraint(foreignKeyConstraint);
-		return foreignKeyConstraint;
+        return foreignKeyConstraint;
 	}
 
 	/**

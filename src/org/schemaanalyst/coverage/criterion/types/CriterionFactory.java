@@ -96,6 +96,10 @@ public class CriterionFactory {
         );
     }
 
+    public static Criterion constraintCoverage() {
+        return new ConstraintCoverage();
+    }
+
     public static Criterion nullCoverage() {
         return new NullColumnCoverage();
     }

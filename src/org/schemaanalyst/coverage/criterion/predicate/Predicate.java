@@ -105,6 +105,10 @@ public class Predicate {
         return new ArrayList<>(clauses);
     }
 
+    public boolean hasClause(Clause clause) {
+        return clauses.contains(clause);
+    }
+
     public Predicate duplicate() {
         Predicate duplicate = new Predicate(purpose);
         for (Clause clause : clauses) {
