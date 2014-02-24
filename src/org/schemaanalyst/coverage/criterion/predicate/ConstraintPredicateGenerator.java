@@ -19,13 +19,15 @@ public class ConstraintPredicateGenerator implements ConstraintVisitor {
     protected Predicate predicate;
 
     public ConstraintPredicateGenerator(Schema schema, Table table) {
-        this(schema, table, null);
+        this.schema = schema;
+        this.constraint = null;
+        this.table = table;
     }
 
-    public ConstraintPredicateGenerator(Schema schema, Table table, Constraint constraint) {
+    public ConstraintPredicateGenerator(Schema schema, Constraint constraint) {
         this.schema = schema;
-        this.table = table;
         this.constraint = constraint;
+        this.table = constraint.getTable();
     }
 
     public Predicate generate(String purpose) {

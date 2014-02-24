@@ -28,27 +28,27 @@ public class AmplifiedConstraintCACCoverage extends Criterion {
 
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, table, primaryKeyConstraint);
+            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, primaryKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, table, uniqueConstraint);
+            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, uniqueConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, table, foreignKeyConstraint);
+            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, foreignKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (CheckConstraint checkConstraint : schema.getCheckConstraints(table)) {
-            RequirementsGenerator generator = new CheckConstraintCACRequirementsGenerator(schema, table, checkConstraint);
+            RequirementsGenerator generator = new CheckConstraintCACRequirementsGenerator(schema, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (NotNullConstraint notNullConstraint : schema.getNotNullConstraints(table)) {
-            RequirementsGenerator generator = new NotNullConstraintRequirementsGenerator(schema, table, notNullConstraint);
+            RequirementsGenerator generator = new NotNullConstraintRequirementsGenerator(schema, notNullConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 

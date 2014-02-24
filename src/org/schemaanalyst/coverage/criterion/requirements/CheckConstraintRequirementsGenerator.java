@@ -17,9 +17,9 @@ public class CheckConstraintRequirementsGenerator extends RequirementsGenerator 
 
     private Expression expression;
 
-    public CheckConstraintRequirementsGenerator(Schema schema, Table table, CheckConstraint checkConstraint) {
-        super(schema, table, checkConstraint);
-        this.expression = checkConstraint.getExpression();
+    public CheckConstraintRequirementsGenerator(Schema schema, CheckConstraint constraint) {
+        super(schema, constraint);
+        this.expression = constraint.getExpression();
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
@@ -23,25 +24,28 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
     private Table referenceTable;
     private List<Column> columns, referenceColumns;
 
-    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, PrimaryKeyConstraint constraint) {
-        super(schema, table, constraint);
-        this.columns = constraint.getColumns();
-        this.referenceTable = table;
-        this.referenceColumns = columns;
-    }
-
-    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, UniqueConstraint constraint) {
-        super(schema, table, constraint);
-        this.columns = constraint.getColumns();
-        this.referenceTable = table;
-        this.referenceColumns = columns;
-    }
-
-    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, Table table, ForeignKeyConstraint constraint) {
-        super(schema, table, constraint);
+    /**
+     * The constructor to use with FOREIGN KEY constraints
+     * @param schema a schema
+     * @param constraint the FOREIGN KEY constraint
+     */
+    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, ForeignKeyConstraint constraint) {
+        super(schema, constraint);
         this.columns = constraint.getColumns();
         this.referenceTable = constraint.getReferenceTable();
         this.referenceColumns = constraint.getReferenceColumns();
+    }
+
+    /**
+     * The constructor to use with PRIMARY KEY and UNIQUE constraints
+     * @param schema a schema
+     * @param constraint the PRIMARY KEY constraint
+     */
+    public MultiColumnConstraintCACRequirementsGenerator(Schema schema, MultiColumnConstraint constraint) {
+        super(schema, constraint);
+        this.columns = constraint.getColumns();
+        this.referenceTable = table;
+        this.referenceColumns = columns;
     }
 
     @Override

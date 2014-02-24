@@ -20,15 +20,17 @@ public abstract class RequirementsGenerator {
     private ConstraintPredicateGenerator predicateGenerator;
 
     public RequirementsGenerator(Schema schema, Table table) {
-        this(schema, table, null);
-    }
-
-    public RequirementsGenerator(Schema schema, Table table, Constraint constraint) {
         this.schema = schema;
         this.table = table;
-        this.constraint = constraint;
+        this.constraint = null;
+        predicateGenerator = new ConstraintPredicateGenerator(schema, table);
+    }
 
-        predicateGenerator = new ConstraintPredicateGenerator(schema, table, constraint);
+    public RequirementsGenerator(Schema schema, Constraint constraint) {
+        this.schema = schema;
+        this.table = constraint.getTable();
+        this.constraint = constraint;
+        predicateGenerator = new ConstraintPredicateGenerator(schema, constraint);
     }
 
     public abstract List<Predicate> generateRequirements();

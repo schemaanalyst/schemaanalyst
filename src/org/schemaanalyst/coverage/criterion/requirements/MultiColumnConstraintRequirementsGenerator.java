@@ -21,19 +21,21 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     private boolean requiresComparisonRow;
     private List<Column> emptyList;
 
-    public MultiColumnConstraintRequirementsGenerator(Schema schema, Table table, MultiColumnConstraint constraint) {
-        super(schema, table, constraint);
+    public MultiColumnConstraintRequirementsGenerator(Schema schema, ForeignKeyConstraint constraint) {
+        super(schema, constraint);
         cols = constraint.getColumns();
-        if (constraint instanceof ForeignKeyConstraint) {
-            ForeignKeyConstraint foreignKeyConstraint = (ForeignKeyConstraint) constraint;
-            refCols = foreignKeyConstraint.getReferenceColumns();
-            refTable = foreignKeyConstraint.getTable();
-            requiresComparisonRow = false;
-        } else {
-            refCols = cols;
-            refTable = table;
-            requiresComparisonRow = true;
-        }
+        refCols = constraint.getReferenceColumns();
+        refTable = constraint.getTable();
+        requiresComparisonRow = false;
+        emptyList = new ArrayList<>();
+    }
+
+    public MultiColumnConstraintRequirementsGenerator(Schema schema, MultiColumnConstraint constraint) {
+        super(schema, constraint);
+        cols = constraint.getColumns();
+        refCols = cols;
+        refTable = table;
+        requiresComparisonRow = true;
         emptyList = new ArrayList<>();
     }
 

@@ -21,9 +21,9 @@ public class CheckConstraintCACRequirementsGenerator extends RequirementsGenerat
 
     private Expression expression;
 
-    public CheckConstraintCACRequirementsGenerator(Schema schema, Table table, CheckConstraint checkConstraint) {
-        super(schema, table, checkConstraint);
-        this.expression = checkConstraint.getExpression();
+    public CheckConstraintCACRequirementsGenerator(Schema schema, CheckConstraint constraint) {
+        super(schema, constraint);
+        this.expression = constraint.getExpression();
     }
 
     @Override

@@ -17,9 +17,9 @@ public class NotNullConstraintRequirementsGenerator extends RequirementsGenerato
 
     private Column column;
 
-    public NotNullConstraintRequirementsGenerator(Schema schema, Table table, NotNullConstraint notNullConstraint) {
-        super(schema, table, notNullConstraint);
-        this.column = notNullConstraint.getColumn();
+    public NotNullConstraintRequirementsGenerator(Schema schema, NotNullConstraint constraint) {
+        super(schema, constraint);
+        this.column = constraint.getColumn();
     }
 
     @Override
