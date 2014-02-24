@@ -72,9 +72,7 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
 
         // each of the columns should be NOT NULL
         // (otherwise the outcome of the predicate would not be TRUE/FALSE, it would be NULL).
-        for (Column col : cols) {
-            predicate.setColumnNullStatus(table, col, false);
-        }
+        ensureColumnsAreNotNull(predicate);
         requirements.add(predicate);
     }
 
@@ -91,10 +89,14 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
 
         // each of the columns should be NOT NULL
         // (otherwise the outcome of the predicate would not be TRUE/FALSE, it would be NULL).
+        ensureColumnsAreNotNull(predicate);
+        requirements.add(predicate);
+    }
+
+    private void ensureColumnsAreNotNull(Predicate predicate) {
         for (Column col : cols) {
             predicate.setColumnNullStatus(table, col, false);
         }
-        requirements.add(predicate);
     }
 
     private void addOneColumnNullRequirement(List<Predicate> requirements) {

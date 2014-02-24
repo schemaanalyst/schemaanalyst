@@ -19,6 +19,6 @@ public class UniqueColumnCoverage extends Criterion {
 
     @Override
     public List<Predicate> generateRequirements(Schema schema, Table table) {
-        return new UniqueColumnRequirementsGenerator(schema, table).generateRequirements();
+        return new UniqueColumnRequirementsGenerator(schema, table, false).generateRequirements();
     }
 }

@@ -100,11 +100,11 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
         predicate.addClause(
                 new MatchClause(
                         table,
+                        new ArrayList<Column>(),
                         columns,
-                        new ArrayList<Column>(),
                         referenceTable,
-                        referenceColumns,
                         new ArrayList<Column>(),
+                        referenceColumns,
                         MatchClause.Mode.AND,
                         requiresComparisonRow)
         );

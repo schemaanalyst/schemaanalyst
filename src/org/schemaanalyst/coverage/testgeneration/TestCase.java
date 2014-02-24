@@ -87,7 +87,13 @@ public class TestCase {
         String str = "";
 
         // print purposes and predicates attempted/satisfied by this test case
+        boolean first = true;
         for (Predicate predicate : getPredicates()) {
+            if (first) {
+                first = false;
+            } else {
+                str += "\n";
+            }
             str += "PURPOSE:   " + predicate.getPurpose();
             str += "\nPREDICATE: " + predicate;
         }

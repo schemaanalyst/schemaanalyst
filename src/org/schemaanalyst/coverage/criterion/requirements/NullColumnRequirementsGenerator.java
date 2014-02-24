@@ -17,6 +17,10 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
         super(schema, table);
     }
 
+    public NullColumnRequirementsGenerator(Schema schema, Table table, boolean generateFullPredicate) {
+        super(schema, table, generateFullPredicate);
+    }
+
     public List<Predicate> generateRequirements() {
         List<Predicate> requirements = new ArrayList<>();
         List<Column> columns = table.getColumns();
@@ -33,16 +37,14 @@ public class NullColumnRequirementsGenerator extends RequirementsGenerator {
     }
 
     private void addIsNotNullRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = generatePredicate("Test " + column + " as not null");
+        Predicate predicate = generatePredicate("Test " + column + " is NOT NULL for " + table);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
     }
 
     private void addIsNullRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = generatePredicate("Test " + column + " as null");
+        Predicate predicate = generatePredicate("Test " + column + " is NULL for " + table);
         predicate.setColumnNullStatus(table, column, true);
         requirements.add(predicate);
     }
-
-
 }

@@ -76,6 +76,14 @@ public class CriterionFactory {
         return new AmplifiedConstraintCACCoverage();
     }
 
+    public static Criterion amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage() {
+        return new MultiCriterion(
+                new AmplifiedConstraintCACCoverage(),
+                new NullColumnCACCoverage(),
+                new UniqueColumnCACCoverage()
+        );
+    }
+
     public static Criterion amplifiedConstraintCACWithNullAndUniqueColumnCoverage() {
         return new MultiCriterion(
                 new AmplifiedConstraintCACCoverage(),
@@ -86,6 +94,14 @@ public class CriterionFactory {
 
     public static Criterion constraintCACCoverage() {
         return new ConstraintCACCoverage();
+    }
+
+    public static Criterion constraintCACWitNullAndUniqueColumnCACCoverage() {
+        return new MultiCriterion(
+                new ConstraintCACCoverage(),
+                new NullColumnCACCoverage(),
+                new UniqueColumnCACCoverage()
+        );
     }
 
     public static Criterion constraintCACWithNullAndUniqueColumnCoverage() {
@@ -100,11 +116,19 @@ public class CriterionFactory {
         return new ConstraintCoverage();
     }
 
-    public static Criterion nullCoverage() {
+    public static Criterion nullColumnCoverage() {
         return new NullColumnCoverage();
     }
 
-    public static Criterion uniqueCoverage() {
+    public static Criterion nullColumnCACCoverage() {
+        return new NullColumnCACCoverage();
+    }
+
+    public static Criterion uniqueColumnCoverage() {
         return new UniqueColumnCoverage();
+    }
+
+    public static Criterion uniqueColumnCACCoverage() {
+        return new UniqueColumnCACCoverage();
     }
 }

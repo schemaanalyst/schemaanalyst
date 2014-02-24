@@ -9,16 +9,16 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import java.util.List;
 
 /**
- * Created by phil on 03/02/2014.
+ * Created by phil on 24/02/2014.
  */
-public class NullColumnCoverage extends Criterion {
+public class NullColumnCACCoverage extends Criterion {
 
-    public NullColumnCoverage() {
-        super("Null column coverage");
+    public NullColumnCACCoverage() {
+        super("Null column CAC coverage");
     }
 
     @Override
     public List<Predicate> generateRequirements(Schema schema, Table table) {
-        return new NullColumnRequirementsGenerator(schema, table, false).generateRequirements();
+        return new NullColumnRequirementsGenerator(schema, table).generateRequirements();
     }
 }

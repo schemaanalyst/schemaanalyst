@@ -3,6 +3,7 @@ package org.schemaanalyst.coverage;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.*;
@@ -26,6 +27,8 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
  * Created by phil on 21/01/2014.
  */
 public class GenerateSchemaCoverage extends Runner {
+
+    boolean printUncoveredPredicates = false;
 
     @Override
     protected void task() {
@@ -107,7 +110,18 @@ public class GenerateSchemaCoverage extends Runner {
                 starred = " (*)";
             }
 
-            System.out.println(name + starred + ": " + testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(schema)));
+            CoverageReport coverageReport = testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(schema));
+            System.out.println(name + starred + ": " + coverageReport.getCoverage());
+
+            if (printUncoveredPredicates) {
+                List<Predicate> uncovered = coverageReport.getUncovered();
+                if (uncovered.size() > 0) {
+                    System.out.println("Uncovered predicates: ");
+                    for (Predicate predicate : uncovered) {
+                        System.out.println(predicate.getPurpose() + ": " + predicate);
+                    }
+                }
+            }
         }
     }
 

@@ -1,5 +1,6 @@
 package org.schemaanalyst.coverage.testgeneration;
 
+import org.schemaanalyst.coverage.CoverageReport;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 
@@ -16,5 +17,5 @@ public abstract class TestCaseGenerationAlgorithm {
 
     public abstract boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate);
 
-    public abstract double computeCoverage(TestSuite testSuite, List<Predicate> requirements);
+    public abstract CoverageReport computeCoverage(TestSuite testSuite, List<Predicate> requirements);
 }

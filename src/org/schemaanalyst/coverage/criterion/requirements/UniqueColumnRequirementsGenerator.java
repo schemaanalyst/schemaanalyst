@@ -17,6 +17,10 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
         super(schema, table);
     }
 
+    public UniqueColumnRequirementsGenerator(Schema schema, Table table, boolean generateFullPredicate) {
+        super(schema, table, generateFullPredicate);
+    }
+
     public List<Predicate> generateRequirements() {
         List<Predicate> requirements = new ArrayList<>();
 
@@ -34,14 +38,14 @@ public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
     }
 
     private void addNotUniqueColumnRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = generatePredicate("Test " + column + " as non-unique (matching)");
+        Predicate predicate = generatePredicate("Test " + column + " is NOT UNIQUE for " + table);
         predicate.setColumnUniqueStatus(table, column, false);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
     }
 
     private void addUniqueColumnRequirement(List<Predicate> requirements, Column column) {
-        Predicate predicate = generatePredicate("Test " + column + " as unique");
+        Predicate predicate = generatePredicate("Test " + column + " is UNIQUE for " + table);
         predicate.setColumnUniqueStatus(table, column, true);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
