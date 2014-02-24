@@ -1,5 +1,6 @@
 package org.schemaanalyst.coverage.criterion.predicate;
 
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
@@ -70,9 +71,14 @@ public class ConstraintPredicateGenerator implements ConstraintVisitor {
 
     @Override
     public void visit(PrimaryKeyConstraint constraint) {
+        Table table = constraint.getTable();
+        List<Column> columns = constraint.getColumns();
         predicate.addClause(
-                unique(constraint.getTable(), constraint.getColumns(), false)
+                unique(table, columns, false)
         );
+        for (Column column : columns) {
+            predicate.setColumnNullStatus(table, column, false);
+        }
     }
 
     @Override

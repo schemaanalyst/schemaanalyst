@@ -10,6 +10,4 @@ public interface ClauseVisitor {
     public void visit(MatchClause clause);
 
     public void visit(NullClause clause);
-
-    public void visit(OrClause clause);
 }

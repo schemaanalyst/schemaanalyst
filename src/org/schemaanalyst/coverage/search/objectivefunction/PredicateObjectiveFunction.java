@@ -44,12 +44,6 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
             public void visit(NullClause clause) {
                 objectiveFunctions.add(new NullObjectiveFunction(clause));
             }
-
-            @Override
-            public void visit(OrClause clause) {
-                // TODO: too tired to complete this right now ...
-                objectiveFunctions.add(null);
-            }
         };
 
         for (Clause clause : predicate.getClauses()) {
