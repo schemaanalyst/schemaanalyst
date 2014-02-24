@@ -60,9 +60,9 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     }
 
     private void addOneColumnNotEqualRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test at least one column not equal for " + constraint);
+        Predicate predicate = generatePredicate("Test at least one column not equal for " + table + "'s " + constraint);
 
-        // add the clause such one of the columns should not be equal
+        // add the clause such that (at least) one of the columns is not equal
         predicate.addClause(
                 new MatchClause(
                         table, emptyList, cols,
@@ -77,9 +77,9 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     }
 
     private void addAllColumnsEqualRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test all columns equal for " + constraint);
+        Predicate predicate = generatePredicate("Test all columns equal for " + table + "'s " + constraint);
 
-        // add the clause such one of the columns should not be equal
+        // add the clause such that all of the columns are equal
         predicate.addClause(
                 new MatchClause(
                         table, cols, emptyList,
@@ -100,12 +100,14 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
     }
 
     private void addOneColumnNullRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test one column IS NULL for " + constraint);
-
         // We achieve the requirement by stating that the first column should be NULL.
         // In principle it could be any, but we should pick one.
         // We do not need to say anything definite about the NULL status of other columns
         Column firstColumn = cols.get(0);
+
+        Predicate predicate = generatePredicate(
+                "Test one column IS NULL (" + firstColumn + ") for " + table + "'s "  + constraint);
+
         predicate.setColumnNullStatus(table, firstColumn, true);
 
         requirements.add(predicate);

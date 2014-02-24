@@ -27,3 +27,5 @@ CREATE TABLE Towns (
    department VARCHAR(4) NOT NULL REFERENCES Departments (code),
    UNIQUE (code, department)
 );
+
+

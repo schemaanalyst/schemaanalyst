@@ -40,13 +40,13 @@ public class NotNullConstraintRequirementsGenerator extends RequirementsGenerato
     }
 
     private void addTrueRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test " + column + " is NOT NULL for " + constraint);
+        Predicate predicate = generatePredicate("Test " + column + " is NOT NULL for " + table + "'s " + constraint);
         predicate.setColumnNullStatus(table, column, false);
         requirements.add(predicate);
     }
 
     private void addFalseRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test " + column + " is NULL for " + constraint);
+        Predicate predicate = generatePredicate("Test " + column + " is NULL for " + table + "'s " + constraint);
         predicate.setColumnNullStatus(table, column, true);
         requirements.add(predicate);
     }

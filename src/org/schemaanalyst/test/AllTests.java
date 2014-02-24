@@ -5,6 +5,13 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
+	org.schemaanalyst.test.coverage.criterion.predicate.TestConstraintPredicateGenerator.class,
+	org.schemaanalyst.test.coverage.criterion.predicate.TestPredicate.class,
+	org.schemaanalyst.test.coverage.criterion.requirements.TestCheckConstraintRequirementsGenerator.class,
+	org.schemaanalyst.test.coverage.criterion.requirements.TestMultiColumnConstraintCACRequirementsGenerator.class,
+	org.schemaanalyst.test.coverage.criterion.requirements.TestMultiColumnConstraintRequirementsGenerator.class,
+	org.schemaanalyst.test.coverage.criterion.requirements.TestNotNullConstraintRequirementsGenerator.class,
+	org.schemaanalyst.test.coverage.search.objectivefunction.TestMatchObjectiveFunction.class,
 	org.schemaanalyst.test.data.TestStringValue.class,
 	org.schemaanalyst.test.data.TestValueEquality.class,
 	org.schemaanalyst.test.datageneration.search.TestAlternatingValueSearch.class,
@@ -49,7 +56,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.operator.TestCCNullifier.class,
 	org.schemaanalyst.test.mutation.operator.TestCCRelationalExpressionOperatorE.class,
 	org.schemaanalyst.test.mutation.operator.TestFKCColumnPairA.class,
-        org.schemaanalyst.test.mutation.operator.TestFKCColumnPairE.class,
+	org.schemaanalyst.test.mutation.operator.TestFKCColumnPairE.class,
 	org.schemaanalyst.test.mutation.operator.TestFKCColumnPairR.class,
 	org.schemaanalyst.test.mutation.operator.TestNNCAR.class,
 	org.schemaanalyst.test.mutation.operator.TestPKCColumnARE.class,

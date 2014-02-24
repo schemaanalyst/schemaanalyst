@@ -28,7 +28,7 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
  */
 public class GenerateSchemaCoverage extends Runner {
 
-    boolean printUncoveredPredicates = false;
+    boolean printUncoveredPredicates = true;
 
     @Override
     protected void task() {

@@ -7,14 +7,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by phil on 22/01/2014.
@@ -53,14 +50,14 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
         boolean requiresComparisonRow = table.equals(referenceTable);
         List<Predicate> requirements = new ArrayList<>();
 
-        addEqualsOnceRequirements(requirements, requiresComparisonRow);
-        addAllNotEqualRequirement(requirements, requiresComparisonRow);
+        addNotEqualsOnceRequirements(requirements, requiresComparisonRow);
+        addAllEqualRequirement(requirements, requiresComparisonRow);
         addNullOnceRequirements(requirements);
 
         return requirements;
     }
 
-    private void addEqualsOnceRequirements(List<Predicate> requirements, boolean requiresComparisonRow) {
+    private void addNotEqualsOnceRequirements(List<Predicate> requirements, boolean requiresComparisonRow) {
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = referenceColumns.iterator();
 
@@ -74,15 +71,15 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
             List<Column> refRemainingCols = new ArrayList<>(referenceColumns);
             refRemainingCols.remove(refCol);
 
-            Predicate predicate = generatePredicate("Test " + col + " only equal for " + table + "'s " + constraint);
+            Predicate predicate = generatePredicate("Test all equal except " + col + " for " + table + "'s " + constraint);
             predicate.addClause(
                     new MatchClause(
                             table,
-                            Arrays.asList(col),
                             remainingCols,
+                            Arrays.asList(col),
                             referenceTable,
-                            Arrays.asList(refCol),
                             refRemainingCols,
+                            Arrays.asList(refCol),
                             MatchClause.Mode.AND,
                             requiresComparisonRow)
             );
@@ -94,17 +91,17 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
         }
     }
 
-    private void addAllNotEqualRequirement(List<Predicate> requirements, boolean requiresComparisonRow) {
-        Predicate predicate = generatePredicate("Test all columns are not equal for " + table + "'s " + constraint);
+    private void addAllEqualRequirement(List<Predicate> requirements, boolean requiresComparisonRow) {
+        Predicate predicate = generatePredicate("Test all columns equal for " + table + "'s " + constraint);
 
         predicate.addClause(
                 new MatchClause(
                         table,
-                        new ArrayList<Column>(),
                         columns,
-                        referenceTable,
                         new ArrayList<Column>(),
+                        referenceTable,
                         referenceColumns,
+                        new ArrayList<Column>(),
                         MatchClause.Mode.AND,
                         requiresComparisonRow)
         );

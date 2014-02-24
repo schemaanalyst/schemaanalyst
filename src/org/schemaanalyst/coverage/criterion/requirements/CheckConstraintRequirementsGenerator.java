@@ -44,7 +44,7 @@ public class CheckConstraintRequirementsGenerator extends RequirementsGenerator 
     }
 
     private void addTrueRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test TRUE evaluation for " + constraint);
+        Predicate predicate = generatePredicate("Test TRUE evaluation for " + table + "'s " + constraint);
         predicate.addClause(new ExpressionClause(table, expression, true));
 
         // each of the columns should be NOT NULL
@@ -61,7 +61,7 @@ public class CheckConstraintRequirementsGenerator extends RequirementsGenerator 
     }
 
     private void addFalseRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test FALSE evaluation for " + constraint);
+        Predicate predicate = generatePredicate("Test FALSE evaluation for " + table + "'s " + constraint);
         predicate.addClause(new ExpressionClause(table, expression, false));
 
         // each of the columns should be NOT NULL
@@ -72,7 +72,7 @@ public class CheckConstraintRequirementsGenerator extends RequirementsGenerator 
     }
 
     private void addNullRequirement(List<Predicate> requirements) {
-        Predicate predicate = generatePredicate("Test " + expression + " evaluates to NULL");
+        Predicate predicate = generatePredicate("Test NULL evaluation for " + table + "'s " + constraint);
 
         List<Column> columns = expression.getColumnsInvolved();
         if (columns.size() > 0) {
