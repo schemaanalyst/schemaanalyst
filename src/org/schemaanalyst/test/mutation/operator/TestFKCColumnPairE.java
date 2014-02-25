@@ -101,7 +101,7 @@ public class TestFKCColumnPairE {
         FKCColumnPairE exchanger = new FKCColumnPairE(schemaTwoColFK);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with two foreign key columns should "
-                + "produce 8 mutants", 8, mutants.size());
+                + "produce 6 mutants", 6, mutants.size());
     }
     
 }

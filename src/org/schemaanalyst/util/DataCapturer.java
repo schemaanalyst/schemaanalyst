@@ -35,7 +35,7 @@ public class DataCapturer {
         if (instance != null) {
             writeResult(source, key, value);
         } else {
-            LOGGER.log(Level.WARNING, MessageFormat.format("DataCapturer has not been instantiated and cannot be used to capture value: '{0},{1},{2},", source, key, value));
+            LOGGER.log(Level.FINE, MessageFormat.format("DataCapturer has not been instantiated and cannot be used to capture value: ''{0},{1},{2}''", source, key, value));
         }
     }
 
