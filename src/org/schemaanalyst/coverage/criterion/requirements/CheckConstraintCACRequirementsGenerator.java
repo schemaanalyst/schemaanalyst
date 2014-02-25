@@ -4,7 +4,6 @@ import org.schemaanalyst.coverage.criterion.clause.Clause;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 

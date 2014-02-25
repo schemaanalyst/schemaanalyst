@@ -1,6 +1,7 @@
 package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
+import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
@@ -12,8 +13,8 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
 import java.io.File;
-import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 
 @RequiredParameters("casestudy criterion")
 public class CoverageTester extends Runner {

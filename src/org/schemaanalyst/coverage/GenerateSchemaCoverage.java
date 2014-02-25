@@ -14,7 +14,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.*;
+import parsedcasestudy.CustomerOrder;
 
 import java.io.File;
 import java.io.FileNotFoundException;

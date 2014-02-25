@@ -1,6 +1,5 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.omg.CosNaming._NamingContextExtStub;
 import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -106,7 +105,7 @@ public class MultiColumnConstraintRequirementsGenerator extends RequirementsGene
         Column firstColumn = cols.get(0);
 
         Predicate predicate = generatePredicate(
-                "Test one column IS NULL (" + firstColumn + ") for " + table + "'s "  + constraint);
+                "Test one column IS NULL (" + firstColumn + ") for " + table + "'s " + constraint);
 
         predicate.setColumnNullStatus(table, firstColumn, true);
 

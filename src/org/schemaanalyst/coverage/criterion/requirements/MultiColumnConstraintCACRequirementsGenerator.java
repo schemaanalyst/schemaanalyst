@@ -23,7 +23,8 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
 
     /**
      * The constructor to use with FOREIGN KEY constraints
-     * @param schema a schema
+     *
+     * @param schema     a schema
      * @param constraint the FOREIGN KEY constraint
      */
     public MultiColumnConstraintCACRequirementsGenerator(Schema schema, ForeignKeyConstraint constraint) {
@@ -35,8 +36,9 @@ public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsG
 
     /**
      * The constructor to use with PRIMARY KEY and UNIQUE constraints
-     * @param schema a schema
-     * @param constraint the PRIMARY KEY constraint
+     *
+     * @param schema     a schema
+     * @param constraint the PRIMARY KEY or UNIQUE constraint
      */
     public MultiColumnConstraintCACRequirementsGenerator(Schema schema, MultiColumnConstraint constraint) {
         super(schema, constraint);

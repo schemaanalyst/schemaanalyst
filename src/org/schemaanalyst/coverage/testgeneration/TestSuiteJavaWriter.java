@@ -2,7 +2,6 @@ package org.schemaanalyst.coverage.testgeneration;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.derby.iapi.util.StringUtil;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.dbms.DBMS;

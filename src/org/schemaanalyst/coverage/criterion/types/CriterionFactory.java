@@ -20,7 +20,7 @@ public class CriterionFactory {
 
     /**
      * Instantiate a {@link Criterion} instance given the name.
-     * 
+     *
      * @param criterionName The name
      * @return The criterion
      */
@@ -44,7 +44,7 @@ public class CriterionFactory {
 
     /**
      * Returns a list of all data generation {@link Criterion}.
-     * 
+     *
      * @return All criterion
      */
     public static List<Criterion> allCriteria() {

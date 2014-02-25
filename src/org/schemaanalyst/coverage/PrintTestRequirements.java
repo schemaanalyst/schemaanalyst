@@ -35,7 +35,7 @@ public class PrintTestRequirements extends Runner {
             System.out.println(predicate);
             System.out.println();
 
-            num ++;
+            num++;
         }
     }
 
