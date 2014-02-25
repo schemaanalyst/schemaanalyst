@@ -34,7 +34,7 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        // Schema schema = new BankAccount();
+        Schema schema = new BankAccount();
         // Schema schema = new BookTown();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
@@ -71,7 +71,7 @@ public class GenerateSchemaCoverage extends Runner {
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 schema,
                 criterion,
-                dbms,
+                dbms.getValueFactory(),
                 testCaseGenerator,
                 reuseTestCases);
 

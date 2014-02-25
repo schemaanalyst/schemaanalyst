@@ -173,7 +173,7 @@ public class MutationAnalysis extends Runner {
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 CriterionFactory.instantiate(criterion),
-                dbms,
+                dbms.getValueFactory(),
                 testCaseGenerator,
                 reuse
         );

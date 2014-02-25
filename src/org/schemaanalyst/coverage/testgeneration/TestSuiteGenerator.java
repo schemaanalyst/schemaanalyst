@@ -25,7 +25,7 @@ public class TestSuiteGenerator {
 
     private Schema schema;
     private Criterion criterion;
-    private DBMS dbms;
+    private ValueFactory valueFactory;
     private TestCaseGenerationAlgorithm testCaseGenerator;
     private HashMap<Table, Data> initialTableData;
     private boolean reuseTestCases;
@@ -35,12 +35,12 @@ public class TestSuiteGenerator {
 
     public TestSuiteGenerator(Schema schema,
                               Criterion criterion,
-                              DBMS dbms,
+                              ValueFactory valueFactory,
                               TestCaseGenerationAlgorithm testCaseGenerator,
                               boolean reuseTestCases) {
         this.schema = schema;
         this.criterion = criterion;
-        this.dbms = dbms;
+        this.valueFactory = valueFactory;
         this.testCaseGenerator = testCaseGenerator;
         this.reuseTestCases = reuseTestCases;
 
@@ -123,7 +123,6 @@ public class TestSuiteGenerator {
     private TestCase generateTestCase(Table table, Predicate predicate) {
         Data data = new Data();
         Data state = new Data();
-        ValueFactory valueFactory = dbms.getValueFactory();
 
         // add rows for tables linked via foreign keys to the state
         List<Table> linkedTables = schema.getConnectedTables(table);

@@ -43,7 +43,7 @@ public class CoverageTester extends Runner {
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 chosenCriterion,
-                new SQLiteDBMS(),
+                new SQLiteDBMS().getValueFactory(),
                 testCaseGenerator,
                 reuse
         );
