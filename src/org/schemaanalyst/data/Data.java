@@ -291,13 +291,15 @@ public class Data  {
         if (tables != null) {
             boolean first = true;
             for (Table table : tables) {
-                if (first) {
-                    first = false;
-                } else {
-                    sb.append(System.lineSeparator());
-                }
                 List<Row> rows = data.get(table);
-				sb.append("* " + StringUtils.join(rows, System.lineSeparator()));
+                for (Row row : rows) {
+                    if (first) {
+                        first = false;
+                    } else {
+                        sb.append(System.lineSeparator());
+                    }
+                    sb.append("* " + row);
+                }
             }
         }
         return sb.toString();

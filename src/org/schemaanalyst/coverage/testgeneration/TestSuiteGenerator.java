@@ -150,8 +150,10 @@ public class TestSuiteGenerator {
 
             // add foreign key rows to the data
             for (Table linkedTable : linkedTables) {
-                data.addRow(linkedTable, valueFactory);
-                predicate.addClauses(generateInitialTablePredicate(schema, linkedTable));
+                if (!linkedTable.equals(table)) {
+                    data.addRow(linkedTable, valueFactory);
+                    predicate.addClauses(generateInitialTablePredicate(schema, linkedTable));
+                }
             }
         }
 

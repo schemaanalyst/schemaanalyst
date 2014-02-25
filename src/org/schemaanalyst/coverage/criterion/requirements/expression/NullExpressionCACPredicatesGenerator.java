@@ -33,7 +33,7 @@ public class NullExpressionCACPredicatesGenerator extends ExpressionCACPredicate
     private List<Predicate> generatePredicate(boolean outcome) {
         List<Predicate> predicates = new ArrayList<>();
         Predicate predicate = new Predicate("Testing " + nullExpression + " is " + outcome);
-        predicate.addClause(new NullClause(table, nullExpression.getColumnsInvolved().get(0), outcome));
+        predicate.addClause(new NullClause(table, nullExpression.getColumnsInvolved().get(0), !outcome));
         predicates.add(predicate);
         return predicates;
     }

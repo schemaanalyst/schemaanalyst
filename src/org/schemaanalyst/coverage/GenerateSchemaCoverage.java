@@ -28,17 +28,17 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
  */
 public class GenerateSchemaCoverage extends Runner {
 
-    boolean printUncoveredPredicates = false;
+    boolean printUncoveredPredicates = true;
 
     @Override
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
         // Schema schema = new BankAccount();
-        Schema schema = new BookTown (); // ERROR ...
+        // Schema schema = new BookTown ();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
-        // Schema schema = new CustomerOrder();
+        Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
         // Schema schema = new Flights();
         // Schema schema = new FrenchTowns();

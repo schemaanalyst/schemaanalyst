@@ -15,6 +15,10 @@ import java.util.List;
  */
 public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
+    private static final int EXPRESSION_CLAUSE_WEIGHT = 1;
+    private static final int MATCH_CLAUSE_WEIGHT = 1;
+    private static final int NULL_CLAUSE_WEIGHT = 5;
+
     private Predicate predicate;
     private Data state;
     private List<ObjectiveFunction<Data>> objectiveFunctions;
@@ -29,20 +33,26 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
             @Override
             public void visit(ExpressionClause clause) {
-                objectiveFunctions.add(new ExpressionObjectiveFunction(clause));
+                for (int i=0; i < EXPRESSION_CLAUSE_WEIGHT; i++) {
+                    objectiveFunctions.add(new ExpressionObjectiveFunction(clause));
+                }
             }
 
             @Override
             public void visit(MatchClause clause) {
-                objectiveFunctions.add(
-                        new MatchObjectiveFunction(
-                                clause,
-                                PredicateObjectiveFunction.this.state));
+                for (int i=0; i < MATCH_CLAUSE_WEIGHT; i++) {
+                    objectiveFunctions.add(
+                            new MatchObjectiveFunction(
+                                    clause,
+                                    PredicateObjectiveFunction.this.state));
+                }
             }
 
             @Override
             public void visit(NullClause clause) {
-                objectiveFunctions.add(new NullObjectiveFunction(clause));
+                for (int i=0; i < NULL_CLAUSE_WEIGHT; i++) {
+                    objectiveFunctions.add(new NullObjectiveFunction(clause));
+                }
             }
         };
 
