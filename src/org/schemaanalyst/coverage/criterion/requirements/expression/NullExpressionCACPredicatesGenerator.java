@@ -13,11 +13,8 @@ import java.util.List;
  */
 public class NullExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
-    private NullExpression nullExpression;
-
-    public NullExpressionCACPredicatesGenerator(Table table, NullExpression nullExpression) {
-        super(table);
-        this.nullExpression = nullExpression;
+    public NullExpressionCACPredicatesGenerator(Table table, NullExpression expression) {
+        super(table, expression);
     }
 
     @Override
@@ -32,9 +29,14 @@ public class NullExpressionCACPredicatesGenerator extends ExpressionCACPredicate
 
     private List<Predicate> generatePredicate(boolean outcome) {
         List<Predicate> predicates = new ArrayList<>();
-        Predicate predicate = new Predicate("Testing " + nullExpression + " is " + outcome);
-        predicate.addClause(new NullClause(table, nullExpression.getColumnsInvolved().get(0), !outcome));
+        Predicate predicate = new Predicate("Testing " + expression + " is " + outcome);
+        predicate.addClause(new NullClause(table, expression.getColumnsInvolved().get(0), !outcome));
         predicates.add(predicate);
         return predicates;
+    }
+
+    @Override
+    public List<Predicate> generateNullPredicates() {
+        return new ArrayList<>();
     }
 }

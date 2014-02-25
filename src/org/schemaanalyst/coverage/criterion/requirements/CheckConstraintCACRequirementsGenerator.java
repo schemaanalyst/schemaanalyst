@@ -1,17 +1,13 @@
 package org.schemaanalyst.coverage.criterion.requirements;
 
-import org.schemaanalyst.coverage.criterion.clause.Clause;
-import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateFalsePredicates;
-import static org.schemaanalyst.coverage.criterion.requirements.expression.ExpressionCACPredicatesGenerator.generateTruePredicates;
 
 /**
  * Created by phil on 07/02/2014.
@@ -29,22 +25,12 @@ public class CheckConstraintCACRequirementsGenerator extends RequirementsGenerat
     public List<Predicate> generateRequirements() {
         List<Predicate> requirements = new ArrayList<>();
 
-        List<Predicate> expressionPredicates = generateTruePredicates(table, expression);
-        expressionPredicates.addAll(generateFalsePredicates(table, expression));
+        List<Predicate> expressionPredicates =
+                ExpressionCACPredicatesGenerator.generatePredicates(table, expression);
 
         for (Predicate expressionPredicate : expressionPredicates) {
             Predicate predicate = generatePredicate(expressionPredicate.getPurpose());
             predicate.addClauses(expressionPredicate);
-
-            // Explicitly set the column NULL status for NullClauses, to avoid infeasible predicates
-            // if the column was required to be the opposite NULL status previously in the predicate
-            for (Clause clause : expressionPredicate.getClauses()) {
-                if (clause instanceof NullClause) {
-                    NullClause nullClause = (NullClause) clause;
-                    predicate.setColumnNullStatus(nullClause.getTable(), nullClause.getColumn(), nullClause.getSatisfy());
-                }
-            }
-
             requirements.add(predicate);
         }
 

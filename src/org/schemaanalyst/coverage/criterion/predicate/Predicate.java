@@ -38,11 +38,20 @@ public class Predicate {
     }
 
     public void addClause(Clause clause) {
+        if (clause instanceof NullClause) {
+            setColumnNullStatus((NullClause) clause);
+        }
         clauses.add(clause);
     }
 
     public void addClauses(Predicate predicate) {
-        clauses.addAll(predicate.clauses);
+        for (Clause clause : predicate.getClauses()) {
+            addClause(clause);
+        }
+    }
+
+    public void setColumnNullStatus(NullClause nullClause) {
+        setColumnNullStatus(nullClause.getTable(), nullClause.getColumn(), nullClause.getSatisfy());
     }
 
     public void setColumnNullStatus(Table table, Column column, boolean isNull) {

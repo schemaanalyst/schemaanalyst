@@ -13,13 +13,11 @@ import java.util.List;
  */
 public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicatesGenerator {
 
-    private AndExpression andExpression;
     private List<Expression> subexpressions;
 
-    public AndExpressionCACPredicatesGenerator(Table table, AndExpression andExpression) {
-        super(table);
-        this.andExpression = andExpression;
-        subexpressions = andExpression.getSubexpressions();
+    public AndExpressionCACPredicatesGenerator(Table table, AndExpression expression) {
+        super(table, expression);
+        subexpressions = expression.getSubexpressions();
     }
 
     @Override
@@ -31,7 +29,7 @@ public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicates
 
             for (Predicate truePredicate : generateTruePredicates(table, subexpression)) {
                 Predicate predicate = new Predicate(
-                        "Testing " + andExpression + " is true with " + truePredicate.getPurpose());
+                        "Testing " + expression + " is true with " + truePredicate.getPurpose());
                 predicate.addClauses(truePredicate);
                 predicate.addClauses(truePredicateExcludingExpression);
                 predicates.add(predicate);
@@ -50,8 +48,27 @@ public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicates
 
             for (Predicate falsePredicate : generateFalsePredicates(table, subexpression)) {
                 Predicate predicate = new Predicate(
-                        "Testing " + andExpression + " is false with " + falsePredicate.getPurpose());
+                        "Testing " + expression + " is false with " + falsePredicate.getPurpose());
                 predicate.addClauses(falsePredicate);
+                predicate.addClauses(truePredicateExcludingExpression);
+                predicates.add(predicate);
+            }
+        }
+
+        return predicates;
+    }
+
+    @Override
+    public List<Predicate> generateNullPredicates() {
+        List<Predicate> predicates = new ArrayList<>();
+
+        for (Expression subexpression : subexpressions) {
+            Predicate truePredicateExcludingExpression = getTruePredicateExcludingExpression(subexpression);
+
+            for (Predicate nullPredicate : generateNullPredicates(table, subexpression)) {
+                Predicate predicate = new Predicate(
+                        "Testing " + expression + " is NULL with " + nullPredicate.getPurpose());
+                predicate.addClauses(nullPredicate);
                 predicate.addClauses(truePredicateExcludingExpression);
                 predicates.add(predicate);
             }

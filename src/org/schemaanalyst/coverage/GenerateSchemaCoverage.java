@@ -35,10 +35,10 @@ public class GenerateSchemaCoverage extends Runner {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
         // Schema schema = new BankAccount();
-        // Schema schema = new BookTown ();
+        // Schema schema = new BookTown();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
-        Schema schema = new CustomerOrder();
+        // Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
         // Schema schema = new Flights();
         // Schema schema = new FrenchTowns();
@@ -48,7 +48,7 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new NistDML181();
         // Schema schema = new NistDML182();
         // Schema schema = new NistDML183();
-        // Schema schema = new NistWeather(); // SQL ERROR - quoting?
+        // Schema schema = new NistWeather();
         // Schema schema = new NistXTS748();
         // Schema schema = new NistXTS749();
         // Schema schema = new Person();

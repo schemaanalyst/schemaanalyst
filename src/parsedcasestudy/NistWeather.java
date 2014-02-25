@@ -29,7 +29,7 @@ public class NistWeather extends Schema {
 		tableStation.createColumn("LONG_W", new IntDataType());
 		this.createPrimaryKeyConstraint(tableStation, tableStation.getColumn("ID"));
 		this.createCheckConstraint(tableStation, new BetweenExpression(new ColumnExpression(tableStation, tableStation.getColumn("LAT_N")), new ConstantExpression(new NumericValue(0)), new ConstantExpression(new NumericValue(90)), false, false));
-		this.createCheckConstraint(tableStation, new BetweenExpression(new ColumnExpression(tableStation, tableStation.getColumn("LONG_W")), new ConstantExpression(new NumericValue(180)), new ConstantExpression(new NumericValue(-180)), false, true));
+		this.createCheckConstraint(tableStation, new BetweenExpression(new ColumnExpression(tableStation, tableStation.getColumn("LONG_W")), new ConstantExpression(new NumericValue(-180)), new ConstantExpression(new NumericValue(180)), false, false));
 		this.createNotNullConstraint(tableStation, tableStation.getColumn("LAT_N"));
 		this.createNotNullConstraint(tableStation, tableStation.getColumn("LONG_W"));
 

@@ -1,9 +1,11 @@
 package org.schemaanalyst.coverage.criterion.requirements.expression;
 
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,22 +14,48 @@ import java.util.List;
 public abstract class ExpressionCACPredicatesGenerator {
 
     protected Table table;
+    protected Expression expression;
 
-    public ExpressionCACPredicatesGenerator(Table table) {
+    public ExpressionCACPredicatesGenerator(Table table, Expression expression) {
         this.table = table;
+        this.expression = expression;
     }
 
     public abstract List<Predicate> generateTruePredicates();
 
     public abstract List<Predicate> generateFalsePredicates();
 
+    public abstract List<Predicate> generateNullPredicates();
+
+    protected void setNullStatusForColumns(Predicate predicate) {
+        List<Column> columns = expression.getColumnsInvolved();
+        for (Column column : columns) {
+            predicate.setColumnNullStatus(table, column, false);
+        }
+    }
+
+    public static List<Predicate> generatePredicates(Table table, Expression expression) {
+        ExpressionCACPredicatesGenerator predicatesGenerator = createPredicateGenerator(table, expression);
+        List<Predicate> predicates = new ArrayList<>();
+        predicates.addAll(predicatesGenerator.generateTruePredicates());
+        predicates.addAll(predicatesGenerator.generateFalsePredicates());
+        predicates.addAll(predicatesGenerator.generateNullPredicates());
+        return predicates;
+    }
 
     public static List<Predicate> generateTruePredicates(Table table, Expression expression) {
-        return createPredicateGenerator(table, expression).generateTruePredicates();
+        ExpressionCACPredicatesGenerator predicatesGenerator = createPredicateGenerator(table, expression);
+        return predicatesGenerator.generateTruePredicates();
     }
 
     public static List<Predicate> generateFalsePredicates(Table table, Expression expression) {
-        return createPredicateGenerator(table, expression).generateFalsePredicates();
+        ExpressionCACPredicatesGenerator predicatesGenerator = createPredicateGenerator(table, expression);
+        return predicatesGenerator.generateFalsePredicates();
+    }
+
+    public static List<Predicate> generateNullPredicates(Table table, Expression expression) {
+        ExpressionCACPredicatesGenerator predicatesGenerator = createPredicateGenerator(table, expression);
+        return predicatesGenerator.generateNullPredicates();
     }
 
     public static ExpressionCACPredicatesGenerator createPredicateGenerator(Table table, Expression expression) {
