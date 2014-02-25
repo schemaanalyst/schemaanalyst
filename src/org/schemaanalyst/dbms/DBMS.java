@@ -13,14 +13,12 @@ import org.schemaanalyst.sqlwriter.CellSQLWriter;
  */
 public abstract class DBMS {
 
-    private SQLWriter sqlWriter;
-    private ValueFactory valueFactory;
-    private CellSQLWriter valueToStringConverter;
+    protected SQLWriter sqlWriter;
+    protected ValueFactory valueFactory;
 
     public DBMS() {
         sqlWriter = new SQLWriter();
         valueFactory = new ValueFactory();
-        valueToStringConverter = new CellSQLWriter();
     }
 
     /**
@@ -44,15 +42,6 @@ public abstract class DBMS {
      */
     public ValueFactory getValueFactory() {
         return valueFactory;
-    }
-
-    /**
-     * Get the {@link CellSQLWriter} instance for this DBMS.
-     * 
-     * @return The CellSQLWriter
-     */
-    public CellSQLWriter getValueStringConverter() {
-        return valueToStringConverter;
     }
 
     /**

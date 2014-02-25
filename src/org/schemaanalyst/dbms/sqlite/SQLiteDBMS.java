@@ -2,9 +2,12 @@ package org.schemaanalyst.dbms.sqlite;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
+import org.schemaanalyst.sqlwriter.CellSQLWriter;
+import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**
  * <p>
@@ -14,6 +17,11 @@ import org.schemaanalyst.dbms.DBMSVisitor;
 public class SQLiteDBMS extends DBMS {
 
     private SQLiteDatabaseInteractor databaseInteractor;
+
+    public SQLiteDBMS() {
+        sqlWriter = new SQLiteSQLWriter();
+        valueFactory = new ValueFactory();
+    }
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
