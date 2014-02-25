@@ -37,7 +37,7 @@ public class RelationalExpressionCACPredicatesGenerator extends ExpressionCACPre
         List<Predicate> requirements = new ArrayList<>();
 
         Predicate predicate = new Predicate("Testing " + relationalExpression + " is false");
-        predicate.addClause(new ExpressionClause(table, relationalExpression, true));
+        predicate.addClause(new ExpressionClause(table, relationalExpression, false));
 
         requirements.add(predicate);
         return requirements;

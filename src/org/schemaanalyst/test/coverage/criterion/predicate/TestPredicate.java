@@ -64,6 +64,7 @@ public class TestPredicate {
         assertTrue(p.hasClause(nc1));
         p.setColumnNullStatus(tab1, tab1Col1, true);
         assertTrue(p.hasClause(nc1));
+        assertEquals("There should be exactly 1 clause", 1, p.getClauses().size());
     }
 
     @Test
@@ -153,5 +154,15 @@ public class TestPredicate {
         assertFalse(p.hasClause(uc1));
         assertTrue(p.hasClause(uc2));
         assertTrue(p.hasClause(uc3));
+    }
+
+    @Test
+    public void testAlreadyUnique() {
+        MatchClause uc = ClauseFactory.unique(tab1, tab1Col1, true);
+        Predicate p = new Predicate("Test predicate");
+        p.addClause(uc);
+        p.setColumnUniqueStatus(tab1, tab1Col1, true);
+        assertTrue(p.hasClause(uc));
+        assertEquals("There should be exactly 1 clause", 1, p.getClauses().size());
     }
 }

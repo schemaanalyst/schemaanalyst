@@ -14,7 +14,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.CustomerOrder;
+import parsedcasestudy.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -28,16 +28,25 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
  */
 public class GenerateSchemaCoverage extends Runner {
 
-    boolean printUncoveredPredicates = true;
+    boolean printUncoveredPredicates = false;
 
     @Override
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new CustomerOrder();
+        // Schema schema = new BankAccount();
+        // Schema schema = new BookTown (); // ERROR ...
+        // Schema schema = new Cloc();
+        // Schema schema = new CoffeeOrders();
+        // Schema schema = new CustomerOrder();
+        // Schema schema = new DellStore();
+        // Schema schema = new Flights();
+        Schema schema = new Products();
+
+
         DBMS dbms = new SQLiteDBMS();
-        Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACCoverage");
-        boolean reuseTestCases = true;
+        Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
+        boolean reuseTestCases = false;
         Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
 
         // instantiate the test case generation algorithm
@@ -77,13 +86,15 @@ public class GenerateSchemaCoverage extends Runner {
                              TestCaseGenerationAlgorithm testCaseGenerator) {
 
         // print out each test suite test case
+        System.out.println("SUCCESSFUL TEST CASES:");
         for (TestCase testCase : testSuite.getTestCases()) {
             printTestCase(testCase, true);
         }
 
         // print out each failed test case
+        System.out.println("FAILED TEST CASES:");
         for (TestCase testCase : failedTestCases) {
-            printTestCase(testCase, true);
+            printTestCase(testCase, false);
         }
 
         printTestSuiteStats(schema, criterionUsed, testSuite, testCaseGenerator);

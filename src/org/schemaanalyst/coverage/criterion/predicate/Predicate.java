@@ -87,9 +87,11 @@ public class Predicate {
                 if (foundCol) {
                     clauses.remove(matchClause);
 
-                    clauses.add(new MatchClause(
-                            table, equalCols, notEqualCols,
-                            matchClause.getMode(), matchClause.requiresComparisonRow()));
+                    if (equalCols.size() > 0 || notEqualCols.size() > 0) {
+                        clauses.add(new MatchClause(
+                                table, equalCols, notEqualCols,
+                                matchClause.getMode(), matchClause.requiresComparisonRow()));
+                    }
                 }
             }
         }
