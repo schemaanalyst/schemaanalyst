@@ -23,8 +23,7 @@ public class OchiaiTest {
 		double score = (double) Math.round(r.getScore() * 100)/100;
 		assertEquals(0.53, score, 0.01);
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Test
 	public void test3() {
 		OchiaiResultMatrixRow r = new OchiaiResultMatrixRow("first Constraint" , "first mutant" ,2 , 4, 2, false);
@@ -32,8 +31,7 @@ public class OchiaiTest {
 		double score = (double) Math.round(r.getScore() * 100)/100;
 		assertEquals(0.58, score, 0.01);
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Test
 	public void test4() {
 		OchiaiResultMatrixRow r = new OchiaiResultMatrixRow("first Constraint" , "first mutant" ,2 , 0, 2, false);
