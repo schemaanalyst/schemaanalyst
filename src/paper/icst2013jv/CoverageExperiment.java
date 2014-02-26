@@ -49,7 +49,7 @@ public class CoverageExperiment extends Runner {
     Criterion[] generateCriteria = {
             CriterionFactory.amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage(),
             CriterionFactory.amplifiedConstraintCACCoverage(),
-            CriterionFactory.constraintCACWitNullAndUniqueColumnCACCoverage(),
+            CriterionFactory.constraintCACWithNullAndUniqueColumnCACCoverage(),
             CriterionFactory.constraintCACCoverage(),
     };
 
