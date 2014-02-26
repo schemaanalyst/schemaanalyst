@@ -11,7 +11,6 @@ import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
 import org.schemaanalyst.datageneration.search.DirectedRandomSearch;
-import org.schemaanalyst.datageneration.search.NaiveRandomConstraintCoverer;
 import org.schemaanalyst.datageneration.search.RandomSearch;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.SearchConstraintCoverer;
@@ -220,20 +219,5 @@ public class ConstraintCovererFactory {
         return new SearchConstraintCoverer(drs, schema, dbms, 
                                            satisfyRows, 
                                            negateRows);
-    }    
-    
-    public static NaiveRandomConstraintCoverer naiveRandom(Schema schema,
-                                            				DBMS dbms,
-                                            				String cellRandomisationProfile,
-                                            				long seed,
-                                            				int maxEvaluations,
-                                                            int satisfyRows,
-                                                            int negateRows) {
-    	Random random = new SimpleRandom(seed);    
-    	CellRandomiser cellRandomiser = CellRandomiserFactory.instantiate(cellRandomisationProfile, random);
-    	
-        return new NaiveRandomConstraintCoverer(schema, dbms, cellRandomiser,
-                                                DEFAULT_NAIVE_RND_NUM_ROWS_PER_TABLE, 
-                                                maxEvaluations);
     }
 }

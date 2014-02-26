@@ -104,6 +104,13 @@ public class CriterionFactory {
         );
     }
 
+    public static Criterion nullAndUniqueColumnCACCoverage() {
+        return new MultiCriterion(
+                new NullColumnCACCoverage(),
+                new UniqueColumnCACCoverage()
+        );
+    }
+
     public static Criterion constraintCACWithNullAndUniqueColumnCoverage() {
         return new MultiCriterion(
                 new ConstraintCACCoverage(),

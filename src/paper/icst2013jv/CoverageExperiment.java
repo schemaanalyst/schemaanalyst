@@ -1,5 +1,6 @@
-package org.schemaanalyst.coverage;
+package paper.icst2013jv;
 
+import org.schemaanalyst.coverage.CoverageReport;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
@@ -53,11 +54,7 @@ public class CoverageExperiment extends Runner {
     };
 
     Criterion[] testCriteria = {
-            CriterionFactory.constraintCoverage(),
-            CriterionFactory.uniqueColumnCACCoverage(),
-            CriterionFactory.nullColumnCACCoverage(),
-            CriterionFactory.uniqueColumnCoverage(),
-            CriterionFactory.nullColumnCoverage()
+            CriterionFactory.constraintCoverage()
     };
 
     Boolean[] reuseOptions = {
@@ -72,6 +69,7 @@ public class CoverageExperiment extends Runner {
                     doExpt(schema, criterion, reuseTestCases);
                 }
             }
+            System.out.println();
         }
     }
 
@@ -93,13 +91,20 @@ public class CoverageExperiment extends Runner {
 
         TestSuite testSuite = dg.generate();
 
-        System.out.print(schema.getName() + ", " + criterion.getName());
+        System.out.print(schema.getName() + ", " +
+                         criterion.getName() + ", " +
+                         reuseTestCases + ", " +
+                         criterion.generateRequirements(schema).size() + ", " +
+                         testSuite.getNumTestCases() + ", " +
+                         testSuite.getNumInserts() + ", ");
 
         for (Criterion checkCriteria : generateCriteria) {
             CoverageReport coverageReport =
                     testCaseGenerator.computeCoverage(testSuite, checkCriteria.generateRequirements(schema));
             System.out.print(", " + coverageReport.getCoverage());
         }
+
+        System.out.print(", ");
 
         for (Criterion checkCriteria : testCriteria) {
             CoverageReport coverageReport =
