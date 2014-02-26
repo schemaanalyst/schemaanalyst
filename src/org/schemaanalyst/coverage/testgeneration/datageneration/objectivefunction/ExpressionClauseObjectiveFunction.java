@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.search.objectivefunction;
+package org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.data.Data;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class ExpressionObjectiveFunction extends ObjectiveFunction<Data> {
+public class ExpressionClauseObjectiveFunction extends ObjectiveFunction<Data> {
 
     private ExpressionClause expressionClause;
 
-    public ExpressionObjectiveFunction(ExpressionClause expressionClause) {
+    public ExpressionClauseObjectiveFunction(ExpressionClause expressionClause) {
         this.expressionClause = expressionClause;
     }
 

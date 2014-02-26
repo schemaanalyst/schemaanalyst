@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.schemaanalyst.faultlocalization.Calculator;
 import org.schemaanalyst.faultlocalization.TarantulaResultMatrixRow;
 
-public class TarantulaTest {
+public class TestTarantula {
 
 	@Test
 	public void test1() {

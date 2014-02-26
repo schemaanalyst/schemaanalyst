@@ -6,7 +6,7 @@ import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.util.Duplicator;
 
 /**
- * Abstract class for representing a search
+ * Abstract class for representing a datageneration
  *
  * @author Phil McMinn
  *
@@ -33,7 +33,7 @@ public abstract class Search<T> {
     }
 
     /**
-     * Sets the termination criterion for the search.
+     * Sets the termination criterion for the datageneration.
      *
      * @param terminationCriterion The terminationCriterion to be used.
      */
@@ -42,17 +42,17 @@ public abstract class Search<T> {
     }
 
     /**
-     * Sets the objective function for the search.
+     * Sets the objective function for the datageneration.
      *
      * @param objectiveFunction The objective function to be used to evaluate
-     * candidate solutions during the search.
+     * candidate solutions during the datageneration.
      */
     public void setObjectiveFunction(ObjectiveFunction<T> objectiveFunction) {
         this.objFun = objectiveFunction;
     }
 
     /**
-     * Initializes the search (by resetting the counters).
+     * Initializes the datageneration (by resetting the counters).
      */
     public void initialize() {
         evaluationsCounter.reset();
@@ -62,10 +62,10 @@ public abstract class Search<T> {
     }
 
     /**
-     * Performs the search.
+     * Performs the datageneration.
      *
      * @param candidateSolution The candidateSolution to use as the basis for
-     * the search.
+     * the datageneration.
      */
     public abstract void search(T candidateSolution);
 
@@ -88,9 +88,9 @@ public abstract class Search<T> {
     }
 
     /**
-     * Returns the best objective value found by the search so far.
+     * Returns the best objective value found by the datageneration so far.
      *
-     * @return The best objective value found by the search so far.
+     * @return The best objective value found by the datageneration so far.
      */
     public ObjectiveValue getBestObjectiveValue() {
         return bestObjVal;
@@ -98,46 +98,46 @@ public abstract class Search<T> {
 
     /**
      * Returns the candidate solution with the best objective value found by the
-     * search so far.
+     * datageneration so far.
      *
      * @return The candidate solution with the best objective value found by the
-     * search so far.
+     * datageneration so far.
      */
     public T getBestCandidateSolution() {
         return bestCandidateSolution;
     }
 
     /**
-     * Returns the evaluations counter used by the search.
+     * Returns the evaluations counter used by the datageneration.
      *
-     * @return The evaluations counter used by the search.
+     * @return The evaluations counter used by the datageneration.
      */
     public Counter getEvaluationsCounter() {
         return evaluationsCounter;
     }
 
     /**
-     * Returns the number of evaluations performed by the search.
+     * Returns the number of evaluations performed by the datageneration.
      *
-     * @return The number of evaluations performed by the search.
+     * @return The number of evaluations performed by the datageneration.
      */
     public int getNumEvaluations() {
         return evaluationsCounter.getValue();
     }
 
     /**
-     * Returns the restarts counter used by the search.
+     * Returns the restarts counter used by the datageneration.
      *
-     * @return The restarts counter used by the search.
+     * @return The restarts counter used by the datageneration.
      */
     public Counter getRestartsCounter() {
         return restartsCounter;
     }
 
     /**
-     * Returns the number of restarts performed by the search.
+     * Returns the number of restarts performed by the datageneration.
      *
-     * @return The number of restarts performed by the search.
+     * @return The number of restarts performed by the datageneration.
      */
     public int getNumRestarts() {
         return restartsCounter.getValue();

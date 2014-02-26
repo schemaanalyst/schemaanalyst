@@ -13,9 +13,33 @@ public abstract class TestCaseGenerationAlgorithm {
 
     public abstract TestCase generateTestCase(Data data, Data state, Predicate predicate);
 
-    public abstract TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite);
-
     public abstract boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate);
 
-    public abstract CoverageReport computeCoverage(TestSuite testSuite, List<Predicate> requirements);
+    public TestCase testCaseThatSatisfiesPredicate(Predicate predicate, TestSuite testSuite) {
+        for (TestCase testCase : testSuite.getTestCases()) {
+            if (testCaseSatisfiesPredicate(testCase, predicate)) {
+                return testCase;
+            }
+        }
+        return null;
+    }
+
+    public CoverageReport computeCoverage(TestSuite testSuite, List<Predicate> requirements) {
+        CoverageReport coverageReport = new CoverageReport();
+
+        for (Predicate predicate : requirements) {
+            boolean covered = false;
+            for (TestCase testCase : testSuite.getTestCases()) {
+                if (testCaseSatisfiesPredicate(testCase, predicate)) {
+                    covered = true;
+                    coverageReport.addCovered(predicate);
+                    break;
+                }
+            }
+            if (!covered) {
+                coverageReport.addUncovered(predicate);
+            }
+        }
+        return coverageReport;
+    }
 }

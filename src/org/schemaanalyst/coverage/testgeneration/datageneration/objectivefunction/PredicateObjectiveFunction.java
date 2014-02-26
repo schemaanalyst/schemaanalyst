@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.search.objectivefunction;
+package org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.*;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
@@ -34,7 +34,7 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
             @Override
             public void visit(ExpressionClause clause) {
                 for (int i=0; i < EXPRESSION_CLAUSE_WEIGHT; i++) {
-                    objectiveFunctions.add(new ExpressionObjectiveFunction(clause));
+                    objectiveFunctions.add(new ExpressionClauseObjectiveFunction(clause));
                 }
             }
 
@@ -42,7 +42,7 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
             public void visit(MatchClause clause) {
                 for (int i=0; i < MATCH_CLAUSE_WEIGHT; i++) {
                     objectiveFunctions.add(
-                            new MatchObjectiveFunction(
+                            new MatchClauseObjectiveFunction(
                                     clause,
                                     PredicateObjectiveFunction.this.state));
                 }
@@ -51,7 +51,7 @@ public class PredicateObjectiveFunction extends ObjectiveFunction<Data> {
             @Override
             public void visit(NullClause clause) {
                 for (int i=0; i < NULL_CLAUSE_WEIGHT; i++) {
-                    objectiveFunctions.add(new NullObjectiveFunction(clause));
+                    objectiveFunctions.add(new NullClauseObjectiveFunction(clause));
                 }
             }
         };
