@@ -96,7 +96,7 @@ public class CriterionFactory {
         return new ConstraintCACCoverage();
     }
 
-    public static Criterion constraintCACWitNullAndUniqueColumnCACCoverage() {
+    public static Criterion constraintCACWithNullAndUniqueColumnCACCoverage() {
         return new MultiCriterion(
                 new ConstraintCACCoverage(),
                 new NullColumnCACCoverage(),

@@ -43,6 +43,17 @@ public class TestSuiteResult {
         return Objects.equals(this.result, other.result);
     }
 
+    @Override
+    public String toString() {
+        StringBuilder b = new StringBuilder();
+        b.append("TestSuiteResult:\n");
+        for (MixedPair<TestCase, TestCaseResult> pair : result) {
+            b.append("\t");
+            b.append(pair.getSecond());
+            b.append("\n");
+        }
+        return b.toString();
+    }    
     
     
 }

@@ -9,7 +9,7 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.CreateStatementException;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.DropStatementException;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.InsertStatementException;
-import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
@@ -94,7 +94,7 @@ public class TestCaseExecutor {
             executeInserts(testCase.getData());
             executeDrops();
             result = TestCaseResult.SuccessfulTestCaseResult;
-        } catch (TestCaseException ex) {
+        } catch (StatementException ex) {
             result = new TestCaseResult(ex);
         }
         return result;
