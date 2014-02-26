@@ -7,5 +7,13 @@ import org.schemaanalyst.data.Data;
  */
 public abstract class Handler {
 
-    public abstract boolean handle(Data data);
+    public boolean check(Data data) {
+        return handle(data, false);
+    }
+
+    public boolean fix(Data data) {
+        return handle(data, true);
+    }
+
+    protected abstract boolean handle(Data data, boolean fix);
 }

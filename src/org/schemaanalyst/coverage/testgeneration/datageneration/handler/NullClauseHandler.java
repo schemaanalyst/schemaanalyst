@@ -19,22 +19,24 @@ public class NullClauseHandler extends Handler {
     }
 
     @Override
-    public boolean handle(Data data) {
-        boolean adjusted = false;
+    protected boolean handle(Data data, boolean fix) {
+        boolean satisfies = true;
         List<Row> rows = data.getRows(nullClause.getTable());
 
         if (rows.size() > 0) {
-
             for (Row row : rows) {
                 Cell cell = row.getCell(nullClause.getColumn());
 
                 if (nullClause.getSatisfy() != cell.isNull()) {
-                    cell.setNull(nullClause.getSatisfy());
-                    adjusted = true;
+                    if (fix) {
+                        cell.setNull(nullClause.getSatisfy());
+                    }
+
+                    satisfies = false;
                 }
             }
         }
 
-        return adjusted;
+        return satisfies;
     }
 }

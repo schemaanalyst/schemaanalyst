@@ -1,12 +1,9 @@
-package org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction;
+package org.schemaanalyst.coverage.testgeneration.datageneration.handler;
 
 import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.datageneration.search.objective.*;
-import org.schemaanalyst.datageneration.search.objective.value.RelationalValueObjectiveFunction;
-import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -15,15 +12,15 @@ import java.util.List;
 import java.util.ListIterator;
 
 /**
- * Created by phil on 24/01/2014.
+ * Created by phil on 26/02/2014.
  */
-public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
+public class MatchClauseHandler extends Handler {
 
     private MatchClause matchClause;
     private Data state;
     private Table table, referenceTable;
 
-    public MatchClauseObjectiveFunction(MatchClause matchClause, Data state) {
+    public MatchClauseHandler(MatchClause matchClause, Data state) {
         this.matchClause = matchClause;
         this.state = state;
         this.table = matchClause.getTable();
@@ -31,12 +28,11 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     @Override
-    public ObjectiveValue evaluate(Data data) {
-        String description = matchClause.toString();
+    public boolean handle(Data data, boolean fix) {
+        boolean adjusted = false;
         List<Row> rows = data.getRows(matchClause.getTable());
 
         if (rows.size() > 0) {
-            SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
             ListIterator<Row> rowsIterator = rows.listIterator();
 
             while (rowsIterator.hasNext()) {
@@ -45,20 +41,18 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
                 List<Row> compareRows = getCompareRows(data, index);
 
                 if (compareRows.size() > 0) {
-                    BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
 
                     for (Row compareRow : compareRows) {
-                        rowObjVal.add(compareRows(row, compareRow));
+                        boolean result = compareRows(row, compareRow);
+                        if (result) {
+                            adjusted = true;
+                        }
                     }
-
-                    objVal.add(rowObjVal);
                 }
             }
-
-            return objVal;
         }
 
-        return ObjectiveValue.worstObjectiveValue(description);
+        return adjusted;
     }
 
     protected List<Row> getCompareRows(Data data, int index) {
@@ -70,37 +64,30 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
         return compareRows;
     }
 
-    protected ObjectiveValue compareRows(Row row, Row compareRow) {
-        MultiObjectiveValue objVal =
-                matchClause.getMode() == MatchClause.Mode.AND
-                        ? new SumOfMultiObjectiveValue()
-                        : new BestOfMultiObjectiveValue();
+    protected boolean compareRows(Row row, Row compareRow) {
 
         evaluateColumnLists(
                 row,
                 compareRow,
                 matchClause.getEqualColumns(),
                 matchClause.getEqualRefColumns(),
-                RelationalOperator.EQUALS,
-                objVal);
+                true);
 
         evaluateColumnLists(
                 row,
                 compareRow,
                 matchClause.getNotEqualColumns(),
                 matchClause.getNotEqualRefColumns(),
-                RelationalOperator.NOT_EQUALS,
-                objVal);
+                false);
 
-        return objVal;
+        return false;
     }
 
-    protected void evaluateColumnLists(Row row,
-                                       Row compareRow,
-                                       List<Column> cols,
-                                       List<Column> refCols,
-                                       RelationalOperator op,
-                                       MultiObjectiveValue objVal) {
+    protected boolean evaluateColumnLists(Row row,
+                                          Row compareRow,
+                                          List<Column> cols,
+                                          List<Column> refCols,
+                                          boolean equals) {
 
         Iterator<Column> colsIterator = cols.iterator();
         Iterator<Column> refColsIterator = refCols.iterator();
@@ -111,19 +98,20 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
 
             Value colValue = row.getCell(col).getValue();
 
-            ObjectiveValue compareObjVal = ObjectiveValue.worstObjectiveValue();
             if (compareRow.hasColumn(refCol)) {
                 Value refColValue = compareRow.getCell(refCol).getValue();
 
+                /*
                 compareObjVal =
                         RelationalValueObjectiveFunction.compute(
                                 colValue,
                                 op,
                                 refColValue,
                                 true);
+                */
             }
-
-            objVal.add(compareObjVal);
         }
+
+        return false;
     }
 }

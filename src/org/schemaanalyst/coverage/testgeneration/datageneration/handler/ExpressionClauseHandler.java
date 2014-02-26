@@ -18,7 +18,7 @@ public class ExpressionClauseHandler extends Handler {
     }
 
     @Override
-    public boolean handle(Data data) {
+    public boolean handle(Data data, boolean fix) {
         String description = expressionClause.toString();
         List<Row> rows = data.getRows(expressionClause.getTable());
 
