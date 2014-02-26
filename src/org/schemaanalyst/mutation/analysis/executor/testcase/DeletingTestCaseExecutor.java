@@ -4,7 +4,7 @@ import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 public class DeletingTestCaseExecutor extends TestCaseExecutor {
@@ -29,7 +29,7 @@ public class DeletingTestCaseExecutor extends TestCaseExecutor {
             executeInserts(testCase.getData());
             executeDeletes();
             result = TestCaseResult.SuccessfulTestCaseResult;
-        } catch (TestCaseException ex) {
+        } catch (StatementException ex) {
             result = new TestCaseResult(ex);
         }
         return result;

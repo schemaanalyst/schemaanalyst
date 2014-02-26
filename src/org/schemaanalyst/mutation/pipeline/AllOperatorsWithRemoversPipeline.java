@@ -33,7 +33,6 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyColumnNotNullRemover());
         addRemover(new PrimaryKeyColumnsUniqueRemover());
         addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker()));
@@ -43,6 +42,7 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
         switch (dbms) {
             case "Postgres":
                 addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());

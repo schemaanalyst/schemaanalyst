@@ -1,12 +1,14 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
 import java.util.Objects;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.TestCaseException;
 
 /**
- * <p>The result of executing a test case - either indicating success or 
- * providing the resulting exception.</p>
- * 
+ * <p>
+ * The result of executing a test case - either indicating success or providing
+ * the resulting exception.</p>
+ *
  * @author Chris J. Wright
  */
 public class TestCaseResult {
@@ -14,14 +16,14 @@ public class TestCaseResult {
     public final static TestCaseResult SuccessfulTestCaseResult = new TestCaseResult();
 
     final boolean successful;
-    final private TestCaseException exception;
+    final private StatementException exception;
 
     public TestCaseResult() {
         successful = true;
         exception = null;
     }
 
-    public TestCaseResult(TestCaseException exception) {
+    public TestCaseResult(StatementException exception) {
         successful = false;
         this.exception = exception;
     }
@@ -37,7 +39,7 @@ public class TestCaseResult {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 89 * hash + Objects.hashCode(this.exception.getMessage());
+        hash = 89 * hash + (!this.successful ? Objects.hashCode(this.exception.getMessage()) : 0);
         hash = 89 * hash + (this.successful ? 1 : 0);
         return hash;
     }
@@ -62,7 +64,15 @@ public class TestCaseResult {
 
     @Override
     public String toString() {
-        return "TestCaseResult{" + "successful=" + successful + ", exception=" + (exception == null ? "null" : exception.getMessage()) + '}';
+        StringBuilder b = new StringBuilder();
+        b.append("TestCaseResult{successful=");
+        b.append(successful);
+        b.append(", exception=");
+        b.append(exception == null ? "null" : exception.getClass().getSimpleName() + exception.getMessage());
+        b.append(", statement=");
+        b.append(exception == null ? "null" : exception.getStatement().replaceAll("\n", " "));
+        b.append('}');
+        return b.toString();
     }
 
 }
