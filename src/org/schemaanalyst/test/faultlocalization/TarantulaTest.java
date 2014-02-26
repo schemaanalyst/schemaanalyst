@@ -8,7 +8,6 @@ import org.schemaanalyst.faultlocalization.TarantulaResultMatrixRow;
 
 public class TarantulaTest {
 
-	@SuppressWarnings("deprecation")
 	@Test
 	public void test1() {
 		TarantulaResultMatrixRow r = new TarantulaResultMatrixRow("first Constraint" , "first mutant", 2, 5, 5, 2, false);
@@ -18,8 +17,6 @@ public class TarantulaTest {
 		assertEquals(0.5, score);
 	}
 
-	
-	@SuppressWarnings("deprecation")
 	@Test
 	public void test2() {
 		TarantulaResultMatrixRow r = new TarantulaResultMatrixRow("second Constraint" , "second mutant", 2, 5, 4, 2, false);
@@ -27,8 +24,7 @@ public class TarantulaTest {
 		double score = (double) Math.round(r.getScore() * 100)/100;
 		assertEquals(0.56, score);
 	}
-	
-	@SuppressWarnings("deprecation")
+
 	@Test
 	public void test3() {
 		TarantulaResultMatrixRow r = new TarantulaResultMatrixRow("first Constraint" , "first mutant", 2, 5, 3, 2, false);
