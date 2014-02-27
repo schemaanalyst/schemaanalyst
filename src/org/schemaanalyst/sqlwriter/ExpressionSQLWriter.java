@@ -16,6 +16,8 @@ import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
+import static org.schemaanalyst.sqlwriter.SQLWriter.quoteIdentifier;
+
 public class ExpressionSQLWriter {
 
     protected ValueSQLWriter valueSQLWriter;
@@ -110,7 +112,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeColumn(Column column) {
-        return column.toString();
+        return quoteIdentifier(column.toString());
     }
 
     public String writeInExpression(InExpression expression) {
