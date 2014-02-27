@@ -5,7 +5,7 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
-import org.schemaanalyst.coverage.search.SearchBasedTestCaseGenerationAlgorithm;
+import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.*;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.Search;
@@ -118,7 +118,7 @@ public class GenerateSchemaCoverage extends Runner {
         System.out.println("\n" + testCase);
 
         if (!success) {
-            // print details of the objective value computed by the search
+            // print details of the objective value computed by the datageneration
             System.out.println("FAIL – OBJ VAL:\n" + testCase.getInfo("objval"));
         }
     }

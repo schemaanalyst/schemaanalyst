@@ -1,24 +1,7 @@
-package org.schemaanalyst.test.coverage.search.objectivefunction;
+package org.schemaanalyst.test.coverage.objectivefunction;
 
 import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.schemaanalyst.coverage.criterion.clause.MatchClause;
-import org.schemaanalyst.coverage.search.objectivefunction.MatchObjectiveFunction;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.Params.*;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 /**
  * Created by phil on 24/01/2014.
@@ -77,7 +60,7 @@ public class TestMatchObjectiveFunction {
 
         MatchClause mf = new MatchClause(database.table, equalCols, notEqualCols, mode, false);
 
-        MatchObjectiveFunction mof = new MatchObjectiveFunction(mf, state);
+        MatchClauseObjectiveFunction mof = new MatchClauseObjectiveFunction(mf, state);
         ObjectiveValue objVal = mof.evaluate(row);
 
         if (success) {

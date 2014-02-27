@@ -33,7 +33,7 @@ public class SearchFactory {
             }
         }
 
-        throw new SearchException("Unknown search \"" + searchName + "\"");
+        throw new SearchException("Unknown datageneration \"" + searchName + "\"");
     }
 
     public static Search<Data> avsDefaults(long randomSeed, int maxEvaluations) {

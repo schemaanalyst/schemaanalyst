@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.schemaanalyst.faultlocalization.Calculator;
 import org.schemaanalyst.faultlocalization.OchiaiResultMatrixRow;
 
-public class OchiaiTest {
+public class TestOchiai {
 
 	@Test
 	public void test1() {

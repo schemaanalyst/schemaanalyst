@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.search.objectivefunction;
+package org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.data.Data;
@@ -17,13 +17,13 @@ import java.util.ListIterator;
 /**
  * Created by phil on 24/01/2014.
  */
-public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
+public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
 
     private MatchClause matchClause;
     private Data state;
     private Table table, referenceTable;
 
-    public MatchObjectiveFunction(MatchClause matchClause, Data state) {
+    public MatchClauseObjectiveFunction(MatchClause matchClause, Data state) {
         this.matchClause = matchClause;
         this.state = state;
         this.table = matchClause.getTable();
@@ -96,7 +96,7 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     protected void evaluateColumnLists(Row row,
-                                       Row stateRow,
+                                       Row compareRow,
                                        List<Column> cols,
                                        List<Column> refCols,
                                        RelationalOperator op,
@@ -112,8 +112,8 @@ public class MatchObjectiveFunction extends ObjectiveFunction<Data> {
             Value colValue = row.getCell(col).getValue();
 
             ObjectiveValue compareObjVal = ObjectiveValue.worstObjectiveValue();
-            if (stateRow.hasColumn(refCol)) {
-                Value refColValue = stateRow.getCell(refCol).getValue();
+            if (compareRow.hasColumn(refCol)) {
+                Value refColValue = compareRow.getCell(refCol).getValue();
 
                 compareObjVal =
                         RelationalValueObjectiveFunction.compute(

@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage.search.objectivefunction;
+package org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction;
 
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.data.Data;
@@ -13,11 +13,11 @@ import java.util.List;
 /**
  * Created by phil on 24/01/2014.
  */
-public class NullObjectiveFunction extends ObjectiveFunction<Data> {
+public class NullClauseObjectiveFunction extends ObjectiveFunction<Data> {
 
     private NullClause nullClause;
 
-    public NullObjectiveFunction(NullClause nullClause) {
+    public NullClauseObjectiveFunction(NullClause nullClause) {
         this.nullClause = nullClause;
     }
 
