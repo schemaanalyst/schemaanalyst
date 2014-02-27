@@ -82,8 +82,8 @@ public class MatchClauseHandler extends Handler {
 
         boolean result = handleColumnLists(
                 row, compareRow,
-                matchClause.getEqualColumns(),
-                matchClause.getEqualRefColumns(),
+                matchClause.getMatchingColumns(),
+                matchClause.getMatchingReferenceColumns(),
                 true, fix);
 
         if (!result) {
@@ -92,8 +92,8 @@ public class MatchClauseHandler extends Handler {
 
         result = handleColumnLists(
                 row, compareRow,
-                matchClause.getNotEqualColumns(),
-                matchClause.getNotEqualRefColumns(),
+                matchClause.getNonMatchingColumns(),
+                matchClause.getNonMatchingReferenceColumns(),
                 false, fix);
 
         if (!result) {
@@ -161,7 +161,7 @@ public class MatchClauseHandler extends Handler {
 
     private void makeEqual(List<Pair<Cell>> valuePairs) {
         for (Pair<Cell> valuePair : valuePairs) {
-            valuePair.getFirst().setValue(valuePair.getSecond().getValue());
+            valuePair.getFirst().setValue(valuePair.getSecond().getValue().duplicate());
         }
     }
 

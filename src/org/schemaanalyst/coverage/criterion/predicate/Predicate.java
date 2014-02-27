@@ -87,8 +87,8 @@ public class Predicate {
                             matchClause.getReferenceTable().equals(table);
 
             if (sameTable) {
-                List<Column> equalCols = matchClause.getEqualColumns();
-                List<Column> notEqualCols = matchClause.getNotEqualColumns();
+                List<Column> equalCols = matchClause.getMatchingColumns();
+                List<Column> notEqualCols = matchClause.getNonMatchingColumns();
 
                 boolean foundCol = equalCols.remove(column);
                 foundCol = foundCol || notEqualCols.remove(column);

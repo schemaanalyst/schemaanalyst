@@ -5,6 +5,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,40 +20,49 @@ public class MatchClause extends Clause {
     public enum Mode {
         AND, OR;
 
+        public boolean isAnd() {
+            return this == AND;
+        }
+
+        public boolean isOr() {
+            return this == OR;
+        }
+
         public String toString() {
-            return this == AND ? "\u2227" : "\u2228";
+            return isAnd() ? "\u2227" : "\u2228";
         }
     }
 
+    public static final List<Column> EMPTY_COLUMN_LIST = Collections.unmodifiableList(new ArrayList<Column>());
+
     private Table refTable;
-    private List<Column> equalCols, notEqualCols, equalRefCols, notEqualRefCols;
+    private List<Column> matchingCols, nonMatchingCols, matchingRefCols, nonMatchingRefCols;
     private Mode mode;
-    private boolean requiresComparisonRow;
+    private boolean requiresComparisonRow, involvesOneTable;
 
     public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
                        Mode mode, boolean requiresComparisonRow) {
-        this(table, equalCols, notEqualCols,
-                table, equalCols, notEqualCols,
-                mode, requiresComparisonRow);
+        this(table, equalCols, notEqualCols, table, equalCols, notEqualCols, mode, requiresComparisonRow);
     }
 
-    public MatchClause(Table table, List<Column> equalCols, List<Column> notEqualCols,
-                       Table refTable, List<Column> equalRefCols, List<Column> notEqualRefCols,
+    public MatchClause(Table table, List<Column> matchingCols, List<Column> nonMatchingCols,
+                       Table refTable, List<Column> matchingRefCols, List<Column> nonMatchingRefCols,
                        Mode mode, boolean requiresComparisonRow) {
         super(table);
 
-        this.equalCols = new ArrayList<>(equalCols);
-        this.notEqualCols = new ArrayList<>(notEqualCols);
+        this.matchingCols = new ArrayList<>(matchingCols);
+        this.nonMatchingCols = new ArrayList<>(nonMatchingCols);
 
         this.refTable = refTable;
-        this.equalRefCols = new ArrayList<>(equalRefCols);
-        this.notEqualRefCols = new ArrayList<>(notEqualRefCols);
+        this.matchingRefCols = new ArrayList<>(matchingRefCols);
+        this.nonMatchingRefCols = new ArrayList<>(nonMatchingRefCols);
 
         this.mode = mode;
         this.requiresComparisonRow = requiresComparisonRow;
+        this.involvesOneTable = table.equals(refTable);
 
-        boolean sameNumberOfEqualsCols = equalCols.size() == equalRefCols.size();
-        boolean sameNumberOfNotEqualsCols = notEqualCols.size() == notEqualRefCols.size();
+        boolean sameNumberOfEqualsCols = matchingCols.size() == matchingRefCols.size();
+        boolean sameNumberOfNotEqualsCols = nonMatchingCols.size() == nonMatchingRefCols.size();
 
         if (!sameNumberOfEqualsCols || !sameNumberOfNotEqualsCols) {
             throw new ClauseConfigurationException("Number of columns and reference columns are not equal");
@@ -60,17 +70,17 @@ public class MatchClause extends Clause {
     }
 
     public List<Column> getColumns() {
-        ArrayList<Column> cols = new ArrayList<>(equalCols);
-        cols.addAll(notEqualCols);
+        ArrayList<Column> cols = new ArrayList<>(matchingCols);
+        cols.addAll(nonMatchingCols);
         return cols;
     }
 
-    public List<Column> getEqualColumns() {
-        return new ArrayList<>(equalCols);
+    public List<Column> getMatchingColumns() {
+        return new ArrayList<>(matchingCols);
     }
 
-    public List<Column> getNotEqualColumns() {
-        return new ArrayList<>(notEqualCols);
+    public List<Column> getNonMatchingColumns() {
+        return new ArrayList<>(nonMatchingCols);
     }
 
     public Table getReferenceTable() {
@@ -78,17 +88,17 @@ public class MatchClause extends Clause {
     }
 
     public List<Column> getReferenceColumns() {
-        ArrayList<Column> cols = new ArrayList<>(equalRefCols);
-        cols.addAll(notEqualRefCols);
+        ArrayList<Column> cols = new ArrayList<>(matchingRefCols);
+        cols.addAll(nonMatchingRefCols);
         return cols;
     }
 
-    public List<Column> getEqualRefColumns() {
-        return new ArrayList<>(equalRefCols);
+    public List<Column> getMatchingReferenceColumns() {
+        return new ArrayList<>(matchingRefCols);
     }
 
-    public List<Column> getNotEqualRefColumns() {
-        return new ArrayList<>(notEqualRefCols);
+    public List<Column> getNonMatchingReferenceColumns() {
+        return new ArrayList<>(nonMatchingRefCols);
     }
 
     public Mode getMode() {
@@ -99,22 +109,26 @@ public class MatchClause extends Clause {
         return requiresComparisonRow;
     }
 
+    public boolean involvesOneTable() {
+        return involvesOneTable;
+    }
+
     public String getName() {
-        int numCols = equalCols.size() + notEqualCols.size();
+        int numCols = matchingCols.size() + nonMatchingCols.size();
         return (numCols > 1 ? mode : "") + "Match";
     }
 
     protected String paramsToString() {
         String str = "";
 
-        if (equalCols.size() > 0) {
-            str += "=" + colsToString(equalCols, equalRefCols);
+        if (matchingCols.size() > 0) {
+            str += "=" + colsToString(matchingCols, matchingRefCols);
         }
-        if (notEqualCols.size() > 0) {
+        if (nonMatchingCols.size() > 0) {
             if (str.length() > 0) {
                 str += ", ";
             }
-            str += "\u2260" + colsToString(notEqualCols, notEqualRefCols);
+            str += "\u2260" + colsToString(nonMatchingCols, nonMatchingRefCols);
         }
 
         return str;
@@ -125,7 +139,7 @@ public class MatchClause extends Clause {
 
         if (!table.equals(refTable) || !cols.equals(refCols)) {
             colsStr += " -> ";
-            if (!table.equals(refTable)) {
+            if (!involvesOneTable()) {
                 colsStr += refTable + ": ";
             }
             colsStr += StringUtils.join(refCols, ",");
@@ -137,11 +151,11 @@ public class MatchClause extends Clause {
     public MatchClause duplicate() {
         return new MatchClause(
                 table,
-                new ArrayList<>(equalCols),
-                new ArrayList<>(notEqualCols),
+                new ArrayList<>(matchingCols),
+                new ArrayList<>(nonMatchingCols),
                 refTable,
-                new ArrayList<>(equalRefCols),
-                new ArrayList<>(notEqualRefCols),
+                new ArrayList<>(matchingRefCols),
+                new ArrayList<>(nonMatchingRefCols),
                 mode, requiresComparisonRow);
     }
 
@@ -157,11 +171,11 @@ public class MatchClause extends Clause {
 
         MatchClause that = (MatchClause) o;
 
-        if (!equalCols.equals(that.equalCols)) return false;
-        if (!equalRefCols.equals(that.equalRefCols)) return false;
+        if (!matchingCols.equals(that.matchingCols)) return false;
+        if (!matchingRefCols.equals(that.matchingRefCols)) return false;
         if (mode != that.mode) return false;
-        if (!notEqualCols.equals(that.notEqualCols)) return false;
-        if (!notEqualRefCols.equals(that.notEqualRefCols)) return false;
+        if (!nonMatchingCols.equals(that.nonMatchingCols)) return false;
+        if (!nonMatchingRefCols.equals(that.nonMatchingRefCols)) return false;
         if (!refTable.equals(that.refTable)) return false;
 
         return true;
@@ -172,10 +186,10 @@ public class MatchClause extends Clause {
         int result = super.hashCode();
         result = 31 * result + mode.hashCode();
         result = 31 * result + refTable.hashCode();
-        result = 31 * result + notEqualCols.hashCode();
-        result = 31 * result + equalCols.hashCode();
-        result = 31 * result + notEqualRefCols.hashCode();
-        result = 31 * result + equalRefCols.hashCode();
+        result = 31 * result + nonMatchingCols.hashCode();
+        result = 31 * result + matchingCols.hashCode();
+        result = 31 * result + nonMatchingRefCols.hashCode();
+        result = 31 * result + matchingRefCols.hashCode();
         return result;
     }
 }

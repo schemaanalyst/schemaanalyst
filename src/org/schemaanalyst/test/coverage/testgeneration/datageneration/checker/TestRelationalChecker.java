@@ -1,17 +1,23 @@
-package org.schemaanalyst.test.coverage.testgeneration.datageneration.handler;
+package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
+import org.schemaanalyst.coverage.testgeneration.datageneration.checker.RelationalChecker;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
+import org.schemaanalyst.data.Value;
+import org.schemaanalyst.logic.RelationalOperator;
 
 import static org.junit.Assert.*;
-import static org.schemaanalyst.coverage.testgeneration.datageneration.handler.RelationalExpressionChecker.check;
 import static org.schemaanalyst.logic.RelationalOperator.*;
 
 /**
  * Created by phil on 26/02/2014.
  */
-public class TestRelationalExpressionChecker {
+public class TestRelationalChecker {
+
+    private boolean check(Value lhs, RelationalOperator op, Value rhs, boolean allowNull) {
+        return new RelationalChecker(lhs, op, rhs, allowNull).check();
+    }
 
     @Test
     public void testNumericExpressions() {

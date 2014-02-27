@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.coverage.objectivefunction;
+package org.schemaanalyst.test.coverage.testgeneration.datageneration.objectivefunction;
 
 import junitparams.JUnitParamsRunner;
 import org.junit.runner.RunWith;
@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
  */
 
 @RunWith(JUnitParamsRunner.class)
-public class TestMatchObjectiveFunction {
+public class TestMatchClauseObjectiveFunction {
 /*
     Object[] testValues() {
         return $(

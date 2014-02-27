@@ -79,16 +79,16 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
         evaluateColumnLists(
                 row,
                 compareRow,
-                matchClause.getEqualColumns(),
-                matchClause.getEqualRefColumns(),
+                matchClause.getMatchingColumns(),
+                matchClause.getMatchingReferenceColumns(),
                 RelationalOperator.EQUALS,
                 objVal);
 
         evaluateColumnLists(
                 row,
                 compareRow,
-                matchClause.getNotEqualColumns(),
-                matchClause.getNotEqualRefColumns(),
+                matchClause.getNonMatchingColumns(),
+                matchClause.getNonMatchingReferenceColumns(),
                 RelationalOperator.NOT_EQUALS,
                 objVal);
 

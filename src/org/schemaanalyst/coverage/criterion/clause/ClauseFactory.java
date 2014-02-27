@@ -13,8 +13,6 @@ import java.util.List;
  */
 public class ClauseFactory {
 
-    static final List<Column> EMPTY_COLUMN_LIST = new ArrayList<>();
-
     public static NullClause isNotNull(Table table, Column column) {
         return new NullClause(
                 table,
@@ -36,7 +34,7 @@ public class ClauseFactory {
     public static MatchClause unique(Table table, List<Column> columns, boolean requiresComparisonRow) {
         return new MatchClause(
                 table,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 columns,
                 MatchClause.Mode.OR,
                 requiresComparisonRow);
@@ -50,7 +48,7 @@ public class ClauseFactory {
         return new MatchClause(
                 table,
                 columns,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 MatchClause.Mode.AND,
                 true);
     }
@@ -59,10 +57,10 @@ public class ClauseFactory {
         return new MatchClause(
                 table,
                 columns,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 refTable,
                 refCols,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 MatchClause.Mode.AND,
                 false);
     }
@@ -70,10 +68,10 @@ public class ClauseFactory {
     public static MatchClause notReferences(Table table, List<Column> columns, Table refTable, List<Column> refCols) {
         return new MatchClause(
                 table,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 columns,
                 refTable,
-                EMPTY_COLUMN_LIST,
+                MatchClause.EMPTY_COLUMN_LIST,
                 refCols,
                 MatchClause.Mode.OR,
                 false);
