@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by phil on 27/02/2014.
  */
-public class NullClauseChecker extends Checker {
+public class NullClauseChecker extends ClauseChecker<NullClause> {
 
     private NullClause nullClause;
     private Data data;
@@ -22,7 +22,7 @@ public class NullClauseChecker extends Checker {
         this.data = data;
     }
 
-    public NullClause getNullClause() {
+    public NullClause getClause() {
         return nullClause;
     }
 

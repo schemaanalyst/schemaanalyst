@@ -1,6 +1,5 @@
 package org.schemaanalyst.coverage.testgeneration.datageneration.fixer;
 
-import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.coverage.testgeneration.datageneration.checker.MatchClauseChecker;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.data.Cell;
@@ -19,7 +18,9 @@ public class MatchClauseFixer extends Fixer {
     private Random random;
     private CellValueGenerator cellValueGenerator;
 
-    public MatchClauseFixer(MatchClauseChecker matchClauseChecker, Random random, CellValueGenerator cellValueGenerator) {
+    public MatchClauseFixer(MatchClauseChecker matchClauseChecker,
+                            Random random,
+                            CellValueGenerator cellValueGenerator) {
         this.matchClauseChecker = matchClauseChecker;
         this.random = random;
         this.cellValueGenerator = cellValueGenerator;
@@ -27,7 +28,7 @@ public class MatchClauseFixer extends Fixer {
 
     @Override
     public void attemptFix() {
-        boolean isOr = matchClauseChecker.getMatchClause().getMode().isOr();
+        boolean isOr = matchClauseChecker.getClause().getMode().isOr();
 
         attemptFixNonMatchingCells(isOr);
         attemptFixMatchingCells(isOr);

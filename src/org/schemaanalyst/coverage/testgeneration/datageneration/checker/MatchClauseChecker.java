@@ -16,7 +16,7 @@ import java.util.ListIterator;
 /**
  * Created by phil on 27/02/2014.
  */
-public class MatchClauseChecker extends Checker {
+public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     private MatchClause matchClause;
     private boolean allowNull;
@@ -35,7 +35,7 @@ public class MatchClauseChecker extends Checker {
         this.state = state;
     }
 
-    public MatchClause getMatchClause() {
+    public MatchClause getClause() {
         return matchClause;
     }
 

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by phil on 27/02/2014.
  */
-public class ExpressionClauseChecker extends Checker {
+public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
 
     private ExpressionClause expressionClause;
     private boolean allowNull;
@@ -25,7 +25,7 @@ public class ExpressionClauseChecker extends Checker {
         this.data = data;
     }
 
-    public ExpressionClause getExpressionClause() {
+    public ExpressionClause getClause() {
         return expressionClause;
     }
 

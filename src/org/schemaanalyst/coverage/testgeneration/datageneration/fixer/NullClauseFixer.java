@@ -16,7 +16,7 @@ public class NullClauseFixer extends Fixer {
 
     @Override
     public void attemptFix() {
-        boolean setToNull = nullClauseChecker.getNullClause().getSatisfy();
+        boolean setToNull = nullClauseChecker.getClause().getSatisfy();
 
         for (Cell cell : nullClauseChecker.getNonComplyingCells()) {
             cell.setNull(setToNull);
