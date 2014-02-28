@@ -19,16 +19,18 @@ import java.util.ListIterator;
 public class MatchClauseChecker extends Checker {
 
     private MatchClause matchClause;
+    private boolean allowNull;
     private Data data, state;
     private List<Pair<Cell>> nonMatchingCells;
     private List<Cell> matchingCells;
 
-    public MatchClauseChecker(MatchClause matchClause, Data data) {
-        this(matchClause, data, new Data());
+    public MatchClauseChecker(MatchClause matchClause, boolean allowNull, Data data) {
+        this(matchClause, allowNull, data, new Data());
     }
 
-    public MatchClauseChecker(MatchClause matchClause, Data data, Data state) {
+    public MatchClauseChecker(MatchClause matchClause, boolean allowNull, Data data, Data state) {
         this.matchClause = matchClause;
+        this.allowNull = allowNull;
         this.data = data;
         this.state = state;
     }
@@ -110,7 +112,10 @@ public class MatchClauseChecker extends Checker {
                 Cell refCell = compareRow.getCell(refCol);
 
                 boolean valuesEqual = new RelationalChecker(
-                        cell.getValue(), RelationalOperator.EQUALS, refCell.getValue(), true).check();
+                        cell.getValue(),
+                        RelationalOperator.EQUALS,
+                        refCell.getValue(),
+                        allowNull).check();
 
                 if (shouldMatch != valuesEqual) {
                     if (shouldMatch) {

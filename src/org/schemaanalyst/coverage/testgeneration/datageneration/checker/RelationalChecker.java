@@ -16,10 +16,6 @@ public class RelationalChecker extends Checker {
     private RelationalOperator op;
     private boolean allowNull;
 
-    public RelationalChecker(Value lhs, RelationalOperator op, Value rhs) {
-        this(lhs, op, rhs, false);
-    }
-
     public RelationalChecker(Value lhs, RelationalOperator op, Value rhs, boolean allowNull) {
         this.lhs = lhs;
         this.op = op;
@@ -99,8 +95,18 @@ public class RelationalChecker extends Checker {
             Value nextLHSValue = lhsIterator.next();
             Value nextRHSValue = rhsIterator.next();
 
-            if (!new RelationalChecker(nextLHSValue, RelationalOperator.EQUALS, nextRHSValue).check()) {
-                return new RelationalChecker(nextLHSValue, op, nextRHSValue).check();
+            boolean equal = new RelationalChecker(
+                    nextLHSValue,
+                    RelationalOperator.EQUALS,
+                    nextRHSValue,
+                    allowNull).check();
+
+            if (!equal) {
+                return new RelationalChecker(
+                        nextLHSValue,
+                        op,
+                        nextRHSValue,
+                        allowNull).check();
             }
         }
 

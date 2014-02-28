@@ -18,12 +18,12 @@ import static org.junit.Assert.assertEquals;
 public class TestMatchClauseChecker {
 
     @Test
-    public void testOneColSameAndAreSame() {
+    public void testOneColMatchAndAreSame() {
         testOneColSame(10, 10, true);
     }
 
     @Test
-    public void testOneColSameAndAreDifferent() {
+    public void testOneColMatchAndAreDifferent() {
         testOneColSame(10, 20, false);
     }
 
@@ -41,7 +41,7 @@ public class TestMatchClauseChecker {
                 true
         );
 
-        MatchClauseChecker checker = new MatchClauseChecker(matchClause, data);
+        MatchClauseChecker checker = new MatchClauseChecker(matchClause, true, data);
 
         assertEquals(result, checker.check());
 
@@ -55,12 +55,12 @@ public class TestMatchClauseChecker {
     }
 
     @Test
-    public void testOneColDifferentAndAreDifferent() {
+    public void testOneColNonMatchAndAreDifferent() {
         testOneColNonMatching(10, 20, true);
     }
 
     @Test
-    public void testOneColDifferentAndAreSame() {
+    public void testOneColNonMatchAndAreSame() {
         testOneColNonMatching(10, 10, false);
     }
 
@@ -79,7 +79,7 @@ public class TestMatchClauseChecker {
                 true
         );
 
-        MatchClauseChecker checker = new MatchClauseChecker(matchClause, data);
+        MatchClauseChecker checker = new MatchClauseChecker(matchClause, true, data);
 
         assertEquals(result, checker.check());
 
