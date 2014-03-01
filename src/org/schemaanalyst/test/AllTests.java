@@ -2,7 +2,6 @@ package org.schemaanalyst.test;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import org.schemaanalyst.test.coverage.testgeneration.datageneration.checker.TestRelationalChecker;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
@@ -13,7 +12,11 @@ import org.schemaanalyst.test.coverage.testgeneration.datageneration.checker.Tes
 	org.schemaanalyst.test.coverage.criterion.requirements.TestMultiColumnConstraintRequirementsGenerator.class,
 	org.schemaanalyst.test.coverage.criterion.requirements.TestNotNullConstraintRequirementsGenerator.class,
 	org.schemaanalyst.test.coverage.testgeneration.datageneration.checker.TestMatchClauseChecker.class,
-	TestRelationalChecker.class,
+	org.schemaanalyst.test.coverage.testgeneration.datageneration.checker.TestRelationalChecker.class,
+	org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer.TestExpressionClauseFixer.class,
+	org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer.TestMatchClauseFixer.class,
+	org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer.TestNullClauseFixer.class,
+	org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer.TestPredicateFixer.class,
 	org.schemaanalyst.test.coverage.testgeneration.datageneration.objectivefunction.TestMatchClauseObjectiveFunction.class,
 	org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration.TestCellValueGenerator.class,
 	org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration.TestExpressionConstantMiner.class,

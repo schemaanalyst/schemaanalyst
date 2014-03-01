@@ -52,7 +52,9 @@ public class MatchClauseFixer extends Fixer {
         List<Cell> matchingCells = matchClauseChecker.getMatchingCells();
 
         if (isOr && matchingCells.size() > 1) {
-            Cell randomCell = matchingCells.get(random.nextInt(matchingCells.size()));
+            int randomCellIndex = random.nextInt(matchingCells.size());
+
+            Cell randomCell = matchingCells.get(randomCellIndex);
             matchingCells = new ArrayList<>();
             matchingCells.add(randomCell);
         }

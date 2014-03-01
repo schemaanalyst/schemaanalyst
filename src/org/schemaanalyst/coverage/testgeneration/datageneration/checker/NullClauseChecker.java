@@ -15,7 +15,7 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
 
     private NullClause nullClause;
     private Data data;
-    private List<Cell> nonComplyingCells;
+    protected List<Cell> nonComplyingCells;
 
     public NullClauseChecker(NullClause nullClause, Data data) {
         this.nullClause = nullClause;

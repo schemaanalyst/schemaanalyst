@@ -21,8 +21,8 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
     private MatchClause matchClause;
     private boolean allowNull;
     private Data data, state;
-    private List<Pair<Cell>> nonMatchingCells;
-    private List<Cell> matchingCells;
+    protected List<Pair<Cell>> nonMatchingCells;
+    protected List<Cell> matchingCells;
 
     public MatchClauseChecker(MatchClause matchClause, boolean allowNull, Data data) {
         this(matchClause, allowNull, data, new Data());

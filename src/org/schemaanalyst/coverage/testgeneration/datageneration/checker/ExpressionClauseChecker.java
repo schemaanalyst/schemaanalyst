@@ -17,7 +17,7 @@ public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
     private boolean allowNull;
     private Data data;
     private boolean compliant;
-    private List<Cell> nonComplyingCells;
+    protected List<Cell> nonComplyingCells;
 
     public ExpressionClauseChecker(ExpressionClause expressionClause, boolean allowNull, Data data) {
         this.expressionClause = expressionClause;

@@ -58,7 +58,7 @@ public class PredicateFixer extends Fixer {
         }
 
         fixers = new ArrayList<>();
-        List<ClauseChecker> clauseCheckers = predicateChecker.getClauseCheckers();
+        List<ClauseChecker<? extends Clause>> clauseCheckers = predicateChecker.getClauseCheckers();
         FixerInstantiator clauseFixerInstantiator = new FixerInstantiator(random, cellValueGenerator);
 
         for (ClauseChecker clauseChecker : clauseCheckers) {
@@ -66,6 +66,9 @@ public class PredicateFixer extends Fixer {
         }
     }
 
+    public List<Fixer> getFixers() {
+        return new ArrayList<>(fixers);
+    }
 
     @Override
     public void attemptFix() {

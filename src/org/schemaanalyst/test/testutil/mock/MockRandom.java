@@ -2,6 +2,8 @@ package org.schemaanalyst.test.testutil.mock;
 
 import org.schemaanalyst.util.random.Random;
 
+import java.util.List;
+
 public class MockRandom extends Random {
 
     protected int[] nextInts = {0};
@@ -14,6 +16,14 @@ public class MockRandom extends Random {
     public MockRandom(int... nextInts) {
         super(0);
         setNextInts(nextInts);
+    }
+
+    public MockRandom(List<Integer> nextIntsList) {
+        super(0);
+        nextInts = new int[nextIntsList.size()];
+        for (int i=0; i < nextIntsList.size(); i++) {
+            nextInts[i] = nextIntsList.get(i);
+        }
     }
 
     public void setNextInts(int... nextInts) {
