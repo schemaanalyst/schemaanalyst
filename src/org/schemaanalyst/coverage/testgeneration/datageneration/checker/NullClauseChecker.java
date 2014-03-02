@@ -39,6 +39,7 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
         if (rows.size() > 0) {
             for (Row row : rows) {
                 Cell cell = row.getCell(nullClause.getColumn());
+
                 if (nullClause.getSatisfy() != cell.isNull()) {
                     nonComplyingCells.add(cell);
                 }

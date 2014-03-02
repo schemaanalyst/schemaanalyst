@@ -44,7 +44,18 @@ public abstract class MockDatabase {
         setValues(state, values);
     }
 
-    public void setDataValues(Integer... values) {        
+    public void setDataValues(List<Integer> valuesList) {
+        Integer[] values = null;
+        if (valuesList != null) {
+            values = new Integer[valuesList.size()];
+            for (int i=0; i < valuesList.size(); i++) {
+                values[i] = valuesList.get(i);
+            }
+        }
+        setDataValues(values);
+    }
+
+    public void setDataValues(Integer... values) {
         if (data == null) {
             createData((int) Math.ceil((values.length / (double) numColumns)));
         }
