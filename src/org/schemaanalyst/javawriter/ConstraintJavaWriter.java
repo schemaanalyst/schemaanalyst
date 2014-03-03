@@ -36,7 +36,7 @@ public class ConstraintJavaWriter {
 
             String writeConstraint(Constraint constraint) {
                 args = new ArrayList<>();
-                if (constraint.hasIdentifier()) {
+                if (constraint.hasIdentifier() && constraint.getIdentifier().get() != null) {
                     args.add(javaWriter.writeString(constraint.getName()));
                 }
                 args.add(javaWriter.getVariableName(constraint.getTable()));
