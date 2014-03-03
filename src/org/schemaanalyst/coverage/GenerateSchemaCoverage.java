@@ -5,14 +5,20 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
+import org.schemaanalyst.coverage.testgeneration.datageneration.DirectedRandomTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.*;
+import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueInitializationProfile;
+import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueLibrary;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.util.random.Random;
+import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.*;
 
@@ -61,11 +67,24 @@ public class GenerateSchemaCoverage extends Runner {
         DBMS dbms = new SQLiteDBMS();
         Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
         boolean reuseTestCases = false;
-        Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
 
+        //Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
         // instantiate the test case generation algorithm
+        //TestCaseGenerationAlgorithm testCaseGenerator =
+        //        new SearchBasedTestCaseGenerationAlgorithm(search);
+
+        Random random = new SimpleRandom(0L);
         TestCaseGenerationAlgorithm testCaseGenerator =
-                new SearchBasedTestCaseGenerationAlgorithm(search);
+                new DirectedRandomTestCaseGenerationAlgorithm(
+                        random,
+                        new CellValueGenerator(
+                                new ValueLibrary(),
+                                ValueInitializationProfile.SMALL,
+                                random,
+                                0.1,
+                                0,
+                                false),
+                        100000);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(

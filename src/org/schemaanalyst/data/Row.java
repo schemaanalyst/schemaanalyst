@@ -48,13 +48,29 @@ public class Row {
     public Row(Cell... cells) {
         this(Arrays.asList(cells));
     }
-    
+
+    public int getNumCells() {
+        return cells.size();
+    }
+
+    public Row reduceRow(List<Column> columns) {
+        return new Row(getCells(columns));
+    }
+
     public Table getTable() {
         return table;
     }
 
     public List<Cell> getCells() {
-        return Collections.unmodifiableList(cells);
+        return new ArrayList<>(cells);
+    }
+
+    public List<Cell> getCells(List<Column> columns) {
+        List<Cell> cells = new ArrayList<>();
+        for (Column column : columns) {
+            cells.add(getCell(column));
+        }
+        return cells;
     }
 
     public Cell getCell(Column column) {

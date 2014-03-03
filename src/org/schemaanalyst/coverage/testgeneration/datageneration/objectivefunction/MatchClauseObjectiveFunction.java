@@ -112,6 +112,8 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
             Value colValue = row.getCell(col).getValue();
 
             ObjectiveValue compareObjVal = ObjectiveValue.worstObjectiveValue();
+
+            // TODO: check: how can the compare row NOT have the column ??
             if (compareRow.hasColumn(refCol)) {
                 Value refColValue = compareRow.getCell(refCol).getValue();
 
