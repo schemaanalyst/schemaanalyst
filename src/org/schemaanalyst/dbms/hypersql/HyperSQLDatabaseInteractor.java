@@ -45,7 +45,7 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
                     + File.separator + databaseConfiguration.getHsqldbPath()
                     + File.separator + databaseName);
             if (hsqldbDirectory.exists()) {
-                LOGGER.log(Level.WARNING, "Database folder already exists: {0}", hsqldbDirectory.getPath());
+                LOGGER.log(Level.CONFIG, "Database folder already exists: {0}", hsqldbDirectory.getPath());
             }
             Files.createDirectories(hsqldbDirectory.toPath());
 
