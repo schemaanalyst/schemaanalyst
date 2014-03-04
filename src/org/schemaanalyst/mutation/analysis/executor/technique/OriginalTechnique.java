@@ -19,7 +19,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
  * @author Chris J. Wright
  */
 public class OriginalTechnique extends Technique {
-
+    
     public OriginalTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         super(schema, mutants, testSuite, dbms, databaseInteractor);
     }

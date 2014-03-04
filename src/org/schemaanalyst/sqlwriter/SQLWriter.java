@@ -114,9 +114,11 @@ public class SQLWriter {
                 }
             }
 
+            boolean hasUnique = false;
             for (UniqueConstraint unique : schema.getUniqueConstraints(table)) {
-                if (!unique.hasMultipleColumns() && unique.involvesColumn(column)) {
+                if (!hasUnique && !unique.hasMultipleColumns() && unique.involvesColumn(column)) {
                     sql.appendTabbed(constraintSQLWriter.writeConstraint(unique));
+                    hasUnique = true;
                 }
             }
 
