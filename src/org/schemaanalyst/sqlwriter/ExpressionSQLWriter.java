@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlwriter;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -93,7 +95,12 @@ public class ExpressionSQLWriter {
     }
 
     public String writeAndExpression(AndExpression expression) {
-		return StringUtils.join(expression.getSubexpressions(), " AND ");	
+        List<Expression> subexpressions = expression.getSubexpressions();
+        List<String> subexpressionsStrings = new ArrayList<>(subexpressions.size());
+        for (Expression expr : subexpressions) {
+            subexpressionsStrings.add(writeExpression(expr));
+        }
+        return StringUtils.join(subexpressionsStrings, " AND ");
     }
 
     public String writeBetweenExpression(BetweenExpression expression) {
