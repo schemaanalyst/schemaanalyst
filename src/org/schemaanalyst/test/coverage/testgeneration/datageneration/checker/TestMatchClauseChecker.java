@@ -18,16 +18,26 @@ import static org.junit.Assert.assertEquals;
 public class TestMatchClauseChecker {
 
     @Test
-    public void testOneColMatchAndAreSame() {
-        testOneColSame(10, 10, true);
+    public void testOneColMatchAndAreSameAndMode() {
+        testOneColSame(10, 10, MatchClause.Mode.AND, true);
     }
 
     @Test
-    public void testOneColMatchAndAreDifferent() {
-        testOneColSame(10, 20, false);
+    public void testOneColMatchAndAreSameOrMode() {
+        testOneColSame(10, 10, MatchClause.Mode.OR, true);
     }
 
-    private void testOneColSame(int row1Value, int row2Value, boolean result) {
+    @Test
+    public void testOneColMatchAndAreDifferentAndMode() {
+        testOneColSame(10, 20, MatchClause.Mode.AND, false);
+    }
+
+    @Test
+    public void testOneColMatchAndAreDifferentOrMode() {
+        testOneColSame(10, 20, MatchClause.Mode.OR, false);
+    }
+
+    private void testOneColSame(int row1Value, int row2Value, MatchClause.Mode mode, boolean result) {
 
         OneColumnMockDatabase database = new OneColumnMockDatabase();
         Data data = database.createData(2);
@@ -35,9 +45,9 @@ public class TestMatchClauseChecker {
 
         MatchClause matchClause = new MatchClause(
                 database.table,
-                Arrays.asList(database.column),
-                MatchClause.EMPTY_COLUMN_LIST,
-                MatchClause.Mode.AND,
+                Arrays.asList(database.column), // equals columns
+                MatchClause.EMPTY_COLUMN_LIST,  // non-equals columns
+                mode,
                 true
         );
 
@@ -55,16 +65,26 @@ public class TestMatchClauseChecker {
     }
 
     @Test
-    public void testOneColNonMatchAndAreDifferent() {
-        testOneColNonMatching(10, 20, true);
+    public void testOneColNonMatchAndAreDifferentAndMode() {
+        testOneColNonMatching(10, 20, MatchClause.Mode.AND, true);
     }
 
     @Test
-    public void testOneColNonMatchAndAreSame() {
-        testOneColNonMatching(10, 10, false);
+    public void testOneColNonMatchAndAreSameAndMode() {
+        testOneColNonMatching(10, 10, MatchClause.Mode.AND, false);
     }
 
-    private void testOneColNonMatching(int row1Value, int row2Value, boolean result) {
+    @Test
+    public void testOneColNonMatchAndAreDifferentOrMode() {
+        testOneColNonMatching(10, 20, MatchClause.Mode.OR, true);
+    }
+
+    @Test
+    public void testOneColNonMatchAndAreSameOrMode() {
+        testOneColNonMatching(10, 10, MatchClause.Mode.OR, false);
+    }
+
+    private void testOneColNonMatching(int row1Value, int row2Value, MatchClause.Mode mode, boolean result) {
 
         OneColumnMockDatabase database = new OneColumnMockDatabase();
 
@@ -75,7 +95,7 @@ public class TestMatchClauseChecker {
                 database.table,
                 MatchClause.EMPTY_COLUMN_LIST,
                 Arrays.asList(database.column),
-                MatchClause.Mode.AND,
+                mode,
                 true
         );
 

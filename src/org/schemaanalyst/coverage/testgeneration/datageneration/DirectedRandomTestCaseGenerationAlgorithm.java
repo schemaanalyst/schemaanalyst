@@ -43,6 +43,11 @@ public class DirectedRandomTestCaseGenerationAlgorithm extends TestCaseGeneratio
         }
 
         TestCase testCase = new TestCase(data, state, predicate, success);
+
+        if (!success) {
+            testCase.addInfo("dump", predicateChecker.getDump());
+        }
+
         return testCase;
     }
 

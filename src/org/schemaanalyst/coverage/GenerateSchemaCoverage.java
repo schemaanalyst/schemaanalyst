@@ -138,7 +138,7 @@ public class GenerateSchemaCoverage extends Runner {
 
         if (!success) {
             // print details of the objective value computed by the datageneration
-            System.out.println("FAIL – OBJ VAL:\n" + testCase.getInfo("objval"));
+            System.out.println("FAIL – DUMP:\n" + testCase.getInfo("dump"));
         }
     }
 

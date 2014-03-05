@@ -48,4 +48,18 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
 
         return (nonComplyingCells.size() == 0);
     }
+
+    @Override
+    public String getDump() {
+        boolean check = check();
+        String dump = "Null clause: " + nullClause + "\n";
+        dump += "\t* Success: " + check + "\n";
+        if (!check) {
+            dump += "\t* Non-complying cells:\n";
+            for (Cell cell : nonComplyingCells) {
+                dump += "\t\t* " + cell + "\n";
+            }
+        }
+        return dump;
+    }
 }

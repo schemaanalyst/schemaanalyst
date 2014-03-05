@@ -22,39 +22,37 @@ public class Row {
     protected Table table;
     protected List<Cell> cells;
 
-    protected Row() {
-        table = null;
-        cells = new ArrayList<>();
-    }
-
     public Row(Table table, ValueFactory valueFactory) {
-        this();
-
         this.table = table;
+        this.cells = new ArrayList<>();
         for (Column column : table.getColumns()) {
             Cell cell = new Cell(column, valueFactory);
-            cells.add(cell);
+            this.cells.add(cell);
         }
     }
 
-    public Row(List<Cell> cells) {
-        this();
-
+    public Row(Table table, List<Cell> cells) {
+        this.table = table;
+        this.cells = new ArrayList<>();
         for (Cell cell : cells) {
             this.cells.add(cell);
         }
     }
-    
-    public Row(Cell... cells) {
-        this(Arrays.asList(cells));
+
+    public Row(List<Cell> cells) {
+        this.cells = new ArrayList<>();
+        for (Cell cell : cells) {
+            this.cells.add(cell);
+        }
     }
+
 
     public int getNumCells() {
         return cells.size();
     }
 
     public Row reduceRow(List<Column> columns) {
-        return new Row(getCells(columns));
+        return new Row(table, getCells(columns));
     }
 
     public Table getTable() {
@@ -105,12 +103,11 @@ public class Row {
     }
 
     public Row duplicate() {
-        Row duplicate = new Row();
-        duplicate.table = this.table;
+        List<Cell> duplicateCells = new ArrayList<>();
         for (Cell cell : this.cells) {
-            duplicate.cells.add(cell.duplicate());
+            duplicateCells.add(cell.duplicate());
         }
-        return duplicate;
+        return new Row(table, duplicateCells);
     }
 
     @Override

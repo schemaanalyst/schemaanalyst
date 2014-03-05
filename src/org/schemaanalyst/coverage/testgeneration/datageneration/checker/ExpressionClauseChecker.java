@@ -55,4 +55,9 @@ public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
 
         return compliant;
     }
+
+    @Override
+    public String getDump() {
+        return "";
+    }
 }

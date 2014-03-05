@@ -38,6 +38,7 @@ public class MatchClauseFixer extends Fixer {
     }
 
     private void attemptFixNonMatchingCells(boolean isOr) {
+        boolean isAnd = !isOr;
         List<MixedPair<Row, List<Row>>> nonMatchingCells = matchClauseChecker.getNonMatchingCells();
 
         for (MixedPair<Row, List<Row>> pair: nonMatchingCells) {
@@ -48,22 +49,25 @@ public class MatchClauseFixer extends Fixer {
             List<Row> alternativeRows = pair.getSecond();
             Row alternativeRow = alternativeRows.get(random.nextInt(alternativeRows.size()));
 
+            // if it's an OR MatchClause, we only need to fix up one pair of cells
+            // so work out a random index
             int orIndex = -1;
             if (isOr) {
                 orIndex = random.nextInt(row.getNumCells());
             }
 
-            ListIterator<Cell> rowIterator = row.getCells().listIterator();
-            ListIterator<Cell> alternativeRowIterator = alternativeRow.getCells().listIterator();
+            ListIterator<Cell> cellIterator = row.getCells().listIterator();
+            ListIterator<Cell> alternativeCellIterator = alternativeRow.getCells().listIterator();
 
-            while (rowIterator.hasNext()) {
-                if (isOr && orIndex != rowIterator.nextIndex()) {
-                    continue;
+            while (cellIterator.hasNext()) {
+                boolean matchCells = isAnd || orIndex == cellIterator.nextIndex();
+
+                Cell firstCell = cellIterator.next();
+                Cell secondCell = alternativeCellIterator.next();
+
+                if (matchCells) {
+                    firstCell.setValue(secondCell.getValue().duplicate());
                 }
-
-                Cell firstCell = rowIterator.next();
-                Cell secondCell = alternativeRowIterator.next();
-                firstCell.setValue(secondCell.getValue().duplicate());
             }
         }
     }
