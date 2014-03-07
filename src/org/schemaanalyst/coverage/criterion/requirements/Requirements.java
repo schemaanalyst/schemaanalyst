@@ -23,6 +23,12 @@ public class Requirements {
     public void addPredicate(Predicate predicateToAdd) {
         for (Predicate predicate : predicates) {
             if (predicate.equals(predicateToAdd)) {
+                // Debug code
+                // System.out.println(predicate.getPurposes());
+                // System.out.println(predicate);
+                // System.out.println(predicateToAdd.getPurposes());
+                // System.out.println(predicateToAdd);
+                // System.out.println();
                 predicate.addPurposes(predicateToAdd.getPurposes());
                 return;
             }

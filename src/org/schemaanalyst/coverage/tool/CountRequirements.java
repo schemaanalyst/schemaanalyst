@@ -1,6 +1,5 @@
 package org.schemaanalyst.coverage.tool;
 
-import com.sun.org.apache.regexp.internal.recompile;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
