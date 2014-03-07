@@ -20,7 +20,7 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 /*
  * BookTown schema.
- * Java code originally generated: 2013/08/17 00:30:27
+ * Java code originally generated: 2014/03/03 11:22:35
  *
  */
 
@@ -138,7 +138,7 @@ public class BookTown extends Schema {
 		tableDistinguishedAuthors.createColumn("last_name", new VarCharDataType(100));
 		tableDistinguishedAuthors.createColumn("first_name", new VarCharDataType(100));
 		tableDistinguishedAuthors.createColumn("award", new VarCharDataType(100));
-		this.createPrimaryKeyConstraint("authors_pkey", tableDistinguishedAuthors, tableDistinguishedAuthors.getColumn("id"));
+		this.createPrimaryKeyConstraint("distinguished_authors_pkey", tableDistinguishedAuthors, tableDistinguishedAuthors.getColumn("id"));
 		this.createNotNullConstraint(tableDistinguishedAuthors, tableDistinguishedAuthors.getColumn("id"));
 
 		Table tableVarchar100Sorting = this.createTable("varchar(100)_sorting");

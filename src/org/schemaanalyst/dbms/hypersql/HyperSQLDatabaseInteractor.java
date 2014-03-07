@@ -45,7 +45,7 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
                     + File.separator + databaseConfiguration.getHsqldbPath()
                     + File.separator + databaseName);
             if (hsqldbDirectory.exists()) {
-                LOGGER.log(Level.WARNING, "Database folder already exists: {0}", hsqldbDirectory.getPath());
+                LOGGER.log(Level.CONFIG, "Database folder already exists: {0}", hsqldbDirectory.getPath());
             }
             Files.createDirectories(hsqldbDirectory.toPath());
 
@@ -54,7 +54,12 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
             // system, thus the use of Configuration.project.  Also,
             // note that you should set the write_delay in the 
             // connection to the database supporting quick persists.
-            String databaseUrl = "jdbc:hsqldb:file:/" + hsqldbDirectory.getAbsolutePath() + URL_SUFFIX;
+            String databaseUrl;
+            if (!databaseConfiguration.getHsqldb_in_memory()) {
+                databaseUrl = "jdbc:hsqldb:file:/" + hsqldbDirectory.getAbsolutePath() + URL_SUFFIX;
+            } else {
+                databaseUrl = "jdbc:hsqldb:mem:/database" + URL_SUFFIX;
+            }
             LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
             // create the connection to the database, 

@@ -67,6 +67,10 @@ public class DatabaseConfiguration extends Configuration {
      */
     private String hsqldb_driver;
     /**
+     * Whether to use 'in-memory' mode.
+     */
+    private Boolean hsqldb_in_memory;
+    /**
      * The Derby database path.
      */
     private String derby_path;
@@ -205,6 +209,15 @@ public class DatabaseConfiguration extends Configuration {
      */
     public String getHsqldbDriver() {
         return hsqldb_driver;
+    }
+    
+    /**
+     * Whether to use 'in-memory' mode.
+     * 
+     * @return the hsqldb_in_memory
+     */
+    public Boolean getHsqldb_in_memory() {
+        return hsqldb_in_memory;
     }
 
     /**

@@ -12,8 +12,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
  *
  * @author Chris J. Wright
  */
-public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
-    
+public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema> {
+
     private static final Logger LOGGER = Logger.getLogger(AllOperatorsWithRemoversPipeline.class.getName());
 
     public AllOperatorsWithRemoversPipeline(Schema schema) {
@@ -37,7 +37,7 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
         addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker()));
     }
-    
+
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
@@ -47,9 +47,12 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema>{
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());
                 break;
+            case "HyperSQL":
+                addRemover(new PostgresRemover());
+                break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");
         }
     }
-    
+
 }

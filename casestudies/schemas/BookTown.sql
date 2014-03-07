@@ -170,7 +170,7 @@ CREATE TABLE "distinguished_authors" (
 	"last_name" varchar(100),
 	"first_name" varchar(100),
 	"award" varchar(100),
-	Constraint "authors_pkey" Primary Key ("id")
+	Constraint "distinguished_authors_pkey" Primary Key ("id")
 )
 
 CREATE TABLE "favorite_authors" (
