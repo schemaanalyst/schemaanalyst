@@ -48,7 +48,7 @@ public class TestMatchClauseChecker {
                 Arrays.asList(database.column), // equals columns
                 MatchClause.EMPTY_COLUMN_LIST,  // non-equals columns
                 mode,
-                true
+                false
         );
 
         MatchClauseChecker checker = new MatchClauseChecker(matchClause, true, data);
@@ -96,7 +96,7 @@ public class TestMatchClauseChecker {
                 MatchClause.EMPTY_COLUMN_LIST,
                 Arrays.asList(database.column),
                 mode,
-                true
+                false
         );
 
         MatchClauseChecker checker = new MatchClauseChecker(matchClause, true, data);

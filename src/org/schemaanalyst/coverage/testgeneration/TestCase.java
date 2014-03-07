@@ -84,7 +84,7 @@ public class TestCase {
     }
 
     public String toString() {
-        String str = "";
+        StringBuffer sb = new StringBuffer();
 
         // print purposes and predicates attempted/satisfied by this test case
         boolean first = true;
@@ -92,25 +92,37 @@ public class TestCase {
             if (first) {
                 first = false;
             } else {
-                str += "\n";
+                sb.append("\n");
             }
-            str += "PURPOSE:   " + predicate.getPurpose();
-            str += "\nPREDICATE: " + predicate;
+
+            // details about the purpose of the predicate
+            sb.append("PURPOSE:\t");
+            List<String> purposes = predicate.getPurposes();
+            if (purposes.size() == 1) {
+                sb.append(purposes.get(0));
+            } else {
+                for (String purpose : purposes) {
+                    sb.append("\n\t* " + purpose);
+                }
+            }
+
+            // the actual predicate
+            sb.append("\nPREDICATE:\t" + predicate);
         }
 
-        // print the contents of the state
+        // details about the contents of the state
         Data state = getState();
         if (state.getCells().size() > 0) {
-            str += "\nSTATE:\n" + getState();
+            sb.append("\nSTATE:\n" + getState());
         }
 
-        // print the contents of the test case data
-        str += "\nDATA:\n" + getData();
+        // details about the contents of the test case data
+        sb.append("\nDATA:\n" + getData());
 
         if (dbmsResults.size() > 0) {
-            str += "\nRESULTS:\n " + dbmsResults;
+            sb.append("\nRESULTS:\n " + dbmsResults);
         }
 
-        return str;
+        return sb.toString();
     }
 }

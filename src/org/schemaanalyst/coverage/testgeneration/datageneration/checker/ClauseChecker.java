@@ -9,5 +9,5 @@ public abstract class ClauseChecker<T extends Clause> extends Checker {
 
     public abstract T getClause();
 
-    public abstract String getDump();
+    public abstract String getInfo();
 }

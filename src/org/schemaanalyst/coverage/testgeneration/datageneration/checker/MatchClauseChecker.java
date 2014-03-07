@@ -24,7 +24,6 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
     private boolean compliant;
     private List<MixedPair<Row, List<Row>>> nonMatchingCells;
     private List<Cell> matchingCells;
-    private String valueCheckLog;
 
     public MatchClauseChecker(MatchClause matchClause, boolean allowNull, Data data) {
         this(matchClause, allowNull, data, new Data());
@@ -60,12 +59,11 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     @Override
     public boolean check() {
-        valueCheckLog = "";
+
         compliant = true;
         nonMatchingCells = new ArrayList<>();
         matchingCells = new ArrayList<>();
 
-        // do the check
         List<Row> rows = data.getRows(matchClause.getTable());
         ListIterator<Row> rowsIterator = rows.listIterator();
 
@@ -74,9 +72,14 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
             Row row = rowsIterator.next();
             List<Row> compareRows = getCompareRows(data, index);
 
-            checkMatching(row, compareRows);
-            checkNonMatching(row, compareRows);
-
+            if (compareRows.size() == 0) {
+                if (matchClause.requiresComparisonRow()) {
+                    compliant = false;
+                }
+            } else {
+                checkMatching(row, compareRows);
+                checkNonMatching(row, compareRows);
+            }
         }
 
         return compliant;
@@ -87,12 +90,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         List<Column> matchingColumns = matchClause.getMatchingColumns();
         List<Column> matchingReferenceColumns = matchClause.getMatchingReferenceColumns();
 
-        List<Row> nonCompliantRows = checkRow(
-                row,
-                compareRows,
-                matchingColumns,
-                matchingReferenceColumns,
-                true);
+        List<Row> nonCompliantRows = checkRow(row, compareRows, matchingColumns, matchingReferenceColumns, true);
 
         int numNonCompliant = nonCompliantRows.size();
         int numCompare = compareRows.size();
@@ -159,7 +157,6 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
                             refCell.getValue(),
                             allowNull).check();
 
-                    valueCheckLog += cell.getValue() + " " + (shouldMatch ? "=" : "=/=") + " " + refCell.getValue() + "\n";
                     boolean thisPairingSatisfied = (shouldMatch == valuesEqual);
 
                     if (thisPairingSatisfied) {
@@ -169,12 +166,9 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
                     }
                 }
 
-
                 boolean satisfied =
                         (matchClause.getMode().isAnd() && allPairingsSatisfied) ||
                                 (matchClause.getMode().isOr() && onePairingSatisfied);
-
-                valueCheckLog += "satisfied? " + satisfied + ", allPairingsSatisfied? " + allPairingsSatisfied + " onePairingSatisfied? "  + onePairingSatisfied + "\n";
 
                 if (!satisfied) {
                     nonCompliantRows.add(row);
@@ -186,25 +180,25 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
     }
 
     @Override
-    public String getDump() {
+    public String getInfo() {
         boolean check = check();
-        String dump = "Match clause: " + matchClause + "\n";
-        dump += "\t* Success: " + check + "\n";
-        dump += valueCheckLog;
+        String info = "Match clause: " + matchClause + "\n";
+        info += "\t* Success: " + check + "\n";
+
         if (!check) {
-            dump += "\t* Matching cells:\n";
+            info += "\t* Matching cells:\n";
             for (Cell cell : matchingCells) {
-                dump += "\t\t* " + cell + "\n";
+                info += "\t\t* " + cell + "\n";
             }
-            dump += "\t* Non-matching cells:\n";
+            info += "\t* Non-matching cells:\n";
             for (MixedPair<Row, List<Row>> pair : nonMatchingCells) {
-                dump += "\t\t* " + pair.getFirst() + "\n";
+                info += "\t\t* " + pair.getFirst() + "\n";
                 List<Row> rows = pair.getSecond();
                 for (Row row : rows) {
-                    dump += "\t\t\t-> " + row + "\n";
+                    info += "\t\t\t-> " + row + "\n";
                 }
             }
         }
-        return dump;
+        return info;
     }
 }

@@ -5,6 +5,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.schemaanalyst.coverage.criterion.clause.ClauseFactory.*;
@@ -17,7 +18,7 @@ public class ConstraintPredicateGenerator implements ConstraintVisitor {
     private Schema schema;
     private Table table;
     private Constraint constraint;
-    protected Predicate predicate;
+    private Predicate predicate;
 
     public ConstraintPredicateGenerator(Schema schema, Table table) {
         this.schema = schema;
@@ -32,7 +33,11 @@ public class ConstraintPredicateGenerator implements ConstraintVisitor {
     }
 
     public Predicate generate(String purpose) {
-        predicate = new Predicate(purpose);
+        return generate(Arrays.asList(purpose));
+    }
+
+    public Predicate generate(List<String> purposes) {
+        predicate = new Predicate(purposes);
         List<Constraint> constraints = schema.getConstraints(table);
 
         for (Constraint tableConstraint : constraints) {

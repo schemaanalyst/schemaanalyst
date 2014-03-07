@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by phil on 31/01/2014.
  */
-public class CheckConstraintRequirementsGenerator extends RequirementsGenerator {
+public class CheckConstraintRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     private Expression expression;
 

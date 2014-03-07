@@ -69,7 +69,7 @@ public class PredicateChecker extends Checker {
     public String getDump() {
         String dump = "";
         for (ClauseChecker clauseChecker : clauseCheckers) {
-            dump += clauseChecker.getDump();
+            dump += clauseChecker.getInfo();
         }
         return dump;
     }

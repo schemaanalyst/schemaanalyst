@@ -8,13 +8,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Scenario: We have one current row "C" to compare with a set of other rows "R", 1-r.
- * This function checks C is not equal to all R, 1-r, except for one row according the
- * columns individually in the lists "equalsCols" and "notEqualsCols" (with optional references).
- *
- * @author Phil McMinn
- */
 public class MatchClause extends Clause {
 
     public enum Mode {

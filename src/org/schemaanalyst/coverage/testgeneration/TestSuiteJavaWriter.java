@@ -126,7 +126,9 @@ public class TestSuiteJavaWriter {
 
         code.setIndentLevel(2);
         for (Predicate predicate : testCase.getPredicates()) {
-            code.appendln("// " + predicate.getPurpose());
+            for (String purpose : predicate.getPurposes()) {
+                code.appendln("// " + purpose);
+            }
         }
 
         Data state = testCase.getState();

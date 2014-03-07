@@ -57,7 +57,7 @@ public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
     }
 
     @Override
-    public String getDump() {
+    public String getInfo() {
         return "";
     }
 }

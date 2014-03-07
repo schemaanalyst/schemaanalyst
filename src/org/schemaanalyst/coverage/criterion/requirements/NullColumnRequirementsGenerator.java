@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by phil on 21/01/2014.
  */
-public class NullColumnRequirementsGenerator extends RequirementsGenerator {
+public class NullColumnRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     public NullColumnRequirementsGenerator(Schema schema, Table table) {
         super(schema, table);

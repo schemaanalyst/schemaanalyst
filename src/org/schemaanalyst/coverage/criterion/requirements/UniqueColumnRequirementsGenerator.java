@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by phil on 21/01/2014.
  */
-public class UniqueColumnRequirementsGenerator extends RequirementsGenerator {
+public class UniqueColumnRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     public UniqueColumnRequirementsGenerator(Schema schema, Table table) {
         super(schema, table);

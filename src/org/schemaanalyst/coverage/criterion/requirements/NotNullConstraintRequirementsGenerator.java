@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by phil on 05/02/2014.
  */
-public class NotNullConstraintRequirementsGenerator extends RequirementsGenerator {
+public class NotNullConstraintRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     private Column column;
 

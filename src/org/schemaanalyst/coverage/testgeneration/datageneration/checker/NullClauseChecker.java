@@ -50,7 +50,7 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
     }
 
     @Override
-    public String getDump() {
+    public String getInfo() {
         boolean check = check();
         String dump = "Null clause: " + nullClause + "\n";
         dump += "\t* Success: " + check + "\n";

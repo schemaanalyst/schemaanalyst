@@ -3,9 +3,9 @@ package org.schemaanalyst.coverage.criterion.types;
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.CheckConstraintCACRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.ConstraintRequirementsGenerator;
 import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintCACRequirementsGenerator;
 import org.schemaanalyst.coverage.criterion.requirements.NotNullConstraintRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.RequirementsGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
@@ -28,27 +28,27 @@ public class AmplifiedConstraintCACCoverage extends Criterion {
 
         if (schema.hasPrimaryKeyConstraint(table)) {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, primaryKeyConstraint);
+            ConstraintRequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, primaryKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, uniqueConstraint);
+            ConstraintRequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, uniqueConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
-            RequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, foreignKeyConstraint);
+            ConstraintRequirementsGenerator generator = new MultiColumnConstraintCACRequirementsGenerator(schema, foreignKeyConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (CheckConstraint checkConstraint : schema.getCheckConstraints(table)) {
-            RequirementsGenerator generator = new CheckConstraintCACRequirementsGenerator(schema, checkConstraint);
+            ConstraintRequirementsGenerator generator = new CheckConstraintCACRequirementsGenerator(schema, checkConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 
         for (NotNullConstraint notNullConstraint : schema.getNotNullConstraints(table)) {
-            RequirementsGenerator generator = new NotNullConstraintRequirementsGenerator(schema, notNullConstraint);
+            ConstraintRequirementsGenerator generator = new NotNullConstraintRequirementsGenerator(schema, notNullConstraint);
             requirements.addAll(generator.generateRequirements());
         }
 

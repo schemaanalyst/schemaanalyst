@@ -162,7 +162,7 @@ public class GenerateSchemaCoverage extends Runner {
                 if (uncovered.size() > 0) {
                     System.out.println("Uncovered predicates: ");
                     for (Predicate predicate : uncovered) {
-                        System.out.println(predicate.getPurpose() + ": " + predicate);
+                        System.out.println(predicate.getPurposes() + ": " + predicate);
                     }
                 }
             }

@@ -29,7 +29,7 @@ public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicates
 
             for (Predicate truePredicate : generateTruePredicates(table, subexpression)) {
                 Predicate predicate = new Predicate(
-                        "Testing " + expression + " is true with " + truePredicate.getPurpose());
+                        "Testing " + expression + " is true with " + truePredicate.getPurposes());
                 predicate.addClauses(truePredicate);
                 predicate.addClauses(truePredicateExcludingExpression);
                 predicates.add(predicate);
@@ -48,7 +48,7 @@ public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicates
 
             for (Predicate falsePredicate : generateFalsePredicates(table, subexpression)) {
                 Predicate predicate = new Predicate(
-                        "Testing " + expression + " is false with " + falsePredicate.getPurpose());
+                        "Testing " + expression + " is false with " + falsePredicate.getPurposes());
                 predicate.addClauses(falsePredicate);
                 predicate.addClauses(truePredicateExcludingExpression);
                 predicates.add(predicate);
@@ -67,7 +67,7 @@ public class AndExpressionCACPredicatesGenerator extends ExpressionCACPredicates
 
             for (Predicate nullPredicate : generateNullPredicates(table, subexpression)) {
                 Predicate predicate = new Predicate(
-                        "Testing " + expression + " is NULL with " + nullPredicate.getPurpose());
+                        "Testing " + expression + " is NULL with " + nullPredicate.getPurposes());
                 predicate.addClauses(nullPredicate);
                 predicate.addClauses(truePredicateExcludingExpression);
                 predicates.add(predicate);
