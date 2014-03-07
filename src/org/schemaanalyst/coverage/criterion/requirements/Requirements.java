@@ -13,7 +13,7 @@ public class Requirements {
     private ArrayList<Predicate> predicates;
 
     public Requirements() {
-        predicates = new ArrayList<>();
+        this.predicates = new ArrayList<>();
     }
 
     public List<Predicate> getPredicates() {

@@ -1,4 +1,4 @@
-package org.schemaanalyst.coverage;
+package org.schemaanalyst.coverage.tool;
 
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.Requirements;
@@ -12,7 +12,7 @@ import org.schemaanalyst.util.runner.Runner;
  * Created by phil on 24/02/2014.
  */
 @RequiredParameters("schema criterion")
-public class PrintTestRequirements extends Runner {
+public class PrintRequirements extends Runner {
 
     @Parameter("The name of the schema to use.")
     protected String schema;
@@ -54,7 +54,7 @@ public class PrintTestRequirements extends Runner {
     }
 
     public static void main(String... args) {
-        new PrintTestRequirements().run(args);
+        new PrintRequirements().run(args);
     }
 
 }
