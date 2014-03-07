@@ -21,15 +21,12 @@ public class Requirements {
     }
 
     public void addPredicate(Predicate predicateToAdd) {
-        System.out.println("Entered");
         for (Predicate predicate : predicates) {
             if (predicate.equals(predicateToAdd)) {
-                System.out.println("\t" + predicateToAdd + " is equal to a predicate in the set");
                 predicate.addPurposes(predicateToAdd.getPurposes());
                 return;
             }
         }
-        System.out.println("\t adding " + predicateToAdd);
         predicates.add(predicateToAdd);
     }
 
