@@ -3,16 +3,11 @@
 
 package org.schemaanalyst.mutation.reduction;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
+import java.util.*;
 
 /**
  * <p>

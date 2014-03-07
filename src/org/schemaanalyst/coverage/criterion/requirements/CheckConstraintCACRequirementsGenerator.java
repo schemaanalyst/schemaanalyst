@@ -6,7 +6,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,8 +21,8 @@ public class CheckConstraintCACRequirementsGenerator extends ConstraintRequireme
     }
 
     @Override
-    public List<Predicate> generateRequirements() {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         List<Predicate> expressionPredicates =
                 ExpressionCACPredicatesGenerator.generatePredicates(table, expression);
@@ -31,7 +30,7 @@ public class CheckConstraintCACRequirementsGenerator extends ConstraintRequireme
         for (Predicate expressionPredicate : expressionPredicates) {
             Predicate predicate = generatePredicate(expressionPredicate.getPurposes());
             predicate.addClauses(expressionPredicate);
-            requirements.add(predicate);
+            requirements.addPredicate(predicate);
         }
 
         return requirements;

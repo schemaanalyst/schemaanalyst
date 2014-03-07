@@ -2,9 +2,9 @@ package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
-import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;

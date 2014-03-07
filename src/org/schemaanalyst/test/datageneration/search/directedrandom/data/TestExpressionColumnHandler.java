@@ -1,11 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.directedrandom.data;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.Params.*;
-import static org.schemaanalyst.test.testutil.assertion.DataAssert.assertDataEquals;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
@@ -17,6 +13,11 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.MockCellRandomiser;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.schemaanalyst.test.testutil.Params.d;
+import static org.schemaanalyst.test.testutil.Params.r;
+import static org.schemaanalyst.test.testutil.assertion.DataAssert.assertDataEquals;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestExpressionColumnHandler {

@@ -1,18 +1,19 @@
 package org.schemaanalyst.test.datageneration.search.directedrandom.data;
 
-import java.util.List;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import static org.junit.Assert.*;
-import static junitparams.JUnitParamsRunner.$;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.datageneration.search.handler.NullColumnHandler;
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
+
+import java.util.List;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestNullColumnHandler {

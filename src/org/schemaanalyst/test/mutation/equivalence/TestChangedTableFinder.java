@@ -1,7 +1,6 @@
 package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -14,6 +13,8 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
+
+import static org.junit.Assert.*;
 
 public class TestChangedTableFinder {
     

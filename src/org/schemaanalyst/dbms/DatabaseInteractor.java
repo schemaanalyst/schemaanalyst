@@ -1,13 +1,14 @@
 package org.schemaanalyst.dbms;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
 
 /**
  * <p>

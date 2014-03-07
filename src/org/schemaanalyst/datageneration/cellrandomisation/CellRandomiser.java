@@ -1,20 +1,10 @@
 package org.schemaanalyst.datageneration.cellrandomisation;
 
+import org.schemaanalyst.data.*;
+import org.schemaanalyst.util.random.Random;
+
 import java.math.BigDecimal;
 import java.util.List;
-
-import org.schemaanalyst.data.BooleanValue;
-import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.DateTimeValue;
-import org.schemaanalyst.data.DateValue;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.TimeValue;
-import org.schemaanalyst.data.TimestampValue;
-import org.schemaanalyst.data.Value;
-import org.schemaanalyst.data.ValueVisitor;
-import org.schemaanalyst.util.random.Random;
 
 public class CellRandomiser {
 

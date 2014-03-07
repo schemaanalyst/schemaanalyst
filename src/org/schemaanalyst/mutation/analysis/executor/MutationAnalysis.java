@@ -1,12 +1,9 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
-import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -24,6 +21,10 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 /**
  * An alternative implementation of mutation analysis, using the

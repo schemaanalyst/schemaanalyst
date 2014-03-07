@@ -1,6 +1,5 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueLibrary;
@@ -12,6 +11,8 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 import org.schemaanalyst.test.testutil.mock.MockRandom;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by phil on 26/02/2014.

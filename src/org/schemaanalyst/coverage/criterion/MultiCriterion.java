@@ -1,10 +1,9 @@
 package org.schemaanalyst.coverage.criterion;
 
-import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -37,11 +36,11 @@ public class MultiCriterion extends Criterion {
     }
 
     @Override
-    public List<Predicate> generateRequirements(Schema schema, Table table) {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements(Schema schema, Table table) {
+        Requirements requirements = new Requirements();
 
         for (Criterion criterion : criteria) {
-            requirements.addAll(criterion.generateRequirements(schema, table));
+            requirements.addPredicates(criterion.generateRequirements(schema, table));
         }
 
         return requirements;

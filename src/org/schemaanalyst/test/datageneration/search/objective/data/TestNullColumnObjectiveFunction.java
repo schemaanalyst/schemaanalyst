@@ -2,7 +2,6 @@ package org.schemaanalyst.test.datageneration.search.objective.data;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
@@ -11,8 +10,8 @@ import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValu
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
-import static org.junit.Assert.assertEquals;
 import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.assertEquals;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
 

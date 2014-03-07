@@ -1,9 +1,9 @@
 package org.schemaanalyst.datageneration.search.objective;
 
-import static java.math.BigDecimal.ZERO;
-import static java.math.BigDecimal.ONE;
-
 import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
 
 public class ObjectiveValue implements Comparable<ObjectiveValue> {
 

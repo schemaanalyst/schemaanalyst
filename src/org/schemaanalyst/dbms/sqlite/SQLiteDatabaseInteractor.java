@@ -1,18 +1,19 @@
 package org.schemaanalyst.dbms.sqlite;
 
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import org.sqlite.SQLiteConfig;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.sqlite.SQLiteConfig;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
 
 /**
  * <p>

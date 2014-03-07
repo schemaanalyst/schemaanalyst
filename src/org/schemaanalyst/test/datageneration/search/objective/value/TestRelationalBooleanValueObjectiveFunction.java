@@ -2,9 +2,6 @@ package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-import static org.junit.Assert.*;
-import static junitparams.JUnitParamsRunner.$;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.BooleanValue;
@@ -13,7 +10,10 @@ import org.schemaanalyst.datageneration.search.objective.value.RelationalBoolean
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.tuple.Pair;
 
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.*;
+import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.fail;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertWorst;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestRelationalBooleanValueObjectiveFunction {

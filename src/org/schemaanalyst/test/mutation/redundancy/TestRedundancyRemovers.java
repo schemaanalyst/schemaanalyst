@@ -2,23 +2,24 @@
  */
 package org.schemaanalyst.test.mutation.redundancy;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
-import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

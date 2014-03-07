@@ -2,12 +2,14 @@
  */
 package org.schemaanalyst.test.mutation.equivalence;
 
+import org.junit.Test;
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.junit.Test;
+
 import static org.junit.Assert.*;
-import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 
 /**
  *

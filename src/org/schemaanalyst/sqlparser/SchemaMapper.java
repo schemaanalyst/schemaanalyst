@@ -1,31 +1,24 @@
 package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.EIndexType;
-import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
-
-import java.util.logging.Logger;
-
 import gudusoft.gsqlparser.TCustomSqlStatement;
 import gudusoft.gsqlparser.TStatementList;
-import gudusoft.gsqlparser.nodes.TAlterTableOption;
-import gudusoft.gsqlparser.nodes.TAlterTableOptionList;
-import gudusoft.gsqlparser.nodes.TColumnDefinition;
-import gudusoft.gsqlparser.nodes.TColumnDefinitionList;
-import gudusoft.gsqlparser.nodes.TObjectName;
-import gudusoft.gsqlparser.nodes.TOrderByItemList;
+import gudusoft.gsqlparser.nodes.*;
 import gudusoft.gsqlparser.stmt.TAlterTableStatement;
 import gudusoft.gsqlparser.stmt.TCreateIndexSqlStatement;
 import gudusoft.gsqlparser.stmt.TCreateTableSqlStatement;
-import java.util.ArrayList;
-import java.util.List;
-
-import java.util.logging.Level;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 
 /**
  * <p>

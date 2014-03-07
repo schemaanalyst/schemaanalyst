@@ -1,17 +1,12 @@
 package org.schemaanalyst.datageneration.search.objective.value;
 
-import java.util.Iterator;
-import java.util.List;
-
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.datageneration.search.objective.*;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.tuple.Pair;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class EqualsMultiValueObjectiveFunction extends ObjectiveFunction<Pair<List<Value>>> {
 

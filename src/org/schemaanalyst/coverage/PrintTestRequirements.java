@@ -1,13 +1,12 @@
 package org.schemaanalyst.coverage;
 
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-
-import java.util.List;
 
 /**
  * Created by phil on 24/02/2014.
@@ -23,14 +22,14 @@ public class PrintTestRequirements extends Runner {
 
     @Override
     protected void task() {
-        List<Predicate> requirements =
+        Requirements requirements =
                 CriterionFactory.instantiate(criterion)
                         .generateRequirements(instantiateSchema(schema));
 
         System.out.println("Number of requirements: " + requirements.size());
 
         int num = 1;
-        for (Predicate predicate : requirements) {
+        for (Predicate predicate : requirements.getPredicates()) {
             System.out.println(num + ") " + predicate.getPurposes());
             System.out.println(predicate);
             System.out.println();

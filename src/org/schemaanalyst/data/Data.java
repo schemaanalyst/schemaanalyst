@@ -1,15 +1,9 @@
 package org.schemaanalyst.data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.*;
 
 /**
  * A class that represents data belonging to a series of tables.

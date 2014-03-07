@@ -3,23 +3,7 @@ package org.schemaanalyst.sqlparser;
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TParseTreeNode;
 import gudusoft.gsqlparser.nodes.TTypeName;
-
-import org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DateTimeDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DecimalDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.SingleCharDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.TimeDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.TimestampDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.TinyIntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.*;
 
 class DataTypeMapper {
 

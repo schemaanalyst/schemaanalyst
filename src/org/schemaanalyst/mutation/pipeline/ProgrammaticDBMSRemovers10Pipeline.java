@@ -2,10 +2,6 @@
  */
 package org.schemaanalyst.mutation.pipeline;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
@@ -17,6 +13,11 @@ import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>

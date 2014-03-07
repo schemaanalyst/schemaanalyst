@@ -1,13 +1,19 @@
 package org.schemaanalyst.test.mutation.operator;
 
 import org.junit.Test;
-import java.util.*;
-import static org.junit.Assert.*;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.FKCColumnPairA;
-import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
-import org.schemaanalyst.sqlrepresentation.datatype.*;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestFKCColumnPairA {
 

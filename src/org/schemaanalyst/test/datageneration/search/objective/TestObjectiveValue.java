@@ -1,9 +1,10 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
 import org.junit.Test;
-
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestObjectiveValue {
 

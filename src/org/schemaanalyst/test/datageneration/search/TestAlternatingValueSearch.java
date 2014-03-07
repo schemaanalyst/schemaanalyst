@@ -4,15 +4,15 @@ import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.AlternatingValueSearch;
+import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
-import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
 import org.schemaanalyst.test.testutil.mock.MockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestAlternatingValueSearch {
 

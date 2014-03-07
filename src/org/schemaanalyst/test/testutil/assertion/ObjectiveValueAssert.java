@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.testutil.assertion;
 
-import static org.junit.Assert.assertTrue;
-
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+
+import static org.junit.Assert.assertTrue;
 
 public class ObjectiveValueAssert {
 

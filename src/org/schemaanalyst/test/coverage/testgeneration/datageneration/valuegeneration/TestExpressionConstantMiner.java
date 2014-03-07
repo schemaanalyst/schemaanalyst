@@ -1,6 +1,5 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ExpressionConstantMiner;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueLibrary;
@@ -13,6 +12,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 import org.schemaanalyst.sqlrepresentation.expression.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 
 /**

@@ -1,14 +1,14 @@
 package org.schemaanalyst.mutation.supplier.expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionWalker;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
+import org.schemaanalyst.sqlrepresentation.expression.ExpressionWalker;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

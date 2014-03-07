@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +20,8 @@ public class UniqueColumnRequirementsGenerator extends ConstraintRequirementsGen
         super(schema, table, generateFullPredicate);
     }
 
-    public List<Predicate> generateRequirements() {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         List<Column> columns = table.getColumns();
         for (Column column : columns) {
@@ -37,17 +36,17 @@ public class UniqueColumnRequirementsGenerator extends ConstraintRequirementsGen
         return requirements;
     }
 
-    private void addNotUniqueColumnRequirement(List<Predicate> requirements, Column column) {
+    private void addNotUniqueColumnRequirement(Requirements requirements, Column column) {
         Predicate predicate = generatePredicate("Test " + column + " is NOT UNIQUE for " + table);
         predicate.setColumnUniqueStatus(table, column, false);
         predicate.setColumnNullStatus(table, column, false);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
-    private void addUniqueColumnRequirement(List<Predicate> requirements, Column column) {
+    private void addUniqueColumnRequirement(Requirements requirements, Column column) {
         Predicate predicate = generatePredicate("Test " + column + " is UNIQUE for " + table);
         predicate.setColumnUniqueStatus(table, column, true);
         predicate.setColumnNullStatus(table, column, false);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 }

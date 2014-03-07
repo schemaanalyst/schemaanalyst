@@ -1,6 +1,5 @@
 package parsedcasestudy;
 
-import java.util.Arrays;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -12,6 +11,8 @@ import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+
+import java.util.Arrays;
 
 /*
  * Flights schema.

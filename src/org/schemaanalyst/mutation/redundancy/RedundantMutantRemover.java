@@ -1,9 +1,9 @@
 package org.schemaanalyst.mutation.redundancy;
 
-import java.util.List;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
+import java.util.List;
 
 /**
  * <p>

@@ -1,14 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.directedrandom.data;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.Params.*;
-import static org.schemaanalyst.test.testutil.assertion.DataAssert.assertDataEquals;
-
-import java.util.Collections;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.datageneration.search.handler.ReferenceColumnHandler;
@@ -16,6 +9,12 @@ import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObj
 import org.schemaanalyst.test.testutil.mock.MockCellRandomiser;
 import org.schemaanalyst.test.testutil.mock.MockRandom;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
+
+import java.util.Collections;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.schemaanalyst.test.testutil.Params.*;
+import static org.schemaanalyst.test.testutil.assertion.DataAssert.assertDataEquals;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestReferenceColumnHandler {

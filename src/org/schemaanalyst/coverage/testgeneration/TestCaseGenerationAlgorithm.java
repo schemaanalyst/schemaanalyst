@@ -2,9 +2,8 @@ package org.schemaanalyst.coverage.testgeneration;
 
 import org.schemaanalyst.coverage.CoverageReport;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.data.Data;
-
-import java.util.List;
 
 /**
  * Created by phil on 03/02/2014.
@@ -24,10 +23,10 @@ public abstract class TestCaseGenerationAlgorithm {
         return null;
     }
 
-    public CoverageReport computeCoverage(TestSuite testSuite, List<Predicate> requirements) {
+    public CoverageReport computeCoverage(TestSuite testSuite, Requirements requirements) {
         CoverageReport coverageReport = new CoverageReport();
 
-        for (Predicate predicate : requirements) {
+        for (Predicate predicate : requirements.getPredicates()) {
             boolean covered = false;
             for (TestCase testCase : testSuite.getTestCases()) {
                 if (testCaseSatisfiesPredicate(testCase, predicate)) {

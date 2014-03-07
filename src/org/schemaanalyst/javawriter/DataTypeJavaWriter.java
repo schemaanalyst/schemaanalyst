@@ -1,13 +1,9 @@
 package org.schemaanalyst.javawriter;
 
+import org.schemaanalyst.sqlrepresentation.datatype.*;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DataTypeCategoryVisitor;
-import org.schemaanalyst.sqlrepresentation.datatype.LengthLimited;
-import org.schemaanalyst.sqlrepresentation.datatype.PrecisionedAndScaled;
-import org.schemaanalyst.sqlrepresentation.datatype.Signed;
 
 public class DataTypeJavaWriter {
 

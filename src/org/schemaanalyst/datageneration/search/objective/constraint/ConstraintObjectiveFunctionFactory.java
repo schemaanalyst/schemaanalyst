@@ -6,13 +6,7 @@ import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnOb
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
 
 public class ConstraintObjectiveFunctionFactory {
 

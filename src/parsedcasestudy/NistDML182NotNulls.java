@@ -1,11 +1,12 @@
 package parsedcasestudy;
 
-import java.util.Arrays;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
+
+import java.util.Arrays;
 
 /*
  * NistDML182NotNulls schema.

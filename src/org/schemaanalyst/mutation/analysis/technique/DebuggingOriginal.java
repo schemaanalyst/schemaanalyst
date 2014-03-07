@@ -2,21 +2,12 @@
  */
 package org.schemaanalyst.mutation.analysis.technique;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.schemaanalyst.configuration.ExperimentConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.result.MutantReport;
-import org.schemaanalyst.mutation.analysis.result.MutationReport;
-import org.schemaanalyst.mutation.analysis.result.SQLExecutionRecord;
-import org.schemaanalyst.mutation.analysis.result.SQLExecutionReport;
-import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
+import org.schemaanalyst.mutation.analysis.result.*;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
@@ -32,6 +23,12 @@ import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.xml.XMLSerialiser;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * <p>

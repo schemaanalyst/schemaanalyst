@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
@@ -13,6 +12,8 @@ import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementExceptio
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+
+import java.util.List;
 
 /**
  * <p>Executes {@link TestCase}s with a given {@link Schema} and {@link DBMS}.</p>

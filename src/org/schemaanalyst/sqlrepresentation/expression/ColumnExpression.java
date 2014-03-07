@@ -1,10 +1,10 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ColumnExpression extends ExpressionLeaf {
 

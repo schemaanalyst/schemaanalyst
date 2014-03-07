@@ -1,5 +1,11 @@
 package org.schemaanalyst.tool;
 
+import org.schemaanalyst.util.IndentableStringBuilder;
+import org.schemaanalyst.util.file.FileSystemWalker;
+import org.schemaanalyst.util.runner.Description;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.Runner;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -8,13 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.schemaanalyst.util.IndentableStringBuilder;
-import org.schemaanalyst.util.file.FileSystemWalker;
-import org.schemaanalyst.util.runner.Description;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.Runner;
-
-import static org.schemaanalyst.util.java.JavaUtils.*;
+import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
+import static org.schemaanalyst.util.java.JavaUtils.fileNameToClassName;
 
 @Description("Generates a complete test suite from individual test classes")
 public class GenerateSchemaAnalystsTestSuite extends Runner {

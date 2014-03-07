@@ -1,12 +1,12 @@
 package org.schemaanalyst.datageneration.cellrandomisation;
 
+import org.schemaanalyst.util.random.Random;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.schemaanalyst.util.random.Random;
 
 public class CellRandomiserFactory {
 

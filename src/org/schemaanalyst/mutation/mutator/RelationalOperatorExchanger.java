@@ -2,11 +2,12 @@
  */
 package org.schemaanalyst.mutation.mutator;
 
+import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.mutation.supplier.Supplier;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.mutation.supplier.Supplier;
 
 /**
  * <p>

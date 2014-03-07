@@ -1,15 +1,15 @@
 package org.schemaanalyst.datageneration.search.objective.value;
 
-import static java.math.BigDecimal.ONE;
-import static java.math.BigDecimal.ZERO;
-
-import java.math.BigDecimal;
-
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
+
+import java.math.BigDecimal;
+
+import static java.math.BigDecimal.ONE;
+import static java.math.BigDecimal.ZERO;
 
 public class RelationalNumericValueObjectiveFunction extends RelationalValueObjectiveFunction<NumericValue> {
 

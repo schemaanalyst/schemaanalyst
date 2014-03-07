@@ -6,7 +6,7 @@ import org.schemaanalyst.coverage.criterion.clause.MatchClause;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintCACRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.MultiColumnConstraintRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -19,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -51,32 +50,34 @@ public class TestMultiColumnConstraintCACRequirementsGenerator {
         MultiColumnConstraintCACRequirementsGenerator reqGen
                 = new MultiColumnConstraintCACRequirementsGenerator(schema, pk);
 
-        List<Predicate> requirements = reqGen.generateRequirements();
+        Requirements requirements = reqGen.generateRequirements();
         assertEquals("Number of requirements should be equal to 5", 5, requirements.size());
+
+        List<Predicate> predicates = requirements.getPredicates();
 
         // first column not equal
         MatchClause matchClause1 = new MatchClause(
                 tab1, Arrays.asList(tab1Col2), Arrays.asList(tab1Col1),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(0), matchClause1);
+        checkMatchClauseRequirement(predicates.get(0), matchClause1);
 
         // second column not equal
         MatchClause matchClause2 = new MatchClause(
                 tab1, Arrays.asList(tab1Col1), Arrays.asList(tab1Col2),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(1), matchClause2);
+        checkMatchClauseRequirement(predicates.get(1), matchClause2);
 
         // all columns equal
         MatchClause matchClause = new MatchClause(
                 tab1, Arrays.asList(tab1Col1, tab1Col2), new ArrayList<Column>(),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(2), matchClause);
+        checkMatchClauseRequirement(predicates.get(2), matchClause);
 
         // first column null
-        checkNullClauseRequirement(requirements.get(3), tab1Col1, tab1Col2);
+        checkNullClauseRequirement(predicates.get(3), tab1Col1, tab1Col2);
 
         // second column null
-        checkNullClauseRequirement(requirements.get(4), tab1Col2, tab1Col1);
+        checkNullClauseRequirement(predicates.get(4), tab1Col2, tab1Col1);
     }
 
     @Test
@@ -88,35 +89,37 @@ public class TestMultiColumnConstraintCACRequirementsGenerator {
         MultiColumnConstraintCACRequirementsGenerator reqGen
                 = new MultiColumnConstraintCACRequirementsGenerator(schema, fk);
 
-        List<Predicate> requirements = reqGen.generateRequirements();
+        Requirements requirements = reqGen.generateRequirements();
         assertEquals("Number of requirements should be equal to 5", 5, requirements.size());
+
+        List<Predicate> predicates = requirements.getPredicates();
 
         // first column not equal
         MatchClause matchClause1 = new MatchClause(
                 tab1, Arrays.asList(tab1Col2), Arrays.asList(tab1Col1),
                 tab2, Arrays.asList(tab2Col2), Arrays.asList(tab2Col1),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(0), matchClause1);
+        checkMatchClauseRequirement(predicates.get(0), matchClause1);
 
         // second column not equal
         MatchClause matchClause2 = new MatchClause(
                 tab1, Arrays.asList(tab1Col1), Arrays.asList(tab1Col2),
                 tab2, Arrays.asList(tab2Col1), Arrays.asList(tab2Col2),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(1), matchClause2);
+        checkMatchClauseRequirement(predicates.get(1), matchClause2);
 
         // all columns equal
         MatchClause matchClause = new MatchClause(
                 tab1, Arrays.asList(tab1Col1, tab1Col2), new ArrayList<Column>(),
                 tab2, Arrays.asList(tab2Col1, tab2Col2), new ArrayList<Column>(),
                 MatchClause.Mode.AND, true);
-        checkMatchClauseRequirement(requirements.get(2), matchClause);
+        checkMatchClauseRequirement(predicates.get(2), matchClause);
 
         // first column null
-        checkNullClauseRequirement(requirements.get(3), tab1Col1, tab1Col2);
+        checkNullClauseRequirement(predicates.get(3), tab1Col1, tab1Col2);
 
         // second column null
-        checkNullClauseRequirement(requirements.get(4), tab1Col2, tab1Col1);
+        checkNullClauseRequirement(predicates.get(4), tab1Col2, tab1Col1);
     }
 
     protected void checkMatchClauseRequirement(Predicate predicate, MatchClause matchClause) {

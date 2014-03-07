@@ -1,24 +1,16 @@
 package org.schemaanalyst.test.sqlrepresentation.expression;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionFilter;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionWalker;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
-import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
 
-import static org.junit.Assert.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestExpressionFilterWalker {
 

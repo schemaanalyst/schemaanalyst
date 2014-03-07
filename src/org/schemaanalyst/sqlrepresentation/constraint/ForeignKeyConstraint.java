@@ -1,13 +1,13 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Represents foreign key constraints.

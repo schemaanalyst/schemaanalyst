@@ -2,10 +2,9 @@ package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.TGSqlParser;
 import gudusoft.gsqlparser.TStatementList;
+import org.schemaanalyst.dbms.DBMS;
 
 import java.io.File;
-
-import org.schemaanalyst.dbms.DBMS;
 
 /**
  * <p>

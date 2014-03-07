@@ -1,26 +1,18 @@
 package org.schemaanalyst.util.runner;
 
+import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.configuration.DataCapturerConfiguration;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.LogManager;
-
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.apache.commons.lang3.StringUtils;
-import org.schemaanalyst.configuration.DataCapturerConfiguration;
 
 /**
  * <p>Represents an entry point to the SchemaAnalyst system, parses in key

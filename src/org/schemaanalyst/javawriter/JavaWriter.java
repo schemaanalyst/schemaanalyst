@@ -1,15 +1,15 @@
 package org.schemaanalyst.javawriter;
 
+import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.apache.commons.lang3.StringUtils;
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Table;
-
-import static org.schemaanalyst.javawriter.MethodNameConstants.*;
+import static org.schemaanalyst.javawriter.MethodNameConstants.TABLE_GET_COLUMN_METHOD;
 
 public class JavaWriter {
 

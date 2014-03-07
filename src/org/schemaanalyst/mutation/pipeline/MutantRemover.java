@@ -2,8 +2,9 @@
  */
 package org.schemaanalyst.mutation.pipeline;
 
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
+
+import java.util.List;
 
 /**
  * <p>

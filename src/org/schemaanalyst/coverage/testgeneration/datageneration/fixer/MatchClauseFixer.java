@@ -6,7 +6,6 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.tuple.MixedPair;
-import org.schemaanalyst.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;

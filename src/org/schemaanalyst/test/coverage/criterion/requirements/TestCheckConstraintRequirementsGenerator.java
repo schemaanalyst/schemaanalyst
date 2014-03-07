@@ -6,13 +6,12 @@ import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.requirements.CheckConstraintRequirementsGenerator;
-import org.schemaanalyst.coverage.criterion.requirements.NotNullConstraintRequirementsGenerator;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
@@ -20,9 +19,7 @@ import org.schemaanalyst.test.testutil.mock.SimpleSchema;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by phil on 24/02/2014.
@@ -53,8 +50,10 @@ public class TestCheckConstraintRequirementsGenerator {
         CheckConstraintRequirementsGenerator reqGen
                 = new CheckConstraintRequirementsGenerator(schema, cc);
 
-        List<Predicate> requirements = reqGen.generateRequirements();
+        Requirements requirements = reqGen.generateRequirements();
         assertEquals("Number of requirements should be equal to 3", 3, requirements.size());
+
+        List<Predicate> predicates = requirements.getPredicates();
 
         ExpressionClause expTrue = new ExpressionClause(tab1, exp, true);
         ExpressionClause expFalse = new ExpressionClause(tab1, exp, false);
@@ -63,17 +62,17 @@ public class TestCheckConstraintRequirementsGenerator {
         NullClause col1NotNull = new NullClause(tab1, tab1Col1, false);
         NullClause col2NotNull = new NullClause(tab1, tab1Col2, false);
 
-        Predicate predicate1 = requirements.get(0);
+        Predicate predicate1 = predicates.get(0);
         assertTrue(predicate1.hasClause(expTrue));
         assertTrue(predicate1.hasClause(col1NotNull));
         assertTrue(predicate1.hasClause(col2NotNull));
 
-        Predicate predicate2 = requirements.get(1);
+        Predicate predicate2 = predicates.get(1);
         assertTrue(predicate2.hasClause(expFalse));
         assertTrue(predicate2.hasClause(col1NotNull));
         assertTrue(predicate2.hasClause(col2NotNull));
 
-        Predicate predicate3 = requirements.get(2);
+        Predicate predicate3 = predicates.get(2);
         assertTrue(predicate3.hasClause(col1Null));
         assertFalse(predicate3.hasClause(col2NotNull));
     }

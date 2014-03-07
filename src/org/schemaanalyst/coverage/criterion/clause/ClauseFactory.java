@@ -4,7 +4,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

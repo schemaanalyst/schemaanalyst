@@ -1,10 +1,10 @@
 package org.schemaanalyst.mutation.mutator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.util.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

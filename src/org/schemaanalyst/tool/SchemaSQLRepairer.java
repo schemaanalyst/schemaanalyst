@@ -1,16 +1,16 @@
 package org.schemaanalyst.tool;
 
+import org.schemaanalyst.util.runner.Description;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
+import org.schemaanalyst.util.sql.SQLRepairer;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.runner.Description;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.sql.SQLRepairer;
 
 @Description("Repairs a schema SQL file and then writes it back to the console.")
 @RequiredParameters("schemaInput schemaOutput")

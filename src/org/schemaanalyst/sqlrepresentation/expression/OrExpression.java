@@ -1,9 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class OrExpression extends CompoundExpression {
 

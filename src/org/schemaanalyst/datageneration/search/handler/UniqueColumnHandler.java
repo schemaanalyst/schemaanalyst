@@ -1,11 +1,11 @@
 package org.schemaanalyst.datageneration.search.handler;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
 import org.schemaanalyst.util.random.Random;
+
+import java.util.List;
 
 public class UniqueColumnHandler extends ColumnHandler<UniqueColumnObjectiveFunction>{
     

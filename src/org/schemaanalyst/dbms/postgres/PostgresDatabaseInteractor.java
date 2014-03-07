@@ -1,14 +1,15 @@
 package org.schemaanalyst.dbms.postgres;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.dbms.DatabaseInteractor;
+
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.dbms.DatabaseInteractor;
 
 /**
  * <p>

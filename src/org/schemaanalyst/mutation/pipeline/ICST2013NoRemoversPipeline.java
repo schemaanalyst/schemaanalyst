@@ -1,10 +1,6 @@
 package org.schemaanalyst.mutation.pipeline;
 
-import org.schemaanalyst.mutation.operator.CCNullifier;
-import org.schemaanalyst.mutation.operator.FKCColumnPairR;
-import org.schemaanalyst.mutation.operator.NNCAR;
-import org.schemaanalyst.mutation.operator.PKCColumnARE;
-import org.schemaanalyst.mutation.operator.UCColumnARE;
+import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**

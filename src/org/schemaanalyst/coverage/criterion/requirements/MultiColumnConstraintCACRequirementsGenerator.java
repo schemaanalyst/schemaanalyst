@@ -48,9 +48,9 @@ public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintReq
     }
 
     @Override
-    public List<Predicate> generateRequirements() {
+    public Requirements generateRequirements() {
         boolean requiresComparisonRow = table.equals(referenceTable);
-        List<Predicate> requirements = new ArrayList<>();
+        Requirements requirements = new Requirements();
 
         addNotEqualsOnceRequirements(requirements, requiresComparisonRow);
         addAllEqualRequirement(requirements, requiresComparisonRow);
@@ -59,7 +59,7 @@ public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintReq
         return requirements;
     }
 
-    private void addNotEqualsOnceRequirements(List<Predicate> requirements, boolean requiresComparisonRow) {
+    private void addNotEqualsOnceRequirements(Requirements requirements, boolean requiresComparisonRow) {
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = referenceColumns.iterator();
 
@@ -89,11 +89,11 @@ public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintReq
             // NOT NULL clauses are only added to original columns,
             // as we are not in control of column values of the reference row.
             addNotNulls(predicate, table, columns);
-            requirements.add(predicate);
+            requirements.addPredicate(predicate);
         }
     }
 
-    private void addAllEqualRequirement(List<Predicate> requirements, boolean requiresComparisonRow) {
+    private void addAllEqualRequirement(Requirements requirements, boolean requiresComparisonRow) {
         Predicate predicate = generatePredicate("Test all columns equal for " + table + "'s " + constraint);
 
         predicate.addClause(
@@ -112,10 +112,10 @@ public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintReq
         // as we are not in control of column values of the reference row.
         addNotNulls(predicate, table, columns);
 
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
-    private void addNullOnceRequirements(List<Predicate> requirements) {
+    private void addNullOnceRequirements(Requirements requirements) {
         // NULL-ONCE specifies that the original columns should be
         // NULL although technically it could be original and/or
         // reference column. However, test generation is concentrated
@@ -132,7 +132,7 @@ public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintReq
             remainingCols.remove(col);
             addNotNulls(predicate, table, remainingCols);
 
-            requirements.add(predicate);
+            requirements.addPredicate(predicate);
         }
     }
 

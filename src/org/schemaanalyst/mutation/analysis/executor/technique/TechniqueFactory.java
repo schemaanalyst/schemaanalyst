@@ -1,14 +1,15 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.List;
 
 /**
  *

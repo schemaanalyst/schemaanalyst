@@ -7,7 +7,8 @@ import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.RelationalOperator;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.schemaanalyst.logic.RelationalOperator.*;
 
 /**

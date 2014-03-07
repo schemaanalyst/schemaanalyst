@@ -2,6 +2,11 @@
  */
 package org.schemaanalyst.mutation.analysis.util;
 
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
+import org.schemaanalyst.util.tuple.MixedPair;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -12,10 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  * <p>

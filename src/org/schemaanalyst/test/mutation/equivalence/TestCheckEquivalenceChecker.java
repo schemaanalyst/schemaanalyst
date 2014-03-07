@@ -2,10 +2,7 @@
  */
 package org.schemaanalyst.test.mutation.equivalence;
 
-import java.util.Arrays;
-import java.util.List;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.mutation.equivalence.CheckEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -15,6 +12,11 @@ import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  *

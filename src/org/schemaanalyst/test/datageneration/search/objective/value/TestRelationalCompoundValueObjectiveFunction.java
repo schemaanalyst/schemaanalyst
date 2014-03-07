@@ -1,9 +1,6 @@
 package org.schemaanalyst.test.datageneration.search.objective.value;
 
 import org.junit.Test;
-
-import static java.math.BigDecimal.ONE;
-
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
@@ -11,15 +8,11 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.RelationalValueObjectiveFunction;
 
-import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.GREATER;
-import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.LESS;
-import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
+import static java.math.BigDecimal.ONE;
+import static org.schemaanalyst.datageneration.search.objective.value.RelationalNumericValueObjectiveFunction.K;
+import static org.schemaanalyst.logic.RelationalOperator.*;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.datageneration.search.objective.value.RelationalNumericValueObjectiveFunction.K;
 
 public class TestRelationalCompoundValueObjectiveFunction {
 

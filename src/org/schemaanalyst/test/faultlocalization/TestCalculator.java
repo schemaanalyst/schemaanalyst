@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.faultlocalization;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.faultlocalization.Calculator;
 import org.schemaanalyst.faultlocalization.ResultMatrixRow;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestCalculator {
 

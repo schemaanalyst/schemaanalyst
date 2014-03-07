@@ -3,8 +3,8 @@ package org.schemaanalyst.dbms.derby;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**

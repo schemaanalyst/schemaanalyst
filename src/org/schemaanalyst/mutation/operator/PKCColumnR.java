@@ -1,22 +1,18 @@
 package org.schemaanalyst.mutation.operator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
-import org.schemaanalyst.mutation.mutator.ListElementAdder;
-import org.schemaanalyst.mutation.mutator.ListElementExchanger;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.mutation.supplier.SupplyChain;
 import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnSupplier;
-import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyColumnsWithAlternativesSupplier;
 import org.schemaanalyst.mutation.supplier.schema.PrimaryKeyConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.util.tuple.Pair;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

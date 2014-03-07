@@ -1,9 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.List;
 
 /**
  * Represents the PRIMARY KEY of a table.

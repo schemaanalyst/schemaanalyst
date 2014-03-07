@@ -1,29 +1,18 @@
 package org.schemaanalyst.sqlparser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import gudusoft.gsqlparser.EExpressionType;
 import gudusoft.gsqlparser.nodes.TConstant;
 import gudusoft.gsqlparser.nodes.TExpression;
 import gudusoft.gsqlparser.nodes.TExpressionList;
-
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
-import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
-import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
-import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

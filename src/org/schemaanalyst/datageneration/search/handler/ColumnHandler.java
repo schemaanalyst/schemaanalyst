@@ -1,10 +1,10 @@
 package org.schemaanalyst.datageneration.search.handler;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.data.ColumnObjectiveFunction;
+
+import java.util.List;
 
 public abstract class ColumnHandler<T extends ColumnObjectiveFunction> {
     

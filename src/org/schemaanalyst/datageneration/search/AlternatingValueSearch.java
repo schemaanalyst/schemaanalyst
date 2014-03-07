@@ -1,24 +1,13 @@
 package org.schemaanalyst.datageneration.search;
 
-import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.List;
-
-import org.schemaanalyst.data.BooleanValue;
-import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.CompoundValue;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.DateTimeValue;
-import org.schemaanalyst.data.DateValue;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.TimeValue;
-import org.schemaanalyst.data.TimestampValue;
-import org.schemaanalyst.data.Value;
-import org.schemaanalyst.data.ValueVisitor;
+import org.schemaanalyst.data.*;
 import org.schemaanalyst.datageneration.search.datainitialization.DataInitialiser;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
+
+import java.math.BigDecimal;
+import java.util.Iterator;
+import java.util.List;
 
 public class AlternatingValueSearch extends Search<Data> {
 

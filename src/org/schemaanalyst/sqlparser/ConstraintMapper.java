@@ -1,21 +1,16 @@
 package org.schemaanalyst.sqlparser;
 
-import gudusoft.gsqlparser.nodes.TConstraint;
-import gudusoft.gsqlparser.nodes.TConstraintList;
-import gudusoft.gsqlparser.nodes.TExpression;
-import gudusoft.gsqlparser.nodes.TObjectName;
-import gudusoft.gsqlparser.nodes.TObjectNameList;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import gudusoft.gsqlparser.nodes.*;
 import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import static org.schemaanalyst.sqlparser.QuoteStripper.stripQuotes;
 

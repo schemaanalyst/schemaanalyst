@@ -1,14 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.objective.data;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.junit.Assert.assertEquals;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.test.testutil.Params.*;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
@@ -20,6 +13,12 @@ import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.assertEquals;
+import static org.schemaanalyst.test.testutil.Params.*;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestExpressionColumnObjectiveFunction {

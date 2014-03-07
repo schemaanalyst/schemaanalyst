@@ -4,9 +4,9 @@ import org.schemaanalyst.coverage.criterion.Criterion;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
 import org.schemaanalyst.coverage.criterion.predicate.ConstraintPredicateGenerator;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+import org.schemaanalyst.coverage.criterion.requirements.Requirements;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -89,8 +89,8 @@ public class TestSuiteGenerator {
 
     private void generateTestCases() {
         for (Table table : schema.getTablesInReverseOrder()) {
-            List<Predicate> requirements = criterion.generateRequirements(schema, table);
-            for (Predicate predicate : requirements) {
+            Requirements requirements = criterion.generateRequirements(schema, table);
+            for (Predicate predicate : requirements.getPredicates()) {
 
                 LOGGER.fine("Generating data for " + predicate);
 

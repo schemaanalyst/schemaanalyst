@@ -1,14 +1,15 @@
 package org.schemaanalyst.util;
 
+import org.schemaanalyst.configuration.DataCapturerConfiguration;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
+
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.configuration.DataCapturerConfiguration;
-import org.schemaanalyst.util.csv.CSVFileWriter;
-import org.schemaanalyst.util.csv.CSVResult;
 
 /**
  *

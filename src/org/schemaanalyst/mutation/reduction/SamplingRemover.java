@@ -3,12 +3,13 @@
 
 package org.schemaanalyst.mutation.reduction;
 
+import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
  * <p>

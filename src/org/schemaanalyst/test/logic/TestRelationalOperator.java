@@ -1,11 +1,10 @@
 package org.schemaanalyst.test.logic;
 
-import static org.junit.Assert.*;
-
-import static org.schemaanalyst.logic.RelationalOperator.*;
-
 import org.junit.Test;
 import org.schemaanalyst.logic.RelationalOperatorException;
+
+import static org.junit.Assert.assertEquals;
+import static org.schemaanalyst.logic.RelationalOperator.*;
 
 public class TestRelationalOperator {
 

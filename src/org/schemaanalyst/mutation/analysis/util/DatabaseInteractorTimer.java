@@ -2,7 +2,6 @@
  */
 package org.schemaanalyst.mutation.analysis.util;
 
-import java.util.ArrayList;
 import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -15,6 +14,8 @@ import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.*;
+
+import java.util.ArrayList;
 
 /**
  * <p>

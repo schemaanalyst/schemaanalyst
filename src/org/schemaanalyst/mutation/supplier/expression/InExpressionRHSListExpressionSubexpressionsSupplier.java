@@ -1,12 +1,12 @@
 package org.schemaanalyst.mutation.supplier.expression;
 
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.mutation.supplier.Supplier;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+
+import java.util.List;
 
 /**
  * <p>

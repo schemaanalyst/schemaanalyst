@@ -2,6 +2,10 @@
  */
 package org.schemaanalyst.mutation.analysis.util;
 
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
+import org.schemaanalyst.util.runner.Runner;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,9 +13,6 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.Runner;
 
 /**
  * <p>

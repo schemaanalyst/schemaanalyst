@@ -1,13 +1,14 @@
 package org.schemaanalyst.test.faultlocalization;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
-
 import org.junit.Test;
 import org.schemaanalyst.faultlocalization.ProcessMatrix;
 import org.schemaanalyst.faultlocalization.ResultMatrix;
 import org.schemaanalyst.faultlocalization.ResultMatrixRow;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestProcessMatrix {
 

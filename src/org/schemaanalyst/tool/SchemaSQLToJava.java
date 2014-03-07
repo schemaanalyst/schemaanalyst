@@ -1,13 +1,13 @@
 package org.schemaanalyst.tool;
 
+import org.schemaanalyst.javawriter.SchemaJavaWriter;
+import org.schemaanalyst.util.runner.Description;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.schemaanalyst.javawriter.SchemaJavaWriter;
-import org.schemaanalyst.util.runner.Description;
-
-import static org.schemaanalyst.util.java.JavaUtils.*;
+import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
 @Description("Parses a schema and generates Java code for it.")
 public class SchemaSQLToJava extends SchemaSQLParser {

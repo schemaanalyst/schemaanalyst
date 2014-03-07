@@ -1,7 +1,6 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -12,6 +11,8 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteE
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.util.List;
 
 /**
  * <p>The 'Original' mutation analysis approach, with no optimisations.</p>

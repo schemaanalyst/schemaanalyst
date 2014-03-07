@@ -4,10 +4,8 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.dbms.DBMSVisitor;
-import org.schemaanalyst.sqlwriter.CellSQLWriter;
-import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 
 /**
  * <p>

@@ -2,12 +2,13 @@
  */
 package org.schemaanalyst.mutation.redundancy;
 
-import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
-import java.util.ArrayList;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.util.DataCapturer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@link MutantRemover} that removes mutants equivalent to other mutants,

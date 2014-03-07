@@ -1,11 +1,11 @@
 package org.schemaanalyst.test.util.collection;
 
-import java.util.Iterator;
-
 import org.junit.Test;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
-import org.schemaanalyst.util.collection.Identifier;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
+import org.schemaanalyst.util.collection.Identifier;
+
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 

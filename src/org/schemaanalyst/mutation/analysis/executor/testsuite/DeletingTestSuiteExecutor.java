@@ -1,10 +1,11 @@
 
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
+
+import java.util.List;
 
 
 public class DeletingTestSuiteExecutor extends TestSuiteExecutor {

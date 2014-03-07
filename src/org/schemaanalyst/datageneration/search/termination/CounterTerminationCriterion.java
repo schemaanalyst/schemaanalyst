@@ -1,8 +1,8 @@
 package org.schemaanalyst.datageneration.search.termination;
 
-import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.datageneration.search.Counter;
 import org.schemaanalyst.datageneration.search.SearchException;
+import org.schemaanalyst.logic.RelationalOperator;
 
 public class CounterTerminationCriterion implements TerminationCriterion {
 

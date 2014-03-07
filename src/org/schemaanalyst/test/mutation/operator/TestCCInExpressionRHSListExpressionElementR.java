@@ -2,10 +2,6 @@
  */
 package org.schemaanalyst.test.mutation.operator;
 
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.mutation.Mutant;
@@ -15,12 +11,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

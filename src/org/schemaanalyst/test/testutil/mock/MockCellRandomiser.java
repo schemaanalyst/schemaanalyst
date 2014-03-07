@@ -1,12 +1,12 @@
 package org.schemaanalyst.test.testutil.mock;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MockCellRandomiser extends CellRandomiser {
 

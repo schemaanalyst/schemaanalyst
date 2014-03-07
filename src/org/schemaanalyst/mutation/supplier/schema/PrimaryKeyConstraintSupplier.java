@@ -1,12 +1,12 @@
 package org.schemaanalyst.mutation.supplier.schema;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Supplies

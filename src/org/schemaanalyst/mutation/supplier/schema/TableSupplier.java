@@ -1,10 +1,10 @@
 package org.schemaanalyst.mutation.supplier.schema;
 
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.IteratingSupplier;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.List;
 
 /**
  * Supplies {@link org.schemaanalyst.sqlrepresentation.Table}s from a

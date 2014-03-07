@@ -1,9 +1,9 @@
 package org.schemaanalyst.datageneration;
 
+import org.schemaanalyst.data.Data;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.schemaanalyst.data.Data;
 
 public class TestCase<G> {
 	

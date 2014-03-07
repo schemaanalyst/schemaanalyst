@@ -2,11 +2,6 @@
  */
 package org.schemaanalyst.test.mutation.operator;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.FKCColumnPairR;
@@ -15,6 +10,11 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

@@ -2,8 +2,9 @@
  */
 package org.schemaanalyst.configuration;
 
-import java.io.File;
 import org.schemaanalyst.util.PropertiesParser;
+
+import java.io.File;
 
 /**
  *

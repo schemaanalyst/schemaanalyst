@@ -5,9 +5,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by phil on 05/02/2014.
  */
@@ -25,8 +22,8 @@ public class NotNullConstraintRequirementsGenerator extends ConstraintRequiremen
     }
 
     @Override
-    public List<Predicate> generateRequirements() {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         // NOT NULL is TRUE requirement (NOT NULL)
         addTrueRequirement(requirements);
@@ -37,15 +34,15 @@ public class NotNullConstraintRequirementsGenerator extends ConstraintRequiremen
         return requirements;
     }
 
-    private void addTrueRequirement(List<Predicate> requirements) {
+    private void addTrueRequirement(Requirements requirements) {
         Predicate predicate = generatePredicate("Test " + column + " is NOT NULL for " + table + "'s " + constraint);
         predicate.setColumnNullStatus(table, column, false);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
-    private void addFalseRequirement(List<Predicate> requirements) {
+    private void addFalseRequirement(Requirements requirements) {
         Predicate predicate = generatePredicate("Test " + column + " is NULL for " + table + "'s " + constraint);
         predicate.setColumnNullStatus(table, column, true);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 }

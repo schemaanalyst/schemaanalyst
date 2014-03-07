@@ -1,19 +1,19 @@
 package org.schemaanalyst.datageneration.search;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
-import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
+import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiserFactory;
 import org.schemaanalyst.datageneration.search.datainitialization.NoDataInitialization;
+import org.schemaanalyst.datageneration.search.datainitialization.RandomDataInitializer;
 import org.schemaanalyst.datageneration.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 public class SearchFactory {
 

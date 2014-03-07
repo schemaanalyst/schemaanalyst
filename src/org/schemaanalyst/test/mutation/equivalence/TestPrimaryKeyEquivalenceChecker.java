@@ -2,15 +2,18 @@
  */
 package org.schemaanalyst.test.mutation.equivalence;
 
-import java.util.Arrays;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.mutation.equivalence.PrimaryKeyEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.Arrays;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

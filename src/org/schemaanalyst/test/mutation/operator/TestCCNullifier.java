@@ -2,8 +2,6 @@
  */
 package org.schemaanalyst.test.mutation.operator;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
@@ -19,7 +17,9 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
-import static org.junit.Assert.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

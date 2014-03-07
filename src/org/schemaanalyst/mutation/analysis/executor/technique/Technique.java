@@ -1,12 +1,13 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.List;
 import org.schemaanalyst.coverage.testgeneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.util.List;
 
 /**
  * <p>Abstract parent class of techniques performing mutation analysis.</p>

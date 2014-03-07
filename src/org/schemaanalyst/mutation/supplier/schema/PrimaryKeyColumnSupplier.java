@@ -1,10 +1,10 @@
 package org.schemaanalyst.mutation.supplier.schema;
 
-import java.util.List;
-
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+
+import java.util.List;
 
 /**
  * Supplies columns from a

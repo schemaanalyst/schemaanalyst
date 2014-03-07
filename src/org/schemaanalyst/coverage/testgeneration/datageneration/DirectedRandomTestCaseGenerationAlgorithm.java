@@ -8,7 +8,6 @@ import org.schemaanalyst.coverage.testgeneration.datageneration.fixer.PredicateF
 import org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
 

@@ -1,9 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.List;
 
 public interface Expression {
 

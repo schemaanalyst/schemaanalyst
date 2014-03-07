@@ -1,7 +1,5 @@
 package org.schemaanalyst.datageneration.search;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.ConstraintGoal;
 import org.schemaanalyst.datageneration.DataGenerator;
@@ -9,9 +7,11 @@ import org.schemaanalyst.datageneration.TestCase;
 import org.schemaanalyst.datageneration.TestSuite;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+
+import java.util.List;
 
 public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
 

@@ -1,13 +1,13 @@
 package org.schemaanalyst.datageneration.search.objective.data;
 
-import java.util.Collections;
-
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.Collections;
 
 public class NullColumnObjectiveFunction extends ColumnObjectiveFunction {
 

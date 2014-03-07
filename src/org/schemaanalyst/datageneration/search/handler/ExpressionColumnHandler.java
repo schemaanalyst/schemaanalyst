@@ -1,10 +1,10 @@
 package org.schemaanalyst.datageneration.search.handler;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
+
+import java.util.List;
 
 public class ExpressionColumnHandler extends ColumnHandler<ExpressionColumnObjectiveFunction> {
 

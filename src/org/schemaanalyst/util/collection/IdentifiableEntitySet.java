@@ -1,16 +1,10 @@
 package org.schemaanalyst.util.collection;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.commons.lang3.StringUtils;
+import java.util.*;
 
 /**
  * <p>

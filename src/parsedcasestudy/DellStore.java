@@ -2,11 +2,7 @@ package parsedcasestudy;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.datatype.DateDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.NumericDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.SmallIntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.*;
 
 /*
  * DellStore schema.

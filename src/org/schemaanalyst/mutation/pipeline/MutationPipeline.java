@@ -1,12 +1,12 @@
 package org.schemaanalyst.mutation.pipeline;
 
+import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.MutantProducer;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.MutantProducer;
 
 /**
  * <p>

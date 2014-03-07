@@ -2,8 +2,6 @@
  */
 package org.schemaanalyst.mutation.quasimutant;
 
-import java.util.Iterator;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -12,6 +10,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.util.DataCapturer;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Removes those mutant schemas that will be rejected by the SQLite DBMS, but

@@ -1,11 +1,11 @@
 package org.schemaanalyst.sqlrepresentation;
 
-import java.io.Serializable;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
+
+import java.io.Serializable;
+import java.util.List;
 
 /**
  * Represents a database table.

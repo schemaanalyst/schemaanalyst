@@ -1,6 +1,5 @@
 package org.schemaanalyst.test.coverage.criterion.predicate;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.schemaanalyst.coverage.criterion.clause.ClauseFactory;
@@ -17,6 +16,9 @@ import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by phil on 24/02/2014.
@@ -47,7 +49,7 @@ public class TestConstraintPredicateGenerator {
         assertTrue("Predicate should have match clause", fullPredicate.hasClause(ClauseFactory.unique(tab1, tab1Col1, true)));
         assertTrue("Predicate should have not null clause", fullPredicate.hasClause(ClauseFactory.isNotNull(tab1, tab1Col1)));
 
-        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, pk);
+        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, tab1, pk);
         Predicate predicate = gen2.generate("test predicate");
         assertEquals("Predicate should have no clauses", 0, predicate.getClauses().size());
     }
@@ -61,7 +63,7 @@ public class TestConstraintPredicateGenerator {
         assertTrue("Predicate should have match clause", fullPredicate.hasClause(
                 ClauseFactory.references(tab1, Arrays.asList(tab1Col1), tab2, Arrays.asList(tab2Col1))));
 
-        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, fk);
+        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, tab1, fk);
         Predicate predicate = gen2.generate("test predicate");
         assertEquals("Predicate should have no clauses", 0, predicate.getClauses().size());
     }
@@ -74,7 +76,7 @@ public class TestConstraintPredicateGenerator {
         Predicate fullPredicate = gen1.generate("test predicate");
         assertTrue("Predicate should have not null clause", fullPredicate.hasClause(ClauseFactory.isNotNull(tab1, tab1Col1)));
 
-        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, nc);
+        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, tab1, nc);
         Predicate predicate = gen2.generate("test predicate");
         assertEquals("Predicate should have no clauses", 0, predicate.getClauses().size());
     }
@@ -91,7 +93,7 @@ public class TestConstraintPredicateGenerator {
         Predicate fullPredicate = gen1.generate("test predicate");
         assertTrue("Predicate should have expression clause", fullPredicate.hasClause(ClauseFactory.expression(tab1, exp)));
 
-        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, cc);
+        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, tab1, cc);
         Predicate predicate = gen2.generate("test predicate");
         assertEquals("Predicate should have no clauses", 0, predicate.getClauses().size());
     }
@@ -104,7 +106,7 @@ public class TestConstraintPredicateGenerator {
         Predicate fullPredicate = gen1.generate("test predicate");
         assertTrue("Predicate should have match clause", fullPredicate.hasClause(ClauseFactory.unique(tab1, tab1Col1, true)));
 
-        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, uc);
+        ConstraintPredicateGenerator gen2 = new ConstraintPredicateGenerator(schema, tab1, uc);
         Predicate predicate = gen2.generate("test predicate");
         assertEquals("Predicate should have no clauses", 0, predicate.getClauses().size());
     }

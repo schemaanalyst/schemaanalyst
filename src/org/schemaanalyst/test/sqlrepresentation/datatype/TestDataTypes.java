@@ -1,19 +1,16 @@
 package org.schemaanalyst.test.sqlrepresentation.datatype;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.sqlrepresentation.datatype.*;
+import org.schemaanalyst.util.java.JavaUtils;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.sqlrepresentation.datatype.DataType;
-import org.schemaanalyst.sqlrepresentation.datatype.DataTypeCategoryVisitor;
-import org.schemaanalyst.sqlrepresentation.datatype.LengthLimited;
-import org.schemaanalyst.sqlrepresentation.datatype.PrecisionedAndScaled;
-import org.schemaanalyst.sqlrepresentation.datatype.Signed;
-import org.schemaanalyst.util.java.JavaUtils;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 public class TestDataTypes {
     

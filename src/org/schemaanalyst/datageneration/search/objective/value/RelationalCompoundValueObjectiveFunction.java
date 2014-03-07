@@ -1,14 +1,5 @@
 package org.schemaanalyst.datageneration.search.objective.value;
 
-import static org.schemaanalyst.logic.RelationalOperator.EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.GREATER;
-import static org.schemaanalyst.logic.RelationalOperator.GREATER_OR_EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.LESS;
-import static org.schemaanalyst.logic.RelationalOperator.LESS_OR_EQUALS;
-import static org.schemaanalyst.logic.RelationalOperator.NOT_EQUALS;
-
-import java.util.List;
-
 import org.schemaanalyst.data.CompoundValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.BestOfMultiObjectiveValue;
@@ -16,6 +7,10 @@ import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
+
+import java.util.List;
+
+import static org.schemaanalyst.logic.RelationalOperator.*;
 
 public class RelationalCompoundValueObjectiveFunction extends RelationalValueObjectiveFunction<CompoundValue> {
 

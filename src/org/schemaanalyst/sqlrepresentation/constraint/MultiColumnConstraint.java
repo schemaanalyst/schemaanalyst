@@ -1,12 +1,12 @@
 package org.schemaanalyst.sqlrepresentation.constraint;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Abstract superclass for integrity constrains that potentially involve

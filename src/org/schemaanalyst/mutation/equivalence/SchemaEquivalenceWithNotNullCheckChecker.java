@@ -2,22 +2,14 @@
  */
 package org.schemaanalyst.mutation.equivalence;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
+
+import java.util.*;
 
 /**
  * <p>

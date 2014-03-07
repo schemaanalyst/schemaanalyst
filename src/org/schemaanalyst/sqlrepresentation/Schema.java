@@ -1,23 +1,12 @@
 package org.schemaanalyst.sqlrepresentation;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ListIterator;
-
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
+
+import java.io.Serializable;
+import java.util.*;
 
 /**
  * Represents a database schema.

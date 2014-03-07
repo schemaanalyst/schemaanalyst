@@ -1,8 +1,5 @@
 package org.schemaanalyst.mutation.operator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
@@ -13,6 +10,9 @@ import org.schemaanalyst.mutation.supplier.schema.UniqueConstraintSupplier;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>

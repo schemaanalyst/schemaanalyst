@@ -1,9 +1,9 @@
 package paper.util;
 
+import org.schemaanalyst.sqlrepresentation.Schema;
+
 import java.util.HashSet;
 import java.util.Set;
-
-import org.schemaanalyst.sqlrepresentation.Schema;
 
 public class SchemaStatsTable {
 

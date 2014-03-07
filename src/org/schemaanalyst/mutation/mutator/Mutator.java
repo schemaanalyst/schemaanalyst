@@ -1,10 +1,10 @@
 package org.schemaanalyst.mutation.mutator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.supplier.Supplier;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A {@link Mutator} takes a {@link Supplier} to generate duplicates of an

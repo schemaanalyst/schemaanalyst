@@ -1,16 +1,16 @@
 package org.schemaanalyst.test.mutation.mutator;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.mutator.ListElementRemover;
 import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.util.Duplicator;
 
-import static org.junit.Assert.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestListElementRemover {
 

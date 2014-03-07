@@ -2,13 +2,16 @@
  */
 package org.schemaanalyst.test.mutation.reduction;
 
-import java.util.ArrayList;
-import java.util.List;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 import org.schemaanalyst.mutation.reduction.NSelectiveRemover;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 
 public class TestNSelectiveRemover {
 

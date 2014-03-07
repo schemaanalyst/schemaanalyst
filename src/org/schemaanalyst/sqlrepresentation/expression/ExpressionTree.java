@@ -1,13 +1,9 @@
 package org.schemaanalyst.sqlrepresentation.expression;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.*;
 
 public abstract class ExpressionTree implements Expression {
 

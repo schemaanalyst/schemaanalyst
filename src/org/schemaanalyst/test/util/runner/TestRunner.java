@@ -1,5 +1,8 @@
 package org.schemaanalyst.test.util.runner;
 
+import org.junit.Test;
+import org.schemaanalyst.util.runner.*;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -8,15 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Test;
-
 import static org.junit.Assert.*;
-
-import org.schemaanalyst.util.runner.ArgumentException;
-import org.schemaanalyst.util.runner.Parameter;
-import org.schemaanalyst.util.runner.Runner;
-import org.schemaanalyst.util.runner.RequiredParameters;
-import org.schemaanalyst.util.runner.RunnerException;
 
 public class TestRunner {
 

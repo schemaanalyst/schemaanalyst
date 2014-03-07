@@ -2,9 +2,11 @@
  */
 package org.schemaanalyst.mutation.equivalence;
 
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+
 import java.util.List;
-import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
 
 /**
  * <p>

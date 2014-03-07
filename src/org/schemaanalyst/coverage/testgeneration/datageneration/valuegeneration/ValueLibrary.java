@@ -2,7 +2,9 @@ package org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration
 
 import org.schemaanalyst.data.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Created by phil on 26/02/2014.

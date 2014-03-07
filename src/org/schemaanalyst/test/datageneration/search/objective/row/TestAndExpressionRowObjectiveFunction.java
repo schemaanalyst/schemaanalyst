@@ -1,11 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.objective.row;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
@@ -19,6 +15,10 @@ import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.MockRow;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestAndExpressionRowObjectiveFunction {

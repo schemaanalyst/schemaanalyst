@@ -2,8 +2,9 @@
  */
 package org.schemaanalyst.mutation.analysis.util;
 
-import java.util.EnumMap;
 import org.apache.commons.lang3.time.StopWatch;
+
+import java.util.EnumMap;
 
 /**
  * <p>

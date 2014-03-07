@@ -1,16 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.objective.value;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.junit.Assert.fail;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
@@ -18,6 +9,14 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.value.EqualsMultiValueObjectiveFunction;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.fail;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestEqualsMultiValueObjectiveFunction {

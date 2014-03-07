@@ -2,10 +2,11 @@
  */
 package org.schemaanalyst.mutation.reduction;
 
-import java.util.List;
-import java.util.Random;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
+import java.util.List;
+import java.util.Random;
 
 /**
  * <p>

@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.testutil.assertion;
 
+import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.data.Data;
+
 import static org.junit.Assert.assertArrayEquals;
 import static org.schemaanalyst.test.testutil.DataUtils.dataToIntegerValues;
-
-import org.schemaanalyst.data.Data;
-import org.apache.commons.lang3.StringUtils;
 
 public class DataAssert {
 

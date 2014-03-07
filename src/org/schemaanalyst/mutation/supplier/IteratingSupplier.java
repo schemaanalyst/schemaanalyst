@@ -1,9 +1,9 @@
 package org.schemaanalyst.mutation.supplier;
 
-import java.util.List;
-
 import org.schemaanalyst.mutation.MutationException;
 import org.schemaanalyst.util.Duplicator;
+
+import java.util.List;
 
 /**
  * <p>

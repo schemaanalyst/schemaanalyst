@@ -1,8 +1,5 @@
 package org.schemaanalyst.datageneration.search.objective.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
@@ -11,6 +8,9 @@ import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ColumnObjectiveFunction extends ObjectiveFunction<Data> {
     

@@ -1,10 +1,6 @@
 package org.schemaanalyst.sqlparser;
 
-import gudusoft.gsqlparser.nodes.TAlterTableOption;
-import gudusoft.gsqlparser.nodes.TConstraint;
-import gudusoft.gsqlparser.nodes.TExpression;
-import gudusoft.gsqlparser.nodes.TParseTreeNode;
-import gudusoft.gsqlparser.nodes.TTypeName;
+import gudusoft.gsqlparser.nodes.*;
 
 /**
  * <p>

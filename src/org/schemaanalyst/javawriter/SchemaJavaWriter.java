@@ -1,16 +1,17 @@
 package org.schemaanalyst.javawriter;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
-import static org.schemaanalyst.javawriter.MethodNameConstants.*;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
+import static org.schemaanalyst.javawriter.MethodNameConstants.SCHEMA_CREATE_TABLE_METHOD;
+import static org.schemaanalyst.javawriter.MethodNameConstants.TABLE_CREATE_COLUMN_METHOD;
 
 public class SchemaJavaWriter {
 

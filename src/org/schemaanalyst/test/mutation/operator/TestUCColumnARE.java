@@ -2,10 +2,6 @@
  */
 package org.schemaanalyst.test.mutation.operator;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
@@ -14,6 +10,13 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

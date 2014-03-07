@@ -1,23 +1,11 @@
 package org.schemaanalyst.javawriter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionVisitor;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
-import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
-import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
-import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ExpressionJavaWriter {
 

@@ -1,7 +1,5 @@
 package org.schemaanalyst.test.sqlrepresentation;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
@@ -9,6 +7,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.DoubleDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import static org.junit.Assert.*;
 
 public class TestTable {
 

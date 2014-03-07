@@ -1,16 +1,9 @@
 package org.schemaanalyst.datageneration.search;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.datageneration.search.datainitialization.DataInitialiser;
-import org.schemaanalyst.datageneration.search.handler.ColumnHandler;
-import org.schemaanalyst.datageneration.search.handler.ExpressionColumnHandler;
-import org.schemaanalyst.datageneration.search.handler.NullColumnHandler;
-import org.schemaanalyst.datageneration.search.handler.ReferenceColumnHandler;
-import org.schemaanalyst.datageneration.search.handler.UniqueColumnHandler;
+import org.schemaanalyst.datageneration.search.handler.*;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
@@ -18,6 +11,9 @@ import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiv
 import org.schemaanalyst.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
 import org.schemaanalyst.util.random.Random;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DirectedRandomSearch extends Search<Data> {
 

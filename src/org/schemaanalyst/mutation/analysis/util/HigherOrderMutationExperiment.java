@@ -1,15 +1,9 @@
 package org.schemaanalyst.mutation.analysis.util;
 
 
-import java.util.ArrayList;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
-import org.schemaanalyst.mutation.operator.CCNullifier;
-import org.schemaanalyst.mutation.operator.FKCColumnPairR;
-import org.schemaanalyst.mutation.operator.NNCAR;
-import org.schemaanalyst.mutation.operator.PKCColumnARE;
-import org.schemaanalyst.mutation.operator.UCColumnARE;
+import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
 import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
@@ -21,6 +15,9 @@ import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /*
  */

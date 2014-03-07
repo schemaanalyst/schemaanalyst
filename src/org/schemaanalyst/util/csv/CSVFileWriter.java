@@ -2,15 +2,11 @@
  */
 package org.schemaanalyst.util.csv;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.*;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A simple writer for saving CSVResult objects to files.

@@ -1,14 +1,14 @@
 package org.schemaanalyst.test.datageneration.search;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.Duplicator;
 
-import static org.junit.Assert.*;
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestSearchEvaluation {
 

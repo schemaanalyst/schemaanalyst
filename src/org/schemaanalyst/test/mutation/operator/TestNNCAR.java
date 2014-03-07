@@ -2,9 +2,7 @@
  */
 package org.schemaanalyst.test.mutation.operator;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.operator.NNCAR;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -12,6 +10,10 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  *

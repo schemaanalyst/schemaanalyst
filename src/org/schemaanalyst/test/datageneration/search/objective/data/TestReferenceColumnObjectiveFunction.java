@@ -1,17 +1,7 @@
 package org.schemaanalyst.test.datageneration.search.objective.data;
 
-import static junitparams.JUnitParamsRunner.$;
-import static org.junit.Assert.assertEquals;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
-import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
-import static org.schemaanalyst.test.testutil.Params.*;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
@@ -22,6 +12,15 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.test.testutil.mock.FourColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static junitparams.JUnitParamsRunner.$;
+import static org.junit.Assert.assertEquals;
+import static org.schemaanalyst.test.testutil.Params.*;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertNonOptimal;
+import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;
 
 @RunWith(JUnitParamsRunner.class)
 public class TestReferenceColumnObjectiveFunction {

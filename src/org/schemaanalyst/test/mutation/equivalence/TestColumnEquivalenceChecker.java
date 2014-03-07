@@ -5,10 +5,12 @@ package org.schemaanalyst.test.mutation.equivalence;
 import org.junit.Test;
 import org.schemaanalyst.mutation.equivalence.ColumnEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import static org.junit.Assert.*;
 import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

@@ -1,9 +1,10 @@
 package org.schemaanalyst.test.sqlrepresentation.expression;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.expression.ExpressionPath;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 public class TestExpressionPath {
 

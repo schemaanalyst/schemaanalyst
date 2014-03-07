@@ -3,27 +3,20 @@
 package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.mutation.equivalence.CheckEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.ColumnEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.ForeignKeyEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.NotNullEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.PrimaryKeyEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.TableEquivalenceChecker;
-import org.schemaanalyst.mutation.equivalence.UniqueEquivalenceChecker;
-import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.datatype.*;
+import org.schemaanalyst.mutation.equivalence.*;
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+
+import static org.junit.Assert.*;
 
 /**
  *

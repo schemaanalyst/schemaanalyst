@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.data;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class TestStringValue {
 

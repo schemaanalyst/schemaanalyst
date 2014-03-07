@@ -1,15 +1,10 @@
 package org.schemaanalyst.test.data;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
-import org.schemaanalyst.data.BooleanValue;
-import org.schemaanalyst.data.DateTimeValue;
-import org.schemaanalyst.data.DateValue;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.TimeValue;
-import org.schemaanalyst.data.TimestampValue;
+import org.schemaanalyst.data.*;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class TestValueEquality {
 

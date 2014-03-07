@@ -1,7 +1,6 @@
 package paper.mutation2013;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
-
 import paper.util.SchemaStatsTable;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {

@@ -3,7 +3,7 @@ package org.schemaanalyst.test.util.sql;
 import org.junit.Test;
 import org.schemaanalyst.util.sql.SQLRepairer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestSQLRepairer {
 

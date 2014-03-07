@@ -3,7 +3,8 @@ package org.schemaanalyst.test.util.collection;
 import org.junit.Test;
 import org.schemaanalyst.util.collection.Identifier;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TestIdentifier {
 

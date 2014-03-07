@@ -44,11 +44,11 @@ public abstract class ConstraintRequirementsGenerator {
         this.constraint = constraint;
 
         if (generateFullPredicate) {
-            predicateGenerator = new ConstraintPredicateGenerator(schema, constraint);
+            predicateGenerator = new ConstraintPredicateGenerator(schema, table, constraint);
         }
     }
 
-    public abstract List<Predicate> generateRequirements();
+    public abstract Requirements generateRequirements();
 
     protected Predicate generatePredicate(String purpose) {
         return generatePredicate(Arrays.asList(purpose));

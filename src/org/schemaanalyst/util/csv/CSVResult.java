@@ -2,11 +2,11 @@
  */
 package org.schemaanalyst.util.csv;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * A single row to be stored for output in a CSV format.

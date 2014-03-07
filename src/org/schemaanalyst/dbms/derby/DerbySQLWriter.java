@@ -1,6 +1,6 @@
 package org.schemaanalyst.dbms.derby;
 
-import org.schemaanalyst.sqlrepresentation.*;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 
 /**

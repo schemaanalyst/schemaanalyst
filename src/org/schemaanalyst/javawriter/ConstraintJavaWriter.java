@@ -1,18 +1,12 @@
 package org.schemaanalyst.javawriter;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 
 import static org.schemaanalyst.javawriter.MethodNameConstants.*;
 

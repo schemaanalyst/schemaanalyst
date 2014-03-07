@@ -1,9 +1,9 @@
 package org.schemaanalyst.datageneration.search.handler;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.data.NullColumnObjectiveFunction;
+
+import java.util.List;
 
 public class NullColumnHandler extends ColumnHandler<NullColumnObjectiveFunction> {
     

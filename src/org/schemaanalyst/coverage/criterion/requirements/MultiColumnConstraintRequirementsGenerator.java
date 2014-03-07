@@ -48,8 +48,8 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
     }
 
     @Override
-    public List<Predicate> generateRequirements() {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
 
         addOneColumnNotEqualRequirement(requirements);
         addAllColumnsEqualRequirement(requirements);
@@ -58,7 +58,7 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
         return requirements;
     }
 
-    private void addOneColumnNotEqualRequirement(List<Predicate> requirements) {
+    private void addOneColumnNotEqualRequirement(Requirements requirements) {
         Predicate predicate = generatePredicate("Test at least one column not equal for " + table + "'s " + constraint);
 
         // add the clause such that (at least) one of the columns is not equal
@@ -72,10 +72,10 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
         // each of the columns should be NOT NULL
         // (otherwise the outcome of the predicate would not be TRUE/FALSE, it would be NULL).
         ensureColumnsAreNotNull(predicate);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
-    private void addAllColumnsEqualRequirement(List<Predicate> requirements) {
+    private void addAllColumnsEqualRequirement(Requirements requirements) {
         Predicate predicate = generatePredicate("Test all columns equal for " + table + "'s " + constraint);
 
         // add the clause such that all of the columns are equal
@@ -89,7 +89,7 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
         // each of the columns should be NOT NULL
         // (otherwise the outcome of the predicate would not be TRUE/FALSE, it would be NULL).
         ensureColumnsAreNotNull(predicate);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
     private void ensureColumnsAreNotNull(Predicate predicate) {
@@ -98,7 +98,7 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
         }
     }
 
-    private void addOneColumnNullRequirement(List<Predicate> requirements) {
+    private void addOneColumnNullRequirement(Requirements requirements) {
         // We achieve the requirement by stating that the first column should be NULL.
         // In principle it could be any, but we should pick one.
         // We do not need to say anything definite about the NULL status of other columns
@@ -109,6 +109,6 @@ public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequir
 
         predicate.setColumnNullStatus(table, firstColumn, true);
 
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 }

@@ -3,15 +3,7 @@ package org.schemaanalyst.datageneration.search.objective.row;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunctionException;
-import org.schemaanalyst.sqlrepresentation.expression.AndExpression;
-import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
-import org.schemaanalyst.sqlrepresentation.expression.ExpressionAdapter;
-import org.schemaanalyst.sqlrepresentation.expression.InExpression;
-import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
-import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
-import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
 
 public class ExpressionRowObjectiveFunctionFactory {
 

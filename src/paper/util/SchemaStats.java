@@ -1,12 +1,12 @@
 package paper.util;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class SchemaStats {
 

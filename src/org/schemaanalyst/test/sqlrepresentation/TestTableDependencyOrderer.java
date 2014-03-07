@@ -1,16 +1,13 @@
 package org.schemaanalyst.test.sqlrepresentation;
 
-import java.util.List;
-
 import org.junit.Test;
-import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.TableDependencyOrderer;
+import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 
-import static org.junit.Assert.*;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class TestTableDependencyOrderer {
 

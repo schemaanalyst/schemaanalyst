@@ -1,12 +1,13 @@
 
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.util.tuple.MixedPair;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * <p>The results of executing a {@link TestSuite}.</p>

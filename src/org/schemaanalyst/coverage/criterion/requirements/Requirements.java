@@ -31,6 +31,16 @@ public class Requirements {
         predicates.add(predicateToAdd);
     }
 
+    public void addPredicates(List<Predicate> predicates) {
+        for (Predicate predicate : predicates) {
+            addPredicate(predicate);
+        }
+    }
+
+    public void addPredicates(Requirements requirements) {
+        addPredicates(requirements.getPredicates());
+    }
+
     public int size() {
         return predicates.size();
     }

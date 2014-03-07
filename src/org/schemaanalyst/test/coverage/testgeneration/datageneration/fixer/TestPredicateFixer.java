@@ -3,7 +3,6 @@ package org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer;
 import org.junit.Test;
 import org.schemaanalyst.coverage.criterion.clause.Clause;
 import org.schemaanalyst.coverage.criterion.clause.ClauseFactory;
-import org.schemaanalyst.coverage.criterion.clause.ExpressionClause;
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.testgeneration.datageneration.checker.*;
 import org.schemaanalyst.coverage.testgeneration.datageneration.fixer.*;

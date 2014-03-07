@@ -2,14 +2,7 @@
  */
 package org.schemaanalyst.test.mutation.mutator;
 
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
-
 import org.junit.Test;
-
-import static org.junit.Assert.*;
-
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.mutation.Mutant;
@@ -18,6 +11,13 @@ import org.schemaanalyst.mutation.supplier.SolitaryComponentSupplier;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 public class TestRelationalOperatorExchanger {
 

@@ -3,12 +3,14 @@
 package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.mutation.equivalence.NotNullEquivalenceChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  *

@@ -1,6 +1,5 @@
 package org.schemaanalyst.test.coverage.criterion.predicate;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.schemaanalyst.coverage.criterion.clause.ClauseFactory;
@@ -13,6 +12,8 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
 
 import java.util.Arrays;
+
+import static org.junit.Assert.*;
 
 /**
  * Created by phil on 24/02/2014.

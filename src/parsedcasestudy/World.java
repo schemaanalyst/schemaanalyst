@@ -4,16 +4,8 @@ import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.datatype.BooleanDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
-import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
-import org.schemaanalyst.sqlrepresentation.expression.OrExpression;
-import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
-import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.sqlrepresentation.datatype.*;
+import org.schemaanalyst.sqlrepresentation.expression.*;
 
 /*
  * World schema.

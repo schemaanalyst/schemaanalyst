@@ -1,12 +1,12 @@
 package org.schemaanalyst.test.testutil.mock;
 
-import java.util.List;
-
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.List;
 
 public abstract class MockDatabase {
 

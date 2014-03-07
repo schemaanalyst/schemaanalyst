@@ -1,12 +1,13 @@
 package org.schemaanalyst.dbms.derby;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.dbms.DatabaseInteractor;
+
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.dbms.DatabaseInteractor;
 
 /**
  * <p>

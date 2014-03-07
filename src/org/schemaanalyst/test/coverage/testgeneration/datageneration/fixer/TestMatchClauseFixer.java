@@ -14,7 +14,6 @@ import org.schemaanalyst.test.testutil.mock.MockCellValueGenerator;
 import org.schemaanalyst.test.testutil.mock.MockRandom;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.tuple.MixedPair;
-import org.schemaanalyst.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;

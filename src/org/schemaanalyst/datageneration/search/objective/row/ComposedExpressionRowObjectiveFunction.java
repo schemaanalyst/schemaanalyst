@@ -1,14 +1,14 @@
 package org.schemaanalyst.datageneration.search.objective.row;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.datageneration.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class ComposedExpressionRowObjectiveFunction extends ObjectiveFunction<Row> {
 

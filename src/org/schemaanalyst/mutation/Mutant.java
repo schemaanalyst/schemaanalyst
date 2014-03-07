@@ -1,8 +1,9 @@
 package org.schemaanalyst.mutation;
 
+import org.schemaanalyst.mutation.pipeline.MutantRemover;
+
 import java.util.LinkedList;
 import java.util.List;
-import org.schemaanalyst.mutation.pipeline.MutantRemover;
 
 /**
  * {@link Mutant} is a wrapper around a mutated object with a string 

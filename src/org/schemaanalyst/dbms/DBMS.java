@@ -4,7 +4,6 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.sqlwriter.SQLWriter;
-import org.schemaanalyst.sqlwriter.CellSQLWriter;
 
 /**
  * <p>

@@ -1,10 +1,11 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>The result of running a mutation analysis {@link Technique}</p>

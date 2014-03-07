@@ -1,14 +1,12 @@
 package org.schemaanalyst.data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 public class Row {
 

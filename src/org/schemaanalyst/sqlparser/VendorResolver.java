@@ -1,7 +1,6 @@
 package org.schemaanalyst.sqlparser;
 
 import gudusoft.gsqlparser.EDbVendor;
-
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.dbms.derby.DerbyDBMS;

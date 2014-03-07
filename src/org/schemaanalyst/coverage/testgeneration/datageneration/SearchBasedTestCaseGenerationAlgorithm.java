@@ -1,9 +1,9 @@
 package org.schemaanalyst.coverage.testgeneration.datageneration;
 
 import org.schemaanalyst.coverage.criterion.predicate.Predicate;
-import org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.coverage.testgeneration.TestCase;
 import org.schemaanalyst.coverage.testgeneration.TestCaseGenerationAlgorithm;
+import org.schemaanalyst.coverage.testgeneration.datageneration.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.Search;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;

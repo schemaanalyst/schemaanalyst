@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,8 +20,8 @@ public class NullColumnRequirementsGenerator extends ConstraintRequirementsGener
         super(schema, table, generateFullPredicate);
     }
 
-    public List<Predicate> generateRequirements() {
-        List<Predicate> requirements = new ArrayList<>();
+    public Requirements generateRequirements() {
+        Requirements requirements = new Requirements();
         List<Column> columns = table.getColumns();
 
         for (Column column : columns) {
@@ -36,15 +35,15 @@ public class NullColumnRequirementsGenerator extends ConstraintRequirementsGener
         return requirements;
     }
 
-    private void addIsNotNullRequirement(List<Predicate> requirements, Column column) {
+    private void addIsNotNullRequirement(Requirements requirements, Column column) {
         Predicate predicate = generatePredicate("Test " + column + " is NOT NULL for " + table);
         predicate.setColumnNullStatus(table, column, false);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 
-    private void addIsNullRequirement(List<Predicate> requirements, Column column) {
+    private void addIsNullRequirement(Requirements requirements, Column column) {
         Predicate predicate = generatePredicate("Test " + column + " is NULL for " + table);
         predicate.setColumnNullStatus(table, column, true);
-        requirements.add(predicate);
+        requirements.addPredicate(predicate);
     }
 }

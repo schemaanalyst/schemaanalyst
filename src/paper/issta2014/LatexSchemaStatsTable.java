@@ -1,9 +1,8 @@
 package paper.issta2014;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
-import parsedcasestudy.*;
-
 import paper.util.SchemaStatsTable;
+import parsedcasestudy.*;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {
 

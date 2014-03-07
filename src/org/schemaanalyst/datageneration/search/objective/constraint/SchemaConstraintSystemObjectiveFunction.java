@@ -1,18 +1,18 @@
 package org.schemaanalyst.datageneration.search.objective.constraint;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SchemaConstraintSystemObjectiveFunction extends ObjectiveFunction<Data> {
 

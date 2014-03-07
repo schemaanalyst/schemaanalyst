@@ -1,14 +1,12 @@
 package org.schemaanalyst.test.datageneration.search.objective;
 
-import java.math.BigDecimal;
-
 import org.junit.Test;
-
-import static org.junit.Assert.assertNull;
-
 import org.schemaanalyst.datageneration.search.objective.DistanceObjectiveValue;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
 
+import java.math.BigDecimal;
+
+import static org.junit.Assert.assertNull;
 import static org.schemaanalyst.test.testutil.assertion.BigDecimalAssert.assertEquals;
 
 public class TestDistanceObjectiveValue {

@@ -1,21 +1,10 @@
 package org.schemaanalyst.test.testutil.mock;
 
-import java.util.List;
-
-import org.schemaanalyst.data.BooleanValue;
-import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.DateTimeValue;
-import org.schemaanalyst.data.DateValue;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.TimeValue;
-import org.schemaanalyst.data.TimestampValue;
-import org.schemaanalyst.data.ValueFactory;
-import org.schemaanalyst.data.ValueVisitor;
+import org.schemaanalyst.data.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+
+import java.util.List;
 
 public class EasyData extends Data {
 

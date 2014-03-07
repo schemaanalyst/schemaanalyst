@@ -4,11 +4,9 @@ import org.junit.Test;
 import org.schemaanalyst.coverage.criterion.clause.NullClause;
 import org.schemaanalyst.coverage.testgeneration.datageneration.checker.NullClauseChecker;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.Value;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
