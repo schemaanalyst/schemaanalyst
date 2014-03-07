@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by phil on 22/01/2014.
  */
-public class MultiColumnConstraintCACRequirementsGenerator extends RequirementsGenerator {
+public class MultiColumnConstraintCACRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     private Table referenceTable;
     private List<Column> columns, referenceColumns;

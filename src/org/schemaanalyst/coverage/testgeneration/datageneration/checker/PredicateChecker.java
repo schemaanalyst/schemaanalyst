@@ -57,12 +57,20 @@ public class PredicateChecker extends Checker {
     public boolean check() {
 
         boolean result = true;
-        for (Checker clauseChecker : clauseCheckers) {
+        for (ClauseChecker clauseChecker : clauseCheckers) {
             if (!clauseChecker.check()) {
                 result = false;
             }
         }
 
         return result;
+    }
+
+    public String getDump() {
+        String dump = "";
+        for (ClauseChecker clauseChecker : clauseCheckers) {
+            dump += clauseChecker.getInfo();
+        }
+        return dump;
     }
 }

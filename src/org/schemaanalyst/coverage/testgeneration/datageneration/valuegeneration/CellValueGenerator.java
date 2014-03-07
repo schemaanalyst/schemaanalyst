@@ -37,15 +37,14 @@ public class CellValueGenerator {
 
         // set the value to null?
         boolean setToNull = random.nextDouble() < nullProbability;
+        cell.setNull(setToNull);
         if (setToNull) {
-            cell.setValue(null);
             return;
         }
 
         boolean setToLibraryValue = random.nextDouble() < useLibraryProbability;
         if (setToLibraryValue) {
             boolean success = setToLibraryValue(cell);
-
             if (success) {
                 return;
             }

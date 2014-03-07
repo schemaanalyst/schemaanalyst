@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by phil on 05/02/2014.
  */
-public class MultiColumnConstraintRequirementsGenerator extends RequirementsGenerator {
+public class MultiColumnConstraintRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     private List<Column> cols, refCols;
     private Table refTable;

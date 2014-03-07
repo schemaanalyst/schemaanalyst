@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by phil on 07/02/2014.
  */
-public class CheckConstraintCACRequirementsGenerator extends RequirementsGenerator {
+public class CheckConstraintCACRequirementsGenerator extends ConstraintRequirementsGenerator {
 
     private Expression expression;
 
@@ -29,7 +29,7 @@ public class CheckConstraintCACRequirementsGenerator extends RequirementsGenerat
                 ExpressionCACPredicatesGenerator.generatePredicates(table, expression);
 
         for (Predicate expressionPredicate : expressionPredicates) {
-            Predicate predicate = generatePredicate(expressionPredicate.getPurpose());
+            Predicate predicate = generatePredicate(expressionPredicate.getPurposes());
             predicate.addClauses(expressionPredicate);
             requirements.add(predicate);
         }

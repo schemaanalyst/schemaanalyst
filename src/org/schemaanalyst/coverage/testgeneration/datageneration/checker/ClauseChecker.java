@@ -8,4 +8,6 @@ import org.schemaanalyst.coverage.criterion.clause.Clause;
 public abstract class ClauseChecker<T extends Clause> extends Checker {
 
     public abstract T getClause();
+
+    public abstract String getInfo();
 }

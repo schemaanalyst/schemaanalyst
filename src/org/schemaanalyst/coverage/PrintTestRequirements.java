@@ -31,7 +31,7 @@ public class PrintTestRequirements extends Runner {
 
         int num = 1;
         for (Predicate predicate : requirements) {
-            System.out.println(num + ") " + predicate.getPurpose());
+            System.out.println(num + ") " + predicate.getPurposes());
             System.out.println(predicate);
             System.out.println();
 

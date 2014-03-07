@@ -6,12 +6,13 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * Created by phil on 20/01/2014.
  */
-public abstract class RequirementsGenerator {
+public abstract class ConstraintRequirementsGenerator {
 
     protected Schema schema;
     protected Table table;
@@ -19,11 +20,11 @@ public abstract class RequirementsGenerator {
 
     private ConstraintPredicateGenerator predicateGenerator;
 
-    public RequirementsGenerator(Schema schema, Table table) {
+    public ConstraintRequirementsGenerator(Schema schema, Table table) {
         this(schema, table, true);
     }
 
-    public RequirementsGenerator(Schema schema, Table table, boolean generateFullPredicate) {
+    public ConstraintRequirementsGenerator(Schema schema, Table table, boolean generateFullPredicate) {
         this.schema = schema;
         this.table = table;
         this.constraint = null;
@@ -33,12 +34,11 @@ public abstract class RequirementsGenerator {
         }
     }
 
-    public RequirementsGenerator(Schema schema, Constraint constraint) {
+    public ConstraintRequirementsGenerator(Schema schema, Constraint constraint) {
         this(schema, constraint, true);
     }
 
-
-    public RequirementsGenerator(Schema schema, Constraint constraint, boolean generateFullPredicate) {
+    public ConstraintRequirementsGenerator(Schema schema, Constraint constraint, boolean generateFullPredicate) {
         this.schema = schema;
         this.table = constraint.getTable();
         this.constraint = constraint;
@@ -51,8 +51,12 @@ public abstract class RequirementsGenerator {
     public abstract List<Predicate> generateRequirements();
 
     protected Predicate generatePredicate(String purpose) {
+        return generatePredicate(Arrays.asList(purpose));
+    }
+
+    protected Predicate generatePredicate(List<String> purposes) {
         return predicateGenerator == null
-                ? new Predicate(purpose)
-                : predicateGenerator.generate(purpose);
+                ? new Predicate(purposes)
+                : predicateGenerator.generate(purposes);
     }
 }

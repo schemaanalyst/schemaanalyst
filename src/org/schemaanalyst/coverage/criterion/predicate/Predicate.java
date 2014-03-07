@@ -17,24 +17,34 @@ import java.util.List;
  */
 public class Predicate {
 
-    private String purpose;
+    private List<String> purposes;
     private LinkedHashSet<Clause> clauses;
 
     public Predicate() {
-        this(null);
+        purposes = new ArrayList<>();
+        clauses = new LinkedHashSet<>();
     }
 
     public Predicate(String purpose) {
-        this.purpose = purpose;
-        this.clauses = new LinkedHashSet<>();
+        this();
+        addPurpose(purpose);
     }
 
-    public String getPurpose() {
-        return purpose;
+    public Predicate(List<String> purposes) {
+        this();
+        this.purposes = new ArrayList<>(purposes);
     }
 
-    public void setPurpose(String purpose) {
-        this.purpose = purpose;
+    public List<String> getPurposes() {
+        return new ArrayList<>(purposes);
+    }
+
+    public void addPurpose(String purpose) {
+        purposes.add(purpose);
+    }
+
+    public void addPurposes(List<String> purposes) {
+        this.purposes.addAll(purposes);
     }
 
     public void addClause(Clause clause) {
@@ -121,7 +131,7 @@ public class Predicate {
     }
 
     public Predicate duplicate() {
-        Predicate duplicate = new Predicate(purpose);
+        Predicate duplicate = new Predicate(this.purposes);
         for (Clause clause : clauses) {
             duplicate.addClause(clause.duplicate());
         }

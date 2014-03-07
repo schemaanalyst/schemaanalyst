@@ -1,0 +1,37 @@
+package org.schemaanalyst.coverage.criterion.requirements;
+
+import org.schemaanalyst.coverage.criterion.predicate.Predicate;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Created by phil on 07/03/2014.
+ */
+public class Requirements {
+
+    private ArrayList<Predicate> predicates;
+
+    public Requirements() {
+        predicates = new ArrayList<>();
+    }
+
+    public List<Predicate> getPredicates() {
+        return new ArrayList<>(predicates);
+    }
+
+    public void addPredicate(Predicate predicateToAdd) {
+
+        for (Predicate predicate : predicates) {
+            if (predicate.equals(predicateToAdd)) {
+                predicate.addPurposes(predicateToAdd.getPurposes());
+                return;
+            }
+        }
+        predicates.add(predicateToAdd);
+    }
+
+    public int size() {
+        return predicates.size();
+    }
+}
