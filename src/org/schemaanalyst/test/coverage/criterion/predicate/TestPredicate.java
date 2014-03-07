@@ -33,6 +33,38 @@ public class TestPredicate {
     }
 
     @Test
+    public void testEquality() {
+        Predicate p1 = new Predicate("predicate1");
+        Predicate p2 = new Predicate("predicate2");
+
+        NullClause nullClause1 = new NullClause(tab1, tab1Col1, true);
+        NullClause nullClause2 = new NullClause(tab1, tab1Col2, true);
+
+        p1.addClause(nullClause1);
+        p1.addClause(nullClause2);
+
+        p2.addClause(nullClause2);
+        p2.addClause(nullClause1);
+
+        assertEquals(p1, p2);
+    }
+
+    @Test
+    public void testNonEquality() {
+        Predicate p1 = new Predicate("predicate1");
+        Predicate p2 = new Predicate("predicate2");
+
+        NullClause nullClause1 = new NullClause(tab1, tab1Col1, true);
+        NullClause nullClause2 = new NullClause(tab1, tab1Col2, true);
+
+        p1.addClause(nullClause1);
+
+        p2.addClause(nullClause2);
+
+        assertNotEquals(p1, p2);
+    }
+
+    @Test
     public void testSetNullNotAlreadyNull() {
         NullClause nc = new NullClause(tab1, tab1Col1, true);
         Predicate p = new Predicate("Test predicate");
