@@ -37,6 +37,12 @@ public class ChangedConstraintFinder extends ChangedElementFinder {
         if (diffC != null) {
             return diffC;
         }
+        
+        diffC = findDifferent(new ForeignKeyEquivalenceChecker(), first.getForeignKeyConstraints(), second.getForeignKeyConstraints());
+        if (diffC != null) {
+            return diffC;
+        }
+        
         return null;
     }
 }

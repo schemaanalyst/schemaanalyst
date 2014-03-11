@@ -53,6 +53,12 @@ public class ChangedTableFinder extends ChangedElementFinder {
         if (diffC != null) {
             return diffC.getTable();
         }
+        
+        diffC = findDifferent(new ForeignKeyEquivalenceChecker(), first.getForeignKeyConstraints(), second.getForeignKeyConstraints());
+        if (diffC != null) {
+            return diffC.getTable();
+        }
+        
         return null;
     }
 }
