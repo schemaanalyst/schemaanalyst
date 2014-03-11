@@ -16,7 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.BankAccount;
+import parsedcasestudy.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,27 +36,29 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new BankAccount();
-        // Schema schema = new BookTown();
+        // Schema schema = new BankAccount();
+        // Schema schema = new BookTown(); // -- insert error (seen this before?)
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
-        // Schema schema = new Flights();
+        // Schema schema = new Employee();  // -- check constraint wierdness
+        // Schema schema = new Examination();   // -- check constraint wierdness
+        // Schema schema = new Flights(); // -- crashes
         // Schema schema = new FrenchTowns();
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
         // Schema schema = new JWhoisServer();
-        // Schema schema = new NistDML181();
-        // Schema schema = new NistDML182();
+        Schema schema = new NistDML181();  // -- fails on two test cases -- overfitting?
+        // Schema schema = new NistDML182(); // -- some failures
         // Schema schema = new NistDML183();
-        // Schema schema = new NistWeather();
-        // Schema schema = new NistXTS748();
+        // Schema schema = new NistWeather(); // -- crashes
+        // Schema schema = new NistXTS748(); // -- check constraint weirdness ??
         // Schema schema = new NistXTS749();
-        // Schema schema = new Person();
-        // Schema schema = new Products();
+        // Schema schema = new Person(); // -- crashes
+        // Schema schema = new Products(); // check constraint issues
         // Schema schema = new RiskIt();
-        // Schema schema = new StudentResidence();
+        // Schema schema = new StudentResidence(); // check constraint issues
         // Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
@@ -69,7 +71,7 @@ public class GenerateSchemaCoverage extends Runner {
         //TestCaseGenerationAlgorithm testCaseGenerator =
         //        new SearchBasedTestCaseGenerationAlgorithm(search);
 
-        Random random = new SimpleRandom(0L);
+        Random random = new SimpleRandom(10L);
         TestCaseGenerationAlgorithm testCaseGenerator =
                 new DirectedRandomTestCaseGenerationAlgorithm(
                         random,

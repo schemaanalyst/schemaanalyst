@@ -6,24 +6,22 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.util.tuple.MixedPair;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 /**
  * Created by phil on 27/02/2014.
  */
 public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
+
+
     private MatchClause matchClause;
     private boolean allowNull;
     private Data data, state;
     private boolean compliant;
-    private List<MixedPair<Row, List<Row>>> nonMatchingCells;
-    private List<Cell> matchingCells;
+    private List<MatchRecord> nonMatchingCells;
+    private List<MatchRecord> matchingCells;
 
     public MatchClauseChecker(MatchClause matchClause, boolean allowNull, Data data) {
         this(matchClause, allowNull, data, new Data());
@@ -40,21 +38,24 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         return matchClause;
     }
 
-    public List<MixedPair<Row, List<Row>>> getNonMatchingCells() {
+    public List<MatchRecord> getNonMatchingCells() {
         return nonMatchingCells;
     }
 
-    public List<Cell> getMatchingCells() {
+    public List<MatchRecord> getMatchingCells() {
         return matchingCells;
     }
 
-    private List<Row> getCompareRows(Data data, int index) {
+    private List<Row> getDataRows(int index) {
         List<Row> compareRows = data.getRows(matchClause.getReferenceTable());
         if (matchClause.involvesOneTable()) {
             compareRows = compareRows.subList(0, index);
         }
-        compareRows.addAll(state.getRows(matchClause.getReferenceTable()));
         return compareRows;
+    }
+
+    private List<Row> getStateRows() {
+        return state.getRows(matchClause.getReferenceTable());
     }
 
     @Override
@@ -68,65 +69,85 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         ListIterator<Row> rowsIterator = rows.listIterator();
 
         while (rowsIterator.hasNext()) {
-            int index = rowsIterator.nextIndex();
             Row row = rowsIterator.next();
-            List<Row> compareRows = getCompareRows(data, index);
 
-            if (compareRows.size() == 0) {
+            List<Row> dataRows = getDataRows(rowsIterator.nextIndex() - 1);
+            List<Row> stateRows = getStateRows();
+            int numCompareRows = dataRows.size() + stateRows.size();
+            if (numCompareRows == 0) {
                 if (matchClause.requiresComparisonRow()) {
                     compliant = false;
                 }
             } else {
-                checkMatching(row, compareRows);
-                checkNonMatching(row, compareRows);
+                checkMatching(row, dataRows, stateRows);
+                checkNonMatching(row, dataRows, stateRows);
             }
         }
 
         return compliant;
     }
 
-    private void checkMatching(Row row, List<Row> compareRows) {
-
-        List<Column> matchingColumns = matchClause.getMatchingColumns();
-        List<Column> matchingReferenceColumns = matchClause.getMatchingReferenceColumns();
-
-        List<Row> nonCompliantRows = checkRow(row, compareRows, matchingColumns, matchingReferenceColumns, true);
-
-        int numNonCompliant = nonCompliantRows.size();
-        int numCompare = compareRows.size();
-
-        if (numNonCompliant > 0 && numNonCompliant == numCompare) {
-            compliant = false;
-
-            Row reducedRow = row.reduceRow(matchingColumns);
-            List<Row> reducedCompareRows = new ArrayList<>();
-            for (Row compareRow : compareRows) {
-                reducedCompareRows.add(compareRow.reduceRow(matchingReferenceColumns));
-            }
-            nonMatchingCells.add(new MixedPair(reducedRow, reducedCompareRows));
+    private void checkMatching(Row row, List<Row> dataRows, List<Row> stateRows) {
+        MatchRecord matchRecord = checkRows(
+                row,
+                dataRows,
+                stateRows,
+                matchClause.getMatchingColumns(),
+                matchClause.getMatchingReferenceColumns(),
+                true);
+        if (matchRecord != null) {
+            nonMatchingCells.add(matchRecord);
         }
     }
 
-
-    private void checkNonMatching(Row row, List<Row> compareRows) {
-
-        List<Column> nonMatchingColumns = matchClause.getNonMatchingColumns();
-        List<Column> nonMatchingReferenceColumns = matchClause.getNonMatchingReferenceColumns();
-
-        List<Row> nonCompliantRows = checkRow(
+    private void checkNonMatching(Row row, List<Row> dataRows, List<Row> stateRows) {
+        MatchRecord matchRecord = checkRows(
                 row,
-                compareRows,
-                nonMatchingColumns,
-                nonMatchingReferenceColumns,
+                dataRows,
+                stateRows,
+                matchClause.getNonMatchingColumns(),
+                matchClause.getNonMatchingReferenceColumns(),
                 false);
-
-        int numNonCompliant = nonCompliantRows.size();
-        int numCompare = compareRows.size();
-
-        if (numNonCompliant > 0 && numNonCompliant == numCompare) {
-            compliant = false;
-            matchingCells.addAll(row.getCells(nonMatchingColumns));
+        if (matchRecord != null) {
+            matchingCells.add(matchRecord);
         }
+    }
+
+    private MatchRecord checkRows(Row row, List<Row> dataRows, List<Row> stateRows, List<Column> columns, List<Column> referenceColumns, boolean checkMatch) {
+
+        List<Row> nonCompliantStateRows = checkRow(
+                row,
+                dataRows,
+                columns,
+                referenceColumns,
+                checkMatch);
+
+        List<Row> nonCompliantDataRows = checkRow(
+                row,
+                stateRows,
+                columns,
+                referenceColumns,
+                checkMatch);
+
+        int numRows = dataRows.size() + stateRows.size();
+        int numNonCompliantRows = nonCompliantDataRows.size() + nonCompliantStateRows.size();
+        boolean everyRowNonCompliant = (numRows == numNonCompliantRows);
+
+        MatchRecord matchRecord = null;
+
+        if (numNonCompliantRows > 0 && everyRowNonCompliant) {
+            compliant = false;
+
+            matchRecord = new MatchRecord(row.reduceRow(columns));
+            for (Row stateRow : nonCompliantStateRows) {
+                matchRecord.addUnmodifiableComparison(stateRow.reduceRow(referenceColumns));
+            }
+            for (Row dataRow : nonCompliantDataRows) {
+                matchRecord.addModifableComparison(dataRow.reduceRow(referenceColumns));
+            }
+        }
+
+        return matchRecord;
     }
 
     private List<Row> checkRow(Row row,
@@ -145,16 +166,16 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
                 boolean onePairingSatisfied = false;
 
                 while (colsIterator.hasNext()) {
-                    Column col = colsIterator.next();
-                    Column refCol = refColsIterator.next();
+                    Column column = colsIterator.next();
+                    Column referenceColumn = refColsIterator.next();
 
-                    Cell cell = row.getCell(col);
-                    Cell refCell = compareRow.getCell(refCol);
+                    Cell cell = row.getCell(column);
+                    Cell referenceCell = compareRow.getCell(referenceColumn);
 
                     boolean valuesEqual = new RelationalChecker(
                             cell.getValue(),
                             RelationalOperator.EQUALS,
-                            refCell.getValue(),
+                            referenceCell.getValue(),
                             allowNull).check();
 
                     boolean thisPairingSatisfied = (shouldMatch == valuesEqual);
@@ -184,21 +205,49 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         boolean check = check();
         String info = "Match clause: " + matchClause + "\n";
         info += "\t* Success: " + check + "\n";
-
         if (!check) {
-            info += "\t* Matching cells:\n";
-            for (Cell cell : matchingCells) {
-                info += "\t\t* " + cell + "\n";
-            }
-            info += "\t* Non-matching cells:\n";
-            for (MixedPair<Row, List<Row>> pair : nonMatchingCells) {
-                info += "\t\t* " + pair.getFirst() + "\n";
-                List<Row> rows = pair.getSecond();
-                for (Row row : rows) {
-                    info += "\t\t\t-> " + row + "\n";
-                }
-            }
+            info += "\t* Matching cells: " + getMatchRecordsInfo(matchingCells) + "\n";
+            info += "\t* Non-matching cells: " + getMatchRecordsInfo(nonMatchingCells) + "\n";
         }
         return info;
+    }
+
+    private String getMatchRecordsInfo(List<MatchRecord> matchRecords) {
+        if (matchRecords.size() == 0) {
+            return "<none>";
+        }
+        String info = "\n";
+        for (MatchRecord matchRecord : matchRecords) {
+            info += getMatchRecordInfo(matchRecord);
+        }
+        return info;
+    }
+
+    private String getMatchRecordInfo(MatchRecord matchRecord) {
+        String str = "\t\t* Original row: " + matchRecord.getOriginalRow() + "\n";
+        str += "\t\t\t* Data compare row(s): " + getCompareRowsInfo(matchRecord.getModifiableComparisons()) + "\n";
+        str += "\t\t\t* State compare row(s): " + getCompareRowsInfo(matchRecord.getUnmodifiableComparisons()) + "\n";
+        return str;
+    }
+
+    private String getCompareRowsInfo(List<Row> compareRows) {
+        int numRows = compareRows.size();
+        if (numRows == 0) {
+            return "<none>";
+        } else if (numRows == 1) {
+            return compareRows.get(0).toString();
+        } else {
+            String str = "";
+            boolean first = true;
+            for (Row row : compareRows) {
+                if (first) {
+                    first = false;
+                } else {
+                    str += "\n";
+                }
+                str += "\t\t\t\t* " + row;
+            }
+            return str;
+        }
     }
 }

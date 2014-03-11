@@ -1,13 +1,12 @@
 package org.schemaanalyst.coverage.testgeneration.datageneration.fixer;
 
 import org.schemaanalyst.coverage.testgeneration.datageneration.checker.MatchClauseChecker;
+import org.schemaanalyst.coverage.testgeneration.datageneration.checker.MatchRecord;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.util.random.Random;
-import org.schemaanalyst.util.tuple.MixedPair;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -30,60 +29,57 @@ public class MatchClauseFixer extends Fixer {
 
     @Override
     public void attemptFix() {
-        boolean isOr = matchClauseChecker.getClause().getMode().isOr();
-
-        attemptFixNonMatchingCells(isOr);
-        attemptFixMatchingCells(isOr);
+        attemptFix(matchClauseChecker.getNonMatchingCells(), true);
+        attemptFix(matchClauseChecker.getMatchingCells(), false);
     }
 
-    private void attemptFixNonMatchingCells(boolean isOr) {
-        boolean isAnd = !isOr;
-        List<MixedPair<Row, List<Row>>> nonMatchingCells = matchClauseChecker.getNonMatchingCells();
+    private void attemptFix(List<MatchRecord> matchRecords, boolean attemptMatch) {
 
-        for (MixedPair<Row, List<Row>> pair: nonMatchingCells) {
-            // get the initial row
-            Row row = pair.getFirst();
+        for (MatchRecord matchRecord : matchRecords) {
+            Row originalRow = matchRecord.getOriginalRow();
 
-            // get the reference row
-            List<Row> alternativeRows = pair.getSecond();
-            Row alternativeRow = alternativeRows.get(random.nextInt(alternativeRows.size()));
+            int randomRowIndex = random.nextInt(matchRecord.getNumComparisonRows());
+            Row alternativeRow = matchRecord.getComparisonRow(randomRowIndex);
 
-            // if it's an OR MatchClause, we only need to fix up one pair of cells
-            // so work out a random index
-            int orIndex = -1;
+            boolean takeSecond = matchRecord.isModifiableRow(randomRowIndex) && random.nextBoolean();
+
+            boolean isOr = matchClauseChecker.getClause().getMode().isOr();
             if (isOr) {
-                orIndex = random.nextInt(row.getNumCells());
-            }
+                // if it's an OR MatchClause, we only need to fix one pair of cells
+                int randomCellIndex = random.nextInt(originalRow.getNumCells());
+                Cell firstCell = originalRow.getCell(randomCellIndex);
+                Cell secondCell = alternativeRow.getCell(randomCellIndex);
+                fixCells(firstCell, secondCell, takeSecond, attemptMatch);
+            } else {
+                ListIterator<Cell> originalRowIterator = originalRow.getCells().listIterator();
+                ListIterator<Cell> alternativeRowIterator = alternativeRow.getCells().listIterator();
 
-            ListIterator<Cell> cellIterator = row.getCells().listIterator();
-            ListIterator<Cell> alternativeCellIterator = alternativeRow.getCells().listIterator();
-
-            while (cellIterator.hasNext()) {
-                boolean matchCells = isAnd || orIndex == cellIterator.nextIndex();
-
-                Cell firstCell = cellIterator.next();
-                Cell secondCell = alternativeCellIterator.next();
-
-                if (matchCells) {
-                    firstCell.setValue(secondCell.getValue().duplicate());
+                while (originalRowIterator.hasNext()) {
+                    Cell firstCell = originalRowIterator.next();
+                    Cell secondCell = alternativeRowIterator.next();
+                    fixCells(firstCell, secondCell, takeSecond, attemptMatch);
                 }
             }
         }
     }
 
-    private void attemptFixMatchingCells(boolean isOr) {
-        List<Cell> matchingCells = matchClauseChecker.getMatchingCells();
-
-        if (isOr && matchingCells.size() > 1) {
-            int randomCellIndex = random.nextInt(matchingCells.size());
-
-            Cell randomCell = matchingCells.get(randomCellIndex);
-            matchingCells = new ArrayList<>();
-            matchingCells.add(randomCell);
+    private void fixCells(Cell firstCell, Cell secondCell, boolean takeSecond, boolean attemptMatch) {
+        if (attemptMatch) {
+            matchCells(firstCell, secondCell, takeSecond);
+        } else {
+            mismatchCells(firstCell, secondCell, takeSecond);
         }
+    }
 
-        for (Cell cell : matchingCells) {
-            cellValueGenerator.generateCellValue(cell);
+    private void matchCells(Cell firstCell, Cell secondCell, boolean takeSecond) {
+        if (takeSecond) {
+            secondCell.setValue(firstCell.getValue().duplicate());
+        } else {
+            firstCell.setValue(secondCell.getValue().duplicate());
         }
+    }
+
+    private void mismatchCells(Cell firstCell, Cell secondCell, boolean takeSecond) {
+        cellValueGenerator.generateCellValue(takeSecond ? secondCell : firstCell);
     }
 }
