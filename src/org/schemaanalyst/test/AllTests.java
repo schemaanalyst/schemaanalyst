@@ -51,6 +51,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.faultlocalization.TestCalculator.class,
 	org.schemaanalyst.test.faultlocalization.TestProcessMatrix.class,
 	org.schemaanalyst.test.logic.TestRelationalOperator.class,
+        org.schemaanalyst.test.mutation.analysis.util.TestSchemaMerger.class,
 	org.schemaanalyst.test.mutation.equivalence.TestChangedConstraintFinder.class,
 	org.schemaanalyst.test.mutation.equivalence.TestChangedTableFinder.class,
 	org.schemaanalyst.test.mutation.equivalence.TestCheckEquivalenceChecker.class,
