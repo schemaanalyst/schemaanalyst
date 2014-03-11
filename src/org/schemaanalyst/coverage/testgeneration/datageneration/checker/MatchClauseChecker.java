@@ -14,12 +14,10 @@ import java.util.*;
  */
 public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
-
-
     private MatchClause matchClause;
     private boolean allowNull;
     private Data data, state;
-    private boolean compliant;
+    private boolean compareRowAlwaysPresent;
     private List<MatchRecord> nonMatchingCells;
     private List<MatchRecord> matchingCells;
 
@@ -60,8 +58,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     @Override
     public boolean check() {
-
-        compliant = true;
+        compareRowAlwaysPresent = true;
         nonMatchingCells = new ArrayList<>();
         matchingCells = new ArrayList<>();
 
@@ -76,7 +73,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
             int numCompareRows = dataRows.size() + stateRows.size();
             if (numCompareRows == 0) {
                 if (matchClause.requiresComparisonRow()) {
-                    compliant = false;
+                    compareRowAlwaysPresent = false;
                 }
             } else {
                 checkMatching(row, dataRows, stateRows);
@@ -84,7 +81,11 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
             }
         }
 
-        return compliant;
+        return getResult();
+    }
+
+    public boolean getResult() {
+        return compareRowAlwaysPresent && nonMatchingCells.size() == 0 && matchingCells.size() == 0;
     }
 
     private void checkMatching(Row row, List<Row> dataRows, List<Row> stateRows) {
@@ -117,14 +118,14 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
         List<Row> nonCompliantStateRows = checkRow(
                 row,
-                dataRows,
+                stateRows,
                 columns,
                 referenceColumns,
                 checkMatch);
 
         List<Row> nonCompliantDataRows = checkRow(
                 row,
-                stateRows,
+                dataRows,
                 columns,
                 referenceColumns,
                 checkMatch);
@@ -136,7 +137,6 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         MatchRecord matchRecord = null;
 
         if (numNonCompliantRows > 0 && everyRowNonCompliant) {
-            compliant = false;
 
             matchRecord = new MatchRecord(row.reduceRow(columns));
             for (Row stateRow : nonCompliantStateRows) {
@@ -192,7 +192,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
                                 (matchClause.getMode().isOr() && onePairingSatisfied);
 
                 if (!satisfied) {
-                    nonCompliantRows.add(row);
+                    nonCompliantRows.add(compareRow);
                 }
             }
         }
@@ -202,10 +202,10 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     @Override
     public String getInfo() {
-        boolean check = check();
+        boolean result = getResult();
         String info = "Match clause: " + matchClause + "\n";
-        info += "\t* Success: " + check + "\n";
-        if (!check) {
+        info += "\t* Success: " + result + "\n";
+        if (!result) {
             info += "\t* Matching cells: " + getMatchRecordsInfo(matchingCells) + "\n";
             info += "\t* Non-matching cells: " + getMatchRecordsInfo(nonMatchingCells) + "\n";
         }

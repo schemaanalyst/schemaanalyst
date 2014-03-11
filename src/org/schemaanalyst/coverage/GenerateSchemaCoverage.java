@@ -49,8 +49,8 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
         // Schema schema = new JWhoisServer();
-        Schema schema = new NistDML181();  // -- fails on two test cases -- overfitting?
-        // Schema schema = new NistDML182(); // -- some failures
+        // Schema schema = new NistDML181();  // now works
+        // Schema schema = new NistDML182(); // now works
         // Schema schema = new NistDML183();
         // Schema schema = new NistWeather(); // -- crashes
         // Schema schema = new NistXTS748(); // -- check constraint weirdness ??
@@ -60,7 +60,7 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new RiskIt();
         // Schema schema = new StudentResidence(); // check constraint issues
         // Schema schema = new UnixUsage();
-        // Schema schema = new Usda();
+        Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
         Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");

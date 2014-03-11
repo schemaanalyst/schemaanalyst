@@ -48,13 +48,11 @@ public class MockRandom extends Random {
 
     @Override
     public boolean nextBoolean() {
-        // TODO Auto-generated method stub
-        return false;
+        return (nextInt() == 0);
     }
 
     @Override
     public double nextDouble() {
-        // TODO Auto-generated method stub
-        return 0;
+        return (double) nextInt();
     }
 }

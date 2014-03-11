@@ -27,50 +27,50 @@ public class TestReferenceColumnObjectiveFunction {
 		
     Object[] oneColumnTestValues() {
         return $(
-                $(EMPTY, EMPTY, true, false, false, 0, 0),
-                $(EMPTY, EMPTY, true, true, false, 0, 0),
-                $(EMPTY, EMPTY, false, false, false, 0, 0),
-                $(EMPTY, EMPTY, false, true, false, 0, 0),                
+                $(EMPTY_I, EMPTY_I, true, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, true, true, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, true, false, 0, 0),
                 
-                $(d(r(1, 1)), EMPTY, true, false, true, 1, 0),
-                $(d(r(1, 1)), EMPTY, true, true, true, 1, 0),
-                $(d(r(1, 1)), EMPTY, false, false, false, 1, 0),
-                $(d(r(1, 1)), EMPTY, false, true, false, 1, 0),
+                $(d(r(1, 1)), EMPTY_I, true, false, true, 1, 0),
+                $(d(r(1, 1)), EMPTY_I, true, true, true, 1, 0),
+                $(d(r(1, 1)), EMPTY_I, false, false, false, 1, 0),
+                $(d(r(1, 1)), EMPTY_I, false, true, false, 1, 0),
                 
-                $(d(r(1, 2)), EMPTY, true, false, false, 0, 1),
-                $(d(r(1, 2)), EMPTY, true, true, false, 0, 1),
-                $(d(r(1, 2)), EMPTY, false, false, true, 0, 1),
-                $(d(r(1, 2)), EMPTY, false, true, true, 0, 1),
+                $(d(r(1, 2)), EMPTY_I, true, false, false, 0, 1),
+                $(d(r(1, 2)), EMPTY_I, true, true, false, 0, 1),
+                $(d(r(1, 2)), EMPTY_I, false, false, true, 0, 1),
+                $(d(r(1, 2)), EMPTY_I, false, true, true, 0, 1),
                 
-                $(d(r(1, 2), r(5, 6)), EMPTY, true, false, false, 0, 2),
-                $(d(r(1, 2), r(5, 6)), EMPTY, true, true, false, 0, 2),
-                $(d(r(1, 2), r(5, 6)), EMPTY, false, false, true, 0, 2),
-                $(d(r(1, 2), r(5, 6)), EMPTY, false, true, true, 0, 2),
+                $(d(r(1, 2), r(5, 6)), EMPTY_I, true, false, false, 0, 2),
+                $(d(r(1, 2), r(5, 6)), EMPTY_I, true, true, false, 0, 2),
+                $(d(r(1, 2), r(5, 6)), EMPTY_I, false, false, true, 0, 2),
+                $(d(r(1, 2), r(5, 6)), EMPTY_I, false, true, true, 0, 2),
                 
-                $(d(r(1, 5), r(5, 1)), EMPTY, true, false, true, 2, 0),
-                $(d(r(1, 5), r(5, 1)), EMPTY, true, true, true, 2, 0),
-                $(d(r(1, 5), r(5, 1)), EMPTY, false, false, false, 2, 0),
-                $(d(r(1, 5), r(5, 1)), EMPTY, false, true, false, 2, 0),
+                $(d(r(1, 5), r(5, 1)), EMPTY_I, true, false, true, 2, 0),
+                $(d(r(1, 5), r(5, 1)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(1, 5), r(5, 1)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(1, 5), r(5, 1)), EMPTY_I, false, true, false, 2, 0),
                 
                 // since we didn't pass or fail BOTH rows, the optimum is never reached
                 // for any of these test cases
-                $(d(r(1, 5), r(5, 3)), EMPTY, true, false, false, 1, 1),
-                $(d(r(1, 5), r(5, 3)), EMPTY, true, true, false, 1, 1),
-                $(d(r(1, 5), r(5, 3)), EMPTY, false, false, false, 1, 1),
-                $(d(r(1, 5), r(5, 3)), EMPTY, false, true, false, 1, 1),
+                $(d(r(1, 5), r(5, 3)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(1, 5), r(5, 3)), EMPTY_I, true, true, false, 1, 1),
+                $(d(r(1, 5), r(5, 3)), EMPTY_I, false, false, false, 1, 1),
+                $(d(r(1, 5), r(5, 3)), EMPTY_I, false, true, false, 1, 1),
                 
-                $(d(r(1, 5), r(2, 3)), EMPTY, true, false, false, 0, 2),
-                $(d(r(1, 5), r(2, 3)), EMPTY, true, true, false, 0, 2),
-                $(d(r(1, 5), r(2, 3)), EMPTY, false, false, true, 0, 2),
-                $(d(r(1, 5), r(2, 3)), EMPTY, false, true, true, 0, 2),
+                $(d(r(1, 5), r(2, 3)), EMPTY_I, true, false, false, 0, 2),
+                $(d(r(1, 5), r(2, 3)), EMPTY_I, true, true, false, 0, 2),
+                $(d(r(1, 5), r(2, 3)), EMPTY_I, false, false, true, 0, 2),
+                $(d(r(1, 5), r(2, 3)), EMPTY_I, false, true, true, 0, 2),
                
                 // there's no match in the state, but the objective
                 // function is concerned with the data only, and 
-                // the data is EMPTY
-                $(EMPTY, d(r(1, 5), r(2, 3)), true, false, false, 0, 0),
-                $(EMPTY, d(r(1, 5), r(2, 3)), true, true, false, 0, 0),
-                $(EMPTY, d(r(1, 5), r(2, 3)), false, false, false, 0, 0),
-                $(EMPTY, d(r(1, 5), r(2, 3)), false, true, false, 0, 0),                
+                // the data is EMPTY_I
+                $(EMPTY_I, d(r(1, 5), r(2, 3)), true, false, false, 0, 0),
+                $(EMPTY_I, d(r(1, 5), r(2, 3)), true, true, false, 0, 0),
+                $(EMPTY_I, d(r(1, 5), r(2, 3)), false, false, false, 0, 0),
+                $(EMPTY_I, d(r(1, 5), r(2, 3)), false, true, false, 0, 0),
                 
                 // ditto for above - we do not care about the state
                 $(d(r(1, 1)), d(r(1, 5), r(2, 3)), true, false, true, 1, 0),
@@ -78,26 +78,26 @@ public class TestReferenceColumnObjectiveFunction {
                 $(d(r(1, 1)), d(r(1, 5), r(2, 3)), false, false, false, 1, 0),
                 $(d(r(1, 1)), d(r(1, 5), r(2, 3)), false, true, false, 1, 0),                
                 
-                $(d(r(2, 1), r(2, 2)), EMPTY, true, false, true, 2, 0),
-                $(d(r(2, 1), r(2, 2)), EMPTY, true, true, true, 2, 0),
-                $(d(r(2, 1), r(2, 2)), EMPTY, false, false, false, 2, 0),
-                $(d(r(2, 1), r(2, 2)), EMPTY, false, true, false, 2, 0),                
+                $(d(r(2, 1), r(2, 2)), EMPTY_I, true, false, true, 2, 0),
+                $(d(r(2, 1), r(2, 2)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(2, 1), r(2, 2)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(2, 1), r(2, 2)), EMPTY_I, false, true, false, 2, 0),
                 
-                $(d(r(NULL, NULL)), EMPTY, true, false, false, 0, 1),
-                $(d(r(NULL, NULL)), EMPTY, true, true, true, 1, 0),
-                $(d(r(NULL, NULL)), EMPTY, false, false, false, 1, 0),
-                $(d(r(NULL, NULL)), EMPTY, false, true, true, 0, 1),
+                $(d(r(NULL, NULL)), EMPTY_I, true, false, false, 0, 1),
+                $(d(r(NULL, NULL)), EMPTY_I, true, true, true, 1, 0),
+                $(d(r(NULL, NULL)), EMPTY_I, false, false, false, 1, 0),
+                $(d(r(NULL, NULL)), EMPTY_I, false, true, true, 0, 1),
                                   
-                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY, true, false, false, 0, 2),
-                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY, true, true, true, 2, 0),
-                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY, false, false, false, 2, 0),
-                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY, false, true, true, 0, 2),
+                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY_I, true, false, false, 0, 2),
+                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(NULL, 1), r(NULL, NULL)), EMPTY_I, false, true, true, 0, 2),
                                         
-                $(d(r(NULL, 1), r(1, NULL)), EMPTY, true, false, false, 1, 1),
-                $(d(r(NULL, 1), r(1, NULL)), EMPTY, true, true, true, 2, 0),
+                $(d(r(NULL, 1), r(1, NULL)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(NULL, 1), r(1, NULL)), EMPTY_I, true, true, true, 2, 0),
                 // partial match on 1 == 1, so this test fails
-                $(d(r(NULL, 1), r(1, NULL)), EMPTY, false, false, false, 2, 0),                
-                $(d(r(NULL, 1), r(1, NULL)), EMPTY, false, true, false, 1, 1),                
+                $(d(r(NULL, 1), r(1, NULL)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(NULL, 1), r(1, NULL)), EMPTY_I, false, true, false, 1, 1),
                 
                 $(d(r(1, 2)), d(r(2, 1)), true, false, true, 1, 0),
                 $(d(r(1, 2)), d(r(2, 1)), true, true, true, 1, 0),
@@ -137,35 +137,35 @@ public class TestReferenceColumnObjectiveFunction {
 	
     Object[] twoColumnTestValues() {
         return $(
-                $(d(r(1, 2, 1, 2)), EMPTY, true, false, true, 1, 0),
-                $(d(r(1, 2, 1, 2)), EMPTY, true, true, true, 1, 0),
-                $(d(r(1, 2, 1, 2)), EMPTY, false, false, false, 1, 0),
-                $(d(r(1, 2, 1, 2)), EMPTY, false, true, false, 1, 0),
+                $(d(r(1, 2, 1, 2)), EMPTY_I, true, false, true, 1, 0),
+                $(d(r(1, 2, 1, 2)), EMPTY_I, true, true, true, 1, 0),
+                $(d(r(1, 2, 1, 2)), EMPTY_I, false, false, false, 1, 0),
+                $(d(r(1, 2, 1, 2)), EMPTY_I, false, true, false, 1, 0),
                 
-                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY, true, false, true, 2, 0),
-                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY, true, true, true, 2, 0),
-                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY, false, false, false, 2, 0),
-                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY, false, true, false, 2, 0),      
+                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY_I, true, false, true, 2, 0),
+                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(1, 2, 1, 2), r(2, 3, 2, 3)), EMPTY_I, false, true, false, 2, 0),
                 
-                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY, true, false, false, 0, 2),
-                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY, true, true, false, 0, 2),
-                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY, false, false, true, 0, 2),
-                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY, false, true, true, 0, 2),
+                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY_I, true, false, false, 0, 2),
+                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY_I, true, true, false, 0, 2),
+                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY_I, false, false, true, 0, 2),
+                $(d(r(1, 2, 4, 5), r(2, 3, 6, 7)), EMPTY_I, false, true, true, 0, 2),
                 
-                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY, true, false, false, 1, 1),
-                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY, true, true, false, 1, 1),
-                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY, false, false, false, 1, 1),
-                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY, false, true, false, 1, 1),
+                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY_I, true, true, false, 1, 1),
+                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY_I, false, false, false, 1, 1),
+                $(d(r(1, 2, 2, 3), r(2, 3, 6, 7)), EMPTY_I, false, true, false, 1, 1),
                 
-                $(d(r(1, 2, 1, 3)), EMPTY, true, false, false, 0, 1),
-                $(d(r(1, 2, 1, 3)), EMPTY, true, true, false, 0, 1),
-                $(d(r(1, 2, 1, 3)), EMPTY, false, false, true, 0, 1),
-                $(d(r(1, 2, 1, 3)), EMPTY, false, true, true, 0, 1),
+                $(d(r(1, 2, 1, 3)), EMPTY_I, true, false, false, 0, 1),
+                $(d(r(1, 2, 1, 3)), EMPTY_I, true, true, false, 0, 1),
+                $(d(r(1, 2, 1, 3)), EMPTY_I, false, false, true, 0, 1),
+                $(d(r(1, 2, 1, 3)), EMPTY_I, false, true, true, 0, 1),
                 
-                $(d(r(1, NULL, 1, NULL)), EMPTY, true, false, false, 0, 1), 
-                $(d(r(1, NULL, 1, NULL)), EMPTY, true, true, true, 1, 0),
-                $(d(r(1, NULL, 1, NULL)), EMPTY, false, false, false, 1, 0),
-                $(d(r(1, NULL, 1, NULL)), EMPTY, false, true, true, 0, 1)                
+                $(d(r(1, NULL, 1, NULL)), EMPTY_I, true, false, false, 0, 1),
+                $(d(r(1, NULL, 1, NULL)), EMPTY_I, true, true, true, 1, 0),
+                $(d(r(1, NULL, 1, NULL)), EMPTY_I, false, false, false, 1, 0),
+                $(d(r(1, NULL, 1, NULL)), EMPTY_I, false, true, true, 0, 1)
         		);
     }     
     
@@ -206,16 +206,16 @@ public class TestReferenceColumnObjectiveFunction {
     
     Object[] noReferenceColumnTestValues() {
         return $(
-                $(nullValue, EMPTY, true, false, false, 0, 1),
-                $(nullValue, EMPTY, true, true, true, 1, 0),
-                $(nullValue, EMPTY, false, false, false, 1, 0),
-                $(nullValue, EMPTY, false, true, true, 0, 1),
+                $(nullValue, EMPTY_I, true, false, false, 0, 1),
+                $(nullValue, EMPTY_I, true, true, true, 1, 0),
+                $(nullValue, EMPTY_I, false, false, false, 1, 0),
+                $(nullValue, EMPTY_I, false, true, true, 0, 1),
                 
 
-                $(oneValue, EMPTY, true, false, false, 0, 1),
-                $(oneValue, EMPTY, true, true, false, 0, 1),
-                $(oneValue, EMPTY, false, false, true, 0, 1),
-                $(oneValue, EMPTY, false, true, true, 0, 1)
+                $(oneValue, EMPTY_I, true, false, false, 0, 1),
+                $(oneValue, EMPTY_I, true, true, false, 0, 1),
+                $(oneValue, EMPTY_I, false, false, true, 0, 1),
+                $(oneValue, EMPTY_I, false, true, true, 0, 1)
                                 
                 );
     }
