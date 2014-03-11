@@ -79,6 +79,10 @@ public class Row {
         throw new DataException("Unknown column \"" + column + "\"");
     }
 
+    public Cell getCell(int index) {
+        return cells.get(index);
+    }
+
     public boolean hasColumn(Column column) {
         for (Cell cell : cells) {
             if (column.equals(cell.getColumn())) {
