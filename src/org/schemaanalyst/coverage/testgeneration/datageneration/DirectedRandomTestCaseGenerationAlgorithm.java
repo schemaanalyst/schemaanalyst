@@ -44,10 +44,4 @@ public class DirectedRandomTestCaseGenerationAlgorithm extends TestCaseGeneratio
 
         return testCase;
     }
-
-    @Override
-    public boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate) {
-        PredicateChecker predicateChecker = new PredicateChecker(predicate, testCase.getData(), testCase.getState());
-        return predicateChecker.check();
-    }
 }

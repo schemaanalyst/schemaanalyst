@@ -40,11 +40,4 @@ public class SearchBasedTestCaseGenerationAlgorithm extends TestCaseGenerationAl
 
         return testCase;
     }
-
-    @Override
-    public boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate) {
-        PredicateObjectiveFunction objFun = new PredicateObjectiveFunction(predicate, testCase.getState());
-        ObjectiveValue objVal = objFun.evaluate(testCase.getData());
-        return objVal.isOptimal();
-    }
 }

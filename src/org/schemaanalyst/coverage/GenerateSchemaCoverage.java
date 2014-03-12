@@ -42,29 +42,29 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new BankAccount();
-        // Schema schema = new BookTown(); // -- insert error (seen this before?)
+        // Schema schema = new BankAccount();
+        // Schema schema = new BookTown();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
-        // Schema schema = new Employee();  // -- checks now work
-        // Schema schema = new Examination();   // -- checks now work
-        // Schema schema = new Flights(); // -- checks now work (with value library)
+        // Schema schema = new Employee();
+        // Schema schema = new Examination();
+        Schema schema = new Flights();
         // Schema schema = new FrenchTowns();
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
         // Schema schema = new JWhoisServer();
-        // Schema schema = new NistDML181();  // now works
-        // Schema schema = new NistDML182(); // now works
+        // Schema schema = new NistDML181();
+        // Schema schema = new NistDML182();
         // Schema schema = new NistDML183();
-        // Schema schema = new NistWeather(); // -- checks now work
-        // Schema schema = new NistXTS748(); // -- checks now work
+        // Schema schema = new NistWeather();
+        // Schema schema = new NistXTS748();
         // Schema schema = new NistXTS749();
-        // Schema schema = new Person(); // -- crashes
-        // Schema schema = new Products(); // one infeasible (expected) check constraint)
+        // Schema schema = new Person();
+        // Schema schema = new Products();
         // Schema schema = new RiskIt();
-        // Schema schema = new StudentResidence(); // checks now work
+        // Schema schema = new StudentResidence();
         // Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
@@ -77,9 +77,22 @@ public class GenerateSchemaCoverage extends Runner {
         //TestCaseGenerationAlgorithm testCaseGenerator =
         //        new SearchBasedTestCaseGenerationAlgorithm(search);
 
+        Random random = new SimpleRandom(10L);
+        TestCaseGenerationAlgorithm testCaseGenerator =
+                new DirectedRandomTestCaseGenerationAlgorithm(
+                        random,
+                        new CellValueGenerator(
+                                new ExpressionConstantMiner().mine(schema),
+                                ValueInitializationProfile.SMALL,
+                                random,
+                                0.1,
+                                0.25,
+                                false),
+                        500);
+
         //Random random = new SimpleRandom(10L);
         //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new DirectedRandomTestCaseGenerationAlgorithm(
+        //        new RandomTestCaseGenerationAlgorithm(
         //                random,
         //                new CellValueGenerator(
         //                        new ExpressionConstantMiner().mine(schema),
@@ -88,20 +101,7 @@ public class GenerateSchemaCoverage extends Runner {
         //                        0.1,
         //                        0.25,
         //                        false),
-        //                500);
-
-        Random random = new SimpleRandom(10L);
-        TestCaseGenerationAlgorithm testCaseGenerator =
-                new RandomTestCaseGenerationAlgorithm(
-                        random,
-                        new CellValueGenerator(
-                                new ExpressionConstantMiner().mine(schema),
-                                ValueInitializationProfile.SMALL,
-                                random,
-                                0,
-                                0,
-                                false),
-                        100000);
+        //                100000);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -172,12 +172,8 @@ public class GenerateSchemaCoverage extends Runner {
                 starred = " (*)";
             }
 
-            Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
-            TestCaseGenerationAlgorithm testCaseGenerator2 =
-                    new SearchBasedTestCaseGenerationAlgorithm(search);
-
             CoverageReport coverageReport =
-                    testCaseGenerator2.computeCoverage(testSuite, criterion.generateRequirements(schema));
+                    testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(schema));
             System.out.println(name + starred + ": " + coverageReport.getCoverage());
 
             if (printUncoveredPredicates) {

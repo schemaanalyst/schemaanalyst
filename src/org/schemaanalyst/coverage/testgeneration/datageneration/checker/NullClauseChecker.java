@@ -34,7 +34,6 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
     public boolean check() {
         nonComplyingCells = new ArrayList<>();
 
-        // do the check
         List<Row> rows = data.getRows(nullClause.getTable());
         if (rows.size() > 0) {
             for (Row row : rows) {
@@ -44,9 +43,10 @@ public class NullClauseChecker extends ClauseChecker<NullClause> {
                     nonComplyingCells.add(cell);
                 }
             }
+            return (nonComplyingCells.size() == 0);
         }
 
-        return (nonComplyingCells.size() == 0);
+        return false;
     }
 
     @Override

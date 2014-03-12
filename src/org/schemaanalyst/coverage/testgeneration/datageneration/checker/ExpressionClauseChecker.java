@@ -16,7 +16,6 @@ public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
     private ExpressionClause expressionClause;
     private boolean allowNull;
     private Data data;
-    private boolean compliant;
     private List<Cell> nonComplyingCells;
 
     public ExpressionClauseChecker(ExpressionClause expressionClause, boolean allowNull, Data data) {
@@ -35,25 +34,27 @@ public class ExpressionClauseChecker extends ClauseChecker<ExpressionClause> {
 
     @Override
     public boolean check() {
-        compliant = true;
+
         nonComplyingCells = new ArrayList<>();
 
-        // do the check
         List<Row> rows = data.getRows(expressionClause.getTable());
-        for (Row row : rows) {
-            ExpressionChecker expressionChecker = new ExpressionChecker(
-                    expressionClause.getExpression(),
-                    expressionClause.getSatisfy(),
-                    allowNull,
-                    row);
+        if (rows.size() > 0) {
 
-            if (!expressionChecker.check()) {
-                compliant = false;
-                nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
+            for (Row row : rows) {
+                ExpressionChecker expressionChecker = new ExpressionChecker(
+                        expressionClause.getExpression(),
+                        expressionClause.getSatisfy(),
+                        allowNull,
+                        row);
+
+                if (!expressionChecker.check()) {
+                    nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
+                }
             }
-        }
 
-        return compliant;
+            return (nonComplyingCells.size() == 0);
+        }
+        return false;
     }
 
     @Override

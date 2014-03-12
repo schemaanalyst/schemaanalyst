@@ -50,23 +50,25 @@ public class ExpressionChecker extends Checker {
 
             @Override
             public void visit(AndExpression expression) {
+                List<Expression> satisfiedSubexpressions = new ArrayList<>();
                 List<Expression> unsatisfiedSubexpressions = new ArrayList<>();
 
                 boolean overallResult = true;
                 for (Expression subexpression : expression.getSubexpressions()) {
                     ExpressionChecker expressionChecker = new ExpressionChecker(subexpression, true, allowNull, row);
-                    boolean expressionResult = expressionChecker.check();
-                    if (!expressionResult) {
+
+                    if (expressionChecker.check()) {
+                        satisfiedSubexpressions.add(subexpression);
+                    } else {
                         overallResult = false;
-                    }
-                    if (expressionResult != satisfy) {
                         unsatisfiedSubexpressions.add(subexpression);
                     }
                 }
 
-                if (!overallResult) {
-                    for (Expression unsatisfiedExpression : unsatisfiedSubexpressions) {
-                        setNonCompliant(unsatisfiedExpression);
+                if (overallResult != satisfy) {
+                    List<Expression> subexpressions = satisfy ? unsatisfiedSubexpressions : satisfiedSubexpressions;
+                    for (Expression subexpression : subexpressions) {
+                        setNonCompliant(subexpression);
                     }
                 }
             }
@@ -146,23 +148,25 @@ public class ExpressionChecker extends Checker {
 
             @Override
             public void visit(OrExpression expression) {
+                List<Expression> satisfiedSubexpressions = new ArrayList<>();
                 List<Expression> unsatisfiedSubexpressions = new ArrayList<>();
 
                 boolean overallResult = false;
                 for (Expression subexpression : expression.getSubexpressions()) {
                     ExpressionChecker expressionChecker = new ExpressionChecker(subexpression, true, allowNull, row);
-                    boolean expressionResult = expressionChecker.check();
-                    if (expressionResult) {
+
+                    if (expressionChecker.check()) {
                         overallResult = true;
-                    }
-                    if (expressionResult != satisfy) {
+                        satisfiedSubexpressions.add(subexpression);
+                    } else {
                         unsatisfiedSubexpressions.add(subexpression);
                     }
                 }
 
-                if (!overallResult) {
-                    for (Expression unsatisfiedExpression : unsatisfiedSubexpressions) {
-                        setNonCompliant(unsatisfiedExpression);
+                if (overallResult != satisfy) {
+                    List<Expression> subexpressions = satisfy ? unsatisfiedSubexpressions : satisfiedSubexpressions;
+                    for (Expression subexpression : subexpressions) {
+                        setNonCompliant(subexpression);
                     }
                 }
             }

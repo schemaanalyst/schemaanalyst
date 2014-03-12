@@ -52,6 +52,8 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
                     }
 
                     objVal.add(rowObjVal);
+                } else if (matchClause.requiresComparisonRow()) {
+                    objVal.add(ObjectiveValue.worstObjectiveValue("Comparison row not available"));
                 }
             }
 
@@ -61,7 +63,7 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
         return ObjectiveValue.worstObjectiveValue(description);
     }
 
-    protected List<Row> getCompareRows(Data data, int index) {
+    private List<Row> getCompareRows(Data data, int index) {
         List<Row> compareRows = data.getRows(matchClause.getReferenceTable());
         if (table.equals(referenceTable)) {
             compareRows = compareRows.subList(0, index);
@@ -70,7 +72,7 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
         return compareRows;
     }
 
-    protected ObjectiveValue compareRows(Row row, Row compareRow) {
+    private ObjectiveValue compareRows(Row row, Row compareRow) {
         MultiObjectiveValue objVal =
                 matchClause.getMode() == MatchClause.Mode.AND
                         ? new SumOfMultiObjectiveValue()
@@ -95,12 +97,12 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
         return objVal;
     }
 
-    protected void evaluateColumnLists(Row row,
-                                       Row compareRow,
-                                       List<Column> cols,
-                                       List<Column> refCols,
-                                       RelationalOperator op,
-                                       MultiObjectiveValue objVal) {
+    private void evaluateColumnLists(Row row,
+                                     Row compareRow,
+                                     List<Column> cols,
+                                     List<Column> refCols,
+                                     RelationalOperator op,
+                                     MultiObjectiveValue objVal) {
 
         Iterator<Column> colsIterator = cols.iterator();
         Iterator<Column> refColsIterator = refCols.iterator();

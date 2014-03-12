@@ -17,7 +17,6 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
     private MatchClause matchClause;
     private boolean allowNull;
     private Data data, state;
-    private boolean compareRowAlwaysPresent;
     private List<MatchRecord> nonMatchingCells;
     private List<MatchRecord> matchingCells;
 
@@ -58,34 +57,36 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     @Override
     public boolean check() {
-        compareRowAlwaysPresent = true;
+
         nonMatchingCells = new ArrayList<>();
         matchingCells = new ArrayList<>();
 
         List<Row> rows = data.getRows(matchClause.getTable());
-        ListIterator<Row> rowsIterator = rows.listIterator();
 
-        while (rowsIterator.hasNext()) {
-            Row row = rowsIterator.next();
+        if (rows.size() > 0) {
+            boolean compareRowAlwaysPresent = true;
+            ListIterator<Row> rowsIterator = rows.listIterator();
 
-            List<Row> dataRows = getDataRows(rowsIterator.nextIndex() - 1);
-            List<Row> stateRows = getStateRows();
-            int numCompareRows = dataRows.size() + stateRows.size();
-            if (numCompareRows == 0) {
-                if (matchClause.requiresComparisonRow()) {
-                    compareRowAlwaysPresent = false;
+            while (rowsIterator.hasNext()) {
+                Row row = rowsIterator.next();
+
+                List<Row> dataRows = getDataRows(rowsIterator.nextIndex() - 1);
+                List<Row> stateRows = getStateRows();
+                int numCompareRows = dataRows.size() + stateRows.size();
+                if (numCompareRows == 0) {
+                    if (matchClause.requiresComparisonRow()) {
+                        compareRowAlwaysPresent = false;
+                    }
+                } else {
+                    checkMatching(row, dataRows, stateRows);
+                    checkNonMatching(row, dataRows, stateRows);
                 }
-            } else {
-                checkMatching(row, dataRows, stateRows);
-                checkNonMatching(row, dataRows, stateRows);
             }
+
+            return compareRowAlwaysPresent && nonMatchingCells.size() == 0 && matchingCells.size() == 0;
         }
 
-        return getResult();
-    }
-
-    public boolean getResult() {
-        return compareRowAlwaysPresent && nonMatchingCells.size() == 0 && matchingCells.size() == 0;
+        return false;
     }
 
     private void checkMatching(Row row, List<Row> dataRows, List<Row> stateRows) {
@@ -114,7 +115,12 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
         }
     }
 
-    private MatchRecord checkRows(Row row, List<Row> dataRows, List<Row> stateRows, List<Column> columns, List<Column> referenceColumns, boolean checkMatch) {
+    private MatchRecord checkRows(Row row,
+                                  List<Row> dataRows,
+                                  List<Row> stateRows,
+                                  List<Column> columns,
+                                  List<Column> referenceColumns,
+                                  boolean checkMatch) {
 
         List<Row> nonCompliantStateRows = checkRow(
                 row,
@@ -155,6 +161,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
                                List<Column> cols,
                                List<Column> refCols,
                                boolean shouldMatch) {
+
         List<Row> nonCompliantRows = new ArrayList<>();
 
         for (Row compareRow : compareRows) {
@@ -202,7 +209,7 @@ public class MatchClauseChecker extends ClauseChecker<MatchClause> {
 
     @Override
     public String getInfo() {
-        boolean result = getResult();
+        boolean result = check();
         String info = "Match clause: " + matchClause + "\n";
         info += "\t* Success: " + result + "\n";
         if (!result) {
