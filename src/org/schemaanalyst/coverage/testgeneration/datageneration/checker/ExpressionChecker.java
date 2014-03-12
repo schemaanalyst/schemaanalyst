@@ -40,12 +40,6 @@ public class ExpressionChecker extends Checker {
         // do the check
         expression.accept(new ExpressionAdapter() {
 
-            void checkSubexpression(Expression expression) {
-                ExpressionChecker expressionChecker = new ExpressionChecker(expression, satisfy, allowNull, row);
-                expressionChecker.check();
-                nonComplyingCells.addAll(getNonComplyingCells());
-            }
-
             void setNonCompliant(Expression expression) {
                 compliant = false;
                 List<Column> columnsInvolved = expression.getColumnsInvolved();
@@ -56,8 +50,24 @@ public class ExpressionChecker extends Checker {
 
             @Override
             public void visit(AndExpression expression) {
+                List<Expression> unsatisfiedSubexpressions = new ArrayList<>();
+
+                boolean overallResult = true;
                 for (Expression subexpression : expression.getSubexpressions()) {
-                    checkSubexpression(subexpression);
+                    ExpressionChecker expressionChecker = new ExpressionChecker(subexpression, true, allowNull, row);
+                    boolean expressionResult = expressionChecker.check();
+                    if (!expressionResult) {
+                        overallResult = false;
+                    }
+                    if (expressionResult != satisfy) {
+                        unsatisfiedSubexpressions.add(subexpression);
+                    }
+                }
+
+                if (!overallResult) {
+                    for (Expression unsatisfiedExpression : unsatisfiedSubexpressions) {
+                        setNonCompliant(unsatisfiedExpression);
+                    }
                 }
             }
 
@@ -126,7 +136,7 @@ public class ExpressionChecker extends Checker {
             @Override
             public void visit(NullExpression expression) {
                 Value subject = new ExpressionEvaluator(expression.getSubexpression(), row).evaluate();
-                boolean result = subject != null;
+                boolean result = subject == null;
                 boolean requiredResult = satisfy && !expression.isNotNull();
 
                 if (result != requiredResult) {
@@ -136,14 +146,34 @@ public class ExpressionChecker extends Checker {
 
             @Override
             public void visit(OrExpression expression) {
+                List<Expression> unsatisfiedSubexpressions = new ArrayList<>();
+
+                boolean overallResult = false;
                 for (Expression subexpression : expression.getSubexpressions()) {
-                    checkSubexpression(subexpression);
+                    ExpressionChecker expressionChecker = new ExpressionChecker(subexpression, true, allowNull, row);
+                    boolean expressionResult = expressionChecker.check();
+                    if (expressionResult) {
+                        overallResult = true;
+                    }
+                    if (expressionResult != satisfy) {
+                        unsatisfiedSubexpressions.add(subexpression);
+                    }
+                }
+
+                if (!overallResult) {
+                    for (Expression unsatisfiedExpression : unsatisfiedSubexpressions) {
+                        setNonCompliant(unsatisfiedExpression);
+                    }
                 }
             }
 
             @Override
             public void visit(ParenthesisedExpression expression) {
-                checkSubexpression(expression.getSubexpression());
+                Expression subexpression = expression.getSubexpression();
+                ExpressionChecker expressionChecker = new ExpressionChecker(subexpression, satisfy, allowNull, row);
+                if (!expressionChecker.check()) {
+                    setNonCompliant(subexpression);
+                }
             }
 
             @Override
