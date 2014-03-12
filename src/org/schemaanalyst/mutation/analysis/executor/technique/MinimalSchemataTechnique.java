@@ -87,59 +87,10 @@ public class MinimalSchemataTechnique extends Technique {
             Set<Integer> affectedMutants = new HashSet<>();
             Data state = testCase.getState();
             TestCaseResult normalTestResult = null;
-            for (Table table : schema.getTablesInOrder()) {
-                if (state.getTables().contains(table)) {
-                    List<Integer> applicableMutants = changedTableMap.get(table.getIdentifier().get());
-                    affectedMutants.addAll(applicableMutants);
-                    for (Row row : state.getRows(table)) {
-                        String insert = sqlWriter.writeInsertStatement(row);
-                        // Only insert for normal if we haven't failed yet
-                        if (normalTestResult == null) {
-                            Integer normalResult = databaseInteractor.executeUpdate(insert);
-                            if (normalResult != 1) {
-                                normalTestResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + normalResult, insert));
-                            }
-                        }
-                        for (Integer mutantId : applicableMutants) {
-                            // Only insert for mutant if we haven't failed yet
-                            if (!failedInserts.containsKey(mutantId)) {
-                                String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
-                                Integer mutResult = databaseInteractor.executeUpdate(mutInsert);
-                                if (mutResult != 1) {
-                                    failedInserts.put(mutantId, new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert)));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            normalTestResult = executeTestCase(state, affectedMutants, normalTestResult, failedInserts);
             // Data inserts
             Data data = testCase.getData();
-            for (Table table : schema.getTablesInOrder()) {
-                if (data.getTables().contains(table)) {
-                    List<Integer> applicableMutants = changedTableMap.get(table.getIdentifier().get());
-                    affectedMutants.addAll(applicableMutants);
-                    for (Row row : data.getRows(table)) {
-                        String insert = sqlWriter.writeInsertStatement(row);
-                        if (normalTestResult == null) {
-                            Integer normalResult = databaseInteractor.executeUpdate(insert);
-                            if (normalResult != 1) {
-                                normalTestResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + normalResult, insert));
-                            }
-                        }
-                        for (Integer mutantId : applicableMutants) {
-                            // Only insert for mutant if we haven't failed yet
-                            if (!failedInserts.containsKey(mutantId)) {
-                                String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
-                                Integer mutResult = databaseInteractor.executeUpdate(mutInsert);
-                                if (mutResult != 1) {
-                                    failedInserts.put(mutantId, new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert)));
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            normalTestResult = executeTestCase(data, affectedMutants, normalTestResult, failedInserts);
             if (normalTestResult == null) {
                 normalTestResult = TestCaseResult.SuccessfulTestCaseResult;
             }
@@ -168,6 +119,36 @@ public class MinimalSchemataTechnique extends Technique {
         executeDropStmts();
 
         return result;
+    }
+
+    private TestCaseResult executeTestCase(Data state, Set<Integer> affectedMutants, TestCaseResult normalTestResult, Map<Integer, TestCaseResult> failedInserts) {
+        for (Table table : schema.getTablesInOrder()) {
+            if (state.getTables().contains(table)) {
+                List<Integer> applicableMutants = changedTableMap.get(table.getIdentifier().get());
+                affectedMutants.addAll(applicableMutants);
+                for (Row row : state.getRows(table)) {
+                    String insert = sqlWriter.writeInsertStatement(row);
+                    // Only insert for normal if we haven't failed yet
+                    if (normalTestResult == null) {
+                        Integer normalResult = databaseInteractor.executeUpdate(insert);
+                        if (normalResult != 1) {
+                            normalTestResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + normalResult, insert));
+                        }
+                    }
+                    for (Integer mutantId : applicableMutants) {
+                        // Only insert for mutant if we haven't failed yet
+                        if (!failedInserts.containsKey(mutantId)) {
+                            String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
+                            Integer mutResult = databaseInteractor.executeUpdate(mutInsert);
+                            if (mutResult != 1) {
+                                failedInserts.put(mutantId, new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return normalTestResult;
     }
 
     private void executeDropStmts() {
@@ -201,5 +182,5 @@ public class MinimalSchemataTechnique extends Technique {
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
-
+    
 }
