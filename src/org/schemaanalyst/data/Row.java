@@ -37,13 +37,19 @@ public class Row {
         }
     }
 
-    public Row(List<Cell> cells) {
+    public Row(Cell... cells) {
         this.cells = new ArrayList<>();
         for (Cell cell : cells) {
             this.cells.add(cell);
         }
     }
 
+    public Row(List<Cell> cells) {
+        this.cells = new ArrayList<>();
+        for (Cell cell : cells) {
+            this.cells.add(cell);
+        }
+    }
 
     public int getNumCells() {
         return cells.size();

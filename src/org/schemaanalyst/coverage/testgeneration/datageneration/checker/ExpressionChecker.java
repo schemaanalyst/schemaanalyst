@@ -67,35 +67,23 @@ public class ExpressionChecker extends Checker {
                 Value lhs = new ExpressionEvaluator(expression.getLHS(), row).evaluate();
                 Value rhs = new ExpressionEvaluator(expression.getRHS(), row).evaluate();
 
-                boolean lhsResult, rhsResult;
-
-                if (expression.isNotBetween()) {
-                    lhsResult = new RelationalChecker(
-                            subject,
-                            RelationalOperator.LESS,
-                            lhs,
-                            allowNull).check();
-
-                    rhsResult = new RelationalChecker(
-                            subject,
-                            RelationalOperator.GREATER,
-                            rhs,
-                            allowNull).check();
-                } else {
-                    lhsResult = new RelationalChecker(
+                boolean lhsResult = new RelationalChecker(
                             subject,
                             RelationalOperator.GREATER_OR_EQUALS,
                             lhs,
                             allowNull).check();
 
-                    rhsResult = new RelationalChecker(
+                boolean rhsResult = new RelationalChecker(
                             subject,
                             RelationalOperator.LESS_OR_EQUALS,
                             rhs,
                             allowNull).check();
-                }
 
-                if (lhsResult || rhsResult) {
+
+                boolean result = lhsResult && rhsResult;
+                boolean requiredResult = satisfy && !expression.isNotBetween();
+
+                if (result != requiredResult) {
                     setNonCompliant(expression);
                 }
             }
@@ -128,7 +116,9 @@ public class ExpressionChecker extends Checker {
                     }
                 }
 
-                if (!result) {
+                boolean requiredResult = satisfy && !expression.isNotIn();
+
+                if (result != requiredResult) {
                     setNonCompliant(expression);
                 }
             }
@@ -136,9 +126,10 @@ public class ExpressionChecker extends Checker {
             @Override
             public void visit(NullExpression expression) {
                 Value subject = new ExpressionEvaluator(expression.getSubexpression(), row).evaluate();
-                boolean expressionSatisifed = expression.isNotNull() && subject != null;
+                boolean result = subject != null;
+                boolean requiredResult = satisfy && !expression.isNotNull();
 
-                if (expressionSatisifed != satisfy) {
+                if (result != requiredResult) {
                     setNonCompliant(expression);
                 }
             }
@@ -159,14 +150,10 @@ public class ExpressionChecker extends Checker {
             public void visit(RelationalExpression expression) {
                 Value lhs = new ExpressionEvaluator(expression.getLHS(), row).evaluate();
                 Value rhs = new ExpressionEvaluator(expression.getRHS(), row).evaluate();
+                RelationalOperator op = expression.getRelationalOperator();
 
-                boolean result = new RelationalChecker(
-                        lhs,
-                        expression.getRelationalOperator(),
-                        rhs,
-                        allowNull).check();
-
-                if (!result) {
+                boolean result = new RelationalChecker(lhs, op, rhs, allowNull).check();
+                if (result != satisfy) {
                     setNonCompliant(expression);
                 }
             }
@@ -174,5 +161,4 @@ public class ExpressionChecker extends Checker {
 
         return compliant;
     }
-
 }

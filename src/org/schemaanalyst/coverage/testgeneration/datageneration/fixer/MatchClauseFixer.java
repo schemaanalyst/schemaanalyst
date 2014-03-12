@@ -36,6 +36,7 @@ public class MatchClauseFixer extends Fixer {
     private void attemptFix(List<MatchRecord> matchRecords, boolean attemptMatch) {
 
         for (MatchRecord matchRecord : matchRecords) {
+
             Row originalRow = matchRecord.getOriginalRow();
 
             int randomRowIndex = random.nextInt(matchRecord.getNumComparisonRows());

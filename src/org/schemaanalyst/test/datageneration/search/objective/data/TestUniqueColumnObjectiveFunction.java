@@ -27,15 +27,15 @@ public class TestUniqueColumnObjectiveFunction {
     Object[] oneColumnTestValues() {
         return $(
                 
-                $(EMPTY, EMPTY, true, false, false, 0, 0),
-                $(EMPTY, EMPTY, true, true, false, 0, 0),
-                $(EMPTY, EMPTY, false, false, false, 0, 0),
-                $(EMPTY, EMPTY, false, true, false, 0, 0),                
+                $(EMPTY_I, EMPTY_I, true, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, true, true, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, true, false, 0, 0),
 
-                $(EMPTY, d(r(1)), true, false, false, 0, 0),
-                $(EMPTY, d(r(1)), true, true, false, 0, 0),
-                $(EMPTY, d(r(1)), false, false, false, 0, 0),
-                $(EMPTY, d(r(1)), false, true, false, 0, 0),         
+                $(EMPTY_I, d(r(1)), true, false, false, 0, 0),
+                $(EMPTY_I, d(r(1)), true, true, false, 0, 0),
+                $(EMPTY_I, d(r(1)), false, false, false, 0, 0),
+                $(EMPTY_I, d(r(1)), false, true, false, 0, 0),
                 
                 // non-uniqueness of the state should be ignored
                 $(d(r(1)), d(r(2), r(2)), true, false, true, 1, 0),
@@ -43,10 +43,10 @@ public class TestUniqueColumnObjectiveFunction {
                 $(d(r(1)), d(r(2), r(2)), false, false, false, 1, 0),
                 $(d(r(1)), d(r(2), r(2)), false, true, false, 1, 0),                  
                 
-                $(d(r(2), r(3)), EMPTY, true, false, true, 2, 0),
-                $(d(r(2), r(3)), EMPTY, true, true, true, 2, 0),
-                $(d(r(2), r(3)), EMPTY, false, false, false, 2, 0),
-                $(d(r(2), r(3)), EMPTY, false, true, false, 2, 0),
+                $(d(r(2), r(3)), EMPTY_I, true, false, true, 2, 0),
+                $(d(r(2), r(3)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(2), r(3)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(2), r(3)), EMPTY_I, false, true, false, 2, 0),
 
                 // one row in data clashes with one row in the state
                 $(d(r(1), r(2)), d(r(2), r(3)), true, false, false, 1, 1),
@@ -54,15 +54,15 @@ public class TestUniqueColumnObjectiveFunction {
                 $(d(r(1), r(2)), d(r(2), r(3)), false, false, false, 1, 1),
                 $(d(r(1), r(2)), d(r(2), r(3)), false, true, false, 1, 1),                
                 
-                $(d(r(2), r(2)), EMPTY, true, false, false, 1, 1),
-                $(d(r(2), r(2)), EMPTY, true, true, false, 1, 1),
-                $(d(r(2), r(2)), EMPTY, false, false, false, 1, 1),
-                $(d(r(2), r(2)), EMPTY, false, true, false, 1, 1),
+                $(d(r(2), r(2)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(2), r(2)), EMPTY_I, true, true, false, 1, 1),
+                $(d(r(2), r(2)), EMPTY_I, false, false, false, 1, 1),
+                $(d(r(2), r(2)), EMPTY_I, false, true, false, 1, 1),
 
-                $(d(r(NULL), r(NULL)), EMPTY, true, false, false, 0, 2),
-                $(d(r(NULL), r(NULL)), EMPTY, true, true, true, 2, 0),
-                $(d(r(NULL), r(NULL)), EMPTY, false, false, false, 2, 0),
-                $(d(r(NULL), r(NULL)), EMPTY, false, true, true, 0, 2),
+                $(d(r(NULL), r(NULL)), EMPTY_I, true, false, false, 0, 2),
+                $(d(r(NULL), r(NULL)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(NULL), r(NULL)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(NULL), r(NULL)), EMPTY_I, false, true, true, 0, 2),
                 
                 $(d(r(1), r(NULL)), d(r(2), r(3)), true, false, false, 1, 1),
                 $(d(r(1), r(NULL)), d(r(2), r(3)), true, true, true, 2, 0),
@@ -102,35 +102,35 @@ public class TestUniqueColumnObjectiveFunction {
 
     Object[] twoColumnTestValues() {
         return $(
-                $(EMPTY, EMPTY, true, false, false, 0, 0),
-                $(EMPTY, EMPTY, true, true, false, 0, 0),
-                $(EMPTY, EMPTY, false, false, false, 0, 0),
-                $(EMPTY, EMPTY, false, true, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, true, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, true, true, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, false, false, 0, 0),
+                $(EMPTY_I, EMPTY_I, false, true, false, 0, 0),
 
-                $(d(r(1, 1), r(2, 2)), EMPTY, true, false, true, 2, 0),
-                $(d(r(1, 1), r(2, 2)), EMPTY, true, true, true, 2, 0),
-                $(d(r(1, 1), r(2, 2)), EMPTY, false, false, false, 2, 0),
-                $(d(r(1, 1), r(2, 2)), EMPTY, false, true, false, 2, 0),
+                $(d(r(1, 1), r(2, 2)), EMPTY_I, true, false, true, 2, 0),
+                $(d(r(1, 1), r(2, 2)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(1, 1), r(2, 2)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(1, 1), r(2, 2)), EMPTY_I, false, true, false, 2, 0),
 
                 $(d(r(1, 1)), d(r(2, 2)), true, false, true, 1, 0),
                 $(d(r(1, 1)), d(r(2, 2)), true, true, true, 1, 0),
                 $(d(r(1, 1)), d(r(2, 2)), false, false, false, 1, 0),
                 $(d(r(1, 1)), d(r(2, 2)), false, true, false, 1, 0),
 
-                $(d(r(1, 1), r(1, 1)), EMPTY, true, false, false, 1, 1),
-                $(d(r(1, 1), r(1, 1)), EMPTY, true, true, false, 1, 1),
-                $(d(r(1, 1), r(1, 1)), EMPTY, false, false, false, 1, 1),
-                $(d(r(1, 1), r(1, 1)), EMPTY, false, true, false, 1, 1),
+                $(d(r(1, 1), r(1, 1)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(1, 1), r(1, 1)), EMPTY_I, true, true, false, 1, 1),
+                $(d(r(1, 1), r(1, 1)), EMPTY_I, false, false, false, 1, 1),
+                $(d(r(1, 1), r(1, 1)), EMPTY_I, false, true, false, 1, 1),
 
                 $(d(r(1, 1)), d(r(1, 1)), true, false, false, 0, 1),
                 $(d(r(1, 1)), d(r(1, 1)), true, true, false, 0, 1),
                 $(d(r(1, 1)), d(r(1, 1)), false, false, true, 0, 1),
                 $(d(r(1, 1)), d(r(1, 1)), false, true, true, 0, 1),
 
-                $(d(r(1, NULL), r(1, 1)), EMPTY, true, false, false, 1, 1),
-                $(d(r(1, NULL), r(1, 1)), EMPTY, true, true, true, 2, 0),
-                $(d(r(1, NULL), r(1, 1)), EMPTY, false, false, false, 2, 0),
-                $(d(r(1, NULL), r(1, 1)), EMPTY, false, true, false, 1, 1)
+                $(d(r(1, NULL), r(1, 1)), EMPTY_I, true, false, false, 1, 1),
+                $(d(r(1, NULL), r(1, 1)), EMPTY_I, true, true, true, 2, 0),
+                $(d(r(1, NULL), r(1, 1)), EMPTY_I, false, false, false, 2, 0),
+                $(d(r(1, NULL), r(1, 1)), EMPTY_I, false, true, false, 1, 1)
                 );
     }
 

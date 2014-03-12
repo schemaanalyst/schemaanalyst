@@ -55,7 +55,7 @@ public class MatchRecord {
     }
 
     private boolean isModifiableIndex(int index) {
-        return index > 0 && index < modifiableComparisons.size();
+        return index >= 0 && index < modifiableComparisons.size();
     }
 
     private boolean isUnmodifiableIndex(int index) {

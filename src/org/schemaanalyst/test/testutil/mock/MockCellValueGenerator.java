@@ -4,6 +4,7 @@ import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,9 +15,21 @@ public class MockCellValueGenerator extends CellValueGenerator {
     private int index;
     private List<Integer> cellValues;
 
-    public MockCellValueGenerator(List<Integer> cellValues) {
+    private MockCellValueGenerator() {
         super(null, null, null, 0, 0, false);
         index = 0;
+    }
+
+    public MockCellValueGenerator(int[] cellValues) {
+        this();
+        this.cellValues = new ArrayList<>();
+        for (int cellValue : cellValues) {
+            this.cellValues.add(cellValue);
+        }
+    }
+
+    public MockCellValueGenerator(List<Integer> cellValues) {
+        this();
         this.cellValues = cellValues;
     }
 

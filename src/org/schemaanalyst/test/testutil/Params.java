@@ -6,7 +6,8 @@ import java.util.List;
 
 public class Params {
 
-    public static final Integer[] EMPTY = d();
+    public static final Integer[] EMPTY_I = d();
+    public static final int[] EMPTY_i = i();
     
     public static final Integer NULL = null;
     
