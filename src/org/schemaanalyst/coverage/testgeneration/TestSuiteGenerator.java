@@ -72,7 +72,6 @@ public class TestSuiteGenerator {
             if (testCase.satisfiesOriginalPredicate()) {
                 initialTableData.put(table, testCase.getData());
             } else {
-                // TODO
                 // not sure what to do here, throwing an exception for now...
                 System.out.println(testCase);
                 System.out.println(testCase.getInfo("info"));

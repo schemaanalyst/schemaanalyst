@@ -7,6 +7,7 @@ import org.schemaanalyst.coverage.criterion.predicate.Predicate;
 import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.testgeneration.*;
 import org.schemaanalyst.coverage.testgeneration.datageneration.DirectedRandomTestCaseGenerationAlgorithm;
+import org.schemaanalyst.coverage.testgeneration.datageneration.RandomTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ExpressionConstantMiner;
@@ -41,8 +42,8 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        // Schema schema = new BankAccount();
-        Schema schema = new BookTown(); // -- insert error (seen this before?)
+        Schema schema = new BankAccount();
+        // Schema schema = new BookTown(); // -- insert error (seen this before?)
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
@@ -71,10 +72,10 @@ public class GenerateSchemaCoverage extends Runner {
         Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
         boolean reuseTestCases = false;
 
-        Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
-        // instantiate the test case generation algorithm
-        TestCaseGenerationAlgorithm testCaseGenerator =
-                new SearchBasedTestCaseGenerationAlgorithm(search);
+        //Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
+        //// instantiate the test case generation algorithm
+        //TestCaseGenerationAlgorithm testCaseGenerator =
+        //        new SearchBasedTestCaseGenerationAlgorithm(search);
 
         //Random random = new SimpleRandom(10L);
         //TestCaseGenerationAlgorithm testCaseGenerator =
@@ -88,6 +89,19 @@ public class GenerateSchemaCoverage extends Runner {
         //                        0.25,
         //                        false),
         //                500);
+
+        Random random = new SimpleRandom(10L);
+        TestCaseGenerationAlgorithm testCaseGenerator =
+                new RandomTestCaseGenerationAlgorithm(
+                        random,
+                        new CellValueGenerator(
+                                new ExpressionConstantMiner().mine(schema),
+                                ValueInitializationProfile.SMALL,
+                                random,
+                                0,
+                                0,
+                                false),
+                        100000);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -139,11 +153,11 @@ public class GenerateSchemaCoverage extends Runner {
     private void printTestCase(TestCase testCase, boolean success) {
         System.out.println("\n" + testCase);
 
-        //if (!success) {
+        if (!success) {
             // print details of the objective value computed by the datageneration
             //System.out.println("FAIL – INFO DUMP:");
             System.out.println(testCase.getInfo("info"));
-        //}
+        }
     }
 
     private void printTestSuiteStats(Schema schema, Criterion criterionUsed, TestSuite testSuite, TestCaseGenerationAlgorithm testCaseGenerator) {
@@ -158,7 +172,12 @@ public class GenerateSchemaCoverage extends Runner {
                 starred = " (*)";
             }
 
-            CoverageReport coverageReport = testCaseGenerator.computeCoverage(testSuite, criterion.generateRequirements(schema));
+            Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
+            TestCaseGenerationAlgorithm testCaseGenerator2 =
+                    new SearchBasedTestCaseGenerationAlgorithm(search);
+
+            CoverageReport coverageReport =
+                    testCaseGenerator2.computeCoverage(testSuite, criterion.generateRequirements(schema));
             System.out.println(name + starred + ": " + coverageReport.getCoverage());
 
             if (printUncoveredPredicates) {
