@@ -106,7 +106,6 @@ public class TestMatchClauseChecker {
             assertEquals(0, checker.getMatchingCells().size());
             assertEquals(0, checker.getNonMatchingCells().size());
         } else {
-            System.out.println(checker.getInfo());
             assertEquals(1, checker.getMatchingCells().size());
             assertEquals(0, checker.getNonMatchingCells().size());
         }

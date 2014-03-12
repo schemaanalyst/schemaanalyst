@@ -50,7 +50,7 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new DellStore();
         // Schema schema = new Employee();
         // Schema schema = new Examination();
-        Schema schema = new Flights();
+        // Schema schema = new Flights();
         // Schema schema = new FrenchTowns();
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
@@ -65,7 +65,7 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new Products();
         // Schema schema = new RiskIt();
         // Schema schema = new StudentResidence();
-        // Schema schema = new UnixUsage();
+        Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
@@ -77,22 +77,9 @@ public class GenerateSchemaCoverage extends Runner {
         //TestCaseGenerationAlgorithm testCaseGenerator =
         //        new SearchBasedTestCaseGenerationAlgorithm(search);
 
-        Random random = new SimpleRandom(10L);
-        TestCaseGenerationAlgorithm testCaseGenerator =
-                new DirectedRandomTestCaseGenerationAlgorithm(
-                        random,
-                        new CellValueGenerator(
-                                new ExpressionConstantMiner().mine(schema),
-                                ValueInitializationProfile.SMALL,
-                                random,
-                                0.1,
-                                0.25,
-                                false),
-                        500);
-
         //Random random = new SimpleRandom(10L);
         //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new RandomTestCaseGenerationAlgorithm(
+        //        new DirectedRandomTestCaseGenerationAlgorithm(
         //                random,
         //                new CellValueGenerator(
         //                        new ExpressionConstantMiner().mine(schema),
@@ -101,7 +88,20 @@ public class GenerateSchemaCoverage extends Runner {
         //                        0.1,
         //                        0.25,
         //                        false),
-        //                100000);
+        //                500);
+
+        Random random = new SimpleRandom(10L);
+        TestCaseGenerationAlgorithm testCaseGenerator =
+                new RandomTestCaseGenerationAlgorithm(
+                        random,
+                        new CellValueGenerator(
+                                new ExpressionConstantMiner().mine(schema),
+                                ValueInitializationProfile.SMALL,
+                                random,
+                                0.1,
+                                0.25,
+                                true),
+                        100000);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(

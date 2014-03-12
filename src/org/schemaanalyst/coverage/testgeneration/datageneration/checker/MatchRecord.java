@@ -32,7 +32,7 @@ public class MatchRecord {
         return new ArrayList<>(unmodifiableComparisons);
     }
 
-    public void addModifableComparison(Row row) {
+    public void addModifiableComparison(Row row) {
         modifiableComparisons.add(row);
     }
 
