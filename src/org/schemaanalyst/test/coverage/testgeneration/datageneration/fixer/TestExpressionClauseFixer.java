@@ -20,9 +20,15 @@ public class TestExpressionClauseFixer {
 
     class MockExpressionClauseChecker extends ExpressionClauseChecker {
 
+        List<Cell> nonComplyingCells;
+
         public MockExpressionClauseChecker(List<Cell> nonComplyingCells) {
             super(null, true, null);
             this.nonComplyingCells = nonComplyingCells;
+        }
+
+        public List<Cell> getNonComplyingCells() {
+            return nonComplyingCells;
         }
     }
 

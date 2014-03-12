@@ -53,6 +53,6 @@ public class MockRandom extends Random {
 
     @Override
     public double nextDouble() {
-        return (double) nextInt();
+        return nextInt() / 100.0;
     }
 }

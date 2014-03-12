@@ -26,8 +26,8 @@ public class ValueInitializationProfile {
             0, // secondMin
             59, // secondMax
 
-            new BigDecimal(-100), // numericMin
-            new BigDecimal(100), // numericMax
+            new BigDecimal(-1000), // numericMin
+            new BigDecimal(1000), // numericMax
 
             10, // stringLengthMax
             97, // characterMin

@@ -8,6 +8,7 @@ import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
 import org.schemaanalyst.coverage.testgeneration.*;
 import org.schemaanalyst.coverage.testgeneration.datageneration.DirectedRandomTestCaseGenerationAlgorithm;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ExpressionConstantMiner;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueInitializationProfile;
 import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueLibrary;
 import org.schemaanalyst.dbms.DBMS;
@@ -42,9 +43,9 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
-        // Schema schema = new Employee();  // -- check constraint wierdness
+        Schema schema = new Employee();  // -- check constraint wierdness
         // Schema schema = new Examination();   // -- check constraint wierdness
-        // Schema schema = new Flights(); // -- crashes
+        // Schema schema = new Flights(); // -- CHECK constraints, works with value library
         // Schema schema = new FrenchTowns();
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
@@ -60,7 +61,7 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new RiskIt();
         // Schema schema = new StudentResidence(); // check constraint issues
         // Schema schema = new UnixUsage();
-        Schema schema = new Usda();
+        // Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
         Criterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
@@ -76,13 +77,13 @@ public class GenerateSchemaCoverage extends Runner {
                 new DirectedRandomTestCaseGenerationAlgorithm(
                         random,
                         new CellValueGenerator(
-                                new ValueLibrary(),
+                                new ExpressionConstantMiner().mine(schema),
                                 ValueInitializationProfile.SMALL,
                                 random,
                                 0.1,
-                                0,
+                                0.25,
                                 false),
-                        100000);
+                        500);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -134,10 +135,11 @@ public class GenerateSchemaCoverage extends Runner {
     private void printTestCase(TestCase testCase, boolean success) {
         System.out.println("\n" + testCase);
 
-        if (!success) {
+        //if (!success) {
             // print details of the objective value computed by the datageneration
-            System.out.println("FAIL – DUMP:\n" + testCase.getInfo("dump"));
-        }
+            //System.out.println("FAIL – INFO DUMP:");
+            System.out.println(testCase.getInfo("info"));
+        //}
     }
 
     private void printTestSuiteStats(Schema schema, Criterion criterionUsed, TestSuite testSuite, TestCaseGenerationAlgorithm testCaseGenerator) {

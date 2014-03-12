@@ -160,11 +160,12 @@ public class ExpressionChecker extends Checker {
                 Value lhs = new ExpressionEvaluator(expression.getLHS(), row).evaluate();
                 Value rhs = new ExpressionEvaluator(expression.getRHS(), row).evaluate();
 
-                boolean result = new RelationalChecker(
-                        lhs,
-                        expression.getRelationalOperator(),
-                        rhs,
-                        allowNull).check();
+                RelationalOperator op = expression.getRelationalOperator();
+                if (!satisfy) {
+                    op = op.inverse();
+                }
+
+                boolean result = new RelationalChecker(lhs, op, rhs, allowNull).check();
 
                 if (!result) {
                     setNonCompliant(expression);
@@ -174,5 +175,4 @@ public class ExpressionChecker extends Checker {
 
         return compliant;
     }
-
 }

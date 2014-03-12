@@ -28,7 +28,7 @@ public class TestCellValueGenerator {
         CellValueGenerator cellValueGenerator = new CellValueGenerator(
                 valueLibrary,
                 null,                   // no profile required
-                new MockRandom(1, 0),
+                new MockRandom(0, 0, 1, 0, 0, 0),
                 0,                      // null probability
                 1,                      // use library probability
                 false                   // put generated value in library
@@ -52,7 +52,7 @@ public class TestCellValueGenerator {
         CellValueGenerator cellValueGenerator = new CellValueGenerator(
                 valueLibrary,
                 null,                   // no profile required
-                new MockRandom(1, 0),
+                new MockRandom(0, 0, 1, 0, 0, 0),
                 0,                      // null probability
                 1,                      // use library probability
                 false                   // put generated value in library
