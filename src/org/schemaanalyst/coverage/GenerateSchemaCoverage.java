@@ -38,14 +38,14 @@ public class GenerateSchemaCoverage extends Runner {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
         // Schema schema = new BankAccount();
-        // Schema schema = new BookTown(); // -- insert error (seen this before?)
+        Schema schema = new BookTown(); // -- insert error (seen this before?)
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
         // Schema schema = new DellStore();
-        Schema schema = new Employee();  // -- check constraint wierdness
-        // Schema schema = new Examination();   // -- check constraint wierdness
-        // Schema schema = new Flights(); // -- CHECK constraints, works with value library
+        // Schema schema = new Employee();  // -- checks now work
+        // Schema schema = new Examination();   // -- checks now work
+        // Schema schema = new Flights(); // -- checks now work (with value library)
         // Schema schema = new FrenchTowns();
         // Schema schema = new Inventory();
         // Schema schema = new Iso3166();
@@ -54,12 +54,12 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new NistDML182(); // now works
         // Schema schema = new NistDML183();
         // Schema schema = new NistWeather(); // -- crashes
-        // Schema schema = new NistXTS748(); // -- check constraint weirdness ??
+        // Schema schema = new NistXTS748(); // -- checks now work
         // Schema schema = new NistXTS749();
         // Schema schema = new Person(); // -- crashes
-        // Schema schema = new Products(); // check constraint issues
+        // Schema schema = new Products(); // one infeasible (expected) check constraint)
         // Schema schema = new RiskIt();
-        // Schema schema = new StudentResidence(); // check constraint issues
+        // Schema schema = new StudentResidence(); // checks now work
         // Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
