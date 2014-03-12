@@ -71,6 +71,12 @@ public class TestSuiteGenerator {
             TestCase testCase = generateTestCase(table, predicate);
             if (testCase.satisfiesOriginalPredicate()) {
                 initialTableData.put(table, testCase.getData());
+            } else {
+                // TODO
+                // not sure what to do here, throwing an exception for now...
+                System.out.println(testCase);
+                System.out.println(testCase.getInfo("info"));
+                throw new RuntimeException("Cannot generate initial table data for " + table);
             }
         }
     }

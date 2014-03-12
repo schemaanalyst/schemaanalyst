@@ -12,6 +12,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
+import org.schemaanalyst.sqlrepresentation.expression.ParenthesisedExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 
 import static org.junit.Assert.assertFalse;
@@ -57,5 +58,45 @@ public class TestExpressionChecker {
         // test false outcome
         cell.setValue(zero);
         assertFalse(notSatisfyExpressionChecker.check());
+    }
+
+    @Test
+    public void testParenthesisedExpression() {
+        Table table = new Table("table");
+        Column column = new Column("col", new IntDataType());
+        Cell cell = new Cell(column, new ValueFactory());
+        Row row = new Row(cell);
+        NumericValue zero = new NumericValue(0);
+        NumericValue minusOne = new NumericValue(-1);
+
+        RelationalExpression relationalExpression = new RelationalExpression(
+                new ColumnExpression(table, column),
+                RelationalOperator.GREATER_OR_EQUALS,
+                new ConstantExpression(zero));
+
+        ParenthesisedExpression parenthesisedExpression = new ParenthesisedExpression(relationalExpression);
+
+        // Test SATISFY expression
+        ExpressionChecker satisfyExpressionChecker = new ExpressionChecker(parenthesisedExpression, true, false, row);
+
+        // test true outcome
+        cell.setValue(zero);
+        assertTrue(satisfyExpressionChecker.check());
+
+        // test false outcome
+        cell.setValue(minusOne);
+        assertFalse(satisfyExpressionChecker.check());
+
+        // Test SATISFY expression
+        ExpressionChecker notSatisfyExpressionChecker = new ExpressionChecker(parenthesisedExpression, false, false, row);
+
+        // test true outcome
+        cell.setValue(minusOne);
+        assertTrue(notSatisfyExpressionChecker.check());
+
+        // test false outcome
+        cell.setValue(zero);
+        assertFalse(notSatisfyExpressionChecker.check());
+
     }
 }
