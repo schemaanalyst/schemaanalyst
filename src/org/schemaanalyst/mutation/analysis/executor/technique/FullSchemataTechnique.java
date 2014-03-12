@@ -26,9 +26,9 @@ import java.util.List;
  */
 public class FullSchemataTechnique extends Technique {
 
-    private String createStmt;
-    private String dropStmt;
-    private final SQLWriter sqlWriter;
+    protected String createStmt;
+    protected String dropStmt;
+    protected final SQLWriter sqlWriter;
 
     public FullSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         super(schema, mutants, testSuite, dbms, databaseInteractor);
@@ -42,7 +42,7 @@ public class FullSchemataTechnique extends Technique {
         TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
 
         // Get mutant results with schemata changes
-        schemataSteps();
+        doSchemataSteps();
         databaseInteractor.executeUpdate(dropStmt);
         databaseInteractor.executeUpdate(createStmt);
         int mutantId = 0;
@@ -68,25 +68,25 @@ public class FullSchemataTechnique extends Technique {
      * @param suite The test suite
      * @return The execution results
      */
-    private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
+    protected TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
         TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
-    private TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix) {
+    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix) {
         TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, databaseInteractor, schemataPrefix);
         TestSuiteExecutor suiteExecutor = new TestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
-    private void schemataSteps() {
+    protected void doSchemataSteps() {
         renameMutants(mutants);
         dropStmt = buildDrop(mutants);
         createStmt = buildCreate(mutants);
     }
 
-    private static void renameMutants(List<Mutant<Schema>> mutants) {
+    protected static void renameMutants(List<Mutant<Schema>> mutants) {
         for (int i = 0; i < mutants.size(); i++) {
             Schema mutantSchema = mutants.get(i).getMutatedArtefact();
             for (Table table : mutantSchema.getTablesInOrder()) {
@@ -101,7 +101,7 @@ public class FullSchemataTechnique extends Technique {
         }
     }
 
-    private String buildDrop(List<Mutant<Schema>> mutants) {
+    protected String buildDrop(List<Mutant<Schema>> mutants) {
         StringBuilder dropBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
@@ -114,7 +114,7 @@ public class FullSchemataTechnique extends Technique {
         return dropBuilder.toString();
     }
 
-    private String buildCreate(List<Mutant<Schema>> mutants) {
+    protected String buildCreate(List<Mutant<Schema>> mutants) {
         StringBuilder createBuilder = new StringBuilder();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();

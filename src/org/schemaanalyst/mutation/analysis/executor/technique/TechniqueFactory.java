@@ -39,4 +39,8 @@ public class TechniqueFactory {
     public static Technique fullSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         return new FullSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
     }
+    
+    public static Technique minimalSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+        return new MinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    }
 }
