@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Phil
  */
-public class CriterionFactory {
+public class CoverageCriterionFactory {
 
     /**
      * Instantiate a {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion} instance given the name.
@@ -24,7 +24,7 @@ public class CriterionFactory {
      */
     @SuppressWarnings("unchecked")
     public static CoverageCriterion instantiate(String criterionName) {
-        Class<CriterionFactory> c = CriterionFactory.class;
+        Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
         Method methods[] = c.getMethods();
 
         for (Method m : methods) {
@@ -41,13 +41,13 @@ public class CriterionFactory {
     }
 
     /**
-     * Returns a list of all data generation {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion}.
+     * Returns a list of all {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion}.
      *
-     * @return All criterion
+     * @return All criteria
      */
     public static List<CoverageCriterion> allCriteria() {
         List<CoverageCriterion> criteria = new ArrayList<>();
-        Class<CriterionFactory> c = CriterionFactory.class;
+        Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
         Method methods[] = c.getMethods();
 
         for (Method m : methods) {

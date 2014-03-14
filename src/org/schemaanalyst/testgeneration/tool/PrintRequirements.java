@@ -2,7 +2,7 @@ package org.schemaanalyst.testgeneration.tool;
 
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
@@ -23,7 +23,7 @@ public class PrintRequirements extends Runner {
     @Override
     protected void task() {
         Requirements requirements =
-                CriterionFactory.instantiate(criterion)
+                CoverageCriterionFactory.instantiate(criterion)
                         .generateRequirements(instantiateSchema(schema));
 
         System.out.println("Number of requirements: " + requirements.size());

@@ -4,7 +4,7 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.testgeneration.CoverageReport;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
 import org.schemaanalyst.data.Data;
@@ -47,14 +47,14 @@ public class CoverageExperiment extends Runner {
     };
 
     CoverageCriterion[] generateCriteria = {
-            CriterionFactory.amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage(),
-            CriterionFactory.amplifiedConstraintCACCoverage(),
-            CriterionFactory.constraintCACWithNullAndUniqueColumnCACCoverage(),
-            CriterionFactory.constraintCACCoverage(),
+            CoverageCriterionFactory.amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage(),
+            CoverageCriterionFactory.amplifiedConstraintCACCoverage(),
+            CoverageCriterionFactory.constraintCACWithNullAndUniqueColumnCACCoverage(),
+            CoverageCriterionFactory.constraintCACCoverage(),
     };
 
     CoverageCriterion[] testCriteria = {
-            CriterionFactory.constraintCoverage()
+            CoverageCriterionFactory.constraintCoverage()
     };
 
     Boolean[] reuseOptions = {

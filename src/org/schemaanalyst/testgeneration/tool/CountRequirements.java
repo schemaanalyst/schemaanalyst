@@ -2,7 +2,7 @@ package org.schemaanalyst.testgeneration.tool;
 
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
@@ -59,7 +59,7 @@ public class CountRequirements extends Runner {
                 System.out.println("Checking " + schema);
             }
             Requirements requirements =
-                    CriterionFactory.instantiate(criterion)
+                    CoverageCriterionFactory.instantiate(criterion)
                             .generateRequirements(schema);
 
             int unreducedCount = 0;

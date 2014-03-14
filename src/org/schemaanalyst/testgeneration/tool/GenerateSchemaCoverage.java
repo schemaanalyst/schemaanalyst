@@ -4,6 +4,7 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.CellValueGenerator;
 import org.schemaanalyst.data.generation.ValueInitializationProfile;
@@ -13,7 +14,7 @@ import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Runner;
@@ -64,33 +65,9 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
-        CoverageCriterion criterion = CriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
+        CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        //Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
-        //// instantiate the test case generation algorithm
-        //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new SearchBasedDataGenerator(search);
-
-        Random random = new SimpleRandom(10L);
-        DataGenerator dataGenerator =
-                new DirectedRandomDataGenerator(
-                        random,
-                        new CellValueGenerator(
-                                random, ValueInitializationProfile.SMALL, 0.1, new ValueMiner().mine(schema),
-                                0.25),
-                        500);
-
-        //Random random = new SimpleRandom(10L);
-        //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new RandomDataGenerator(
-        //                random,
-        //                new CellValueGenerator(
-        //                        new ValueMiner().mine(schema),
-        //                        ValueInitializationProfile.SMALL,
-        //                        random,
-        //                        0.1,
-        //                        0.25),
-        //                100000);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("directedRandom", 0L, 500, new ValueMiner().mine(schema));
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -152,7 +129,7 @@ public class GenerateSchemaCoverage extends Runner {
         System.out.println("Number of test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
 
-        for (CoverageCriterion criterion : CriterionFactory.allCriteria()) {
+        for (CoverageCriterion criterion : CoverageCriterionFactory.allCriteria()) {
             String name = criterion.getName();
             String starred = "";
             if (name.equals(criterionUsed.getName())) {

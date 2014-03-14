@@ -15,7 +15,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
@@ -173,7 +173,7 @@ public class MutationAnalysis extends Runner {
                         SearchFactory.avsDefaults(0L, 100000));
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                CriterionFactory.instantiate(criterion),
+                CoverageCriterionFactory.instantiate(criterion),
                 dbms.getValueFactory(),
                 testCaseGenerator
         );
