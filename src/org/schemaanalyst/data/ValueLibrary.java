@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation;
+package org.schemaanalyst.data;
 
 import org.schemaanalyst.data.*;
 

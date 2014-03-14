@@ -16,7 +16,7 @@ public class MockCellValueGenerator extends CellValueGenerator {
     private List<Integer> cellValues;
 
     private MockCellValueGenerator() {
-        super(null, null, null, 0, 0);
+        super(null, null, 0, null, 0);
         index = 0;
     }
 

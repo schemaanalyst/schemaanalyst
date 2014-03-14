@@ -1,5 +1,6 @@
-package org.schemaanalyst.data.generation;
+package org.schemaanalyst.data;
 
+import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.*;
@@ -11,7 +12,7 @@ import java.util.List;
 /**
  * Created by phil on 26/02/2014.
  */
-public class ConstantMiner {
+public class ValueMiner {
 
     public ValueLibrary mine(Schema schema) {
         List<Expression> expressions = new ArrayList<>();
@@ -27,7 +28,7 @@ public class ConstantMiner {
     }
 
     public ValueLibrary mine(List<Expression> expressions) {
-        class ConstantExpressionMiner implements ExpressionVisitor {
+        class ExpressionValueMiner implements ExpressionVisitor {
 
             List<ConstantExpression> constantExpressions;
 
@@ -75,7 +76,6 @@ public class ConstantMiner {
 
             @Override
             public void visit(NullExpression expression) {
-
             }
 
             @Override
@@ -95,7 +95,7 @@ public class ConstantMiner {
         }
 
         return extractConstantsIntoValueLibrary(
-                new ConstantExpressionMiner().extractConstantExpressions(expressions));
+                new ExpressionValueMiner().extractConstantExpressions(expressions));
     }
 
     private ValueLibrary extractConstantsIntoValueLibrary(List<ConstantExpression> constantExpressions) {

@@ -3,9 +3,9 @@ package org.schemaanalyst.testgeneration.tool;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.ValueMiner;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.CellValueGenerator;
-import org.schemaanalyst.data.generation.ConstantMiner;
 import org.schemaanalyst.data.generation.ValueInitializationProfile;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
@@ -76,10 +76,7 @@ public class GenerateSchemaCoverage extends Runner {
                 new DirectedRandomDataGenerator(
                         random,
                         new CellValueGenerator(
-                                new ConstantMiner().mine(schema),
-                                ValueInitializationProfile.SMALL,
-                                random,
-                                0.1,
+                                random, ValueInitializationProfile.SMALL, 0.1, new ValueMiner().mine(schema),
                                 0.25),
                         500);
 
@@ -88,7 +85,7 @@ public class GenerateSchemaCoverage extends Runner {
         //        new RandomDataGenerator(
         //                random,
         //                new CellValueGenerator(
-        //                        new ConstantMiner().mine(schema),
+        //                        new ValueMiner().mine(schema),
         //                        ValueInitializationProfile.SMALL,
         //                        random,
         //                        0.1,

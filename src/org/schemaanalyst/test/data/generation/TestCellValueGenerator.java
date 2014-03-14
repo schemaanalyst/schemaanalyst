@@ -6,7 +6,7 @@ import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.CellValueGenerator;
-import org.schemaanalyst.data.generation.ValueLibrary;
+import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
@@ -26,10 +26,9 @@ public class TestCellValueGenerator {
         valueLibrary.addValue(new NumericValue(20));
 
         CellValueGenerator cellValueGenerator = new CellValueGenerator(
-                valueLibrary,
-                null,                   // no profile required
-                new MockRandom(0, 0, 1, 0, 0, 0),
-                0,                      // null probability
+                new MockRandom(0, 0, 1, 0, 0, 0), null, 0, valueLibrary,
+                // no profile required
+                // null probability
                 1                       // use library probability
         );
 
@@ -49,10 +48,9 @@ public class TestCellValueGenerator {
         valueLibrary.addValue(new StringValue("Goodbye"));
 
         CellValueGenerator cellValueGenerator = new CellValueGenerator(
-                valueLibrary,
-                null,                   // no profile required
-                new MockRandom(0, 0, 1, 0, 0, 0),
-                0,                      // null probability
+                new MockRandom(0, 0, 1, 0, 0, 0), null, 0, valueLibrary,
+                // no profile required
+                // null probability
                 1                       // use library probability
         );
 

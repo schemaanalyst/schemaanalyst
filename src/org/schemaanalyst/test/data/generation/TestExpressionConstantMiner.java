@@ -3,8 +3,8 @@ package org.schemaanalyst.test.data.generation;
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.generation.ConstantMiner;
-import org.schemaanalyst.data.generation.ValueLibrary;
+import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -26,7 +26,7 @@ public class TestExpressionConstantMiner {
     public void testSimpleConstant() {
         int value = 10;
         ConstantExpression constantExpression = new ConstantExpression(new NumericValue(value));
-        ValueLibrary library = new ConstantMiner().mine(constantExpression);
+        ValueLibrary library = new ValueMiner().mine(constantExpression);
 
         assertTrue(library.getNumericValues().contains(new NumericValue((value))));
         assertFalse(library.getNumericValues().contains(new NumericValue((value + 1))));
@@ -43,7 +43,7 @@ public class TestExpressionConstantMiner {
         Table table = new Table("test");
         Column column = new Column("initials", new VarCharDataType());
         InExpression inExpression = new InExpression(new ColumnExpression(table, column), listExpression, true);
-        ValueLibrary library = new ConstantMiner().mine(new ParenthesisedExpression(inExpression));
+        ValueLibrary library = new ValueMiner().mine(new ParenthesisedExpression(inExpression));
 
         assertTrue(library.getStringValues().contains(new StringValue("L")));
         assertTrue(library.getStringValues().contains(new StringValue("I")));
@@ -70,7 +70,7 @@ public class TestExpressionConstantMiner {
                         new ConstantExpression(new NumericValue(10))));
 
 
-        ValueLibrary library = new ConstantMiner().mine(schema);
+        ValueLibrary library = new ValueMiner().mine(schema);
 
         assertTrue(library.getNumericValues().contains(new NumericValue(10)));
         assertTrue(library.getNumericValues().contains(new NumericValue(1)));

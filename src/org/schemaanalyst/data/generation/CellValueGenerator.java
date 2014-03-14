@@ -17,10 +17,10 @@ public class CellValueGenerator {
     private double nullProbability, useLibraryProbability;
 
     public CellValueGenerator(
-            ValueLibrary valueLibrary,
-            ValueInitializationProfile profile,
             Random random,
+            ValueInitializationProfile profile,
             double nullProbability,
+            ValueLibrary valueLibrary,
             double useLibraryProbability) {
 
         this.random = random;
