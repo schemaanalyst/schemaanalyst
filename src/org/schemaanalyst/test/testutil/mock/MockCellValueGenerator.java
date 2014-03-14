@@ -2,7 +2,7 @@ package org.schemaanalyst.test.testutil.mock;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.data.generation.CellValueGenerator;
 
 import java.util.ArrayList;
 import java.util.List;

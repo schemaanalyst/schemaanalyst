@@ -1,6 +1,6 @@
 package org.schemaanalyst.data.generation.directedrandom;
 
-import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.data.generation.CellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.*;
 import org.schemaanalyst.logic.predicate.clause.*;
 import org.schemaanalyst.util.random.Random;

@@ -2,7 +2,7 @@ package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.data.generation.CellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.MatchClauseChecker;
 import org.schemaanalyst.logic.predicate.checker.MatchRecord;
 import org.schemaanalyst.util.random.Random;
