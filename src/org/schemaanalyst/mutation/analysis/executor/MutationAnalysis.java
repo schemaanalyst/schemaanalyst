@@ -1,7 +1,7 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
-import org.schemaanalyst.datageneration.search.SearchFactory;
+import org.schemaanalyst._deprecated.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;

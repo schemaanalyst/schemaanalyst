@@ -1,9 +1,9 @@
 package org.schemaanalyst.data.generation.search.objectivefunction;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveFunction;
+import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst._deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.clause.*;
 

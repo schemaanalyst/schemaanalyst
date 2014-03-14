@@ -1,6 +1,6 @@
 package org.schemaanalyst.test.testutil.assertion;
 
-import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
 
 import static org.junit.Assert.assertTrue;
 

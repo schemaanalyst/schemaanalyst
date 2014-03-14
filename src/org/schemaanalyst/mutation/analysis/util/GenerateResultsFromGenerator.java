@@ -4,7 +4,7 @@ package org.schemaanalyst.mutation.analysis.util;
 
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.schemaanalyst.datageneration.*;
+import org.schemaanalyst._deprecated.datageneration.*;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.csv.CSVFileWriter;
