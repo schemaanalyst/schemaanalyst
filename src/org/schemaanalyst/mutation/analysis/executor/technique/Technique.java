@@ -1,7 +1,7 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import org.schemaanalyst.coverage.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;

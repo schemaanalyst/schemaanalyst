@@ -66,7 +66,7 @@ public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
         Data data = new Data();
         data.addRows(tables, numRows, dbms.getValueFactory());
 
-        // initialise everything needed for the datageneration and perform it
+        // initialise everything needed for the generation and perform it
         search.setObjectiveFunction(new SchemaConstraintSystemObjectiveFunction(schema, state, constraint));
         TestCase<ConstraintGoal> testCase = performSearch(constraintGoal, data);
 
@@ -90,7 +90,7 @@ public class SearchConstraintCoverer extends DataGenerator<ConstraintGoal> {
         SearchTestCase<ConstraintGoal> testCase = new SearchTestCase<>(constraintGoal.toString());
         testCase.startTimer();
 
-        // do the datageneration
+        // do the generation
         search.initialize();
         search.search(data);
 

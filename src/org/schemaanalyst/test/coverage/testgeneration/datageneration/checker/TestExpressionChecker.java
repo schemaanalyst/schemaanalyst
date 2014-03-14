@@ -1,7 +1,7 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.testgeneration.datageneration.checker.ExpressionChecker;
+import org.schemaanalyst.data.generation.checker.ExpressionChecker;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;

@@ -1,7 +1,7 @@
 
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
-import org.schemaanalyst.coverage.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.util.tuple.MixedPair;
 

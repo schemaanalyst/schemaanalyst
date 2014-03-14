@@ -4,7 +4,7 @@ package org.schemaanalyst.mutation.analysis.executor.exceptions;
 /**
  * <p> A {@link RuntimeException} encountered when executing an {@code SQL} 
  * statement during a 
- * {@link org.schemaanalyst.coverage.testgeneration.TestCase}.</p>
+ * {@link org.schemaanalyst.testgeneration.TestCase}.</p>
  * 
  * @author Chris J. Wright
  */

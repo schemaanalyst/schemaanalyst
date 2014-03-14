@@ -1,6 +1,6 @@
 package org.schemaanalyst.test.testutil.mock;
 
-import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 
@@ -16,7 +16,7 @@ public class MockCellValueGenerator extends CellValueGenerator {
     private List<Integer> cellValues;
 
     private MockCellValueGenerator() {
-        super(null, null, null, 0, 0, false);
+        super(null, null, null, 0, 0);
         index = 0;
     }
 

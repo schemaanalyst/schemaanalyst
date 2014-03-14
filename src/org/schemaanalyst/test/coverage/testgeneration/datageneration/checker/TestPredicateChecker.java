@@ -1,9 +1,9 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.criterion.clause.*;
-import org.schemaanalyst.coverage.criterion.predicate.Predicate;
-import org.schemaanalyst.coverage.testgeneration.datageneration.checker.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.clause.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.data.generation.checker.*;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;

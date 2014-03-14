@@ -1,8 +1,8 @@
 
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
-import org.schemaanalyst.coverage.testgeneration.TestCase;
-import org.schemaanalyst.coverage.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 
 import java.util.List;

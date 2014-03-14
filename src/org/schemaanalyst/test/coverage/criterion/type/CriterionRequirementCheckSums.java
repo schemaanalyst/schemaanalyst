@@ -1,8 +1,7 @@
 package org.schemaanalyst.test.coverage.criterion.type;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.types.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
@@ -107,7 +106,7 @@ public class CriterionRequirementCheckSums {
         return numCols;
     }
 
-    private void assertCheckSum(Schema schema, Criterion criterion, int sum) {
+    private void assertCheckSum(Schema schema, CoverageCriterion criterion, int sum) {
         assertEquals(sum, criterion.generateRequirements(schema).size());
     }
 }

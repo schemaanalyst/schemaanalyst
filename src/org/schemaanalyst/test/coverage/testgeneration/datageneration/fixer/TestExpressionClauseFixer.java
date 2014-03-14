@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.testgeneration.datageneration.checker.ExpressionClauseChecker;
-import org.schemaanalyst.coverage.testgeneration.datageneration.fixer.ExpressionClauseFixer;
+import org.schemaanalyst.data.generation.checker.ExpressionClauseChecker;
+import org.schemaanalyst.data.generation.fixer.ExpressionClauseFixer;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.test.testutil.mock.MockCell;

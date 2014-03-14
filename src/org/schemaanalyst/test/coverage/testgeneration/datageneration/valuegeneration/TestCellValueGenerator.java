@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.CellValueGenerator;
-import org.schemaanalyst.coverage.testgeneration.datageneration.valuegeneration.ValueLibrary;
+import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
+import org.schemaanalyst.data.generation.valuegeneration.ValueLibrary;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
@@ -30,8 +30,7 @@ public class TestCellValueGenerator {
                 null,                   // no profile required
                 new MockRandom(0, 0, 1, 0, 0, 0),
                 0,                      // null probability
-                1,                      // use library probability
-                false                   // put generated value in library
+                1                       // use library probability
         );
 
         Cell cell = new Cell(new Column("test", new IntDataType()), new ValueFactory());
@@ -54,8 +53,7 @@ public class TestCellValueGenerator {
                 null,                   // no profile required
                 new MockRandom(0, 0, 1, 0, 0, 0),
                 0,                      // null probability
-                1,                      // use library probability
-                false                   // put generated value in library
+                1                       // use library probability
         );
 
         Cell cell = new Cell(new Column("test", new VarCharDataType(4)), new ValueFactory());

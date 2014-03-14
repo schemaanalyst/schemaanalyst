@@ -1,9 +1,9 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
-import org.schemaanalyst.coverage.testgeneration.TestSuite;
-import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
+import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.data.generation.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -175,8 +175,7 @@ public class MutationAnalysis extends Runner {
                 schema,
                 CriterionFactory.instantiate(criterion),
                 dbms.getValueFactory(),
-                testCaseGenerator,
-                reuse
+                testCaseGenerator
         );
         // Generate suite and return
         return generator.generate();

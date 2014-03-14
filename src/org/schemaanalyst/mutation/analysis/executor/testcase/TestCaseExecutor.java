@@ -1,6 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import org.schemaanalyst.coverage.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;

@@ -1,12 +1,12 @@
 package paper.icst2013jv;
 
-import org.schemaanalyst.coverage.CoverageReport;
-import org.schemaanalyst.coverage.criterion.Criterion;
-import org.schemaanalyst.coverage.criterion.types.CriterionFactory;
-import org.schemaanalyst.coverage.testgeneration.TestCaseGenerationAlgorithm;
-import org.schemaanalyst.coverage.testgeneration.TestSuite;
-import org.schemaanalyst.coverage.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.coverage.testgeneration.datageneration.SearchBasedTestCaseGenerationAlgorithm;
+import org.schemaanalyst.testgeneration.CoverageReport;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.TestCaseGenerationAlgorithm;
+import org.schemaanalyst.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.data.generation.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.search.Search;
@@ -46,14 +46,14 @@ public class CoverageExperiment extends Runner {
             new Usda()
     };
 
-    Criterion[] generateCriteria = {
+    CoverageCriterion[] generateCriteria = {
             CriterionFactory.amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage(),
             CriterionFactory.amplifiedConstraintCACCoverage(),
             CriterionFactory.constraintCACWithNullAndUniqueColumnCACCoverage(),
             CriterionFactory.constraintCACCoverage(),
     };
 
-    Criterion[] testCriteria = {
+    CoverageCriterion[] testCriteria = {
             CriterionFactory.constraintCoverage()
     };
 
@@ -64,7 +64,7 @@ public class CoverageExperiment extends Runner {
     @Override
     protected void task() {
         for (Schema schema : schemas) {
-            for (Criterion criterion : generateCriteria) {
+            for (CoverageCriterion criterion : generateCriteria) {
                 for (Boolean reuseTestCases : reuseOptions) {
                     doExpt(schema, criterion, reuseTestCases);
                 }
@@ -73,7 +73,7 @@ public class CoverageExperiment extends Runner {
         }
     }
 
-    void doExpt(Schema schema, Criterion criterion, boolean reuseTestCases) {
+    void doExpt(Schema schema, CoverageCriterion criterion, boolean reuseTestCases) {
 
         Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
 
@@ -86,8 +86,7 @@ public class CoverageExperiment extends Runner {
                 schema,
                 criterion,
                 new ValueFactory(),
-                testCaseGenerator,
-                reuseTestCases);
+                testCaseGenerator);
 
         TestSuite testSuite = dg.generate();
 
@@ -98,18 +97,18 @@ public class CoverageExperiment extends Runner {
                          testSuite.getNumTestCases() + ", " +
                          testSuite.getNumInserts() + ", ");
 
-        for (Criterion checkCriteria : generateCriteria) {
-            CoverageReport coverageReport =
-                    testCaseGenerator.computeCoverage(testSuite, checkCriteria.generateRequirements(schema));
-            System.out.print(", " + coverageReport.getCoverage());
+        for (CoverageCriterion checkCriteria : generateCriteria) {
+            CoverageReport coverageCalculator =
+                    new CoverageReport(testSuite, checkCriteria.generateRequirements(schema));
+            System.out.print(", " + coverageCalculator.getCoverage());
         }
 
         System.out.print(", ");
 
-        for (Criterion checkCriteria : testCriteria) {
-            CoverageReport coverageReport =
-                    testCaseGenerator.computeCoverage(testSuite, checkCriteria.generateRequirements(schema));
-            System.out.print(", " + coverageReport.getCoverage());
+        for (CoverageCriterion checkCriteria : testCriteria) {
+            CoverageReport coverageCalculator =
+                    new CoverageReport(testSuite, checkCriteria.generateRequirements(schema));
+            System.out.print(", " + coverageCalculator.getCoverage());
         }
 
         System.out.println();

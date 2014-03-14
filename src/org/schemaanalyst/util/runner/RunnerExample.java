@@ -10,7 +10,7 @@ package org.schemaanalyst.util.runner;
 // They are specified without switches and must be supplied in the order specified.
 // If one is not specified, Runner will look in the superclass.  (Parameters are also
 // searched for in superclasses.)
-@RequiredParameters("schema dbms datageneration")
+@RequiredParameters("schema dbms generation")
 public class RunnerExample extends Runner {
     
     // This annotation specifies a parameter
@@ -25,22 +25,22 @@ public class RunnerExample extends Runner {
     private String dbms;
     
     // A further parameter
-    @Parameter("The name of the datageneration")
+    @Parameter("The name of the generation")
     private String search;
     
     // Parameters are not limited to Strings, they can also be of any primitive type. 
     // Runner checks the value passed at the command line are actual ints, doubles, longs etc.
     // This is an optional parameter, as it is not specified in the "RequiredParameters"
     // class annotation.  Default values can be set by initialising the variable.
-    @Parameter("The number of repetitions of the datageneration")
+    @Parameter("The number of repetitions of the generation")
     private int numrepetitions = 5;
     
     // A parameter of type long
-    @Parameter("The seed needed to start the datageneration")
+    @Parameter("The seed needed to start the generation")
     private long seed = 0;
 
     // An integer parameter
-    @Parameter("The number of tries to generate data, only needed if the datageneration is set to random ")
+    @Parameter("The number of tries to generate data, only needed if the generation is set to random ")
     private int numtries = 10000;    
     
     // A boolean flag parameter, showing the use of the valueAsSwitch annotation field 
@@ -54,7 +54,7 @@ public class RunnerExample extends Runner {
         out.println("Parsed parameters:");
         out.println("schema is " + schema);
         out.println("dbms is " + dbms);
-        out.println("datageneration is " + search);
+        out.println("generation is " + search);
         out.println("numrepetitions is " + numrepetitions);
         out.println("seed is " + seed);
         out.println("numtries is " + numtries);
@@ -75,7 +75,7 @@ public class RunnerExample extends Runner {
             }
         }
               
-        check(numtriesCheck, "numtries should be set if and only if the datageneration is set to random");
+        check(numtriesCheck, "numtries should be set if and only if the generation is set to random");
     }    
     
     // A main method must be provided in this format (i.e. construction with args and 

@@ -1,8 +1,8 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.coverage.criterion.clause.MatchClause;
-import org.schemaanalyst.coverage.testgeneration.datageneration.checker.MatchClauseChecker;
+import org.schemaanalyst.testgeneration.coveragecriterion.clause.MatchClause;
+import org.schemaanalyst.data.generation.checker.MatchClauseChecker;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
