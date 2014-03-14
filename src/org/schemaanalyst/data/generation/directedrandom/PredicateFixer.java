@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.directedrandom.fixer;
+package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.*;
@@ -58,7 +58,7 @@ public class PredicateFixer extends Fixer {
         }
 
         fixers = new ArrayList<>();
-        List<ClauseChecker<? extends Clause>> clauseCheckers = predicateChecker.getClauseCheckers();
+        List<ClauseChecker> clauseCheckers = predicateChecker.getClauseCheckers();
         FixerInstantiator clauseFixerInstantiator = new FixerInstantiator(random, cellValueGenerator);
 
         for (ClauseChecker clauseChecker : clauseCheckers) {

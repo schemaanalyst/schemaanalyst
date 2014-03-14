@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.directedrandom.fixer;
+package org.schemaanalyst.data.generation.directedrandom;
 
 /**
  * Created by phil on 27/02/2014.

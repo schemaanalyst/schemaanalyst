@@ -2,7 +2,7 @@ package org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer;
 
 import org.junit.Test;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.generation.directedrandom.fixer.*;
+import org.schemaanalyst.data.generation.directedrandom.*;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.*;
 import org.schemaanalyst.logic.predicate.clause.Clause;
@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
 public class TestPredicateFixer {
 
     public class MockPredicateChecker extends PredicateChecker {
-        public MockPredicateChecker(List<ClauseChecker<? extends Clause>> clauseCheckers) {
+        public MockPredicateChecker(List<ClauseChecker> clauseCheckers) {
             super(new Predicate(), null, null);
             this.clauseCheckers = clauseCheckers;
         }

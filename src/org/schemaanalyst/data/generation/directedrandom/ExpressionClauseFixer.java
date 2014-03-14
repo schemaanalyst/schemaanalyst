@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.directedrandom.fixer;
+package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;

@@ -3,7 +3,6 @@ package org.schemaanalyst.data.generation.directedrandom;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.directedrandom.fixer.PredicateFixer;
 import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.PredicateChecker;

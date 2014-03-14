@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.data.generation.directedrandom.fixer.NullClauseFixer;
+import org.schemaanalyst.data.generation.directedrandom.NullClauseFixer;
 import org.schemaanalyst.logic.predicate.checker.NullClauseChecker;
 import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.test.testutil.mock.MockCell;

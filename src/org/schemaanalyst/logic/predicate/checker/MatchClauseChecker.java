@@ -15,7 +15,7 @@ import java.util.ListIterator;
 /**
  * Created by phil on 12/03/2014.
  */
-public class MatchClauseChecker extends ClauseChecker<MatchClause> {
+public class MatchClauseChecker extends ClauseChecker {
 
     private MatchClause matchClause;
     private boolean allowNull;

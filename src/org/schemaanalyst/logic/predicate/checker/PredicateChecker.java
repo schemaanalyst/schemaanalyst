@@ -14,7 +14,7 @@ public class PredicateChecker extends Checker {
 
     private Predicate predicate;
     private Data data, state;
-    protected List<ClauseChecker<? extends Clause>> clauseCheckers;
+    protected List<ClauseChecker> clauseCheckers;
 
     public PredicateChecker(Predicate predicate, Data data, Data state) {
         this.predicate = predicate;
@@ -49,7 +49,7 @@ public class PredicateChecker extends Checker {
         }
     }
 
-    public List<ClauseChecker<? extends Clause>> getClauseCheckers() {
+    public List<ClauseChecker> getClauseCheckers() {
         return new ArrayList<>(clauseCheckers);
     }
 

@@ -37,7 +37,7 @@ public class TestPredicateChecker {
         predicate.addClause(nullClause);
 
         PredicateChecker predicateChecker = new PredicateChecker(predicate, null, null);
-        List<ClauseChecker<? extends Clause>> checkers = predicateChecker.getClauseCheckers();
+        List<ClauseChecker> checkers = predicateChecker.getClauseCheckers();
 
         assertTrue(checkers.get(0) instanceof ExpressionClauseChecker);
         assertTrue(checkers.get(1) instanceof MatchClauseChecker);
