@@ -1,9 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
-import org.schemaanalyst.testgeneration.TestSuite;
-import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.data.generation.SearchBasedTestCaseGenerationAlgorithm;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.datageneration.search.SearchFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -16,6 +13,9 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
@@ -168,8 +168,8 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite generateTestSuite() {
         // Initialise test case generator
-        final SearchBasedTestCaseGenerationAlgorithm testCaseGenerator
-                = new SearchBasedTestCaseGenerationAlgorithm(
+        final SearchBasedDataGenerator testCaseGenerator
+                = new SearchBasedDataGenerator(
                         SearchFactory.avsDefaults(0L, 100000));
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,

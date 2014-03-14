@@ -1,8 +1,8 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 
 import java.util.Arrays;
 import java.util.List;

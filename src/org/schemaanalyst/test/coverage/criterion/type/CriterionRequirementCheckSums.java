@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.coverage.criterion.type;
 
 import org.junit.Test;
-import org.schemaanalyst.testgeneration.coveragecriterion.*;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.*;
 import parsedcasestudy.*;
 
 import static org.junit.Assert.assertEquals;

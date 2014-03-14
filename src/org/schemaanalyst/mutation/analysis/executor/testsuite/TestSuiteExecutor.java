@@ -1,8 +1,8 @@
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
-import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 
 /**
  * <p>Executes each {@link TestCase} of a {@link TestSuite} using a {@link TestCaseExecutor}.</p>

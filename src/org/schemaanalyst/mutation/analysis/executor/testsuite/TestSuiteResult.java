@@ -1,8 +1,8 @@
 
 package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
-import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
+import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.util.tuple.MixedPair;
 
 import java.util.ArrayList;

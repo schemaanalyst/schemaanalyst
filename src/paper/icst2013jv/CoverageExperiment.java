@@ -1,12 +1,12 @@
 package paper.icst2013jv;
 
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.testgeneration.CoverageReport;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
-import org.schemaanalyst.testgeneration.TestCaseGenerationAlgorithm;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.data.generation.SearchBasedTestCaseGenerationAlgorithm;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.datageneration.search.Search;
@@ -78,15 +78,15 @@ public class CoverageExperiment extends Runner {
         Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
 
         // instantiate the test case generation algorithm
-        TestCaseGenerationAlgorithm testCaseGenerator =
-                new SearchBasedTestCaseGenerationAlgorithm(search);
+        DataGenerator dataGenerator =
+                new SearchBasedDataGenerator(search);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
                 schema,
                 criterion,
                 new ValueFactory(),
-                testCaseGenerator);
+                dataGenerator);
 
         TestSuite testSuite = dg.generate();
 

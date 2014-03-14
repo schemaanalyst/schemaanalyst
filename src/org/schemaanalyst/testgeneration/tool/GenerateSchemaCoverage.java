@@ -2,21 +2,22 @@ package org.schemaanalyst.testgeneration.tool;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.generation.DirectedRandomTestCaseGenerationAlgorithm;
-import org.schemaanalyst.testgeneration.*;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.valuegeneration.CellValueGenerator;
 import org.schemaanalyst.data.generation.valuegeneration.ExpressionConstantMiner;
 import org.schemaanalyst.data.generation.valuegeneration.ValueInitializationProfile;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.*;
+import parsedcasestudy.UnixUsage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -68,11 +69,11 @@ public class GenerateSchemaCoverage extends Runner {
         //Search<Data> search = SearchFactory.avsDefaults(0L, 100000);
         //// instantiate the test case generation algorithm
         //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new SearchBasedTestCaseGenerationAlgorithm(search);
+        //        new SearchBasedDataGenerator(search);
 
         Random random = new SimpleRandom(10L);
-        TestCaseGenerationAlgorithm testCaseGenerator =
-                new DirectedRandomTestCaseGenerationAlgorithm(
+        DataGenerator dataGenerator =
+                new DirectedRandomDataGenerator(
                         random,
                         new CellValueGenerator(
                                 new ExpressionConstantMiner().mine(schema),
@@ -84,7 +85,7 @@ public class GenerateSchemaCoverage extends Runner {
 
         //Random random = new SimpleRandom(10L);
         //TestCaseGenerationAlgorithm testCaseGenerator =
-        //        new RandomTestCaseGenerationAlgorithm(
+        //        new RandomDataGenerator(
         //                random,
         //                new CellValueGenerator(
         //                        new ExpressionConstantMiner().mine(schema),
@@ -99,7 +100,7 @@ public class GenerateSchemaCoverage extends Runner {
                 schema,
                 criterion,
                 dbms.getValueFactory(),
-                testCaseGenerator);
+                dataGenerator);
 
         TestSuite testSuite = dg.generate();
 
@@ -113,7 +114,7 @@ public class GenerateSchemaCoverage extends Runner {
         executor.execute(testSuite);
 
         // write report to console
-        printReport(schema, criterion, testSuite, dg.getFailedTestCases(), testCaseGenerator);
+        printReport(schema, criterion, testSuite, dg.getFailedTestCases());
 
         // write JUnit test suite to file
         writeTestSuite(schema, dbms, testSuite, "generatedtest");
@@ -122,8 +123,7 @@ public class GenerateSchemaCoverage extends Runner {
     private void printReport(Schema schema,
                              CoverageCriterion criterionUsed,
                              TestSuite testSuite,
-                             List<TestCase> failedTestCases,
-                             TestCaseGenerationAlgorithm testCaseGenerator) {
+                             List<TestCase> failedTestCases) {
 
         // print out each test suite test case
         System.out.println("SUCCESSFUL TEST CASES:");
@@ -137,7 +137,7 @@ public class GenerateSchemaCoverage extends Runner {
             printTestCase(testCase, false);
         }
 
-        printTestSuiteStats(schema, criterionUsed, testSuite, testCaseGenerator);
+        printTestSuiteStats(schema, criterionUsed, testSuite);
     }
 
     private void printTestCase(TestCase testCase, boolean success) {
@@ -150,7 +150,7 @@ public class GenerateSchemaCoverage extends Runner {
         }
     }
 
-    private void printTestSuiteStats(Schema schema, CoverageCriterion criterionUsed, TestSuite testSuite, TestCaseGenerationAlgorithm testCaseGenerator) {
+    private void printTestSuiteStats(Schema schema, CoverageCriterion criterionUsed, TestSuite testSuite) {
         System.out.println("\nTEST SUITE STATS:");
         System.out.println("Number of test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());

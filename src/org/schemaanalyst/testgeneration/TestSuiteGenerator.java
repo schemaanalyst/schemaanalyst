@@ -1,15 +1,17 @@
 package org.schemaanalyst.testgeneration;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.Clause;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ConstraintPredicateGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
+import org.schemaanalyst.data.generation.DataGenerationReport;
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.logic.predicate.ConstraintPredicateGenerator;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.clause.Clause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +28,7 @@ public class TestSuiteGenerator {
     private Schema schema;
     private CoverageCriterion criterion;
     private ValueFactory valueFactory;
-    private TestCaseGenerationAlgorithm testCaseGenerator;
+    private DataGenerator dataGenerator;
     private HashMap<Table, Data> initialTableData;
 
     private TestSuite testSuite;
@@ -35,11 +37,11 @@ public class TestSuiteGenerator {
     public TestSuiteGenerator(Schema schema,
                               CoverageCriterion criterion,
                               ValueFactory valueFactory,
-                              TestCaseGenerationAlgorithm testCaseGenerator) {
+                              DataGenerator testCaseGenerator) {
         this.schema = schema;
         this.criterion = criterion;
         this.valueFactory = valueFactory;
-        this.testCaseGenerator = testCaseGenerator;
+        this.dataGenerator = testCaseGenerator;
 
         initialTableData = new HashMap<>();
     }
@@ -152,7 +154,9 @@ public class TestSuiteGenerator {
         LOGGER.fine("Data is " + data);
 
         // generate the test case
-        TestCase testCase = testCaseGenerator.generateTestCase(data, state, predicate);
+        DataGenerationReport report = dataGenerator.generateData(data, state, predicate);
+        TestCase testCase = new TestCase(data, state, predicate, report.getSuccess());
+
         LOGGER.fine("Generated test case: \n" + testCase);
 
         return testCase;

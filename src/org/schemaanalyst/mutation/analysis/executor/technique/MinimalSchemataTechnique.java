@@ -1,13 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import org.schemaanalyst.testgeneration.TestCase;
-import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
@@ -25,6 +17,10 @@ import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestSuite;
+
+import java.util.*;
 
 /**
  *

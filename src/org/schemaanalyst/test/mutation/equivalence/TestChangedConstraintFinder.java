@@ -1,7 +1,6 @@
 package org.schemaanalyst.test.mutation.equivalence;
 
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -9,6 +8,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  *

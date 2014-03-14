@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Row {
@@ -98,15 +97,14 @@ public class Row {
         return false;
     }
 
-    public void copyValues(Row other) {
-        Iterator<Cell> thisIterator = cells.iterator();
-        Iterator<Cell> otherIterator = other.cells.iterator();
-        while (thisIterator.hasNext() && otherIterator.hasNext()) {
-            Cell thisCell = thisIterator.next();
-            Cell otherCell = otherIterator.next();
-
-            Value value = otherCell.getValue().duplicate();
-            thisCell.setValue(value);
+    public void copyValues(Row source) {
+        for (Cell sourceCell : source.getCells()) {
+            Column column = sourceCell.getColumn();
+            Cell targetCell = getCell(column);
+            if (targetCell == null) {
+                throw new DataException("Cannot copy cell value as column " + column + " does not exist in target");
+            }
+            targetCell.setValue(sourceCell.getValue().duplicate());
         }
     }
 

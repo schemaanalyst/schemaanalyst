@@ -2,10 +2,10 @@ package org.schemaanalyst.test.coverage.criterion.predicate;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.ClauseFactory;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ConstraintPredicateGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.logic.predicate.ConstraintPredicateGenerator;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.clause.ClauseFactory;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

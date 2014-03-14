@@ -1,12 +1,12 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.data.generation.checker.ExpressionChecker;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.logic.predicate.checker.ExpressionChecker;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;

@@ -1,10 +1,9 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.NullColumnRequirementsGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.NullColumnRequirementsGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 
 /**
  * Created by phil on 24/02/2014.

@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer;
 
 import org.junit.Test;
-import org.schemaanalyst.data.generation.checker.ExpressionClauseChecker;
-import org.schemaanalyst.data.generation.fixer.ExpressionClauseFixer;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.data.generation.directedrandom.fixer.ExpressionClauseFixer;
+import org.schemaanalyst.logic.predicate.checker.ExpressionClauseChecker;
 import org.schemaanalyst.test.testutil.mock.MockCell;
 import org.schemaanalyst.test.testutil.mock.MockCellValueGenerator;
 

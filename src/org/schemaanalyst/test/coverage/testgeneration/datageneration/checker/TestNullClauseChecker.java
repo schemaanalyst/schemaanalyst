@@ -1,9 +1,9 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.NullClause;
-import org.schemaanalyst.data.generation.checker.NullClauseChecker;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.logic.predicate.checker.NullClauseChecker;
+import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import java.util.ArrayList;

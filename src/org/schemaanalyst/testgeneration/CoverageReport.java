@@ -1,10 +1,10 @@
 package org.schemaanalyst.testgeneration;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
-import org.schemaanalyst.data.generation.checker.PredicateChecker;
-import org.schemaanalyst.data.generation.objectivefunction.PredicateObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objectivefunction.PredicateObjectiveFunction;
 import org.schemaanalyst.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 
 import java.util.ArrayList;
 import java.util.List;

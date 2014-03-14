@@ -1,7 +1,7 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.MatchClause;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

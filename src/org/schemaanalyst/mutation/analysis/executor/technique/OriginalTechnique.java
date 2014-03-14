@@ -1,7 +1,6 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
@@ -11,6 +10,7 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteE
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.util.List;
 

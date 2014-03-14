@@ -1,9 +1,9 @@
 package org.schemaanalyst.testgeneration.tool;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
-import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.coveragecriterion.CriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;

@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
@@ -12,6 +11,7 @@ import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementExceptio
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.testgeneration.TestCase;
 
 import java.util.List;
 

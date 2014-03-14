@@ -1,10 +1,10 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.TestCase;
 
 import java.util.List;
 

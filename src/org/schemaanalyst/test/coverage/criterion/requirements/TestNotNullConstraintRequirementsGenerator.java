@@ -2,15 +2,15 @@ package org.schemaanalyst.test.coverage.criterion.requirements;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.NullClause;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.NotNullConstraintRequirementsGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.NotNullConstraintRequirementsGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
 
 import java.util.List;
 

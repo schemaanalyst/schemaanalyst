@@ -1,10 +1,10 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.expression.ExpressionCACPredicatesGenerator;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.testgeneration.coveragecriterion.requirements.expression.ExpressionCACPredicatesGenerator;
 
 import java.util.List;
 

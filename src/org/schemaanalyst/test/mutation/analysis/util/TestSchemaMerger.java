@@ -1,19 +1,16 @@
 package org.schemaanalyst.test.mutation.analysis.util;
 
-import static org.junit.Assert.*;
 import org.junit.Test;
 import org.schemaanalyst.mutation.analysis.util.SchemaMerger;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
+
+import static org.junit.Assert.*;
 
 /**
  *

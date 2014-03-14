@@ -1,11 +1,11 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.checker;
 
 import org.junit.Test;
-import org.schemaanalyst.data.generation.checker.RelationalChecker;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.logic.predicate.checker.RelationalChecker;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;

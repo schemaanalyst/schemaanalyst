@@ -1,14 +1,11 @@
 package org.schemaanalyst.mutation.analysis.util;
 
-import java.util.Collection;
-import java.util.HashSet;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 /**
  * <p>Merges pairs of schemas together, to produce single schemas containing 

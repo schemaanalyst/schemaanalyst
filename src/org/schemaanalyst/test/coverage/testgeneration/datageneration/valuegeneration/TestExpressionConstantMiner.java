@@ -1,10 +1,10 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.valuegeneration;
 
 import org.junit.Test;
-import org.schemaanalyst.data.generation.valuegeneration.ExpressionConstantMiner;
-import org.schemaanalyst.data.generation.valuegeneration.ValueLibrary;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.StringValue;
+import org.schemaanalyst.data.generation.valuegeneration.ExpressionConstantMiner;
+import org.schemaanalyst.data.generation.valuegeneration.ValueLibrary;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;

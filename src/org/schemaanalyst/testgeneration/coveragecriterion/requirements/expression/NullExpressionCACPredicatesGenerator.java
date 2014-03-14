@@ -1,7 +1,7 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements.expression;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.NullClause;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 

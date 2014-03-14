@@ -254,7 +254,36 @@ public class Data  {
     }
 
     /**
-     * Copies this data instance.
+     * Copies the values from the other data object into this
+     */
+    public void copyValues(Data source) {
+
+        for (Table table : source.getTables()) {
+
+            List<Row> targetRows = this.getRows(table);
+            if (data == null) {
+                throw new DataException("Cannot copy data values, as table " + table + " does not exist in target");
+            }
+
+            List<Row> sourceRows = source.getRows(table);
+            if (targetRows.size() != sourceRows.size()) {
+                throw new DataException("Cannot copy data values, as table " + table + " does not have the same number of rows in target");
+            }
+
+            Iterator<Row> sourceRowIterator = sourceRows.iterator();
+            Iterator<Row> targetRowIterator = targetRows.iterator();
+
+            while (sourceRowIterator.hasNext()) {
+                Row sourceRow = sourceRowIterator.next();
+                Row targetRow = targetRowIterator.next();
+
+                targetRow.copyValues(sourceRow);
+            }
+        }
+    }
+
+    /**
+     * Duplicates this data instance.
      */
     public Data duplicate() {
         Data duplicate = new Data();

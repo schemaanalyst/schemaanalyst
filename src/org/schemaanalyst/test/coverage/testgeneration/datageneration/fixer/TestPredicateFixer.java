@@ -1,12 +1,12 @@
 package org.schemaanalyst.test.coverage.testgeneration.datageneration.fixer;
 
 import org.junit.Test;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.Clause;
-import org.schemaanalyst.testgeneration.coveragecriterion.clause.ClauseFactory;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.data.generation.checker.*;
-import org.schemaanalyst.data.generation.fixer.*;
 import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.data.generation.directedrandom.fixer.*;
+import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.checker.*;
+import org.schemaanalyst.logic.predicate.clause.Clause;
+import org.schemaanalyst.logic.predicate.clause.ClauseFactory;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;

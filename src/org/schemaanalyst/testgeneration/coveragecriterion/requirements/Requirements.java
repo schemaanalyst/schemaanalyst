@@ -1,6 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;

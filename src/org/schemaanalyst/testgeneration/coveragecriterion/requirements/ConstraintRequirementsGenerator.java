@@ -1,7 +1,7 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ConstraintPredicateGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.ConstraintPredicateGenerator;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;

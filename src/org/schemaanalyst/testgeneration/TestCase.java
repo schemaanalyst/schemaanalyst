@@ -1,7 +1,7 @@
 package org.schemaanalyst.testgeneration;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.logic.predicate.Predicate;
 
 import java.util.ArrayList;
 import java.util.HashMap;

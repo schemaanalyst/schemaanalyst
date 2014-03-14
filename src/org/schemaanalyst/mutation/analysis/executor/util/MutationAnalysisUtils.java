@@ -1,7 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.util;
 
-import java.util.Arrays;
-import java.util.List;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.util.SchemaMerger;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
@@ -9,6 +7,9 @@ import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * <p>

@@ -1,6 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.requirements.expression;
 
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.expression.*;

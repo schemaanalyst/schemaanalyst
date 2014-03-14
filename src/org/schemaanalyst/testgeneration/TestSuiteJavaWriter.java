@@ -2,9 +2,9 @@ package org.schemaanalyst.testgeneration;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
