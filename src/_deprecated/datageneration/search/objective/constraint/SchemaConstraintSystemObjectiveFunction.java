@@ -1,9 +1,9 @@
 package _deprecated.datageneration.search.objective.constraint;
 
-import org.schemaanalyst.data.Data;
 import _deprecated.datageneration.search.objective.ObjectiveFunction;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
 import _deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;

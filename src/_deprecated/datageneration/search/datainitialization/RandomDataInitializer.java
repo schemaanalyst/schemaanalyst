@@ -1,8 +1,8 @@
 package _deprecated.datageneration.search.datainitialization;
 
+import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 
 import java.util.List;
 

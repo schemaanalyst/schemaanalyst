@@ -1,9 +1,9 @@
 package _deprecated.datageneration.search.objective.row;
 
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.Value;
 import _deprecated.datageneration.search.objective.*;
 import _deprecated.datageneration.search.objective.value.RelationalValueObjectiveFunction;
+import org.schemaanalyst.data.Row;
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
 

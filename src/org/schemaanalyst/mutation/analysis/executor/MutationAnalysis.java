@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;

@@ -1,8 +1,8 @@
 package _deprecated.datageneration.search.handler;
 
-import org.schemaanalyst.data.Row;
 import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import _deprecated.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
+import org.schemaanalyst.data.Row;
 import org.schemaanalyst.util.random.Random;
 
 import java.util.List;

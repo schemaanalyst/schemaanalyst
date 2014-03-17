@@ -1,6 +1,5 @@
 package _deprecated.datageneration.search;
 
-import org.schemaanalyst.data.Data;
 import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import _deprecated.datageneration.search.datainitialization.DataInitialiser;
 import _deprecated.datageneration.search.handler.*;
@@ -10,6 +9,7 @@ import _deprecated.datageneration.search.objective.data.ExpressionColumnObjectiv
 import _deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.util.random.Random;
 
 import java.util.ArrayList;

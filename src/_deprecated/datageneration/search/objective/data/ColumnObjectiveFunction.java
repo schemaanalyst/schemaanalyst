@@ -1,11 +1,11 @@
 package _deprecated.datageneration.search.objective.data;
 
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.Row;
 import _deprecated.datageneration.search.objective.MultiObjectiveValue;
 import _deprecated.datageneration.search.objective.ObjectiveFunction;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
 import _deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 

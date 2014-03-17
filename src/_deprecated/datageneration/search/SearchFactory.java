@@ -1,6 +1,5 @@
 package _deprecated.datageneration.search;
 
-import org.schemaanalyst.data.Data;
 import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import _deprecated.datageneration.cellrandomisation.CellRandomiserFactory;
 import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
@@ -9,6 +8,7 @@ import _deprecated.datageneration.search.termination.CombinedTerminationCriterio
 import _deprecated.datageneration.search.termination.CounterTerminationCriterion;
 import _deprecated.datageneration.search.termination.OptimumTerminationCriterion;
 import _deprecated.datageneration.search.termination.TerminationCriterion;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 

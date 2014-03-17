@@ -1,9 +1,9 @@
 package _deprecated.datageneration.search.objective.value;
 
-import org.schemaanalyst.data.NumericValue;
 import _deprecated.datageneration.search.objective.DistanceObjectiveValue;
 import _deprecated.datageneration.search.objective.ObjectiveFunctionException;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.logic.RelationalOperator;
 
 import java.math.BigDecimal;

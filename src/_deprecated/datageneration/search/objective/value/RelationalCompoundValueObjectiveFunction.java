@@ -1,11 +1,11 @@
 package _deprecated.datageneration.search.objective.value;
 
-import org.schemaanalyst.data.CompoundValue;
-import org.schemaanalyst.data.Value;
 import _deprecated.datageneration.search.objective.BestOfMultiObjectiveValue;
 import _deprecated.datageneration.search.objective.MultiObjectiveValue;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
 import _deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.data.CompoundValue;
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.logic.RelationalOperator;
 
 import java.util.List;

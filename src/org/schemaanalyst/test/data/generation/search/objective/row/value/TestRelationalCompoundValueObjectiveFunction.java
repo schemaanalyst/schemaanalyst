@@ -1,15 +1,15 @@
-package org.schemaanalyst.test._deprecated.datageneration.search.objective.value;
+package org.schemaanalyst.test.data.generation.search.objective.row.value;
 
-import _deprecated.datageneration.search.objective.BestOfMultiObjectiveValue;
-import _deprecated.datageneration.search.objective.DistanceObjectiveValue;
-import _deprecated.datageneration.search.objective.ObjectiveValue;
-import _deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
-import _deprecated.datageneration.search.objective.value.RelationalValueObjectiveFunction;
 import org.junit.Test;
 import org.schemaanalyst.data.StringValue;
+import org.schemaanalyst.data.generation.search.objective.BestOfMultiObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.DistanceObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.value.RelationalValueObjectiveFunction;
 
-import static _deprecated.datageneration.search.objective.value.RelationalNumericValueObjectiveFunction.K;
 import static java.math.BigDecimal.ONE;
+import static org.schemaanalyst.data.generation.search.objective.value.RelationalNumericValueObjectiveFunction.K;
 import static org.schemaanalyst.logic.RelationalOperator.*;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertEquivalent;
 import static org.schemaanalyst.test.testutil.assertion.ObjectiveValueAssert.assertOptimal;

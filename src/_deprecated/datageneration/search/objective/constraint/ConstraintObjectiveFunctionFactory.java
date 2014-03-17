@@ -1,11 +1,11 @@
 package _deprecated.datageneration.search.objective.constraint;
 
-import org.schemaanalyst.data.Data;
 import _deprecated.datageneration.search.objective.ObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import _deprecated.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 
 public class ConstraintObjectiveFunctionFactory {

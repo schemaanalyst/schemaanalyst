@@ -1,10 +1,10 @@
 package _deprecated.datageneration.search.objective.row;
 
+import _deprecated.datageneration.search.objective.ObjectiveValue;
+import _deprecated.datageneration.search.objective.value.EqualsMultiValueObjectiveFunction;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
-import _deprecated.datageneration.search.objective.ObjectiveValue;
-import _deprecated.datageneration.search.objective.value.EqualsMultiValueObjectiveFunction;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.data.generation.search.objectivefunction;
+package org.schemaanalyst.test.data.generation.search.objective;
 
 import junitparams.JUnitParamsRunner;
 import org.junit.runner.RunWith;

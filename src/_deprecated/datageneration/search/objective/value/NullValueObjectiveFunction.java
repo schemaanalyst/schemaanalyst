@@ -1,8 +1,8 @@
 package _deprecated.datageneration.search.objective.value;
 
-import org.schemaanalyst.data.Value;
 import _deprecated.datageneration.search.objective.ObjectiveFunction;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.Value;
 
 public class NullValueObjectiveFunction extends ObjectiveFunction<Value> {
 

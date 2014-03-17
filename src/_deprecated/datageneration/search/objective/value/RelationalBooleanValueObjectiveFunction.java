@@ -1,8 +1,8 @@
 package _deprecated.datageneration.search.objective.value;
 
-import org.schemaanalyst.data.BooleanValue;
 import _deprecated.datageneration.search.objective.ObjectiveFunctionException;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.logic.RelationalOperator;
 
 public class RelationalBooleanValueObjectiveFunction extends RelationalValueObjectiveFunction<BooleanValue> {

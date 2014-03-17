@@ -1,7 +1,7 @@
 package _deprecated.datageneration.search.handler;
 
-import org.schemaanalyst.data.Row;
 import _deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
+import org.schemaanalyst.data.Row;
 
 import java.util.List;
 

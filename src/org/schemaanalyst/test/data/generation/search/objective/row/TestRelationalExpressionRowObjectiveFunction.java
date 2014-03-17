@@ -1,14 +1,14 @@
-package org.schemaanalyst.test._deprecated.datageneration.search.objective.row;
+package org.schemaanalyst.test.data.generation.search.objective.row;
 
-import _deprecated.datageneration.search.objective.ObjectiveFunction;
-import _deprecated.datageneration.search.objective.ObjectiveValue;
-import _deprecated.datageneration.search.objective.row.RelationalExpressionRowObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.row.RelationalExpressionRowObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;

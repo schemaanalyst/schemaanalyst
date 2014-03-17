@@ -1,9 +1,9 @@
 package _deprecated.datageneration.search.objective.data;
 
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.Value;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
 import _deprecated.datageneration.search.objective.value.NullValueObjectiveFunction;
+import org.schemaanalyst.data.Row;
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 

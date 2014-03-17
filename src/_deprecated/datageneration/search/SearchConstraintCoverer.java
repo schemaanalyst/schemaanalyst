@@ -1,11 +1,11 @@
 package _deprecated.datageneration.search;
 
-import org.schemaanalyst.data.Data;
 import _deprecated.datageneration.ConstraintGoal;
 import _deprecated.datageneration.DataGenerator;
 import _deprecated.datageneration.TestCase;
 import _deprecated.datageneration.TestSuite;
 import _deprecated.datageneration.search.objective.constraint.SchemaConstraintSystemObjectiveFunction;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;

@@ -1,8 +1,8 @@
-package org.schemaanalyst.test._deprecated.datageneration.search.objective;
+package org.schemaanalyst.test.data.generation.search.objective;
 
-import _deprecated.datageneration.search.objective.DistanceObjectiveValue;
-import _deprecated.datageneration.search.objective.ObjectiveValue;
 import org.junit.Test;
+import org.schemaanalyst.data.generation.search.objective.DistanceObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 
 import java.math.BigDecimal;
 

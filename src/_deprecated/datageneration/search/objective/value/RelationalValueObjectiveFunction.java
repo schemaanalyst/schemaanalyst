@@ -1,8 +1,8 @@
 package _deprecated.datageneration.search.objective.value;
 
-import org.schemaanalyst.data.*;
 import _deprecated.datageneration.search.objective.ObjectiveFunction;
 import _deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.*;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.tuple.Pair;
 

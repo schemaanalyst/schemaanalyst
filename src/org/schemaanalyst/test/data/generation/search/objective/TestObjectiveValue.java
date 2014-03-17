@@ -1,7 +1,7 @@
-package org.schemaanalyst.test._deprecated.datageneration.search.objective;
+package org.schemaanalyst.test.data.generation.search.objective;
 
-import _deprecated.datageneration.search.objective.ObjectiveValue;
 import org.junit.Test;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
