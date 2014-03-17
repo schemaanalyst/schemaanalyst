@@ -1,7 +1,8 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
-import org.schemaanalyst._deprecated.datageneration.search.SearchFactory;
+import org.schemaanalyst.data.ValueLibrary;
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -168,14 +169,13 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite generateTestSuite() {
         // Initialise test case generator
-        final SearchBasedDataGenerator testCaseGenerator
-                = new SearchBasedDataGenerator(
-                        SearchFactory.avsDefaults(0L, 100000));
+        final DataGenerator dataGenerator = DataGeneratorFactory.instantiate("directedRandom", 0L , 100000, new ValueLibrary());
+
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 CoverageCriterionFactory.instantiate(criterion),
                 dbms.getValueFactory(),
-                testCaseGenerator
+                dataGenerator
         );
         // Generate suite and return
         return generator.generate();

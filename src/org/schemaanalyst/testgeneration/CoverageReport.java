@@ -1,7 +1,7 @@
 package org.schemaanalyst.testgeneration;
 
-import org.schemaanalyst.data.generation.search.objectivefunction.predicate.PredicateObjectiveFunction;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunction;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;

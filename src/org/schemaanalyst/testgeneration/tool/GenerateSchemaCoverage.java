@@ -2,12 +2,9 @@ package org.schemaanalyst.testgeneration.tool;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
-import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
-import org.schemaanalyst.data.generation.CellValueGenerator;
-import org.schemaanalyst.data.generation.ValueInitializationProfile;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.logic.predicate.Predicate;
@@ -15,8 +12,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
-import org.schemaanalyst.util.random.Random;
-import org.schemaanalyst.util.random.SimpleRandom;
 import org.schemaanalyst.util.runner.Runner;
 import parsedcasestudy.UnixUsage;
 

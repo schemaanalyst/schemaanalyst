@@ -1,12 +1,12 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.objective.data;
 
+import _deprecated.datageneration.search.objective.ObjectiveValue;
+import _deprecated.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst._deprecated.datageneration.search.objective.data.ReferenceColumnObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.test.testutil.mock.FourColumnMockDatabase;

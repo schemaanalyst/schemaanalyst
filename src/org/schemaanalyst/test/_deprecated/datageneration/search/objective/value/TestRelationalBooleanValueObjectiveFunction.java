@@ -1,12 +1,12 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.objective.value;
 
+import _deprecated.datageneration.search.objective.ObjectiveFunctionException;
+import _deprecated.datageneration.search.objective.value.RelationalBooleanValueObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.BooleanValue;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveFunctionException;
-import org.schemaanalyst._deprecated.datageneration.search.objective.value.RelationalBooleanValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.util.tuple.Pair;
 

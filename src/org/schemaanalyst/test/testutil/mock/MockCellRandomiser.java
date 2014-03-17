@@ -1,9 +1,9 @@
 package org.schemaanalyst.test.testutil.mock;
 
+import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst._deprecated.datageneration.cellrandomisation.CellRandomiser;
 
 import java.util.ArrayList;
 import java.util.List;

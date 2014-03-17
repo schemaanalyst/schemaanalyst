@@ -2,9 +2,8 @@ package org.schemaanalyst.data.generation.search;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.search.objectivefunction.predicate.PredicateObjectiveFunction;
-import org.schemaanalyst._deprecated.datageneration.search.Search;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunction;
 import org.schemaanalyst.logic.predicate.Predicate;
 
 /**
@@ -12,9 +11,9 @@ import org.schemaanalyst.logic.predicate.Predicate;
  */
 public class SearchBasedDataGenerator extends DataGenerator {
 
-    private Search<Data> search;
+    private Search search;
 
-    public SearchBasedDataGenerator(Search<Data> search) {
+    public SearchBasedDataGenerator(Search search) {
         this.search = search;
     }
 

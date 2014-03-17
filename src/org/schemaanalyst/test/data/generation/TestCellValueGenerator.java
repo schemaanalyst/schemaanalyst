@@ -1,12 +1,8 @@
 package org.schemaanalyst.test.data.generation;
 
 import org.junit.Test;
-import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.ValueFactory;
+import org.schemaanalyst.data.*;
 import org.schemaanalyst.data.generation.CellValueGenerator;
-import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;

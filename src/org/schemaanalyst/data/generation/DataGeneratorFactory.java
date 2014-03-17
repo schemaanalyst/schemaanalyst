@@ -1,11 +1,13 @@
 package org.schemaanalyst.data.generation;
 
-import org.schemaanalyst._deprecated.datageneration.search.Search;
-import org.schemaanalyst._deprecated.datageneration.search.SearchFactory;
-import org.schemaanalyst.data.Data;
+import _deprecated.datageneration.cellrandomisation.CellRandomiserFactory;
+import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
+import _deprecated.datageneration.search.datainitialization.RandomDataInitializer;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
+import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.RandomDataGenerator;
+import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
@@ -41,7 +43,15 @@ public class DataGeneratorFactory {
     }
 
     public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, ValueLibrary valueLibrary) {
-        Search<Data> search = SearchFactory.avsDefaults(randomSeed, maxEvaluations);
+        Random random = new SimpleRandom(randomSeed);
+
+        Search search = new AlternatingValueSearch(
+                random,
+                maxEvaluations,
+                valueLibrary,
+                new NoDataInitialization(),
+                new RandomDataInitializer(CellRandomiserFactory.small(random)));
+
         return new SearchBasedDataGenerator(search);
     }
 
@@ -55,7 +65,7 @@ public class DataGeneratorFactory {
                         0.1,
                         valueLibrary,
                         0.25),
-                500);
+                maxEvaluations);
     }
 
     public static RandomDataGenerator random(long randomSeed, int maxEvaluations, ValueLibrary valueLibrary) {
@@ -68,6 +78,6 @@ public class DataGeneratorFactory {
                         0.1,
                         valueLibrary,
                         0.25),
-                500);
+                maxEvaluations);
     }
 }

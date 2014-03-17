@@ -1,8 +1,8 @@
 package org.schemaanalyst.data.generation.search;
 
-import org.schemaanalyst._deprecated.datageneration.search.datainitialization.DataInitialiser;
+import _deprecated.datageneration.search.datainitialization.DataInitialiser;
 import org.schemaanalyst.data.*;
-import org.schemaanalyst.data.generation.search.objectivefunction.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
 
 import java.math.BigDecimal;

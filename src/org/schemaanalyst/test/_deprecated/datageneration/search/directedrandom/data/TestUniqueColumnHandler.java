@@ -1,11 +1,11 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.directedrandom.data;
 
+import _deprecated.datageneration.search.handler.UniqueColumnHandler;
+import _deprecated.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.schemaanalyst._deprecated.datageneration.search.handler.UniqueColumnHandler;
-import org.schemaanalyst._deprecated.datageneration.search.objective.data.UniqueColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.MockCellRandomiser;
 import org.schemaanalyst.test.testutil.mock.MockRandom;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;

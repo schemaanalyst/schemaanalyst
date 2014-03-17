@@ -1,9 +1,9 @@
 package org.schemaanalyst.test._deprecated.datageneration.search;
 
+import _deprecated.datageneration.search.Search;
+import _deprecated.datageneration.search.objective.ObjectiveFunction;
+import _deprecated.datageneration.search.objective.ObjectiveValue;
 import org.junit.Test;
-import org.schemaanalyst._deprecated.datageneration.search.Search;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.Duplicator;
 
 import java.math.BigDecimal;

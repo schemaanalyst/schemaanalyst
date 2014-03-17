@@ -1,12 +1,12 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.directedrandom.data;
 
+import _deprecated.datageneration.search.handler.ExpressionColumnHandler;
+import _deprecated.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst._deprecated.datageneration.search.handler.ExpressionColumnHandler;
-import org.schemaanalyst._deprecated.datageneration.search.objective.data.ExpressionColumnObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ConstantExpression;

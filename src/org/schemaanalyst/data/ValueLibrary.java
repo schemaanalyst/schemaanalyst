@@ -1,7 +1,5 @@
 package org.schemaanalyst.data;
 
-import org.schemaanalyst.data.*;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;

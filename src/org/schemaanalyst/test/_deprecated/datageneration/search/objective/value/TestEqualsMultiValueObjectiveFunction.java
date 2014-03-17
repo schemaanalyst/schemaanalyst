@@ -1,14 +1,14 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.objective.value;
 
+import _deprecated.datageneration.search.objective.ObjectiveFunctionException;
+import _deprecated.datageneration.search.objective.ObjectiveValue;
+import _deprecated.datageneration.search.objective.value.EqualsMultiValueObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveFunctionException;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst._deprecated.datageneration.search.objective.value.EqualsMultiValueObjectiveFunction;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,8 +2,8 @@ package org.schemaanalyst.data.generation.search;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
-import org.schemaanalyst.data.generation.search.objectivefunction.ObjectiveFunction;
-import org.schemaanalyst.data.generation.search.objectivefunction.ObjectiveValue;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
 
 /**

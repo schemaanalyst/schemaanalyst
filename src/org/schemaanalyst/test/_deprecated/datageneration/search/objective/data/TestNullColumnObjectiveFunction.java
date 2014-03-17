@@ -1,13 +1,13 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.objective.data;
 
+import _deprecated.datageneration.search.objective.ObjectiveValue;
+import _deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
+import _deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst._deprecated.datageneration.search.objective.SumOfMultiObjectiveValue;
-import org.schemaanalyst._deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import static junitparams.JUnitParamsRunner.$;

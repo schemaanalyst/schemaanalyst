@@ -1,14 +1,14 @@
 package org.schemaanalyst.test._deprecated.datageneration.search;
 
+import _deprecated.datageneration.search.AlternatingValueSearch;
+import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
+import _deprecated.datageneration.search.objective.ObjectiveFunction;
+import _deprecated.datageneration.search.objective.ObjectiveValue;
+import _deprecated.datageneration.search.termination.CounterTerminationCriterion;
+import _deprecated.datageneration.search.termination.TerminationCriterion;
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst._deprecated.datageneration.search.AlternatingValueSearch;
-import org.schemaanalyst._deprecated.datageneration.search.datainitialization.NoDataInitialization;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveFunction;
-import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
-import org.schemaanalyst._deprecated.datageneration.search.termination.CounterTerminationCriterion;
-import org.schemaanalyst._deprecated.datageneration.search.termination.TerminationCriterion;
 import org.schemaanalyst.test.testutil.mock.MockDatabase;
 import org.schemaanalyst.test.testutil.mock.TwoColumnMockDatabase;
 

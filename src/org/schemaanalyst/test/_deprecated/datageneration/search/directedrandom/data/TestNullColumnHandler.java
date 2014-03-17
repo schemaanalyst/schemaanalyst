@@ -1,12 +1,12 @@
 package org.schemaanalyst.test._deprecated.datageneration.search.directedrandom.data;
 
+import _deprecated.datageneration.search.handler.NullColumnHandler;
+import _deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst._deprecated.datageneration.search.handler.NullColumnHandler;
-import org.schemaanalyst._deprecated.datageneration.search.objective.data.NullColumnObjectiveFunction;
 import org.schemaanalyst.test.testutil.mock.OneColumnMockDatabase;
 
 import java.util.List;

@@ -1,6 +1,5 @@
 package org.schemaanalyst.data;
 
-import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.expression.*;

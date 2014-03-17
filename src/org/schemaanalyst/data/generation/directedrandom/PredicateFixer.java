@@ -2,7 +2,10 @@ package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.generation.CellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.*;
-import org.schemaanalyst.logic.predicate.clause.*;
+import org.schemaanalyst.logic.predicate.clause.ClauseVisitor;
+import org.schemaanalyst.logic.predicate.clause.ExpressionClause;
+import org.schemaanalyst.logic.predicate.clause.MatchClause;
+import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.util.random.Random;
 
 import java.util.ArrayList;
