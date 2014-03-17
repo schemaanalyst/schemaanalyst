@@ -2,7 +2,7 @@ package org.schemaanalyst.data.generation.search;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.search.objectivefunction.PredicateObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objectivefunction.predicate.PredicateObjectiveFunction;
 import org.schemaanalyst._deprecated.datageneration.search.Search;
 import org.schemaanalyst._deprecated.datageneration.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.predicate.Predicate;

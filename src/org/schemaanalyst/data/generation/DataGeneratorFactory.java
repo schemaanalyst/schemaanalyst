@@ -70,5 +70,4 @@ public class DataGeneratorFactory {
                         0.25),
                 500);
     }
-
 }

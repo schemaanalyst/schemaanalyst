@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.search.objectivefunction;
+package org.schemaanalyst.data.generation.search.objectivefunction.predicate;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
