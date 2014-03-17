@@ -2,7 +2,7 @@ package org.schemaanalyst.test.data.generation;
 
 import org.junit.Test;
 import org.schemaanalyst.data.*;
-import org.schemaanalyst.data.generation.CellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
@@ -21,7 +21,7 @@ public class TestCellValueGenerator {
         valueLibrary.addValue(new NumericValue(10));
         valueLibrary.addValue(new NumericValue(20));
 
-        CellValueGenerator cellValueGenerator = new CellValueGenerator(
+        RandomCellValueGenerator cellValueGenerator = new RandomCellValueGenerator(
                 new MockRandom(0, 0, 1, 0, 0, 0), null, 0, valueLibrary,
                 // no profile required
                 // null probability
@@ -43,7 +43,7 @@ public class TestCellValueGenerator {
         valueLibrary.addValue(new StringValue("Hello"));
         valueLibrary.addValue(new StringValue("Goodbye"));
 
-        CellValueGenerator cellValueGenerator = new CellValueGenerator(
+        RandomCellValueGenerator cellValueGenerator = new RandomCellValueGenerator(
                 new MockRandom(0, 0, 1, 0, 0, 0), null, 0, valueLibrary,
                 // no profile required
                 // null probability

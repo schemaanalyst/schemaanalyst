@@ -1,8 +1,8 @@
 package org.schemaanalyst.data.generation.search;
 
-import _deprecated.datageneration.search.datainitialization.DataInitialiser;
-import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.*;
+import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.util.random.Random;
 
 import java.math.BigDecimal;
@@ -11,19 +11,17 @@ import java.util.List;
 
 public class AlternatingValueSearch extends Search<Data> {
 
-    protected static final int ACCELERATION_BASE = 2;
-    protected Random random;
-    protected DataInitialiser startInitialiser;
-    protected DataInitialiser restartInitialiser;
-    protected Data data;
-    protected List<Cell> cells;
-    protected ObjectiveValue lastObjVal;
-    protected int direction;
-    protected int step;
+    private static final int ACCELERATION_BASE = 2;
+    private Random random;
+    private CellInitializer startInitialiser;
+    private CellInitializer restartInitialiser;
+    protected Data data; // protected so that test class can access
+    private List<Cell> cells;
+    private ObjectiveValue lastObjVal;
 
     public AlternatingValueSearch(Random random,
-            DataInitialiser startInitializer,
-            DataInitialiser restartInitializer) {
+                                  CellInitializer startInitializer,
+                                  CellInitializer restartInitializer) {
         super(new Data.Duplicator());
         this.random = random;
         this.startInitialiser = startInitializer;
@@ -108,15 +106,7 @@ public class AlternatingValueSearch extends Search<Data> {
 
         if (!terminationCriterion.satisfied()) {
             Value originalValue = cell.getValue();
-
             cell.setNull(originalValue != null);
-
-            //if (originalValue == null) {
-            //	cell.setNull(false);
-            //	cellRandomizer.randomizeCell(cell, false);
-            //} else {				
-            //	cell.setValue(null);					
-            //}
 
             improvement = evaluate();
             if (!improvement) {

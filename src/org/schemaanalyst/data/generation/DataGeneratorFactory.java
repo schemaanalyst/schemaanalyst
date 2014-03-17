@@ -1,21 +1,21 @@
 package org.schemaanalyst.data.generation;
 
-import _deprecated.datageneration.cellrandomisation.CellRandomiser;
-import _deprecated.datageneration.cellrandomisation.CellRandomiserFactory;
-import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
-import _deprecated.datageneration.search.datainitialization.RandomDataInitializer;
+import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.ValueLibrary;
+import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
+import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
+import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
+import org.schemaanalyst.data.generation.random.RandomDataGenerator;
+import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
+import org.schemaanalyst.data.generation.search.Search;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.ValueLibrary;
-import org.schemaanalyst.data.ValueMiner;
-import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
-import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
-import org.schemaanalyst.data.generation.search.RandomDataGenerator;
-import org.schemaanalyst.data.generation.search.Search;
-import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
@@ -27,6 +27,12 @@ import java.lang.reflect.Method;
  * Created by phil on 14/03/2014.
  */
 public class DataGeneratorFactory {
+
+    public static DataGenerator instantiate(String dataGeneratorName,
+                                            long randomSeed,
+                                            int maxEvaluations) {
+        return instantiate(dataGeneratorName, randomSeed, maxEvaluations, null);
+    }
 
     @SuppressWarnings("unchecked")
     public static DataGenerator instantiate(String dataGeneratorName,
@@ -58,12 +64,18 @@ public class DataGeneratorFactory {
 
     public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
-        CellRandomiser randomizer = CellRandomiserFactory.small(random);
+        RandomCellValueGenerator randomCellValueGenerator =
+                new RandomCellValueGenerator(
+                        random,
+                        ValueInitializationProfile.SMALL,
+                        0.1,
+                        makeValueLibrary(schema),
+                        0.25);
 
         Search<Data> search = new AlternatingValueSearch(
                 random,
-                new NoDataInitialization(),
-                new RandomDataInitializer(randomizer));
+                new DefaultCellInitializer(),
+                new RandomCellInitializer(randomCellValueGenerator));
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
@@ -78,7 +90,7 @@ public class DataGeneratorFactory {
         Random random = new SimpleRandom(randomSeed);
         return new DirectedRandomDataGenerator(
                 random,
-                new CellValueGenerator(
+                new RandomCellValueGenerator(
                         random,
                         ValueInitializationProfile.SMALL,
                         0.1,
@@ -91,7 +103,7 @@ public class DataGeneratorFactory {
         Random random = new SimpleRandom(randomSeed);
         return new RandomDataGenerator(
                 random,
-                new CellValueGenerator(
+                new RandomCellValueGenerator(
                         random,
                         ValueInitializationProfile.SMALL,
                         0.1,

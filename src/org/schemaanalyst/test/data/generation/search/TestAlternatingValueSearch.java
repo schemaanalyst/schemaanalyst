@@ -3,8 +3,8 @@ package org.schemaanalyst.test.data.generation.search;
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
-import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
@@ -27,7 +27,7 @@ public class TestAlternatingValueSearch {
     class NoImprovementAlternatingValueSearch extends AlternatingValueSearch {
 
         public NoImprovementAlternatingValueSearch() {
-            super(null, new NoDataInitialization(), null);
+            super(null, new DefaultCellInitializer(), null);
         }
 
         @Override
@@ -43,7 +43,7 @@ public class TestAlternatingValueSearch {
         int improveUntil;
 
         public ImproveUntilAlternatingValueSearch(int improveUntil) {
-            super(null, new NoDataInitialization(), null);
+            super(null, new DefaultCellInitializer(), null);
             this.improveUntil = improveUntil;
         }
 

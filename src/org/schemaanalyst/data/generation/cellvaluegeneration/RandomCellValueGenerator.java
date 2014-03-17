@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation;
+package org.schemaanalyst.data.generation.cellvaluegeneration;
 
 import org.schemaanalyst.data.*;
 import org.schemaanalyst.util.random.Random;
@@ -9,14 +9,14 @@ import java.util.List;
 /**
  * Created by phil on 26/02/2014.
  */
-public class CellValueGenerator {
+public class RandomCellValueGenerator {
 
     private Random random;
     private ValueInitializationProfile profile;
     private ValueLibrary valueLibrary;
     private double nullProbability, useLibraryProbability;
 
-    public CellValueGenerator(
+    public RandomCellValueGenerator(
             Random random,
             ValueInitializationProfile profile,
             double nullProbability,

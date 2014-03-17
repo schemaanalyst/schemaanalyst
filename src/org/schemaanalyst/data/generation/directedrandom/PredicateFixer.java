@@ -1,6 +1,6 @@
 package org.schemaanalyst.data.generation.directedrandom;
 
-import org.schemaanalyst.data.generation.CellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.*;
 import org.schemaanalyst.logic.predicate.clause.ClauseVisitor;
 import org.schemaanalyst.logic.predicate.clause.ExpressionClause;
@@ -20,16 +20,16 @@ public class PredicateFixer extends Fixer {
 
     public PredicateFixer(PredicateChecker predicateChecker,
                           Random random,
-                          CellValueGenerator cellValueGenerator) {
+                          RandomCellValueGenerator cellValueGenerator) {
 
         class FixerInstantiator implements ClauseVisitor {
 
             Random random;
-            CellValueGenerator cellValueGenerator;
+            RandomCellValueGenerator cellValueGenerator;
             ClauseChecker clauseChecker;
             Fixer fixer;
 
-            FixerInstantiator(Random random, CellValueGenerator cellValueGenerator) {
+            FixerInstantiator(Random random, RandomCellValueGenerator cellValueGenerator) {
                 this.random = random;
                 this.cellValueGenerator = cellValueGenerator;
             }

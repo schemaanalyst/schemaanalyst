@@ -1,7 +1,7 @@
 package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.generation.CellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.ExpressionClauseChecker;
 
 /**
@@ -10,9 +10,9 @@ import org.schemaanalyst.logic.predicate.checker.ExpressionClauseChecker;
 public class ExpressionClauseFixer extends Fixer {
 
     private ExpressionClauseChecker expressionClauseChecker;
-    private CellValueGenerator cellValueGenerator;
+    private RandomCellValueGenerator cellValueGenerator;
 
-    public ExpressionClauseFixer(ExpressionClauseChecker expressionClauseChecker, CellValueGenerator cellValueGenerator) {
+    public ExpressionClauseFixer(ExpressionClauseChecker expressionClauseChecker, RandomCellValueGenerator cellValueGenerator) {
         this.expressionClauseChecker = expressionClauseChecker;
         this.cellValueGenerator = cellValueGenerator;
     }

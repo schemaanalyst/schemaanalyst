@@ -7,7 +7,7 @@ import org.junit.runner.RunWith;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.generation.CellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.directedrandom.MatchClauseFixer;
 import org.schemaanalyst.logic.predicate.checker.MatchClauseChecker;
 import org.schemaanalyst.logic.predicate.clause.MatchClause;
@@ -66,7 +66,7 @@ public class TestMatchClauseFixer {
         database.setDataValues(dataValues);
         database.setStateValues(stateValues);
 
-        CellValueGenerator cellValueGenerator = new MockCellValueGenerator(cellGeneratorValues);
+        RandomCellValueGenerator cellValueGenerator = new MockCellValueGenerator(cellGeneratorValues);
         Random random = new MockRandom(randomValues);
 
         MatchClauseChecker matchClauseChecker = new MatchClauseChecker(matchClause, false, data, state);

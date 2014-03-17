@@ -1,10 +1,10 @@
-package org.schemaanalyst.data.generation.search;
+package org.schemaanalyst.data.generation.random;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.generation.CellValueGenerator;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
 import org.schemaanalyst.util.random.Random;
@@ -18,10 +18,10 @@ import org.schemaanalyst.util.random.Random;
 public class RandomDataGenerator extends DataGenerator {
 
     private Random random;
-    private CellValueGenerator cellValueGenerator;
+    private RandomCellValueGenerator cellValueGenerator;
     private int maxEvaluations;
 
-    public RandomDataGenerator(Random random, CellValueGenerator cellValueGenerator, int maxEvaluations) {
+    public RandomDataGenerator(Random random, RandomCellValueGenerator cellValueGenerator, int maxEvaluations) {
         this.random = random;
         this.cellValueGenerator = cellValueGenerator;
         this.maxEvaluations = maxEvaluations;
@@ -30,8 +30,6 @@ public class RandomDataGenerator extends DataGenerator {
     @Override
     public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
         PredicateChecker predicateChecker = new PredicateChecker(predicate, data, state);
-
-        // use a start initialiser?
 
         boolean success = predicateChecker.check();
         int evaluations = 0;

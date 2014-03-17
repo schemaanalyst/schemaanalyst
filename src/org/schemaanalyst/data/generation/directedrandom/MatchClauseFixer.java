@@ -2,7 +2,7 @@ package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.generation.CellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.MatchClauseChecker;
 import org.schemaanalyst.logic.predicate.checker.MatchRecord;
 import org.schemaanalyst.util.random.Random;
@@ -17,11 +17,11 @@ public class MatchClauseFixer extends Fixer {
 
     private MatchClauseChecker matchClauseChecker;
     private Random random;
-    private CellValueGenerator cellValueGenerator;
+    private RandomCellValueGenerator cellValueGenerator;
 
     public MatchClauseFixer(MatchClauseChecker matchClauseChecker,
                             Random random,
-                            CellValueGenerator cellValueGenerator) {
+                            RandomCellValueGenerator cellValueGenerator) {
         this.matchClauseChecker = matchClauseChecker;
         this.random = random;
         this.cellValueGenerator = cellValueGenerator;
