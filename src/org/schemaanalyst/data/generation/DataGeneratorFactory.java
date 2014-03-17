@@ -4,11 +4,13 @@ import _deprecated.datageneration.cellrandomisation.CellRandomiserFactory;
 import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
 import _deprecated.datageneration.search.datainitialization.RandomDataInitializer;
 import org.schemaanalyst.data.ValueLibrary;
+import org.schemaanalyst.data.ValueMiner;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
 
@@ -24,14 +26,14 @@ public class DataGeneratorFactory {
     public static DataGenerator instantiate(String dataGeneratorName,
                                             long randomSeed,
                                             int maxEvaluations,
-                                            ValueLibrary valueLibrary) {
+                                            Schema schema) {
         Class<DataGeneratorFactory> c = DataGeneratorFactory.class;
         Method methods[] = c.getMethods();
 
         for (Method m : methods) {
             if (m.getName().equals(dataGeneratorName)) {
                 try {
-                    Object[] args = {randomSeed, maxEvaluations, valueLibrary};
+                    Object[] args = {randomSeed, maxEvaluations, schema};
                     return (DataGenerator) m.invoke(null, args);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
@@ -42,20 +44,26 @@ public class DataGeneratorFactory {
         throw new DataGenerationException("Unknown data generator \"" + dataGeneratorName + "\"");
     }
 
-    public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, ValueLibrary valueLibrary) {
+    private static ValueLibrary makeValueLibrary(Schema schema) {
+        return (schema == null)
+                ? new ValueLibrary()
+                : new ValueMiner().mine(schema);
+    }
+
+    public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
 
         Search search = new AlternatingValueSearch(
                 random,
                 maxEvaluations,
-                valueLibrary,
+                makeValueLibrary(schema),
                 new NoDataInitialization(),
                 new RandomDataInitializer(CellRandomiserFactory.small(random)));
 
         return new SearchBasedDataGenerator(search);
     }
 
-    public static DirectedRandomDataGenerator directedRandom(long randomSeed, int maxEvaluations, ValueLibrary valueLibrary) {
+    public static DirectedRandomDataGenerator directedRandom(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
         return new DirectedRandomDataGenerator(
                 random,
@@ -63,12 +71,12 @@ public class DataGeneratorFactory {
                         random,
                         ValueInitializationProfile.SMALL,
                         0.1,
-                        valueLibrary,
+                        makeValueLibrary(schema),
                         0.25),
                 maxEvaluations);
     }
 
-    public static RandomDataGenerator random(long randomSeed, int maxEvaluations, ValueLibrary valueLibrary) {
+    public static RandomDataGenerator random(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
         return new RandomDataGenerator(
                 random,
@@ -76,7 +84,7 @@ public class DataGeneratorFactory {
                         random,
                         ValueInitializationProfile.SMALL,
                         0.1,
-                        valueLibrary,
+                        makeValueLibrary(schema),
                         0.25),
                 maxEvaluations);
     }

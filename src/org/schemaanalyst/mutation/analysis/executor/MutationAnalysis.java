@@ -169,7 +169,7 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite generateTestSuite() {
         // Initialise test case generator
-        final DataGenerator dataGenerator = DataGeneratorFactory.instantiate("directedRandom", 0L , 100000, new ValueLibrary());
+        final DataGenerator dataGenerator = DataGeneratorFactory.instantiate("directedRandom ", 0L , 100000, null);
 
         TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
