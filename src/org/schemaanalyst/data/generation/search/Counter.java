@@ -2,8 +2,8 @@ package org.schemaanalyst.data.generation.search;
 
 public class Counter {
 
-    protected String name;
-    protected int counter;
+    private String name;
+    private int counter;
 
     public Counter(String name) {
         this.name = name;
