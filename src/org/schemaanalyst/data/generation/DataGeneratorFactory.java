@@ -1,8 +1,14 @@
 package org.schemaanalyst.data.generation;
 
+import _deprecated.datageneration.cellrandomisation.CellRandomiser;
 import _deprecated.datageneration.cellrandomisation.CellRandomiserFactory;
 import _deprecated.datageneration.search.datainitialization.NoDataInitialization;
 import _deprecated.datageneration.search.datainitialization.RandomDataInitializer;
+import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
+import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
+import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
+import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
@@ -52,13 +58,18 @@ public class DataGeneratorFactory {
 
     public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
+        CellRandomiser randomizer = CellRandomiserFactory.small(random);
 
-        Search search = new AlternatingValueSearch(
+        Search<Data> search = new AlternatingValueSearch(
                 random,
-                maxEvaluations,
-                makeValueLibrary(schema),
                 new NoDataInitialization(),
-                new RandomDataInitializer(CellRandomiserFactory.small(random)));
+                new RandomDataInitializer(randomizer));
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
+                new OptimumTerminationCriterion<>(search));
+
+        search.setTerminationCriterion(terminationCriterion);
 
         return new SearchBasedDataGenerator(search);
     }

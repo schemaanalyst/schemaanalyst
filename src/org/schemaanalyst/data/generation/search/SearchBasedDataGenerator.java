@@ -11,7 +11,7 @@ import org.schemaanalyst.logic.predicate.Predicate;
  */
 public class SearchBasedDataGenerator extends DataGenerator {
 
-    private Search search;
+    private Search<Data> search;
 
     public SearchBasedDataGenerator(Search search) {
         this.search = search;

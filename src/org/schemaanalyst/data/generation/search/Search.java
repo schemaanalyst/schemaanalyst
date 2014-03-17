@@ -1,112 +1,145 @@
 package org.schemaanalyst.data.generation.search;
 
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
-import org.schemaanalyst.util.random.Random;
+import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
+import org.schemaanalyst.util.Duplicator;
 
 /**
- * Abstract class for representing a search algorithm
+ * Abstract class for representing a generation
  *
  * @author Phil McMinn
  *
  */
-public abstract class Search {
+public abstract class Search<T> {
 
-    protected Random random;
-    protected int maxEvaluations;
-    protected ValueLibrary valueLibrary;
-
-    protected ObjectiveFunction<Data> objectiveFunction;
-    protected ObjectiveValue bestObjectiveValue;
-    protected Data bestCandidateSolution;
-    protected int numEvaluations;
-    protected int numRestarts;
+    protected Duplicator<T> duplicator;
+    protected ObjectiveFunction<T> objFun;
+    protected Counter evaluationsCounter, restartsCounter;
+    protected ObjectiveValue bestObjVal;
+    protected T bestCandidateSolution;
+    protected TerminationCriterion terminationCriterion;
 
     /**
-     * Constructor.
+     * Constructor
+     *
+     * @param duplicator the duplicator instance responsible for producing
+     * duplicate solution instances.
      */
-    public Search(Random random, int maxEvaluations, ValueLibrary valueLibrary) {
-        this.random = random;
-        this.maxEvaluations = maxEvaluations;
-        this.valueLibrary = valueLibrary;
+    public Search(Duplicator<T> duplicator) {
+        this.duplicator = duplicator;
+        evaluationsCounter = new Counter("Number of evaluations");
+        restartsCounter = new Counter("Number of restarts");
     }
 
     /**
-     * Sets the objective function for the search.
+     * Sets the termination criterion for the generation.
+     *
+     * @param terminationCriterion The terminationCriterion to be used.
+     */
+    public void setTerminationCriterion(TerminationCriterion terminationCriterion) {
+        this.terminationCriterion = terminationCriterion;
+    }
+
+    /**
+     * Sets the objective function for the generation.
+     *
      * @param objectiveFunction The objective function to be used to evaluate
-     * candidate solutions during the search.
+     * candidate solutions during the generation.
      */
-    public void setObjectiveFunction(ObjectiveFunction<Data> objectiveFunction) {
-        this.objectiveFunction = objectiveFunction;
+    public void setObjectiveFunction(ObjectiveFunction<T> objectiveFunction) {
+        this.objFun = objectiveFunction;
     }
 
     /**
-     * Initializes the search (by resetting the counters).
+     * Initializes the generation (by resetting the counters).
      */
     public void initialize() {
-        numEvaluations = 0;
-        numRestarts = 0;
+        evaluationsCounter.reset();
+        restartsCounter.reset();
         bestCandidateSolution = null;
-        bestObjectiveValue = null;
+        bestObjVal = null;
     }
 
     /**
      * Performs the generation.
+     *
      * @param candidateSolution The candidateSolution to use as the basis for
      * the generation.
      */
-    public abstract void search(Data candidateSolution);
+    public abstract void search(T candidateSolution);
 
     /**
      * Performs an objective function evaluation.
+     *
      * @return The objective value as a result of the objective function
      * evaluation.
      */
-    protected ObjectiveValue evaluate(Data candidateSolution) {
-        ObjectiveValue objectiveValue = objectiveFunction.evaluate(candidateSolution);
+    protected ObjectiveValue evaluate(T candidateSolution) {
+        ObjectiveValue objVal = objFun.evaluate(candidateSolution);
 
-        if (bestObjectiveValue == null || objectiveValue.betterThan(bestObjectiveValue)) {
-            bestObjectiveValue = objectiveValue;
-            bestCandidateSolution = candidateSolution.duplicate();
+        if (bestObjVal == null || objVal.betterThan(bestObjVal)) {
+            bestObjVal = objVal;
+            bestCandidateSolution = duplicator.duplicate(candidateSolution);
         }
 
-        numEvaluations ++;
-        return objectiveValue;
+        evaluationsCounter.increment();
+        return objVal;
     }
 
     /**
-     * Returns the best objective value found by the search so far.
-     * @return The best objective value found by the search so far.
+     * Returns the best objective value found by the generation so far.
+     *
+     * @return The best objective value found by the generation so far.
      */
     public ObjectiveValue getBestObjectiveValue() {
-        return bestObjectiveValue;
+        return bestObjVal;
     }
 
     /**
      * Returns the candidate solution with the best objective value found by the
-     * search so far.
+     * generation so far.
+     *
      * @return The candidate solution with the best objective value found by the
-     * search so far.
+     * generation so far.
      */
-    public Data getBestCandidateSolution() {
+    public T getBestCandidateSolution() {
         return bestCandidateSolution;
     }
 
     /**
-     * Returns the number of evaluations performed by the search.
-     * @return The number of evaluations performed by the search.
+     * Returns the evaluations counter used by the generation.
+     *
+     * @return The evaluations counter used by the generation.
      */
-    public int getNumEvaluations() {
-        return numEvaluations;
+    public Counter getEvaluationsCounter() {
+        return evaluationsCounter;
     }
 
     /**
-     * Returns the number of restarts performed by the search.
-     * @return The number of restarts performed by the search.
+     * Returns the number of evaluations performed by the generation.
+     *
+     * @return The number of evaluations performed by the generation.
+     */
+    public int getNumEvaluations() {
+        return evaluationsCounter.getValue();
+    }
+
+    /**
+     * Returns the restarts counter used by the generation.
+     *
+     * @return The restarts counter used by the generation.
+     */
+    public Counter getRestartsCounter() {
+        return restartsCounter;
+    }
+
+    /**
+     * Returns the number of restarts performed by the generation.
+     *
+     * @return The number of restarts performed by the generation.
      */
     public int getNumRestarts() {
-        return numRestarts;
+        return restartsCounter.getValue();
     }
 }

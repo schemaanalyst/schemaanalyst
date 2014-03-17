@@ -1,31 +1,31 @@
 package org.schemaanalyst.data.generation.search;
 
 import _deprecated.datageneration.search.datainitialization.DataInitialiser;
-import org.schemaanalyst.data.*;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.data.*;
 import org.schemaanalyst.util.random.Random;
 
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
 
-public class AlternatingValueSearch extends Search {
+public class AlternatingValueSearch extends Search<Data> {
 
-    private static final int ACCELERATION_BASE = 2;
-
-    private DataInitialiser startInitialiser;
-    private DataInitialiser restartInitialiser;
-
-    private Data data;
-    private List<Cell> cells;
-    private ObjectiveValue lastObjectiveValue;
+    protected static final int ACCELERATION_BASE = 2;
+    protected Random random;
+    protected DataInitialiser startInitialiser;
+    protected DataInitialiser restartInitialiser;
+    protected Data data;
+    protected List<Cell> cells;
+    protected ObjectiveValue lastObjVal;
+    protected int direction;
+    protected int step;
 
     public AlternatingValueSearch(Random random,
-                                  int maxEvaluations,
-                                  ValueLibrary valueLibrary,
-                                  DataInitialiser startInitializer,
-                                  DataInitialiser restartInitializer) {
-        super(random, maxEvaluations, valueLibrary);
+            DataInitialiser startInitializer,
+            DataInitialiser restartInitializer) {
+        super(new Data.Duplicator());
+        this.random = random;
         this.startInitialiser = startInitializer;
         this.restartInitialiser = restartInitializer;
     }
@@ -38,36 +38,32 @@ public class AlternatingValueSearch extends Search {
 
         // start
         startInitialiser.initialize(data);
-        lastObjectiveValue = null;
+        lastObjVal = null;
         evaluate();
 
         // main loop
-        while (!terminationCriterionSatisfied()) {
+        while (!terminationCriterion.satisfied()) {
 
             alternateThroughValues();
 
-            if (!terminationCriterionSatisfied()) {
-                numRestarts ++;
+            if (!terminationCriterion.satisfied()) {
+                restartsCounter.increment();
             }
 
-            if (!terminationCriterionSatisfied()) {
+            if (!terminationCriterion.satisfied()) {
                 restartInitialiser.initialize(data);
-                lastObjectiveValue = null;
+                lastObjVal = null;
                 evaluate();
             }
         }
     }
 
-    private boolean terminationCriterionSatisfied() {
-        return numEvaluations >= maxEvaluations;
-    }
-
     protected boolean evaluate() {
         ObjectiveValue nextObjVal = evaluate(data);
-        boolean improvement = (lastObjectiveValue == null || nextObjVal.betterThan(lastObjectiveValue));
+        boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
 
         if (improvement) {
-            lastObjectiveValue = nextObjVal;
+            lastObjVal = nextObjVal;
         }
 
         return improvement;
@@ -78,7 +74,7 @@ public class AlternatingValueSearch extends Search {
         int valuesWithoutImprovement = 0;
         Iterator<Cell> iterator = cells.iterator();
 
-        while (valuesWithoutImprovement < numValues && !terminationCriterionSatisfied()) {
+        while (valuesWithoutImprovement < numValues && !terminationCriterion.satisfied()) {
 
             // restart the iteration process through the columns
             if (!iterator.hasNext()) {
@@ -110,10 +106,17 @@ public class AlternatingValueSearch extends Search {
     protected boolean invertNullMove(Cell cell) {
         boolean improvement = false;
 
-        if (!terminationCriterionSatisfied()) {
+        if (!terminationCriterion.satisfied()) {
             Value originalValue = cell.getValue();
 
             cell.setNull(originalValue != null);
+
+            //if (originalValue == null) {
+            //	cell.setNull(false);
+            //	cellRandomizer.randomizeCell(cell, false);
+            //} else {				
+            //	cell.setValue(null);					
+            //}
 
             improvement = evaluate();
             if (!improvement) {
@@ -176,7 +179,7 @@ public class AlternatingValueSearch extends Search {
     protected boolean booleanValueSearch(BooleanValue value) {
         boolean improvement = false;
 
-        if (!terminationCriterionSatisfied()) {
+        if (!terminationCriterion.satisfied()) {
             boolean originalValue = value.get();
             value.set(!originalValue);
 
@@ -195,10 +198,10 @@ public class AlternatingValueSearch extends Search {
         List<Value> elements = value.getElements();
         int length = elements.size();
 
-        while (iterationImprovement && !terminationCriterionSatisfied()) {
+        while (iterationImprovement && !terminationCriterion.satisfied()) {
             iterationImprovement = false;
 
-            for (int i = 0; i < length && !terminationCriterionSatisfied(); i++) {
+            for (int i = 0; i < length && !terminationCriterion.satisfied(); i++) {
                 if (valueSearch(elements.get(i))) {
                     improvement = true;
                     iterationImprovement = true;
@@ -221,7 +224,7 @@ public class AlternatingValueSearch extends Search {
         boolean improvement = false;
         boolean iterationImprovement = true;
 
-        while (iterationImprovement && !terminationCriterionSatisfied()) {
+        while (iterationImprovement && !terminationCriterion.satisfied()) {
             iterationImprovement = false;
 
             if (removeCharacterMove(value)) {
@@ -246,7 +249,7 @@ public class AlternatingValueSearch extends Search {
     protected boolean addCharacterMove(StringValue value) {
         boolean improvement = false;
 
-        if (!terminationCriterionSatisfied()) {
+        if (!terminationCriterion.satisfied()) {
             if (value.addCharacter()) {
                 improvement = evaluate();
                 if (!improvement) {
@@ -260,7 +263,7 @@ public class AlternatingValueSearch extends Search {
     protected boolean removeCharacterMove(StringValue value) {
         boolean improvement = false;
 
-        if (!terminationCriterionSatisfied()) {
+        if (!terminationCriterion.satisfied()) {
             int numElements = value.getLength();
 
             if (numElements > 0) {
@@ -282,7 +285,7 @@ public class AlternatingValueSearch extends Search {
     protected boolean changeCharactersMove(StringValue value) {
         boolean improvement = false;
 
-        if (!terminationCriterionSatisfied()) {
+        if (!terminationCriterion.satisfied()) {
             improvement = compoundValueSearch(value);
         }
 
@@ -294,7 +297,7 @@ public class AlternatingValueSearch extends Search {
         boolean improvement = false;
         boolean directionalImprovement = true;
 
-        while (directionalImprovement && !terminationCriterionSatisfied()) {
+        while (directionalImprovement && !terminationCriterion.satisfied()) {
             directionalImprovement = false;
 
             int[] directions = {1, -1};
@@ -303,7 +306,7 @@ public class AlternatingValueSearch extends Search {
 
                 boolean moveIsImprovement = true;
 
-                while (moveIsImprovement && !terminationCriterionSatisfied()) {
+                while (moveIsImprovement && !terminationCriterion.satisfied()) {
                     moveIsImprovement = numericMove(value, direction, step);
 
                     if (moveIsImprovement) {
