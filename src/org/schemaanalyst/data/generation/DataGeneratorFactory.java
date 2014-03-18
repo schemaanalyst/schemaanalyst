@@ -3,6 +3,7 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
@@ -42,8 +43,10 @@ public class DataGeneratorFactory {
         Class<DataGeneratorFactory> c = DataGeneratorFactory.class;
         Method methods[] = c.getMethods();
 
+        String instantiatingMethodName = dataGeneratorName + "Generator";
+
         for (Method m : methods) {
-            if (m.getName().equals(dataGeneratorName)) {
+            if (m.getName().equals(instantiatingMethodName)) {
                 try {
                     Object[] args = {randomSeed, maxEvaluations, schema};
                     return (DataGenerator) m.invoke(null, args);
@@ -56,26 +59,35 @@ public class DataGeneratorFactory {
         throw new DataGenerationException("Unknown data generator \"" + dataGeneratorName + "\"");
     }
 
+    private static Random makeRandomNumberGenerator(long seed) {
+        return new SimpleRandom(seed);
+    }
+
+    private static RandomCellValueGenerator makeRandomCellValueGenerator(Random random, Schema schema) {
+        return new RandomCellValueGenerator(
+                random,
+                ValueInitializationProfile.SMALL,
+                0.1,
+                makeValueLibrary(schema),
+                0.25);
+    }
+
     private static ValueLibrary makeValueLibrary(Schema schema) {
         return (schema == null)
                 ? new ValueLibrary()
                 : new ValueMiner().mine(schema);
     }
 
-    public static SearchBasedDataGenerator avsDefaults(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = new SimpleRandom(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator =
-                new RandomCellValueGenerator(
-                        random,
-                        ValueInitializationProfile.SMALL,
-                        0.1,
-                        makeValueLibrary(schema),
-                        0.25);
+    public static SearchBasedDataGenerator makeAlternatingValueSearch(
+            int maxEvaluations,
+            Random random,
+            CellInitializer startInitializer,
+            CellInitializer restartInitializer) {
 
         Search<Data> search = new AlternatingValueSearch(
                 random,
-                new DefaultCellInitializer(),
-                new RandomCellInitializer(randomCellValueGenerator));
+                startInitializer,
+                restartInitializer);
 
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
@@ -86,7 +98,29 @@ public class DataGeneratorFactory {
         return new SearchBasedDataGenerator(search);
     }
 
-    public static DirectedRandomDataGenerator directedRandom(long randomSeed, int maxEvaluations, Schema schema) {
+    public static SearchBasedDataGenerator avsDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
+        return makeAlternatingValueSearch(
+                maxEvaluations,                random,
+                new DefaultCellInitializer(),
+                new RandomCellInitializer(randomCellValueGenerator));
+    }
+
+    public static SearchBasedDataGenerator avsRandomStartGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                maxEvaluations,
+                random,
+                randomCellInitializer,
+                randomCellInitializer);
+    }
+
+    public static DirectedRandomDataGenerator directedRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
         return new DirectedRandomDataGenerator(
                 random,
@@ -99,7 +133,7 @@ public class DataGeneratorFactory {
                 maxEvaluations);
     }
 
-    public static RandomDataGenerator random(long randomSeed, int maxEvaluations, Schema schema) {
+    public static RandomDataGenerator randomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
         return new RandomDataGenerator(
                 random,
