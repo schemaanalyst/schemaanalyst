@@ -41,4 +41,8 @@ public class TestSuite {
         }
         return total;
     }
+
+    public double getAvNumEvaluations() {
+        return getNumEvaluations() / (double) testCases.size();
+    }
 }

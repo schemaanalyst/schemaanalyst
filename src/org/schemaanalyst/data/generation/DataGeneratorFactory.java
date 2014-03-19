@@ -161,7 +161,7 @@ public class DataGeneratorFactory {
 
     public static RandomDataGenerator randomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
-        return new DirectedRandomDataGenerator(
+        return new RandomDataGenerator(
                 random,
                 new RandomCellValueGenerator(
                         random,

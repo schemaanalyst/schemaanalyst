@@ -12,6 +12,7 @@ import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Runner;
+import parsedcasestudy.Flights;
 import parsedcasestudy.UnixUsage;
 
 import java.io.File;
@@ -61,7 +62,7 @@ public class GenerateSchemaCoverage extends Runner {
         DBMS dbms = new SQLiteDBMS();
         CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("random", 0L, 100000, schema);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 100000, schema);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -110,6 +111,7 @@ public class GenerateSchemaCoverage extends Runner {
         System.out.println("Number of successful test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
         System.out.println("Number of evaluations: " + testSuite.getNumEvaluations());
+        System.out.println("Average No. of evaluations: " + testSuite.getAvNumEvaluations());
 
         for (CoverageCriterion criterion : CoverageCriterionFactory.allCriteria()) {
             String name = criterion.getName();
