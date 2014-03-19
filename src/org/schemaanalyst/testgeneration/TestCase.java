@@ -1,6 +1,7 @@
 package org.schemaanalyst.testgeneration;
 
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.logic.predicate.Predicate;
 
 import java.util.ArrayList;
@@ -19,17 +20,17 @@ public class TestCase {
     private List<Predicate> additionalPredicates;
     private List<Boolean> dbmsResults;
 
-    private HashMap<String, Object> info;
+    private DataGenerationReport dataGenerationReport;
 
-    public TestCase(Data data, Data state, Predicate predicate, boolean satisfies) {
+    public TestCase(Data data, Data state, Predicate predicate, DataGenerationReport dataGenerationReport) {
         this.data = data;
         this.state = state;
         this.dbmsResults = new ArrayList<>();
         this.originalPredicate = predicate;
-        this.satisfiesOriginalPredicate = satisfies;
+        this.satisfiesOriginalPredicate = dataGenerationReport.getSuccess();
+        this.dataGenerationReport = dataGenerationReport;
 
         this.additionalPredicates = new ArrayList<>();
-        this.info = new HashMap<>();
     }
 
     public Data getData() {
@@ -71,16 +72,12 @@ public class TestCase {
         return new ArrayList<>(dbmsResults);
     }
 
-    public void addInfo(String key, Object infoObject) {
-        info.put(key, infoObject);
-    }
-
-    public Object getInfo(String key) {
-        return info.get(key);
-    }
-
     public int getNumInserts() {
         return state.getNumRows() + data.getNumRows();
+    }
+
+    public DataGenerationReport getDataGenerationReport() {
+        return dataGenerationReport;
     }
 
     public String toString() {

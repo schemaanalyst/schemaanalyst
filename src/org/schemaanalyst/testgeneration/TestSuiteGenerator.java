@@ -60,6 +60,17 @@ public class TestSuiteGenerator {
         return new ArrayList<>(failedTestCases);
     }
 
+    public int getTotalNumberOfEvaluations() {
+        int total = 0;
+        for (TestCase testCase : testSuite.getTestCases()) {
+            total += testCase.getDataGenerationReport().getNumEvaluations();
+        }
+        for (TestCase testCase : failedTestCases) {
+            total += testCase.getDataGenerationReport().getNumEvaluations();
+        }
+        return total;
+    }
+
     private void generateInitialTableData() {
 
         for (Table table : schema.getTablesInOrder()) {
@@ -145,7 +156,7 @@ public class TestSuiteGenerator {
             if (initialData == null) {
                 return null;
             }
-            
+
             state.appendData(initialData);
 
             // add foreign key rows to the data
@@ -166,7 +177,7 @@ public class TestSuiteGenerator {
 
         // generate the test case
         DataGenerationReport report = dataGenerator.generateData(data, state, predicate);
-        TestCase testCase = new TestCase(data, state, predicate, report.getSuccess());
+        TestCase testCase = new TestCase(data, state, predicate, report);
 
         LOGGER.fine("Generated test case: \n" + testCase);
 

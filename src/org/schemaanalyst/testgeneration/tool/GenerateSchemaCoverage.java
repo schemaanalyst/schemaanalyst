@@ -82,6 +82,7 @@ public class GenerateSchemaCoverage extends Runner {
         executor.execute(testSuite);
 
         // write report to console
+        System.out.println("Total no. of evaluations: " + dg.getTotalNumberOfEvaluations());
         printReport(schema, criterion, testSuite, dg.getFailedTestCases());
 
         // write JUnit test suite to file
@@ -110,12 +111,6 @@ public class GenerateSchemaCoverage extends Runner {
 
     private void printTestCase(TestCase testCase, boolean success) {
         System.out.println("\n" + testCase);
-
-        if (!success) {
-            // print details of the objective value computed by the generation
-            //System.out.println("FAIL – INFO DUMP:");
-            System.out.println(testCase.getInfo("info"));
-        }
     }
 
     private void printTestSuiteStats(Schema schema, CoverageCriterion criterionUsed, TestSuite testSuite) {
