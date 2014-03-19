@@ -35,7 +35,7 @@ public class GenerateSchemaCoverage extends Runner {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
         // Schema schema = new BankAccount();
-        Schema schema = new BookTown();
+        // Schema schema = new BookTown();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
         // Schema schema = new CustomerOrder();
@@ -57,13 +57,13 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new Products();
         // Schema schema = new RiskIt();
         // Schema schema = new StudentResidence();
-        // Schema schema = new UnixUsage();
+        Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
         CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("directedRandom", 0L, 100000, schema);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 100000, schema);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
