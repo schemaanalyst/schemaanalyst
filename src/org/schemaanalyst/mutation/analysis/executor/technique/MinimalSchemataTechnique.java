@@ -13,7 +13,6 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteE
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.analysis.executor.util.MutationAnalysisUtils;
-import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
@@ -50,7 +49,7 @@ public class MinimalSchemataTechnique extends Technique {
         this.changedTableMap = new HashMap<>();
         for (int id = 0; id < mutants.size(); id++) {
             Mutant<Schema> mutant = mutants.get(id);
-            String differentTable = ChangedTableFinder.getDifferentTable(schema, mutant.getMutatedArtefact()).getIdentifier().get();
+            String differentTable = MutationAnalysisUtils.computeChangedTable(schema, mutant);
             if (changedTableMap.containsKey(differentTable)) {
                 List<Integer> list = changedTableMap.get(differentTable);
                 list.add(id);
