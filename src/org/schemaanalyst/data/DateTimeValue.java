@@ -8,7 +8,7 @@ public class DateTimeValue extends DateValue {
     protected NumericValue hour, minute, second;
 
     public DateTimeValue() {
-        this(0, 0, 0, 0, 0, 0);
+        this(2000, 1, 1, 0, 0, 0);
     }
 
     public DateTimeValue(int year, int month, int day, int hour, int minute, int second) {

@@ -12,6 +12,7 @@ import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Runner;
+import parsedcasestudy.BankAccount;
 import parsedcasestudy.BookTown;
 import parsedcasestudy.Flights;
 import parsedcasestudy.UnixUsage;
@@ -34,7 +35,7 @@ public class GenerateSchemaCoverage extends Runner {
     protected void task() {
 
         // these are parameters of the task (TODO: formalize these as per Runner ...)
-        // Schema schema = new BankAccount();
+        Schema schema = new BankAccount();
         // Schema schema = new BookTown();
         // Schema schema = new Cloc();
         // Schema schema = new CoffeeOrders();
@@ -57,13 +58,13 @@ public class GenerateSchemaCoverage extends Runner {
         // Schema schema = new Products();
         // Schema schema = new RiskIt();
         // Schema schema = new StudentResidence();
-        Schema schema = new UnixUsage();
+        // Schema schema = new UnixUsage();
         // Schema schema = new Usda();
 
         DBMS dbms = new SQLiteDBMS();
         CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 100000, schema);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 10000, schema);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(

@@ -38,8 +38,8 @@ public class ValueInitializationProfile {
     );
 
     public static final ValueInitializationProfile LARGE = new ValueInitializationProfile(
-            0, // yearMin
-            5000, // yearMax
+            1000, // yearMin
+            9999, // yearMax
 
             1, // monthMin
             12, // monthMax,
