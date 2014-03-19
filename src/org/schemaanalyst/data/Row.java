@@ -104,7 +104,9 @@ public class Row {
             if (targetCell == null) {
                 throw new DataException("Cannot copy cell value as column " + column + " does not exist in target");
             }
-            targetCell.setValue(sourceCell.getValue().duplicate());
+            Value sourceValue = sourceCell.getValue();
+            Value duplicatedValue = (sourceValue == null) ? null : sourceValue.duplicate();
+            targetCell.setValue(duplicatedValue);
         }
     }
 

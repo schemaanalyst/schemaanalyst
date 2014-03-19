@@ -68,13 +68,10 @@ public class TestSuiteGenerator {
             LOGGER.fine("Generating initial table data for " + table);
             LOGGER.fine("Predicate is " + predicate);
             TestCase testCase = generateTestCase(table, predicate);
-            if (testCase.satisfiesOriginalPredicate()) {
+            if (testCase == null) {
+                LOGGER.fine("Failed to generate");
+            } else if (testCase.satisfiesOriginalPredicate()) {
                 initialTableData.put(table, testCase.getData());
-            } else {
-                // not sure what to do here, throwing an exception for now...
-                System.out.println(testCase);
-                System.out.println(testCase.getInfo("info"));
-                throw new RuntimeException("Cannot generate initial table data for " + table);
             }
         }
     }
@@ -99,12 +96,16 @@ public class TestSuiteGenerator {
                 LOGGER.fine("Generating data for " + predicate);
 
                 TestCase testCase = generateTestCase(table, predicate);
-                if (testCase.satisfiesOriginalPredicate()) {
-                    LOGGER.fine("Successfully generated test case");
-                    testSuite.addTestCase(testCase);
+                if (testCase != null) {
+                    if (testCase.satisfiesOriginalPredicate()) {
+                        LOGGER.fine("Successfully generated test case");
+                        testSuite.addTestCase(testCase);
+                    } else {
+                        LOGGER.fine("Failed to generate test case");
+                        failedTestCases.add(testCase);
+                    }
                 } else {
-                    LOGGER.fine("Failed to generate test case");
-                    failedTestCases.add(testCase);
+                    LOGGER.fine("Could not generate test case, as a dependent row was not previously generated");
                 }
             }
         }
@@ -121,6 +122,10 @@ public class TestSuiteGenerator {
             // for a linked table
             if (!linkedTable.equals(table)) {
                 Data initialData = initialTableData.get(linkedTable);
+                // cannot generate a test case in this instance
+                if (initialData == null) {
+                    return null;
+                }
                 state.appendData(initialData);
             }
         }
@@ -135,6 +140,12 @@ public class TestSuiteGenerator {
         if (requiresComparisonRow) {
             // add the comparison row to the state
             Data initialData = initialTableData.get(table);
+
+            // cannot generate a test case in this instance
+            if (initialData == null) {
+                return null;
+            }
+            
             state.appendData(initialData);
 
             // add foreign key rows to the data
