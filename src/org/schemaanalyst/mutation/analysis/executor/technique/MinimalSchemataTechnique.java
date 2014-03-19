@@ -121,6 +121,7 @@ public class MinimalSchemataTechnique extends Technique {
         for (Table table : schema.getTablesInOrder()) {
             if (state.getTables().contains(table)) {
                 List<Integer> applicableMutants = changedTableMap.get(table.getIdentifier().get());
+                applicableMutants = applicableMutants == null ? new ArrayList<Integer>() : applicableMutants;
                 affectedMutants.addAll(applicableMutants);
                 for (Row row : state.getRows(table)) {
                     String insert = sqlWriter.writeInsertStatement(row);
