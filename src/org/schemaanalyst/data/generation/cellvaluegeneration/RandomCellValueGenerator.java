@@ -189,7 +189,9 @@ public class RandomCellValueGenerator {
 
             @Override
             public void visit(BooleanValue value) {
-                value.set(random.nextBoolean());
+                boolean randomBoolean = random.nextBoolean();
+                System.out.println(randomBoolean);
+                value.set(randomBoolean);
             }
 
             @Override

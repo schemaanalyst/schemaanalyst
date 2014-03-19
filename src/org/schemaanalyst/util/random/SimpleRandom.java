@@ -11,7 +11,7 @@ public class SimpleRandom extends Random {
 
     @Override
     public boolean nextBoolean() {
-        return nextDouble() > 0;
+        return random.nextBoolean();
     }
 
     @Override
