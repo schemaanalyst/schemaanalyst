@@ -33,4 +33,16 @@ public class TestSuite {
         }
         return total;
     }
+
+    public int getNumEvaluations() {
+        int total = 0;
+        for (TestCase testCase : getTestCases()) {
+            total += testCase.getDataGenerationReport().getNumEvaluations();
+        }
+        return total;
+    }
+
+    public double getAvNumEvaluations() {
+        return getNumEvaluations() / (double) testCases.size();
+    }
 }

@@ -79,8 +79,8 @@ public class DataGeneratorFactory {
     }
 
     public static SearchBasedDataGenerator makeAlternatingValueSearch(
-            int maxEvaluations,
             Random random,
+            int maxEvaluations,
             CellInitializer startInitializer,
             CellInitializer restartInitializer) {
 
@@ -103,8 +103,8 @@ public class DataGeneratorFactory {
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
 
         return makeAlternatingValueSearch(
-                maxEvaluations,
                 random,
+                maxEvaluations,
                 new DefaultCellInitializer(),
                 new RandomCellInitializer(randomCellValueGenerator));
     }
@@ -115,23 +115,20 @@ public class DataGeneratorFactory {
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
         return makeAlternatingValueSearch(
-                maxEvaluations,
                 random,
+                maxEvaluations,
                 randomCellInitializer,
                 randomCellInitializer);
     }
 
     public static DirectedRandomDataGenerator directedRandomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = new SimpleRandom(randomSeed);
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
         return new DirectedRandomDataGenerator(
                 random,
-                new RandomCellValueGenerator(
-                        random,
-                        ValueInitializationProfile.SMALL,
-                        0.1,
-                        makeValueLibrary(schema),
-                        0.25),
                 maxEvaluations,
+                randomCellValueGenerator,
                 new DefaultCellInitializer());
     }
 
@@ -142,8 +139,8 @@ public class DataGeneratorFactory {
 
         return new DirectedRandomDataGenerator(
                 random,
-                randomCellValueGenerator,
                 maxEvaluations,
+                randomCellValueGenerator,
                 randomCellInitializer);
     }
 
@@ -153,23 +150,18 @@ public class DataGeneratorFactory {
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
         return new RandomDataGenerator(
-                random,
-                randomCellValueGenerator,
                 maxEvaluations,
+                randomCellValueGenerator,
                 randomCellInitializer);
     }
 
     public static RandomDataGenerator randomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = new SimpleRandom(randomSeed);
-        return new DirectedRandomDataGenerator(
-                random,
-                new RandomCellValueGenerator(
-                        random,
-                        ValueInitializationProfile.SMALL,
-                        0.1,
-                        makeValueLibrary(schema),
-                        0.25),
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
+        return new RandomDataGenerator(
                 maxEvaluations,
+                randomCellValueGenerator,
                 new DefaultCellInitializer());
     }
 }

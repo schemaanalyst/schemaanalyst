@@ -12,6 +12,7 @@ import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Runner;
+import parsedcasestudy.Flights;
 import parsedcasestudy.UnixUsage;
 
 import java.io.File;
@@ -105,23 +106,12 @@ public class GenerateSchemaCoverage extends Runner {
             printTestCase(testCase, false);
         }
 
-        printTestSuiteStats(schema, criterionUsed, testSuite);
-    }
-
-    private void printTestCase(TestCase testCase, boolean success) {
-        System.out.println("\n" + testCase);
-
-        if (!success) {
-            // print details of the objective value computed by the generation
-            //System.out.println("FAIL – INFO DUMP:");
-            System.out.println(testCase.getInfo("info"));
-        }
-    }
-
-    private void printTestSuiteStats(Schema schema, CoverageCriterion criterionUsed, TestSuite testSuite) {
         System.out.println("\nTEST SUITE STATS:");
-        System.out.println("Number of test cases: " + testSuite.getNumTestCases());
+        System.out.println("Number of failed test cases: " + failedTestCases.size());
+        System.out.println("Number of successful test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
+        System.out.println("Number of evaluations: " + testSuite.getNumEvaluations());
+        System.out.println("Average No. of evaluations: " + testSuite.getAvNumEvaluations());
 
         for (CoverageCriterion criterion : CoverageCriterionFactory.allCriteria()) {
             String name = criterion.getName();
@@ -144,6 +134,10 @@ public class GenerateSchemaCoverage extends Runner {
                 }
             }
         }
+    }
+
+    private void printTestCase(TestCase testCase, boolean success) {
+        System.out.println("\n" + testCase);
     }
 
     private void writeTestSuite(Schema schema, DBMS dbms, TestSuite testSuite, String packageName) {

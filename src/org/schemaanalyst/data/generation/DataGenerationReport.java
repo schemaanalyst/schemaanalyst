@@ -16,4 +16,8 @@ public class DataGenerationReport {
     public boolean getSuccess() {
         return success;
     }
+
+    public int getNumEvaluations() {
+        return numEvaluations;
+    }
 }
