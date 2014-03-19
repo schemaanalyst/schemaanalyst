@@ -103,12 +103,13 @@ public class DataGeneratorFactory {
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
 
         return makeAlternatingValueSearch(
-                maxEvaluations,                random,
+                maxEvaluations,
+                random,
                 new DefaultCellInitializer(),
                 new RandomCellInitializer(randomCellValueGenerator));
     }
 
-    public static SearchBasedDataGenerator avsRandomStartGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static SearchBasedDataGenerator avsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
@@ -120,7 +121,7 @@ public class DataGeneratorFactory {
                 randomCellInitializer);
     }
 
-    public static DirectedRandomDataGenerator directedRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static DirectedRandomDataGenerator directedRandomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = new SimpleRandom(randomSeed);
         return new DirectedRandomDataGenerator(
                 random,
@@ -130,12 +131,37 @@ public class DataGeneratorFactory {
                         0.1,
                         makeValueLibrary(schema),
                         0.25),
-                maxEvaluations);
+                maxEvaluations,
+                new DefaultCellInitializer());
+    }
+
+    public static DirectedRandomDataGenerator directedRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DirectedRandomDataGenerator(
+                random,
+                randomCellValueGenerator,
+                maxEvaluations,
+                randomCellInitializer);
     }
 
     public static RandomDataGenerator randomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = new SimpleRandom(randomSeed);
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
         return new RandomDataGenerator(
+                random,
+                randomCellValueGenerator,
+                maxEvaluations,
+                randomCellInitializer);
+    }
+
+    public static RandomDataGenerator randomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = new SimpleRandom(randomSeed);
+        return new DirectedRandomDataGenerator(
                 random,
                 new RandomCellValueGenerator(
                         random,
@@ -143,6 +169,7 @@ public class DataGeneratorFactory {
                         0.1,
                         makeValueLibrary(schema),
                         0.25),
-                maxEvaluations);
+                maxEvaluations,
+                new DefaultCellInitializer());
     }
 }

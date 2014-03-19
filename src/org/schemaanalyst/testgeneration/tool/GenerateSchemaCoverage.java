@@ -61,7 +61,7 @@ public class GenerateSchemaCoverage extends Runner {
         DBMS dbms = new SQLiteDBMS();
         CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("avsDefaults", 0L, 500, schema);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("random", 0L, 100000, schema);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
