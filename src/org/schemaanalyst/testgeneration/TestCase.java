@@ -15,19 +15,16 @@ public class TestCase {
 
     private Data data, state;
     private Predicate originalPredicate;
-    private boolean satisfiesOriginalPredicate;
-
     private List<Predicate> additionalPredicates;
-    private List<Boolean> dbmsResults;
 
-    private DataGenerationReport dataGenerationReport;
+private DataGenerationReport dataGenerationReport;
+    private List<Boolean> dbmsResults;
 
     public TestCase(Data data, Data state, Predicate predicate, DataGenerationReport dataGenerationReport) {
         this.data = data;
         this.state = state;
         this.dbmsResults = new ArrayList<>();
         this.originalPredicate = predicate;
-        this.satisfiesOriginalPredicate = dataGenerationReport.getSuccess();
         this.dataGenerationReport = dataGenerationReport;
 
         this.additionalPredicates = new ArrayList<>();
@@ -46,7 +43,7 @@ public class TestCase {
     }
 
     public boolean satisfiesOriginalPredicate() {
-        return satisfiesOriginalPredicate;
+        return dataGenerationReport.getSuccess();
     }
 
     public void addPredicate(Predicate predicate) {
@@ -61,7 +58,7 @@ public class TestCase {
     }
 
     public int getNumSatisfiedPredicates() {
-        return (satisfiesOriginalPredicate ? 1 : 0) + additionalPredicates.size();
+        return (satisfiesOriginalPredicate() ? 1 : 0) + additionalPredicates.size();
     }
 
     public void setDBMSResults(List<Boolean> dbmsResults) {

@@ -60,17 +60,6 @@ public class TestSuiteGenerator {
         return new ArrayList<>(failedTestCases);
     }
 
-    public int getTotalNumberOfEvaluations() {
-        int total = 0;
-        for (TestCase testCase : testSuite.getTestCases()) {
-            total += testCase.getDataGenerationReport().getNumEvaluations();
-        }
-        for (TestCase testCase : failedTestCases) {
-            total += testCase.getDataGenerationReport().getNumEvaluations();
-        }
-        return total;
-    }
-
     private void generateInitialTableData() {
 
         for (Table table : schema.getTablesInOrder()) {

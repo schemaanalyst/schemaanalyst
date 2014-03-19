@@ -82,7 +82,6 @@ public class GenerateSchemaCoverage extends Runner {
         executor.execute(testSuite);
 
         // write report to console
-        System.out.println("Total no. of evaluations: " + dg.getTotalNumberOfEvaluations());
         printReport(schema, criterion, testSuite, dg.getFailedTestCases());
 
         // write JUnit test suite to file
@@ -106,17 +105,11 @@ public class GenerateSchemaCoverage extends Runner {
             printTestCase(testCase, false);
         }
 
-        printTestSuiteStats(schema, criterionUsed, testSuite);
-    }
-
-    private void printTestCase(TestCase testCase, boolean success) {
-        System.out.println("\n" + testCase);
-    }
-
-    private void printTestSuiteStats(Schema schema, CoverageCriterion criterionUsed, TestSuite testSuite) {
         System.out.println("\nTEST SUITE STATS:");
-        System.out.println("Number of test cases: " + testSuite.getNumTestCases());
+        System.out.println("Number of failed test cases: " + failedTestCases.size());
+        System.out.println("Number of successful test cases: " + testSuite.getNumTestCases());
         System.out.println("Number of inserts: " + testSuite.getNumInserts());
+        System.out.println("Number of evaluations: " + testSuite.getNumEvaluations());
 
         for (CoverageCriterion criterion : CoverageCriterionFactory.allCriteria()) {
             String name = criterion.getName();
@@ -139,6 +132,10 @@ public class GenerateSchemaCoverage extends Runner {
                 }
             }
         }
+    }
+
+    private void printTestCase(TestCase testCase, boolean success) {
+        System.out.println("\n" + testCase);
     }
 
     private void writeTestSuite(Schema schema, DBMS dbms, TestSuite testSuite, String packageName) {
