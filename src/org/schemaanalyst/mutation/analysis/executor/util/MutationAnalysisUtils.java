@@ -30,7 +30,7 @@ public class MutationAnalysisUtils {
     public static String computeChangedTable(Schema original, Mutant<Schema> mutant) {
         // Reapply removers if needed
         Schema modifiedSchema;
-        if (mutant.getRemoversApplied().size() > 1) {
+        if (mutant.getRemoversApplied().size() > 0) {
             Schema duplicateSchema = original.duplicate();
             List<Mutant<Schema>> list = Arrays.asList(new Mutant<>(duplicateSchema, ""));
             for (MutantRemover mutantRemover : mutant.getRemoversApplied()) {
