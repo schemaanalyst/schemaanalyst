@@ -1,13 +1,10 @@
 package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.generation.DataGenerationReport;
-import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.logic.predicate.Predicate;
-import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
 import org.schemaanalyst.util.random.Random;
 
 /**
@@ -15,19 +12,21 @@ import org.schemaanalyst.util.random.Random;
  */
 public class DirectedRandomDataGenerator extends RandomDataGenerator {
 
+    private Random random;
     private PredicateFixer predicateFixer;
 
     public DirectedRandomDataGenerator(Random random,
-                                       RandomCellValueGenerator cellValueGenerator,
                                        int maxEvaluations,
+                                       RandomCellValueGenerator cellValueGenerator,
                                        CellInitializer cellInitializer) {
-        super(random, cellValueGenerator, maxEvaluations, cellInitializer);
+        super(maxEvaluations, cellValueGenerator, cellInitializer);
+        this.random = random;
     }
 
     @Override
     protected void initialize(Data data, Data state, Predicate predicate) {
         super.initialize(data, state, predicate);
-        predicateFixer = new PredicateFixer(predicateChecker, random, cellValueGenerator);
+        predicateFixer = new PredicateFixer(predicateChecker, random, randomCellValueGenerator);
     }
 
     @Override
