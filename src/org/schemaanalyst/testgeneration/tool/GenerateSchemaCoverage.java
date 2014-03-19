@@ -12,6 +12,7 @@ import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Runner;
+import parsedcasestudy.BookTown;
 import parsedcasestudy.Flights;
 import parsedcasestudy.UnixUsage;
 
@@ -62,7 +63,7 @@ public class GenerateSchemaCoverage extends Runner {
         DBMS dbms = new SQLiteDBMS();
         CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("random", 0L, 100000, schema);
+        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 100000, schema);
 
         // instantiate the test suite generator and generate the test suite
         TestSuiteGenerator dg = new TestSuiteGenerator(
@@ -95,15 +96,15 @@ public class GenerateSchemaCoverage extends Runner {
                              List<TestCase> failedTestCases) {
 
         // print out each test suite test case
-        System.out.println("SUCCESSFUL TEST CASES:");
-        for (TestCase testCase : testSuite.getTestCases()) {
-            printTestCase(testCase, true);
-        }
+        //System.out.println("SUCCESSFUL TEST CASES:");
+        //for (TestCase testCase : testSuite.getTestCases()) {
+        //    System.out.println("\n" + testCase);
+        //}
 
-        // print out each failed test case
+        //// print out each failed test case
         System.out.println("FAILED TEST CASES:");
         for (TestCase testCase : failedTestCases) {
-            printTestCase(testCase, false);
+            System.out.println("\n" + testCase);
         }
 
         System.out.println("\nTEST SUITE STATS:");
@@ -126,18 +127,14 @@ public class GenerateSchemaCoverage extends Runner {
 
             if (printUncoveredPredicates) {
                 List<Predicate> uncovered = coverageReport.getUncoveredRequirements();
-                if (uncovered.size() > 0) {
-                    System.out.println("Uncovered predicates: ");
-                    for (Predicate predicate : uncovered) {
-                        System.out.println(predicate.getPurposes() + ": " + predicate);
-                    }
-                }
+                //if (uncovered.size() > 0) {
+                //    System.out.println("Uncovered predicates: ");
+                //    for (Predicate predicate : uncovered) {
+                //        System.out.println(predicate.getPurposes() + ": " + predicate);
+                //    }
+                //}
             }
         }
-    }
-
-    private void printTestCase(TestCase testCase, boolean success) {
-        System.out.println("\n" + testCase);
     }
 
     private void writeTestSuite(Schema schema, DBMS dbms, TestSuite testSuite, String packageName) {
