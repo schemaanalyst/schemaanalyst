@@ -49,6 +49,11 @@ public class MutationAnalysis extends Runner {
     @Parameter("The coverage criterion to use to generate data.")
     protected String criterion = "amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage";
     /**
+     * The data generator to use.
+     */
+    @Parameter("The data generator to use.")
+    protected String dataGenerator = "avsDefaults";
+    /**
      * The maximum fitness evaluations when generating data.
      */
     @Parameter("The maximum fitness evaluations when generating data.")
@@ -125,6 +130,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", criterion);
+        result.addValue("datagenerator", dataGenerator);
         result.addValue("coverage", coverageReport.getCoverage());
         result.addValue("comparisoncoverage", comparisonCoverageReport.getCoverage());
         result.addValue("evaluations", suite.getNumEvaluations());
@@ -178,7 +184,7 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite generateTestSuite() {
         // Initialise from factories
-        final DataGenerator dataGenerator = DataGeneratorFactory.instantiate("avsDefaults", 0L , 100000);
+        final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, 0L , 100000);
         final CoverageCriterion coverageCriterion = CoverageCriterionFactory.instantiate(criterion);
         final CoverageCriterion comparisonCoverageCriterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
         
@@ -187,7 +193,7 @@ public class MutationAnalysis extends Runner {
                 schema,
                 coverageCriterion,
                 dbms.getValueFactory(),
-                dataGenerator
+                dataGen
         );
         
         // Generate suite
