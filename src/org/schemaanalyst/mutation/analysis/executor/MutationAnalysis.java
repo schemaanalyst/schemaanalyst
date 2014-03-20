@@ -25,6 +25,8 @@ import org.schemaanalyst.util.runner.Runner;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import org.schemaanalyst.testgeneration.CoverageReport;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -60,11 +62,6 @@ public class MutationAnalysis extends Runner {
     @Parameter("The random seed.")
     protected long randomseed = 0;
     /**
-     * Whether to re-use test cases.
-     */
-    @Parameter("Whether to re-use test cases.")
-    protected boolean reuse = false;
-    /**
      * The mutation pipeline to use to generate mutants.
      */
     @Parameter(value = "The mutation pipeline to use to generate mutants.",
@@ -96,6 +93,18 @@ public class MutationAnalysis extends Runner {
      * The interactor for the DBMS.
      */
     protected DatabaseInteractor databaseInteractor;
+    /**
+     * The number of failed test cases.
+     */
+    private int failedTests;
+    /**
+     * The coverage report, according to the criterion.
+     */
+    private CoverageReport coverageReport;
+    /**
+     * The coverage report, according to the subsuming criterion.
+     */
+    private CoverageReport comparisonCoverageReport;
 
     @Override
     protected void task() {
@@ -119,8 +128,12 @@ public class MutationAnalysis extends Runner {
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", criterion);
-        result.addValue("reuse", reuse);
+        result.addValue("coverage", coverageReport.getCoverage());
+        result.addValue("comparisoncoverage", comparisonCoverageReport.getCoverage());
+        result.addValue("evaluations", suite.getNumEvaluations());
+        result.addValue("averageevaluations", suite.getAvNumEvaluations());
         result.addValue("tests", suite.getNumTestCases());
+        result.addValue("failedtests", failedTests);
         result.addValue("inserts", suite.getNumInserts());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
@@ -167,17 +180,28 @@ public class MutationAnalysis extends Runner {
      * @return The test suite
      */
     private TestSuite generateTestSuite() {
-        // Initialise test case generator
+        // Initialise from factories
         final DataGenerator dataGenerator = DataGeneratorFactory.instantiate("avsDefaults", 0L , 100000);
-
-        TestSuiteGenerator generator = new TestSuiteGenerator(
+        final CoverageCriterion coverageCriterion = CoverageCriterionFactory.instantiate(criterion);
+        final CoverageCriterion comparisonCoverageCriterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
+        
+        // Construct generator
+        final TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                CoverageCriterionFactory.instantiate(criterion),
+                coverageCriterion,
                 dbms.getValueFactory(),
                 dataGenerator
         );
-        // Generate suite and return
-        return generator.generate();
+        
+        // Generate suite
+        final TestSuite testSuite = generator.generate();
+        
+        // Analyse test suite
+        failedTests = generator.getFailedTestCases().size();
+        coverageReport = new CoverageReport(testSuite, coverageCriterion.generateRequirements(schema));
+        comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
+        
+        return testSuite;
     }
 
     /**
