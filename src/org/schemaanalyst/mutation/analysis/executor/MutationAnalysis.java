@@ -35,22 +35,19 @@ import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
  *
  * @author Chris J. Wright
  */
-@RequiredParameters("casestudy criterion")
+@RequiredParameters("casestudy")
 public class MutationAnalysis extends Runner {
 
     /**
      * The name of the schema to use.
      */
     @Parameter("The name of the schema to use.")
-    /**
-     * The name of the schema to use.
-     */
     protected String casestudy;
     /**
      * The coverage criterion to use to generate data.
      */
     @Parameter("The coverage criterion to use to generate data.")
-    protected String criterion;
+    protected String criterion = "amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage";
     /**
      * The maximum fitness evaluations when generating data.
      */
