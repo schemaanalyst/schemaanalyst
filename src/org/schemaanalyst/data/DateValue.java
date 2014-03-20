@@ -10,7 +10,7 @@ public class DateValue extends Value
     protected NumericValue year, month, day;
 
     public DateValue() {
-        this(0, 0, 0);
+        this(2000, 1, 1);
     }
 
     public DateValue(int year, int month, int day) {
