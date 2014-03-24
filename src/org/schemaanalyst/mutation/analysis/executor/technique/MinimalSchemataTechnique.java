@@ -59,11 +59,11 @@ public class MinimalSchemataTechnique extends Technique {
                 changedTableMap.put(differentTable, list);
             }
         }
-        
+
         // Build the meta-mutant schema and SQL statements
         Schema metamutant = MutationAnalysisUtils.renameAndMergeMutants(schema, mutants);
         createStmts = sqlWriter.writeCreateTableStatements(metamutant);
-        dropStmts = sqlWriter.writeDropTableStatements(metamutant,true);
+        dropStmts = sqlWriter.writeDropTableStatements(metamutant, true);
         deleteStmts = sqlWriter.writeDeleteFromTableStatements(metamutant);
 
         // Build map of results
@@ -77,30 +77,24 @@ public class MinimalSchemataTechnique extends Technique {
         executeCreateStmts();
         for (TestCase testCase : testSuite.getTestCases()) {
             executeDeleteStmts();
-            // State inserts
-            Map<Integer, TestCaseResult> failedInserts = new HashMap<>();
-            Set<Integer> affectedMutants = new HashSet<>();
-            Data state = testCase.getState();
             TestCaseResult normalTestResult = null;
-            normalTestResult = executeTestCase(state, affectedMutants, normalTestResult, failedInserts);
-            // Data inserts
-            Data data = testCase.getData();
-            normalTestResult = executeTestCase(data, affectedMutants, normalTestResult, failedInserts);
+            Map<Integer, TestCaseResult> failedMutants = new HashMap<>();
+
+            Data data = testCase.getState();
+            normalTestResult = executeInserts(data, normalTestResult, failedMutants, testCase);
+            data = testCase.getData();
+            normalTestResult = executeInserts(data, normalTestResult, failedMutants, testCase);
             if (normalTestResult == null) {
-                normalTestResult = TestCaseResult.SuccessfulTestCaseResult;
-            }
-            for (int id = 0; id < mutants.size(); id++) {
-                TestCaseResult testCaseResult;
-                if (!affectedMutants.contains(id)) {
-                    testCaseResult = normalTestResult;
-                } else if (failedInserts.containsKey(id)) {
-                    testCaseResult = failedInserts.get(id);
-                } else {
-                    testCaseResult = TestCaseResult.SuccessfulTestCaseResult;
+                for (int i = 0; i < mutants.size(); i++) {
+                    if (!failedMutants.containsKey(i)) {
+                        resultMap.get(i).add(testCase, TestCaseResult.SuccessfulTestCaseResult);
+                    }
                 }
-                resultMap.get(id).add(testCase, testCaseResult);
             }
+            
+            
         }
+
         // Build the TestSuiteResult objects
         for (int i = 0; i < mutants.size(); i++) {
             TestSuiteResult mutantResult = resultMap.get(i);
@@ -110,35 +104,45 @@ public class MinimalSchemataTechnique extends Technique {
                 result.addLive(mutants.get(i));
             }
         }
-        
+
         executeDropStmts();
 
         return result;
     }
 
-    private TestCaseResult executeTestCase(Data state, Set<Integer> affectedMutants, TestCaseResult normalTestResult, Map<Integer, TestCaseResult> failedInserts) {
+    private TestCaseResult executeInserts(Data data, TestCaseResult normalTestResult, Map<Integer, TestCaseResult> failedMutants, TestCase testCase) {
         for (Table table : schema.getTablesInOrder()) {
-            if (state.getTables().contains(table)) {
+            if (data.getTables().contains(table)) {
                 List<Integer> applicableMutants = changedTableMap.get(table.getIdentifier().get());
                 applicableMutants = applicableMutants == null ? new ArrayList<Integer>() : applicableMutants;
-                affectedMutants.addAll(applicableMutants);
-                for (Row row : state.getRows(table)) {
+                for (Row row : data.getRows(table)) {
                     String insert = sqlWriter.writeInsertStatement(row);
-                    // Only insert for normal if we haven't failed yet
+                    // Only insert if we haven't failed yet
                     if (normalTestResult == null) {
                         Integer normalResult = databaseInteractor.executeUpdate(insert);
                         if (normalResult != 1) {
                             normalTestResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + normalResult, insert));
                         }
                     }
+                    
                     for (Integer mutantId : applicableMutants) {
-                        // Only insert for mutant if we haven't failed yet
-                        if (!failedInserts.containsKey(mutantId)) {
+                        // Only insert if we haven't failed yet
+                        if (!failedMutants.containsKey(mutantId)) {
                             String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
                             Integer mutResult = databaseInteractor.executeUpdate(mutInsert);
                             if (mutResult != 1) {
-                                failedInserts.put(mutantId, new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert)));
+                                TestCaseResult mutantResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert));
+                                failedMutants.put(mutantId, mutantResult);
+                                resultMap.get(mutantId).add(testCase, mutantResult);
                             }
+                        }
+                    }
+                    
+                    // If a mutant isn't applicable, then it should 'inherit' the normal result
+                    for (int i = 0; i < mutants.size(); i++) {
+                        if (!applicableMutants.contains(i) && normalTestResult != null) {
+                            resultMap.get(i).add(testCase, normalTestResult);
+                            failedMutants.put(i, normalTestResult);
                         }
                     }
                 }
