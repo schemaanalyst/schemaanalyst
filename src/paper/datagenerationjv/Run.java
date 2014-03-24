@@ -58,16 +58,16 @@ public class Run extends Runner {
         System.out.println("---------------------------------------------");
 
         // successful test cases
-        //for (TestCase testCase : testSuite.getTestCases()) {
-        //    System.out.println(testCase + "\n");
-        //}
-
-        for (TestCase testCase : failedTestCases) {
-            for (Predicate predicate : testCase.getPredicates()) {
-                System.out.println(predicate);
-            }
-            System.out.println();
+        for (TestCase testCase : testSuite.getTestCases()) {
+            System.out.println(testCase + "\n");
         }
+
+        //for (TestCase testCase : failedTestCases) {
+        //    for (Predicate predicate : testCase.getPredicates()) {
+        //        System.out.println(predicate);
+        //    }
+        //    System.out.println();
+        //}
     }
 
     private Schema instantiateSchema() {
