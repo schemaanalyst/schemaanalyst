@@ -2,6 +2,7 @@ package org.schemaanalyst.data.generation.directedrandom;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.logic.predicate.checker.MatchClauseChecker;
 import org.schemaanalyst.logic.predicate.checker.MatchRecord;
@@ -42,45 +43,49 @@ public class MatchClauseFixer extends Fixer {
             int randomRowIndex = random.nextInt(matchRecord.getNumComparisonRows());
             Row alternativeRow = matchRecord.getComparisonRow(randomRowIndex);
 
-            boolean takeSecond = matchRecord.isModifiableRow(randomRowIndex) && random.nextBoolean();
+            boolean modifyAlternativeCell = matchRecord.isModifiableRow(randomRowIndex) && random.nextBoolean();
 
             boolean isOr = matchClauseChecker.getClause().getMode().isOr();
             if (isOr) {
                 // if it's an OR MatchClause, we only need to fix one pair of cells
                 int randomCellIndex = random.nextInt(originalRow.getNumCells());
-                Cell firstCell = originalRow.getCell(randomCellIndex);
-                Cell secondCell = alternativeRow.getCell(randomCellIndex);
-                fixCells(firstCell, secondCell, takeSecond, attemptMatch);
+                Cell originalCell = originalRow.getCell(randomCellIndex);
+                Cell alternativeCell = alternativeRow.getCell(randomCellIndex);
+                fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
             } else {
                 ListIterator<Cell> originalRowIterator = originalRow.getCells().listIterator();
                 ListIterator<Cell> alternativeRowIterator = alternativeRow.getCells().listIterator();
 
                 while (originalRowIterator.hasNext()) {
-                    Cell firstCell = originalRowIterator.next();
-                    Cell secondCell = alternativeRowIterator.next();
-                    fixCells(firstCell, secondCell, takeSecond, attemptMatch);
+                    Cell originalCell = originalRowIterator.next();
+                    Cell alternativeCell = alternativeRowIterator.next();
+                    fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
                 }
             }
         }
     }
 
-    private void fixCells(Cell firstCell, Cell secondCell, boolean takeSecond, boolean attemptMatch) {
+    private void fixCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell, boolean attemptMatch) {
         if (attemptMatch) {
-            matchCells(firstCell, secondCell, takeSecond);
+            matchCells(originalCell, alternativeCell, modifyAlternativeCell);
         } else {
-            mismatchCells(firstCell, secondCell, takeSecond);
+            mismatchCells(originalCell, alternativeCell, modifyAlternativeCell);
         }
     }
 
-    private void matchCells(Cell firstCell, Cell secondCell, boolean takeSecond) {
-        if (takeSecond) {
-            secondCell.setValue(firstCell.getValue().duplicate());
+    private void matchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
+        Cell targetCell = modifyAlternativeCell ? alternativeCell : originalCell;
+        Cell sourceCell = modifyAlternativeCell ? originalCell : alternativeCell;
+
+        Value value = sourceCell.getValue();
+        if (value == null) {
+            targetCell.setNull(true);
         } else {
-            firstCell.setValue(secondCell.getValue().duplicate());
+            targetCell.setValue(value.duplicate());
         }
     }
 
-    private void mismatchCells(Cell firstCell, Cell secondCell, boolean takeSecond) {
-        cellValueGenerator.generateCellValue(takeSecond ? secondCell : firstCell);
+    private void mismatchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
+        cellValueGenerator.generateCellValue(modifyAlternativeCell ? alternativeCell : originalCell);
     }
 }
