@@ -3,13 +3,17 @@ package org.schemaanalyst.data;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import static org.schemaanalyst.data.DateTimeValueDefaults.*;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_MINUTE;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_SECOND;
+
 public class TimestampValue extends NumericValue {
 
     public static int MIN = -2147483648, MAX = 2147483647;
     private static final long serialVersionUID = 8677553167833978258L;
 
     public TimestampValue() {
-        super(MIN, MAX);
+        this(DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND);
     }
 
     public TimestampValue(int value) {
@@ -17,7 +21,7 @@ public class TimestampValue extends NumericValue {
     }
 
     public TimestampValue(int year, int month, int day) {
-        this(year, month, day, 0, 0, 0);
+        this(year, month, day, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND);
     }
 
     public TimestampValue(int year, int month, int day, int hour, int minute, int second) {
@@ -30,7 +34,6 @@ public class TimestampValue extends NumericValue {
         calendar.set(year, month - 1, day, hour, minute, second);
 
         int milliseconds = (int) (calendar.getTimeInMillis() / 1000);
-
         set(milliseconds);
     }
 

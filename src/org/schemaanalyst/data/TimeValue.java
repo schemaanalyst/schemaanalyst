@@ -3,20 +3,23 @@ package org.schemaanalyst.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TimeValue extends Value
-        implements CompoundValue {
+import static org.schemaanalyst.data.DateTimeValueDefaults.*;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_MINUTE;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_SECOND;
+
+public class TimeValue extends Value implements CompoundValue {
 
     private static final long serialVersionUID = 8345571547413381450L;
     protected NumericValue hour, minute, second;
 
     public TimeValue() {
-        this(0, 0, 0);
+        this(DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND);
     }
 
     public TimeValue(int hour, int minute, int second) {
-        this.hour = new NumericValue(hour, 0, 23);
-        this.minute = new NumericValue(minute, 0, 59);
-        this.second = new NumericValue(second, 0, 59);
+        this.hour = new NumericValue(hour, MIN_HOUR, MAX_HOUR);
+        this.minute = new NumericValue(minute, MIN_MINUTE, MAX_MINUTE);
+        this.second = new NumericValue(second, MIN_SECOND, MAX_SECOND);
     }
 
     public NumericValue getHour() {

@@ -3,7 +3,7 @@ package org.schemaanalyst.data;
 public class BooleanValue extends Value {
 
     private static final long serialVersionUID = 2243548983716445823L;
-    protected boolean value;
+    protected boolean value = false;
 
     public BooleanValue() {
     }

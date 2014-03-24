@@ -11,6 +11,7 @@ public class StringValue extends Value
     public static final int LOWER_A_CHAR = 97;
     public static final int LOWER_Z_CHAR = 122;
     public static final int NO_MAX_LENGTH = -1;
+
     protected int maxLength = NO_MAX_LENGTH;
     protected int characterDefault = LOWER_A_CHAR;
     protected int characterMin = UPPER_A_CHAR;

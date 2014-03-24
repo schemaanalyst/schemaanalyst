@@ -1,6 +1,7 @@
 package org.schemaanalyst.data;
 
 import java.util.List;
+import static org.schemaanalyst.data.DateTimeValueDefaults.*;
 
 public class DateTimeValue extends DateValue {
 
@@ -8,14 +9,14 @@ public class DateTimeValue extends DateValue {
     protected NumericValue hour, minute, second;
 
     public DateTimeValue() {
-        this(2000, 1, 1, 0, 0, 0);
+        this(DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY, DEFAULT_HOUR, DEFAULT_MINUTE, DEFAULT_SECOND);
     }
 
     public DateTimeValue(int year, int month, int day, int hour, int minute, int second) {
         super(year, month, day);
-        this.hour = new NumericValue(hour, 0, 23);
-        this.minute = new NumericValue(minute, 0, 59);
-        this.second = new NumericValue(second, 0, 59);
+        this.hour = new NumericValue(hour, MIN_HOUR, MAX_HOUR);
+        this.minute = new NumericValue(minute, MIN_MINUTE, MAX_MINUTE);
+        this.second = new NumericValue(second, MIN_SECOND, MAX_SECOND);
     }
 
     public NumericValue getHour() {

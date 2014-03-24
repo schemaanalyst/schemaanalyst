@@ -3,6 +3,7 @@ package paper.datagenerationjv;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
+import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
@@ -61,9 +62,12 @@ public class Run extends Runner {
         //    System.out.println(testCase + "\n");
         //}
 
-        //for (TestCase testCase : failedTestCases) {
-        //    System.out.println(testCase.getPredicates());
-        //}
+        for (TestCase testCase : failedTestCases) {
+            for (Predicate predicate : testCase.getPredicates()) {
+                System.out.println(predicate);
+            }
+            System.out.println();
+        }
     }
 
     private Schema instantiateSchema() {

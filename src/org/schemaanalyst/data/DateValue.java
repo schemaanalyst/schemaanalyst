@@ -3,6 +3,10 @@ package org.schemaanalyst.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.schemaanalyst.data.DateTimeValueDefaults.*;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_MINUTE;
+import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_SECOND;
+
 public class DateValue extends Value
         implements CompoundValue {
 
@@ -10,13 +14,13 @@ public class DateValue extends Value
     protected NumericValue year, month, day;
 
     public DateValue() {
-        this(2000, 1, 1);
+        this(DEFAULT_YEAR, DEFAULT_MONTH, DEFAULT_DAY);
     }
 
     public DateValue(int year, int month, int day) {
-        this.year = new NumericValue(year, 1000, 9999);
-        this.month = new NumericValue(month, 1, 12);
-        this.day = new NumericValue(day, 1, 31);
+        this.year = new NumericValue(year, MIN_YEAR, MAX_YEAR);
+        this.month = new NumericValue(month, MIN_MONTH, MAX_MONTH);
+        this.day = new NumericValue(day, MIN_DAY, MAX_DAY);
     }
 
     public NumericValue getYear() {
