@@ -111,12 +111,7 @@ public class FullTransactedOriginal extends Runner {
         result.addValue("trial", trial);
 
         // Instantiate the DBMS and related objects
-        DBMS dbms;
-        try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
-        }
+        DBMS dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         SQLWriter sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 

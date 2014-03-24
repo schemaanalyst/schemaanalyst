@@ -53,11 +53,7 @@ public abstract class GenerateResults extends Runner {
         }
 
         // Instantiate the DBMS and related objects
-        try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
-        }
+        dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 

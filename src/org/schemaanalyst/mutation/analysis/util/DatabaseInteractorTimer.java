@@ -34,12 +34,7 @@ public class DatabaseInteractorTimer extends Runner {
 
     @Override
     protected void task() {
-        DBMS dbms;
-        try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
-        }
+        DBMS dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         SQLWriter sqlWriter = dbms.getSQLWriter();
         DatabaseInteractor databaseInteractor = dbms.getDatabaseInteractor("test", databaseConfiguration, locationsConfiguration);
         

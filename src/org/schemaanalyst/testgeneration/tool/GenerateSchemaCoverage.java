@@ -5,17 +5,15 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
+import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
+import org.schemaanalyst.util.runner.Parameter;
+import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
-import parsedcasestudy.BankAccount;
-import parsedcasestudy.BookTown;
-import parsedcasestudy.Flights;
-import parsedcasestudy.UnixUsage;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,72 +25,60 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 /**
  * Created by phil on 21/01/2014.
  */
+
+@RequiredParameters("schema criterion datagenerator dbms")
 public class GenerateSchemaCoverage extends Runner {
 
-    boolean printUncoveredPredicates = true;
+    @Parameter("The name of the schema to use.")
+    protected String schema;
+
+    @Parameter("The name of the coverage criterion to use.")
+    protected String criterion;
+
+    @Parameter("The name of the data generator to use.")
+    protected String datagenerator;
+
+    @Parameter("The name of the DBMS to use.")
+    protected String dbms;
+
+    @Parameter("Whether a test suite should be written or not.")
+    protected boolean buildTestSuite = false;
 
     @Override
     protected void task() {
 
-        // these are parameters of the task (TODO: formalize these as per Runner ...)
-        Schema schema = new BankAccount();
-        // Schema schema = new BookTown();
-        // Schema schema = new Cloc();
-        // Schema schema = new CoffeeOrders();
-        // Schema schema = new CustomerOrder();
-        // Schema schema = new DellStore();
-        // Schema schema = new Employee();
-        // Schema schema = new Examination();
-        // Schema schema = new Flights();
-        // Schema schema = new FrenchTowns();
-        // Schema schema = new Inventory();
-        // Schema schema = new Iso3166();
-        // Schema schema = new JWhoisServer();
-        // Schema schema = new NistDML181();
-        // Schema schema = new NistDML182();
-        // Schema schema = new NistDML183();
-        // Schema schema = new NistWeather();
-        // Schema schema = new NistXTS748();
-        // Schema schema = new NistXTS749();
-        // Schema schema = new Person();
-        // Schema schema = new Products();
-        // Schema schema = new RiskIt();
-        // Schema schema = new StudentResidence();
-        // Schema schema = new UnixUsage();
-        // Schema schema = new Usda();
+        // instantiate objects for parameters
+        Schema schemaObject = instantiateSchema();
+        CoverageCriterion criterionObject = CoverageCriterionFactory.instantiate(criterion);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 10000, schemaObject);
+        DBMS dbmsObject = DBMSFactory.instantiate(dbms);
 
-        DBMS dbms = new SQLiteDBMS();
-        CoverageCriterion criterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
+        // generate the test suite
+        TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(
+                schemaObject,
+                criterionObject,
+                dbmsObject.getValueFactory(),
+                dataGeneratorObject);
+        TestSuite testSuite = testSuiteGenerator.generate();
 
-        DataGenerator dataGenerator = DataGeneratorFactory.instantiate("randomDefaults", 0L, 10000, schema);
+        printReport(schemaObject, criterionObject, testSuite, testSuiteGenerator.getFailedTestCases());
 
-        // instantiate the test suite generator and generate the test suite
-        TestSuiteGenerator dg = new TestSuiteGenerator(
-                schema,
-                criterion,
-                dbms.getValueFactory(),
-                dataGenerator);
+        if (buildTestSuite) {
+            // execute each test case to see what the DBMS result is for each row generated (accept / row)
+            TestCaseExecutor executor = new TestCaseExecutor(
+                    schemaObject,
+                    dbmsObject,
+                    new DatabaseConfiguration(),
+                    new LocationsConfiguration());
+            executor.execute(testSuite);
 
-        TestSuite testSuite = dg.generate();
-
-        // execute each test case to see what the DBMS result is for each row generated (accept / row)
-        TestCaseExecutor executor = new TestCaseExecutor(
-                schema,
-                dbms,
-                new DatabaseConfiguration(),
-                new LocationsConfiguration());
-
-        executor.execute(testSuite);
-
-        // write report to console
-        printReport(schema, criterion, testSuite, dg.getFailedTestCases());
-
-        // write JUnit test suite to file
-        writeTestSuite(schema, dbms, testSuite, "generatedtest");
+            // write JUnit test suite to file
+            writeTestSuite(schemaObject, dbmsObject, testSuite, "generatedtest");
+        }
     }
 
-    private void printReport(Schema schema,
-                             CoverageCriterion criterionUsed,
+    private void printReport(Schema schemaObject,
+                             CoverageCriterion criterionObject,
                              TestSuite testSuite,
                              List<TestCase> failedTestCases) {
 
@@ -118,15 +104,15 @@ public class GenerateSchemaCoverage extends Runner {
         for (CoverageCriterion criterion : CoverageCriterionFactory.allCriteria()) {
             String name = criterion.getName();
             String starred = "";
-            if (name.equals(criterionUsed.getName())) {
+            if (name.equals(criterionObject.getName())) {
                 starred = " (*)";
             }
 
             CoverageReport coverageReport =
-                    new CoverageReport(testSuite, criterion.generateRequirements(schema));
+                    new CoverageReport(testSuite, criterion.generateRequirements(schemaObject));
             System.out.println(name + starred + ": " + coverageReport.getCoverage());
 
-            if (printUncoveredPredicates) {
+            //if (printUncoveredPredicates) {
                 List<Predicate> uncovered = coverageReport.getUncoveredRequirements();
                 //if (uncovered.size() > 0) {
                 //    System.out.println("Uncovered predicates: ");
@@ -134,7 +120,7 @@ public class GenerateSchemaCoverage extends Runner {
                 //        System.out.println(predicate.getPurposes() + ": " + predicate);
                 //    }
                 //}
-            }
+            //}
         }
     }
 
@@ -150,6 +136,14 @@ public class GenerateSchemaCoverage extends Runner {
             fileOut.println(javaCode);
             System.out.println("\n[JUnit test suite written to " + javaFile + "]");
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Schema instantiateSchema() {
+        try {
+            return (Schema) Class.forName(schema).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
             throw new RuntimeException(e);
         }
     }

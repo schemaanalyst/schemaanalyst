@@ -1,5 +1,6 @@
 package org.schemaanalyst.dbms;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,24 +16,19 @@ public class DBMSFactory {
      * 
      * @param name The DBMS name
      * @return The new DBMS instance
-     * @throws ClassNotFoundException If the DBMS class name is not valid
-     * @throws InstantiationException If the DBMS class cannot be instantiated
-     * @throws IllegalAccessException If the DBMS class cannot be instantiated
      */
-    public static DBMS instantiate(String name) throws ClassNotFoundException,
-                                                       InstantiationException,
-                                                       IllegalAccessException {
+    public static DBMS instantiate(String name) {
         if (!getDBMSChoices().contains(name)) {
-            throw new UnknownDBMSException("DBMS \"" + name + "\" is unrecognised or not supported");
+            throw new DBMSException("Unknown DBMS: \"" + name + "\" is unrecognised or not supported");
         }
-        
-        String dbmsClassName =
-                "org.schemaanalyst.dbms."
-                + name.toLowerCase() + "." + name + "DBMS";
 
-        Class<?> dbmsClass = Class.forName(dbmsClassName);
-        DBMS dbms = (DBMS) dbmsClass.newInstance();
-        return dbms;
+        try {
+            String dbmsClassName = "org.schemaanalyst.dbms." + name.toLowerCase() + "." + name + "DBMS";
+            Class<?> dbmsClass = Class.forName(dbmsClassName);
+            return (DBMS) dbmsClass.newInstance();
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
     
     /**

@@ -141,11 +141,7 @@ public class MutationAnalysis extends Runner {
      */
     private void instantiateParameters() {
         // Get the required DBMS class, writer and interactor
-        try {
-            dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
-        }
+        dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
         sqlWriter = dbms.getSQLWriter();
         databaseInteractor = dbms.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 

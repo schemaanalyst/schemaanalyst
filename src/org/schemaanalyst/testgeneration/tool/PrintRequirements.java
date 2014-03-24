@@ -24,7 +24,7 @@ public class PrintRequirements extends Runner {
     protected void task() {
         Requirements requirements =
                 CoverageCriterionFactory.instantiate(criterion)
-                        .generateRequirements(instantiateSchema(schema));
+                        .generateRequirements(instantiateSchema());
 
         System.out.println("Number of requirements: " + requirements.size());
 
@@ -38,13 +38,11 @@ public class PrintRequirements extends Runner {
         }
     }
 
-    protected Schema instantiateSchema(String casestudy) {
-        Schema schema;
+    private Schema instantiateSchema() {
         try {
-            schema = (Schema) Class.forName(casestudy).newInstance();
-            return schema;
-        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
-            throw new RuntimeException(ex);
+            return (Schema) Class.forName(schema).newInstance();
+        } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
         }
     }
 

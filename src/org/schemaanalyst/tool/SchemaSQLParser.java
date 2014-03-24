@@ -29,13 +29,9 @@ public class SchemaSQLParser extends Runner {
     protected DBMS dbmsObject;
     
     protected void instantiateDBMS() {
-        try {
-            if (dbmsObject == null) {
-                dbmsObject = DBMSFactory.instantiate(dbms);
-            }
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }  
+        if (dbmsObject == null) {
+            dbmsObject = DBMSFactory.instantiate(dbms);
+        }
     }
     
     protected void parseSchema() {
