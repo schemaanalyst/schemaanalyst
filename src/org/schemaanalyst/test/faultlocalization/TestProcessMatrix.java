@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.schemaanalyst.faultlocalization.ProcessMatrix;
 import org.schemaanalyst.faultlocalization.ResultMatrix;
 import org.schemaanalyst.faultlocalization.ResultMatrixRow;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 import java.util.ArrayList;
 
@@ -14,17 +16,19 @@ public class TestProcessMatrix {
 
 	@Test
 	public void testRankingsSame() {
-		ResultMatrixRow r1 = new ResultMatrixRow("first constraint" , "first mutant", 2, 5, 5, 2, false);
-		ResultMatrixRow r2 = new ResultMatrixRow("second constraint" , "second mutant", 2, 5, 4, 2, false);
-		ResultMatrixRow r3 = new ResultMatrixRow("third constraint" , "third mutant", 2, 5, 3, 2, false);
+		Constraint c = null;
+		Schema s = null;
+		ResultMatrixRow r1 = new ResultMatrixRow(c , "first mutant", 2, 5, 5, 2, false);
+		ResultMatrixRow r2 = new ResultMatrixRow(c , "second mutant", 2, 5, 4, 2, false);
+		ResultMatrixRow r3 = new ResultMatrixRow(c , "third mutant", 2, 5, 3, 2, false);
 		
 		ArrayList<ResultMatrixRow> rows = new ArrayList<>();
 		rows.add(r1);
 		rows.add(r2);
 		rows.add(r3);
 		
-		ResultMatrix matrix = new ResultMatrix(rows);
-		ProcessMatrix.Process(matrix);
+		ResultMatrix matrix = new ResultMatrix(s, rows);
+		ProcessMatrix.Process(s, matrix);
 		ResultMatrix ochiai = ProcessMatrix.OchiaiRanked;
 		ResultMatrix tarantula = ProcessMatrix.TarantulaRanked;
 		ResultMatrix jaccard = ProcessMatrix.JaccardRanked;
@@ -57,18 +61,19 @@ public class TestProcessMatrix {
 	
 	@Test
 	public void testRankingsDifferent(){
-		
-		ResultMatrixRow r1 = new ResultMatrixRow("first constraint" , "first mutant", 5, 13, 10, 4, false);
-		ResultMatrixRow r2 = new ResultMatrixRow("second constraint" , "second mutant", 5, 13, 4, 2, false);
-		ResultMatrixRow r3 = new ResultMatrixRow("third constraint" , "third mutant", 5, 13, 8, 1, false);
+		Constraint c = null;
+		Schema s = null;
+		ResultMatrixRow r1 = new ResultMatrixRow(c , "first mutant", 5, 13, 10, 4, false);
+		ResultMatrixRow r2 = new ResultMatrixRow(c , "second mutant", 5, 13, 4, 2, false);
+		ResultMatrixRow r3 = new ResultMatrixRow(c , "third mutant", 5, 13, 8, 1, false);
 		
 		ArrayList<ResultMatrixRow> rows = new ArrayList<>();
 		rows.add(r1);
 		rows.add(r2);
 		rows.add(r3);
 		
-		ResultMatrix matrix = new ResultMatrix(rows);
-		ProcessMatrix.Process(matrix);
+		ResultMatrix matrix = new ResultMatrix(s,rows);
+		ProcessMatrix.Process(s, matrix);
 		ResultMatrix ochiai = ProcessMatrix.OchiaiRanked;
 		ResultMatrix tarantula = ProcessMatrix.TarantulaRanked;
 		ResultMatrix jaccard = ProcessMatrix.JaccardRanked;

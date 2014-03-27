@@ -1,8 +1,10 @@
 package org.schemaanalyst.faultlocalization;
 
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+
 public class ResultMatrixRow {
 
-	public String DBConstraint;
+	public Constraint DBConstraint;
 	public String Mutant;
 	public int totFailed;
 	public int totPassed;
@@ -14,7 +16,7 @@ public class ResultMatrixRow {
 	public double TarantulaScore;
 	public double JaccardScore;
 	
-	public ResultMatrixRow(String dbc, String m, int tf, int tp, int p, int f, boolean fau){
+	public ResultMatrixRow(Constraint dbc, String m, int tf, int tp, int p, int f, boolean fau){
 		this.DBConstraint = dbc;
 		this.Mutant = m;
 		this.totFailed = tf;
@@ -24,11 +26,15 @@ public class ResultMatrixRow {
 		this.fault = fau;
 	}
 
-	public String getDBConstraint() {
+	public Constraint getDBConstraint() {
 		return DBConstraint;
 	}
+	
+	public String getDBConstraintName(){
+		return DBConstraint.getName();
+	}
 
-	public void setDBConstraint(String dBConstraint) {
+	public void setDBConstraint(Constraint dBConstraint) {
 		DBConstraint = dBConstraint;
 	}
 

@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import org.schemaanalyst.sqlrepresentation.Schema;
+
 public class ProcessMatrix {
+	public static Schema schema;
 	public static ResultMatrix OchiaiRanked;
 	public static ResultMatrix TarantulaRanked;
 	public static ResultMatrix JaccardRanked;
 
-	public static void Process(ResultMatrix matrix) {
+	public static void Process(Schema s, ResultMatrix matrix) {
+		schema = s;
 		setScores(matrix);
 		setRanks(matrix);
 	}
@@ -37,13 +41,13 @@ public class ProcessMatrix {
 		}
 
 		Collections.sort(matrix1, new OchiaiComparator());
-		OchiaiRanked = new ResultMatrix(matrix1);
+		OchiaiRanked = new ResultMatrix(schema, matrix1);
 
 		Collections.sort(matrix2, new TarantulaComparator());
-		TarantulaRanked = new ResultMatrix(matrix2);
+		TarantulaRanked = new ResultMatrix(schema, matrix2);
 
 		Collections.sort(matrix3, new JaccardComparator());
-		JaccardRanked = new ResultMatrix(matrix3);
+		JaccardRanked = new ResultMatrix(schema, matrix3);
 
 	}
 

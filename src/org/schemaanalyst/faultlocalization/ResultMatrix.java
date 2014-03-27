@@ -2,16 +2,20 @@ package org.schemaanalyst.faultlocalization;
 
 import java.util.ArrayList;
 
+import org.schemaanalyst.sqlrepresentation.Schema;
+
 public class ResultMatrix {
 	
 	ArrayList<ResultMatrixRow> rmr;
 	int indexOfMaxScore;
+	Schema schema;
 	
 	public ResultMatrix(){
 		
 	}
 	
-	public ResultMatrix(ArrayList<ResultMatrixRow> row){
+	public ResultMatrix(Schema s, ArrayList<ResultMatrixRow> row){
+		schema = s;
 		rmr = row;
 	}	
 	
