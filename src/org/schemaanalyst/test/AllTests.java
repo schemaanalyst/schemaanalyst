@@ -16,7 +16,6 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.data.generation.search.TestAlternatingValueSearch.class,
 	org.schemaanalyst.test.data.generation.search.TestSearchEvaluation.class,
 	org.schemaanalyst.test.data.generation.search.objective.TestDistanceObjectiveValue.class,
-	org.schemaanalyst.test.data.generation.search.objective.TestMatchClauseObjectiveFunction.class,
 	org.schemaanalyst.test.data.generation.search.objective.TestObjectiveValue.class,
 	org.schemaanalyst.test.data.generation.search.objective.row.TestAndExpressionRowObjectiveFunction.class,
 	org.schemaanalyst.test.data.generation.search.objective.row.TestBetweenExpressionRowObjectiveFunction.class,
