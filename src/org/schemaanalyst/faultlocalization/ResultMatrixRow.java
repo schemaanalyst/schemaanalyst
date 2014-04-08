@@ -10,11 +10,16 @@ public class ResultMatrixRow {
 	public int totPassed;
 	public int passed;
 	public int failed;
-	public double score;
+	public double oScore;
 	public boolean fault;
 	public double OchiaiScore;
 	public double TarantulaScore;
 	public double JaccardScore;
+	public double jScore;
+	public double tScore;
+	public int ochiaiRank;
+	public int tarantulaRank;
+	public int jaccardRank;
 	
 	public ResultMatrixRow(Constraint dbc, String m, int tf, int tp, int p, int f, boolean fau){
 		this.DBConstraint = dbc;
@@ -78,12 +83,12 @@ public class ResultMatrixRow {
 		this.failed = failed;
 	}
 
-	public double getScore() {
-		return score;
+	public double getScoreOchiai() {
+		return oScore;
 	}
 
-	public void setScore(double score) {
-		this.score = score;
+	public void setScoreOchiai(double score) {
+		this.oScore = score;
 	}
 
 	public boolean isFault() {
@@ -119,5 +124,43 @@ public class ResultMatrixRow {
 	}
 	
 	
+	public double getScoreTarantula() {
+		return tScore;
+	}
+
+	public void setScoreTarantula(double score) {
+		this.tScore = score;
+	}
+	
+	public double getScoreJaccard() {
+		return jScore;
+	}
+
+	public void setScoreJaccard(double score) {
+		this.jScore = score;
+	}
+	public int getOchiaiRank() {
+		return ochiaiRank;
+	}
+
+	public void setOchiaiRank(int ochiaiRank) {
+		this.ochiaiRank = ochiaiRank;
+	}
+
+	public int getTarantulaRank() {
+		return tarantulaRank;
+	}
+
+	public void setTarantulaRank(int tarantulaRank) {
+		this.tarantulaRank = tarantulaRank;
+	}
+
+	public int getJaccardRank() {
+		return jaccardRank;
+	}
+
+	public void setJaccardRank(int jaccardRank) {
+		this.jaccardRank = jaccardRank;
+	}
 	
 }

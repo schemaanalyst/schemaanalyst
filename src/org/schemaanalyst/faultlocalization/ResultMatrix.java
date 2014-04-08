@@ -19,7 +19,7 @@ public class ResultMatrix {
 		rmr = row;
 	}	
 	
-	public ArrayList<ResultMatrixRow> getRmr() {
+	public ArrayList<ResultMatrixRow> getRows() {
 		return rmr;
 	}
 
