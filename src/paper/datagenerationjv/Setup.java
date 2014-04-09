@@ -13,7 +13,7 @@ public class Setup {
             "Cloc",
             "CoffeeOrders",
             "CustomerOrder",
-            "DellStore ",
+            "DellStore",
             "Employee",
             "Examination",
             "Flights",
@@ -46,10 +46,10 @@ public class Setup {
     public static final String[] TECHNIQUES = {
             "avsDefaults",
             "avs",
-            "directedRandomDefaultsGenerator",
-            "directedRandomGenerator",
-            "randomDefaultsGenerator",
-            "RandomGenerator"
+            "directedRandomDefaults",
+            "directedRandom",
+            "randomDefaults",
+            "random"
     };
 
     public static final long[] SEEDS = {
