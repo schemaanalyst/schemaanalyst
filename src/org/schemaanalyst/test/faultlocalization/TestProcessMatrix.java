@@ -46,9 +46,7 @@ public class TestProcessMatrix {
 		assertEquals(0.63, ochiai.getRow(0).getOchiaiScore(), 0.01);
 		assertEquals(0.577, ochiai.getRow(1).getOchiaiScore(), 0.01);
 		assertEquals(0.53, ochiai.getRow(2).getOchiaiScore(), 0.01);
-		
-		System.out.println(ochiai.getRow(0).getDBConstraint().toString());
-		
+				
 		assertTrue(ochiai.getRow(0).getDBConstraint().toString().equals("NOT NULL(first)"));
 		assertTrue(ochiai.getRow(1).getDBConstraint().toString().equals("NOT NULL(first)"));
 		assertTrue(ochiai.getRow(2).getDBConstraint().toString().equals("NOT NULL(first)"));
