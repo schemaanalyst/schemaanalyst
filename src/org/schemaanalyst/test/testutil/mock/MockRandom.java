@@ -55,4 +55,9 @@ public class MockRandom extends Random {
     public double nextDouble() {
         return nextInt() / 100.0;
     }
+
+    @Override
+    public long nextLong() {
+        return (long) nextInt();
+    }
 }
