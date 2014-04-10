@@ -3,8 +3,12 @@ package org.schemaanalyst.faultlocalization;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class ProcessMatrix {
 	public static Schema schema;
@@ -14,11 +18,12 @@ public class ProcessMatrix {
 
 	public static void Process(Schema s, ResultMatrix matrix) {
 		schema = s;
-		setScores(matrix);
+		setMatrixScores(matrix);
 		setRanks(matrix);
+		computeScores(s);
 	}
 
-	public static void setScores(ResultMatrix matrix) {
+	public static void setMatrixScores(ResultMatrix matrix) {
 		for (int i = 0; i < matrix.size(); i++) {
 			Calculator.calculateOchiai(matrix.getRow(i));
 			Calculator.calculateTarantula(matrix.getRow(i));
@@ -50,9 +55,96 @@ public class ProcessMatrix {
 		JaccardRanked = new ResultMatrix(schema, matrix3);
 
 	}
+	public static void computeScores(Schema s){
+		ArrayList<ResultMatrixRow> oRows = OchiaiRanked.getRows();
+		rankConstraints(s);
+		int oConstraints = OchiaiRanked.size();
+		for(int i= 0; i < oRows.size(); i++){
+			if(oRows.get(i).isFault()){
+				double rank = OchiaiRanked.getRow(i).getOchiaiRank();
+				double score = (oConstraints - rank)/oConstraints;
+				oRows.get(i).setScoreOchiai(score);
+			}else{
+				oRows.get(i).setScoreOchiai(0.0);
+			}
+		}
+		
+		ArrayList<ResultMatrixRow> tRows = TarantulaRanked.getRows();
+		int tConstraints = TarantulaRanked.size();
+		for(int i= 0; i < tRows.size(); i++){
+			if(tRows.get(i).isFault()){
+				double rank = TarantulaRanked.getRow(i).getTarantulaRank();
+				double score = (tConstraints - rank)/tConstraints;
+				tRows.get(i).setScoreTarantula(score);
+			}else{
+				tRows.get(i).setScoreTarantula(0.0);
+			}
+		}
+		
+		ArrayList<ResultMatrixRow> jRows = JaccardRanked.getRows();
+		int jConstraints = JaccardRanked.size();
+		for(int i= 0; i < jRows.size(); i++){
+			if(jRows.get(i).isFault()){
+				double rank = JaccardRanked.getRow(i).getJaccardRank();
+				double score = (jConstraints - rank)/jConstraints;
+				jRows.get(i).setScoreJaccard(score);
+			}else{
+				jRows.get(i).setScoreJaccard(0.0);
+			}
+		}
+	}
+	
+	public static void rankConstraints(Schema s){
+		
+		List<Constraint> constraints = new ArrayList<>();
+		for(int i =0; i < OchiaiRanked.size(); i++){
+			if(constraints.contains(OchiaiRanked.getRow(i).getDBConstraint())){
+				
+			}else{
+				constraints.add(OchiaiRanked.getRow(i).getDBConstraint());
+			}
+		}
+		int ochiaiRank = 1;
+		for(int i = 0; i < OchiaiRanked.size()-1; i++){
+			Constraint current = OchiaiRanked.getRow(i).getDBConstraint();
+			OchiaiRanked.getRow(i).setOchiaiRank(ochiaiRank);
+			Constraint next = OchiaiRanked.getRow(i+1).getDBConstraint();
+			if(!current.equals(next) && constraints.contains(next)){
+				constraints.remove(current);
+				ochiaiRank++;
+				OchiaiRanked.getRow(i+1).setOchiaiRank(ochiaiRank);
+			}else{
+				OchiaiRanked.getRow(i).setOchiaiRank(ochiaiRank);
+			}
+		}
 
-	public static void writeToCSV() {
-
+		int tarantulaRank = 1;
+		for(int i = 0; i < TarantulaRanked.size()-1; i++){
+			Constraint current = TarantulaRanked.getRow(i).getDBConstraint();
+			TarantulaRanked.getRow(i).setTarantulaRank(tarantulaRank);
+			Constraint next = TarantulaRanked.getRow(i+1).getDBConstraint();
+			if(!current.equals(next) && constraints.contains(next)){
+				constraints.remove(current);
+				tarantulaRank++;
+				TarantulaRanked.getRow(i+1).setTarantulaRank(tarantulaRank);
+			}else{
+				TarantulaRanked.getRow(i).setTarantulaRank(tarantulaRank);
+			}
+		}
+		
+		int jaccardRank = 1;
+		for(int i = 0; i < JaccardRanked.size()-1; i++){
+			Constraint current = JaccardRanked.getRow(i).getDBConstraint();
+			JaccardRanked.getRow(i).setJaccardRank(jaccardRank);
+			Constraint next = JaccardRanked.getRow(i+1).getDBConstraint();
+			if(!current.equals(next) && constraints.contains(next)){
+				constraints.remove(current);
+				jaccardRank++;
+				JaccardRanked.getRow(i+1).setJaccardRank(jaccardRank);
+			}else{
+				JaccardRanked.getRow(i).setJaccardRank(jaccardRank);
+			}
+		}
 	}
 
 }

@@ -4,6 +4,8 @@ import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -11,60 +13,41 @@ import java.util.List;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
 import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
 import org.schemaanalyst.mutation.analysis.executor.technique.TechniqueFactory;
-import org.schemaanalyst.mutation.analysis.result.SQLInsertRecord;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
+import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
+import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
-import org.schemaanalyst.util.csv.CSVFileWriter;
-import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 
-import parsedcasestudy.ArtistTerm;
 import parsedcasestudy.BankAccount;
-import parsedcasestudy.BookTown;
-import parsedcasestudy.Cloc;
 import parsedcasestudy.CoffeeOrders;
-import parsedcasestudy.CustomerOrder;
-import parsedcasestudy.DellStore;
 import parsedcasestudy.Flav_R03_1Repaired;
 import parsedcasestudy.Flights;
-import parsedcasestudy.FrenchTowns;
 import parsedcasestudy.GeoMetaDB;
-import parsedcasestudy.Inventory;
-import parsedcasestudy.Iso3166;
 import parsedcasestudy.IsoFlav_R2Repaired;
 import parsedcasestudy.JWhoisServer;
-import parsedcasestudy.NistDML181;
 import parsedcasestudy.NistDML182;
 import parsedcasestudy.NistDML183;
 import parsedcasestudy.NistWeather;
-import parsedcasestudy.NistXTS748;
-import parsedcasestudy.NistXTS749;
-import parsedcasestudy.Person;
 import parsedcasestudy.Products;
 import parsedcasestudy.RiskIt;
 import parsedcasestudy.StackOverflow;
-import parsedcasestudy.StudentResidence;
-import parsedcasestudy.UnixUsage;
-import parsedcasestudy.Usda;
 import parsedcasestudy.WordNet;
 
 
@@ -72,40 +55,10 @@ public class FaultLocalizationExperiment extends Runner {
     
 	static String mutationPipeline = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR,"
 			+ "CCRelationalExpressionOperatorE,FKCColumnPairA,FKCColumnPairR,FKCColumnPairE,PKCColumnA,PKCColumnR,"
-			+ "PKCColumnE,NNCA,NNCR,UCColumnA,UCColumnR,UCColumnE";
-	
-	static String smallCC = "ProgrammaticDBMSRemovers:FKCColumnPairA,FKCColumnPairR,FKCColumnPairE";
-	
-	static String noCC = "ProgrammaticDBMSRemovers:FKCColumnPairA,FKCColumnPairR,FKCColumnPairE,"
-			+ "PKCColumnA,PKCColumnR,PKCColumnE,NNCA,NNCR,UCColumnA,UCColumnR,UCColumnE";
-	
-	static String smallFK = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR";
-	
-	static String noFK = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR,CCRelationalExpressionOperatorE,"
-			+ "PKCColumnA,PKCColumnR,PKCColumnE,NNCA,NNCR,UCColumnA,UCColumnR,UCColumnE";
-	
-	static String smallPK = "ProgrammaticDBMSRemovers:CCNullifier";
-	
-	static String noPK = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR,"
-			+ "CCRelationalExpressionOperatorE,FKCColumnPairA,FKCColumnPairR,FKCColumnPairE,"
-			+ "NNCA,NNCR,UCColumnA,UCColumnR,UCColumnE";
-	
-	static String smallNN = "ProgrammaticDBMSRemovers:CCNullifier";
-	
-	static String noNN = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR,"
-			+ "CCRelationalExpressionOperatorE,FKCColumnPairA,FKCColumnPairR,FKCColumnPairE,PKCColumnA,"
-			+ "PKCColumnR,PKCColumnE,UCColumnA,UCColumnR,UCColumnE";
-	
-	static String smallUC = "ProgrammaticDBMSRemovers:CCNullifier";
-	
-	static String noUC = "ProgrammaticDBMSRemovers:CCNullifier,CCInExpressionRHSListExpressionElementR,CCRelationalExpressionOperatorE,"
-			+ "FKCColumnPairA,FKCColumnPairR,FKCColumnPairE,PKCColumnA,PKCColumnR,PKCColumnE";
-
+			+ "PKCColumnE,UCColumnA,UCColumnR,UCColumnE";
 	
     Schema[] schemas = {
-            new ArtistTerm(),
     		new BankAccount(),
-            new BookTown(),
             new CoffeeOrders(),
             new Flav_R03_1Repaired(),
             new Flights(),
@@ -120,9 +73,8 @@ public class FaultLocalizationExperiment extends Runner {
             new StackOverflow(),
             new WordNet()
     };
-//	Schema[] schemas = {
-//			new ArtistTerm()
-//	};
+    
+    protected static FileWriter dataWriter;
 
     @Parameter("The name of the schema to use.")
     protected String schema;
@@ -154,6 +106,18 @@ public class FaultLocalizationExperiment extends Runner {
     
     int counter = 0;
     
+    int timesNoScore = 0;
+    
+    List<Constraint> origConstraints;
+    
+    boolean origConstraint;
+    
+    @Parameter("The schema to run")
+    protected String schemaName;
+    
+    @Parameter("Name of the file")
+    protected String fileName;
+    
 //    protected TestSuiteGenerator testSuiteGenerator;
     
     @Parameter("Which mutation analysis technique to use.")
@@ -161,122 +125,104 @@ public class FaultLocalizationExperiment extends Runner {
     
     @Override
     protected void task() {
-        for (Schema schema : schemas) {
-        	counter = 0;
-        	System.out.println("SCHEMA:" + schema.getName());
+    	createFileWriter(locationsConfiguration.getResultsDir() + File.separator + schemaName + ".dat");
+    	try {
+			dataWriter.append("Schema,");
+			dataWriter.append("Fault Operator,");
+			dataWriter.append("Distance Function,");
+			dataWriter.append("Score\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	
+//        for (Schema schema : schemas) {
+        	System.out.println(schemaName);
         	instantiateDBMS();
-        	String casestudy = "parsedcasestudy." + schema.getName();
-        	//CreateDefectiveSchemas.createDefects(casestudy, mutationPipeline, databaseConfiguration.getDbms());
+        	String casestudy = "parsedcasestudy." + schemaName;
             Schema schemaObject = instantiateSchema(casestudy);
-            String filename = "src/"+ packagename + "/Test" + schema.getName() + ".java";
-            File f = new File(filename);
-            if(f.exists()){
-            	System.out.println(filename + " already exists");
-            }else{
+//            String filename = "src/"+ packagename + "/Test" + schema.getName() + ".java";
+//            File f = new File(filename);
+//            if(f.exists()){
+//            	System.out.println(filename + " already exists");
+//            }else{
             	tempTestSuite = GenerateTestData(schemaObject);
             	originalTestSuite = GenerateTestData(schemaObject);
-            }
-            MutationPipeline<Schema> pipeline= instantiatePipeline(schema, mutationPipeline);
+//            }
+            MutationPipeline<Schema> pipeline= instantiatePipeline(schemaObject, mutationPipeline);
+
             List<Mutant<Schema>> mutatedSchema = pipeline.mutate();
-//            System.out.println("MUTATEDSIZE: " + mutatedSchema.size());
+            
             for(int i = 0; i < mutatedSchema.size(); i++){
+            	Constraint originalConstraint = null;
+            	Table mutatedTable = null;
             	String mutationOperator = mutatedSchema.get(i).getSimpleDescription();
             	if(mutationOperator.equals("CCNullifier") || mutationOperator.equals("CCRelationalExpressionOperatorE") ||
             			mutationOperator.equals("CCInExpressionRHSListExpressionElementR")){
-//            		System.out.println("CC");
-            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), noCC);
+            		
+            		originalConstraint = CompareSchema.CompareCheckConstraints(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		mutatedTable = ChangedTableFinder.getDifferentTable(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), mutatedSchema.get(i).getDescription(), originalConstraint, mutatedTable);
             	}
             	if(mutationOperator.equals("FKCColumnPairR") || mutationOperator.equals("FKCColumnPairE") ||
             			mutationOperator.equals("FKCColumnPairA")){
-//            		System.out.println("FK");
-            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), noFK);
+            		originalConstraint = CompareSchema.CompareForeignKeyConstraints(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		mutatedTable = ChangedTableFinder.getDifferentTable(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), mutatedSchema.get(i).getDescription(), originalConstraint, mutatedTable);
             	}
             	if(mutationOperator.equals("PKCColumnR") || mutationOperator.equals("PKCColumnE") ||
             			mutationOperator.equals("PKCColumnA")){
-//            		System.out.println("PK");
-            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), noPK);
+            		originalConstraint = CompareSchema.ComparePrimaryKeyConstraints(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		mutatedTable = ChangedTableFinder.getDifferentTable(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+//            		System.out.println(originalConstraint);
+//            		System.out.println(mutatedSchema.get(i).getDescription());
+            		
+            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), mutatedSchema.get(i).getDescription(), originalConstraint, mutatedTable);
             	}
             	if(mutationOperator.equals("NNCA") || mutationOperator.equals("NNCR")){
-//            		System.out.println("NN");
-            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), noNN);
+//            		do nothing
             	}
             	if(mutationOperator.equals("UCColumnA") || mutationOperator.equals("UCColumnR") ||
             			mutationOperator.equals("UCColumnE")){
-//            		System.out.println("UC");
-            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), noUC);
+            		//should be which constraint was mutated
+            		originalConstraint = CompareSchema.CompareUniqueConstraints(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+            		mutatedTable = ChangedTableFinder.getDifferentTable(schemaObject, mutatedSchema.get(i).getMutatedArtefact());
+//            		System.out.println(originalConstraint);
+            		//
+//            		System.out.println(mutatedSchema.get(i).getDescription());
+            		doExpt(mutatedSchema.get(i).getMutatedArtefact(), mutatedSchema.get(i).getDescription(), originalConstraint, mutatedTable);
             	}
+            	try {
+					dataWriter.flush();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
-//            System.out.println("matrixrows " + matrixRows.size());
-//            ResultMatrix matrix = new ResultMatrix(schema, matrixRows);
-//            System.out.println(matrix.size());
-//            for(int i= 0; i < matrix.size(); i++){
-//            	System.out.println(matrix.getRow(i).getDBConstraint());
-//            }
-//            ProcessMatrix.Process(schema, matrix);
             
-
-//    		System.out.println("OCHIAI:");
-//    		for(int i = 0; i < ochiai.size(); i++){
-////    			String oc = ochiai.getRow(i).getDBConstraint().getName();
-////    			System.out.println("oc : " + oc);
-//    			double score = ochiai.getRow(i).getOchiaiScore();
-//    			System.out.println("score : " + score);
-//    			System.out.println(ochiai.getRow(i).getDBConstraint() + ", Mutant " + ochiai.getRow(i).getMutant() + " score: " +score );
-//    		}
-//    		System.out.println();
-//    		System.out.println();
-//    		System.out.println();
-//    		System.out.println("TARANTULA");
-//    		for(int i = 0; i < ochiai.size(); i++){
-////    			String oc = tarantula.getRow(i).getDBConstraint().getName();
-//    			double score = ochiai.getRow(i).getTarantulaScore();
-//    			System.out.println(tarantula.getRow(i).getDBConstraint() + ", Mutant " + tarantula.getRow(i).getMutant() + " score: " +score );
-//    		}
-//    		System.out.println();
-//    		System.out.println();
-//    		System.out.println();
-//    		System.out.println("JACCARD");
-//    		for(int i = 0; i < ochiai.size(); i++){
-////    			String oc = jaccard.getRow(i).getDBConstraint().getName();
-//    			double score = jaccard.getRow(i).getJaccardScore();
-//    			System.out.println(jaccard.getRow(i).getDBConstraint() + ", Mutant " + jaccard.getRow(i).getMutant() + " score: " +score );
-//    		}
+            closeStream();
             }
         
-            System.out.println();
-        }
+//            System.out.println();
+//        }
     
-
-    void doExpt(Schema schema, String pipe) {
+//pass it which constraint has the seeded fault
+    void doExpt(Schema schema, String mutant, Constraint originalConstraint, Table mutatedTable) {
     	ExperimentTimer timer = new ExperimentTimer();
     	counter++;
     	ArrayList<ResultMatrixRow> matrixRows = new ArrayList<ResultMatrixRow>();
-    	System.out.println("MATRIX ROWS SIZE: " + matrixRows.size());
     	String casestudy = "parsedcasestudy." + schema;
     	Schema schemaObject = instantiateSchema(casestudy);
-    	MutationPipeline<Schema> pipeline= instantiatePipeline(schemaObject, pipe);
+    	MutationPipeline<Schema> pipeline = instantiatePipeline(schemaObject, mutationPipeline);
     	timer.start(ExperimentTimer.TimingPoint.MUTATION_TIME);
     	List<Mutant<Schema>> mutatedSchema = pipeline.mutate();
-    	timer.stop(ExperimentTimer.TimingPoint.MUTATION_TIME);
-    	
+    	timer.stop(ExperimentTimer.TimingPoint.MUTATION_TIME);    	
     	System.out.println("RUN " + counter + " OUT OF: " + mutatedSchema.size());
-//    	int totalFailed = testSuiteGenerator.getFailedTestCases().size();
-//    	int totalPassed = t.getNumTestCases() - totalFailed;
+
     	int totalFailed = 0;
     	int totalPassed = 0;
-    	
-
-    	
     	List<TestCase> cases = originalTestSuite.getTestCases();
     	for(int i = 0; i < cases.size(); i++){
-//    		Gets whole test case
-//    		System.out.println("testcase " + cases.get(i));
-    		//gets num inserts
-//    		System.out.println("getNumInserts: " + cases.get(i).getNumInserts());
-    		
-    		//gets result
-//    		System.out.println("getDBMSResults" + cases.get(i).getDBMSResults());
-    		//gets total passes and fails
     		for(int j = 0; j < cases.get(i).getDBMSResults().size(); j++){
     			if(cases.get(i).getDBMSResults().get(j)){
     				totalPassed++;
@@ -285,28 +231,25 @@ public class FaultLocalizationExperiment extends Runner {
     			}
     		}
     	}
-//    	System.out.println("totalpassed: " + totalPassed);
-//		System.out.println("totalfailed: " + totalFailed);
-//    	System.out.println("mut size " + mutatedSchema.size());
         Constraint c = null;
+        //EACH RUN OF FOR loop corresponds to one row in the matrix
 		for(int id = 0; id < mutatedSchema.size(); id++){
-			
 			int passed = 0;
             int failed = 0;
         	if(mutatedSchema.get(id).getSimpleDescription().equals("CCNullifier") ||
         			mutatedSchema.get(id).getSimpleDescription().equals("CCRelationalExpressionOperatorE")||
         					mutatedSchema.get(id).getSimpleDescription().equals("CCInExpressionRHSListExpressionElementR")){
-        		c = CompareSchema.CompareCheckConstraints(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
+        		c = ChangedConstraintFinder.getDifferentConstraint(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
         	}
         	if(mutatedSchema.get(id).getSimpleDescription().equals("FKCColumnPairR") ||
         			mutatedSchema.get(id).getSimpleDescription().equals("FKCColumnPairE") ||
         				mutatedSchema.get(id).getSimpleDescription().equals("FKCColumnPairA")){
-        		c = CompareSchema.CompareForeignKeyConstraints(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
+        		c = ChangedConstraintFinder.getDifferentConstraint(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
         	}
         	if(mutatedSchema.get(id).getSimpleDescription().equals("PKCColumnR") ||
         			mutatedSchema.get(id).getSimpleDescription().equals("PKCColumnE") ||
         					mutatedSchema.get(id).getSimpleDescription().equals("PKCColumnA")){
-        		c = CompareSchema.ComparePrimaryKeyConstraints(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
+        		c = ChangedConstraintFinder.getDifferentConstraint(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
         	}
         	if(mutatedSchema.get(id).getSimpleDescription().equals("NNCA") ||
         			mutatedSchema.get(id).getSimpleDescription().equals("NNCR")){
@@ -315,113 +258,131 @@ public class FaultLocalizationExperiment extends Runner {
         	if(mutatedSchema.get(id).getSimpleDescription().equals("UCColumnA") ||
         			mutatedSchema.get(id).getSimpleDescription().equals("UCColumnR") ||
         				mutatedSchema.get(id).getSimpleDescription().equals("UCColumnE")){
-        		c = CompareSchema.CompareUniqueConstraints(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
+        		c = ChangedConstraintFinder.getDifferentConstraint(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
         	}
-        	
-//        	resultOchiai.addValue("Mutant Operator", mutatedSchema.get(id).getSimpleDescription());
-//        	resultJaccard.addValue("Mutant Operator", mutatedSchema.get(id).getSimpleDescription());
-//        	resultTarantula.addValue("Mutant Operator", mutatedSchema.get(id).getSimpleDescription());
-
         	
         	// Drop existing tables
 //            timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         	boolean quasiMutant = false;
-            
-            //insert the test data
-//            Technique mutTechnique = instantiateTechnique(schemaObject, mutatedSchema, t, dbmsObject, databaseInteractor);
-//            AnalysisResult analysisResult = mutTechnique.analyse();
-        	
-            timer.start(ExperimentTimer.TimingPoint.INSERTS_TIME);
-            TestCaseExecutor executor = new TestCaseExecutor(
+                    	
+        	TestCaseExecutor executor = new TestCaseExecutor(
                     mutatedSchema.get(id).getMutatedArtefact(),
                     dbmsObject,
                     new DatabaseConfiguration(),
                     new LocationsConfiguration());
             executor.execute(tempTestSuite);
-            timer.stop(ExperimentTimer.TimingPoint.INSERTS_TIME);
-            
-        	List<TestCase> mutatedCases = tempTestSuite.getTestCases();
-        	for(int i = 0; i < mutatedCases.size(); i++){
-        		for(int j = 0; j < mutatedCases.get(i).getDBMSResults().size(); j++){
-        			if(mutatedCases.get(i).getDBMSResults().get(j).equals(cases.get(i).getDBMSResults().get(j))){
-        				passed++;
-        			}else{
-        				failed++;
-        			}
+        	ResultMatrixRow r;
+//            	timer.start(ExperimentTimer.TimingPoint.INSERTS_TIME);
+                 List<TestCase> mutatedCases = tempTestSuite.getTestCases();
+                 
+                 //if it passed and failed = pass
+                 //if it failed and now passes = fail
+                 for(int k = 0; k < mutatedCases.size(); k++){
+             		for(int j = 0; j < mutatedCases.get(k).getDBMSResults().size(); j++){
+             			//if original was true
+             			if(cases.get(k).getDBMSResults().get(j)){
+             				//if theyre the same
+             				if(mutatedCases.get(k).getDBMSResults().get(j).equals(cases.get(k).getDBMSResults().get(j))){
+             					
+             				}else{
+             					passed++;
+             				}
+             			}else{
+             				
+             			}
+             			if(mutatedCases.get(k).getDBMSResults().get(j).equals(cases.get(k).getDBMSResults().get(j))){
+             				
+             			}else{
+             				failed++;
+             			}
+             		}
+             	}
+             	boolean isFault = false;
+             	Table changedTable = ChangedTableFinder.getDifferentTable(schemaObject, mutatedSchema.get(id).getMutatedArtefact());
+             	if(mutatedSchema.get(id).getDescription().equals(mutant.toString()) &&
+             			changedTable.equals(mutatedTable)){
+             		isFault = true;
+             	}
+             	if(c.equals(originalConstraint) && !originalConstraint.toString().equals("Empty Constraint")){
+             		
+             	}else{
+             		r = new ResultMatrixRow(c, mutatedSchema.get(id).getSimpleDescription(), totalFailed, totalPassed, passed, failed, isFault);
+             		matrixRows.add(r);
+             	}
+                
+            }
+		boolean hasScore = false;
+		for(int i = 0; i < matrixRows.size(); i++){
+			if(matrixRows.get(i).isFault()){
+	    		hasScore = true;       		    		
+	    	}
+		}
+		if(hasScore){
+			ResultMatrix matrix = new ResultMatrix(schemaObject, matrixRows);
+			ProcessMatrix.Process(schemaObject, matrix);
+    		
+    			try
+        		{
+        		    dataWriter.append(schemaObject.getName() + ",");
+        		    for(int i = 0; i < matrixRows.size(); i++){
+        		    	if(matrixRows.get(i).isFault()){
+                		    dataWriter.append(matrixRows.get(i).getMutant() + ",");
+                		    dataWriter.append("Ochiai,");
+        		    		System.out.println("ochiai score: " + matrixRows.get(i).getScoreOchiai());
+        		    		dataWriter.append(matrixRows.get(i).getScoreOchiai() + "\n");        		    		
+        		    	}
+        		    }
+        		    
+        		    dataWriter.append(schemaObject.getName() + ",");
+        		    for(int i = 0; i < matrixRows.size(); i++){
+        		    	if(matrixRows.get(i).isFault()){
+                		    dataWriter.append(matrixRows.get(i).getMutant() + ",");
+                		    dataWriter.append("Tarantula,");
+        		    		System.out.println("tarantula score: " + matrixRows.get(i).getScoreTarantula());
+        		    		dataWriter.append(matrixRows.get(i).getScoreTarantula() + "\n");        		    		
+        		    	}
+        		    }
+        		    
+        		    dataWriter.append(schemaObject.getName() + ",");
+        		    for(int i = 0; i < matrixRows.size(); i++){
+        		    	if(matrixRows.get(i).isFault()){
+                		    dataWriter.append(matrixRows.get(i).getMutant() + ",");
+                		    dataWriter.append("Jaccard,");
+        		    		System.out.println("jaccard score: " + matrixRows.get(i).getScoreJaccard());
+        		    		dataWriter.append(matrixRows.get(i).getScoreJaccard() + "\n");        		    		
+        		    	}
+        		    }
+        		    
+        		    
         		}
-        	}
-            
-//            System.out.println("Passed: " + passed);
-//            System.out.println("Failed: " + failed);
-            String mutantDescription = mutatedSchema.get(id).getDescription();
-//            System.out.println("Mutant description " + mutantDescription);
-            ResultMatrixRow r = new ResultMatrixRow(c, mutantDescription, totalFailed, totalPassed, passed, failed, false);
-            matrixRows.add(r);
-//            System.out.println("size " + matrixRows.size());
-//            System.out.println("**************************END*************");
+        		catch(IOException e)
+        		{
+        		     e.printStackTrace();
+        		} 
+//    			closeStream();
+    		}
+    		
 		}
-        ResultMatrix matrix = new ResultMatrix(schema, matrixRows);
-//      System.out.println(matrix.size());
-//      for(int i= 0; i < matrix.size(); i++){
-//      	System.out.println(matrix.getRow(i).getDBConstraint());
-//      }
-        ProcessMatrix.Process(schema, matrix);
-
-        ResultMatrix ochiai = ProcessMatrix.OchiaiRanked;
-		ResultMatrix tarantula = ProcessMatrix.TarantulaRanked;
-		ResultMatrix jaccard = ProcessMatrix.JaccardRanked;
-		System.out.println("Ochiai");
-		for(int i = 0; i < ochiai.size(); i++){
-			System.out.println("Constraint " + ochiai.getRow(i).getDBConstraint());
-			System.out.println("Score " + ochiai.getRow(i).getOchiaiScore());
-		}
-		System.out.println("Tarantula");
-		for(int i = 0; i < tarantula.size(); i++){
-			System.out.println("Constraint " + tarantula.getRow(i).getDBConstraint());
-			System.out.println("Score " + tarantula.getRow(i).getTarantulaScore());
-		}
-		System.out.println("Jaccard");
-		for(int i = 0; i < jaccard.size(); i++){
-			System.out.println("Constraint " + jaccard.getRow(i).getDBConstraint());
-			System.out.println("Score " + jaccard.getRow(i).getJaccardScore());
-		}
-    	CSVResult resultOchiai = new CSVResult();
-        resultOchiai.addValue("schema", schema.getName());
-        resultOchiai.addValue("matrix", "Ochiai");
-        for(int i = 0; i < matrixRows.size(); i++){
-        	resultOchiai.addValue("pipeline", pipe);
-        	resultOchiai.addValue(i + " original constraint", ochiai.getRow(i).getDBConstraint());
-        	resultOchiai.addValue(i + " mutant" , ochiai.getRow(i).getMutant());
-        	resultOchiai.addValue(i + " score", ochiai.getRow(i).getOchiaiScore());
-        }
-        
-        new CSVFileWriter("src/resultFiles/" + schema.getName() + "Ochiai" + counter + ".dat").write(resultOchiai);
-        
-        CSVResult resultTarantula = new CSVResult();
-        resultTarantula.addValue("schema", schema.getName());
-        resultTarantula.addValue("matrix", "tarantula");
-        for(int i = 0; i < matrixRows.size(); i++){
-        	resultTarantula.addValue("pipeline", pipe);
-        	resultTarantula.addValue(i + " original constraint", tarantula.getRow(i).getDBConstraint());
-        	resultTarantula.addValue(i + " mutant" , tarantula.getRow(i).getMutant());
-        	resultTarantula.addValue(i + " score", tarantula.getRow(i).getJaccardScore());
-        }
-        new CSVFileWriter("src/resultFiles/" + schema.getName() + "Tarantula" + counter + ".dat").write(resultTarantula);
-
-        CSVResult resultJaccard = new CSVResult();
-        resultJaccard.addValue("schema", schema.getName());
-        resultJaccard.addValue("matrix", "jaccard");
-        for(int i = 0; i < matrixRows.size(); i++){
-        	resultJaccard.addValue("pipeline", pipe);
-        	resultJaccard.addValue(i + " original constraint", jaccard.getRow(i).getDBConstraint());
-        	resultJaccard.addValue(i + " mutant" , jaccard.getRow(i).getMutant());
-        	resultJaccard.addValue(i + " score", jaccard.getRow(i).getJaccardScore());
-        }
-        
-        new CSVFileWriter("src/resultFiles/" + schema.getName() + "Jaccard" + counter + ".dat").write(resultJaccard);
-		
-        
-    }
+    
+    	protected static void createFileWriter(String fileName){
+    		try {
+    			dataWriter = new FileWriter(fileName);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+    	}
+    
+    	protected static void closeStream(){
+    		try {
+				dataWriter.flush();
+				dataWriter.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    		
+    	}    
 
     private Schema instantiateSchema(String s) {
         try {
@@ -445,10 +406,6 @@ public class FaultLocalizationExperiment extends Runner {
     	dbmsObject = DBMSFactory.instantiate(databaseConfiguration.getDbms());
     }
     
-    private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
-    }
-    
     private TestSuite GenerateTestData(Schema s){
     	Schema schemaObject = s;
     	CoverageCriterion criterionObject = CoverageCriterionFactory.instantiate(criterion);
@@ -460,6 +417,7 @@ public class FaultLocalizationExperiment extends Runner {
                 dbmsObject.getValueFactory(),
                 dataGeneratorObject);
         originalTestSuite = testSuiteGenerator.generate();
+        
         
         // execute each test case to see what the DBMS result is for each row generated (accept / row)
         TestCaseExecutor executor = new TestCaseExecutor(
@@ -489,6 +447,6 @@ public class FaultLocalizationExperiment extends Runner {
     }
 
     public static void main(String[] args) {
-        new FaultLocalizationExperiment().run(args);
+        new FaultLocalizationExperiment().run(args);        
     }
 }

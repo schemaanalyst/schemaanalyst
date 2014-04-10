@@ -13,7 +13,7 @@ import org.schemaanalyst.util.runner.Runner;
 
 public class CreateDefects extends Runner{
 	
-	private final static Logger LOGGER = Logger.getLogger(GenerateMatrixRunnable.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(CreateDefects.class.getName());
     /**
      * The name of the schema to use.
      */
