@@ -101,7 +101,7 @@ public class TestCaseExecutor {
                     Integer result = databaseInteractor.executeUpdate(statement);
                     if (result < 0) {
                         throw new TestCaseExecutionException(
-                                "Could not execute INSERT statement for setting database state \"" + statement + "\" while executing test case - result was " + result);
+                                "Could not execute INSERT statement \"" + statement + "\" while executing test case - result was " + result);
                     }
                     boolean success = (result == 1);
                     results.add(success);
