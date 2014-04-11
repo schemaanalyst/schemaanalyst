@@ -17,13 +17,13 @@ import java.util.concurrent.Future;
 
 /**
  * <p>
- * The 'Up Front Schemata' mutation analysis approach.</p>
+ * The 'Just In Time Schemata' mutation analysis approach.</p>
  *
  * @author Chris J. Wright
  */
-public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
+public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
 
-    public UpFrontSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+    public JustInTimeSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         super(schema, mutants, testSuite, dbms, databaseInteractor);
     }
 
@@ -31,21 +31,24 @@ public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
     public AnalysisResult analyse() {
         // Get normal results        
         TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
-
+        
         // Get mutant results with schemata changes
         doSchemataSteps();
-        databaseInteractor.executeUpdate(dropStmt);
-        databaseInteractor.executeUpdate(createStmt);
 
         // Execute mutation analysis using thread pool
         ExecutorService executor = Executors.newFixedThreadPool(4);
-        Map<Mutant, Future<MutantStatus>> callResults = startExecution(originalResults, executor);
+        Map<Mutant<Schema>, Future<MutantStatus>> callResults = startExecution(originalResults, executor);
         AnalysisResult result = collateResults(callResults);
         executor.shutdown();
         
-        // Drop tables and return result
-        databaseInteractor.executeUpdate(dropStmt);
+        // Return result
         return result;
+    }
+
+    @Override
+    protected void doSchemataSteps() {
+        // Overrides because it does not need combined drop and create statements
+        renameMutants(mutants);
     }
 
     /**
@@ -57,8 +60,8 @@ public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
      * @param executor The executor to use for parallel execution
      * @return The collection of mutants and their futures
      */
-    private Map<Mutant, Future<MutantStatus>> startExecution(TestSuiteResult originalResults, ExecutorService executor) {
-        Map<Mutant, Future<MutantStatus>> callResults = new HashMap<>();
+    private Map<Mutant<Schema>, Future<MutantStatus>> startExecution(TestSuiteResult originalResults, ExecutorService executor) {
+        Map<Mutant<Schema>, Future<MutantStatus>> callResults = new HashMap<>();
         for (int mutantId = 0; mutantId < mutants.size(); mutantId++) {
             Mutant<Schema> mutant = mutants.get(mutantId);
             String schemataPrefix = "mutant_" + (mutantId + 1) + "_";
@@ -77,10 +80,10 @@ public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
      * @return The combined result
      * @throws RuntimeException 
      */
-    private AnalysisResult collateResults(Map<Mutant, Future<MutantStatus>> callResults) throws RuntimeException {
+    private AnalysisResult collateResults(Map<Mutant<Schema>, Future<MutantStatus>> callResults) throws RuntimeException {
         AnalysisResult result = new AnalysisResult();
-        for (Map.Entry<Mutant, Future<MutantStatus>> entry : callResults.entrySet()) {
-            Mutant mutant = entry.getKey();
+        for (Map.Entry<Mutant<Schema>, Future<MutantStatus>> entry : callResults.entrySet()) {
+            Mutant<Schema> mutant = entry.getKey();
             Future<MutantStatus> future = entry.getValue();
             try {
                 switch (future.get()) {
