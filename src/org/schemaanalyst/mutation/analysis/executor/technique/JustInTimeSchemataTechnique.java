@@ -14,6 +14,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.schemaanalyst.mutation.analysis.executor.testcase.FullSchemataDeletingTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 
 /**
  * <p>
@@ -121,6 +125,13 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
             TestSuiteResult mutantResults = executeTestSuiteSchemata(mutant.getMutatedArtefact(), testSuite, schemataPrefix);
             return originalResults.equals(mutantResults) ? MutantStatus.ALIVE : MutantStatus.KILLED;
         }
+    }
+
+    @Override
+    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix) {
+        TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, databaseInteractor, schemataPrefix);
+        TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
+        return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
     /**
