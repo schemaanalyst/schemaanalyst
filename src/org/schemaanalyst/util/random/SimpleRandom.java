@@ -28,4 +28,9 @@ public class SimpleRandom extends Random {
     public int nextInt(int ceiling) {
         return random.nextInt(ceiling);
     }
+
+    @Override
+    public long nextLong() {
+        return random.nextLong();
+    }
 }

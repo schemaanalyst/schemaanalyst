@@ -1,20 +1,25 @@
 package paper.datagenerationjv;
 
-import java.util.Random;
+import org.schemaanalyst.util.random.Random;
+import org.schemaanalyst.util.random.SimpleRandom;
 
 /**
- * Created by phil on 07/04/2014.
+ * Created by phil on 26/03/2014.
  */
 public class GenerateSeeds {
 
-    public static void main(String[] args) {
+    public static void main(String... args) {
 
-        Random random = new Random(System.currentTimeMillis());
+        final int NUM_REQUIRED = 30;
 
-        for (int i=1; i<=30; i++) {
+        Random random = new SimpleRandom(System.currentTimeMillis());
+        System.out.println();
 
-            System.out.println(random.nextLong() + "L,");
-
+        for (int i=0; i < NUM_REQUIRED; i++) {
+            System.out.print("\t\t" + random.nextLong() + "L");
+            if (i < NUM_REQUIRED-1) {
+                System.out.println(",");
+            }
         }
     }
 }

@@ -264,14 +264,15 @@ public class FaultLocalizationExperiment extends Runner {
         	// Drop existing tables
 //            timer.start(ExperimentTimer.TimingPoint.DROPS_TIME);
         	boolean quasiMutant = false;
-                    	
+
         	TestCaseExecutor executor = new TestCaseExecutor(
                     mutatedSchema.get(id).getMutatedArtefact(),
                     dbmsObject,
                     new DatabaseConfiguration(),
                     new LocationsConfiguration());
             executor.execute(tempTestSuite);
-        	ResultMatrixRow r;
+
+            ResultMatrixRow r;
 //            	timer.start(ExperimentTimer.TimingPoint.INSERTS_TIME);
                  List<TestCase> mutatedCases = tempTestSuite.getTestCases();
                  

@@ -19,4 +19,6 @@ public abstract class Random {
     public abstract int nextInt();
 
     public abstract int nextInt(int ceiling);
+
+    public abstract long nextLong();
 }
