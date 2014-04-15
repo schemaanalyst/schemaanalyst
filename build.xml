@@ -43,7 +43,7 @@
 		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
 			<classpath refid="build_classpath"/>
 			<exclude name="deprecated/**"/>
-			<exclude name="paper/**"/>
+			<!-- <exclude name="paper/**"/> -->
 		</javac>
 	</target>
 

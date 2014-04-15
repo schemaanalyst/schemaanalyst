@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
@@ -25,6 +26,7 @@ import org.schemaanalyst.util.runner.Runner;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.concurrent.Callable;
 import org.schemaanalyst.testgeneration.CoverageReport;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 
@@ -114,17 +116,36 @@ public class MutationAnalysis extends Runner {
         instantiateParameters();
 
         // Start timing
-        long startTime = System.currentTimeMillis();
-        
+        StopWatch totalTime = new StopWatch();
+        StopWatch testGenerationTime = new StopWatch();
+        StopWatch mutantGenerationTime = new StopWatch();
+        StopWatch mutationAnalysisTime = new StopWatch();
+        totalTime.start();
+
         // Generate test suite and mutants, apply mutation analysis technique
-        TestSuite suite = generateTestSuite();
-        List<Mutant<Schema>> mutants = generateMutants();
-        Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
-        AnalysisResult analysisResult = mutTechnique.analyse();
+        final TestSuite suite = timedTask(new Callable<TestSuite>() {
+            @Override
+            public TestSuite call() throws Exception {
+                return generateTestSuite();
+            }
+        }, testGenerationTime);
+        final List<Mutant<Schema>> mutants = timedTask(new Callable<List<Mutant<Schema>>>() {
+            @Override
+            public List<Mutant<Schema>> call() throws Exception {
+                return generateMutants();
+            }
+        }, mutantGenerationTime);
+        final Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
+        AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
+            @Override
+            public AnalysisResult call() throws Exception {
+                return mutTechnique.analyse();
+            }
+        }, mutationAnalysisTime);
 
         // Stop timing
-        long timeTaken = System.currentTimeMillis() - startTime;
-        
+        totalTime.stop();
+
         // Write results
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
@@ -141,14 +162,29 @@ public class MutationAnalysis extends Runner {
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
-        result.addValue("timetaken", timeTaken);
         result.addValue("technique", technique);
+        result.addValue("testgenerationtime", testGenerationTime.getTime());
+        result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
+        result.addValue("mutationanalysistime",mutationAnalysisTime.getTime());
+        result.addValue("timetaken", totalTime.getTime());
+
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
 
         if (printLive) {
             for (Mutant<Schema> mutant : analysisResult.getLive()) {
                 System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
             }
+        }
+    }
+
+    private static <T> T timedTask(Callable<T> callable, StopWatch watch) {
+        try {
+            watch.start();
+            T result = callable.call();
+            watch.stop();
+            return result;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -168,7 +204,7 @@ public class MutationAnalysis extends Runner {
             throw new RuntimeException(ex);
         }
     }
-    
+
     private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
     }
@@ -180,10 +216,10 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite generateTestSuite() {
         // Initialise from factories
-        final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, 0L , 100000);
+        final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
         final CoverageCriterion coverageCriterion = CoverageCriterionFactory.instantiate(criterion);
         final CoverageCriterion comparisonCoverageCriterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
-        
+
         // Construct generator
         final TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
@@ -191,15 +227,15 @@ public class MutationAnalysis extends Runner {
                 dbms.getValueFactory(),
                 dataGen
         );
-        
+
         // Generate suite
         final TestSuite testSuite = generator.generate();
-        
+
         // Analyse test suite
         failedTests = generator.getFailedTestCases().size();
         coverageReport = new CoverageReport(testSuite, coverageCriterion.generateRequirements(schema));
         comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
-        
+
         return testSuite;
     }
 
