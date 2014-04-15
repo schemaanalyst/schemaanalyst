@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * <p>
@@ -25,6 +26,8 @@ public class MutationPipeline<A> implements MutantProducer<A> {
     protected List<MutantRemover<A>> removers = new ArrayList<>();
     protected Map<Class, Integer> producerCounts = new HashMap<>();
     protected Map<Class, Integer> removerCounts = new HashMap<>();
+    protected Map<MutantProducer<A>,StopWatch> producerTimings = new HashMap<>();
+    protected Map<MutantRemover<A>,StopWatch> removerTimings = new HashMap<>();
 
     public void addProducer(MutantProducer<A> producer) {
         producers.add(producer);
@@ -49,7 +52,11 @@ public class MutationPipeline<A> implements MutantProducer<A> {
 
     private void applyProducers(List<Mutant<A>> mutants) {
         for (MutantProducer<A> producer : producers) {
+            StopWatch timer = new StopWatch();
+            timer.start();
             List<Mutant<A>> producerMutants = producer.mutate();
+            timer.stop();
+            producerTimings.put(producer, timer);
             int newMutants = producerMutants.size();
             if (newMutants > 0) {
                 Class producerClass = producer.getClass();
@@ -67,7 +74,11 @@ public class MutationPipeline<A> implements MutantProducer<A> {
     private List<Mutant<A>> applyRemovers(List<Mutant<A>> mutants) {
         for (MutantRemover<A> remover : removers) {
             int initialMutants = mutants.size();
+            StopWatch timer = new StopWatch();
+            timer.start();
             mutants = remover.removeMutants(mutants);
+            timer.stop();
+            removerTimings.put(remover, timer);
             int removedMutants = initialMutants - mutants.size();
             if (removedMutants > 0) {
                 Class removerClass = remover.getClass();
@@ -85,9 +96,19 @@ public class MutationPipeline<A> implements MutantProducer<A> {
     public Map<Class, Integer> getRemoverCounts() {
         return removerCounts;
     }
+    
+    public Map<MutantProducer<A>, StopWatch> getProducerTimings() {
+        return producerTimings;
+    }
+
+    public Map<MutantRemover<A>, StopWatch> getRemoverTimings() {
+        return removerTimings;
+    }
 
     private void resetCounts() {
         producerCounts.clear();
         removerCounts.clear();
+        producerTimings.clear();
+        removerTimings.clear();
     }
 }
