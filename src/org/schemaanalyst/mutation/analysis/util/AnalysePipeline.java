@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.time.StopWatch;
 
 /**
  *
@@ -63,20 +64,26 @@ public class AnalysePipeline extends Runner {
 
     private void calculateProduced(List<CSVResult> results) {
         for (Map.Entry<Class, Integer> entry : pipeline.getProducerCounts().entrySet()) {
+            final Class clazz = entry.getKey();
+            final StopWatch stopWatch = pipeline.getProducerTimings().get(clazz);
             CSVResult result = initialiseResult();
             result.addValue("type", "produced");
-            result.addValue("operator", entry.getKey().getSimpleName());
+            result.addValue("operator", clazz.getSimpleName());
             result.addValue("count", entry.getValue());
+            result.addValue("timetaken", stopWatch.getTime());
             results.add(result);
         }
     }
 
     private void calculateRemoved(List<CSVResult> results) {
         for (Map.Entry<Class, Integer> entry : pipeline.getRemoverCounts().entrySet()) {
+            final Class clazz = entry.getKey();
+            final StopWatch stopWatch = pipeline.getRemoverTimings().get(clazz);
             CSVResult result = initialiseResult();
             result.addValue("type", "removed");
-            result.addValue("operator", entry.getKey().getSimpleName());
+            result.addValue("operator", clazz.getSimpleName());
             result.addValue("count", entry.getValue());
+            result.addValue("timetaken", stopWatch.getTime());
             results.add(result);
         }
     }
@@ -93,13 +100,14 @@ public class AnalysePipeline extends Runner {
             result.addValue("type", "retained");
             result.addValue("operator", entry.getKey());
             result.addValue("count", entry.getValue());
+            result.addValue("timetaken", "NA");
             results.add(result);
         }
     }
 
     protected void initialise() {
         if (outputfolder == null) {
-            outputfolder = locationsConfiguration.getResultsDir() + File.separator + "analysepipeline" + File.separator;
+            outputfolder = locationsConfiguration.getResultsDir() + File.separator;
         }
         schema = initialiseSchema();
         pipeline = initialisePipeline();

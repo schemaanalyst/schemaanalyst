@@ -26,8 +26,8 @@ public class MutationPipeline<A> implements MutantProducer<A> {
     protected List<MutantRemover<A>> removers = new ArrayList<>();
     protected Map<Class, Integer> producerCounts = new HashMap<>();
     protected Map<Class, Integer> removerCounts = new HashMap<>();
-    protected Map<MutantProducer<A>,StopWatch> producerTimings = new HashMap<>();
-    protected Map<MutantRemover<A>,StopWatch> removerTimings = new HashMap<>();
+    protected Map<Class,StopWatch> producerTimings = new HashMap<>();
+    protected Map<Class,StopWatch> removerTimings = new HashMap<>();
 
     public void addProducer(MutantProducer<A> producer) {
         producers.add(producer);
@@ -56,7 +56,7 @@ public class MutationPipeline<A> implements MutantProducer<A> {
             timer.start();
             List<Mutant<A>> producerMutants = producer.mutate();
             timer.stop();
-            producerTimings.put(producer, timer);
+            producerTimings.put(producer.getClass(), timer);
             int newMutants = producerMutants.size();
             if (newMutants > 0) {
                 Class producerClass = producer.getClass();
@@ -78,7 +78,7 @@ public class MutationPipeline<A> implements MutantProducer<A> {
             timer.start();
             mutants = remover.removeMutants(mutants);
             timer.stop();
-            removerTimings.put(remover, timer);
+            removerTimings.put(remover.getClass(), timer);
             int removedMutants = initialMutants - mutants.size();
             if (removedMutants > 0) {
                 Class removerClass = remover.getClass();
@@ -97,11 +97,11 @@ public class MutationPipeline<A> implements MutantProducer<A> {
         return removerCounts;
     }
     
-    public Map<MutantProducer<A>, StopWatch> getProducerTimings() {
+    public Map<Class, StopWatch> getProducerTimings() {
         return producerTimings;
     }
 
-    public Map<MutantRemover<A>, StopWatch> getRemoverTimings() {
+    public Map<Class, StopWatch> getRemoverTimings() {
         return removerTimings;
     }
 
