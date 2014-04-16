@@ -76,6 +76,7 @@ public class MutationPipelineFactory {
         choices.add("ICST2013");
         choices.add("ICST2013NoRemovers");
         choices.add("ICST2013NewSchema");
+        choices.add("ISSREPostgresDBMSRemovers");
         choices.add("AllOperatorsWithRemovers");
         choices.add("Mutation2013");
         choices.add("Programmatic");
