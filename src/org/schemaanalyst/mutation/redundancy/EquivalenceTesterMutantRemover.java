@@ -6,13 +6,13 @@ import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 
 /**
  * <p>
- * A parent class for any {@link RedundantMutantRemover} that uses an 
+ * A parent class for any {@link AbstractEquivalentMutantRemover} that uses an 
  * {@link EquivalenceChecker} to determine which mutants to remove.
  * </p>
  * 
  * @author Chris J. Wright
  */
-public abstract class EquivalenceTesterMutantRemover<T> extends RedundantMutantRemover<T> {
+public abstract class EquivalenceTesterMutantRemover<T> extends AbstractEquivalentMutantRemover<T> {
 
     EquivalenceChecker<T> checker;
 

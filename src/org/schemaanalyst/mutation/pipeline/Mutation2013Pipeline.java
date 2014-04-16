@@ -9,8 +9,8 @@ import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
-import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
-import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
+import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -37,8 +37,8 @@ public class Mutation2013Pipeline extends MutationPipeline<Schema> {
         addProducer(new NNCAR(schema));
         addProducer(new UCColumnARE(schema));
         
-        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceChecker(), schema));
-        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceChecker()));
+        addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceChecker(), schema));
+        addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceChecker()));
     }
     
     public void addDBMSSpecificRemovers(String dbms) {

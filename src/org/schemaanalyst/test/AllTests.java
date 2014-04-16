@@ -45,7 +45,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.test.mutation.equivalence.TestColumnEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestForeignKeyEquivalenceChecker.class,
-	org.schemaanalyst.test.mutation.equivalence.TestMutantEquivalentToMutantChecker.class,
+	org.schemaanalyst.test.mutation.equivalence.TestRedundantMutantChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestNotNullEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestPrimaryKeyEquivalenceChecker.class,
 	org.schemaanalyst.test.mutation.equivalence.TestSchemaEquivalenceChecker.class,

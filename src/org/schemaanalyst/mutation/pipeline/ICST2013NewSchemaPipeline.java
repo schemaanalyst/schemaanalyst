@@ -5,8 +5,8 @@ package org.schemaanalyst.mutation.pipeline;
 
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
 import org.schemaanalyst.mutation.operator.*;
-import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
-import org.schemaanalyst.mutation.redundancy.MutantEquivalentToOriginalRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
+import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -29,7 +29,7 @@ public class ICST2013NewSchemaPipeline extends MutationPipeline<Schema> {
 
         addRemover(new PrimaryKeyColumnNotNullRemover());
         addRemover(new PrimaryKeyColumnsUniqueRemover());
-        addRemover(new MutantEquivalentToOriginalRemover<>(new SchemaEquivalenceWithNotNullCheckChecker(), schema));
-        addRemover(new MutantEquivalentToMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker()));
+        addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker(), schema));
+        addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker()));
     }
 }

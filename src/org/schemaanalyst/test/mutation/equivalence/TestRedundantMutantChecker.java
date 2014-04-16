@@ -5,7 +5,7 @@ package org.schemaanalyst.test.mutation.equivalence;
 import org.junit.Test;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
-import org.schemaanalyst.mutation.redundancy.MutantEquivalentToMutantRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -21,12 +21,12 @@ import static org.junit.Assert.assertTrue;
  *
  * @author Chris J. Wright
  */
-public class TestMutantEquivalentToMutantChecker {
+public class TestRedundantMutantChecker {
 
     @Test
     public void testEmptyList() {
         List<Mutant<Schema>> mutants = new ArrayList<>();
-        MutantEquivalentToMutantRemover remover = new MutantEquivalentToMutantRemover(new SchemaEquivalenceChecker());
+        RedundantMutantRemover remover = new RedundantMutantRemover(new SchemaEquivalenceChecker());
         List result = remover.removeMutants(mutants);
         assertTrue("MEM removal on an empty list should result in an empty list", result.isEmpty());
     }
@@ -39,7 +39,7 @@ public class TestMutantEquivalentToMutantChecker {
         Column a1 = t1.createColumn("a", new IntDataType());
         Mutant m1 = new Mutant(s1, "m1");
         mutants.add(m1);
-        MutantEquivalentToMutantRemover remover = new MutantEquivalentToMutantRemover(new SchemaEquivalenceChecker());
+        RedundantMutantRemover remover = new RedundantMutantRemover(new SchemaEquivalenceChecker());
         List result = remover.removeMutants(mutants);
         assertTrue("MEM removal on a list with one item should result in a list"
                 + " with one item", result.size() == 1);
@@ -66,7 +66,7 @@ public class TestMutantEquivalentToMutantChecker {
         mutants.add(m1);
         mutants.add(m2);
         mutants.add(m3);
-        MutantEquivalentToMutantRemover remover = new MutantEquivalentToMutantRemover(new SchemaEquivalenceChecker());
+        RedundantMutantRemover remover = new RedundantMutantRemover(new SchemaEquivalenceChecker());
         List result = remover.removeMutants(mutants);
         assertTrue("MEM removal on a list with three non-equivalent items "
                 + "should result in a list of three items", result.size() == 3);
@@ -95,7 +95,7 @@ public class TestMutantEquivalentToMutantChecker {
         mutants.add(m1);
         mutants.add(m2);
         mutants.add(m3);
-        MutantEquivalentToMutantRemover remover = new MutantEquivalentToMutantRemover(new SchemaEquivalenceChecker());
+        RedundantMutantRemover remover = new RedundantMutantRemover(new SchemaEquivalenceChecker());
         List result = remover.removeMutants(mutants);
         assertTrue("MEM removal on a list with 2 equivalent items and one "
                 + "non-equivalent item should result in a list of three items",

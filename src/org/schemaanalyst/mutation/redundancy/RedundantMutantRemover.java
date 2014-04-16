@@ -1,30 +1,54 @@
+/*
+ */
 package org.schemaanalyst.mutation.redundancy;
 
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
+import org.schemaanalyst.util.DataCapturer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * <p>
- * A {@link RedundantMutantRemover} takes a list of mutants and removes
- * any that are found to be equivalent to other mutants or the original
- * in some respect.
- * </p>
- * 
- * @author Phil McMinn
+ * A {@link MutantRemover} that removes mutants equivalent to other mutants,
+ * according to a provided {@link EquivalenceChecker}.
  *
- * @param <A> The class of the artefact being mutated.
+ * @author Chris J. Wright
+ * @param <T> The type of the artefact being mutated.
  */
-public abstract class RedundantMutantRemover<A> extends MutantRemover<A> {
+public class RedundantMutantRemover<T> extends EquivalenceTesterMutantRemover<T> {
 
-	/**
-	 * Produce a reduced list of mutants based on the notion of
-	 * equivalence implemented by the {@link RedundantMutantRemover}. 
-	 * 
-	 * @param mutants the list of mutants to be reduced.
-	 * @return the list of reduced mutants.
-	 */
+    /**
+     * Constructor.
+     *
+     * @param checker The equivalence checker
+     */
+    public RedundantMutantRemover(EquivalenceChecker<T> checker) {
+        super(checker);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
-	public abstract List<Mutant<A>> removeMutants(List<Mutant<A>> mutants);
+    public List<Mutant<T>> removeMutants(List<Mutant<T>> mutants) {
+        List<Mutant<T>> result = new ArrayList<>(mutants.size());
+        for (int i = 0; i < mutants.size(); i++) {
+            Mutant<T> outer = mutants.get(i);
+            boolean found = false;
+            for (int j = i + 1; j < mutants.size(); j++) {
+                Mutant<T> inner = mutants.get(j);
+                if (checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
+                    DataCapturer.capture("removedmutants", "redundant", outer.getMutatedArtefact() + "-" + outer.getSimpleDescription());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                result.add(outer);
+            }
+        }
+        return result;
+    }
 }

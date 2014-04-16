@@ -18,7 +18,7 @@ import java.util.List;
  * @author Chris J. Wright
  * @param <T> The type of the artefact being mutated.
  */
-public class MutantEquivalentToOriginalRemover<T> extends EquivalenceTesterMutantRemover<T> {
+public class EquivalentMutantRemover<T> extends EquivalenceTesterMutantRemover<T> {
     
     private T originalArtefact;
 
@@ -28,7 +28,7 @@ public class MutantEquivalentToOriginalRemover<T> extends EquivalenceTesterMutan
      * @param checker The equivalence checker
      * @param originalArtefact The original artefact that was mutated
      */
-    public MutantEquivalentToOriginalRemover(EquivalenceChecker<T> checker, T originalArtefact) {
+    public EquivalentMutantRemover(EquivalenceChecker<T> checker, T originalArtefact) {
         super(checker);
         this.originalArtefact = originalArtefact;
     }
