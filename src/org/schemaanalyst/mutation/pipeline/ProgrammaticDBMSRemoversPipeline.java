@@ -10,7 +10,6 @@ import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.lang.reflect.Constructor;
@@ -66,11 +65,13 @@ public class ProgrammaticDBMSRemoversPipeline extends MutationPipeline<Schema> {
         switch (dbms) {
             case "Postgres":
                 addRemoverToFront(new PostgresRemover());
-                addRemoverToFront(new PrimaryKeyColumnsUniqueRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());
+                break;
+            case "HyperSQL":
+                addRemover(new PostgresRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");
