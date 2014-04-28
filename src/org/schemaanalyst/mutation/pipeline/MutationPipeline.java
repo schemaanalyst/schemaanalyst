@@ -52,17 +52,21 @@ public class MutationPipeline<A> implements MutantProducer<A> {
 
     private void applyProducers(List<Mutant<A>> mutants) {
         for (MutantProducer<A> producer : producers) {
+            // Time the application of each producer
             StopWatch timer = new StopWatch();
             timer.start();
             List<Mutant<A>> producerMutants = producer.mutate();
             timer.stop();
             producerTimings.put(producer.getClass(), timer);
+            
+            // Record how many mutants were added by the operator
             int newMutants = producerMutants.size();
-            if (newMutants > 0) {
-                Class producerClass = producer.getClass();
-                int producerCount = producerCounts.containsKey(producerClass) ? producerCounts.get(producerClass) : 0;
-                producerCounts.put(producerClass, producerCount + newMutants);
-            }
+            Class producerClass = producer.getClass();
+            // Following 2 lines are for compatibility with higher-order mutation
+            int producerCount = producerCounts.containsKey(producerClass) ? producerCounts.get(producerClass) : 0;
+            producerCounts.put(producerClass, producerCount + newMutants);
+
+            // Store the name of the operator as the simple description
             String simpleDescription = producer.getClass().getSimpleName();
             for (Mutant<A> mutant : producerMutants) {
                 mutant.setSimpleDescription(simpleDescription);
@@ -74,17 +78,19 @@ public class MutationPipeline<A> implements MutantProducer<A> {
     private List<Mutant<A>> applyRemovers(List<Mutant<A>> mutants) {
         for (MutantRemover<A> remover : removers) {
             int initialMutants = mutants.size();
+            
+            // Time the application of each remover
             StopWatch timer = new StopWatch();
             timer.start();
             mutants = remover.removeMutants(mutants);
             timer.stop();
             removerTimings.put(remover.getClass(), timer);
+            
+            // Record how many mutants were removed by the operator
             int removedMutants = initialMutants - mutants.size();
-            if (removedMutants > 0) {
-                Class removerClass = remover.getClass();
-                int removerCount = removerCounts.containsKey(removerClass) ? removerCounts.get(removerClass) : 0;
-                removerCounts.put(removerClass, removerCount + removedMutants);
-            }
+            Class removerClass = remover.getClass();
+            int removerCount = removerCounts.containsKey(removerClass) ? removerCounts.get(removerClass) : 0;
+            removerCounts.put(removerClass, removerCount + removedMutants);
         }
         return mutants;
     }
