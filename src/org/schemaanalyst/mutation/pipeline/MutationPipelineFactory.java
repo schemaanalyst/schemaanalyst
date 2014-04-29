@@ -87,6 +87,8 @@ public class MutationPipelineFactory {
         choices.add("ProgrammaticDBMSRemovers25");
         choices.add("ProgrammaticDBMSRemovers50");
         choices.add("ProgrammaticNoRemovers");
+        choices.add("QSICDBMSRemovers");
+        choices.add("QSICDBMSTransactedRemovers");
         return choices;
     }
 }

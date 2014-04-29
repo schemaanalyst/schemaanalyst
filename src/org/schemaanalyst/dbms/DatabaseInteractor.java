@@ -194,8 +194,13 @@ public abstract class DatabaseInteractor {
                         returnCount = statement.executeUpdate(command);
                         LOGGER.log(Level.FINE, "Statement: {0}\n Result: {1}", new Object[]{command, returnCount});
                     } catch (SQLException e) {
-                        LOGGER.log(Level.FINE, "Statement failed: " + command, e);
-                        returnCount = START;
+                        if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
+                            LOGGER.log(Level.FINE, "Create table failed: {0}", command);
+                            LOGGER.log(Level.FINEST, "Create table failed because: ", e);
+                            returnCount = CREATE_TABLE_ERROR;
+                        } else {
+                            LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                        }
                         connection.rollback();
                         break;
                     }
