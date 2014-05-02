@@ -12,6 +12,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 
 /**
  *
@@ -53,7 +54,8 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema> {
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
-                addRemover(new PostgresRemover());
+                addRemoverToFront(new HyperSQLRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");
