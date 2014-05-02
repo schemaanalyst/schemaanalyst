@@ -413,6 +413,9 @@ public class Schema extends IdentifiableEntity implements Serializable {
 			throw new SQLRepresentationException("No such table \"" + table
 					+ "\" in this schema for constraint");
 		}
+                if (foreignKeyConstraints.contains(constraint)) {
+                    foreignKeyConstraints.remove(constraint);
+                }
 		foreignKeyConstraints.add(constraint);
 	}
 
