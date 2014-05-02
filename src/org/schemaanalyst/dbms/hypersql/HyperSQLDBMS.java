@@ -2,6 +2,7 @@ package org.schemaanalyst.dbms.hypersql;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -14,6 +15,11 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 public class HyperSQLDBMS extends DBMS {
 
     private HyperSQLDatabaseInteractor databaseInteractor;
+
+    public HyperSQLDBMS() {
+        sqlWriter = new HyperSQLSQLWriter();
+        valueFactory = new ValueFactory();
+    }
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
