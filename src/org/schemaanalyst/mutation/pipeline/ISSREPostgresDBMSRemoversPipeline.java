@@ -18,7 +18,8 @@ import org.schemaanalyst.mutation.operator.PKCColumnR;
 import org.schemaanalyst.mutation.operator.UCColumnA;
 import org.schemaanalyst.mutation.operator.UCColumnE;
 import org.schemaanalyst.mutation.operator.UCColumnR;
-import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
+import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
+import org.schemaanalyst.mutation.quasimutant.PostgresDBMSRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
@@ -59,14 +60,14 @@ public class ISSREPostgresDBMSRemoversPipeline extends MutationPipeline<Schema> 
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
-                addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new PostgresDBMSRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
-                addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new HyperSQLRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:

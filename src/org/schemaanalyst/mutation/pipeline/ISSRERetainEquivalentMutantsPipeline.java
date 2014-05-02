@@ -10,6 +10,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.redundancy.NonEquivalentMutantRemover;
 
 /**
@@ -51,7 +52,7 @@ public class ISSRERetainEquivalentMutantsPipeline extends MutationPipeline<Schem
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
-                addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new HyperSQLRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:

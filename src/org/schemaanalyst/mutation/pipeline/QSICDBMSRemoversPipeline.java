@@ -65,7 +65,7 @@ public class QSICDBMSRemoversPipeline extends MutationPipeline<Schema> {
                 addRemoverToFront(new DBMSRemover());
                 break;
             case "HyperSQL":
-                addRemover(new DBMSRemover());
+                addRemoverToFront(new DBMSRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
