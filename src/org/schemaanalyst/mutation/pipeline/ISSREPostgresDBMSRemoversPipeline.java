@@ -18,7 +18,6 @@ import org.schemaanalyst.mutation.operator.PKCColumnR;
 import org.schemaanalyst.mutation.operator.UCColumnA;
 import org.schemaanalyst.mutation.operator.UCColumnE;
 import org.schemaanalyst.mutation.operator.UCColumnR;
-import org.schemaanalyst.mutation.quasimutant.PostgresDBMSRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
@@ -60,14 +59,15 @@ public class ISSREPostgresDBMSRemoversPipeline extends MutationPipeline<Schema> 
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
-                addRemoverToFront(new PostgresDBMSRemover());
+                addRemoverToFront(new PostgresRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
-                addRemover(new PostgresRemover());
+                addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");

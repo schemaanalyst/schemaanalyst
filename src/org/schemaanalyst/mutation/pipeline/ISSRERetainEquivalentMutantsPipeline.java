@@ -51,7 +51,8 @@ public class ISSRERetainEquivalentMutantsPipeline extends MutationPipeline<Schem
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
-                addRemover(new PostgresRemover());
+                addRemoverToFront(new PostgresRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");

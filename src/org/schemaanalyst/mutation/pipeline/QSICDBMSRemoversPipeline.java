@@ -66,6 +66,7 @@ public class QSICDBMSRemoversPipeline extends MutationPipeline<Schema> {
                 break;
             case "HyperSQL":
                 addRemover(new DBMSRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");

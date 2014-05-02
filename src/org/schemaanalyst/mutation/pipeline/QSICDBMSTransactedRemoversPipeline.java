@@ -65,7 +65,8 @@ public class QSICDBMSTransactedRemoversPipeline extends MutationPipeline<Schema>
                 addRemoverToFront(new DBMSTransactedRemover());
                 break;
             case "HyperSQL":
-                addRemover(new DBMSTransactedRemover());
+                addRemoverToFront(new DBMSTransactedRemover());
+                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");
