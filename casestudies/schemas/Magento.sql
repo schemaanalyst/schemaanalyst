@@ -1,4 +1,5 @@
 -- SCHEMA - Magento 1.1.1
+-- Source: https://www.magentocommerce.com/wiki/2_-_magento_concepts_and_architecture/magento_database_diagram
 
 create table admin_assert
 (
