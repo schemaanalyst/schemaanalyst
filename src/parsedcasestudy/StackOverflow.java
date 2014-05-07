@@ -9,7 +9,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 
 /*
  * StackOverflow schema.
- * Java code originally generated: 2013/12/13 10:00:56
+ * Java code originally generated: 2014/05/07 09:58:13
  *
  */
 
@@ -26,7 +26,7 @@ public class StackOverflow extends Schema {
 		tableComments.createColumn("text", new TextDataType());
 		tableComments.createColumn("creation_date", new DateDataType());
 		tableComments.createColumn("user_id", new IntDataType());
-		this.createNotNullConstraint("null", tableComments, tableComments.getColumn("id"));
+		this.createNotNullConstraint(tableComments, tableComments.getColumn("id"));
 
 		Table tablePosts = this.createTable("posts");
 		tablePosts.createColumn("id", new IntDataType());
@@ -49,7 +49,7 @@ public class StackOverflow extends Schema {
 		tablePosts.createColumn("answer_count", new SmallIntDataType());
 		tablePosts.createColumn("comment_count", new SmallIntDataType());
 		tablePosts.createColumn("favorite_count", new IntDataType());
-		this.createNotNullConstraint("null", tablePosts, tablePosts.getColumn("id"));
+		this.createNotNullConstraint(tablePosts, tablePosts.getColumn("id"));
 
 		Table tableUsers = this.createTable("users");
 		tableUsers.createColumn("id", new IntDataType());
@@ -65,15 +65,15 @@ public class StackOverflow extends Schema {
 		tableUsers.createColumn("views", new IntDataType());
 		tableUsers.createColumn("up_votes", new IntDataType());
 		tableUsers.createColumn("down_votes", new IntDataType());
-		this.createNotNullConstraint("null", tableUsers, tableUsers.getColumn("id"));
+		this.createNotNullConstraint(tableUsers, tableUsers.getColumn("id"));
 
 		Table tableVotes = this.createTable("votes");
 		tableVotes.createColumn("id", new IntDataType());
 		tableVotes.createColumn("post_id", new IntDataType());
 		tableVotes.createColumn("vote_type_id", new SmallIntDataType());
 		tableVotes.createColumn("creation_date", new DateDataType());
-		this.createNotNullConstraint("null", tableVotes, tableVotes.getColumn("id"));
-		this.createNotNullConstraint("null", tableVotes, tableVotes.getColumn("post_id"));
+		this.createNotNullConstraint(tableVotes, tableVotes.getColumn("id"));
+		this.createNotNullConstraint(tableVotes, tableVotes.getColumn("post_id"));
 	}
 }
 
