@@ -8,13 +8,19 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
 
     public static Schema[] schemas = {
         new ArtistSimilarity(),
+        new ArtistTerm(),
+        new BankAccount(),
         new BookTown(),
         new Cloc(),
+        new CoffeeOrders(),
         new Flights(),
         new IsoFlav_R2Repaired(),
         new JWhoisServer(),
         new NistDML183(),
+        new NistWeather(),
+        new NistXTS749(),
         new RiskIt(),
+        new StackOverflow(),
         new UnixUsage(),
         new WordNet()
     };
