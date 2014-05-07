@@ -6,10 +6,12 @@ BankAccount,Greg's teaching,No,No,Yes,No
 BioSQL,Biological database,Yes,No,No,No
 BookTown,PG sample,No,No,Yes,No
 Campaign,MS Access sample,No,No,No,No
+ChromeDB,Google Chrome,Yes,No,No,No
 Cloc,LOC counter export format,Yes,No,Yes,Yes
 CoffeeOrders,Textbook example,No,No,Yes,No
 Crafts2002,Textbook example,No,No,No,No
 CustomerOrder,Textbook example,No,No,Yes,No
+DavilaDjango,Schema visualization tool,Yes,No,No,No
 DHDBookstore,Textbook example,No,No,No,No
 DellStore,PG sample,No,No,Yes,No
 Employee,Unknown,No,No,Yes,No
@@ -29,7 +31,11 @@ Iso3166,PG sample,No,No,Yes,No
 IsoFlav_R2,USDA isofalvone,Yes,No,No,No
 iTrust,Laurie Williams studied,Yes,Yes,No,No
 JWhoisServer,WHOIS server,Yes,Yes,Yes,Yes
+Magento,Magento Commerce (eBay),Yes,No,No,No
 MediaWiki,Wiki engine,Yes,No,No,No
+MozillaExtensions,Firefox db,Yes,No,No,No
+MozillaPermissions,Firefox db,Yes,No,No,No
+MozillaPlaces,Firefox db,Yes,No,No,No
 Mxm,MillionSong - made for research,No,Yes,No,No
 NistDML181,NIST conformance suite,Yes,Yes,Yes,No
 NistDML182,NIST conformance suite,Yes,Yes,Yes,Yes
@@ -45,6 +51,7 @@ ProductSales,MS Access sample,No,No,No,No
 Products,Textbook,No,No,Yes,No
 RiskIt,Risk assessment,Yes,Yes,Yes,Yes
 SH_30,Oracle sample,No,No,No,No
+Skype,Skype sqlite db,Yes,No,No,No
 SRAMetadb,Gene sequencing,Yes,No,No,No
 SongTrackMetadata,MillionSong - made for research,No,Yes,No,No
 Spree,E-commerce application,Yes,No,No,No
@@ -52,9 +59,11 @@ StackOverflow,Old SO schema,Yes,No,No,No
 StudentResidence,Unknown,No,No,Yes,No
 TweetComplete,Greg's Twitter teaching,Unknown,No,No,No
 University,Textbook,No,Yes,No,No
+Twitter,Twitter sqlite db,Yes,No,No,No
 UnixUsage,Unix command history,Yes,Yes,Yes,Yes
 Usda,PG sample,No,No,Yes,No
 Voc,MonetDB sample,No,No,No,No
+Wikimedia,Wiki,Yes,No,No,No
 WordNet,Graph visualiser for Wordnet,Yes,No,No,No
 World,MySQL sample,No,No,No,No
 Writers,Student schema,No,No,No,No
