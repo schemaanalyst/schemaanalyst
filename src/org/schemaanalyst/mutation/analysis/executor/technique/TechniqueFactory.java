@@ -51,4 +51,8 @@ public class TechniqueFactory {
     public static Technique justInTimeSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
         return new JustInTimeSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
     }
+    
+    public static Technique dummy (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+        return new DummyTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    }
 }
