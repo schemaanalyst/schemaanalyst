@@ -8,6 +8,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.util.List;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 
 /**
  * <p>Abstract parent class of techniques performing mutation analysis.</p>
@@ -30,6 +31,6 @@ public abstract class Technique {
         this.databaseInteractor = databaseInteractor;
     }
     
-    public abstract AnalysisResult analyse();
+    public abstract AnalysisResult analyse(TestSuiteResult originalResults);
     
 }

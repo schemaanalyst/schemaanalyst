@@ -32,10 +32,7 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
     }
 
     @Override
-    public AnalysisResult analyse() {
-        // Get normal results        
-        TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
-        
+    public AnalysisResult analyse(TestSuiteResult originalResults) {
         // Get mutant results with schemata changes
         doSchemataSteps();
 

@@ -25,7 +25,7 @@ public class DummyTechnique extends Technique {
     }
     
     @Override
-    public AnalysisResult analyse() {
+    public AnalysisResult analyse(TestSuiteResult originalResult) {
         executeTestSuite(schema, testSuite);
         return new AnalysisResult();
     }

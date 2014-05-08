@@ -40,10 +40,9 @@ public class MinimalSchemataTechnique extends Technique {
     }
 
     @Override
-    public AnalysisResult analyse() {
+    public AnalysisResult analyse(TestSuiteResult originalResults) {
         // Get normal results
         AnalysisResult result = new AnalysisResult();
-        TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
 
         // Build map of changed tables
         this.changedTableMap = new HashMap<>();

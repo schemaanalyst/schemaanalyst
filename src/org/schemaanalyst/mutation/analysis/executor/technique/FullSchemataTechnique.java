@@ -23,10 +23,9 @@ public class FullSchemataTechnique extends AbstractSchemataTechnique {
     }
 
     @Override
-    public AnalysisResult analyse() {
+    public AnalysisResult analyse(TestSuiteResult originalResults) {
         // Get normal results
         AnalysisResult result = new AnalysisResult();
-        TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
 
         // Get mutant results with schemata changes
         doSchemataSteps();

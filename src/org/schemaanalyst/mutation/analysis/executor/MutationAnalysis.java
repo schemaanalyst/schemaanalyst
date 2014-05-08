@@ -27,6 +27,11 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.Callable;
+import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.testgeneration.CoverageReport;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 
@@ -119,6 +124,7 @@ public class MutationAnalysis extends Runner {
         StopWatch totalTime = new StopWatch();
         StopWatch testGenerationTime = new StopWatch();
         StopWatch mutantGenerationTime = new StopWatch();
+        StopWatch originalResultsTime = new StopWatch();
         StopWatch mutationAnalysisTime = new StopWatch();
         totalTime.start();
 
@@ -135,11 +141,18 @@ public class MutationAnalysis extends Runner {
                 return generateMutants();
             }
         }, mutantGenerationTime);
+        final TestSuiteResult originalResults = timedTask(new Callable<TestSuiteResult>() {
+            @Override
+            public TestSuiteResult call() throws Exception {
+                return executeTestSuite(schema, suite);
+            }         
+        },originalResultsTime);
+        
         final Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
         AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
             @Override
             public AnalysisResult call() throws Exception {
-                return mutTechnique.analyse();
+                return mutTechnique.analyse(originalResults);
             }
         }, mutationAnalysisTime);
 
@@ -165,6 +178,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("technique", technique);
         result.addValue("testgenerationtime", testGenerationTime.getTime());
         result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
+        result.addValue("originalresultstime", originalResultsTime.getTime());
         result.addValue("mutationanalysistime",mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
 
@@ -252,6 +266,20 @@ public class MutationAnalysis extends Runner {
             throw new RuntimeException(ex);
         }
         return pipeline.mutate();
+    }
+    
+    /**
+     * Executes all {@link TestCase}s in a {@link TestSuite} for a given
+     * {@link Schema}.
+     *
+     * @param schema The schema
+     * @param suite The test suite
+     * @return The execution results
+     */
+    private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
+            TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
+            TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
+            return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
     @Override

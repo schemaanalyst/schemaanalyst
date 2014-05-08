@@ -26,9 +26,8 @@ public class OriginalTechnique extends Technique {
     }
 
     @Override
-    public AnalysisResult analyse() {
+    public AnalysisResult analyse(TestSuiteResult originalResults) {
         AnalysisResult result = new AnalysisResult();
-        TestSuiteResult originalResults = executeTestSuite(schema, testSuite);
         for (Mutant<Schema> mutant : mutants) {
             TestSuiteResult mutantResults = executeTestSuite(mutant.getMutatedArtefact(), testSuite);
             if (!originalResults.equals(mutantResults)) {
