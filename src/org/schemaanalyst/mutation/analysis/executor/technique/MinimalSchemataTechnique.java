@@ -6,11 +6,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.InsertStatementException;
-import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.analysis.executor.util.MutationAnalysisUtils;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -166,20 +162,6 @@ public class MinimalSchemataTechnique extends Technique {
         for (String stmt : deleteStmts) {
             databaseInteractor.executeUpdate(stmt);
         }
-    }
-
-    /**
-     * Executes all {@link TestCase}s in a {@link TestSuite} for a given
-     * {@link Schema}.
-     *
-     * @param schema The schema
-     * @param suite The test suite
-     * @return The execution results
-     */
-    protected TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
-        TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
-        TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
-        return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
     
 }
