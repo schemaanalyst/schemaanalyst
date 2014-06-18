@@ -24,6 +24,15 @@ public class TestSuiteResult {
     public void add(TestCase testCase, TestCaseResult testCaseResult) {
         result.add(new MixedPair<>(testCase, testCaseResult));
     }
+    
+    public TestCaseResult getResult(TestCase testCase) {
+        for (MixedPair<TestCase, TestCaseResult> mixedPair : result) {
+            if (mixedPair.getFirst().equals(testCase)) {
+                return mixedPair.getSecond();
+            }
+        }
+        return null;
+    }
 
     @Override
     public int hashCode() {
