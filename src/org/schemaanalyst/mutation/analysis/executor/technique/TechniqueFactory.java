@@ -16,14 +16,14 @@ import java.util.List;
  * @author Chris J. Wright
  */
 public class TechniqueFactory {
-    public static Technique instantiate(String name, Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+    public static Technique instantiate(String name, Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         Class<TechniqueFactory> c = TechniqueFactory.class;
         Method[] methods = c.getMethods();
         
         for (Method m : methods) {
             if (m.getName().equals(name)) {
                 try {
-                    return (Technique) m.invoke(null, schema, mutants, testSuite, dbms, databaseInteractor);
+                    return (Technique) m.invoke(null, schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
@@ -32,27 +32,27 @@ public class TechniqueFactory {
         throw new RuntimeException("Unknown technique \"" + name + "\"");
     }
     
-    public static Technique original (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new OriginalTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique original (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new OriginalTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
-    public static Technique fullSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new FullSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique fullSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new FullSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
-    public static Technique minimalSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new MinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique minimalSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new MinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
-    public static Technique upFrontSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new UpFrontSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique upFrontSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new UpFrontSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
-    public static Technique justInTimeSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new JustInTimeSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique justInTimeSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new JustInTimeSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
-    public static Technique dummy (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new DummyTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    public static Technique dummy (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new DummyTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
 }

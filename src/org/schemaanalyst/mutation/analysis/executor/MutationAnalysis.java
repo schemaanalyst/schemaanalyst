@@ -87,6 +87,11 @@ public class MutationAnalysis extends Runner {
     @Parameter("Which mutation analysis technique to use.")
     protected String technique = "original";
     /**
+     * Whether to use transactions with this technique (if possible).
+     */
+    @Parameter("Whether to use transactions with this technique (if possible).")
+    protected boolean useTransactions = false;
+    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -176,6 +181,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
         result.addValue("technique", technique);
+        result.addValue("transactions", useTransactions);
         result.addValue("testgenerationtime", testGenerationTime.getTime());
         result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
         result.addValue("originalresultstime", originalResultsTime.getTime());
@@ -220,7 +226,7 @@ public class MutationAnalysis extends Runner {
     }
 
     private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
+        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
 
     /**

@@ -22,13 +22,15 @@ public abstract class Technique {
     protected TestSuite testSuite;
     protected DBMS dbms;
     protected DatabaseInteractor databaseInteractor;
+    protected boolean useTransactions;
 
-    public Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+    public Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         this.schema = schema;
         this.mutants = mutants;
         this.testSuite = testSuite;
         this.dbms = dbms;
         this.databaseInteractor = databaseInteractor;
+        this.useTransactions = useTransactions;
     }
     
     public abstract AnalysisResult analyse(TestSuiteResult originalResults);

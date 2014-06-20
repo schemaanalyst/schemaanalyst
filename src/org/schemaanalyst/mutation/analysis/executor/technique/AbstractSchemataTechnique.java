@@ -25,8 +25,8 @@ public abstract class AbstractSchemataTechnique extends Technique {
     protected String dropStmt;
     protected final SQLWriter sqlWriter;
 
-    public AbstractSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor);
+    public AbstractSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
         sqlWriter = dbms.getSQLWriter();
     }
     

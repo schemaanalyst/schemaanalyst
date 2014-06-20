@@ -27,8 +27,8 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
  */
 public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
 
-    public JustInTimeSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor);
+    public JustInTimeSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
 
     @Override

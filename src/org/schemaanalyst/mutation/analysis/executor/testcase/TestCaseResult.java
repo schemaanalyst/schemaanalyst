@@ -16,7 +16,7 @@ public class TestCaseResult {
 
     public final static TestCaseResult SuccessfulTestCaseResult = new TestCaseResult();
 
-    final boolean successful;
+    final protected boolean successful;
     final private StatementException exception;
 
     public TestCaseResult() {

@@ -20,8 +20,8 @@ import org.schemaanalyst.testgeneration.TestSuite;
  */
 public class DummyTechnique extends Technique {
 
-    public DummyTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor);
+    public DummyTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
     @Override

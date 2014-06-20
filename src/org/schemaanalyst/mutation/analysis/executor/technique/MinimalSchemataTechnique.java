@@ -30,8 +30,8 @@ public class MinimalSchemataTechnique extends Technique {
     private Map<Integer, TestSuiteResult> resultMap;
     private Map<String, List<Integer>> changedTableMap;
 
-    public MinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor);
+    public MinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
         this.sqlWriter = dbms.getSQLWriter();
     }
 

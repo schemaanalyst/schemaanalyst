@@ -6,8 +6,11 @@ import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.util.tuple.MixedPair;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import org.schemaanalyst.testgeneration.TestSuite;
 
 /**
  * <p>The results of executing a {@link TestSuite}.</p>
@@ -16,22 +19,20 @@ import java.util.Objects;
  */
 public class TestSuiteResult {
     private final List<MixedPair<TestCase, TestCaseResult>> result;
+    private final Map<TestCase, TestCaseResult> map;
 
     public TestSuiteResult() {
         result = new ArrayList<>();
+        map = new HashMap<>();
     }
     
     public void add(TestCase testCase, TestCaseResult testCaseResult) {
         result.add(new MixedPair<>(testCase, testCaseResult));
+        map.put(testCase, testCaseResult);
     }
     
     public TestCaseResult getResult(TestCase testCase) {
-        for (MixedPair<TestCase, TestCaseResult> mixedPair : result) {
-            if (mixedPair.getFirst().equals(testCase)) {
-                return mixedPair.getSecond();
-            }
-        }
-        return null;
+        return map.get(testCase);
     }
 
     @Override

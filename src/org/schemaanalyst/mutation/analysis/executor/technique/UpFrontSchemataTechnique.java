@@ -23,8 +23,8 @@ import java.util.concurrent.Future;
  */
 public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
 
-    public UpFrontSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor);
+    public UpFrontSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
 
     @Override

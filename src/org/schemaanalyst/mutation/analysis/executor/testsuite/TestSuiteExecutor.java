@@ -18,5 +18,13 @@ public class TestSuiteExecutor {
         }
         return result;
     }
+    
+    public TestSuiteResult executeTestSuite(TestCaseExecutor executor, TestSuite suite, TestSuiteResult expectedResult) {
+        TestSuiteResult result = new TestSuiteResult();
+        for (TestCase testCase : suite.getTestCases()) {
+            result.add(testCase, executor.executeTestCase(testCase, expectedResult.getResult(testCase)));
+        }
+        return result;
+    }
 
 }

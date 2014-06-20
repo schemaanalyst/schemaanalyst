@@ -24,5 +24,22 @@ public class DeletingTestSuiteExecutor extends TestSuiteExecutor {
         }
         return result;
     }
+
+    @Override
+    public TestSuiteResult executeTestSuite(TestCaseExecutor executor, TestSuite suite, TestSuiteResult expectedResult) {
+        TestSuiteResult result = new TestSuiteResult();
+        List<TestCase> testCases = suite.getTestCases();
+        if (!testCases.isEmpty()) {
+            executor.executeDrops();
+            executor.executeCreates();
+            for (TestCase testCase : testCases) {
+                result.add(testCase, executor.executeTestCase(testCase, expectedResult.getResult(testCase)));
+            }
+            executor.executeDrops();
+        }
+        return result;
+    }
+    
+    
     
 }
