@@ -119,13 +119,13 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
 
         @Override
         public MutantStatus call() throws Exception {
-            TestSuiteResult mutantResults = executeTestSuiteSchemata(mutant.getMutatedArtefact(), testSuite, schemataPrefix);
+            TestSuiteResult mutantResults = executeTestSuiteSchemata(mutant.getMutatedArtefact(), testSuite, schemataPrefix, originalResults);
             return originalResults.equals(mutantResults) ? MutantStatus.ALIVE : MutantStatus.KILLED;
         }
     }
 
     @Override
-    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix) {
+    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix, TestSuiteResult originalResults) {
         TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, databaseInteractor, schemataPrefix);
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);

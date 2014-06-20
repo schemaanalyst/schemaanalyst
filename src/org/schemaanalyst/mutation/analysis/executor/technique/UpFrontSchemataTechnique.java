@@ -112,7 +112,7 @@ public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
 
         @Override
         public MutantStatus call() throws Exception {
-            TestSuiteResult mutantResults = executeTestSuiteSchemata(mutant.getMutatedArtefact(), testSuite, schemataPrefix);
+            TestSuiteResult mutantResults = executeTestSuiteSchemata(mutant.getMutatedArtefact(), testSuite, schemataPrefix, originalResults);
             return originalResults.equals(mutantResults) ? MutantStatus.ALIVE : MutantStatus.KILLED;
         }
     }

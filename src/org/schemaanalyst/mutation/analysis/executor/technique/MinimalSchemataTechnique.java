@@ -23,6 +23,7 @@ import java.util.*;
  */
 public class MinimalSchemataTechnique extends Technique {
 
+    final protected static int TRANSACTION_SIZE = 100;
     private final SQLWriter sqlWriter;
     private List<String> createStmts;
     private List<String> dropStmts;
@@ -86,8 +87,7 @@ public class MinimalSchemataTechnique extends Technique {
                     }
                 }
             }
-            
-            
+
         }
 
         // Build the TestSuiteResult objects
@@ -119,7 +119,7 @@ public class MinimalSchemataTechnique extends Technique {
                             normalTestResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + normalResult, insert));
                         }
                     }
-                    
+
                     for (Integer mutantId : applicableMutants) {
                         // Only insert if we haven't failed yet
                         if (!failedMutants.containsKey(mutantId)) {
@@ -132,7 +132,7 @@ public class MinimalSchemataTechnique extends Technique {
                             }
                         }
                     }
-                    
+
                     // If a mutant isn't applicable, then it should 'inherit' the normal result
                     for (int i = 0; i < mutants.size(); i++) {
                         if (!applicableMutants.contains(i) && normalTestResult != null) {
@@ -147,21 +147,33 @@ public class MinimalSchemataTechnique extends Technique {
     }
 
     private void executeDropStmts() {
-        for (String stmt : dropStmts) {
-            databaseInteractor.executeUpdate(stmt);
+        if (!useTransactions) {
+            for (String stmt : dropStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+        } else {
+            databaseInteractor.executeDropsAsTransaction(dropStmts, TRANSACTION_SIZE);
         }
     }
 
     private void executeCreateStmts() {
-        for (String stmt : createStmts) {
-            databaseInteractor.executeUpdate(stmt);
+        if (!useTransactions) {
+            for (String stmt : createStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+        } else {
+            databaseInteractor.executeCreatesAsTransaction(createStmts, TRANSACTION_SIZE);
         }
     }
 
     private void executeDeleteStmts() {
-        for (String stmt : deleteStmts) {
-            databaseInteractor.executeUpdate(stmt);
+        if (!useTransactions) {
+            for (String stmt : deleteStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+        } else {
+            databaseInteractor.executeUpdatesAsTransaction(deleteStmts);
         }
     }
-    
+
 }

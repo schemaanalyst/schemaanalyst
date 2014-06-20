@@ -45,10 +45,14 @@ public abstract class AbstractSchemataTechnique extends Technique {
         }
     }
 
-    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix) {
+    protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix, TestSuiteResult originalResults) {
         TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, databaseInteractor, schemataPrefix);
         TestSuiteExecutor suiteExecutor = new TestSuiteExecutor();
-        return suiteExecutor.executeTestSuite(caseExecutor, suite);
+        if (!useTransactions || originalResults == null) {
+            return suiteExecutor.executeTestSuite(caseExecutor, suite);
+        } else {
+            return suiteExecutor.executeTestSuite(caseExecutor, suite, originalResults);
+        }
     }
 
     protected void doSchemataSteps() {

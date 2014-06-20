@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
+import java.util.ArrayList;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
@@ -32,6 +33,27 @@ public class FullSchemataDeletingTestCaseExecutor extends DeletingTestCaseExecut
                         if (result != 1) {
                             throw new InsertStatementException("Failed, result was: " + result, statement);
                         }
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void executeInsertsInTransaction(Data data) {
+        List<Table> stateTables = data.getTables();
+        for (Table table : tables) {
+            for (Table stateTable : stateTables) {
+                if (table.getIdentifier().toString().replace(schemataPrefix, "").equals(stateTable.getIdentifier().toString())) {
+                    List<Row> rows = data.getRows(stateTable);
+                    List<String> statements = new ArrayList<>();
+                    for (Row row : rows) {
+                        String statement = sqlWriter.writeInsertStatement(row).replaceAll("INSERT INTO \"", "INSERT INTO \"" + schemataPrefix);
+                        statements.add(statement);
+                    }
+                    Integer result = databaseInteractor.executeUpdatesAsTransaction(statements);
+                    if (result != 1) {
+                        throw new InsertStatementException("Failed, result was: " + result, "(Executed in transaction)");
                     }
                 }
             }
