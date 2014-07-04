@@ -69,11 +69,20 @@ public abstract class DatabaseInteractor {
     protected long insertInteractions = 0;
     protected long deleteInteractions = 0;
 
+    /**
+     * Constructor.
+     * 
+     * @param databaseConfiguration The database configuration object
+     * @param locationConfiguration The location configuration object
+     */
     public DatabaseInteractor(DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
         this.databaseConfiguration = databaseConfiguration;
         this.locationConfiguration = locationConfiguration;
     }
 
+    /**
+     * Initialize the connection to the DBMS and database in use.
+     */
     public abstract void initializeDatabaseConnection();
 
     /**
@@ -152,14 +161,38 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
+    /**
+     * Executes a series of CREATE statements as a transaction, with a limit on 
+     * the maximum transaction size.
+     * 
+     * @param commands
+     * @param transactionSize
+     * @return 
+     */
     public Integer executeCreatesAsTransaction(List<String> commands, int transactionSize) {
         return executeCreatesOrDropsAsTransaction(commands, transactionSize);
     }
 
+    /**
+     * Executes a series of DROP statements as a transaction, with a limit on 
+     * the maximum transaction size.
+     * 
+     * @param commands The statements
+     * @param transactionSize The maximum transaction size
+     * @return 1, if successful
+     */
     public Integer executeDropsAsTransaction(List<String> commands, int transactionSize) {
         return executeCreatesOrDropsAsTransaction(commands, transactionSize);
     }
 
+    /**
+     * Executes a series of CREATE or DROP statements as a transaction, with a 
+     * limit on the maximum transaction size.
+     * 
+     * @param commands The statements
+     * @param transactionSize The maximum transaction size
+     * @return 1, if successful
+     */
     protected Integer executeCreatesOrDropsAsTransaction(List<String> commands, int transactionSize) {
         Integer result = START;
         for (int i = 0; i * transactionSize < commands.size(); i++) {
@@ -175,7 +208,13 @@ public abstract class DatabaseInteractor {
         }
         return result;
     }
-
+    
+    /**
+     * Executes a series of update statements in an explicit transaction.
+     * 
+     * @param commands The statements to execute
+     * @return 1, if successful
+     */
     public Integer executeUpdatesAsTransaction(Iterable<String> commands) {
         Integer returnCount = START;
         try {
@@ -217,6 +256,12 @@ public abstract class DatabaseInteractor {
         return returnCount;
     }
 
+    /**
+     * Executes a series of update statements as a JDBC batch statement.
+     * 
+     * @param commands The statements to execute
+     * @return 1, if successful
+     */
     public Integer executeUpdatesAsBatch(Iterable<String> commands) {
         Integer returnCount = START;
         try {
@@ -280,23 +325,82 @@ public abstract class DatabaseInteractor {
             LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", stmt);
         }
     }
+    
+    /**
+     * Add a number of extra interactions to the internal usage counters in this
+     * DatabaseInteractor object.
+     * 
+     * @param type The type of interaction (insert, create, drop or delete)
+     * @param number The number of interactions
+     */
+    public synchronized void addInteractions(String type, long number) {
+        switch (type) {
+            case "insert":
+                insertInteractions++;
+                break;
+            case "create":
+                createInteractions++;
+                break;
+            case "drop":
+                dropInteractions++;
+                break;
+            case "delete":
+                deleteInteractions++;
+            default:
+                LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", type);
+        }
+    }
+    
+    /**
+     * Add a number of extra interactions to the internal usage counters in this
+     * DatabaseInteractor object, according to the counters of a given 
+     * DatabaseInteractor object.
+     * 
+     * @param interactor The interactor to add to this interactor
+     */
+    public synchronized void addInteractions(DatabaseInteractor interactor) {
+        addInteractions("insert", interactor.getInsertInteractions());
+        addInteractions("create",interactor.getCreateInteractions());
+        addInteractions("drop", interactor.getDropInteractions());
+        addInteractions("delete", interactor.getDeleteInteractions());
+    }
 
+    /**
+     * Get the total number of interactions executed by this DatabaseInteractor
+     * @return 
+     */
     public long getTotalInteractions() {
         return totalInteractions;
     }
 
+    /**
+     * Get the number of CREATE interactions executed by this DatabaseInteractor
+     * @return 
+     */
     public long getCreateInteractions() {
         return createInteractions;
     }
 
+    /**
+     * Get the number of DROP interactions executed by this DatabaseInteractor
+     * @return 
+     */
     public long getDropInteractions() {
         return dropInteractions;
     }
 
+    /**
+     * Get the number of INSERT interactions executed by this DatabaseInteractor
+     * @return 
+     */
     public long getInsertInteractions() {
         return insertInteractions;
     }
 
+    /**
+     * Get the number of DELETE interactions executed by this DatabaseInteractor
+     * @return 
+     */
     public long getDeleteInteractions() {
         return deleteInteractions;
     }
