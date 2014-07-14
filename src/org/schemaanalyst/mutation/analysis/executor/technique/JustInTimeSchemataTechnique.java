@@ -1,12 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
 import java.util.HashMap;
-import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.TestSuite;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -14,10 +8,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.testcase.FullSchemataDeletingTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.TestSuite;
 
 /**
  * <p>
@@ -26,9 +26,12 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
  * @author Chris J. Wright
  */
 public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
+    
+    protected Map<String,DatabaseInteractor> threadInteractors;
 
     public JustInTimeSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+        threadInteractors = new HashMap<>();
     }
 
     @Override
@@ -45,7 +48,7 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
         // Return result
         return result;
     }
-
+    
     @Override
     protected void doSchemataSteps() {
         // Overrides because it does not need combined drop and create statements
@@ -126,12 +129,20 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
 
     @Override
     protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix, TestSuiteResult originalResults) {
-        DatabaseInteractor threadInteractor = databaseInteractor.duplicate();
+        DatabaseInteractor threadInteractor = getInteractorForThread(Thread.currentThread());
         TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, threadInteractor, schemataPrefix);
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         TestSuiteResult result = suiteExecutor.executeTestSuite(caseExecutor, suite);
         databaseInteractor.addInteractions(threadInteractor);
         return result;
+    }
+    
+    protected DatabaseInteractor getInteractorForThread(Thread thread) {
+        String threadName = thread.getName();
+        if (!threadInteractors.containsKey(threadName)) {
+            threadInteractors.put(threadName, databaseInteractor.duplicate());
+        }
+        return threadInteractors.get(threadName);
     }
 
     /**
