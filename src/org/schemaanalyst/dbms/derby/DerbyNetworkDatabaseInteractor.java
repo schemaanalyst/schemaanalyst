@@ -55,4 +55,9 @@ public class DerbyNetworkDatabaseInteractor extends DerbyDatabaseInteractor {
         }
 
     }
+
+    @Override
+    public DatabaseInteractor duplicate() {
+        return new DerbyNetworkDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+    }
 }

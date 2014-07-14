@@ -126,9 +126,12 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
 
     @Override
     protected TestSuiteResult executeTestSuiteSchemata(Schema schema, TestSuite suite, String schemataPrefix, TestSuiteResult originalResults) {
-        TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, databaseInteractor, schemataPrefix);
+        DatabaseInteractor threadInteractor = databaseInteractor.duplicate();
+        TestCaseExecutor caseExecutor = new FullSchemataDeletingTestCaseExecutor(schema, dbms, threadInteractor, schemataPrefix);
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
-        return suiteExecutor.executeTestSuite(caseExecutor, suite);
+        TestSuiteResult result = suiteExecutor.executeTestSuite(caseExecutor, suite);
+        databaseInteractor.addInteractions(threadInteractor);
+        return result;
     }
 
     /**

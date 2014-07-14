@@ -79,4 +79,9 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor {
             return -1;
         }
     }
+
+    @Override
+    public DatabaseInteractor duplicate() {
+        return new PostgresDatabaseInteractor(databaseConfiguration, locationConfiguration);
+    }
 }

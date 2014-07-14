@@ -84,6 +84,13 @@ public abstract class DatabaseInteractor {
      * Initialize the connection to the DBMS and database in use.
      */
     public abstract void initializeDatabaseConnection();
+    
+    /**
+     * Produce a duplicate of this interactor. Note: this does not include the 
+     * internal usage counters.
+     * @return The duplicate DatabaseInteractor
+     */
+    public abstract DatabaseInteractor duplicate();
 
     /**
      * Execute a command against a database. Most useful for commands that
@@ -313,6 +320,7 @@ public abstract class DatabaseInteractor {
         totalInteractions++;
         // Identify subtotal to increment
         String statement = stmt.toLowerCase();
+        statement = statement.trim();
         if (statement.startsWith("insert")) {
             insertInteractions++;
         } else if (statement.startsWith("create")) {
@@ -346,6 +354,7 @@ public abstract class DatabaseInteractor {
                 break;
             case "delete":
                 deleteInteractions++;
+                break;
             default:
                 LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", type);
         }

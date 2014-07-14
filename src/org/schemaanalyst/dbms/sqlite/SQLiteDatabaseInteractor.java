@@ -92,4 +92,9 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             return -1;
         }
     }
+
+    @Override
+    public DatabaseInteractor duplicate() {
+        return new SQLiteDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+    }
 }

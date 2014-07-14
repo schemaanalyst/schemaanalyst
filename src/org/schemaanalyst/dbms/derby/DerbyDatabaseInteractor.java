@@ -149,4 +149,9 @@ public class DerbyDatabaseInteractor extends DatabaseInteractor {
         }
         return returnCount;
     }
+
+    @Override
+    public DatabaseInteractor duplicate() {
+        return new DerbyDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+    }
 }

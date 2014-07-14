@@ -75,4 +75,9 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
             throw new RuntimeException(ex);
         }
     }
+
+    @Override
+    public DatabaseInteractor duplicate() {
+        return new HyperSQLDatabaseInteractor(databaseName, databaseConfiguration, locationConfiguration);
+    }
 }
