@@ -38,8 +38,15 @@ public class CoveredTargetsData extends Runner {
 
                 for (String criterionName : CRITERIA) {
                     CoverageCriterion criterion = CoverageCriterionFactory.instantiate(criterionName);
+                    int numReqs = criterion.generateRequirements(subject).size();
 
                     for (String techniqueName : TECHNIQUES) {
+
+                        System.out.println("DOING " + subjectName + " " + criterionName + " " + techniqueName);
+
+                        int totalNumCovered = 0;
+                        int totalNumFailed = 0;
+                        int totalEvaluations = 0;
 
                         for (long seed : SEEDS) {
 
@@ -52,14 +59,24 @@ public class CoveredTargetsData extends Runner {
                                 new ValueFactory(),
                                 dataGeneratorObject);
 
-                            // TestSuite testSuite = testSuiteGenerator.generate();
+                            TestSuite testSuite = testSuiteGenerator.generate();
 
-                            System.out.println("DOING " + subjectName + " " + criterionName + " " + techniqueName);
-                            // output stats to files ...
+                            int numCovered = testSuite.getNumTestCases();
+                            int numFailed = numReqs - numCovered;
+                            int evaluations = testSuite.getNumEvaluations();
 
-                            coveredTargetsOut.flush();
-                            evaluationsOut.flush();
+                            totalNumCovered += numCovered;
+                            totalNumFailed += numFailed;
+                            totalEvaluations += evaluations;
                         }
+
+                        double coverageAverage = 100 * (totalNumCovered / (double) (totalNumCovered + totalNumFailed));
+                        double evaluationsAverage = totalEvaluations / SEEDS.length;
+                        coveredTargetsOut.print(", " + String.format( "%.1f", coverageAverage));
+                        evaluationsOut.print(", " + String.format( "%.1f", evaluationsAverage));
+
+                        coveredTargetsOut.flush();
+                        evaluationsOut.flush();
                     }
                 }
 
