@@ -139,7 +139,7 @@ public class UpFrontSchemataTechnique extends AbstractSchemataTechnique {
         }
     }
 
-    protected DatabaseInteractor getInteractorForThread(Thread thread) {
+    protected synchronized DatabaseInteractor getInteractorForThread(Thread thread) {
         String threadName = thread.getName();
         if (!threadInteractors.containsKey(threadName)) {
             DatabaseInteractor interactor = databaseInteractor.duplicate();

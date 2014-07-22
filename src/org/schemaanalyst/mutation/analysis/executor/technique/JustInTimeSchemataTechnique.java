@@ -137,7 +137,7 @@ public class JustInTimeSchemataTechnique extends AbstractSchemataTechnique {
         return result;
     }
     
-    protected DatabaseInteractor getInteractorForThread(Thread thread) {
+    protected synchronized DatabaseInteractor getInteractorForThread(Thread thread) {
         String threadName = thread.getName();
         if (!threadInteractors.containsKey(threadName)) {
             threadInteractors.put(threadName, databaseInteractor.duplicate());
