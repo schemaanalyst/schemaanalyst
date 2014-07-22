@@ -1,5 +1,12 @@
 package org.schemaanalyst.mutation.analysis.executor.util;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveTask;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.util.SchemaMerger;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
@@ -7,9 +14,6 @@ import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * <p>
@@ -81,31 +85,43 @@ public class MutationAnalysisUtils {
             }
         }
     }
-    
+
     /**
-     * Renames the changed table in each mutant, with the format 
+     * Renames the changed table in each mutant, with the format
      * 'mutant_ID_NAME'.
-     * 
+     *
      * @param original The original schema
      * @param mutants The mutant schemas
      */
     public static void renameChangedTable(Schema original, List<Mutant<Schema>> mutants) {
         for (int i = 0; i < mutants.size(); i++) {
             Mutant<Schema> mutant = mutants.get(i);
-            Schema mutantSchema = mutant.getMutatedArtefact();
             String changedTableName = MutationAnalysisUtils.computeChangedTable(original, mutant);
-            Table changedTable = mutantSchema.getTable(changedTableName);
-            String newName = String.format("mutant_%d_%s", i, changedTableName);
-            changedTable.setName(newName);
+            renameChangedTable(mutant, i, changedTableName);
         }
     }
-    
+
+    /**
+     * Renames the changed table in a single mutant, with the format
+     * 'mutant_ID_NAME'.
+     *
+     * @param mutant The mutant schema
+     * @param id The mutant id
+     * @param changedTableName The name of the changed table
+     */
+    public static void renameChangedTable(Mutant<Schema> mutant, int id, String changedTableName) {
+        Schema mutantSchema = mutant.getMutatedArtefact();
+        Table changedTable = mutantSchema.getTable(changedTableName);
+        String newName = String.format("mutant_%d_%s", id, changedTableName);
+        changedTable.setName(newName);
+    }
+
     /**
      * Merges a schema and mutants together into a meta-mutant.
-     * 
+     *
      * @param original The original schema
      * @param mutants The mutant schemas
-     * @return 
+     * @return
      */
     public static Schema mergeMutants(Schema original, List<Mutant<Schema>> mutants) {
         Schema merge = original;
@@ -114,19 +130,76 @@ public class MutationAnalysisUtils {
         }
         return merge;
     }
-    
+
+    public static Schema mergeMutantsParallel(Schema original, List<Mutant<Schema>> mutants) {
+        try {
+            ForkJoinPool pool = new ForkJoinPool();
+            LinkedList<Schema> schemas = new LinkedList<>();
+            for (Mutant<Schema> mutant : mutants) {
+                schemas.add(mutant.getMutatedArtefact());
+            }
+            ForkJoinTask<Schema> result = pool.submit(new MergeMutantsTask(original, schemas));
+            pool.shutdown();
+            return result.get();
+        } catch (InterruptedException | ExecutionException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    private static class MergeMutantsTask extends RecursiveTask<Schema> {
+
+        Schema schema;
+        LinkedList<Schema> schemas;
+
+        public MergeMutantsTask(Schema schema, LinkedList<Schema> schemas) {
+            this.schema = schema;
+            this.schemas = schemas;
+        }
+
+        @Override
+        protected Schema compute() {
+            if (schemas.isEmpty()) {
+                return schema;
+            } else if (schemas.size() <= 10) {
+                Schema merge = schema;
+                for (Schema s : schemas) {
+                    merge = SchemaMerger.merge(merge, s);
+                }
+                return merge;
+            } else {
+                try {
+                    MergeMutantsTask first = new MergeMutantsTask(schema, new LinkedList<>(schemas.subList(0, schemas.size()/2)));
+                    MergeMutantsTask second = new MergeMutantsTask(schema, new LinkedList<>(schemas.subList(schemas.size()/2, schemas.size())));
+                    first.fork();
+                    second.fork();
+                    return SchemaMerger.merge(schema, first.get(), second.get());
+                } catch (InterruptedException | ExecutionException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        }
+        
+    }
+
     /**
-     * Merges a schema and mutants together into a meta-mutant, applying all 
+     * Merges a schema and mutants together into a meta-mutant, applying all
      * necessary renaming operations beforehand.
-     * 
+     *
      * @param original The original schema
      * @param mutants The mutant schemas
      * @return The meta-mutant schema
      */
     public static Schema renameAndMergeMutants(Schema original, List<Mutant<Schema>> mutants) {
+        long start = System.currentTimeMillis();
         renameChangedTable(original, mutants);
+        System.out.println("Renamed changed: " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
         renameMutantConstraints(mutants);
-        return mergeMutants(original, mutants);
+        System.out.println("Rename constraints: " + (System.currentTimeMillis() - start));
+        start = System.currentTimeMillis();
+        Schema schemata = mergeMutants(original, mutants);
+        System.out.println("Merge mutants: " + (System.currentTimeMillis() - start));
+        return schemata;
     }
 
 }

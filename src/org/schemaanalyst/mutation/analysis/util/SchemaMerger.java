@@ -55,5 +55,23 @@ public class SchemaMerger {
         }
         return duplicate;
     }
+    
+    /**
+     * Calls merge(a,b) for each pair of schemas in sequence.
+     * 
+     * @param schemas The schemas to merge
+     * @return The merged schema
+     */
+    public static Schema merge(Schema... schemas) {
+        Schema merge = null;
+        for (Schema schema : schemas) {
+            if (merge == null) {
+                merge = schema;
+            } else {
+                merge = merge(merge, schema);
+            }
+        }
+        return merge;
+    }
 
 }
