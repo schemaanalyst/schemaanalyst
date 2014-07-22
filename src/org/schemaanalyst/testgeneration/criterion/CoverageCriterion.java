@@ -15,6 +15,8 @@ public abstract class CoverageCriterion {
         requirements = new LinkedHashMap<>();
     }
 
+    public abstract void generateRequirements();
+
     protected void addRequirement(String id, String description, Predicate predicate) {
         List<TestRequirementDescriptor> descriptors = requirements.get(predicate);
         if (descriptors == null) {

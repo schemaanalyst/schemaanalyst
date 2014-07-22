@@ -1,9 +1,8 @@
 package org.schemaanalyst.testgeneration.criterion.integrityconstraint;
 
-import org.schemaanalyst.logic.TwoVL;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.testgeneration.criterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.criterion.IDGenerator;
 import org.schemaanalyst.testgeneration.criterion.IDGeneratorUsingTable;
@@ -13,19 +12,33 @@ import org.schemaanalyst.testgeneration.criterion.IDGeneratorUsingTable;
  */
 public class ICC extends CoverageCriterion {
 
-    public ICC(Schema schema) {
+    protected Schema schema;
+    protected IDGenerator idGenerator;
 
+    public ICC(Schema schema) {
+        this.schema = schema;
+    }
+
+    public void generateRequirements() {
         for (Table table : schema.getTables()) {
-            IDGenerator generator = new IDGeneratorUsingTable(table);
+            idGenerator = new IDGeneratorUsingTable(table);
 
             for (Constraint constraint : schema.getConstraints(table)) {
-                for (boolean truthValue : TwoVL.VALUES) {
-                    addRequirement(
-                            generator.nextID(),
-                            constraint + "for " + table + " is " + truthValue,
-                            PredicateGenerator.generateConditionPredicate(constraint, truthValue));
-                }
+                generateRequirements(constraint, true);
+                generateRequirements(constraint, false);
             }
         }
+    }
+
+    protected void generateRequirements(Constraint constraint, boolean truthValue) {
+        addRequirement(
+                idGenerator.nextID(),
+                generateMessage(constraint) + " is " + truthValue,
+                PredicateGenerator.generateConditionPredicate(constraint, truthValue));
+    }
+
+
+    protected String generateMessage(Constraint constraint) {
+        return constraint + "for " + constraint.getTable();
     }
 }

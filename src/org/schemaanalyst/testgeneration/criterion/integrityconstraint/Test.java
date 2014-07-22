@@ -9,7 +9,7 @@ public class Test {
 
     public static void main(String[] args) {
         BrowserCookies schema = new BrowserCookies();
-        new ExpAICC(schema).printRequirements();
+        new CondAICC(schema).printRequirements();
 
     }
 }
