@@ -4,6 +4,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.testgeneration.criterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.criterion.predicate.*;
 
 import java.util.ArrayList;
@@ -17,46 +18,46 @@ import java.util.List;
  */
 public class ClauseAICC extends CondAICC {
 
-    public ClauseAICC(Schema schema) {
-        super(schema);
+    public ClauseAICC(Schema schema, TestRequirementIDGenerator trIDGenerator) {
+        super(schema, trIDGenerator);
     }
 
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
-        String idMessage = generateMessage(foreignKeyConstraint);
+        String descMsg = generateMsg(foreignKeyConstraint);
 
         if (truthValue) {
-            generateOneNullRequirements(foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), idMessage);
+            generateOneNullRequirements(foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), descMsg);
             generateOneMatchRequirements(
                     foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(),
-                    foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(), idMessage);
+                    foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(), descMsg);
         } else {
             super.generateForeignKeyConstraintRequirements(foreignKeyConstraint, false);
         }
     }
 
     protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint primaryKeyConstraint, boolean truthValue) {
-        String idMessage = generateMessage(primaryKeyConstraint);
+        String descMsg = generateMsg(primaryKeyConstraint);
 
         if (truthValue) {
-            generateOneMatchRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), idMessage);
+            generateOneMatchRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), descMsg);
         } else {
-            generateOneNullRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), idMessage);
+            generateOneNullRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), descMsg);
             super.generatePrimaryKeyConstraintRequirements(primaryKeyConstraint, false);
         }
     }
 
     protected void generateUniqueConstraintRequirements(UniqueConstraint uniqueConstraint, boolean truthValue) {
-        String idMessage = generateMessage(uniqueConstraint);
+        String descMsg = generateMsg(uniqueConstraint);
 
         if (truthValue) {
-            generateOneNullRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), idMessage);
-            generateOneMatchRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), idMessage);
+            generateOneNullRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), descMsg);
+            generateOneMatchRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), descMsg);
         } else {
             super.generateUniqueConstraintRequirements(uniqueConstraint, false);
         }
     }
 
-    protected void generateOneNullRequirements(Table table, List<Column> columns, String idMessage) {
+    protected void generateOneNullRequirements(Table table, List<Column> columns, String descMsg) {
         for (Column majorColumn : columns) {
             AndPredicate predicate = new AndPredicate();
             predicate.addPredicate(new NullPredicate(table, majorColumn, true));
@@ -65,18 +66,18 @@ public class ClauseAICC extends CondAICC {
                     predicate.addPredicate(new NullPredicate(table, minorColumn, false));
                 }
             }
-            addRequirement(
-                    idGenerator.nextID(),
-                    idMessage + " " + majorColumn + " is NULL",
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " " + majorColumn + " is NULL",
                     predicate);
         }
     }
 
-    protected void generateOneMatchRequirements(Table table, List<Column> columns, String idMessage) {
-        generateOneMatchRequirements(table, columns, table, columns, idMessage);
+    protected void generateOneMatchRequirements(Table table, List<Column> columns, String descMsg) {
+        generateOneMatchRequirements(table, columns, table, columns, descMsg);
     }
 
-    private void generateOneMatchRequirements(Table table, List<Column> columns, Table refTable, List<Column> refColumns, String idMessage) {
+    private void generateOneMatchRequirements(Table table, List<Column> columns, Table refTable, List<Column> refColumns, String descMsg) {
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = refColumns.iterator();
 
@@ -90,9 +91,9 @@ public class ClauseAICC extends CondAICC {
             List<Column> refRemainingCols = new ArrayList<>(refColumns);
             refRemainingCols.remove(refCol);
 
-            addRequirement(
-                    idGenerator.nextID(),
-                    idMessage + " all equal except " + col,
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " all equal except " + col,
                     new MatchPredicate(
                             table,
                             remainingCols,

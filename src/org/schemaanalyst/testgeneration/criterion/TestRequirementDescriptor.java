@@ -5,23 +5,23 @@ package org.schemaanalyst.testgeneration.criterion;
  */
 public class TestRequirementDescriptor {
     private String id;
-    private String description;
+    private String msg;
 
-    public TestRequirementDescriptor(String id, String description) {
+    public TestRequirementDescriptor(String id, String msg) {
         this.id = id;
-        this.description = description;
+        this.msg = msg;
     }
 
     public String getID() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMsg() {
+        return msg;
     }
 
     @Override
     public String toString() {
-        return id + ": " + description;
+        return id + ": " + msg;
     }
 }
