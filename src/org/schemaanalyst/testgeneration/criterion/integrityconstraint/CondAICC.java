@@ -4,9 +4,7 @@ package org.schemaanalyst.testgeneration.criterion.integrityconstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.testgeneration.criterion.TestRequirementIDGenerator;
-import org.schemaanalyst.testgeneration.criterion.predicate.ComposedPredicate;
-import org.schemaanalyst.testgeneration.criterion.predicate.NullPredicate;
-import org.schemaanalyst.testgeneration.criterion.predicate.OrPredicate;
+import org.schemaanalyst.testgeneration.criterion.predicate.*;
 
 import static org.schemaanalyst.testgeneration.criterion.integrityconstraint.PredicateGenerator.*;
 
@@ -53,6 +51,46 @@ public class CondAICC extends AICC {
     }
 
     protected void generateCheckConstraintRequirements(CheckConstraint checkConstraint, boolean truthValue) {
+        ComposedPredicate topLevelPredicate;
+        String descMsg = generateMsg(checkConstraint);
+
+        if (truthValue) {
+            // generate NPC=T requirement
+            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
+            topLevelPredicate.addPredicate(
+                    addNullPredicates(
+                            new OrPredicate(), checkConstraint.getTable(), checkConstraint.getExpression().getColumnsInvolved(), true));
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " is NPC=T",
+                    topLevelPredicate);
+
+            // generate CC=T requirement
+            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
+            AndPredicate cctPredicate = new AndPredicate();
+            cctPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), true));
+            topLevelPredicate.addPredicate(
+                    addNullPredicates(
+                            cctPredicate, checkConstraint.getTable(), checkConstraint.getExpression().getColumnsInvolved(), false));
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " is CC=T",
+                    topLevelPredicate);
+
+        } else {
+            // generate CC=F requirement
+            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
+            AndPredicate ccfPredicate = new AndPredicate();
+            ccfPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), false));
+            topLevelPredicate.addPredicate(
+                    addNullPredicates(
+                            ccfPredicate, checkConstraint.getTable(), checkConstraint.getExpression().getColumnsInvolved(), false));
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " is CC=F",
+                    topLevelPredicate);
+
+        }
     }
 
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
@@ -60,6 +98,16 @@ public class CondAICC extends AICC {
         String descMsg = generateMsg(foreignKeyConstraint);
 
         if (truthValue) {
+            // generate NPC=T requirement
+            topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " is NPC=T",
+                    topLevelPredicate);
+            topLevelPredicate.addPredicate(
+                    addNullPredicates(
+                            new OrPredicate(), foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), true));
+
             // generate CC=T requirement
             topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
             topLevelPredicate.addPredicate(
@@ -71,16 +119,6 @@ public class CondAICC extends AICC {
                     descMsg + " is CC=T",
                     topLevelPredicate);
         } else {
-            // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(), foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), true));
-
             // generate CC=F requirement
             topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
             topLevelPredicate.addPredicate(
@@ -111,7 +149,7 @@ public class CondAICC extends AICC {
                     new NullPredicate(notNullConstraint.getTable(), notNullConstraint.getColumn(), true));
             tr.addTestRequirement(
                     trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
+                    descMsg + " is CC=F",
                     generateAcceptancePredicate(schema, notNullConstraint));
         }
     }
@@ -121,16 +159,6 @@ public class CondAICC extends AICC {
         String descMsg = generateMsg(primaryKeyConstraint);
 
         if (truthValue) {
-            // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(), primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), true));
-
             // generate CC=T requirement
             topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
             topLevelPredicate.addPredicate(
@@ -141,6 +169,16 @@ public class CondAICC extends AICC {
                     descMsg + " is CC=T",
                     topLevelPredicate);
         } else {
+            // generate NPC=T requirement
+            topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
+            tr.addTestRequirement(
+                    trIDGenerator.nextID(),
+                    descMsg + " is NPC=T",
+                    topLevelPredicate);
+            topLevelPredicate.addPredicate(
+                    addNullPredicates(
+                            new OrPredicate(), primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), true));
+
             // generate CC=F requirement
             topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
             topLevelPredicate.addPredicate(
