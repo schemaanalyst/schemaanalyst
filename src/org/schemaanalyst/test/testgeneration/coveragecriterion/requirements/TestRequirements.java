@@ -6,7 +6,7 @@ import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import static org.junit.Assert.assertEquals;
 

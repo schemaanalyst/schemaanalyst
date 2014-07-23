@@ -11,8 +11,8 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.MultiColumnConstraintRequirementsGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.MultiColumnConstraintRequirementsGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import java.util.ArrayList;
 import java.util.Arrays;

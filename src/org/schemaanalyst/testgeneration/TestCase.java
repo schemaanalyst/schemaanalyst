@@ -16,8 +16,7 @@ public class TestCase {
     private Data data, state;
     private Predicate originalPredicate;
     private List<Predicate> additionalPredicates;
-
-private DataGenerationReport dataGenerationReport;
+    private DataGenerationReport dataGenerationReport;
     private List<Boolean> dbmsResults;
 
     public TestCase(Data data, Data state, Predicate predicate, DataGenerationReport dataGenerationReport) {
@@ -43,7 +42,7 @@ private DataGenerationReport dataGenerationReport;
     }
 
     public boolean satisfiesOriginalPredicate() {
-        return dataGenerationReport.getSuccess();
+        return dataGenerationReport.isSuccess();
     }
 
     public void addPredicate(Predicate predicate) {

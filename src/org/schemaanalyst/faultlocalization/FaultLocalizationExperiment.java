@@ -19,8 +19,6 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
-import org.schemaanalyst.mutation.analysis.executor.technique.TechniqueFactory;
 import org.schemaanalyst.mutation.analysis.util.ExperimentTimer;
 import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
@@ -30,8 +28,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.*;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 
@@ -408,6 +406,7 @@ public class FaultLocalizationExperiment extends Runner {
     }
     
     private TestSuite GenerateTestData(Schema s){
+        /*
     	Schema schemaObject = s;
     	CoverageCriterion criterionObject = CoverageCriterionFactory.instantiate(criterion);
         DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 10000, schemaObject);
@@ -440,6 +439,8 @@ public class FaultLocalizationExperiment extends Runner {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+        */
+        return null;
     }
     
     @Override

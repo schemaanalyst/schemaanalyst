@@ -10,7 +10,7 @@ import org.schemaanalyst.util.random.Random;
 /**
  * Created by phil on 26/02/2014.
  */
-public class DirectedRandomDataGenerator extends RandomDataGenerator {
+public class DirectedRandomDataGenerator {  // extends RandomDataGenerator {
 
     private Random random;
     private PredicateFixer predicateFixer;
@@ -19,17 +19,21 @@ public class DirectedRandomDataGenerator extends RandomDataGenerator {
                                        int maxEvaluations,
                                        RandomCellValueGenerator cellValueGenerator,
                                        CellInitializer cellInitializer) {
+       /*
         super(maxEvaluations, cellValueGenerator, cellInitializer);
         this.random = random;
+       */
     }
 
-    @Override
+    //@Override
     protected void initialize(Data data, Data state, Predicate predicate) {
+        /*
         super.initialize(data, state, predicate);
         predicateFixer = new PredicateFixer(predicateChecker, random, randomCellValueGenerator);
+        */
     }
 
-    @Override
+    //@Override
     protected void attemptFix(Data data) {
         predicateFixer.attemptFix();
     }

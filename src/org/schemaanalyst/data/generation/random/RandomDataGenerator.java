@@ -2,7 +2,6 @@ package org.schemaanalyst.data.generation.random;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
@@ -15,7 +14,7 @@ import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
  * TODO - consolidate into SearchBasedDataGenerator
  *
  */
-public class RandomDataGenerator extends DataGenerator {
+public class RandomDataGenerator { // extends DataGenerator {
 
     protected RandomCellValueGenerator randomCellValueGenerator;
     protected int maxEvaluations;
@@ -30,6 +29,7 @@ public class RandomDataGenerator extends DataGenerator {
         this.cellInitializer = cellInitializer;
     }
 
+    /*
     @Override
     public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
         initialize(data, state, predicate);
@@ -54,4 +54,5 @@ public class RandomDataGenerator extends DataGenerator {
             randomCellValueGenerator.generateCellValue(cell);
         }
     }
+    */
 }

@@ -1,7 +1,7 @@
 package org.schemaanalyst.data.generation;
 
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 /**
  * Created by phil on 14/03/2014.

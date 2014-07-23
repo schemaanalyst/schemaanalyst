@@ -4,7 +4,7 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunction;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -14,8 +14,8 @@ import org.schemaanalyst.sqlrepresentation.expression.ColumnExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.CheckConstraintRequirementsGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.CheckConstraintRequirementsGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import java.util.List;
 

@@ -9,8 +9,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.test.testutil.mock.SimpleSchema;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.NotNullConstraintRequirementsGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.NotNullConstraintRequirementsGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import java.util.List;
 
