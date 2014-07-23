@@ -190,15 +190,9 @@ public class MutationAnalysisUtils {
      * @return The meta-mutant schema
      */
     public static Schema renameAndMergeMutants(Schema original, List<Mutant<Schema>> mutants) {
-        long start = System.currentTimeMillis();
         renameChangedTable(original, mutants);
-        System.out.println("Renamed changed: " + (System.currentTimeMillis() - start));
-        start = System.currentTimeMillis();
         renameMutantConstraints(mutants);
-        System.out.println("Rename constraints: " + (System.currentTimeMillis() - start));
-        start = System.currentTimeMillis();
         Schema schemata = mergeMutants(original, mutants);
-        System.out.println("Merge mutants: " + (System.currentTimeMillis() - start));
         return schemata;
     }
 
