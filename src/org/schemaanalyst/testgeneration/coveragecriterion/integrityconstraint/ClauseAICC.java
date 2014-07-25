@@ -59,7 +59,7 @@ public class ClauseAICC extends CondAICC {
 
     protected void generateOneNullRequirements(Table table, List<Column> columns, String descMsg) {
         for (Column majorColumn : columns) {
-            AndPredicate predicate = new AndPredicate(table);
+            AndPredicate predicate = new AndPredicate();
             predicate.addPredicate(new NullPredicate(table, majorColumn, true));
             for (Column minorColumn : columns) {
                 if (!minorColumn.equals(majorColumn)) {

@@ -1,7 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.predicate;
 
 import org.apache.commons.lang3.StringUtils;
-import org.schemaanalyst.logic.predicate.clause.ClauseConfigurationException;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
@@ -29,7 +28,7 @@ public class MatchPredicate extends Predicate {
 
     public static final List<Column> EMPTY_COLUMN_LIST = Collections.unmodifiableList(new ArrayList<Column>());
 
-    private Table refTable;
+    private Table table, refTable;
     private List<Column> matchingCols, nonMatchingCols, matchingRefCols, nonMatchingRefCols;
     private Mode mode;
 
@@ -39,7 +38,7 @@ public class MatchPredicate extends Predicate {
 
     public MatchPredicate(Table table, List<Column> matchingCols, List<Column> nonMatchingCols,
                           Table refTable, List<Column> matchingRefCols, List<Column> nonMatchingRefCols, Mode mode) {
-        super(table);
+        this.table = table;
         this.matchingCols = new ArrayList<>(matchingCols);
         this.nonMatchingCols = new ArrayList<>(nonMatchingCols);
 
@@ -53,7 +52,7 @@ public class MatchPredicate extends Predicate {
         boolean sameNumberOfNotEqualsCols = nonMatchingCols.size() == nonMatchingRefCols.size();
 
         if (!sameNumberOfEqualsCols || !sameNumberOfNotEqualsCols) {
-            throw new ClauseConfigurationException("Number of columns and reference columns are not equal");
+            throw new PredicateConfigurationException("Number of columns and reference columns are not equal");
         }
     }
 
@@ -102,6 +101,11 @@ public class MatchPredicate extends Predicate {
         return (numCols > 1 ? mode : "") + "Match";
     }
 
+    @Override
+    public void accept(PredicateVisitor predicateVisitor) {
+        predicateVisitor.visit(this);
+    }
+
     private String paramsToString() {
         String str = "";
 
@@ -119,7 +123,7 @@ public class MatchPredicate extends Predicate {
     }
 
     private String colsToString(List<Column> cols, List<Column> refCols) {
-        String colsStr = "(" + table + ": " + StringUtils.join(cols, ",");
+        String colsStr = "[" + table + ": " + StringUtils.join(cols, ",");
 
         if (!table.equals(refTable) || !cols.equals(refCols)) {
             colsStr += " -> ";
@@ -129,42 +133,42 @@ public class MatchPredicate extends Predicate {
             colsStr += StringUtils.join(refCols, ",");
         }
 
-        return colsStr + ")";
+        return colsStr + "]";
     }
 
     @Override
     public String toString() {
         int numCols = matchingCols.size() + nonMatchingCols.size();
-        return (numCols > 1 ? mode : "") + "Match" + "(" + paramsToString() + ")";
+        return (numCols > 1 ? mode : "") + "Match" + "[" + paramsToString() + "]";
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        MatchPredicate other = (MatchPredicate) o;
+        MatchPredicate that = (MatchPredicate) o;
 
-        if (!matchingCols.equals(other.matchingCols)) return false;
-        if (!matchingRefCols.equals(other.matchingRefCols)) return false;
-        if (mode != other.mode) return false;
-        if (!nonMatchingCols.equals(other.nonMatchingCols)) return false;
-        if (!nonMatchingRefCols.equals(other.nonMatchingRefCols)) return false;
-        if (!refTable.equals(other.refTable)) return false;
+        if (!matchingCols.equals(that.matchingCols)) return false;
+        if (!matchingRefCols.equals(that.matchingRefCols)) return false;
+        if (mode != that.mode) return false;
+        if (!nonMatchingCols.equals(that.nonMatchingCols)) return false;
+        if (!nonMatchingRefCols.equals(that.nonMatchingRefCols)) return false;
+        if (!refTable.equals(that.refTable)) return false;
+        if (!table.equals(that.table)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + mode.hashCode();
+        int result = table.hashCode();
         result = 31 * result + refTable.hashCode();
-        result = 31 * result + nonMatchingCols.hashCode();
         result = 31 * result + matchingCols.hashCode();
-        result = 31 * result + nonMatchingRefCols.hashCode();
+        result = 31 * result + nonMatchingCols.hashCode();
         result = 31 * result + matchingRefCols.hashCode();
+        result = 31 * result + nonMatchingRefCols.hashCode();
+        result = 31 * result + mode.hashCode();
         return result;
     }
 }

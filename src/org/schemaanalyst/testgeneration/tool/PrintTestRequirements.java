@@ -20,14 +20,25 @@ public class PrintTestRequirements extends Runner {
     @Parameter("The coverage criterion to use to generate data.")
     protected String criterion;
 
+    @Parameter("Whether to filter out duplicate and infeasible test requirements")
+    protected boolean filter = true;
+
+    @Parameter("Whether to reduce the predicate of the test requirement")
+    protected boolean reduce = true;
+
     @Override
     protected void task() {
         TestRequirements tr =
                 CoverageCriterionFactory.integrityConstraintCoverageCriterion(criterion, instantiateSchema())
                         .generateRequirements();
 
+        if (filter) {
+            tr.filterInfeasible();
+            tr.reduce();
+        }
+
         for (TestRequirement req : tr.getTestRequirements()) {
-            System.out.println(req);
+            System.out.println(req.toString(reduce));
         }
 
         System.out.println("Total number of test requirements: " + tr.size());

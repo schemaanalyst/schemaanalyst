@@ -1,5 +1,8 @@
 package org.schemaanalyst.data.generation;
 
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.testgeneration.DataGenerationResult;
+
 /**
  * Created by phil on 23/07/2014.
  */

@@ -1,19 +1,17 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.predicate;
 
-import org.schemaanalyst.sqlrepresentation.Table;
-
 /**
  * Created by phil on 18/07/2014.
  */
 public abstract class Predicate {
 
-    protected Table table;
+    public abstract void accept(PredicateVisitor visitor);
 
-    public Predicate(Table table) {
-        this.table = table;
+    public Predicate reduce() {
+        return this;
     }
 
-    public Table getTable() {
-        return table;
+    public boolean isInfeasible() {
+        return false;
     }
 }

@@ -8,13 +8,18 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
  */
 public class ExpressionPredicate extends Predicate {
 
+    private Table table;
     private Expression expression;
     private boolean truthValue;
 
     public ExpressionPredicate(Table table, Expression expression, boolean truthValue) {
-        super(table);
+        this.table = table;
         this.expression = expression;
         this.truthValue = truthValue;
+    }
+
+    public Table getTable() {
+        return table;
     }
 
     public Expression getExpression() {
@@ -26,29 +31,34 @@ public class ExpressionPredicate extends Predicate {
     }
 
     @Override
+    public void accept(PredicateVisitor predicateVisitor) {
+        predicateVisitor.visit(this);
+    }
+
+    @Override
+    public String toString() {
+        return (!truthValue ? "\u00AC" : "") + "Exp[" + table + ": " + expression.toString() + "]";
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
 
-        ExpressionPredicate other = (ExpressionPredicate) o;
+        ExpressionPredicate that = (ExpressionPredicate) o;
 
-        if (truthValue != other.truthValue) return false;
-        if (!expression.equals(other.expression)) return false;
+        if (truthValue != that.truthValue) return false;
+        if (!expression.equals(that.expression)) return false;
+        if (!table.equals(that.table)) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
+        int result = table.hashCode();
         result = 31 * result + expression.hashCode();
         result = 31 * result + (truthValue ? 1 : 0);
         return result;
-    }
-
-    @Override
-    public String toString() {
-        return (!truthValue ? "\u00AC" : "") + "Exp(" + table + ": " + expression.toString() + ")";
     }
 }

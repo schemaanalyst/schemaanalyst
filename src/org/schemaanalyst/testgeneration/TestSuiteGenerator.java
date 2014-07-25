@@ -4,16 +4,22 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Logger;
 
 /**
@@ -28,9 +34,8 @@ public class TestSuiteGenerator {
     private ValueFactory valueFactory;
     private DataGenerator dataGenerator;
     private HashMap<Table, Data> initialTableData;
-
     private TestSuite testSuite;
-    private List<TestCase> failedTestCases;
+    private TestSuiteGenerationReport testSuiteGenerationReport;
 
     public TestSuiteGenerator(Schema schema,
                               TestRequirements testRequirements,
@@ -46,59 +51,112 @@ public class TestSuiteGenerator {
 
     public TestSuite generate() {
         LOGGER.fine("Generating test suite for " + schema);
+
         testSuite = new TestSuite();
-        failedTestCases = new ArrayList<>();
-
+        testSuiteGenerationReport = new TestSuiteGenerationReport();
         generateInitialTableData();
-        // generateTestCases();
+        generateTestCases();
         return testSuite;
-    }
-
-    public List<TestCase> getFailedTestCases() {
-        return new ArrayList<>(failedTestCases);
     }
 
     private void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
-            // Do we need to add not nulls to each column?
-            Predicate predicate = generateInitialTablePredicate(table);
 
-            LOGGER.fine("Generating initial table data for " + table);
-            LOGGER.fine("Predicate is " + predicate);
+            ComposedPredicate acceptancePredicate = PredicateGenerator.generateAcceptancePredicate(schema, table);
 
-            Data state = createStateForPredicate(predicate);
-            if (state == null) {
-                // we failed to create the state object, so essentially
-                // generating a row of data for this table already failed
-                continue;
+            // add not null predicates
+            List<Column> notNullColumns = new ArrayList<>();
+            PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
+            if (primaryKeyConstraint != null) {
+                // TODO: some check as to whether it's been added already ...
+                notNullColumns.addAll(primaryKeyConstraint.getColumns());
             }
+            for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
+                notNullColumns.addAll(uniqueConstraint.getColumns());
+            }
+            for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
+                notNullColumns.addAll(foreignKeyConstraint.getColumns());
+            }
+            AndPredicate predicate = new AndPredicate();
+            predicate.addPredicate(acceptancePredicate);
+            PredicateGenerator.addNullPredicates(predicate, table, notNullColumns, false);
 
-            Data data = createDataForPredicate(predicate);
+            LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
+            LOGGER.fine("--- Predicate is " + predicate);
 
-            DataGenerationReport report = dataGenerator.generateData(data, state, predicate);
-            if (report.isSuccess()) {
-                initialTableData.put(table, data);
+            // add referenced tables to the state
+            Data state = new Data();
+            boolean haveLinkedData = addLinkedTableDataToState(state, table);
+            if (haveLinkedData) {
+                // generate the row
+                Data data = new Data();
+                data.addRow(table, valueFactory);
+                DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
+
+                if (dataGenerationReport.isSuccess()) {
+                    LOGGER.fine("--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
+                    LOGGER.fine("--- Data is: \n" + data);
+                    initialTableData.put(table, data);
+                } else {
+                    LOGGER.fine("--- Failed");
+                }
+
+                testSuiteGenerationReport.addInitialTableDataResult(
+                        table, new DataGenerationResult(data, state, dataGenerationReport));
+            } else {
+                // there was no linked data generated to add to the state, so generated of this row failed by default
+                testSuiteGenerationReport.addInitialTableDataResult(
+                        table, new NullDataGenerationResult());
             }
         }
     }
 
-    private Predicate generateInitialTablePredicate(Table table) {
-        ComposedPredicate predicate = PredicateGenerator.generateAcceptancePredicate(schema, table);
-        // TODO -- could just make this for UNIQUES and FKs so as in line with paper
-        PredicateGenerator.addNullPredicates(predicate, table, table.getColumns(), true);
-        return predicate;
+    private void generateTestCases() {
+        for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
+
+            Predicate predicate = testRequirement.getPredicate();
+            Table table = getTestRequirementTable(testRequirement);
+
+            LOGGER.fine("\nGENERATING TEST CASE");
+            for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
+                LOGGER.fine(testRequirementDescriptor.toString());
+            }
+            LOGGER.fine("--- Predicate is " + predicate);
+
+            Data state = new Data();
+            Data data = new Data();
+            predicate = addAdditionalRows(state, data, predicate, table);
+
+            if (predicate != null) {
+                data.addRow(table, valueFactory);
+
+                LOGGER.fine("--- Pre-reduced predicate is " + predicate);
+                predicate = predicate.reduce();
+                LOGGER.fine("--- Reduced predicate is " + predicate);
+
+                DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
+
+                if (dataGenerationReport.isSuccess()) {
+                    TestCase testCase = new TestCase(testRequirement, data, state);
+                    testSuite.addTestCase(testCase);
+
+                    LOGGER.fine("--- SUCCESS, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
+                    LOGGER.fine("--- Data is \n" + data);
+                } else {
+                    LOGGER.fine("--- FAILED");
+                }
+
+                testSuiteGenerationReport.addTestRequirementResult(
+                        testRequirement, new DataGenerationResult(data, state, dataGenerationReport));
+            } else  {
+                testSuiteGenerationReport.addTestRequirementResult(
+                        testRequirement, new NullDataGenerationResult());
+            }
+        }
     }
 
-    private Data createDataForPredicate(Predicate predicate) {
-        Table table = predicate.getTable();
-        Data data = new Data();
-        data.addRow(table, valueFactory);
-        return data;
-    }
-
-    private Data createStateForPredicate(Predicate predicate) {
-        Table table = predicate.getTable();
-        Data state = new Data();
+    private boolean addLinkedTableDataToState(Data state, Table table) {
+        LOGGER.fine("--- adding linked data to state");
 
         // add rows for tables linked via foreign keys to the state
         List<Table> linkedTables = schema.getConnectedTables(table);
@@ -111,129 +169,115 @@ public class TestSuiteGenerator {
 
                 // cannot generate data in this instance
                 if (initialData == null) {
-                    return null;
+                    return false;
                 }
                 state.appendData(initialData);
             }
         }
-        return state;
+        return true;
     }
 
-    // this code needs to go in data and state creation
-        /*
-        // check if a 'comparison' row is required for this table
-        // boolean requiresComparisonRow = false;
-        for (Clause clause : predicate.getClauses()) {
-            if (clause.requiresComparisonRow()) {
-                requiresComparisonRow = true;
-            }
+    private Table getTestRequirementTable(TestRequirement testRequirement) {
+        Set<Table> tables = testRequirement.getTables();
+        if (tables.size() != 1) {
+            throw new RuntimeException("TODO .. ADD A PROPER EXCEPTION");
         }
-        if (requiresComparisonRow) {
-            // add the comparison row to the state
-            Data initialData = initialTableData.get(table);
+        return tables.iterator().next();
+    }
 
-            // cannot generate a test case in this instance
-            if (initialData == null) {
+    private Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table) {
+        LOGGER.fine("--- adding additional rows");
+
+        boolean haveLinkedData = addLinkedTableDataToState(state, table);
+        if (!haveLinkedData) {
+            return null;
+        }
+
+        if (requiresComparisonRow(predicate)) {
+            Data comparisonRow = initialTableData.get(table);
+            if (comparisonRow == null) {
+                LOGGER.fine("--- could not add comparison row, data generation FAILED");
                 return null;
             }
 
-            state.appendData(initialData);
+            LOGGER.fine("--- added comparison row");
+            state.appendData(comparisonRow);
 
-            // add foreign key rows to the data
-            // TODO: this only needs to take place under special circumstances as written
-            // in the paper
-            for (Table linkedTable : linkedTables) {
-                if (!linkedTable.equals(table)) {
-                    data.addRow(linkedTable, valueFactory);
-                    predicate.addClauses(generateInitialTablePredicate(schema, linkedTable));
-                }
-            }
+            predicate = addLinkedTablesToData(data, predicate, table);
         }
+        return predicate;
+    }
 
-    /*
-    private void generateTestCases() {
-        for (Table table : schema.getTablesInReverseOrder()) {
-            Requirements requirements = criterion.generateRequirements(schema, table);
-            for (Predicate predicate : requirements.getPredicates()) {
+    private Predicate addLinkedTablesToData(Data data, Predicate predicate, Table table) {
 
-                LOGGER.fine("Generating data for " + predicate);
+        for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
 
-                TestCase testCase = generateTestCase(table, predicate);
-                if (testCase != null) {
-                    if (testCase.satisfiesOriginalPredicate()) {
-                        LOGGER.fine("Successfully generated test case");
-                        testSuite.addTestCase(testCase);
-                    } else {
-                        LOGGER.fine("Failed to generate test case");
-                        failedTestCases.add(testCase);
+            if (!foreignKeyConstraint.getTable().equals(table)) {
+
+                MatchPredicate fkColsUnique =
+                        new MatchPredicate(
+                                table,
+                                MatchPredicate.EMPTY_COLUMN_LIST,
+                                foreignKeyConstraint.getColumns(),
+                                MatchPredicate.Mode.OR);
+
+                boolean foundPredicate = new PredicateAdaptor() {
+                    boolean foundPredicate;
+                    MatchPredicate predicateToFind;
+
+                    boolean contains(MatchPredicate predicateToFind, Predicate predicateToSearch) {
+                        foundPredicate = false;
+                        this.predicateToFind = predicateToFind;
+                        predicateToSearch.accept(this);
+                        return foundPredicate;
                     }
-                } else {
-                    LOGGER.fine("Could not generate test case, as a dependent row was not previously generated");
+
+                    public void visit(MatchPredicate subPredicate) {
+                        if (predicateToFind.equals(subPredicate)) {
+                            foundPredicate = true;
+                        }
+                    }
+                }.contains(fkColsUnique, predicate);
+
+                if (foundPredicate) {
+                    LOGGER.fine("--- foreign key columns are unique in " + table);
+
+                    Table refTable = foreignKeyConstraint.getReferenceTable();
+
+                    // append the predicate with the acceptance predicate of the original
+                    AndPredicate newPredicate = new AndPredicate();
+                    newPredicate.addPredicate(predicate);
+                    newPredicate.addPredicate(PredicateGenerator.generateAcceptancePredicate(schema, refTable));
+                    predicate = newPredicate;
+
+                    LOGGER.fine("--- new predicate is " + predicate);
+
+                    LOGGER.fine("--- adding foreign key row for " + refTable);
+                    predicate = addLinkedTablesToData(data, predicate, table);
+                    data.addRow(refTable, valueFactory);
                 }
             }
         }
+
+        return predicate;
     }
 
-    private TestCase generateTestCase(Table table, Predicate predicate) {
-        Data data = new Data();
-        Data state = new Data();
 
-        // add rows for tables linked via foreign keys to the state
-        List<Table> linkedTables = schema.getConnectedTables(table);
-        for (Table linkedTable : linkedTables) {
-            // a row should always have been previously-generated
-            // for a linked table
-            if (!linkedTable.equals(table)) {
-                Data initialData = initialTableData.get(linkedTable);
-                // cannot generate a test case in this instance
-                if (initialData == null) {
-                    return null;
-                }
-                state.appendData(initialData);
+    private boolean requiresComparisonRow(Predicate predicate) {
+        LOGGER.fine("--- checking if comparison row required for " + predicate);
+
+        return new PredicateAdaptor() {
+            boolean requiresComparisonRow = false;
+
+            boolean requiresComparisonRow(Predicate predicate) {
+                predicate.accept(this);
+                return requiresComparisonRow;
             }
-        }
 
-        // check if a 'comparison' row is required for this table
-        boolean requiresComparisonRow = false;
-        for (Clause clause : predicate.getClauses()) {
-            if (clause.requiresComparisonRow()) {
+            @Override
+            public void visit(MatchPredicate predicate) {
                 requiresComparisonRow = true;
             }
-        }
-        if (requiresComparisonRow) {
-            // add the comparison row to the state
-            Data initialData = initialTableData.get(table);
-
-            // cannot generate a test case in this instance
-            if (initialData == null) {
-                return null;
-            }
-
-            state.appendData(initialData);
-
-            // add foreign key rows to the data
-            for (Table linkedTable : linkedTables) {
-                if (!linkedTable.equals(table)) {
-                    data.addRow(linkedTable, valueFactory);
-                    predicate.addClauses(generateInitialTablePredicate(schema, linkedTable));
-                }
-            }
-        }
-
-        // add the row
-        data.addRow(table, valueFactory);
-
-        LOGGER.fine("Generating test case");
-        LOGGER.fine("State is " + state);
-        LOGGER.fine("Data is " + data);
-
-        // generate the test case
-        DataGenerationReport report = dataGenerator.generateData(data, state, predicate);
-        TestCase testCase = new TestCase(data, state, predicate, report);
-
-        LOGGER.fine("Generated test case: \n" + testCase);
-
-        return testCase;
+        }.requiresComparisonRow(predicate);
     }
-    */
 }

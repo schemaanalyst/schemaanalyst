@@ -7,24 +7,25 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.value.NullValueObjectiveFunction;
 import org.schemaanalyst.logic.predicate.clause.NullClause;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
 import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class NullClauseObjectiveFunction extends ObjectiveFunction<Data> {
+public class NullPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-    private NullClause nullClause;
+    private NullPredicate nullPredicate;
 
-    public NullClauseObjectiveFunction(NullClause nullClause) {
-        this.nullClause = nullClause;
+    public NullPredicateObjectiveFunction(NullPredicate nullPredicate) {
+        this.nullPredicate = nullPredicate;
     }
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        String description = nullClause.toString();
-        List<Row> rows = data.getRows(nullClause.getTable());
+        String description = nullPredicate.toString();
+        List<Row> rows = data.getRows(nullPredicate.getTable());
 
         if (rows.size() > 0) {
             SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
@@ -32,8 +33,8 @@ public class NullClauseObjectiveFunction extends ObjectiveFunction<Data> {
             for (Row row : rows) {
                 objVal.add(
                         NullValueObjectiveFunction.compute(
-                                row.getCell(nullClause.getColumn()).getValue(),
-                                nullClause.getSatisfy())
+                                row.getCell(nullPredicate.getColumn()).getValue(),
+                                nullPredicate.getTruthValue())
                 );
             }
             return objVal;

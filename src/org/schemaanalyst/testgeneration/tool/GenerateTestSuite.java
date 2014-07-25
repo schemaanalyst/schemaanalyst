@@ -75,7 +75,7 @@ public class GenerateTestSuite extends Runner {
             classname = "Test" + schemaObject.getName();
         }
 
-        String javaCode = new TestSuiteJavaWriter(schemaObject, dbmsObject, testSuite)
+        String javaCode = new TestSuiteJavaWriter(schemaObject, dbmsObject, testSuite, true)
                 .writeTestSuite(packagename, classname);
 
         File javaFile = new File(locationsConfiguration.getSrcDir()

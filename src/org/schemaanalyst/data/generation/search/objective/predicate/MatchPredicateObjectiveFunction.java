@@ -6,9 +6,9 @@ import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.*;
 import org.schemaanalyst.data.generation.search.objective.value.RelationalValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.predicate.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 
 import java.util.Iterator;
 import java.util.List;
@@ -17,23 +17,23 @@ import java.util.ListIterator;
 /**
  * Created by phil on 24/01/2014.
  */
-public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
+public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-    private MatchClause matchClause;
+    private MatchPredicate matchPredicate;
     private Data state;
     private Table table, referenceTable;
 
-    public MatchClauseObjectiveFunction(MatchClause matchClause, Data state) {
-        this.matchClause = matchClause;
+    public MatchPredicateObjectiveFunction(MatchPredicate matchPredicate, Data state) {
+        this.matchPredicate = matchPredicate;
         this.state = state;
-        this.table = matchClause.getTable();
-        this.referenceTable = matchClause.getReferenceTable();
+        this.table = matchPredicate.getTable();
+        this.referenceTable = matchPredicate.getReferenceTable();
     }
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        String description = matchClause.toString();
-        List<Row> rows = data.getRows(matchClause.getTable());
+        String description = matchPredicate.toString();
+        List<Row> rows = data.getRows(matchPredicate.getTable());
 
         if (rows.size() > 0) {
             SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
@@ -52,9 +52,14 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
                     }
 
                     objVal.add(rowObjVal);
-                } else if (matchClause.requiresComparisonRow()) {
-                    objVal.add(ObjectiveValue.worstObjectiveValue("Comparison row not available"));
                 }
+
+                // // PM: Legacy code from when this used to be specified at a predicate level
+                // // PM: It's now the responsibility of the test data generator to ensure a row exists.
+                //
+                // else if (matchPredicate.requiresComparisonRow()) {
+                //  objVal.add(ObjectiveValue.worstObjectiveValue("Comparison row not available"));
+                // }
             }
 
             return objVal;
@@ -64,33 +69,33 @@ public class MatchClauseObjectiveFunction extends ObjectiveFunction<Data> {
     }
 
     private List<Row> getCompareRows(Data data, int index) {
-        List<Row> compareRows = data.getRows(matchClause.getReferenceTable());
+        List<Row> compareRows = data.getRows(matchPredicate.getReferenceTable());
         if (table.equals(referenceTable)) {
             compareRows = compareRows.subList(0, index);
         }
-        compareRows.addAll(state.getRows(matchClause.getReferenceTable()));
+        compareRows.addAll(state.getRows(matchPredicate.getReferenceTable()));
         return compareRows;
     }
 
     private ObjectiveValue compareRows(Row row, Row compareRow) {
         MultiObjectiveValue objVal =
-                matchClause.getMode() == MatchClause.Mode.AND
+                matchPredicate.getMode() == MatchPredicate.Mode.AND
                         ? new SumOfMultiObjectiveValue()
                         : new BestOfMultiObjectiveValue();
 
         evaluateColumnLists(
                 row,
                 compareRow,
-                matchClause.getMatchingColumns(),
-                matchClause.getMatchingReferenceColumns(),
+                matchPredicate.getMatchingColumns(),
+                matchPredicate.getMatchingReferenceColumns(),
                 RelationalOperator.EQUALS,
                 objVal);
 
         evaluateColumnLists(
                 row,
                 compareRow,
-                matchClause.getNonMatchingColumns(),
-                matchClause.getNonMatchingReferenceColumns(),
+                matchPredicate.getNonMatchingColumns(),
+                matchPredicate.getNonMatchingReferenceColumns(),
                 RelationalOperator.NOT_EQUALS,
                 objVal);
 

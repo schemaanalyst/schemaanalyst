@@ -172,11 +172,11 @@ public class MutationAnalysis extends Runner {
         result.addValue("datagenerator", dataGenerator);
         result.addValue("coverage", coverageReport.getCoverage());
         result.addValue("comparisoncoverage", comparisonCoverageReport.getCoverage());
-        result.addValue("evaluations", suite.getNumEvaluations());
-        result.addValue("averageevaluations", suite.getAvNumEvaluations());
-        result.addValue("tests", suite.getNumTestCases());
+        //result.addValue("evaluations", suite.getNumEvaluations());
+        //result.addValue("averageevaluations", suite.getAvNumEvaluations());
+        //result.addValue("tests", suite.getNumTestCases());
         result.addValue("failedtests", failedTests);
-        result.addValue("inserts", suite.getNumInserts());
+        //result.addValue("inserts", suite.getNumInserts());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());

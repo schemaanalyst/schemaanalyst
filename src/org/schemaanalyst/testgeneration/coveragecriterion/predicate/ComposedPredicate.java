@@ -1,27 +1,56 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.predicate;
 
-import org.schemaanalyst.sqlrepresentation.Table;
-
-import java.util.LinkedHashSet;
+import java.util.*;
 
 /**
  * Created by phil on 18/07/2014.
  */
 public abstract class ComposedPredicate extends Predicate {
 
-    protected LinkedHashSet<Predicate> predicates;
+    protected LinkedHashSet<Predicate> subPredicates;
 
-    public ComposedPredicate(Table table) {
-        super(table);
-        predicates = new LinkedHashSet<>();
+    public ComposedPredicate() {
+        subPredicates = new LinkedHashSet<>();
     }
 
-    public void addPredicate(Predicate predicate) {
-        predicates.add(predicate);
+    public void addPredicate(Predicate subPredicate) {
+        subPredicates.add(subPredicate);
+    }
+
+    public List<Predicate> getSubPredicates() {
+        return new ArrayList<>(subPredicates);
+    }
+
+    public int numSubPredicates() {
+        return subPredicates.size();
     }
 
     public boolean contains(Predicate predicate) {
-        return predicates.contains(predicate);
+        return subPredicates.contains(predicate);
+    }
+
+    public abstract ComposedPredicate shallowDuplicate();
+
+    public Predicate reduce() {
+
+        if (subPredicates.size() == 1) {
+            return subPredicates.iterator().next();
+        }
+
+        ComposedPredicate duplicate = shallowDuplicate();
+        duplicate.subPredicates = new LinkedHashSet<>();
+
+        for (Predicate subPredicate : subPredicates) {
+            Predicate reducedSubPredicate = subPredicate.reduce();
+
+            if (reducedSubPredicate.getClass().equals(getClass())) {
+                duplicate.subPredicates.addAll(((ComposedPredicate) reducedSubPredicate).getSubPredicates());
+            } else {
+                duplicate.subPredicates.add(reducedSubPredicate);
+            }
+        }
+
+        return duplicate;
     }
 
     @Override
@@ -31,11 +60,11 @@ public abstract class ComposedPredicate extends Predicate {
 
         ComposedPredicate other = (ComposedPredicate) o;
 
-        if (predicates.size() != other.predicates.size()) {
+        if (subPredicates.size() != other.subPredicates.size()) {
             return false;
         }
 
-        for (Predicate predicate : predicates) {
+        for (Predicate predicate : subPredicates) {
             if (!other.contains(predicate)) {
                 return false;
             }
@@ -46,6 +75,6 @@ public abstract class ComposedPredicate extends Predicate {
 
     @Override
     public int hashCode() {
-        return predicates != null ? predicates.hashCode() : 0;
+        return subPredicates != null ? subPredicates.hashCode() : 0;
     }
 }

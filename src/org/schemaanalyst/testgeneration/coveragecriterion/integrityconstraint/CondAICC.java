@@ -59,7 +59,7 @@ public class CondAICC extends AICC {
             topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
             topLevelPredicate.addPredicate(
                     addNullPredicates(
-                            new OrPredicate(checkConstraint.getTable()),
+                            new OrPredicate(),
                             checkConstraint.getTable(),
                             checkConstraint.getExpression().getColumnsInvolved(),
                             true));
@@ -70,7 +70,7 @@ public class CondAICC extends AICC {
 
             // generate CC=T requirement
             topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
-            AndPredicate cctPredicate = new AndPredicate(checkConstraint.getTable());
+            AndPredicate cctPredicate = new AndPredicate();
             cctPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), true));
             topLevelPredicate.addPredicate(
                     addNullPredicates(
@@ -83,7 +83,7 @@ public class CondAICC extends AICC {
         } else {
             // generate CC=F requirement
             topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
-            AndPredicate ccfPredicate = new AndPredicate(checkConstraint.getTable());
+            AndPredicate ccfPredicate = new AndPredicate();
             ccfPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), false));
             topLevelPredicate.addPredicate(
                     addNullPredicates(
@@ -109,7 +109,7 @@ public class CondAICC extends AICC {
                     topLevelPredicate);
             topLevelPredicate.addPredicate(
                     addNullPredicates(
-                            new OrPredicate(foreignKeyConstraint.getTable()),
+                            new OrPredicate(),
                             foreignKeyConstraint.getTable(),
                             foreignKeyConstraint.getColumns(),
                             true));
@@ -183,7 +183,7 @@ public class CondAICC extends AICC {
                     topLevelPredicate);
             topLevelPredicate.addPredicate(
                     addNullPredicates(
-                            new OrPredicate(primaryKeyConstraint.getTable()),
+                            new OrPredicate(),
                             primaryKeyConstraint.getTable(),
                             primaryKeyConstraint.getColumns(),
                             true));
@@ -213,7 +213,7 @@ public class CondAICC extends AICC {
                     topLevelPredicate);
             topLevelPredicate.addPredicate(
                     addNullPredicates(
-                            new OrPredicate(uniqueConstraint.getTable()),
+                            new OrPredicate(),
                             uniqueConstraint.getTable(),
                             uniqueConstraint.getColumns(),
                             true));

@@ -7,24 +7,25 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.row.ExpressionRowObjectiveFunctionFactory;
 import org.schemaanalyst.logic.predicate.clause.ExpressionClause;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPredicate;
 
 import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class ExpressionClauseObjectiveFunction extends ObjectiveFunction<Data> {
+public class ExpressionPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-    private ExpressionClause expressionClause;
+    private ExpressionPredicate expressionPredicate;
 
-    public ExpressionClauseObjectiveFunction(ExpressionClause expressionClause) {
-        this.expressionClause = expressionClause;
+    public ExpressionPredicateObjectiveFunction(ExpressionPredicate expressionPredicate) {
+        this.expressionPredicate = expressionPredicate;
     }
 
     @Override
     public ObjectiveValue evaluate(Data data) {
-        String description = expressionClause.toString();
-        List<Row> rows = data.getRows(expressionClause.getTable());
+        String description = expressionPredicate.toString();
+        List<Row> rows = data.getRows(expressionPredicate.getTable());
 
         if (rows.size() > 0) {
             SumOfMultiObjectiveValue objVal = new SumOfMultiObjectiveValue(description);
@@ -32,8 +33,8 @@ public class ExpressionClauseObjectiveFunction extends ObjectiveFunction<Data> {
             for (Row row : rows) {
                 objVal.add(
                         new ExpressionRowObjectiveFunctionFactory(
-                                expressionClause.getExpression(),
-                                expressionClause.getSatisfy(),
+                                expressionPredicate.getExpression(),
+                                expressionPredicate.getTruthValue(),
                                 true).create().evaluate(row)
                 );
             }
