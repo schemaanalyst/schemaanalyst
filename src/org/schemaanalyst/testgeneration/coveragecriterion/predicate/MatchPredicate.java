@@ -127,7 +127,7 @@ public class MatchPredicate extends Predicate {
 
         if (!table.equals(refTable) || !cols.equals(refCols)) {
             colsStr += " -> ";
-            if (table.equals(refTable)) {
+            if (!table.equals(refTable)) {
                 colsStr += refTable + ": ";
             }
             colsStr += StringUtils.join(refCols, ",");
