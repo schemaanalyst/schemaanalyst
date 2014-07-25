@@ -59,6 +59,10 @@ public class TestSuiteGenerator {
         return testSuite;
     }
 
+    public TestSuiteGenerationReport getTestSuiteGenerationReport() {
+        return testSuiteGenerationReport;
+    }
+
     private void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
 

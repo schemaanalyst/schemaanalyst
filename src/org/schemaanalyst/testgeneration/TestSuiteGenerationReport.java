@@ -1,10 +1,13 @@
 package org.schemaanalyst.testgeneration;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by phil on 24/07/2014.
@@ -27,4 +30,58 @@ public class TestSuiteGenerationReport {
         testRequirementResults.put(testRequirement, result);
     }
 
+    public int numTestRequirementsCovered() {
+        int total = 0;
+        for (TestRequirement testRequirement : testRequirementResults.keySet()) {
+            DataGenerationResult result = testRequirementResults.get(testRequirement);
+            if (result.getReport().isSuccess()) {
+                total ++;
+            }
+        }
+        return total;
+    }
+
+    public int numTestRequirementsAttempted() {
+        return testRequirementResults.keySet().size();
+    }
+
+    public double coverage() {
+        return 100 * (numTestRequirementsCovered() / numTestRequirementsAttempted());
+    }
+
+    public int getNumStateEvaluations(boolean successfulTestCasesOnly) {
+        int evaluations = 0;
+        Set<Table> tablesUsed = new HashSet<>();
+
+        for (TestRequirement testRequirement : testRequirementResults.keySet()) {
+            DataGenerationResult result = testRequirementResults.get(testRequirement);
+            if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
+                Data state = result.getState();
+                tablesUsed.addAll(state.getTables());
+            }
+        }
+
+        for (Table table : initialTableDataResults.keySet()) {
+            if (tablesUsed.contains(table)) {
+                evaluations += initialTableDataResults.get(table).getReport().getNumEvaluations();
+            }
+        }
+
+        return evaluations;
+    }
+
+    public int getNumDataEvaluations(boolean successfulTestCasesOnly) {
+        int evaluations = 0;
+        for (TestRequirement testRequirement : testRequirementResults.keySet()) {
+            DataGenerationResult result = testRequirementResults.get(testRequirement);
+            if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
+                evaluations += result.getReport().getNumEvaluations();
+            }
+        }
+        return evaluations;
+    }
+
+    public int getNumEvaluations(boolean successfulTestCasesOnly) {
+        return getNumStateEvaluations(successfulTestCasesOnly) + getNumDataEvaluations(successfulTestCasesOnly);
+    }
 }

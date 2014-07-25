@@ -66,6 +66,13 @@ public class GenerateTestSuite extends Runner {
                 dataGeneratorObject);
         TestSuite testSuite = testSuiteGenerator.generate();
 
+        // print some stats
+        TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
+        System.out.println("Test requirements covered: " + report.numTestRequirementsCovered() + "/" + report.numTestRequirementsAttempted());
+        System.out.println("Coverage: " + report.coverage() + "%");
+        System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
+        System.out.println("Num Evaluations (all): " + report.getNumDataEvaluations(false));
+
         // execute each test case to see what the DBMS result is for each row generated (accept / row)
         TestCaseExecutor executor = new TestCaseExecutor(
                 schemaObject,
