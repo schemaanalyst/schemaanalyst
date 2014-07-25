@@ -41,7 +41,7 @@ public class TestSuiteJavaWriter {
 
     public String writeTestSuite(String packageName, String className) {
         code = new IndentableStringBuilder();
-        testCaseNumber = 0;
+        testCaseNumber = 1;
 
         writeClassHeader(packageName, className);
         writeBeforeClassMethod();

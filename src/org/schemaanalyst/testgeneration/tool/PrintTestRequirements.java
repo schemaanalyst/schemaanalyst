@@ -38,7 +38,7 @@ public class PrintTestRequirements extends Runner {
         }
 
         for (TestRequirement req : tr.getTestRequirements()) {
-            System.out.println(req.toString(reduce));
+            System.out.println(req.toString(reduce) + "\n");
         }
 
         System.out.println("Total number of test requirements: " + tr.size());

@@ -22,12 +22,15 @@ public class TestRequirements {
         return new ArrayList<>(testRequirements);
     }
 
-    public void addTestRequirement(String id, String msg, Predicate predicate) {
+    public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate) {
         addTestRequirement(new TestRequirement(id, msg, predicate));
     }
 
     public void addTestRequirement(TestRequirement testRequirement) {
         testRequirements.add(testRequirement);
+
+        // updated the list, now sort it
+        Collections.sort(testRequirements);
     }
 
     public void reduce() {
@@ -61,6 +64,9 @@ public class TestRequirements {
 
                 testRequirements.add(testRequirement);
             }
+
+            // updated the list, now sort it
+            Collections.sort(testRequirements);
         }
     }
 
@@ -77,6 +83,9 @@ public class TestRequirements {
 
         if (filteredList.size() < testRequirements.size()) {
             testRequirements = filteredList;
+
+            // updated the list, now sort it
+            Collections.sort(testRequirements);
         }
     }
 

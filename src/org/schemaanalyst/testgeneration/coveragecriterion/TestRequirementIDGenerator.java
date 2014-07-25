@@ -5,7 +5,7 @@ package org.schemaanalyst.testgeneration.coveragecriterion;
  */
 public interface TestRequirementIDGenerator {
 
-    public String nextID();
+    public TestRequirementID nextID();
 
     public void reset(String id, String type);
 }

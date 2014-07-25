@@ -54,6 +54,10 @@ public class GenerateTestSuite extends Runner {
         DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 10000, schemaObject);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
 
+        // filter and reduce test requirements
+        testRequirements.filterInfeasible();
+        testRequirements.reduce();
+
         // generate the test suite
         TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(
                 schemaObject,

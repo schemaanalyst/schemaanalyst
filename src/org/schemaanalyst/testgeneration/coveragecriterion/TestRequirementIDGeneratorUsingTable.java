@@ -15,8 +15,8 @@ public class TestRequirementIDGeneratorUsingTable implements TestRequirementIDGe
         }
     }
 
-    public String nextID() {
+    public TestRequirementID nextID() {
         counter ++;
-        return counter + "-" + id;
+        return new TestRequirementIDUsingTable(counter, id);
     }
 }
