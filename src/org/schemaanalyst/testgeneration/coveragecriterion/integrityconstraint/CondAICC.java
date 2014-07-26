@@ -50,193 +50,117 @@ public class CondAICC extends AICC {
         }.generateRequirements(constraint);
     }
 
-    protected void generateCheckConstraintRequirements(CheckConstraint checkConstraint, boolean truthValue) {
-        ComposedPredicate topLevelPredicate;
-        String descMsg = generateMsg(checkConstraint);
-
+    protected void generateCheckConstraintRequirements(CheckConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(),
-                            checkConstraint.getTable(),
-                            checkConstraint.getExpression().getColumnsInvolved(),
-                            true));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-
-            // generate CC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
-            AndPredicate cctPredicate = new AndPredicate();
-            cctPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), true));
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            cctPredicate, checkConstraint.getTable(), checkConstraint.getExpression().getColumnsInvolved(), false));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
-                    topLevelPredicate);
-
-        } else {
             // generate CC=F requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, checkConstraint);
-            AndPredicate ccfPredicate = new AndPredicate();
-            ccfPredicate.addPredicate(new ExpressionPredicate(checkConstraint.getTable(), checkConstraint.getExpression(), false));
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            ccfPredicate, checkConstraint.getTable(), checkConstraint.getExpression().getColumnsInvolved(), false));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=F",
-                    topLevelPredicate);
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateCheckConstraintPredicate(constraint, true, false));
+        } else {
+            // generate NPC=T requirement
+            generateTestRequirement(
+                    constraint,
+                    " is NPC=T",
+                    generateCheckConstraintPredicate(constraint, null, true));
 
+            // generate CC=F requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateCheckConstraintPredicate(constraint, false, false));
         }
     }
 
-    protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
-        ComposedPredicate topLevelPredicate;
-        String descMsg = generateMsg(foreignKeyConstraint);
-
+    protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(),
-                            foreignKeyConstraint.getTable(),
-                            foreignKeyConstraint.getColumns(),
-                            true));
-
-            // generate CC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
-            topLevelPredicate.addPredicate(
-                    generateAndMatch(
-                            foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(),
-                            foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
-                    topLevelPredicate);
-        } else {
             // generate CC=F requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, foreignKeyConstraint);
-            topLevelPredicate.addPredicate(
-                    generateOrNonMatch(
-                            foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(),
-                            foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=F",
-                    topLevelPredicate);
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, true, false));
+        } else {
+            // generate NPC=T requirement
+            generateTestRequirement(
+                    constraint,
+                    " is NPC=T",
+                    generateMultiColumnConstraintPredicate(constraint, null, true));
+
+            // generate CC=F requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, false, false));
         }
     }
 
 
-    protected void generateNotNullConstraintRequirements(NotNullConstraint notNullConstraint, boolean truthValue) {
-        String descMsg = generateMsg(notNullConstraint);
-
+    protected void generateNotNullConstraintRequirements(NotNullConstraint constraint, boolean truthValue) {
         if (truthValue) {
             // generate CC=T requirement
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
-                    generateAcceptancePredicate(schema, notNullConstraint.getTable(), true));
+            generateTestRequirement(
+                    constraint,
+                    " is CC=T",
+                    new NullPredicate(constraint.getTable(), constraint.getColumn(), false));
         } else {
             // generate CC=F requirement
-            ComposedPredicate topLevelPredicate = generateAcceptancePredicate(schema, notNullConstraint);
-            topLevelPredicate.addPredicate(
-                    new NullPredicate(notNullConstraint.getTable(), notNullConstraint.getColumn(), true));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=F",
-                    generateAcceptancePredicate(schema, notNullConstraint));
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    new NullPredicate(constraint.getTable(), constraint.getColumn(), true));
         }
     }
 
-    protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint primaryKeyConstraint, boolean truthValue) {
-        ComposedPredicate topLevelPredicate;
-        String descMsg = generateMsg(primaryKeyConstraint);
-
+    protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate CC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
-            topLevelPredicate.addPredicate(
-                    generateOrNonMatch(
-                            primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
-                    topLevelPredicate);
+            // generate CC=F requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, true, false));
         } else {
             // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(),
-                            primaryKeyConstraint.getTable(),
-                            primaryKeyConstraint.getColumns(),
-                            true));
+            generateTestRequirement(
+                    constraint,
+                    " is NPC=T",
+                    generateMultiColumnConstraintPredicate(constraint, null, true));
 
             // generate CC=F requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, primaryKeyConstraint);
-            topLevelPredicate.addPredicate(
-                    generateAndMatch(
-                            primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=F",
-                    topLevelPredicate);
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, false, false));
         }
     }
 
-    protected void generateUniqueConstraintRequirements(UniqueConstraint uniqueConstraint, boolean truthValue) {
-        ComposedPredicate topLevelPredicate;
-        String descMsg = generateMsg(uniqueConstraint);
-
+    protected void generateUniqueConstraintRequirements(UniqueConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate NPC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, uniqueConstraint);
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is NPC=T",
-                    topLevelPredicate);
-            topLevelPredicate.addPredicate(
-                    addNullPredicates(
-                            new OrPredicate(),
-                            uniqueConstraint.getTable(),
-                            uniqueConstraint.getColumns(),
-                            true));
+            // generate CC=F requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, true, false));
 
-            // generate CC=T requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, uniqueConstraint);
-            topLevelPredicate.addPredicate(
-                    generateOrNonMatch(
-                            uniqueConstraint.getTable(), uniqueConstraint.getColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=T",
-                    topLevelPredicate);
+            // generate NPC=T requirement
+            generateTestRequirement(
+                    constraint,
+                    " is NPC=T",
+                    generateMultiColumnConstraintPredicate(constraint, null, true));
         } else {
             // generate CC=F requirement
-            topLevelPredicate = generateAcceptancePredicate(schema, uniqueConstraint);
-            topLevelPredicate.addPredicate(
-                    generateAndMatch(
-                            uniqueConstraint.getTable(), uniqueConstraint.getColumns()));
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
-                    descMsg + " is CC=F",
-                    topLevelPredicate);
+            generateTestRequirement(
+                    constraint,
+                    " is CC=F",
+                    generateMultiColumnConstraintPredicate(constraint, false, false));
         }
+    }
+
+    protected void generateTestRequirement(Constraint constraint, String msgSuffix, Predicate predicate) {
+        String msg = generateMsg(constraint) + msgSuffix;
+
+        ComposedPredicate topLevelPredicate = generateAcceptancePredicate(schema, constraint);
+        topLevelPredicate.addPredicate(predicate);
+
+        tr.addTestRequirement(trIDGenerator.nextID(), msg, topLevelPredicate);
     }
 }

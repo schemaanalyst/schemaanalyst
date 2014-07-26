@@ -4,6 +4,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
 import java.util.List;
@@ -78,62 +79,14 @@ public class PredicateGenerator {
     }
 
     public static Predicate generateCheckConstraintPredicate(CheckConstraint checkConstraint, boolean truthValue) {
-        ComposedPredicate composedPredicate;
-        ExpressionPredicate expressionPredicate =
-                new ExpressionPredicate(
-                        checkConstraint.getTable(),
-                        checkConstraint.getExpression(),
-                        truthValue);
-        boolean nullStatus;
-
-        if (truthValue) {
-            composedPredicate = new OrPredicate();
-            nullStatus = true;
-        } else {
-            composedPredicate = new AndPredicate();
-            nullStatus = false;
-        }
-
-        composedPredicate.addPredicate(expressionPredicate);
-        addNullPredicates(
-                composedPredicate,
-                checkConstraint.getTable(),
-                checkConstraint.getExpression().getColumnsInvolved(),
-                nullStatus);
-
-        return composedPredicate;
+        boolean nullStatus = truthValue;
+        return generateCheckConstraintPredicate(checkConstraint, truthValue, nullStatus);
     }
 
     public static Predicate generateForeignKeyConstraintPredicate(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
-        ComposedPredicate composedPredicate;
-        MatchPredicate matchPredicate;
-        boolean nullStatus;
-
-        if (truthValue) {
-            composedPredicate = new OrPredicate();
-            matchPredicate = generateAndMatch(
-                    foreignKeyConstraint.getTable(),
-                    foreignKeyConstraint.getColumns(),
-                    foreignKeyConstraint.getReferenceTable(),
-                    foreignKeyConstraint.getReferenceColumns());
-            nullStatus = true;
-        } else {
-            composedPredicate = new AndPredicate();
-            matchPredicate = generateOrNonMatch(
-                    foreignKeyConstraint.getTable(),
-                    foreignKeyConstraint.getColumns(),
-                    foreignKeyConstraint.getReferenceTable(),
-                    foreignKeyConstraint.getReferenceColumns());
-            nullStatus = false;
-        }
-
-        composedPredicate.addPredicate(matchPredicate);
-        addNullPredicates(
-                composedPredicate,
-                foreignKeyConstraint.getTable(),
-                foreignKeyConstraint.getColumns(),
-                nullStatus);
-        return composedPredicate;
+        boolean match = truthValue;
+        boolean nullStatus = truthValue;
+        return generateMultiColumnConstraintPredicate(foreignKeyConstraint, match, nullStatus);
     }
 
     public static Predicate generateNotNullConstraintPredicate(NotNullConstraint notNullConstraint, boolean truthValue) {
@@ -141,68 +94,64 @@ public class PredicateGenerator {
     }
 
     public static Predicate generatePrimaryKeyConstraintPredicate(PrimaryKeyConstraint primaryKeyConstraint, boolean truthValue) {
-        ComposedPredicate composedPredicate;
-        MatchPredicate matchPredicate;
-        boolean nullStatus;
-
-        if (truthValue) {
-            composedPredicate = new AndPredicate();
-            matchPredicate = generateOrNonMatch(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns());
-            nullStatus = false;
-        } else {
-            composedPredicate = new OrPredicate();
-            matchPredicate = generateAndMatch(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns());
-            nullStatus = true;
-        }
-
-        composedPredicate.addPredicate(matchPredicate);
-        addNullPredicates(
-                composedPredicate,
-                primaryKeyConstraint.getTable(),
-                primaryKeyConstraint.getColumns(),
-                nullStatus);
-
-        return composedPredicate;
+        boolean match = !truthValue;
+        boolean nullStatus = !truthValue;
+        return generateMultiColumnConstraintPredicate(primaryKeyConstraint, match, nullStatus);
     }
 
     public static Predicate generateUniqueConstraintPredicate(UniqueConstraint uniqueConstraint, boolean truthValue) {
-        ComposedPredicate composedPredicate;
-        MatchPredicate matchPredicate;
-        boolean nullStatus;
-
-        if (truthValue) {
-            composedPredicate = new OrPredicate();
-            matchPredicate = generateOrNonMatch(uniqueConstraint.getTable(), uniqueConstraint.getColumns());
-            nullStatus = true;
-        } else {
-            composedPredicate = new AndPredicate();
-            matchPredicate = generateAndMatch(uniqueConstraint.getTable(), uniqueConstraint.getColumns());
-            nullStatus = false;
-        }
-
-        composedPredicate.addPredicate(matchPredicate);
-        addNullPredicates(
-                composedPredicate,
-                uniqueConstraint.getTable(),
-                uniqueConstraint.getColumns(),
-                nullStatus);
-
-        return composedPredicate;
+        boolean match = !truthValue;
+        boolean nullStatus = truthValue;
+        return generateMultiColumnConstraintPredicate(uniqueConstraint, match, nullStatus);
     }
 
-    public static ComposedPredicate addNullPredicates(ComposedPredicate composedPredicate, Table table, List<Column> columns, boolean truthValue) {
-        for (Column column : columns) {
-            composedPredicate.addPredicate(new NullPredicate(table, column, truthValue));
+    public static Predicate generateCheckConstraintPredicate(CheckConstraint constraint, Boolean truthValue, boolean nullStatus) {
+        Table table = constraint.getTable();
+        Expression expression = constraint.getExpression();
+        List<Column> columns = expression.getColumnsInvolved();
+
+        ComposedPredicate predicate = (nullStatus)
+                ? new OrPredicate()
+                : new AndPredicate();
+
+        if (truthValue != null) {
+            ExpressionPredicate expressionPredicate = new ExpressionPredicate(table, expression, truthValue);
+            predicate.addPredicate(expressionPredicate);
         }
-        return composedPredicate;
+
+        addNullPredicates(predicate, table, columns, nullStatus);
+
+        return predicate;
     }
 
-    public static MatchPredicate generateOrNonMatch(Table table, List<Column> columns) {
-        return new MatchPredicate(
-                table,
-                MatchPredicate.EMPTY_COLUMN_LIST,
-                columns,
-                MatchPredicate.Mode.OR);
+    public static Predicate generateMultiColumnConstraintPredicate(MultiColumnConstraint constraint, Boolean match, boolean nullStatus) {
+        Table table = constraint.getTable();
+        List<Column> columns = constraint.getColumns();
+
+        ComposedPredicate predicate = (nullStatus)
+                ? new OrPredicate()
+                : new AndPredicate();
+
+        if (match != null) {
+            Table refTable = table;
+            List<Column> refColumns = columns;
+
+            if (constraint instanceof ForeignKeyConstraint) {
+                ForeignKeyConstraint fkConstraint = (ForeignKeyConstraint) constraint;
+                refTable = fkConstraint.getReferenceTable();
+                refColumns = fkConstraint.getReferenceColumns();
+            }
+
+            MatchPredicate matchPredicate = (match)
+                    ? generateAndMatch(table, columns, refTable, refColumns)
+                    : generateOrNonMatch(table, columns, refTable, refColumns);
+
+            predicate.addPredicate(matchPredicate);
+        }
+
+        addNullPredicates(predicate, table, columns, nullStatus);
+
+        return predicate;
     }
 
     public static MatchPredicate generateOrNonMatch(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
@@ -216,14 +165,6 @@ public class PredicateGenerator {
                 MatchPredicate.Mode.OR);
     }
 
-    public static MatchPredicate generateAndMatch(Table table, List<Column> columns) {
-        return new MatchPredicate(
-                table,
-                columns,
-                MatchPredicate.EMPTY_COLUMN_LIST,
-                MatchPredicate.Mode.AND);
-    }
-
     public static MatchPredicate generateAndMatch(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
         return new MatchPredicate(
                 table,
@@ -233,5 +174,12 @@ public class PredicateGenerator {
                 refColumns,
                 MatchPredicate.EMPTY_COLUMN_LIST,
                 MatchPredicate.Mode.AND);
+    }
+
+    public static ComposedPredicate addNullPredicates(ComposedPredicate composedPredicate, Table table, List<Column> columns, boolean truthValue) {
+        for (Column column : columns) {
+            composedPredicate.addPredicate(new NullPredicate(table, column, truthValue));
+        }
+        return composedPredicate;
     }
 }
