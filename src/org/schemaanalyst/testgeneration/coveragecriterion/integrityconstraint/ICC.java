@@ -45,6 +45,6 @@ public class ICC implements CoverageCriterion {
 
 
     protected String generateMsg(Constraint constraint) {
-        return constraint + "for " + constraint.getTable();
+        return constraint + " for " + constraint.getTable();
     }
 }

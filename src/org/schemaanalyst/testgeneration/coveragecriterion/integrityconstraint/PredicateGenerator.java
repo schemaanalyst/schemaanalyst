@@ -80,13 +80,13 @@ public class PredicateGenerator {
 
     public static Predicate generateCheckConstraintPredicate(CheckConstraint checkConstraint, boolean truthValue) {
         boolean nullStatus = truthValue;
-        return generateCheckConstraintPredicate(checkConstraint, truthValue, nullStatus);
+        return generateCheckConstraintConditionPredicate(checkConstraint, truthValue, nullStatus);
     }
 
     public static Predicate generateForeignKeyConstraintPredicate(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
         boolean match = truthValue;
         boolean nullStatus = truthValue;
-        return generateMultiColumnConstraintPredicate(foreignKeyConstraint, match, nullStatus);
+        return generateMultiColumnConstraintConditionPredicate(foreignKeyConstraint, match, nullStatus);
     }
 
     public static Predicate generateNotNullConstraintPredicate(NotNullConstraint notNullConstraint, boolean truthValue) {
@@ -96,16 +96,16 @@ public class PredicateGenerator {
     public static Predicate generatePrimaryKeyConstraintPredicate(PrimaryKeyConstraint primaryKeyConstraint, boolean truthValue) {
         boolean match = !truthValue;
         boolean nullStatus = !truthValue;
-        return generateMultiColumnConstraintPredicate(primaryKeyConstraint, match, nullStatus);
+        return generateMultiColumnConstraintConditionPredicate(primaryKeyConstraint, match, nullStatus);
     }
 
     public static Predicate generateUniqueConstraintPredicate(UniqueConstraint uniqueConstraint, boolean truthValue) {
         boolean match = !truthValue;
         boolean nullStatus = truthValue;
-        return generateMultiColumnConstraintPredicate(uniqueConstraint, match, nullStatus);
+        return generateMultiColumnConstraintConditionPredicate(uniqueConstraint, match, nullStatus);
     }
 
-    public static Predicate generateCheckConstraintPredicate(CheckConstraint constraint, Boolean truthValue, boolean nullStatus) {
+    public static Predicate generateCheckConstraintConditionPredicate(CheckConstraint constraint, Boolean truthValue, boolean nullStatus) {
         Table table = constraint.getTable();
         Expression expression = constraint.getExpression();
         List<Column> columns = expression.getColumnsInvolved();
@@ -124,7 +124,7 @@ public class PredicateGenerator {
         return predicate;
     }
 
-    public static Predicate generateMultiColumnConstraintPredicate(MultiColumnConstraint constraint, Boolean match, boolean nullStatus) {
+    public static Predicate generateMultiColumnConstraintConditionPredicate(MultiColumnConstraint constraint, Boolean match, boolean nullStatus) {
         Table table = constraint.getTable();
         List<Column> columns = constraint.getColumns();
 
@@ -143,8 +143,8 @@ public class PredicateGenerator {
             }
 
             MatchPredicate matchPredicate = (match)
-                    ? generateAndMatch(table, columns, refTable, refColumns)
-                    : generateOrNonMatch(table, columns, refTable, refColumns);
+                    ? generateAndMatchPredicate(table, columns, refTable, refColumns)
+                    : generateOrNonMatchPredicate(table, columns, refTable, refColumns);
 
             predicate.addPredicate(matchPredicate);
         }
@@ -154,7 +154,7 @@ public class PredicateGenerator {
         return predicate;
     }
 
-    public static MatchPredicate generateOrNonMatch(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
+    public static MatchPredicate generateOrNonMatchPredicate(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
         return new MatchPredicate(
                 table,
                 MatchPredicate.EMPTY_COLUMN_LIST,
@@ -165,7 +165,7 @@ public class PredicateGenerator {
                 MatchPredicate.Mode.OR);
     }
 
-    public static MatchPredicate generateAndMatch(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
+    public static MatchPredicate generateAndMatchPredicate(Table table, List<Column> columns, Table refTable, List<Column> refColumns) {
         return new MatchPredicate(
                 table,
                 columns,

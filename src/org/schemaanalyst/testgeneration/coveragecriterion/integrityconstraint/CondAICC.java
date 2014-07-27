@@ -55,20 +55,20 @@ public class CondAICC extends AICC {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
-                    " is CC=F",
-                    generateCheckConstraintPredicate(constraint, true, false));
+                    " is CC=T",
+                    generateCheckConstraintConditionPredicate(constraint, true, false));
         } else {
             // generate NPC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NPC=T",
-                    generateCheckConstraintPredicate(constraint, null, true));
+                    generateCheckConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateCheckConstraintPredicate(constraint, false, false));
+                    generateCheckConstraintConditionPredicate(constraint, false, false));
         }
     }
 
@@ -77,20 +77,20 @@ public class CondAICC extends AICC {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
-                    " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, true, false));
+                    " is CC=T",
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
         } else {
             // generate NPC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NPC=T",
-                    generateMultiColumnConstraintPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, false, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
         }
     }
 
@@ -113,23 +113,23 @@ public class CondAICC extends AICC {
 
     protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate CC=F requirement
+            // generate CC=T requirement
             generateTestRequirement(
                     constraint,
-                    " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, true, false));
+                    " is CC=T",
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
         } else {
             // generate NPC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NPC=T",
-                    generateMultiColumnConstraintPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, false, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
         }
     }
 
@@ -138,20 +138,20 @@ public class CondAICC extends AICC {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
-                    " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, true, false));
+                    " is CC=T",
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
 
             // generate NPC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NPC=T",
-                    generateMultiColumnConstraintPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
         } else {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintPredicate(constraint, false, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
         }
     }
 
