@@ -22,6 +22,7 @@ public class PredicateChecker_Old extends Checker {
         this.state = state;
 
         clauseCheckers = new ArrayList<>();
+        /*
         for (Clause clause : predicate.getClauses()) {
             clause.accept(new ClauseVisitor() {
                 @Override
@@ -47,6 +48,7 @@ public class PredicateChecker_Old extends Checker {
                 }
             });
         }
+        */
     }
 
     public List<PredicateChecker> getClauseCheckers() {

@@ -3,7 +3,7 @@ package org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
-import org.schemaanalyst.logic.predicate.clause.NullClause;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,17 +13,17 @@ import java.util.List;
  */
 public class NullPredicateChecker extends PredicateChecker {
 
-    private NullClause nullClause;
+    private NullPredicate nullPredicate;
     private Data data;
     protected List<Cell> nonComplyingCells;
 
-    public NullPredicateChecker(NullClause nullClause, Data data) {
-        this.nullClause = nullClause;
+    public NullPredicateChecker(NullPredicate nullPredicate, Data data) {
+        this.nullPredicate = nullPredicate;
         this.data = data;
     }
 
-    public NullClause getClause() {
-        return nullClause;
+    public NullPredicate getPredicate() {
+        return nullPredicate;
     }
 
     public List<Cell> getNonComplyingCells() {
@@ -34,12 +34,12 @@ public class NullPredicateChecker extends PredicateChecker {
     public boolean check() {
         nonComplyingCells = new ArrayList<>();
 
-        List<Row> rows = data.getRows(nullClause.getTable());
+        List<Row> rows = data.getRows(nullPredicate.getTable());
         if (rows.size() > 0) {
             for (Row row : rows) {
-                Cell cell = row.getCell(nullClause.getColumn());
+                Cell cell = row.getCell(nullPredicate.getColumn());
 
-                if (nullClause.getSatisfy() != cell.isNull()) {
+                if (nullPredicate.getTruthValue() != cell.isNull()) {
                     nonComplyingCells.add(cell);
                 }
             }
@@ -52,7 +52,7 @@ public class NullPredicateChecker extends PredicateChecker {
     @Override
     public String getInfo() {
         boolean check = check();
-        String dump = "Null clause: " + nullClause + "\n";
+        String dump = "Null clause: " + nullPredicate + "\n";
         dump += "\t* Success: " + check + "\n";
         if (!check) {
             dump += "\t* Non-complying cells:\n";

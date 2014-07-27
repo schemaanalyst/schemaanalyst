@@ -4,8 +4,8 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.logic.RelationalOperator;
-import org.schemaanalyst.logic.predicate.clause.MatchClause;
 import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -17,25 +17,25 @@ import java.util.ListIterator;
  */
 public class MatchPredicateChecker extends PredicateChecker {
 
-    private MatchClause matchClause;
+    private MatchPredicate matchPredicate;
     private boolean allowNull;
     private Data data, state;
     private List<MatchRecord> nonMatchingCells;
     private List<MatchRecord> matchingCells;
 
-    public MatchPredicateChecker(MatchClause matchClause, boolean allowNull, Data data) {
-        this(matchClause, allowNull, data, new Data());
+    public MatchPredicateChecker(MatchPredicate matchPredicate, boolean allowNull, Data data) {
+        this(matchPredicate, allowNull, data, new Data());
     }
 
-    public MatchPredicateChecker(MatchClause matchClause, boolean allowNull, Data data, Data state) {
-        this.matchClause = matchClause;
+    public MatchPredicateChecker(MatchPredicate matchPredicate, boolean allowNull, Data data, Data state) {
+        this.matchPredicate = matchPredicate;
         this.allowNull = allowNull;
         this.data = data;
         this.state = state;
     }
 
-    public MatchClause getClause() {
-        return matchClause;
+    public MatchPredicate getPredicate() {
+        return matchPredicate;
     }
 
     public List<MatchRecord> getNonMatchingCells() {
@@ -47,15 +47,15 @@ public class MatchPredicateChecker extends PredicateChecker {
     }
 
     private List<Row> getDataRows(int index) {
-        List<Row> compareRows = data.getRows(matchClause.getReferenceTable());
-        if (matchClause.involvesOneTable()) {
+        List<Row> compareRows = data.getRows(matchPredicate.getReferenceTable());
+        if (matchPredicate.tableIsRefTable()) {
             compareRows = compareRows.subList(0, index);
         }
         return compareRows;
     }
 
     private List<Row> getStateRows() {
-        return state.getRows(matchClause.getReferenceTable());
+        return state.getRows(matchPredicate.getReferenceTable());
     }
 
     @Override
@@ -64,7 +64,7 @@ public class MatchPredicateChecker extends PredicateChecker {
         nonMatchingCells = new ArrayList<>();
         matchingCells = new ArrayList<>();
 
-        List<Row> rows = data.getRows(matchClause.getTable());
+        List<Row> rows = data.getRows(matchPredicate.getTable());
 
         if (rows.size() > 0) {
             boolean compareRowAlwaysPresent = true;
@@ -76,10 +76,10 @@ public class MatchPredicateChecker extends PredicateChecker {
                 List<Row> dataRows = getDataRows(rowsIterator.nextIndex() - 1);
                 List<Row> stateRows = getStateRows();
                 int numCompareRows = dataRows.size() + stateRows.size();
-                if (numCompareRows == 0) {
-                    if (matchClause.requiresComparisonRow()) {
-                        compareRowAlwaysPresent = false;
-                    }
+                if (numCompareRows > 0) {
+                    //if (matchPredicate.requiresComparisonRow()) {
+                    //    compareRowAlwaysPresent = false;
+                    //}
                 } else {
                     checkRow(row, stateRows, dataRows);
                 }
@@ -117,23 +117,23 @@ public class MatchPredicateChecker extends PredicateChecker {
         if (numNonCompliantRows > 0 && everyRowNonCompliant) {
 
             if (nonMatchingStateRows.size() > 0 || nonMatchingDataRows.size() > 0) {
-                MatchRecord nonMatch = new MatchRecord(row.reduceRow(matchClause.getMatchingColumns()));
+                MatchRecord nonMatch = new MatchRecord(row.reduceRow(matchPredicate.getMatchingColumns()));
                 for (Row stateRow : nonMatchingStateRows) {
-                    nonMatch.addUnmodifiableComparison(stateRow.reduceRow(matchClause.getMatchingReferenceColumns()));
+                    nonMatch.addUnmodifiableComparison(stateRow.reduceRow(matchPredicate.getMatchingReferenceColumns()));
                 }
                 for (Row dataRow : nonMatchingDataRows) {
-                    nonMatch.addModifiableComparison(dataRow.reduceRow(matchClause.getMatchingReferenceColumns()));
+                    nonMatch.addModifiableComparison(dataRow.reduceRow(matchPredicate.getMatchingReferenceColumns()));
                 }
                 nonMatchingCells.add(nonMatch);
             }
 
             if (matchingStateRows.size() > 0 || matchingDataRows.size() > 0) {
-                MatchRecord match = new MatchRecord(row.reduceRow(matchClause.getNonMatchingColumns()));
+                MatchRecord match = new MatchRecord(row.reduceRow(matchPredicate.getNonMatchingColumns()));
                 for (Row stateRow : matchingStateRows) {
-                    match.addUnmodifiableComparison(stateRow.reduceRow(matchClause.getNonMatchingReferenceColumns()));
+                    match.addUnmodifiableComparison(stateRow.reduceRow(matchPredicate.getNonMatchingReferenceColumns()));
                 }
                 for (Row dataRow : matchingDataRows) {
-                    match.addModifiableComparison(dataRow.reduceRow(matchClause.getNonMatchingReferenceColumns()));
+                    match.addModifiableComparison(dataRow.reduceRow(matchPredicate.getNonMatchingReferenceColumns()));
                 }
                 matchingCells.add(match);
             }
@@ -145,8 +145,8 @@ public class MatchPredicateChecker extends PredicateChecker {
         boolean matchResult = checkColumnLists(
                 row,
                 compareRow,
-                matchClause.getMatchingColumns(),
-                matchClause.getMatchingReferenceColumns(),
+                matchPredicate.getMatchingColumns(),
+                matchPredicate.getMatchingReferenceColumns(),
                 true);
 
         if (!matchResult) {
@@ -156,8 +156,8 @@ public class MatchPredicateChecker extends PredicateChecker {
         boolean nonMatchResult = checkColumnLists(
                 row,
                 compareRow,
-                matchClause.getNonMatchingColumns(),
-                matchClause.getNonMatchingReferenceColumns(),
+                matchPredicate.getNonMatchingColumns(),
+                matchPredicate.getNonMatchingReferenceColumns(),
                 false);
 
         if (!nonMatchResult) {
@@ -201,8 +201,8 @@ public class MatchPredicateChecker extends PredicateChecker {
                 }
             }
 
-            return (matchClause.getMode().isAnd() && allPairingsSatisfied) ||
-                   (matchClause.getMode().isOr() && onePairingSatisfied);
+            return (matchPredicate.getMode().isAnd() && allPairingsSatisfied) ||
+                   (matchPredicate.getMode().isOr() && onePairingSatisfied);
         }
 
         return true;
@@ -211,7 +211,7 @@ public class MatchPredicateChecker extends PredicateChecker {
     @Override
     public String getInfo() {
         boolean result = check();
-        String info = "Match clause: " + matchClause + "\n";
+        String info = "Match clause: " + matchPredicate + "\n";
         info += "\t* Success: " + result + "\n";
         if (!result) {
             info += "\t* Matching cells: " + getMatchRecordsInfo(matchingCells) + "\n";

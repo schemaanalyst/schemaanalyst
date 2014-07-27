@@ -1,8 +1,9 @@
-package org.schemaanalyst.testgeneration.coveragecriterion_old;
+package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.*;
 
 /**

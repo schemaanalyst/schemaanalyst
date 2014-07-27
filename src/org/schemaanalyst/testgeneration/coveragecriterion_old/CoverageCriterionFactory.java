@@ -1,6 +1,7 @@
 package org.schemaanalyst.testgeneration.coveragecriterion_old;
 
 import org.schemaanalyst.testgeneration.CoverageException;
+import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.ConstraintCACCoverage;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

@@ -31,6 +31,7 @@ public class MatchPredicate extends Predicate {
     private Table table, refTable;
     private List<Column> matchingCols, nonMatchingCols, matchingRefCols, nonMatchingRefCols;
     private Mode mode;
+    private boolean tableIsRefTable;
 
     public MatchPredicate(Table table, List<Column> equalCols, List<Column> notEqualCols, Mode mode) {
         this(table, equalCols, notEqualCols, table, equalCols, notEqualCols, mode);
@@ -47,6 +48,7 @@ public class MatchPredicate extends Predicate {
         this.nonMatchingRefCols = new ArrayList<>(nonMatchingRefCols);
 
         this.mode = mode;
+        this.tableIsRefTable = table.equals(refTable);
 
         boolean sameNumberOfEqualsCols = matchingCols.size() == matchingRefCols.size();
         boolean sameNumberOfNotEqualsCols = nonMatchingCols.size() == nonMatchingRefCols.size();
@@ -96,6 +98,10 @@ public class MatchPredicate extends Predicate {
         return mode;
     }
 
+    public boolean tableIsRefTable() {
+        return tableIsRefTable;
+    }
+
     public String getName() {
         int numCols = matchingCols.size() + nonMatchingCols.size();
         return (numCols > 1 ? mode : "") + "Match";
@@ -127,7 +133,7 @@ public class MatchPredicate extends Predicate {
 
         if (!table.equals(refTable) || !cols.equals(refCols)) {
             colsStr += " -> ";
-            if (!table.equals(refTable)) {
+            if (!tableIsRefTable()) {
                 colsStr += refTable + ": ";
             }
             colsStr += StringUtils.join(refCols, ",");
