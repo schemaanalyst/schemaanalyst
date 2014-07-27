@@ -14,28 +14,25 @@ import java.util.List;
  */
 public class PredicateGenerator {
 
-    public static ComposedPredicate generateAcceptancePredicate(Schema schema, Table table) {
-        return generateAcceptancePredicate(schema, table, true);
+    public static ComposedPredicate generatePredicate(List<Constraint> constraints) {
+        return generatePredicate(constraints, true, null);
     }
 
-    public static ComposedPredicate generateAcceptancePredicate(Schema schema, Table table, boolean truthValue) {
-        return generateAcceptancePredicate(schema, table, truthValue, null);
+    public static ComposedPredicate generatePredicate(List<Constraint> constraints, boolean truthValue) {
+        return generatePredicate(constraints, truthValue, null);
     }
 
-    public static ComposedPredicate generateAcceptancePredicate(Schema schema, Constraint ignoreConstraint) {
-        return generateAcceptancePredicate(schema, ignoreConstraint.getTable(), true, ignoreConstraint);
+    public static ComposedPredicate generatePredicate(List<Constraint> constraints, Constraint ignoreConstraint) {
+        return generatePredicate(constraints, true, ignoreConstraint);
     }
 
-    public static ComposedPredicate generateAcceptancePredicate(Schema schema, Table table, boolean truthValue, Constraint ignoreConstraint) {
-
+    public static ComposedPredicate generatePredicate(List<Constraint> constraints, boolean truthValue, Constraint ignoreConstraint) {
         ComposedPredicate ap = truthValue ? new AndPredicate() : new OrPredicate();
-
-        for (Constraint constraint : schema.getConstraints(table)) {
+        for (Constraint constraint : constraints) {
             if (!constraint.equals(ignoreConstraint)) {
                 ap.addPredicate(generateConditionPredicate(constraint, truthValue));
             }
         }
-
         return ap;
     }
 

@@ -10,16 +10,18 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPred
  */
 public class AICC extends ICC {
 
-    public AICC(Schema schema, TestRequirementIDGenerator trIDGenerator) {
-        super(schema, trIDGenerator);
+    public AICC(Schema schema,
+                TestRequirementIDGenerator testRequirementIDGenerator,
+                ConstraintSupplier constraintSupplier) {
+        super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
     protected void generateRequirements(Constraint constraint, boolean truthValue) {
-        ComposedPredicate topLevelPredicate = PredicateGenerator.generateAcceptancePredicate(schema, constraint.getTable(), true, constraint);
+        ComposedPredicate topLevelPredicate = PredicateGenerator.generatePredicate(getConstraints(constraint.getTable()), constraint);
         topLevelPredicate.addPredicate(PredicateGenerator.generateConditionPredicate(constraint, truthValue));
 
-        tr.addTestRequirement(
-                trIDGenerator.nextID(),
+        testRequirements.addTestRequirement(
+                testRequirementIDGenerator.nextID(),
                 generateMsg(constraint) + " is " + truthValue,
                 topLevelPredicate);
     }

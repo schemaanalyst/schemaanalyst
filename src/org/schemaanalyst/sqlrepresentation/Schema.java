@@ -827,7 +827,8 @@ public class Schema extends IdentifiableEntity implements Serializable {
 
 	/**
 	 * Returns a list of all constraints for a table.
-	 * 
+     * @param table The table whose constraints are sought.
+	 *
 	 * @return the list of constraints defined on the table.
 	 */
 	public List<Constraint> getConstraints(Table table) {

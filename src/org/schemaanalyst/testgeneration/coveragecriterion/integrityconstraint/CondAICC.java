@@ -13,8 +13,10 @@ import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstr
  */
 public class CondAICC extends AICC {
 
-    public CondAICC(Schema schema, TestRequirementIDGenerator trIDGenerator) {
-        super(schema, trIDGenerator);
+    public CondAICC(Schema schema,
+                    TestRequirementIDGenerator testRequirementIDGenerator,
+                    ConstraintSupplier constraintSupplier) {
+        super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
     protected void generateRequirements(Constraint constraint, final boolean truthValue) {
@@ -158,9 +160,9 @@ public class CondAICC extends AICC {
     protected void generateTestRequirement(Constraint constraint, String msgSuffix, Predicate predicate) {
         String msg = generateMsg(constraint) + msgSuffix;
 
-        ComposedPredicate topLevelPredicate = generateAcceptancePredicate(schema, constraint);
+        ComposedPredicate topLevelPredicate = generatePredicate(getConstraints(constraint.getTable()), constraint);
         topLevelPredicate.addPredicate(predicate);
 
-        tr.addTestRequirement(trIDGenerator.nextID(), msg, topLevelPredicate);
+        testRequirements.addTestRequirement(testRequirementIDGenerator.nextID(), msg, topLevelPredicate);
     }
 }

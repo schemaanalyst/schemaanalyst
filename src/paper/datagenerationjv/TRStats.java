@@ -27,7 +27,7 @@ public class TRStats {
 
                 data += SEP;
 
-                CoverageCriterion cc = CoverageCriterionFactory.integrityConstraintCoverageCriterion(criterionName, schema);
+                CoverageCriterion cc = CoverageCriterionFactory.integrityConstraintCriterion(criterionName, schema);
 
                 TestRequirements tr = cc.generateRequirements();
 

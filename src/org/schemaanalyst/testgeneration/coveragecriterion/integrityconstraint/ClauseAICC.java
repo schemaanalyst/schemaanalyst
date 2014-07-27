@@ -18,8 +18,10 @@ import java.util.List;
  */
 public class ClauseAICC extends CondAICC {
 
-    public ClauseAICC(Schema schema, TestRequirementIDGenerator trIDGenerator) {
-        super(schema, trIDGenerator);
+    public ClauseAICC(Schema schema,
+                      TestRequirementIDGenerator testRequirementIDGenerator,
+                      ConstraintSupplier constraintSupplier) {
+        super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
@@ -66,8 +68,8 @@ public class ClauseAICC extends CondAICC {
                     predicate.addPredicate(new NullPredicate(table, minorColumn, false));
                 }
             }
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
+            testRequirements.addTestRequirement(
+                    testRequirementIDGenerator.nextID(),
                     descMsg + " " + majorColumn + " is NULL",
                     predicate);
         }
@@ -91,8 +93,8 @@ public class ClauseAICC extends CondAICC {
             List<Column> refRemainingCols = new ArrayList<>(refColumns);
             refRemainingCols.remove(refCol);
 
-            tr.addTestRequirement(
-                    trIDGenerator.nextID(),
+            testRequirements.addTestRequirement(
+                    testRequirementIDGenerator.nextID(),
                     descMsg + " all equal except " + col,
                     new MatchPredicate(
                             table,

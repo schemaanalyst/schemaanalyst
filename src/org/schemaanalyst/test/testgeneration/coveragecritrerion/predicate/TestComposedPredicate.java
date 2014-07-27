@@ -7,7 +7,6 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 import parsedcasestudy.BrowserCookies;
 
@@ -200,44 +199,4 @@ public class TestComposedPredicate {
 
         assertTrue(andPredicate1.equals(andPredicate3));
     }
-
-    @Test
-    public void testBrowserCookies() {
-
-        List<TestRequirement> tr = CoverageCriterionFactory.integrityConstraintCoverageCriterion("aicc", new BrowserCookies()).generateRequirements().getTestRequirements();
-
-        Predicate p1 = (tr.get(0).getPredicate().reduce());
-        Predicate p2 = (tr.get(2).getPredicate().reduce());
-
-        System.out.println(p1);
-        System.out.println(p2);
-        System.out.println();
-
-        MatchPredicate mp1=null, mp2=null;
-        for (Predicate subPredciate : ((ComposedPredicate) p1).getSubPredicates()) {
-            if (subPredciate instanceof MatchPredicate) {
-                mp1 = (MatchPredicate) subPredciate;
-            }
-        }
-        for (Predicate subPredciate : ((ComposedPredicate) p2).getSubPredicates()) {
-            if (subPredciate instanceof MatchPredicate) {
-                mp2 = (MatchPredicate) subPredciate;
-            }
-        }
-
-        System.out.println(mp1);
-        System.out.println(mp2);
-
-        System.out.println("equals?");
-
-        System.out.println(mp1.equals(mp2));
-        System.out.println(mp1.hashCode());
-        System.out.println(mp2.hashCode());
-
-        System.out.println();
-
-        assertTrue(p1.equals(p2));
-
-    }
-
 }

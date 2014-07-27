@@ -66,7 +66,7 @@ public class TestSuiteGenerator {
     private void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
 
-            ComposedPredicate acceptancePredicate = PredicateGenerator.generateAcceptancePredicate(schema, table);
+            ComposedPredicate acceptancePredicate = PredicateGenerator.generatePredicate(schema.getConstraints(table));
 
             // add not null predicates
             List<Column> notNullColumns = new ArrayList<>();
@@ -251,7 +251,7 @@ public class TestSuiteGenerator {
                     // append the predicate with the acceptance predicate of the original
                     AndPredicate newPredicate = new AndPredicate();
                     newPredicate.addPredicate(predicate);
-                    newPredicate.addPredicate(PredicateGenerator.generateAcceptancePredicate(schema, refTable));
+                    newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
                     predicate = newPredicate;
 
                     LOGGER.fine("--- new predicate is " + predicate);

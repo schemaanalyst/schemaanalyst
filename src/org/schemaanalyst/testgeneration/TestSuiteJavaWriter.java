@@ -95,6 +95,10 @@ public class TestSuiteJavaWriter {
         code.appendln("statement = connection.createStatement();");
 
         code.appendln();
+        code.appendln("// enable FOREIGN KEY support");
+        code.appendln(writeExecuteUpdate("PRAGMA foreign_keys = ON") + ";");
+
+        code.appendln();
         code.appendln("// drop the tables for this database (if they exist)");
         List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
         for (String statement : dropTableStatements) {
