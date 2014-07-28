@@ -45,7 +45,7 @@ public class BrowserCookies extends Schema {
 		tableCookies.createColumn("host", new TextDataType());
 		tableCookies.createColumn("path", new TextDataType());
 		this.createPrimaryKeyConstraint(tableCookies, tableCookies.getColumn("id"));
-		this.createCheckConstraint(tableCookies, new OrExpression(new RelationalExpression(new ColumnExpression(tableCookies, tableCookies.getColumn("expiry")), RelationalOperator.EQUALS, new ConstantExpression(new NumericValue(0))), new RelationalExpression(new ColumnExpression(tableCookies, tableCookies.getColumn("expiry")), RelationalOperator.GREATER, new ColumnExpression(tableCookies, tableCookies.getColumn("last_accessed")))));
+		//this.createCheckConstraint(tableCookies, new OrExpression(new RelationalExpression(new ColumnExpression(tableCookies, tableCookies.getColumn("expiry")), RelationalOperator.EQUALS, new ConstantExpression(new NumericValue(0))), new RelationalExpression(new ColumnExpression(tableCookies, tableCookies.getColumn("expiry")), RelationalOperator.GREATER, new ColumnExpression(tableCookies, tableCookies.getColumn("last_accessed")))));
 		this.createCheckConstraint(tableCookies, new RelationalExpression(new ColumnExpression(tableCookies, tableCookies.getColumn("last_accessed")), RelationalOperator.GREATER_OR_EQUALS, new ColumnExpression(tableCookies, tableCookies.getColumn("creation_time"))));
 		this.createForeignKeyConstraint(tableCookies, Arrays.asList(tableCookies.getColumn("host"), tableCookies.getColumn("path")), tablePlaces, Arrays.asList(tablePlaces.getColumn("host"), tablePlaces.getColumn("path")));
 		this.createNotNullConstraint(tableCookies, tableCookies.getColumn("id"));

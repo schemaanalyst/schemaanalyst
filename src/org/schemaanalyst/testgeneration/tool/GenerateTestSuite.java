@@ -8,6 +8,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Parameter;
@@ -51,7 +52,7 @@ public class GenerateTestSuite extends Runner {
         // instantiate objects for parameters
         Schema schemaObject = instantiateSchema();
         TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schemaObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 10000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
 
         // filter and reduce test requirements
@@ -68,10 +69,17 @@ public class GenerateTestSuite extends Runner {
 
         // print some stats
         TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
-        System.out.println("Test requirements covered: " + report.numTestRequirementsCovered() + "/" + report.numTestRequirementsAttempted());
+        System.out.println("Test requirements covered: " + report.getNumTestRequirementsCovered() + "/" + report.getNumTestRequirementsAttempted());
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumDataEvaluations(false));
+        if (report.getNumTestRequirementsFailed() > 0) {
+            System.out.println("Failed test requirements:");
+            for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
+                System.out.println(testRequirement);
+            }
+        }
+
 
         // execute each test case to see what the DBMS result is for each row generated (accept / row)
         TestCaseExecutor executor = new TestCaseExecutor(
