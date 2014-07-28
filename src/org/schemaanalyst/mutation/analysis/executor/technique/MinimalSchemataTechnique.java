@@ -55,7 +55,7 @@ public class MinimalSchemataTechnique extends Technique {
                 changedTableMap.put(differentTable, list);
             }
         }
-
+        
         // Build the meta-mutant schema and SQL statements
         Schema metamutant = MutationAnalysisUtils.renameAndMergeMutants(schema, mutants);
         createStmts = sqlWriter.writeCreateTableStatements(metamutant);

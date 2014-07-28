@@ -20,12 +20,12 @@ import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 /**
- * <p>The Minimal Schemata implementation with all possible parallelisation,
- * including setup processes and INSERT statements.</p>
+ * <p>The Minimal Schemata implementation with parallelisation used for setup
+ * processes but not for INSERT statements.</p>
  * 
  * @author Chris J. Wright
  */
-public class ParallelMinimalSchemataTechnique extends Technique {
+public class PartialParallelMinimalSchemataTechnique extends Technique {
 
     final protected static int TRANSACTION_SIZE = 100;
     private final SQLWriter sqlWriter;
@@ -34,13 +34,10 @@ public class ParallelMinimalSchemataTechnique extends Technique {
     private List<String> deleteStmts;
     private Map<Integer, TestSuiteResult> resultMap;
     private Map<String, List<Integer>> changedTableMap;
-    private Map<String, DatabaseInteractor> threadInteractors;
-    ExecutorService executor;
 
-    public ParallelMinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+    public PartialParallelMinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
         this.sqlWriter = dbms.getSQLWriter();
-        threadInteractors = new HashMap<>();
     }
 
     private class ChangedTableTask implements Runnable {
@@ -62,7 +59,7 @@ public class ParallelMinimalSchemataTechnique extends Technique {
             MutationAnalysisUtils.renameChangedTable(mutant, id, changedTable);
             MutationAnalysisUtils.renameMutantConstraints("mutant_" + id + "_", mutant);
         }
-
+        
         private void updateChangedTableMap(int id, String changedTable) {
             synchronized (changedTableMap) {
                 List<Integer> idList;
@@ -78,40 +75,6 @@ public class ParallelMinimalSchemataTechnique extends Technique {
 
     }
 
-    private class MutantInsertsTask implements Runnable {
-
-        private final String insert;
-        private final Integer mutantId;
-        private final Map<Integer, TestCaseResult> failedMutants;
-        private final TestCase testCase;
-        private final DatabaseInteractor interactor;
-
-        public MutantInsertsTask(String insert, Integer mutantId, Map<Integer, TestCaseResult> failedMutants, TestCase testCase) {
-            this.insert = insert;
-            this.mutantId = mutantId;
-            this.failedMutants = failedMutants;
-            this.testCase = testCase;
-            interactor = getInteractorForThread(Thread.currentThread());
-        }
-
-        @Override
-        public void run() {
-            String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
-            Integer mutResult = interactor.executeUpdate(mutInsert);
-            if (mutResult != 1) {
-                TestCaseResult mutantResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert));
-                synchronized (failedMutants) {
-                    failedMutants.put(mutantId, mutantResult);
-                }
-                synchronized (resultMap) {
-                    TestSuiteResult result = resultMap.get(mutantId);
-                    result.add(testCase, mutantResult);
-                }
-            }
-        }
-
-    }
-
     @Override
     public AnalysisResult analyse(TestSuiteResult originalResults) {
         // Get normal results
@@ -119,7 +82,7 @@ public class ParallelMinimalSchemataTechnique extends Technique {
 
         // Build map of changed tables
         this.changedTableMap = new HashMap<>();
-        executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         for (int id = 0; id < mutants.size(); id++) {
             Mutant<Schema> mutant = mutants.get(id);
             executor.submit(new ChangedTableTask(changedTableMap, id, mutant));
@@ -144,10 +107,10 @@ public class ParallelMinimalSchemataTechnique extends Technique {
         }
 
         // Execute test suite
-        executeDropStmts(databaseInteractor);
-        executeCreateStmts(databaseInteractor);
+        executeDropStmts();
+        executeCreateStmts();
         for (TestCase testCase : testSuite.getTestCases()) {
-            executeDeleteStmts(databaseInteractor);
+            executeDeleteStmts();
             TestCaseResult normalTestResult = null;
             Map<Integer, TestCaseResult> failedMutants = new HashMap<>();
 
@@ -174,11 +137,11 @@ public class ParallelMinimalSchemataTechnique extends Technique {
                 result.addLive(mutants.get(i));
             }
         }
-        
-        executeDropStmts(databaseInteractor);
+        executeDropStmts();
+
         return result;
     }
-    
+
     private TestCaseResult executeInserts(Data data, TestCaseResult normalTestResult, Map<Integer, TestCaseResult> failedMutants, TestCase testCase) {
         for (Table table : schema.getTablesInOrder()) {
             if (data.getTables().contains(table)) {
@@ -194,20 +157,17 @@ public class ParallelMinimalSchemataTechnique extends Technique {
                         }
                     }
 
-                    // Setup for parallel execution
-                    executor = Executors.newFixedThreadPool(4);
                     for (Integer mutantId : applicableMutants) {
                         // Only insert if we haven't failed yet
                         if (!failedMutants.containsKey(mutantId)) {
-                            MutantInsertsTask task = new MutantInsertsTask(insert, mutantId, failedMutants, testCase);
-                            executor.submit(task);
+                            String mutInsert = insert.replace("INSERT INTO \"", "INSERT INTO \"mutant_" + mutantId + "_");
+                            Integer mutResult = databaseInteractor.executeUpdate(mutInsert);
+                            if (mutResult != 1) {
+                                TestCaseResult mutantResult = new TestCaseResult(new InsertStatementException("Failed, result was: " + mutResult, insert));
+                                failedMutants.put(mutantId, mutantResult);
+                                resultMap.get(mutantId).add(testCase, mutantResult);
+                            }
                         }
-                    }
-                    executor.shutdown();
-                    try {
-                        executor.awaitTermination(1, TimeUnit.DAYS);
-                    } catch (InterruptedException ex) {
-                        throw new RuntimeException(ex);
                     }
 
                     // If a mutant isn't applicable, then it should 'inherit' the normal result
@@ -223,7 +183,7 @@ public class ParallelMinimalSchemataTechnique extends Technique {
         return normalTestResult;
     }
 
-    private void executeDropStmts(DatabaseInteractor databaseInteractor) {
+    private void executeDropStmts() {
         if (!useTransactions) {
             for (String stmt : dropStmts) {
                 databaseInteractor.executeUpdate(stmt);
@@ -233,7 +193,7 @@ public class ParallelMinimalSchemataTechnique extends Technique {
         }
     }
 
-    private void executeCreateStmts(DatabaseInteractor databaseInteractor) {
+    private void executeCreateStmts() {
         if (!useTransactions) {
             for (String stmt : createStmts) {
                 databaseInteractor.executeUpdate(stmt);
@@ -243,7 +203,7 @@ public class ParallelMinimalSchemataTechnique extends Technique {
         }
     }
 
-    private void executeDeleteStmts(DatabaseInteractor databaseInteractor) {
+    private void executeDeleteStmts() {
         if (!useTransactions) {
             for (String stmt : deleteStmts) {
                 databaseInteractor.executeUpdate(stmt);
@@ -251,19 +211,6 @@ public class ParallelMinimalSchemataTechnique extends Technique {
         } else {
             databaseInteractor.executeUpdatesAsTransaction(deleteStmts);
         }
-    }
-
-    protected DatabaseInteractor getInteractorForThread(Thread thread) {
-        String threadName = thread.getName();
-        if (!threadInteractors.containsKey(threadName)) {
-            DatabaseInteractor interactor = databaseInteractor.duplicate();
-            threadInteractors.put(threadName, interactor);
-            if (dbms.getName().equals("SQLite")) {
-                executeDropStmts(databaseInteractor);
-                executeCreateStmts(databaseInteractor);
-            }
-        }
-        return threadInteractors.get(threadName);
     }
 
 }
