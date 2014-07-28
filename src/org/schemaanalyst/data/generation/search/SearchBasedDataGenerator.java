@@ -3,8 +3,8 @@ package org.schemaanalyst.data.generation.search;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
-import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunction;
-import org.schemaanalyst.logic.predicate.Predicate;
+import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 /**
  * Created by phil on 05/02/2014.
@@ -20,7 +20,7 @@ public class SearchBasedDataGenerator extends DataGenerator {
     @Override
     public SearchBasedDataGenerationReport generateData(Data data, Data state, Predicate predicate) {
 
-        search.setObjectiveFunction(new PredicateObjectiveFunction(predicate, state));
+        search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state));
         search.initialize();
         search.search(data);
 

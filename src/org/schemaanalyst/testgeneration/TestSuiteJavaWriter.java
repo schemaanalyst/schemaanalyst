@@ -7,6 +7,8 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
 import java.util.ArrayList;
@@ -27,16 +29,19 @@ public class TestSuiteJavaWriter {
     private IndentableStringBuilder code;
     private int testCaseNumber;
 
-    public TestSuiteJavaWriter(Schema schema, DBMS dbms, TestSuite testSuite) {
+    private boolean addSAComments;
+
+    public TestSuiteJavaWriter(Schema schema, DBMS dbms, TestSuite testSuite, boolean addSAComments) {
         this.schema = schema;
         this.dbms = dbms;
         this.testSuite = testSuite;
+        this.addSAComments = addSAComments;
         sqlWriter = dbms.getSQLWriter();
     }
 
     public String writeTestSuite(String packageName, String className) {
         code = new IndentableStringBuilder();
-        testCaseNumber = 0;
+        testCaseNumber = 1;
 
         writeClassHeader(packageName, className);
         writeBeforeClassMethod();
@@ -90,6 +95,10 @@ public class TestSuiteJavaWriter {
         code.appendln("statement = connection.createStatement();");
 
         code.appendln();
+        code.appendln("// enable FOREIGN KEY support");
+        code.appendln(writeExecuteUpdate("PRAGMA foreign_keys = ON") + ";");
+
+        code.appendln();
         code.appendln("// drop the tables for this database (if they exist)");
         List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
         for (String statement : dropTableStatements) {
@@ -125,10 +134,12 @@ public class TestSuiteJavaWriter {
         code.appendln("public void test" + testCaseNumber + "() throws SQLException {");
 
         code.setIndentLevel(2);
-        for (Predicate predicate : testCase.getPredicates()) {
-            for (String purpose : predicate.getPurposes()) {
-                code.appendln("// " + purpose);
-            }
+        TestRequirement testRequirement = testCase.getTestReqiurement();
+        for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
+            code.appendln("// " + (addSAComments ? testRequirementDescriptor : testRequirementDescriptor.getMsg()));
+        }
+        if (addSAComments) {
+            code.appendln("// " + testRequirement.getPredicate());
         }
 
         Data state = testCase.getState();
@@ -164,11 +175,6 @@ public class TestSuiteJavaWriter {
             }
         }
         code.appendln(1, "}");
-    }
-
-
-    private String writeExecuteQuery(String sqlStatement) {
-        return "statement.executeQuery(" + formatSQLStatement(sqlStatement) + ")";
     }
 
     private String writeExecuteUpdate(String sqlStatement) {

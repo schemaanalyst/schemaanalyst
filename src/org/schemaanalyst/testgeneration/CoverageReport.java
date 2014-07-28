@@ -1,10 +1,9 @@
 package org.schemaanalyst.testgeneration;
 
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
-import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunction;
 import org.schemaanalyst.logic.predicate.Predicate;
 import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
-import org.schemaanalyst.testgeneration.coveragecriterion.requirements.Requirements;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.requirements.Requirements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +49,7 @@ public class CoverageReport {
     }
 
     private boolean testCaseSatisfiesPredicate(TestCase testCase, Predicate predicate) {
-
+        /*
         PredicateChecker predicateChecker = new PredicateChecker(predicate, testCase.getData(), testCase.getState());
         boolean checkerResult = predicateChecker.check();
 
@@ -67,8 +66,8 @@ public class CoverageReport {
                             "\nChecker info:\n " + predicateChecker.getInfo() +
                             "\nObj Fun info:\n " + objVal);
         }
-
-        return checkerResult;
+        */
+        return false; // checkerResult;
     }
 
     public List<Predicate> getCoveredRequirements() {

@@ -16,7 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterionFactory;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
@@ -33,7 +33,7 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteE
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.testgeneration.CoverageReport;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterion;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -172,11 +172,11 @@ public class MutationAnalysis extends Runner {
         result.addValue("datagenerator", dataGenerator);
         result.addValue("coverage", coverageReport.getCoverage());
         result.addValue("comparisoncoverage", comparisonCoverageReport.getCoverage());
-        result.addValue("evaluations", suite.getNumEvaluations());
-        result.addValue("averageevaluations", suite.getAvNumEvaluations());
-        result.addValue("tests", suite.getNumTestCases());
+        //result.addValue("evaluations", suite.getNumEvaluations());
+        //result.addValue("averageevaluations", suite.getAvNumEvaluations());
+        //result.addValue("tests", suite.getNumTestCases());
         result.addValue("failedtests", failedTests);
-        result.addValue("inserts", suite.getNumInserts());
+        //result.addValue("inserts", suite.getNumInserts());
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
@@ -235,6 +235,7 @@ public class MutationAnalysis extends Runner {
      * @return The test suite
      */
     private TestSuite generateTestSuite() {
+        /*
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
         final CoverageCriterion coverageCriterion = CoverageCriterionFactory.instantiate(criterion);
@@ -257,6 +258,8 @@ public class MutationAnalysis extends Runner {
         comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
 
         return testSuite;
+        */
+        return null;
     }
 
     /**

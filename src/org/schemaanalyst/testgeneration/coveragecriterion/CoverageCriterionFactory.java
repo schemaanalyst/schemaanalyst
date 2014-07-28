@@ -1,139 +1,59 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
-import org.schemaanalyst.testgeneration.CoverageException;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 /**
- * Instantiates a {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion} for use in data generation.
- *
- * @author Phil
+ * Created by phil on 23/07/2014.
  */
 public class CoverageCriterionFactory {
 
     /**
-     * Instantiate a {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion} instance given the name.
+     * Instantiate an Integrity Constraint Coverage Criterion given the name.
      *
      * @param criterionName The name
+     * @param schema The schema
      * @return The criterion
      */
     @SuppressWarnings("unchecked")
-    public static CoverageCriterion instantiate(String criterionName) {
+    public static CoverageCriterion integrityConstraintCriterion(String criterionName, Schema schema) {
         Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
         Method methods[] = c.getMethods();
 
         for (Method m : methods) {
-            if (m.getName().equals(criterionName)) {
+            if (m.getName().equals("criterion" + criterionName)) {
                 try {
-                    return (CoverageCriterion) m.invoke(null);
+                    Object[] args = {schema};
+                    return (CoverageCriterion) m.invoke(null, args);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
 
-        throw new CoverageException("Unknown criterion \"" + criterionName + "\"");
+        throw new CoverageCriterionException("Unknown criterion \"" + criterionName + "\"");
     }
 
-    /**
-     * Returns a list of all {@link org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion}.
-     *
-     * @return All criteria
-     */
-    public static List<CoverageCriterion> allCriteria() {
-        List<CoverageCriterion> criteria = new ArrayList<>();
-        Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
-        Method methods[] = c.getMethods();
-
-        for (Method m : methods) {
-            if (m.getName().endsWith("Coverage")) {
-                try {
-                    criteria.add((CoverageCriterion) m.invoke(null));
-                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        Collections.sort(criteria, new Comparator<CoverageCriterion>() {
-            @Override
-            public int compare(CoverageCriterion c1, CoverageCriterion c2) {
-                return c1.getName().compareTo(c2.getName());
-            }
-        });
-
-        return criteria;
+    public static CoverageCriterion criterionAPC(Schema schema) {
+        return new APC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
     }
 
-    public static CoverageCriterion amplifiedConstraintCACCoverage() {
-        return new AmplifiedConstraintCACCoverage();
+    public static CoverageCriterion criterionICC(Schema schema) {
+        return new ICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
     }
 
-    public static CoverageCriterion amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage() {
-        return new MultiCoverageCriterion(
-                new AmplifiedConstraintCACCoverage(),
-                new NullColumnCACCoverage(),
-                new UniqueColumnCACCoverage()
-        );
+    public static CoverageCriterion criterionAICC(Schema schema) {
+        return new AICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
     }
 
-    public static CoverageCriterion amplifiedConstraintCACWithNullAndUniqueColumnCoverage() {
-        return new MultiCoverageCriterion(
-                new AmplifiedConstraintCACCoverage(),
-                new NullColumnCoverage(),
-                new UniqueColumnCoverage()
-        );
+    public static CoverageCriterion criterionCondAICC(Schema schema) {
+        return new CondAICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
     }
 
-    public static CoverageCriterion constraintCACCoverage() {
-        return new ConstraintCACCoverage();
-    }
-
-    public static CoverageCriterion constraintCACWithNullAndUniqueColumnCACCoverage() {
-        return new MultiCoverageCriterion(
-                new ConstraintCACCoverage(),
-                new NullColumnCACCoverage(),
-                new UniqueColumnCACCoverage()
-        );
-    }
-
-    public static CoverageCriterion nullAndUniqueColumnCACCoverage() {
-        return new MultiCoverageCriterion(
-                new NullColumnCACCoverage(),
-                new UniqueColumnCACCoverage()
-        );
-    }
-
-    public static CoverageCriterion constraintCACWithNullAndUniqueColumnCoverage() {
-        return new MultiCoverageCriterion(
-                new ConstraintCACCoverage(),
-                new NullColumnCoverage(),
-                new UniqueColumnCoverage()
-        );
-    }
-
-    public static CoverageCriterion constraintCoverage() {
-        return new ConstraintCoverage();
-    }
-
-    public static CoverageCriterion nullColumnCoverage() {
-        return new NullColumnCoverage();
-    }
-
-    public static CoverageCriterion nullColumnCACCoverage() {
-        return new NullColumnCACCoverage();
-    }
-
-    public static CoverageCriterion uniqueColumnCoverage() {
-        return new UniqueColumnCoverage();
-    }
-
-    public static CoverageCriterion uniqueColumnCACCoverage() {
-        return new UniqueColumnCACCoverage();
+    public static CoverageCriterion criterionClauseAICC(Schema schema) {
+        return new ClauseAICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
     }
 }
