@@ -46,7 +46,7 @@ public class TestSuiteGenerationReport {
     }
 
     public double coverage() {
-        return 100 * (numTestRequirementsCovered() / numTestRequirementsAttempted());
+        return 100 * (numTestRequirementsCovered() / (double) numTestRequirementsAttempted());
     }
 
     public int getNumStateEvaluations(boolean successfulTestCasesOnly) {
