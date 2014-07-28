@@ -1,8 +1,6 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
 import org.apache.commons.lang3.time.StopWatch;
-import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -15,8 +13,6 @@ import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestSuite;
-import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterionFactory;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
@@ -27,13 +23,19 @@ import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.Callable;
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.testgeneration.CoverageReport;
-import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterion;
+import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
+import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -150,9 +152,9 @@ public class MutationAnalysis extends Runner {
             @Override
             public TestSuiteResult call() throws Exception {
                 return executeTestSuite(schema, suite);
-            }         
-        },originalResultsTime);
-        
+            }
+        }, originalResultsTime);
+
         final Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
         AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
             @Override
@@ -185,7 +187,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("testgenerationtime", testGenerationTime.getTime());
         result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
         result.addValue("originalresultstime", originalResultsTime.getTime());
-        result.addValue("mutationanalysistime",mutationAnalysisTime.getTime());
+        result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
 
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
@@ -235,31 +237,32 @@ public class MutationAnalysis extends Runner {
      * @return The test suite
      */
     private TestSuite generateTestSuite() {
-        /*
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
-        final CoverageCriterion coverageCriterion = CoverageCriterionFactory.instantiate(criterion);
-        final CoverageCriterion comparisonCoverageCriterion = CoverageCriterionFactory.instantiate("amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage");
+        final TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schema).generateRequirements();
+
+        // Filter and reduce test requirements
+        testRequirements.filterInfeasible();
+        testRequirements.reduce();
 
         // Construct generator
         final TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
-                coverageCriterion,
+                testRequirements,
                 dbms.getValueFactory(),
                 dataGen
         );
-
+        
         // Generate suite
         final TestSuite testSuite = generator.generate();
 
-        // Analyse test suite
-        failedTests = generator.getFailedTestCases().size();
-        coverageReport = new CoverageReport(testSuite, coverageCriterion.generateRequirements(schema));
-        comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
-
+        final TestSuiteGenerationReport generationReport = generator.getTestSuiteGenerationReport();
+//        // Analyse test suite
+//        failedTests = generator.getFailedTestCases().size();
+//        coverageReport = new CoverageReport(testSuite, coverageCriterion.generateRequirements(schema));
+//        comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
+//
         return testSuite;
-        */
-        return null;
     }
 
     /**
@@ -276,7 +279,7 @@ public class MutationAnalysis extends Runner {
         }
         return pipeline.mutate();
     }
-    
+
     /**
      * Executes all {@link TestCase}s in a {@link TestSuite} for a given
      * {@link Schema}.
@@ -286,9 +289,9 @@ public class MutationAnalysis extends Runner {
      * @return The execution results
      */
     private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
-            TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
-            TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
-            return suiteExecutor.executeTestSuite(caseExecutor, suite);
+        TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
+        TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
+        return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
     @Override
