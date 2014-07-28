@@ -244,22 +244,22 @@ public class TestSuiteGenerator {
 
     protected boolean areRefColsUnique(final Predicate predicate, Table table, final ForeignKeyConstraint foreignKeyConstraint) {
         return new PredicateAdaptor() {
-            boolean foundPredicate;
+            boolean refColsUnique;
 
-            boolean contains() {
-                foundPredicate = false;
+            boolean areRefColsUnique() {
+                refColsUnique = false;
                 predicate.accept(this);
-                return foundPredicate;
+                return refColsUnique;
             }
 
             public void visit(MatchPredicate subPredicate) {
                 for (Column column : foreignKeyConstraint.getColumns()) {
                     if (subPredicate.getNonMatchingColumns().contains(column)) {
-                        foundPredicate = true;
+                        refColsUnique = true;
                     }
                 }
             }
-        }.contains();
+        }.areRefColsUnique();
     }
 
 
