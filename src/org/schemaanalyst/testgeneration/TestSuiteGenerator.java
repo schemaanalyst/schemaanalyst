@@ -216,7 +216,8 @@ public class TestSuiteGenerator {
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
 
-            if (!foreignKeyConstraint.getTable().equals(table)) {
+            Table refTable = foreignKeyConstraint.getReferenceTable();
+            if (!refTable.equals(table)) {
 
                 MatchPredicate fkColsUnique =
                         new MatchPredicate(
@@ -246,8 +247,6 @@ public class TestSuiteGenerator {
                 if (foundPredicate) {
                     LOGGER.fine("--- foreign key columns are unique in " + table);
 
-                    Table refTable = foreignKeyConstraint.getReferenceTable();
-
                     // append the predicate with the acceptance predicate of the original
                     AndPredicate newPredicate = new AndPredicate();
                     newPredicate.addPredicate(predicate);
@@ -257,7 +256,7 @@ public class TestSuiteGenerator {
                     LOGGER.fine("--- new predicate is " + predicate);
 
                     LOGGER.fine("--- adding foreign key row for " + refTable);
-                    predicate = addLinkedTablesToData(data, predicate, table);
+                    predicate = addLinkedTablesToData(data, predicate, refTable);
                     data.addRow(refTable, valueFactory);
                 }
             }
