@@ -184,6 +184,8 @@ public class TestSuiteGenerator {
     protected Table getTestRequirementTable(TestRequirement testRequirement) {
         Set<Table> tables = testRequirement.getTables();
         if (tables.size() != 1) {
+            System.out.println(testRequirement);
+            System.out.println(tables);
             throw new RuntimeException("TODO .. ADD A PROPER EXCEPTION");
         }
         return tables.iterator().next();
