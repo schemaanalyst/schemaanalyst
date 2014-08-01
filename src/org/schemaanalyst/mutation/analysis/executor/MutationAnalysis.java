@@ -30,7 +30,6 @@ import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
-import org.schemaanalyst.testgeneration.CoverageReport;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
@@ -56,7 +55,7 @@ public class MutationAnalysis extends Runner {
      * The coverage criterion to use to generate data.
      */
     @Parameter("The coverage criterion to use to generate data.")
-    protected String criterion = "amplifiedConstraintCACWithNullAndUniqueColumnCACCoverage";
+    protected String criterion = "CondAICC";
     /**
      * The data generator to use.
      */
@@ -110,17 +109,9 @@ public class MutationAnalysis extends Runner {
      */
     protected DatabaseInteractor databaseInteractor;
     /**
-     * The number of failed test cases.
+     * The report produced when generating the test suite.
      */
-    private int failedTests;
-    /**
-     * The coverage report, according to the criterion.
-     */
-    private CoverageReport coverageReport;
-    /**
-     * The coverage report, according to the subsuming criterion.
-     */
-    private CoverageReport comparisonCoverageReport;
+    private TestSuiteGenerationReport generationReport;
 
     @Override
     protected void task() {
@@ -172,13 +163,11 @@ public class MutationAnalysis extends Runner {
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", criterion);
         result.addValue("datagenerator", dataGenerator);
-        result.addValue("coverage", coverageReport.getCoverage());
-        result.addValue("comparisoncoverage", comparisonCoverageReport.getCoverage());
-        //result.addValue("evaluations", suite.getNumEvaluations());
-        //result.addValue("averageevaluations", suite.getAvNumEvaluations());
-        //result.addValue("tests", suite.getNumTestCases());
-        result.addValue("failedtests", failedTests);
-        //result.addValue("inserts", suite.getNumInserts());
+        result.addValue("coverage", generationReport.coverage());
+        //TODO: Include the coverage according to the comparison coverage criterion
+        result.addValue("evaluations", generationReport.getNumDataEvaluations(false));
+        result.addValue("tests", suite.getTestCases().size());
+        //TODO: Include the number of insert statements
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
@@ -255,13 +244,9 @@ public class MutationAnalysis extends Runner {
         
         // Generate suite
         final TestSuite testSuite = generator.generate();
-
-        final TestSuiteGenerationReport generationReport = generator.getTestSuiteGenerationReport();
-//        // Analyse test suite
-//        failedTests = generator.getFailedTestCases().size();
-//        coverageReport = new CoverageReport(testSuite, coverageCriterion.generateRequirements(schema));
-//        comparisonCoverageReport = new CoverageReport(testSuite, comparisonCoverageCriterion.generateRequirements(schema));
-//
+        generationReport = generator.getTestSuiteGenerationReport();
+        //TODO: Include the coverage according to the comparison coverage criterion
+        
         return testSuite;
     }
 

@@ -63,7 +63,7 @@ public class TestSuiteGenerator {
         return testSuiteGenerationReport;
     }
 
-    private void generateInitialTableData() {
+    protected void generateInitialTableData() {
         for (Table table : schema.getTablesInOrder()) {
 
             ComposedPredicate acceptancePredicate = PredicateGenerator.generatePredicate(schema.getConstraints(table));
@@ -115,7 +115,7 @@ public class TestSuiteGenerator {
         }
     }
 
-    private void generateTestCases() {
+    protected void generateTestCases() {
         for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
 
             Predicate predicate = testRequirement.getPredicate();
@@ -159,7 +159,7 @@ public class TestSuiteGenerator {
         }
     }
 
-    private boolean addLinkedTableDataToState(Data state, Table table) {
+    protected boolean addLinkedTableDataToState(Data state, Table table) {
         LOGGER.fine("--- adding linked data to state");
 
         // add rows for tables linked via foreign keys to the state
@@ -181,15 +181,17 @@ public class TestSuiteGenerator {
         return true;
     }
 
-    private Table getTestRequirementTable(TestRequirement testRequirement) {
+    protected Table getTestRequirementTable(TestRequirement testRequirement) {
         Set<Table> tables = testRequirement.getTables();
         if (tables.size() != 1) {
+            System.out.println(testRequirement);
+            System.out.println(tables);
             throw new RuntimeException("TODO .. ADD A PROPER EXCEPTION");
         }
         return tables.iterator().next();
     }
 
-    private Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table) {
+    protected Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table) {
         LOGGER.fine("--- adding additional rows");
 
         boolean haveLinkedData = addLinkedTableDataToState(state, table);
@@ -212,41 +214,17 @@ public class TestSuiteGenerator {
         return predicate;
     }
 
-    private Predicate addLinkedTablesToData(Data data, Predicate predicate, Table table) {
+    protected Predicate addLinkedTablesToData(Data data, Predicate predicate, Table table) {
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
 
-            if (!foreignKeyConstraint.getTable().equals(table)) {
+            Table refTable = foreignKeyConstraint.getReferenceTable();
+            if (!refTable.equals(table)) {
 
-                MatchPredicate fkColsUnique =
-                        new MatchPredicate(
-                                table,
-                                MatchPredicate.EMPTY_COLUMN_LIST,
-                                foreignKeyConstraint.getColumns(),
-                                MatchPredicate.Mode.OR);
+                boolean refColsUnique = areRefColsUnique(predicate, table, foreignKeyConstraint);
 
-                boolean foundPredicate = new PredicateAdaptor() {
-                    boolean foundPredicate;
-                    MatchPredicate predicateToFind;
-
-                    boolean contains(MatchPredicate predicateToFind, Predicate predicateToSearch) {
-                        foundPredicate = false;
-                        this.predicateToFind = predicateToFind;
-                        predicateToSearch.accept(this);
-                        return foundPredicate;
-                    }
-
-                    public void visit(MatchPredicate subPredicate) {
-                        if (predicateToFind.equals(subPredicate)) {
-                            foundPredicate = true;
-                        }
-                    }
-                }.contains(fkColsUnique, predicate);
-
-                if (foundPredicate) {
+                if (refColsUnique) {
                     LOGGER.fine("--- foreign key columns are unique in " + table);
-
-                    Table refTable = foreignKeyConstraint.getReferenceTable();
 
                     // append the predicate with the acceptance predicate of the original
                     AndPredicate newPredicate = new AndPredicate();
@@ -257,7 +235,7 @@ public class TestSuiteGenerator {
                     LOGGER.fine("--- new predicate is " + predicate);
 
                     LOGGER.fine("--- adding foreign key row for " + refTable);
-                    predicate = addLinkedTablesToData(data, predicate, table);
+                    predicate = addLinkedTablesToData(data, predicate, refTable);
                     data.addRow(refTable, valueFactory);
                 }
             }
@@ -266,8 +244,28 @@ public class TestSuiteGenerator {
         return predicate;
     }
 
+    protected boolean areRefColsUnique(final Predicate predicate, Table table, final ForeignKeyConstraint foreignKeyConstraint) {
+        return new PredicateAdaptor() {
+            boolean refColsUnique;
 
-    private boolean requiresComparisonRow(Predicate predicate) {
+            boolean areRefColsUnique() {
+                refColsUnique = false;
+                predicate.accept(this);
+                return refColsUnique;
+            }
+
+            public void visit(MatchPredicate subPredicate) {
+                for (Column column : foreignKeyConstraint.getColumns()) {
+                    if (subPredicate.getNonMatchingColumns().contains(column)) {
+                        refColsUnique = true;
+                    }
+                }
+            }
+        }.areRefColsUnique();
+    }
+
+
+    protected boolean requiresComparisonRow(Predicate predicate) {
         LOGGER.fine("--- checking if comparison row required for " + predicate);
 
         return new PredicateAdaptor() {

@@ -4,10 +4,7 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by phil on 24/07/2014.
@@ -30,7 +27,18 @@ public class TestSuiteGenerationReport {
         testRequirementResults.put(testRequirement, result);
     }
 
-    public int numTestRequirementsCovered() {
+    public List<TestRequirement> getFailedTestRequirements() {
+        List<TestRequirement> failed = new ArrayList<>();
+        for (TestRequirement testRequirement : testRequirementResults.keySet()) {
+            DataGenerationResult result = testRequirementResults.get(testRequirement);
+            if (!result.getReport().isSuccess()) {
+                failed.add(testRequirement);
+            }
+        }
+        return failed;
+    }
+
+    public int getNumTestRequirementsCovered() {
         int total = 0;
         for (TestRequirement testRequirement : testRequirementResults.keySet()) {
             DataGenerationResult result = testRequirementResults.get(testRequirement);
@@ -41,12 +49,16 @@ public class TestSuiteGenerationReport {
         return total;
     }
 
-    public int numTestRequirementsAttempted() {
+    public int getNumTestRequirementsFailed() {
+        return getNumTestRequirementsAttempted() - getNumTestRequirementsCovered();
+    }
+
+    public int getNumTestRequirementsAttempted() {
         return testRequirementResults.keySet().size();
     }
 
     public double coverage() {
-        return 100 * (numTestRequirementsCovered() / numTestRequirementsAttempted());
+        return 100 * (getNumTestRequirementsCovered() / (double) getNumTestRequirementsAttempted());
     }
 
     public int getNumStateEvaluations(boolean successfulTestCasesOnly) {
