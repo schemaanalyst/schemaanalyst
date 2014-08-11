@@ -19,14 +19,14 @@ public abstract class TestDBMS {
 
     public void singleColumnPrimaryKeyConstraintTest(String colType, String value, boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(c1 " + colType + " PRIMARY KEY)"};
+                "DROP TABLE IF EXISTS t",
+                "CREATE TABLE t(c1 " + colType + " PRIMARY KEY)"};
 
         String[] testStatements = {
-                "INSERT INTO t1 (c1) VALUES (NULL)",
-                "INSERT INTO t1 (c1) VALUES (NULL)",
-                "INSERT INTO t1 (c1) VALUES (" + value + ")",
-                "INSERT INTO t1 (c1) VALUES (" + value + ")"
+                "INSERT INTO t(c1) VALUES(NULL)",
+                "INSERT INTO t(c1) VALUES(NULL)",
+                "INSERT INTO t(c1) VALUES(" + value + ")",
+                "INSERT INTO t(c1) VALUES(" + value + ")"
         };
 
         executeTest("Single column PRIMARY KEY test (with " + colType + ")", setupStatements, testStatements, expectedResults);
@@ -34,16 +34,16 @@ public abstract class TestDBMS {
 
     public void multiColumnPrimaryKeyConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(c1 INT, c2 INT, PRIMARY KEY(c1, c2))"};
+                "DROP TABLE IF EXISTS t",
+                "CREATE TABLE t(c1 INT, c2 INT, PRIMARY KEY(c1, c2))"};
 
         String[] testStatements = {
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, 1)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 1)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 1)"
+                "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(NULL, 1)",
+                "INSERT INTO t(c1, c2) VALUES(1, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(1, 1)",
+                "INSERT INTO t(c1, c2) VALUES(1, 1)"
         };
 
         executeTest("Multi-column PRIMARY KEY test", setupStatements, testStatements, expectedResults);
@@ -52,17 +52,17 @@ public abstract class TestDBMS {
 
     public void multiColumnUniqueConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(c1 INT, c2 INT, UNIQUE(c1, c2))"
+                "DROP TABLE IF EXISTS t",
+                "CREATE TABLE t(c1 INT, c2 INT, UNIQUE(c1, c2))"
         };
 
         String[] testStatements = {
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, 1)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 1)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 1)"
+                "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(NULL, 1)",
+                "INSERT INTO t(c1, c2) VALUES(1, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(1, 1)",
+                "INSERT INTO t(c1, c2) VALUES(1, 1)"
         };
 
         executeTest("Multi-column UNIQUE test", setupStatements, testStatements, expectedResults);
@@ -70,18 +70,18 @@ public abstract class TestDBMS {
 
     public void multiColumnCheckConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(c1 INT, c2 INT, CHECK(c1 = 0 OR c1 > c2))"
+                "DROP TABLE IF EXISTS t",
+                "CREATE TABLE t(c1 INT, c2 INT, CHECK(c1 = 0 OR c1 > c2))"
         };
 
         String[] testStatements = {
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (NULL, 1)",
-                "INSERT INTO t1 (c1, c2) VALUES (0, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, NULL)",
-                "INSERT INTO t1 (c1, c2) VALUES (0, -1)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 0)",
-                "INSERT INTO t1 (c1, c2) VALUES (1, 2)"
+                "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(NULL, 1)",
+                "INSERT INTO t(c1, c2) VALUES(0, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(1, NULL)",
+                "INSERT INTO t(c1, c2) VALUES(0, -1)",
+                "INSERT INTO t(c1, c2) VALUES(1, 0)",
+                "INSERT INTO t(c1, c2) VALUES(1, 2)"
         };
 
         executeTest("Multi-column CHECK test", setupStatements, testStatements, expectedResults);
@@ -89,20 +89,20 @@ public abstract class TestDBMS {
 
     public void multiColumnForeignKeyConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS tb",
-                "DROP TABLE IF EXISTS ta",
-                "CREATE TABLE ta(c1 INT, c2 INT, PRIMARY KEY (c1, c2))",
-                "CREATE TABLE tb(c1 INT, c2 INT, FOREIGN KEY (c1, c2) REFERENCES ta (c1, c2))"
+                "DROP TABLE IF EXISTS t2",
+                "DROP TABLE IF EXISTS t1",
+                "CREATE TABLE t1(c1 INT, c2 INT, PRIMARY KEY(c1, c2))",
+                "CREATE TABLE t2(c1 INT, c2 INT, FOREIGN KEY(c1, c2) REFERENCES t1(c1, c2))"
         };
 
         String[] testStatements = {
-                "INSERT INTO ta(c1, c2) VALUES (1, 1)",
-                "INSERT INTO tb(c1, c2) VALUES (1, 1)",
-                "INSERT INTO tb(c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO tb(c1, c2) VALUES (NULL, NULL)",
-                "INSERT INTO tb(c1, c2) VALUES (2, NULL)",
-                "INSERT INTO tb(c1, c2) VALUES (NULL, 2)",
-                "INSERT INTO tb(c1, c2) VALUES (2, 2)"
+                "INSERT INTO t1(c1, c2) VALUES(1, 1)",
+                "INSERT INTO t2(c1, c2) VALUES(1, 1)",
+                "INSERT INTO t2(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t2(c1, c2) VALUES(NULL, NULL)",
+                "INSERT INTO t2(c1, c2) VALUES(2, NULL)",
+                "INSERT INTO t2(c1, c2) VALUES(NULL, 2)",
+                "INSERT INTO t2(c1, c2) VALUES(2, 2)"
         };
 
         executeTest("Multi-column FOREIGN KEY test", setupStatements, testStatements, expectedResults);
