@@ -829,7 +829,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	 * Returns a list of all constraints for a table.
      * @param table The table whose constraints are sought.
 	 *
-	 * @return the list of constraints defined on the table.
+	 * @return The list of constraints defined on the table.
 	 */
 	public List<Constraint> getConstraints(Table table) {
 		List<Constraint> constraints = new ArrayList<>();
@@ -843,10 +843,20 @@ public class Schema extends IdentifiableEntity implements Serializable {
 		return constraints;
 	}
 
+    /**
+     * Gets the number of constraints for a table
+     * @param table The table for which the number of constraints are sought.
+     *
+     * @return The number of constraints defined for the table.
+     */
+    public int getNumConstraints(Table table) {
+        return getConstraints(table).size();
+    }
+
 	/**
 	 * Returns a list of all constraints defined on the schema.
 	 * 
-	 * @return a list of all constraints.
+	 * @return A list of all constraints.
 	 */
 	public List<Constraint> getConstraints() {
 		List<Constraint> constraints = new ArrayList<>();

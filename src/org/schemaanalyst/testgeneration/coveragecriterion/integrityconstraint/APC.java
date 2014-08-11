@@ -21,9 +21,11 @@ public class APC extends IntegrityConstraintCriterion {
         testRequirementIDGenerator.reset(schema.getName(), "schema");
 
         for (Table table : schema.getTables()) {
-            testRequirementIDGenerator.reset(table.getName(), "table");
-            generateRequirements(table, true);
-            generateRequirements(table, false);
+            if (schema.getNumConstraints(table) > 0) {
+                testRequirementIDGenerator.reset(table.getName(), "table");
+                generateRequirements(table, true);
+                generateRequirements(table, false);
+            }
         }
 
         return testRequirements;
@@ -35,5 +37,4 @@ public class APC extends IntegrityConstraintCriterion {
                 "Acceptance predicate for " + table + " is " + truthValue,
                 PredicateGenerator.generatePredicate(getConstraints(table), truthValue));
     }
-
 }
