@@ -184,9 +184,7 @@ public class TestSuiteGenerator {
     protected Table getTestRequirementTable(TestRequirement testRequirement) {
         Set<Table> tables = testRequirement.getTables();
         if (tables.size() != 1) {
-            System.out.println(testRequirement);
-            System.out.println(tables);
-            throw new RuntimeException("TODO .. ADD A PROPER EXCEPTION");
+            throw new TestGenerationException("Test requirement  should have predicates involving exactly one table, has " + tables.size() + ". Test requirement is: \n" + testRequirement);
         }
         return tables.iterator().next();
     }
