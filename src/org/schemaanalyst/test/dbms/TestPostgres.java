@@ -40,10 +40,10 @@ public class TestPostgres extends TestDBMS {
     @Test
     public void multiColumnPrimaryKeyConstraintTest() {
         boolean[] results = {
-                true, // 0. INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)
-                true, // 1. INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)
-                true, // 2. INSERT INTO t1 (c1, c2) VALUES (NULL, 1)
-                true, // 3. INSERT INTO t1 (c1, c2) VALUES (1, NULL)
+                false, // 0. INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)
+                false, // 1. INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)
+                false, // 2. INSERT INTO t1 (c1, c2) VALUES (NULL, 1)
+                false, // 3. INSERT INTO t1 (c1, c2) VALUES (1, NULL)
                 true, // 4. INSERT INTO t1 (c1, c2) VALUES (1, 1)
                 false // 5. INSERT INTO t1 (c1, c2) VALUES (1, 1)
         };
