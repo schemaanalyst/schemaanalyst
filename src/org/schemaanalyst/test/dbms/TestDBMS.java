@@ -20,7 +20,8 @@ public abstract class TestDBMS {
     public void singleColumnPrimaryKeyConstraintTest(String colType, String value, boolean[] expectedResults) {
         String[] setupStatements = {
                 "DROP TABLE IF EXISTS t",
-                "CREATE TABLE t(c1 " + colType + " PRIMARY KEY)"};
+                "CREATE TABLE t(c1 " + colType + " PRIMARY KEY)"
+        };
 
         String[] testStatements = {
                 "INSERT INTO t(c1) VALUES(NULL)",
@@ -35,7 +36,8 @@ public abstract class TestDBMS {
     public void multiColumnPrimaryKeyConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
                 "DROP TABLE IF EXISTS t",
-                "CREATE TABLE t(c1 INT, c2 INT, PRIMARY KEY(c1, c2))"};
+                "CREATE TABLE t(c1 INT, c2 INT, PRIMARY KEY(c1, c2))"
+        };
 
         String[] testStatements = {
                 "INSERT INTO t(c1, c2) VALUES(NULL, NULL)",
