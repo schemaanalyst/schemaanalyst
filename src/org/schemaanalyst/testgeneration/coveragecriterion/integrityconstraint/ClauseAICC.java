@@ -12,6 +12,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator.addNullPredicates;
+import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator.generateMultiColumnConstraintConditionPredicate;
+
 
 /**
  * Created by phil on 22/07/2014.
@@ -24,42 +27,37 @@ public class ClauseAICC extends CondAICC {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint foreignKeyConstraint, boolean truthValue) {
-        String descMsg = generateMsg(foreignKeyConstraint);
-
+    protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateOneNullRequirements(foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(), descMsg);
-            generateOneMatchRequirements(
-                    foreignKeyConstraint.getTable(), foreignKeyConstraint.getColumns(),
-                    foreignKeyConstraint.getReferenceTable(), foreignKeyConstraint.getReferenceColumns(), descMsg);
+            generateOneNullRequirements(constraint);
+            generateAllButOneMatchRequirements(constraint);
         } else {
-            super.generateForeignKeyConstraintRequirements(foreignKeyConstraint, false);
+            generateAllMatchRequirement(constraint);
         }
     }
 
-    protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint primaryKeyConstraint, boolean truthValue) {
-        String descMsg = generateMsg(primaryKeyConstraint);
-
+    protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateOneMatchRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), descMsg);
+            generateAllButOneMatchRequirements(constraint);
         } else {
-            generateOneNullRequirements(primaryKeyConstraint.getTable(), primaryKeyConstraint.getColumns(), descMsg);
-            super.generatePrimaryKeyConstraintRequirements(primaryKeyConstraint, false);
+            generateOneNullRequirements(constraint);
+            generateAllMatchRequirement(constraint);
         }
     }
 
-    protected void generateUniqueConstraintRequirements(UniqueConstraint uniqueConstraint, boolean truthValue) {
-        String descMsg = generateMsg(uniqueConstraint);
-
+    protected void generateUniqueConstraintRequirements(UniqueConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateOneNullRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), descMsg);
-            generateOneMatchRequirements(uniqueConstraint.getTable(), uniqueConstraint.getColumns(), descMsg);
+            generateOneNullRequirements(constraint);
+            generateAllButOneMatchRequirements(constraint);
         } else {
-            super.generateUniqueConstraintRequirements(uniqueConstraint, false);
+            generateAllMatchRequirement(constraint);
         }
     }
 
-    protected void generateOneNullRequirements(Table table, List<Column> columns, String descMsg) {
+    protected void generateOneNullRequirements(MultiColumnConstraint constraint) {
+        Table table = constraint.getTable();
+        List<Column> columns = constraint.getColumns();
+
         for (Column majorColumn : columns) {
             AndPredicate predicate = new AndPredicate();
             predicate.addPredicate(new NullPredicate(table, majorColumn, true));
@@ -68,18 +66,30 @@ public class ClauseAICC extends CondAICC {
                     predicate.addPredicate(new NullPredicate(table, minorColumn, false));
                 }
             }
-            testRequirements.addTestRequirement(
-                    testRequirementIDGenerator.nextID(),
-                    descMsg + " " + majorColumn + " is NULL",
-                    predicate);
+            String msgSuffix = " - " + majorColumn + " is NULL";
+            generateTestRequirement(constraint, msgSuffix, predicate);
         }
     }
 
-    protected void generateOneMatchRequirements(Table table, List<Column> columns, String descMsg) {
-        generateOneMatchRequirements(table, columns, table, columns, descMsg);
+    protected void generateAllMatchRequirement(MultiColumnConstraint constraint) {
+        generateTestRequirement(
+                constraint,
+                " - all cols equal",
+                generateMultiColumnConstraintConditionPredicate(constraint, true, false));
     }
 
-    private void generateOneMatchRequirements(Table table, List<Column> columns, Table refTable, List<Column> refColumns, String descMsg) {
+    private void generateAllButOneMatchRequirements(MultiColumnConstraint constraint) {
+        Table table = constraint.getTable();
+        List<Column> columns = constraint.getColumns();
+
+        Table refTable = table;
+        List<Column> refColumns = columns;
+        if (constraint instanceof ForeignKeyConstraint) {
+            ForeignKeyConstraint foreignKeyConstraint = (ForeignKeyConstraint) constraint;
+            refTable = foreignKeyConstraint.getReferenceTable();
+            refColumns = foreignKeyConstraint.getReferenceColumns();
+        }
+
         Iterator<Column> colsIt = columns.iterator();
         Iterator<Column> refColsIt = refColumns.iterator();
 
@@ -93,17 +103,23 @@ public class ClauseAICC extends CondAICC {
             List<Column> refRemainingCols = new ArrayList<>(refColumns);
             refRemainingCols.remove(refCol);
 
-            testRequirements.addTestRequirement(
-                    testRequirementIDGenerator.nextID(),
-                    descMsg + " all equal except " + col,
-                    new MatchPredicate(
-                            table,
-                            remainingCols,
-                            Arrays.asList(col),
-                            refTable,
-                            refRemainingCols,
-                            Arrays.asList(refCol),
-                            MatchPredicate.Mode.AND));
+            ComposedPredicate predicate = new AndPredicate();
+
+            Predicate matchPredicate = new MatchPredicate(
+                    table,
+                    remainingCols,
+                    Arrays.asList(col),
+                    refTable,
+                    refRemainingCols,
+                    Arrays.asList(refCol),
+                    MatchPredicate.Mode.AND);
+
+            predicate.addPredicate(matchPredicate);
+            addNullPredicates(predicate, table, columns, false);
+
+            String msgSuffix = " - all cols equal except " + col;
+
+            generateTestRequirement(constraint, msgSuffix, predicate);
         }
     }
 

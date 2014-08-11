@@ -60,10 +60,10 @@ public class CondAICC extends AICC {
                     " is CC=T",
                     generateCheckConstraintConditionPredicate(constraint, true, false));
         } else {
-            // generate NPC=T requirement
+            // generate NC=T requirement
             generateTestRequirement(
                     constraint,
-                    " is NPC=T",
+                    " is NC=T",
                     generateCheckConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
@@ -82,10 +82,10 @@ public class CondAICC extends AICC {
                     " is CC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, true, false));
         } else {
-            // generate NPC=T requirement
+            // generate NC=T requirement
             generateTestRequirement(
                     constraint,
-                    " is NPC=T",
+                    " is NC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
@@ -121,10 +121,10 @@ public class CondAICC extends AICC {
                     " is CC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, false, false));
         } else {
-            // generate NPC=T requirement
+            // generate NC=T requirement
             generateTestRequirement(
                     constraint,
-                    " is NPC=T",
+                    " is NC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, null, true));
 
             // generate CC=F requirement
@@ -143,10 +143,10 @@ public class CondAICC extends AICC {
                     " is CC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, false, false));
 
-            // generate NPC=T requirement
+            // generate NC=T requirement
             generateTestRequirement(
                     constraint,
-                    " is NPC=T",
+                    " is NC=T",
                     generateMultiColumnConstraintConditionPredicate(constraint, null, true));
         } else {
             // generate CC=F requirement
