@@ -29,7 +29,7 @@ public class PrintTestRequirements extends Runner {
         testRequirements.reduce();
 
         for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
-            boolean infeasible = testRequirement.getPredicate().reduce().isInfeasible();
+            boolean infeasible = testRequirement.getPredicate().reduce().isTriviallyInfeasible();
             System.out.println(testRequirement.toString() + "\n" + (infeasible ? "(Infeasible)\n" : "") );
         }
 
