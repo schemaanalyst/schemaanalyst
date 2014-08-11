@@ -53,7 +53,8 @@ public abstract class TestDBMS {
     public void multiColumnUniqueConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
                 "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(c1 INT, c2 INT, UNIQUE(c1, c2))"};
+                "CREATE TABLE t1(c1 INT, c2 INT, UNIQUE(c1, c2))"
+        };
 
         String[] testStatements = {
                 "INSERT INTO t1 (c1, c2) VALUES (NULL, NULL)",
@@ -88,20 +89,20 @@ public abstract class TestDBMS {
 
     public void multiColumnForeignKeyConstraintTest(boolean[] expectedResults) {
         String[] setupStatements = {
-                "DROP TABLE IF EXISTS t1",
-                "CREATE TABLE t1(t1c1 INT, t1c2 INT, PRIMARY KEY (t1c1, t1c2))",
-                "DROP TABLE IF EXISTS t2",
-                "CREATE TABLE t2(t2c1 INT, t2c2 INT, FOREIGN KEY (t2c1, t2c2) REFERENCES t1 (t1c1, t1c2))"
+                "DROP TABLE IF EXISTS tb",
+                "DROP TABLE IF EXISTS ta",
+                "CREATE TABLE ta(c1 INT, c2 INT, PRIMARY KEY (c1, c2))",
+                "CREATE TABLE tb(c1 INT, c2 INT, FOREIGN KEY (c1, c2) REFERENCES ta (c1, c2))"
         };
 
         String[] testStatements = {
-                "INSERT INTO t1 (t1c1, t1c2) VALUES (1, 1)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (1, 1)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (NULL, NULL)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (NULL, NULL)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (2, NULL)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (NULL, 2)",
-                "INSERT INTO t2 (t2c1, t2c2) VALUES (2, 2)"
+                "INSERT INTO ta(c1, c2) VALUES (1, 1)",
+                "INSERT INTO tb(c1, c2) VALUES (1, 1)",
+                "INSERT INTO tb(c1, c2) VALUES (NULL, NULL)",
+                "INSERT INTO tb(c1, c2) VALUES (NULL, NULL)",
+                "INSERT INTO tb(c1, c2) VALUES (2, NULL)",
+                "INSERT INTO tb(c1, c2) VALUES (NULL, 2)",
+                "INSERT INTO tb(c1, c2) VALUES (2, 2)"
         };
 
         executeTest("Multi-column FOREIGN KEY test", setupStatements, testStatements, expectedResults);
