@@ -74,7 +74,7 @@ public class TestRequirements {
         List<TestRequirement> filteredList = new ArrayList<>();
 
         for (TestRequirement testRequirement : testRequirements) {
-            if (testRequirement.getPredicate().reduce().isInfeasible()) {
+            if (testRequirement.getPredicate().reduce().isTriviallyInfeasible()) {
                 LOGGER.fine("Filtered infeasible requirement: " + testRequirement);
             } else {
                 filteredList.add(testRequirement);

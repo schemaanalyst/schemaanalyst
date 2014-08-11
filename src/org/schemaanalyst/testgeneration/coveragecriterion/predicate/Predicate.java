@@ -11,7 +11,7 @@ public abstract class Predicate {
         return this;
     }
 
-    public boolean isInfeasible() {
+    public boolean isTriviallyInfeasible() {
         return false;
     }
 }
