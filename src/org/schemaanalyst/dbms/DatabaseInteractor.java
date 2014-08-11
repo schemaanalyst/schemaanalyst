@@ -68,6 +68,7 @@ public abstract class DatabaseInteractor {
     protected long dropInteractions = 0;
     protected long insertInteractions = 0;
     protected long deleteInteractions = 0;
+    protected long functionInteractions = 0;
 
     /**
      * Constructor.
@@ -329,6 +330,8 @@ public abstract class DatabaseInteractor {
             dropInteractions++;
         } else if (statement.startsWith("delete")) {
             deleteInteractions++;
+        } else if (statement.contains("create or replace function")) {
+            functionInteractions++;
         } else {
             LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", stmt);
         }
@@ -344,16 +347,19 @@ public abstract class DatabaseInteractor {
     public synchronized void addInteractions(String type, long number) {
         switch (type) {
             case "insert":
-                insertInteractions++;
+                insertInteractions += number;
                 break;
             case "create":
-                createInteractions++;
+                createInteractions += number;
                 break;
             case "drop":
-                dropInteractions++;
+                dropInteractions += number;
                 break;
             case "delete":
-                deleteInteractions++;
+                deleteInteractions += number;
+                break;
+            case "function":
+                functionInteractions += number;
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", type);
@@ -372,6 +378,7 @@ public abstract class DatabaseInteractor {
         addInteractions("create",interactor.getCreateInteractions());
         addInteractions("drop", interactor.getDropInteractions());
         addInteractions("delete", interactor.getDeleteInteractions());
+        addInteractions("function", interactor.getFunctionInteractions());
     }
 
     /**
@@ -413,4 +420,14 @@ public abstract class DatabaseInteractor {
     public long getDeleteInteractions() {
         return deleteInteractions;
     }
+
+    /**
+     * Get the number of FUNCTION interactions executed by this DatabaseInteractor
+     * @return 
+     */
+    public long getFunctionInteractions() {
+        return functionInteractions;
+    }
+    
+    
 }
