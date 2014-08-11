@@ -90,4 +90,5 @@ public class TestHyperSQL extends TestDBMS {
         };
         multiColumnForeignKeyConstraintTest(results);
     }
+
 }
