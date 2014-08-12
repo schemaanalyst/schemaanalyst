@@ -69,6 +69,7 @@ public abstract class DatabaseInteractor {
     protected long insertInteractions = 0;
     protected long deleteInteractions = 0;
     protected long functionInteractions = 0;
+    protected long updateInteractions = 0;
 
     /**
      * Constructor.
@@ -332,6 +333,8 @@ public abstract class DatabaseInteractor {
             deleteInteractions++;
         } else if (statement.contains("create or replace function")) {
             functionInteractions++;
+        } else if (statement.startsWith("update")) {
+            updateInteractions++;
         } else {
             LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", stmt);
         }
@@ -360,6 +363,9 @@ public abstract class DatabaseInteractor {
                 break;
             case "function":
                 functionInteractions += number;
+                break;
+            case "update":
+                updateInteractions += number;
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", type);
