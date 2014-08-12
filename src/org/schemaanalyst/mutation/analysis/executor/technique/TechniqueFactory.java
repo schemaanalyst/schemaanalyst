@@ -60,6 +60,10 @@ public class TechniqueFactory {
         return new PartialParallelMinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
+    public static Technique checks (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new ChecksTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
     public static Technique dummy (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         return new DummyTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
