@@ -16,6 +16,10 @@ public class APC extends IntegrityConstraintCriterion {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
+    public String getName() {
+        return "APC";
+    }
+
     public TestRequirements generateRequirements() {
         testRequirements = new TestRequirements();
         testRequirementIDGenerator.reset(schema.getName(), "schema");

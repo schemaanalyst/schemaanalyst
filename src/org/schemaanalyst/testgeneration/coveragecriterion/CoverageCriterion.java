@@ -5,5 +5,7 @@ package org.schemaanalyst.testgeneration.coveragecriterion;
  */
 public interface CoverageCriterion {
 
+    public String getName();
+
     public TestRequirements generateRequirements();
 }
