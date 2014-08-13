@@ -1,5 +1,7 @@
 package paper.datagenerationjv;
 
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
@@ -48,7 +50,7 @@ public class ResultsDatabase {
     public Map<String, Schema> getSchemas() {
         Map<String, Schema> schemas = new HashMap<>();
 
-        List<String> schemaClassNames = getClassNames("schemas");
+        List<String> schemaClassNames = getNames("schemas");
         for (String schemaClassName : schemaClassNames) {
             try {
                 Schema schema = (Schema) Class.forName("parsedcasestudy."+schemaClassName).newInstance();
@@ -64,7 +66,7 @@ public class ResultsDatabase {
     public Map<String, CoverageCriterion> getCoverageCriteria(Schema schema) {
         Map<String, CoverageCriterion> coverageCriteria = new HashMap<>();
 
-        List<String> coverageCriteriaClassNames = getClassNames("coverage_criteria");
+        List<String> coverageCriteriaClassNames = getNames("coverage_criteria");
         for (String coverageCriteriaClassName : coverageCriteriaClassNames) {
             CoverageCriterion coverageCriterion = CoverageCriterionFactory.integrityConstraintCriterion(coverageCriteriaClassName, schema);
             coverageCriteria.put(coverageCriteriaClassName, coverageCriterion);
@@ -73,12 +75,24 @@ public class ResultsDatabase {
         return coverageCriteria;
     }
 
-    public List<String> getClassNames(String from) {
-        return getClassNames(from, "");
+    public Map<String, DBMS> getDBMSs() {
+        Map<String, DBMS> dbmses = new HashMap<>();
+
+        List<String> dbmsNames = getNames("dbmses");
+        for (String dbmsName : dbmsNames) {
+            DBMS dbms = DBMSFactory.instantiate(dbmsName);
+            dbmses.put(dbmsName, dbms);
+        }
+
+        return dbmses;
     }
 
-    public List<String> getClassNames(String from, String where) {
-        String sql = "SELECT DISTINCT class_name FROM " + from;
+    public List<String> getNames(String from) {
+        return getNames(from, "");
+    }
+
+    public List<String> getNames(String from, String where) {
+        String sql = "SELECT DISTINCT name FROM " + from;
         if (where != null && !where.equals("")) {
             sql += " WHERE " + where;
         }
@@ -88,7 +102,7 @@ public class ResultsDatabase {
             ResultSet rs = statement.executeQuery(sql);
             List<String> classNames = new ArrayList<>();
             while (rs.next() ) {
-                classNames.add(rs.getString("class_name"));
+                classNames.add(rs.getString("name"));
             }
             return classNames;
         } catch (SQLException e) {
