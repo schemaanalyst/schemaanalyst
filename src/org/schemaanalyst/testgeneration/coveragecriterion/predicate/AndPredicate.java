@@ -41,16 +41,20 @@ public class AndPredicate extends ComposedPredicate {
                 // the case where a sub-predicate is an OrPredicate and all the clauses of the Or
                 // are NullPredicate that exist in inverse form in the main predicate
                 // e.g. ¬Null(c1) ∧ ¬Null(c2) ∧ (Null(c1) ∨ Null(c2))
+
                 if (subPredicate instanceof OrPredicate) {
                     OrPredicate orPredicate = (OrPredicate) subPredicate;
 
                     boolean allSubPredicatesInfeasible = true;
                     for (Predicate orPredicateSubPredicate : orPredicate.getSubPredicates()) {
+
                         if (orPredicateSubPredicate instanceof NullPredicate) {
                             NullPredicate nullPredicate = (NullPredicate) orPredicateSubPredicate;
                             if (!checkIfInverseNullPredicateExists(nullPredicate)) {
                                 allSubPredicatesInfeasible = false;
                             }
+                        } else {
+                            allSubPredicatesInfeasible = false;
                         }
                     }
 

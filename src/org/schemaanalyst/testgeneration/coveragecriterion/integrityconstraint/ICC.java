@@ -17,6 +17,10 @@ public class ICC extends IntegrityConstraintCriterion {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
+    public String getName() {
+        return "ICC";
+    }
+
     public TestRequirements generateRequirements() {
         testRequirements = new TestRequirements();
         testRequirementIDGenerator.reset(schema.getName(), "schema");
