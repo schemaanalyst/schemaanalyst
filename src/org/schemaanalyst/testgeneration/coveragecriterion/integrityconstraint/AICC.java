@@ -16,6 +16,10 @@ public class AICC extends ICC {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
+    public String getName() {
+        return "AICC";
+    }
+
     protected void generateRequirements(Constraint constraint, boolean truthValue) {
         ComposedPredicate topLevelPredicate = PredicateGenerator.generatePredicate(getConstraints(constraint.getTable()), constraint);
         topLevelPredicate.addPredicate(PredicateGenerator.generateConditionPredicate(constraint, truthValue));

@@ -19,6 +19,10 @@ public class CondAICC extends AICC {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
+    public String getName() {
+        return "Cond-AICC";
+    }
+
     protected void generateRequirements(Constraint constraint, final boolean truthValue) {
         new ConstraintVisitor() {
             void generateRequirements(Constraint constraint) {

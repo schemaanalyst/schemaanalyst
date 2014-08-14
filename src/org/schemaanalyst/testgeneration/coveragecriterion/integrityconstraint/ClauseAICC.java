@@ -27,6 +27,10 @@ public class ClauseAICC extends CondAICC {
         super(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
+    public String getName() {
+        return "Clause-AICC";
+    }
+
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
             generateOneNullRequirements(constraint);
