@@ -1,4 +1,3 @@
-
 package org.schemaanalyst.sqlwriter;
 
 import java.util.Iterator;
@@ -7,17 +6,18 @@ import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.sqlrepresentation.expression.*;
 
-
 /**
  * Writer to transform all types of constraints into CHECK constraints.
- * 
+ *
  * @author Chris J. Wright
  */
 public class ConstraintAsCheckSQLWriter extends ConstraintSQLWriter {
+
     private final String INACTIVE_MUTANT;
 
     public ConstraintAsCheckSQLWriter(String mutantId) {
         INACTIVE_MUTANT = "NOT active_mutant(" + mutantId + "::text)";
+        expressionSQLWriter = new ExpressionSQLWriter();
     }
 
     @Override
@@ -82,46 +82,54 @@ public class ConstraintAsCheckSQLWriter extends ConstraintSQLWriter {
         sql += "))";
         return sql;
     }
-    
+
     private static String satisfyPrimaryKey(Table table, List<Column> columns) {
-        String colNames = columnsToNamesString(columns);
         String sql = "satisfy_pk('" + table.getName() + "'::text,";
-        sql += "'{" + colNames + "}'::text[],";
-        sql += "ARRAY[" + colNames + "]::text[])";
+        sql += "ARRAY[" + columnsToQuotedString(columns) + "]::text[],";
+        sql += "ARRAY[" + columnsToDoubleQuotedString(columns) + "]::text[])";
         return sql;
     }
-    
+
     private static String satisfyUnique(Table table, List<Column> columns) {
-        String colNames = columnsToNamesString(columns);
         String sql = "satisfy_unique('" + table.getName() + "'::text,";
-        sql += "'{" + colNames + "}'::text[],";
-        sql += "ARRAY[" + colNames + "]::text[])";
+        sql += "ARRAY[" + columnsToQuotedString(columns) + "]::text[],";
+        sql += "ARRAY[" + columnsToDoubleQuotedString(columns) + "]::text[])";
         return sql;
     }
-    
+
     private static String satisfyNotNull(Column column) {
-        return "satisfy_notnull(" + column.getName() + "::text)";
+        return "satisfy_notnull(\"" + column.getName() + "\"::text)";
     }
-    
-    private static String satisfyFk (Table refTable, List<Column> columns, List<Column> refColumns) {
-        String colNames = columnsToNamesString(columns);
-        String refColNames = columnsToNamesString(refColumns);
+
+    private static String satisfyFk(Table refTable, List<Column> columns, List<Column> refColumns) {
         String sql = "satisfy_fk('" + refTable.getName() + "'::text,";
-        sql += "'{" + refColNames + "}'::text[],";
-        sql += "ARRAY[" + colNames + "]::text[])";
+        sql += "ARRAY[" + columnsToQuotedString(refColumns) + "]::text[],";
+        sql += "ARRAY[" + columnsToDoubleQuotedString(columns) + "]::text[])";
         return sql;
     }
-    
-    private static String columnsToNamesString(List<Column> columns) {
+
+    private static String columnsToQuotedString(List<Column> columns) {
+        return columnsToString(columns, "'");
+    }
+
+    private static String columnsToDoubleQuotedString(List<Column> columns) {
+        return columnsToString(columns, "\"");
+    }
+
+    private static String columnsToString(List<Column> columns) {
+        return columnsToString(columns, "");
+    }
+
+    private static String columnsToString(List<Column> columns, String quote) {
         String colNames = "";
         Iterator<Column> iter = columns.iterator();
         while (iter.hasNext()) {
-            colNames += iter.next().getName();
+            colNames += quote + iter.next().getName() + quote;
             if (iter.hasNext()) {
                 colNames += ",";
             }
         }
         return colNames;
     }
-    
+
 }

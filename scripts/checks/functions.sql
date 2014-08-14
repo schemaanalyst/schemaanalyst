@@ -15,19 +15,10 @@ CREATE OR REPLACE FUNCTION satisfy_pk(_table text, _columns text[], _values text
 $$
 DECLARE 
 result integer;
-statement text = 'SELECT (EXISTS (SELECT 1 FROM ' || quote_ident(_table) || ' WHERE ';
-first boolean = true;
+condition text;
 BEGIN
-FOR i IN array_lower(_columns,1)..array_upper(_columns,1) LOOP
-IF first THEN
-statement = statement || quote_ident(_columns[i]) || '=' || _values[i];
-first = false;
-ELSE
-statement = statement || ' AND '|| quote_ident(_columns[i]) || '="' || _values[i] || '"';
-END IF;
-END LOOP;
-statement = statement || '))::int';
-EXECUTE statement INTO result;
+SELECT INTO condition string_agg(format('%I = %L', _columns[i], _values[i]),' AND ' ORDER BY i) FROM generate_subscripts(_columns, 1) i;
+EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %s))::int', _table, condition) INTO result;
 RETURN NOT result::boolean;
 END
 $$
@@ -50,19 +41,10 @@ CREATE OR REPLACE FUNCTION satisfy_unique(_table text, _columns text[], _values 
 $$
 DECLARE 
 result integer;
-statement text = 'SELECT (EXISTS (SELECT 1 FROM ' || quote_ident(_table) || ' WHERE ';
-first boolean = true;
+condition text;
 BEGIN
-FOR i IN array_lower(_columns,1)..array_upper(_columns,1) LOOP
-IF first THEN
-statement = statement || quote_ident(_columns[i]) || '=' || _values[i];
-first = false;
-ELSE
-statement = statement || ' AND '|| quote_ident(_columns[i]) || '=' || _values[i];
-END IF;
-END LOOP;
-statement = statement || '))::int';
-EXECUTE statement INTO result;
+SELECT INTO condition string_agg(format('%I = %L', _columns[i], _values[i]),' AND ' ORDER BY i) FROM generate_subscripts(_columns, 1) i;
+EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %s))::int', _table, condition) INTO result;
 RETURN NOT result::boolean;
 END
 $$
@@ -85,19 +67,10 @@ CREATE OR REPLACE FUNCTION satisfy_fk(_table text, _columns text[], _values text
 $$
 DECLARE 
 result integer;
-statement text = 'SELECT (EXISTS (SELECT 1 FROM ' || quote_ident(_table) || ' WHERE ';
-first boolean = true;
+condition text;
 BEGIN
-FOR i IN array_lower(_columns,1)..array_upper(_columns,1) LOOP
-IF first THEN
-statement = statement || quote_ident(_columns[i]) || '=' || _values[i];
-first = false;
-ELSE
-statement = statement || ' AND '|| quote_ident(_columns[i]) || '=' || _values[i];
-END IF;
-END LOOP;
-statement = statement || '))::int';
-EXECUTE statement INTO result;
+SELECT INTO condition string_agg(format('%I = %L', _columns[i], _values[i]),' AND ' ORDER BY i) FROM generate_subscripts(_columns, 1) i;
+EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %s))::int', _table, condition) INTO result;
 RETURN result::boolean;
 END
 $$
@@ -113,13 +86,18 @@ $$
 LANGUAGE plpgsql;
 
 -- Active mutant
-CREATE OR REPLACE FUNCTION active_mutant(_id int) RETURNS boolean AS
+CREATE OR REPLACE FUNCTION active_mutant(_id text) RETURNS boolean AS
 $$
 DECLARE
 result integer;
+-- BEGIN
+-- UPDATE schemaanalyst_activecalls SET count = count + 1;
+-- EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %I = %L))::int','schemaanalyst_activemutant','id',_id) INTO result;
+-- RETURN result::boolean;
+-- END
 BEGIN
-EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %I=%s))::int','schemaanalyst_activemutant','id',_id) INTO result;
-RETURN result::boolean;
+UPDATE schemaanalyst_activecalls SET count = count + 1;
+RETURN 'false'::boolean;
 END
 $$
 LANGUAGE plpgsql;

@@ -10,12 +10,17 @@ import java.util.List;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.CreateStatementException;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.DropStatementException;
+import org.schemaanalyst.mutation.analysis.executor.testcase.ChecksTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.ChecksTestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.sqlwriter.ConstraintAsCheckSQLWriter;
@@ -29,6 +34,8 @@ import org.schemaanalyst.util.IndentableStringBuilder;
  * @author Chris J. Wright
  */
 public class ChecksTechnique extends Technique {
+    
+    private static final String META_MUTANT_SELECTION_TABLE = "schemaanalyst_activemutant";
 
     public ChecksTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
@@ -42,32 +49,57 @@ public class ChecksTechnique extends Technique {
                     + " Use another technique, or change the configuration to"
                     + " use Postgres.");
         }
-
+        
         // Create results object
         AnalysisResult result = new AnalysisResult();
 
         // Add functions to DBMS
-        addDBMSFunctions();
+        createDBMSFunctions();
 
         // Create meta-mutant selection table
-        addSelectionTable();
+        createSelectionTable();
 
         // Create meta-mutant in database
         ChecksSQLWriter sqlWriter = new ChecksSQLWriter();
-        List<String> createStmts = sqlWriter.writeMetaMutantCreateTableStatements(mutants);
+        createMetaMutant(sqlWriter);
         
+        // Execute test suite
+        ChecksTestCaseExecutor caseExecutor = new ChecksTestCaseExecutor(schema, dbms, databaseInteractor);
+        ChecksTestSuiteExecutor suiteExecutor = new ChecksTestSuiteExecutor();
+        for (int i = 0; i < mutants.size(); i++) {
+//            System.out.println("MUTANT " + i);
+            caseExecutor.setMutantId(i);
+            TestSuiteResult mutantResult = suiteExecutor.executeTestSuite(caseExecutor, testSuite);
+            if (!originalResults.equals(mutantResult)) {
+//                System.out.println("Killed (" + mutants.get(i).getMutantProducer() + "," + mutants.get(i).getDescription() + ")");
+//                System.out.println("\t Original: " + originalResults);
+//                System.out.println("\t Mutant: " + mutantResult);
+                result.addKilled(mutants.get(i));
+            } else {
+                result.addLive(mutants.get(i));
+            }
+        }
         
-        // Clear database
+        // Drop meta-mutant
+        dropMetaMutant(sqlWriter);
+        
+        // Drop meta-mutant selection table
+        dropSelectionTable();
+        
         return result;
     }
 
-    private void addSelectionTable() {
-        databaseInteractor.executeUpdate("DROP TABLE IF EXISTS schemaanalyst_activemutant");
-        databaseInteractor.executeUpdate("CREATE TABLE IF NOT EXISTS schemaanalyst_activemutant(id text)");
-        databaseInteractor.executeUpdate("INSERT INTO schemaanalyst_activemutant VALUES (0)");
+    private void createSelectionTable() {
+        dropSelectionTable();
+        databaseInteractor.executeUpdate("CREATE TABLE IF NOT EXISTS " + META_MUTANT_SELECTION_TABLE + "(id text)");
+        databaseInteractor.executeUpdate("INSERT INTO " + META_MUTANT_SELECTION_TABLE + " VALUES (0)");
+    }
+    
+    private void dropSelectionTable() {
+        databaseInteractor.executeUpdate("DROP TABLE IF EXISTS " + META_MUTANT_SELECTION_TABLE);
     }
 
-    private void addDBMSFunctions() throws RuntimeException {
+    private void createDBMSFunctions() throws RuntimeException {
         try {
             Path path = FileSystems.getDefault().getPath("scripts/checks/functions.sql");
             List<String> functions = Files.readAllLines(path, Charset.defaultCharset());
@@ -85,6 +117,27 @@ public class ChecksTechnique extends Technique {
             }
         } catch (IOException ex) {
             throw new RuntimeException("Could not find 'functions.sql' to load", ex);
+        }
+    }
+    
+    private void createMetaMutant(ChecksSQLWriter sqlWriter) {
+        List<String> createStmts = sqlWriter.writeMetaMutantCreateTableStatements(mutants);
+        for (String create : createStmts) {
+            Integer createResult = databaseInteractor.executeUpdate(create);
+            if (createResult < 0) {
+                throw new CreateStatementException("Failed, result was: " + createResult, create);
+            }
+        }
+    }
+    
+    private void dropMetaMutant(ChecksSQLWriter sqlWriter) throws DropStatementException {
+        // Drop meta-mutant in database
+        List<String> dropStmts = sqlWriter.writeDropTableStatements(schema);
+        for (String drop : dropStmts) {
+            Integer dropResult = databaseInteractor.executeUpdate(drop);
+            if (dropResult < 0) {
+                throw new DropStatementException("Failed, result was: " + dropResult, drop);
+            }
         }
     }
 
@@ -119,6 +172,12 @@ public class ChecksTechnique extends Technique {
                 sql.append(1, constraintSQLWriter.writeConstraint(unique));
             }
 
+            // write not nulls
+            for (NotNullConstraint notNullConstraint : schema.getNotNullConstraints(table)) {
+                sql.appendln(0, ",");
+                sql.append(1, constraintSQLWriter.writeConstraint(notNullConstraint));
+            }
+            
             // write check constraints
             for (CheckConstraint check : schema.getCheckConstraints(table)) {
                 sql.appendln(0, ",");
