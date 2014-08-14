@@ -90,15 +90,15 @@ CREATE OR REPLACE FUNCTION active_mutant(_id text) RETURNS boolean AS
 $$
 DECLARE
 result integer;
+BEGIN
+-- UPDATE schemaanalyst_activecalls SET count = count + 1;
+EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %I = %L))::int','schemaanalyst_activemutant','id',_id) INTO result;
+RETURN result::boolean;
+END
 -- BEGIN
 -- UPDATE schemaanalyst_activecalls SET count = count + 1;
--- EXECUTE format('SELECT (EXISTS (SELECT 1 FROM %I WHERE %I = %L))::int','schemaanalyst_activemutant','id',_id) INTO result;
--- RETURN result::boolean;
+-- RETURN 'false'::boolean;
 -- END
-BEGIN
-UPDATE schemaanalyst_activecalls SET count = count + 1;
-RETURN 'false'::boolean;
-END
 $$
 LANGUAGE plpgsql;
 
