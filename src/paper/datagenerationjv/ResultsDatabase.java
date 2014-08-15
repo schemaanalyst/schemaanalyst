@@ -47,46 +47,6 @@ public class ResultsDatabase {
         }
     }
 
-    public Map<String, Schema> getSchemas() {
-        Map<String, Schema> schemas = new HashMap<>();
-
-        List<String> schemaClassNames = getNames("schemas");
-        for (String schemaClassName : schemaClassNames) {
-            try {
-                Schema schema = (Schema) Class.forName("parsedcasestudy."+schemaClassName).newInstance();
-                schemas.put(schemaClassName, schema);
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        return schemas;
-    }
-
-    public Map<String, CoverageCriterion> getCoverageCriteria(Schema schema) {
-        Map<String, CoverageCriterion> coverageCriteria = new HashMap<>();
-
-        List<String> coverageCriteriaClassNames = getNames("coverage_criteria");
-        for (String coverageCriteriaClassName : coverageCriteriaClassNames) {
-            CoverageCriterion coverageCriterion = CoverageCriterionFactory.integrityConstraintCriterion(coverageCriteriaClassName, schema);
-            coverageCriteria.put(coverageCriteriaClassName, coverageCriterion);
-        }
-
-        return coverageCriteria;
-    }
-
-    public Map<String, DBMS> getDBMSs() {
-        Map<String, DBMS> dbmses = new HashMap<>();
-
-        List<String> dbmsNames = getNames("dbmses");
-        for (String dbmsName : dbmsNames) {
-            DBMS dbms = DBMSFactory.instantiate(dbmsName);
-            dbmses.put(dbmsName, dbms);
-        }
-
-        return dbmses;
-    }
-
     public List<String> getNames(String from) {
         return getNames(from, "");
     }
@@ -105,6 +65,21 @@ public class ResultsDatabase {
                 classNames.add(rs.getString("name"));
             }
             return classNames;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public Long getSeed(int runNo) {
+        String sql = "SELECT seed FROM seeds WHERE run_no = " + runNo;
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getLong("seed");
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

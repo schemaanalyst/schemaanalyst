@@ -108,7 +108,7 @@ public class TestSuiteGenerator {
                 testSuiteGenerationReport.addInitialTableDataResult(
                         table, new DataGenerationResult(data, state, dataGenerationReport));
             } else {
-                // there was no linked data generated   to add to the state, so generated of this row failed by default
+                // there was no linked data generated to add to the state, so generated of this row failed by default
                 testSuiteGenerationReport.addInitialTableDataResult(
                         table, null);
             }
