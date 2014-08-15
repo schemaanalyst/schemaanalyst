@@ -108,9 +108,9 @@ public class TestSuiteGenerator {
                 testSuiteGenerationReport.addInitialTableDataResult(
                         table, new DataGenerationResult(data, state, dataGenerationReport));
             } else {
-                // there was no linked data generated to add to the state, so generated of this row failed by default
+                // there was no linked data generated   to add to the state, so generated of this row failed by default
                 testSuiteGenerationReport.addInitialTableDataResult(
-                        table, new NullDataGenerationResult());
+                        table, null);
             }
         }
     }
@@ -154,7 +154,7 @@ public class TestSuiteGenerator {
                         testRequirement, new DataGenerationResult(data, state, dataGenerationReport));
             } else  {
                 testSuiteGenerationReport.addTestRequirementResult(
-                        testRequirement, new NullDataGenerationResult());
+                        testRequirement, null);
             }
         }
     }
