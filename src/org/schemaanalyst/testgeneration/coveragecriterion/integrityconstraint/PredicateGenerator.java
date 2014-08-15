@@ -1,12 +1,13 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
-import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -105,7 +106,6 @@ public class PredicateGenerator {
     public static Predicate generateCheckConstraintConditionPredicate(CheckConstraint constraint, Boolean truthValue, boolean nullStatus) {
         Table table = constraint.getTable();
         Expression expression = constraint.getExpression();
-        List<Column> columns = expression.getColumnsInvolved();
 
         ComposedPredicate predicate = (nullStatus)
                 ? new OrPredicate()
@@ -116,9 +116,39 @@ public class PredicateGenerator {
             predicate.addPredicate(expressionPredicate);
         }
 
-        addNullPredicates(predicate, table, columns, nullStatus);
+        addNullPredicates(
+                predicate,
+                table,
+                columnsNotInNullExpressions(expression),
+                nullStatus);
 
-        return predicate;
+        if (predicate.numSubPredicates() > 0) {
+            return predicate;
+        } else {
+            // The predicate has no sub clauses. This means that it is
+            // impossible to generate the predicate (this can happen with "x IS NOT NULL" == unknown),
+            // so we generate an infeasible predicate for accounting purposes
+            return generateDummyInfeasiblePredicate(table);
+        }
+    }
+
+    protected static List<Column> columnsNotInNullExpressions(Expression expression) {
+        List<Column> nullColumns = new DepthFirstSubExpressionVisitor() {
+            List<Column> nullColumns;
+
+            public List<Column> getNullColumns(Expression expression) {
+                nullColumns = new ArrayList<>();
+                expression.accept(this);
+                return nullColumns;
+            }
+
+            public void visit(NullExpression nullExpression) {
+                nullColumns.addAll(nullExpression.getColumnsInvolved());
+            }
+        }.getNullColumns(expression);
+        List<Column> columns = expression.getColumnsInvolved();
+        columns.removeAll(nullColumns);
+        return columns;
     }
 
     public static Predicate generateMultiColumnConstraintConditionPredicate(MultiColumnConstraint constraint, Boolean match, boolean nullStatus) {
@@ -178,5 +208,14 @@ public class PredicateGenerator {
             composedPredicate.addPredicate(new NullPredicate(table, column, truthValue));
         }
         return composedPredicate;
+    }
+
+    // sometimes a dummy infeasible predicates are needed when the real (infeasible) predicate is impossible to generate
+    public static AndPredicate generateDummyInfeasiblePredicate(Table table) {
+        Column col = table.getColumns().get(0);
+        AndPredicate andPredicate = new AndPredicate();
+        andPredicate.addPredicate(new NullPredicate(table, col, true));
+        andPredicate.addPredicate(new NullPredicate(table, col, false));
+        return andPredicate;
     }
 }

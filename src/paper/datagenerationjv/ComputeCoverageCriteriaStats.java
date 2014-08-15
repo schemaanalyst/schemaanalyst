@@ -17,13 +17,13 @@ public class ComputeCoverageCriteriaStats extends ComputeUsing {
         TestRequirements tr = coverageCriterion.generateRequirements();
         int numReqs = tr.size();
 
-        tr.filterInfeasible();
-        int numReqsMinusInfeasible = tr.size();
-
         tr.reduce();
         int numReqsMinusDuplicates = tr.size();
 
-        String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", " +  numReqs + ", " +  numReqsMinusInfeasible + ", " +  numReqsMinusDuplicates;
+        tr.filterInfeasible();
+        int numReqsMinusInfeasible = tr.size();
+
+        String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", " +  numReqs + ", " +  numReqsMinusDuplicates + ", " +  numReqsMinusInfeasible;
 
         String sql = "INSERT INTO coverage_criteria_stats VALUES(" + data + ")";
 

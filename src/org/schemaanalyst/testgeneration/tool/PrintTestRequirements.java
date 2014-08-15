@@ -26,14 +26,24 @@ public class PrintTestRequirements extends Runner {
                 CoverageCriterionFactory.integrityConstraintCriterion(criterion, instantiateSchema())
                         .generateRequirements();
 
+        int total = testRequirements.size();
+
         testRequirements.reduce();
+
+        int totalMinusDuplicates = testRequirements.size();
 
         for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
             boolean infeasible = testRequirement.getPredicate().reduce().isTriviallyInfeasible();
-            System.out.println(testRequirement.toString() + "\n" + (infeasible ? "(Infeasible)\n" : "") );
+            System.out.println(testRequirement.toString(true) + "\n" + (infeasible ? "(Infeasible)\n" : "") );
         }
 
-        System.out.println("Total number of test requirements: " + testRequirements.size());
+        testRequirements.filterInfeasible();
+
+        int totalMinusDuplicatesMinusInfeasible = testRequirements.size();
+
+        System.out.println("Total number of test requirements: " + total);
+        System.out.println("Minus duplicates:                  " + totalMinusDuplicates);
+        System.out.println("Minus duplicates and infeasible:   " + totalMinusDuplicatesMinusInfeasible);
     }
 
     private Schema instantiateSchema() {
