@@ -1,20 +1,14 @@
 package org.schemaanalyst.faultlocalization;
 
-import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -28,8 +22,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.*;
-import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion_old.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
 

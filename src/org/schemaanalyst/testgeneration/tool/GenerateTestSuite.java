@@ -7,6 +7,7 @@ import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -73,10 +74,23 @@ public class GenerateTestSuite extends Runner {
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumDataEvaluations(false));
+
+        // failed initial table data generation attempts
+        if (report.getInitialTableDataGenerationAttemptsFailed() > 0) {
+            System.out.println("Initial table data generation attempts that failed:");
+            int i = 1;
+            for (Table table : report.getFailedInitialTableDataGenerationAttempts()) {
+                System.out.println(i + ") " + table);
+                i ++;
+            }
+        }
+
         if (report.getNumTestRequirementsFailed() > 0) {
             System.out.println("Failed test requirements:");
+            int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
-                System.out.println(testRequirement);
+                System.out.println(i + ") " + testRequirement);
+                i ++;
             }
         }
 

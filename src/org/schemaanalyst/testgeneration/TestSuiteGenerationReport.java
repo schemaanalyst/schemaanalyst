@@ -27,11 +27,26 @@ public class TestSuiteGenerationReport {
         testRequirementResults.put(testRequirement, result);
     }
 
+    public List<Table> getFailedInitialTableDataGenerationAttempts() {
+        List<Table> failed = new ArrayList<>();
+        for (Table table : initialTableDataResults.keySet()) {
+            DataGenerationResult result = testRequirementResults.get(table);
+            if (result == null || !result.getReport().isSuccess()) {
+                failed.add(table);
+            }
+        }
+        return failed;
+    }
+
+    public int getInitialTableDataGenerationAttemptsFailed() {
+        return getFailedInitialTableDataGenerationAttempts().size();
+    }
+
     public List<TestRequirement> getFailedTestRequirements() {
         List<TestRequirement> failed = new ArrayList<>();
         for (TestRequirement testRequirement : testRequirementResults.keySet()) {
             DataGenerationResult result = testRequirementResults.get(testRequirement);
-            if (!result.getReport().isSuccess()) {
+            if (result == null || !result.getReport().isSuccess()) {
                 failed.add(testRequirement);
             }
         }
@@ -42,7 +57,7 @@ public class TestSuiteGenerationReport {
         int total = 0;
         for (TestRequirement testRequirement : testRequirementResults.keySet()) {
             DataGenerationResult result = testRequirementResults.get(testRequirement);
-            if (result.getReport().isSuccess()) {
+            if (result != null && result.getReport().isSuccess()) {
                 total ++;
             }
         }
@@ -67,9 +82,11 @@ public class TestSuiteGenerationReport {
 
         for (TestRequirement testRequirement : testRequirementResults.keySet()) {
             DataGenerationResult result = testRequirementResults.get(testRequirement);
-            if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
-                Data state = result.getState();
-                tablesUsed.addAll(state.getTables());
+            if (result != null) {
+                if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
+                    Data state = result.getState();
+                    tablesUsed.addAll(state.getTables());
+                }
             }
         }
 
@@ -86,8 +103,10 @@ public class TestSuiteGenerationReport {
         int evaluations = 0;
         for (TestRequirement testRequirement : testRequirementResults.keySet()) {
             DataGenerationResult result = testRequirementResults.get(testRequirement);
-            if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
-                evaluations += result.getReport().getNumEvaluations();
+            if (result != null) {
+                if (!successfulTestCasesOnly || (successfulTestCasesOnly && result.getReport().isSuccess())) {
+                    evaluations += result.getReport().getNumEvaluations();
+                }
             }
         }
         return evaluations;

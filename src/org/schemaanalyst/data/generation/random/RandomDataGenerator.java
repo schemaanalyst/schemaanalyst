@@ -2,24 +2,26 @@ package org.schemaanalyst.data.generation.random;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
-import org.schemaanalyst.logic.predicate.Predicate;
-import org.schemaanalyst.logic.predicate.checker.PredicateChecker;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 /**
  * Created by phil on 12/03/2014.
  *
- * TODO - consolidate into SearchBasedDataGenerator
+ * TODO - consolidate into SearchBasedDataGenerator or reintroduce PredicateChecking.
  *
  */
-public class RandomDataGenerator { // extends DataGenerator {
+public class RandomDataGenerator extends DataGenerator {
 
     protected RandomCellValueGenerator randomCellValueGenerator;
     protected int maxEvaluations;
-    protected CellInitializer cellInitializer;
-    protected PredicateChecker predicateChecker;
+    protected CellInitializer cellInitializer;;
+    protected ObjectiveFunction<Data> objectiveFunction;
 
     public RandomDataGenerator(int maxEvaluations,
                                RandomCellValueGenerator randomCellValueGenerator,
@@ -29,16 +31,15 @@ public class RandomDataGenerator { // extends DataGenerator {
         this.cellInitializer = cellInitializer;
     }
 
-    /*
     @Override
     public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
         initialize(data, state, predicate);
-        boolean success = predicateChecker.check();
+        boolean success = objectiveFunction.evaluate(data).isOptimal();
         int evaluations = 0;
         while (!success && evaluations < maxEvaluations) {
             attemptFix(data);
             evaluations ++;
-            success = predicateChecker.check();
+            success = objectiveFunction.evaluate(data).isOptimal();
         }
 
         return new DataGenerationReport(success, evaluations);
@@ -46,7 +47,7 @@ public class RandomDataGenerator { // extends DataGenerator {
 
     protected void initialize(Data data, Data state, Predicate predicate) {
         cellInitializer.initialize(data);
-        predicateChecker = new PredicateChecker(predicate, data, state);
+        objectiveFunction = PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state);
     }
 
     protected void attemptFix(Data data) {
@@ -54,5 +55,4 @@ public class RandomDataGenerator { // extends DataGenerator {
             randomCellValueGenerator.generateCellValue(cell);
         }
     }
-    */
 }
