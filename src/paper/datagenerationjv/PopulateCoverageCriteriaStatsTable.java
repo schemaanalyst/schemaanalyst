@@ -5,7 +5,6 @@ import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
 import java.util.List;
-import java.util.Map;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
 import static paper.datagenerationjv.Instantiator.instantiateSchema;
@@ -16,23 +15,23 @@ import static paper.datagenerationjv.Instantiator.instantiateSchema;
  *
  * Created by phil on 13/08/2014.
  */
-public class ComputeCoverageCriteriaStats {
+public class PopulateCoverageCriteriaStatsTable {
 
     protected ResultsDatabase resultsDatabase;
 
-    public void compute(String resultsDatabaseFileName) {
+    public void populate(String resultsDatabaseFileName) {
         resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
 
         List<String> schemaNames = resultsDatabase.getNames("schemas");
         for (String schemaName : schemaNames) {
             List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
             for (String coverageCriterionName : coverageCriteriaNames) {
-                compute(schemaName, coverageCriterionName);
+                populate(schemaName, coverageCriterionName);
             }
         }
     }
 
-    protected void compute(String schemaName, String coverageCriterionName) {
+    protected void populate(String schemaName, String coverageCriterionName) {
         Schema schema = instantiateSchema(schemaName);
         CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema);
 
@@ -60,6 +59,6 @@ public class ComputeCoverageCriteriaStats {
             System.exit(1);
         }
 
-        new ComputeCoverageCriteriaStats().compute(args[0]);
+        new PopulateCoverageCriteriaStatsTable().populate(args[0]);
     }
 }

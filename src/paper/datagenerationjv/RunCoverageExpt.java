@@ -69,7 +69,7 @@ public class RunCoverageExpt {
                     + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + successfulEvaluations
                     + ", " + allEvaluations;
 
-        String sql = "INSERT INTO test_generation_run VALUES (1, " + data + ")";
+        String sql = "INSERT INTO test_generation_run VALUES (NULL, " + data + ")";
 
         System.out.println(sql);
 
