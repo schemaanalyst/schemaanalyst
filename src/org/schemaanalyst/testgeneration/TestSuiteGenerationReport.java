@@ -30,7 +30,7 @@ public class TestSuiteGenerationReport {
     public List<Table> getFailedInitialTableDataGenerationAttempts() {
         List<Table> failed = new ArrayList<>();
         for (Table table : initialTableDataResults.keySet()) {
-            DataGenerationResult result = testRequirementResults.get(table);
+            DataGenerationResult result = initialTableDataResults.get(table);
             if (result == null || !result.getReport().isSuccess()) {
                 failed.add(table);
             }
