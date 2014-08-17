@@ -94,6 +94,7 @@ public class GenerateTestSuite extends Runner {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
                 i ++;
             }
         }
@@ -113,11 +114,9 @@ public class GenerateTestSuite extends Runner {
             Boolean dbmsResult = testCase.getLastDBMSResult();
             if (result != null && result != dbmsResult) {
                 TestRequirement testRequirement = testCase.getTestReqiurement();
-                DataGenerationResult dataGenerationResult = report.getDataGenerationResult(testRequirement);
-
                 System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
                 System.out.println(testRequirement);
-                System.out.println(((SearchBasedDataGenerationReport) dataGenerationResult.getReport()).getBestObjectiveValue());
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
             }
         }
 
