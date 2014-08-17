@@ -27,6 +27,10 @@ public class TestSuiteGenerationReport {
         testRequirementResults.put(testRequirement, result);
     }
 
+    public DataGenerationResult getDataGenerationResult(TestRequirement testRequirement) {
+        return testRequirementResults.get(testRequirement);
+    }
+
     public List<Table> getFailedInitialTableDataGenerationAttempts() {
         List<Table> failed = new ArrayList<>();
         for (Table table : initialTableDataResults.keySet()) {

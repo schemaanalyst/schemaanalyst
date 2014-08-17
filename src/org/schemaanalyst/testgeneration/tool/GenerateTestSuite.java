@@ -3,8 +3,10 @@ package org.schemaanalyst.testgeneration.tool;
 import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerationReport;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -110,8 +112,12 @@ public class GenerateTestSuite extends Runner {
             Boolean result = testCase.getTestReqiurement().getResult();
             Boolean dbmsResult = testCase.getLastDBMSResult();
             if (result != null && result != dbmsResult) {
+                TestRequirement testRequirement = testCase.getTestReqiurement();
+                DataGenerationResult dataGenerationResult = report.getDataGenerationResult(testRequirement);
+
                 System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
-                System.out.println(testCase.getTestReqiurement());
+                System.out.println(testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) dataGenerationResult.getReport()).getBestObjectiveValue());
             }
         }
 
