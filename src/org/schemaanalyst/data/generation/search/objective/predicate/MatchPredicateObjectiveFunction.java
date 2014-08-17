@@ -22,12 +22,17 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
     private MatchPredicate matchPredicate;
     private Data state;
     private Table table, referenceTable;
+    private boolean forAll;
 
     public MatchPredicateObjectiveFunction(MatchPredicate matchPredicate, Data state) {
         this.matchPredicate = matchPredicate;
         this.state = state;
         this.table = matchPredicate.getTable();
         this.referenceTable = matchPredicate.getReferenceTable();
+
+        // if there are non-matching columns this must hold for all rows,
+        // else if they must all match this needs to hold for one row only
+        this.forAll = matchPredicate.getNonMatchingColumns().size() > 0;
     }
 
     @Override
@@ -45,7 +50,12 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
                 List<Row> compareRows = getCompareRows(data, index);
 
                 if (compareRows.size() > 0) {
-                    BestOfMultiObjectiveValue rowObjVal = new BestOfMultiObjectiveValue();
+
+                    // if the predicate holds for all rows, we need a SumOf...
+                    // else if it's for one row, we need a BestOf..
+                    MultiObjectiveValue rowObjVal = (forAll)
+                            ? new SumOfMultiObjectiveValue()
+                            : new BestOfMultiObjectiveValue();
 
                     for (Row compareRow : compareRows) {
                         rowObjVal.add(compareRows(row, compareRow));

@@ -1,9 +1,12 @@
 package org.schemaanalyst.testgeneration.tool;
 
+import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerationReport;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -19,6 +22,7 @@ import org.schemaanalyst.util.runner.Runner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
@@ -90,6 +94,7 @@ public class GenerateTestSuite extends Runner {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
                 i ++;
             }
         }
@@ -102,6 +107,19 @@ public class GenerateTestSuite extends Runner {
                 new DatabaseConfiguration(),
                 new LocationsConfiguration());
         executor.execute(testSuite);
+
+        // check the results
+        for (TestCase testCase : testSuite.getTestCases()) {
+            Boolean result = testCase.getTestReqiurement().getResult();
+            Boolean dbmsResult = testCase.getLastDBMSResult();
+            if (result != null && result != dbmsResult) {
+                TestRequirement testRequirement = testCase.getTestReqiurement();
+                System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
+                System.out.println(testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
+            }
+        }
+
 
         // write JUnit test suite to file
         if (classname.equals("")) {
