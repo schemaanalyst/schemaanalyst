@@ -27,6 +27,7 @@ public class AICC extends ICC {
         testRequirements.addTestRequirement(
                 testRequirementIDGenerator.nextID(),
                 generateMsg(constraint) + " is " + truthValue,
-                topLevelPredicate);
+                topLevelPredicate,
+                truthValue);
     }
 }

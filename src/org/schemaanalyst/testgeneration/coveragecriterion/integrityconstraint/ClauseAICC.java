@@ -33,43 +33,42 @@ public class ClauseAICC extends CondAICC {
     }
 
     protected void generateCheckConstraintRequirements(CheckConstraint constraint, boolean truthValue) {
-
         if (truthValue) {
-            generateExpressionRequirements(constraint, true);
+            generateExpressionRequirements(constraint, true, true);
+            generateExpressionRequirements(constraint, null, true);
         } else {
-            generateExpressionRequirements(constraint, false);
-            generateExpressionRequirements(constraint, null);
+            generateExpressionRequirements(constraint, false, false);
         }
     }
 
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateOneNullRequirements(constraint);
-            generateAllButOneMatchRequirements(constraint);
+            generateOneNullRequirements(constraint, true);
+            generateAllMatchRequirement(constraint, true);
         } else {
-            generateAllMatchRequirement(constraint);
+            generateAllButOneMatchRequirements(constraint, false);
         }
     }
 
     protected void generatePrimaryKeyConstraintRequirements(PrimaryKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateAllButOneMatchRequirements(constraint);
+            generateAllButOneMatchRequirements(constraint, true);
         } else {
-            generateOneNullRequirements(constraint);
-            generateAllMatchRequirement(constraint);
+            generateOneNullRequirements(constraint, false);
+            generateAllMatchRequirement(constraint, false);
         }
     }
 
     protected void generateUniqueConstraintRequirements(UniqueConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateOneNullRequirements(constraint);
-            generateAllButOneMatchRequirements(constraint);
+            generateOneNullRequirements(constraint, true);
+            generateAllButOneMatchRequirements(constraint, true);
         } else {
-            generateAllMatchRequirement(constraint);
+            generateAllMatchRequirement(constraint, false);
         }
     }
 
-    protected void generateOneNullRequirements(MultiColumnConstraint constraint) {
+    protected void generateOneNullRequirements(MultiColumnConstraint constraint, boolean result) {
         Table table = constraint.getTable();
         List<Column> columns = constraint.getColumns();
 
@@ -82,18 +81,19 @@ public class ClauseAICC extends CondAICC {
                 }
             }
             String msgSuffix = " - " + majorColumn + " is NULL";
-            generateTestRequirement(constraint, msgSuffix, predicate);
+            generateTestRequirement(constraint, msgSuffix, predicate, result);
         }
     }
 
-    protected void generateAllMatchRequirement(MultiColumnConstraint constraint) {
+    protected void generateAllMatchRequirement(MultiColumnConstraint constraint, boolean result) {
         generateTestRequirement(
                 constraint,
                 " - all cols equal",
-                generateMultiColumnConstraintConditionPredicate(constraint, true, false));
+                generateMultiColumnConstraintConditionPredicate(constraint, true, false),
+                result);
     }
 
-    private void generateAllButOneMatchRequirements(MultiColumnConstraint constraint) {
+    private void generateAllButOneMatchRequirements(MultiColumnConstraint constraint, boolean result) {
         Table table = constraint.getTable();
         List<Column> columns = constraint.getColumns();
 
@@ -134,19 +134,19 @@ public class ClauseAICC extends CondAICC {
 
             String msgSuffix = " - all cols equal except " + col;
 
-            generateTestRequirement(constraint, msgSuffix, predicate);
+            generateTestRequirement(constraint, msgSuffix, predicate, result);
         }
     }
 
-    public void generateExpressionRequirements(final CheckConstraint constraint, final Boolean truthValue) {
+    public void generateExpressionRequirements(final CheckConstraint constraint, final Boolean truthValue, final boolean result) {
 
         constraint.getExpression().accept(new ExpressionVisitor() {
             public void visit(AndExpression expression) {
-                generateAndExpressionRequirements(constraint, expression, truthValue);
+                generateAndExpressionRequirements(constraint, expression, truthValue, result);
             }
 
             public void visit(BetweenExpression expression) {
-                generateBetweenExpressionRequirements(constraint, expression, truthValue);
+                generateBetweenExpressionRequirements(constraint, expression, truthValue, result);
             }
 
             @Override
@@ -160,7 +160,7 @@ public class ClauseAICC extends CondAICC {
             }
 
             public void visit(InExpression expression) {
-                generateInExpressionRequirements(constraint, expression, truthValue);
+                generateInExpressionRequirements(constraint, expression, truthValue, result);
             }
 
             @Override
@@ -174,7 +174,7 @@ public class ClauseAICC extends CondAICC {
             }
 
             public void visit(OrExpression expression) {
-                generateOrExpressionRequirements(constraint, expression, truthValue);
+                generateOrExpressionRequirements(constraint, expression, truthValue, result);
             }
 
             public void visit(ParenthesisedExpression expression) {
@@ -182,12 +182,12 @@ public class ClauseAICC extends CondAICC {
             }
 
             public void visit(RelationalExpression expression) {
-                generateRelationalExpressionRequirement(constraint, expression, truthValue);
+                generateRelationalExpressionRequirement(constraint, expression, truthValue, result);
             }
         });
     }
 
-    public void generateAndExpressionRequirements(Constraint constraint, AndExpression expression, Boolean truthValue) {
+    public void generateAndExpressionRequirements(Constraint constraint, AndExpression expression, Boolean truthValue, boolean result) {
         Table table = constraint.getTable();
         List<Column> columnsNotInNullExpressions = columnsNotInNullExpressions(expression);
         List<Expression> subexpressions = expression.getSubexpressions();
@@ -218,7 +218,7 @@ public class ClauseAICC extends CondAICC {
                     predicate = generateDummyInfeasiblePredicate(table);
                 }
                 String msgSuffix = subexpressions.get(i) + " is U";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             }
         } else {
             if (truthValue == true) {
@@ -228,7 +228,7 @@ public class ClauseAICC extends CondAICC {
                 }
                 addNullPredicates(predicate, table, columnsNotInNullExpressions, false);
                 String msgSuffix = " - all subexpressions of "+ expression + " are T";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             } else if (truthValue == false) {
                 for (int i = 0; i < subexpressions.size(); i++) {
                     AndPredicate predicate = new AndPredicate();
@@ -239,13 +239,13 @@ public class ClauseAICC extends CondAICC {
                     }
                     addNullPredicates(predicate, table, columnsNotInNullExpressions, false);
                     String msgSuffix = subexpressions.get(i) + " is F";
-                    generateTestRequirement(constraint, msgSuffix, predicate);
+                    generateTestRequirement(constraint, msgSuffix, predicate, result);
                 }
             }
         }
     }
 
-    public void generateBetweenExpressionRequirements(Constraint constraint, BetweenExpression expression, Boolean truthValue) {
+    public void generateBetweenExpressionRequirements(Constraint constraint, BetweenExpression expression, Boolean truthValue, boolean result) {
         // X BETWEEN Y AND Z is transformed to
         // X >= Y AND X <=Z
 
@@ -262,7 +262,7 @@ public class ClauseAICC extends CondAICC {
             OrPredicate predicate = new OrPredicate();
             addNullPredicates(predicate, table, subject.getColumnsInvolved(), true);
             String msgSuffix = " - subject of " + expression + " is U";
-            generateTestRequirement(constraint, msgSuffix, predicate);
+            generateTestRequirement(constraint, msgSuffix, predicate, result);
         } else {
             if (truthValue == true) {
                 // this is just the between predicate as it was ...
@@ -270,7 +270,7 @@ public class ClauseAICC extends CondAICC {
                 predicate.addPredicate(new ExpressionPredicate(table, expression, true));
                 addNullPredicates(predicate, table, columns, false);
                 String msgSuffix = " - all subexpressions of "+ expression + " are T";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             } else {
                 // make each of the clauses individually false
                 Expression lhsRelationalExpression = new RelationalExpression(subject, RelationalOperator.GREATER_OR_EQUALS, lhs);
@@ -282,7 +282,7 @@ public class ClauseAICC extends CondAICC {
                 predicate.addPredicate(new ExpressionPredicate(table, rhsRelationalExpression, true));
                 addNullPredicates(predicate, table, columns, false);
                 String msgSuffix = " - LHS subexpression "+ lhs + " is F";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
 
                 // 2) RHS
                 predicate = new AndPredicate();
@@ -290,12 +290,12 @@ public class ClauseAICC extends CondAICC {
                 predicate.addPredicate(new ExpressionPredicate(table, rhsRelationalExpression, false));
                 addNullPredicates(predicate, table, columns, false);
                 msgSuffix = " - RHS subexpression "+ rhs + " is F";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             }
         }
     }
 
-    public void generateInExpressionRequirements(Constraint constraint, InExpression expression, Boolean truthValue) {
+    public void generateInExpressionRequirements(Constraint constraint, InExpression expression, Boolean truthValue, boolean result) {
         // X IN (A, B, C ...) is transformed to
         // (X = A) OR (X = B) OR (X = C) ...
 
@@ -310,7 +310,7 @@ public class ClauseAICC extends CondAICC {
             OrPredicate predicate = new OrPredicate();
             addNullPredicates(predicate, table, lhs.getColumnsInvolved(), true);
             String msgSuffix = "Subject of " + expression + " is U";
-            generateTestRequirement(constraint, msgSuffix, predicate);
+            generateTestRequirement(constraint, msgSuffix, predicate, result);
         } else {
             if (truthValue == true) {
                 for (Expression subexpression : subexpressions) {
@@ -319,7 +319,7 @@ public class ClauseAICC extends CondAICC {
                     predicate.addPredicate(new ExpressionPredicate(table, equalsExpression, true));
                     addNullPredicates(predicate, table, columns, false);
                     String msgSuffix = subexpression + " is T";
-                    generateTestRequirement(constraint, msgSuffix, predicate);
+                    generateTestRequirement(constraint, msgSuffix, predicate, result);
                 }
             } else if (truthValue == false) {
                 AndPredicate predicate = new AndPredicate();
@@ -329,12 +329,12 @@ public class ClauseAICC extends CondAICC {
                 }
                 addNullPredicates(predicate, table, columns, false);
                 String msgSuffix = " - all subexpressions of "+ expression + " are F";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             }
         }
     }
 
-    public void generateOrExpressionRequirements(Constraint constraint, OrExpression expression, Boolean truthValue) {
+    public void generateOrExpressionRequirements(Constraint constraint, OrExpression expression, Boolean truthValue, boolean result) {
         Table table = constraint.getTable();
         List<Expression> subexpressions = expression.getSubexpressions();
 
@@ -353,7 +353,7 @@ public class ClauseAICC extends CondAICC {
                     }
                 }
                 String msgSuffix = " - " + subexpressions.get(i) + " is U";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             }
         } else {
             if (truthValue == true) {
@@ -366,7 +366,7 @@ public class ClauseAICC extends CondAICC {
                     }
                     addNullPredicates(predicate, table, expression.getColumnsInvolved(), false);
                     String msgSuffix = subexpressions.get(i) + " is T";
-                    generateTestRequirement(constraint, msgSuffix, predicate);
+                    generateTestRequirement(constraint, msgSuffix, predicate, result);
                 }
             } else if (truthValue == false) {
                 AndPredicate predicate = new AndPredicate();
@@ -375,12 +375,12 @@ public class ClauseAICC extends CondAICC {
                 }
                 addNullPredicates(predicate, table, expression.getColumnsInvolved(), false);
                 String msgSuffix = " - all subexpressions of "+ expression + " are F";
-                generateTestRequirement(constraint, msgSuffix, predicate);
+                generateTestRequirement(constraint, msgSuffix, predicate, result);
             }
         }
     }
 
-    public void generateRelationalExpressionRequirement(Constraint constraint, RelationalExpression expression, Boolean truthValue) {
+    public void generateRelationalExpressionRequirement(Constraint constraint, RelationalExpression expression, Boolean truthValue, boolean result) {
         Table table = constraint.getTable();
 
         ComposedPredicate predicate = (truthValue == null)
@@ -399,6 +399,6 @@ public class ClauseAICC extends CondAICC {
                 truthValue == null);
 
         String msgSuffix = " - " + expression + " is " + ((truthValue == null) ? "U" : ((truthValue) ? "T" : "F"));
-        generateTestRequirement(constraint, msgSuffix, predicate);
+        generateTestRequirement(constraint, msgSuffix, predicate, result);
     }
 }

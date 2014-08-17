@@ -41,4 +41,8 @@ public class TestCase {
     public List<Boolean> getDBMSResults() {
         return new ArrayList<>(dbmsResults);
     }
+
+    public Boolean getLastDBMSResult() {
+        return dbmsResults.get(dbmsResults.size()-1);
+    }
 }

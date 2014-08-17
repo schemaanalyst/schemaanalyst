@@ -39,6 +39,7 @@ public class APC extends IntegrityConstraintCriterion {
         testRequirements.addTestRequirement(
                 testRequirementIDGenerator.nextID(),
                 "Acceptance predicate for " + table + " is " + truthValue,
-                PredicateGenerator.generatePredicate(getConstraints(table), truthValue));
+                PredicateGenerator.generatePredicate(getConstraints(table), truthValue),
+                truthValue);
     }
 }
