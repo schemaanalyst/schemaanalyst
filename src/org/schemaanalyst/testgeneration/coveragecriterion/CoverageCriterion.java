@@ -3,9 +3,15 @@ package org.schemaanalyst.testgeneration.coveragecriterion;
 /**
  * Created by phil on 18/07/2014.
  */
-public interface CoverageCriterion {
+public abstract class CoverageCriterion {
 
-    public String getName();
+    protected TestRequirementIDGenerator testRequirementIDGenerator;
 
-    public TestRequirements generateRequirements();
+    public CoverageCriterion(TestRequirementIDGenerator testRequirementIDGenerator) {
+        this.testRequirementIDGenerator = testRequirementIDGenerator;
+    }
+
+    public abstract String getName();
+
+    public abstract TestRequirements generateRequirements();
 }

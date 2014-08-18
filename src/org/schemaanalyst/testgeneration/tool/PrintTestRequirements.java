@@ -23,7 +23,7 @@ public class PrintTestRequirements extends Runner {
     @Override
     protected void task() {
         TestRequirements testRequirements =
-                CoverageCriterionFactory.integrityConstraintCriterion(criterion, instantiateSchema())
+                CoverageCriterionFactory.schemaCriterion(criterion, instantiateSchema())
                         .generateRequirements();
 
         int total = testRequirements.size();

@@ -1,9 +1,7 @@
 package org.schemaanalyst.testgeneration.tool;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerationReport;
@@ -22,7 +20,6 @@ import org.schemaanalyst.util.runner.Runner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.util.List;
 
 import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
@@ -56,7 +53,7 @@ public class GenerateTestSuite extends Runner {
 
         // instantiate objects for parameters
         Schema schemaObject = instantiateSchema();
-        TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schemaObject).generateRequirements();
+        TestRequirements testRequirements = CoverageCriterionFactory.schemaCriterion(criterion, schemaObject).generateRequirements();
         DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
 

@@ -6,6 +6,8 @@ import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.*;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
+import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.TABLE;
+
 /**
  * Created by phil on 23/07/2014.
  */
@@ -19,7 +21,7 @@ public class CoverageCriterionFactory {
      * @return The criterion
      */
     @SuppressWarnings("unchecked")
-    public static CoverageCriterion integrityConstraintCriterion(String criterionName, Schema schema) {
+    public static CoverageCriterion schemaCriterion(String criterionName, Schema schema) {
         Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
         Method methods[] = c.getMethods();
 
@@ -38,22 +40,22 @@ public class CoverageCriterionFactory {
     }
 
     public static CoverageCriterion criterionAPC(Schema schema) {
-        return new APC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
+        return new APC(schema, new TestRequirementIDGenerator(TABLE), new ICMinimalConstraintSupplier());
     }
 
     public static CoverageCriterion criterionICC(Schema schema) {
-        return new ICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
+        return new ICC(schema, new TestRequirementIDGenerator(TABLE), new ICMinimalConstraintSupplier());
     }
 
     public static CoverageCriterion criterionAICC(Schema schema) {
-        return new AICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
+        return new AICC(schema, new TestRequirementIDGenerator(TABLE), new ICMinimalConstraintSupplier());
     }
 
     public static CoverageCriterion criterionCondAICC(Schema schema) {
-        return new CondAICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
+        return new CondAICC(schema, new TestRequirementIDGenerator(TABLE), new ICMinimalConstraintSupplier());
     }
 
     public static CoverageCriterion criterionClauseAICC(Schema schema) {
-        return new ClauseAICC(schema, new TestRequirementIDGeneratorUsingTable(), new ICMinimalConstraintSupplier());
+        return new ClauseAICC(schema, new TestRequirementIDGenerator(TABLE), new ICMinimalConstraintSupplier());
     }
 }

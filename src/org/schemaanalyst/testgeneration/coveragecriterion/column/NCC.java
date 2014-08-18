@@ -1,38 +1,29 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.column;
 
+import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
-import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.IntegrityConstraintCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
 /**
  * Created by phil on 18/08/2014.
  */
-public class NCC extends IntegrityConstraintCriterion {
+public class NCC extends ColumnCriterion {
 
-    public NCC(Schema schema,
-               TestRequirementIDGenerator testRequirementIDGenerator) {
-        super(schema, testRequirementIDGenerator, null);
+    public NCC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
+        super(schema, testRequirementIDGenerator);
     }
 
     public String getName() {
         return "NCC";
     }
 
-    public TestRequirements generateRequirements() {
-
-        testRequirements = new TestRequirements();
-        testRequirementIDGenerator.reset(schema.getName(), "schema");
-
-        for (Table table : schema.getTables()) {
-            testRequirementIDGenerator.reset(table.getName(), "table");
-            generateRequirements(table);
-        }
-        return testRequirements;
-    }
-
-    protected void generateRequirements(Table table) {
-
+    protected void generateRequirement(Table table, Column column, boolean truthValue) {
+        testRequirements.addTestRequirement(
+                testRequirementIDGenerator.nextID(),
+                column + " is " + ((truthValue) ? "NULL" : "NOT NULL"),
+                new NullPredicate(table, column, truthValue),
+                null);
     }
 }

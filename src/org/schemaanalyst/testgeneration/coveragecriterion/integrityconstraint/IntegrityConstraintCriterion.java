@@ -12,18 +12,17 @@ import java.util.List;
 /**
  * Created by phil on 27/07/2014.
  */
-public abstract class IntegrityConstraintCriterion implements CoverageCriterion {
+public abstract class IntegrityConstraintCriterion extends CoverageCriterion {
 
     protected Schema schema;
     protected TestRequirements testRequirements;
-    protected TestRequirementIDGenerator testRequirementIDGenerator;
     protected ConstraintSupplier constraintSupplier;
 
     public IntegrityConstraintCriterion(Schema schema,
                                         TestRequirementIDGenerator testRequirementIDGenerator,
                                         ConstraintSupplier constraintSupplier) {
+        super(testRequirementIDGenerator);
         this.schema = schema;
-        this.testRequirementIDGenerator = testRequirementIDGenerator;
         this.constraintSupplier = constraintSupplier;
     }
 
