@@ -91,7 +91,7 @@ public class GenerateTestSuite extends Runner {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
-                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
+                //System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
                 i ++;
             }
         }

@@ -6,6 +6,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class MatchPredicate extends Predicate {
     private List<Column> matchingCols, nonMatchingCols, matchingRefCols, nonMatchingRefCols;
     private Mode mode;
     private boolean tableIsRefTable;
+    private boolean colsAreRefCols;
 
     public MatchPredicate(Table table, List<Column> equalCols, List<Column> notEqualCols, Mode mode) {
         this(table, equalCols, notEqualCols, table, equalCols, notEqualCols, mode);
@@ -55,6 +57,24 @@ public class MatchPredicate extends Predicate {
 
         if (!sameNumberOfEqualsCols || !sameNumberOfNotEqualsCols) {
             throw new PredicateConfigurationException("Number of columns and reference columns are not equal");
+        }
+
+        colsAreRefCols = true;
+        Iterator<Column> matchingColsIterator = matchingCols.iterator();
+        Iterator<Column> matchingRefColsIterator = matchingRefCols.iterator();
+        while (matchingColsIterator.hasNext() && matchingRefColsIterator.hasNext()) {
+            if (!matchingColsIterator.next().equals(matchingRefColsIterator.next())) {
+                colsAreRefCols = false;
+            }
+        }
+        if (colsAreRefCols) {
+            Iterator<Column> nonMatchingColsIterator = nonMatchingCols.iterator();
+            Iterator<Column> nonMatchingRefColsIterator = nonMatchingRefCols.iterator();
+            while (nonMatchingColsIterator.hasNext() && nonMatchingRefColsIterator.hasNext()) {
+                if (!nonMatchingColsIterator.next().equals(nonMatchingRefColsIterator.next())) {
+                    colsAreRefCols = false;
+                }
+            }
         }
     }
 
@@ -100,6 +120,10 @@ public class MatchPredicate extends Predicate {
 
     public boolean tableIsRefTable() {
         return tableIsRefTable;
+    }
+
+    public boolean colsAreRefCols() {
+        return colsAreRefCols;
     }
 
     public String getName() {

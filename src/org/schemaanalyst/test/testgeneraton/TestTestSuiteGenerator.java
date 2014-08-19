@@ -13,8 +13,6 @@ import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.Pr
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import parsedcasestudy.UnixUsage;
 
-import java.util.Arrays;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -29,12 +27,12 @@ public class TestTestSuiteGenerator {
             super(schema, null, new ValueFactory(), null);
         }
 
-        public Predicate addLinkedTablesToData(Data data, Predicate predicate, Table table) {
-            return super.addLinkedTablesToData(data, predicate, table);
+        public Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
+            return super.addLinkedTableRowsToData(data, predicate, table);
         }
 
-        public boolean areRefColsUnique(Predicate predicate, Table table, ForeignKeyConstraint foreignKeyConstraint) {
-            return super.areRefColsUnique(predicate, table, foreignKeyConstraint);
+        public boolean areRefColsUnique(ForeignKeyConstraint foreignKeyConstraint) {
+            return super.areRefColsUnique(foreignKeyConstraint);
         }
     }
 
@@ -77,10 +75,10 @@ public class TestTestSuiteGenerator {
         TestSuiteGeneratorMock tsg = new TestSuiteGeneratorMock(testSchema);
 
         Predicate predicate = PredicateGenerator.generatePredicate(testSchema.getConstraints(testSchema.t2));
-        assertTrue(tsg.areRefColsUnique(predicate, testSchema.t2, testSchema.fk1));
+        assertTrue(tsg.areRefColsUnique(testSchema.fk1));
 
         Data data = new Data();
-        tsg.addLinkedTablesToData(data, predicate, testSchema.t2);
+        tsg.addLinkedTableRowsToData(data, predicate, testSchema.t2);
         assertEquals(1, data.getNumRows(testSchema.t1));
     }
 
@@ -90,11 +88,11 @@ public class TestTestSuiteGenerator {
         TestSuiteGeneratorMock tsg = new TestSuiteGeneratorMock(testSchema);
 
         Predicate predicate = PredicateGenerator.generatePredicate(testSchema.getConstraints(testSchema.t4));
-        assertTrue(tsg.areRefColsUnique(predicate, testSchema.t4, testSchema.fk2));
-        assertTrue(tsg.areRefColsUnique(predicate, testSchema.t4, testSchema.fk3));
+        assertTrue(tsg.areRefColsUnique(testSchema.fk2));
+        assertTrue(tsg.areRefColsUnique(testSchema.fk3));
 
         Data data = new Data();
-        tsg.addLinkedTablesToData(data, predicate, testSchema.t4);
+        tsg.addLinkedTableRowsToData(data, predicate, testSchema.t4);
         assertEquals(1, data.getNumRows(testSchema.t1));
         assertEquals(1, data.getNumRows(testSchema.t3));
     }
@@ -109,7 +107,7 @@ public class TestTestSuiteGenerator {
         System.out.println(predicate);
 
         Data data = new Data();
-        tsg.addLinkedTablesToData(data, predicate, t);
+        tsg.addLinkedTableRowsToData(data, predicate, t);
         System.out.println("DATA is " + data);
     }
 }

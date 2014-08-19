@@ -84,12 +84,6 @@ public class RunCoverageExpt {
         }
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
-
-        // schemaName,
-        // coverageCriterionName,
-        // dataGeneratorName,
-        // dbmsName,
-        // runNo
         rce.expt("BrowserCookies", "ClauseAICC", "avsDefaults", "SQLite", 1);
     }
 }
