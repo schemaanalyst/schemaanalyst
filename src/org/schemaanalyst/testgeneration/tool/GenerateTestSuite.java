@@ -53,9 +53,9 @@ public class GenerateTestSuite extends Runner {
 
         // instantiate objects for parameters
         Schema schemaObject = instantiateSchema();
-        TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
+        TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
