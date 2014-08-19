@@ -133,7 +133,7 @@ public class TestSuiteJavaWriter {
         code.appendln("public void test" + testCaseNumber + "() throws SQLException {");
 
         code.setIndentLevel(2);
-        TestRequirement testRequirement = testCase.getTestReqiurement();
+        TestRequirement testRequirement = testCase.getTestRequirement();
         for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
             code.appendln("// " + (addSAComments ? testRequirementDescriptor : testRequirementDescriptor.getMsg()));
         }

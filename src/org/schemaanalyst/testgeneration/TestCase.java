@@ -30,7 +30,7 @@ public class TestCase {
         return state;
     }
 
-    public TestRequirement getTestReqiurement () {
+    public TestRequirement getTestRequirement() {
         return testReqiurement;
     }
 
