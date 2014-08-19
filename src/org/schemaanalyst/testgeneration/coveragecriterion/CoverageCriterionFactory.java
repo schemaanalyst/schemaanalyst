@@ -1,5 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
+import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.column.ANCC;
 import org.schemaanalyst.testgeneration.coveragecriterion.column.AUCC;
@@ -26,74 +27,83 @@ public class CoverageCriterionFactory {
      * @param schema The schema
      * @return The criterion
      */
-    public static CoverageCriterion instantiateSchemaCriterion(String criterionName, Schema schema) {
+    public static CoverageCriterion instantiateSchemaCriterion(String criterionName, Schema schema, DBMS dbms) {
         TestRequirementIDGenerator testRequirementIDGenerator = new TestRequirementIDGenerator(TABLE);
+        ConstraintSupplier constraintSupplier = ConstraintSupplierFactory.instantiateConstraintSupplier(dbms);
 
         String[] names = criterionName.split("\\+");
         if (names.length == 0) {
-            return instantiateIndividualSchemaCriterion(criterionName, schema, testRequirementIDGenerator);
+            return instantiateSchemaCriterionFromName(criterionName, schema, testRequirementIDGenerator, constraintSupplier);
         } else {
             List<CoverageCriterion> criteria = new ArrayList<>();
             for (String name : names) {
-                criteria.add(instantiateIndividualSchemaCriterion(name, schema, testRequirementIDGenerator));
+                criteria.add(instantiateSchemaCriterionFromName(name, schema, testRequirementIDGenerator, constraintSupplier));
             }
             return new MultiCoverageCriteria(criteria);
         }
     }
 
-    private static CoverageCriterion instantiateIndividualSchemaCriterion(String criterionName,
-                                                                          Schema schema,
-                                                                          TestRequirementIDGenerator testRequirementIDGenerator) {
+    private static CoverageCriterion instantiateSchemaCriterionFromName(
+            String criterionName, Schema schema,
+            TestRequirementIDGenerator testRequirementIDGenerator,
+            ConstraintSupplier constraintSupplier) {
         Class<CoverageCriterionFactory> c = CoverageCriterionFactory.class;
         Method methods[] = c.getMethods();
-
         for (Method m : methods) {
             if (m.getName().equals("criterion" + criterionName)) {
                 try {
-                    Object[] args = {schema, testRequirementIDGenerator};
+                    Object[] args = {schema, testRequirementIDGenerator, constraintSupplier};
                     return (CoverageCriterion) m.invoke(null, args);
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
                     throw new RuntimeException(e);
                 }
             }
         }
-
         throw new CoverageCriterionException("Unknown criterion \"" + criterionName + "\"");
     }
 
-    public static CoverageCriterion criterionAPC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new APC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionAPC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new APC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionICC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new ICC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionICC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new ICC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionAICC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new AICC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionAICC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new AICC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionCondAICC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new CondAICC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionCondAICC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new CondAICC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionClauseAICC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new ClauseAICC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionClauseAICC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new ClauseAICC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionNCC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
+    public static CoverageCriterion criterionNCC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
         return new NCC(schema, testRequirementIDGenerator);
     }
 
-    public static CoverageCriterion criterionANCC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new ANCC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionANCC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new ANCC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 
-    public static CoverageCriterion criterionUCC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
+    public static CoverageCriterion criterionUCC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
         return new UCC(schema, testRequirementIDGenerator);
     }
 
-    public static CoverageCriterion criterionAUCC(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
-        return new AUCC(schema, testRequirementIDGenerator, new ICMinimalConstraintSupplier());
+    public static CoverageCriterion criterionAUCC(
+            Schema schema, TestRequirementIDGenerator testRequirementIDGenerator,ConstraintSupplier constraintSupplier) {
+        return new AUCC(schema, testRequirementIDGenerator, constraintSupplier);
     }
 }

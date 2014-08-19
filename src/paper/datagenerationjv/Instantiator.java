@@ -20,7 +20,7 @@ public class Instantiator {
     }
 
     public static CoverageCriterion instantiateCoverageCriterion(String coverageCriterionName, Schema schema) {
-        return CoverageCriterionFactory.instantiateSchemaCriterion(coverageCriterionName, schema);
+        return null;
     }
 
     public static DBMS instantiateDBMS(String dbmsName) {

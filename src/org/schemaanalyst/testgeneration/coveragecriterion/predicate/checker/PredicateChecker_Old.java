@@ -2,7 +2,6 @@ package org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.logic.predicate.Predicate;
-import org.schemaanalyst.logic.predicate.clause.*;
 
 import java.util.ArrayList;
 import java.util.List;
