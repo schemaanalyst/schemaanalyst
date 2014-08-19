@@ -17,8 +17,10 @@ import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.CreateStatementException;
+import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
 import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
@@ -180,7 +182,7 @@ public class MutationAnalysisAlters extends Runner {
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
         result.addValue("scorenumerator", analysisResult.getKilled().size());
         result.addValue("scoredenominator", mutants.size());
-        result.addValue("technique", technique);
+        result.addValue("technique", "alters_" + technique);
         result.addValue("transactions", useTransactions);
         result.addValue("testgenerationtime", testGenerationTime.getTime());
         result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
@@ -237,7 +239,7 @@ public class MutationAnalysisAlters extends Runner {
     private TestSuite generateTestSuite() {
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
-        final TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schema).generateRequirements();
+        final TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schema, dbms).generateRequirements();
 
         // Filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -300,14 +302,17 @@ public class MutationAnalysisAlters extends Runner {
             executeInserts(testCase.getState());
             executeInserts(testCase.getData());
             
-            // Apply the ALTERs
-            
+            // Execute the alters
+            executeAlters(schema, testCase, result);
+        }
+        
+        // Drop the tables
+        List<String> dropStmts = tableWriter.writeDropTableStatements(schema, true);
+        for (String stmt : dropStmts) {
+            databaseInteractor.executeUpdate(stmt);
         }
         
         return result;
-//        TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
-//        TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
-//        return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
     private void executeInserts(Data data) {
@@ -319,6 +324,19 @@ public class MutationAnalysisAlters extends Runner {
                     String statement = sqlWriter.writeInsertStatement(row);
                     databaseInteractor.executeUpdate(statement);
                 }
+            }
+        }
+    }
+    
+    private void executeAlters(Schema schema, TestCase testCase, TestSuiteResult result) {
+        ConstraintlessSQLWriter constraintWriter = new ConstraintlessSQLWriter();
+        List<String> alterStmts = constraintWriter.writeAlterTableStatements(schema);
+        for (String stmt : alterStmts) {
+            Integer res = databaseInteractor.executeUpdate(stmt);
+            if (res != 1) {
+                result.add(testCase, new TestCaseResult(new StatementException("Failed, result was: " + res, stmt)));
+            } else {
+                result.add(testCase, TestCaseResult.SuccessfulTestCaseResult);
             }
         }
     }
@@ -340,7 +358,8 @@ public class MutationAnalysisAlters extends Runner {
 
         @Override
         public AnalysisResult analyse(TestSuiteResult originalResults) {
-            throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            AnalysisResult result = new AnalysisResult();
+            return new AnalysisResult();
         }
 
     }
@@ -389,7 +408,7 @@ public class MutationAnalysisAlters extends Runner {
         public List<String> writeAlterTableStatements(Schema schema, Table table) {
             List<String> stmts = new ArrayList<>();
             for (Constraint constraint : schema.getConstraints(table)) {
-                stmts.add(constraintSQLWriter.writeConstraint(constraint));
+                stmts.add("ALTER TABLE " + table.getName() + " " + constraintSQLWriter.writeConstraint(constraint));
             }
             return stmts;
         }
