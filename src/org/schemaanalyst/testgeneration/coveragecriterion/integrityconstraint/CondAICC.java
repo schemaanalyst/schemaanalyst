@@ -4,7 +4,9 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator.*;
 
