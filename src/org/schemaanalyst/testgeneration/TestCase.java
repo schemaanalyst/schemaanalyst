@@ -3,13 +3,16 @@ package org.schemaanalyst.testgeneration;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by phil on 24/01/2014.
  */
-public class TestCase {
+public class TestCase implements Serializable {
+
+    private static final long serialVersionUID = 7252118737699128109L;
 
     private TestRequirement testReqiurement;
     private Data data, state;

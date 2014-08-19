@@ -10,6 +10,9 @@ import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
@@ -21,10 +24,12 @@ import static paper.datagenerationjv.Instantiator.instantiateSchema;
  */
 public class RunCoverageExpt {
 
+    protected LocationsConfiguration locationsConfiguration;
     protected ResultsDatabase resultsDatabase;
     protected int maxEvaluations = 100000;
 
     public RunCoverageExpt(String resultsDatabaseFileName) {
+        locationsConfiguration = new LocationsConfiguration();
         resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
     }
 
@@ -33,8 +38,9 @@ public class RunCoverageExpt {
         for (String schemaName : schemaNames) {
             List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
             for (String coverageCriterionName : coverageCriteriaNames) {
-                if (!schemaName.equals("DellStore") && !schemaName.equals("BrowserCookies"))
-                expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
+                //if (!schemaName.equals("DellStore") && !schemaName.equals("BrowserCookies"))
+                //expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
+                expt(schemaName, coverageCriterionName, "avsDefaults", "SQLite", 1);
             }
         }
     }
@@ -103,7 +109,21 @@ public class RunCoverageExpt {
 
         System.out.println(sql);
 
-        resultsDatabase.executeInsert(sql);
+        //resultsDatabase.executeInsert(sql);
+
+        // serialize the test suite
+        try {
+            String fileName = locationsConfiguration.getResultsDir() + "/" + schemaName + "-" + coverageCriterionName
+                    + "-" + dataGeneratorName + "-" + dbmsName + "-" + runNo + ".testsuite";
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(testSuite);
+            out.close();
+            fileOut.close();
+            System.out.println("Test suite serialized to " + fileName);
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws Exception {

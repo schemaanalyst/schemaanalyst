@@ -3,8 +3,7 @@ package org.schemaanalyst.data;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StringValue extends Value
-        implements CompoundValue {
+public class StringValue extends Value implements CompoundValue {
 
     private static final long serialVersionUID = -2565741196272855452L;
     public static final int UPPER_A_CHAR = 65;
