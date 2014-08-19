@@ -40,6 +40,15 @@ public abstract class DatabaseInteractor {
      */
     protected static final String CREATE_TABLE_SIGNATURE = "CREATE TABLE";
     /**
+     * The return code to specify that there was an error in altering the SQL
+     * schema with an ALTER TABLE.
+     */
+    protected static final int ALTER_TABLE_ERROR = -2;
+    /**
+     * The signature for the ALTER TABLE statement.
+     */
+    protected static final String ALTER_TABLE_SIGNATURE = "ALTER TABLE";
+    /**
      * The return code indicates an UPDATE, INSERT, DELETE.
      */
     protected static final boolean UPDATE_COUNT = false;
@@ -119,9 +128,11 @@ public abstract class DatabaseInteractor {
             // an exception, then set the return code to -1 to indicate 
             // that there was a special failure in creating the schema
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
-                LOGGER.log(Level.FINE, "Create table failed: {0}", command);
-                LOGGER.log(Level.FINEST, "Create table failed because: ", e);
+                LOGGER.log(Level.FINE, "Create table failed: " + command, e);
                 returnCount = CREATE_TABLE_ERROR;
+            } else if (command.toUpperCase().contains(ALTER_TABLE_SIGNATURE)) {
+                LOGGER.log(Level.FINE, "Alter table failed: " + command, e);
+                returnCount = ALTER_TABLE_ERROR;
             } else {
                 LOGGER.log(Level.FINE, "Statement failed: " + command, e);
             }
