@@ -2,10 +2,13 @@ package org.schemaanalyst.mutation.analysis.executor;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Callable;
 import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.data.Data;
@@ -301,17 +304,23 @@ public class MutationAnalysisAlters extends Runner {
             // Insert the test data
             executeInserts(testCase.getState());
             executeInserts(testCase.getData());
-            
-            // Execute the alters
+
+            // Add the constraints
             executeAlters(schema, testCase, result);
+
+            // Drop the constraints
+            executeDropAlters(schema);
+
+            // Delete the test data
+            executeDeletes(schema);
         }
-        
+
         // Drop the tables
         List<String> dropStmts = tableWriter.writeDropTableStatements(schema, true);
         for (String stmt : dropStmts) {
             databaseInteractor.executeUpdate(stmt);
         }
-        
+
         return result;
     }
 
@@ -327,17 +336,31 @@ public class MutationAnalysisAlters extends Runner {
             }
         }
     }
-    
+
     private void executeAlters(Schema schema, TestCase testCase, TestSuiteResult result) {
         ConstraintlessSQLWriter constraintWriter = new ConstraintlessSQLWriter();
         List<String> alterStmts = constraintWriter.writeAlterTableStatements(schema);
         for (String stmt : alterStmts) {
             Integer res = databaseInteractor.executeUpdate(stmt);
-            if (res != 1) {
+            if (res != 0) {
                 result.add(testCase, new TestCaseResult(new StatementException("Failed, result was: " + res, stmt)));
             } else {
                 result.add(testCase, TestCaseResult.SuccessfulTestCaseResult);
             }
+        }
+    }
+
+    private void executeDeletes(Schema schema) {
+        for (String stmt : sqlWriter.writeDeleteFromTableStatements(schema)) {
+            databaseInteractor.executeUpdate(stmt);
+        }
+    }
+
+    private void executeDropAlters(Schema schema) {
+        ConstraintlessSQLWriter constraintWriter = new ConstraintlessSQLWriter();
+        List<String> alterStmts = constraintWriter.writeDropAlterTableStatements(schema);
+        for (String stmt : alterStmts) {
+            databaseInteractor.executeUpdate(stmt);
         }
     }
 
@@ -359,17 +382,72 @@ public class MutationAnalysisAlters extends Runner {
         @Override
         public AnalysisResult analyse(TestSuiteResult originalResults) {
             AnalysisResult result = new AnalysisResult();
-            return new AnalysisResult();
+            ConstraintlessSQLWriter tableWriter = new ConstraintlessSQLWriter();
+
+            // Setup the map of results
+            Map<Mutant<Schema>, TestSuiteResult> resultMap = new HashMap<>();
+            for (Mutant<Schema> mutant : mutants) {
+                resultMap.put(mutant, new TestSuiteResult());
+            }
+
+            // Add the tables
+            List<String> createStmts = tableWriter.writeCreateTableStatements(schema);
+            for (String stmt : createStmts) {
+                Integer stmtResult = databaseInteractor.executeUpdate(stmt);
+                if (stmtResult < 0) {
+                    throw new CreateStatementException("Failed, result was: " + stmtResult, stmt);
+                }
+            }
+
+            // Insert the test data
+            for (TestCase testCase : testSuite.getTestCases()) {
+                // Insert the test data
+                executeInserts(testCase.getState());
+                executeInserts(testCase.getData());
+
+                for (Mutant<Schema> mutant : mutants) {
+                    // Add the constraints
+                    executeAlters(mutant.getMutatedArtefact(), testCase, resultMap.get(mutant));
+
+                    // Drop the constraints
+                    executeDropAlters(mutant.getMutatedArtefact());
+                }
+
+                // Delete the test data
+                executeDeletes(schema);
+            }
+
+            // Drop the tables
+            List<String> dropStmts = tableWriter.writeDropTableStatements(schema, true);
+            for (String stmt : dropStmts) {
+                databaseInteractor.executeUpdate(stmt);
+            }
+            
+            // Compare results
+            for (Map.Entry<Mutant<Schema>, TestSuiteResult> entry : resultMap.entrySet()) {
+                System.out.println("-----");
+                System.out.println("Original:");
+                System.out.println(originalResults);
+                System.out.println("Mutant:");
+                System.out.println(entry.getValue());
+                if (entry.getValue().equals(originalResults)) {
+                    result.addLive(entry.getKey());
+                } else {
+                    result.addKilled(entry.getKey());
+                }
+            }
+
+            return result;
         }
 
     }
 
     /**
-     * An SQLWriter that omits constraints, which can be separately produced as 
+     * An SQLWriter that omits constraints, which can be separately produced as
      * ALTER TABLE statements.
      */
     private class ConstraintlessSQLWriter extends SQLWriter {
-        
+
         AlterTableConstraintWriter constraintWriter = new AlterTableConstraintWriter();
 
         @Override
@@ -398,9 +476,10 @@ public class MutationAnalysisAlters extends Runner {
             sql.append(")");
             return sql.toString();
         }
-        
+
         /**
          * Write the alter table statements for one table in a schema
+         *
          * @param schema The schema
          * @param table The table
          * @return The alter statements
@@ -408,13 +487,14 @@ public class MutationAnalysisAlters extends Runner {
         public List<String> writeAlterTableStatements(Schema schema, Table table) {
             List<String> stmts = new ArrayList<>();
             for (Constraint constraint : schema.getConstraints(table)) {
-                stmts.add("ALTER TABLE " + table.getName() + " " + constraintSQLWriter.writeConstraint(constraint));
+                stmts.add("ALTER TABLE " + table.getName() + " " + constraintWriter.writeConstraint(constraint));
             }
             return stmts;
         }
-        
+
         /**
          * Write the alter table statements for all tables in a schema
+         *
          * @param schema The schema
          * @return The alter statements
          */
@@ -425,27 +505,60 @@ public class MutationAnalysisAlters extends Runner {
             }
             return stmts;
         }
+
+        /**
+         * Write the alter table statements for one table in a schema
+         *
+         * @param schema The schema
+         * @param table The table
+         * @return The alter statements
+         */
+        public List<String> writeDropAlterTableStatements(Schema schema, Table table) {
+            List<String> stmts = new ArrayList<>();
+            for (Constraint constraint : schema.getConstraints(table)) {
+                for (String stmt : constraintWriter.writeDropConstraint(constraint)) {
+                    stmts.add("ALTER TABLE " + table.getName() + " " + stmt);
+                }
+            }
+            return stmts;
+        }
+
+        /**
+         * Write the alter table statements for all tables in a schema
+         *
+         * @param schema The schema
+         * @return The alter statements
+         */
+        public List<String> writeDropAlterTableStatements(Schema schema) {
+            List<String> stmts = new ArrayList<>();
+            for (Table table : schema.getTables()) {
+                stmts.addAll(writeDropAlterTableStatements(schema, table));
+            }
+            return stmts;
+        }
     }
-    
+
     /**
-     * A constraint writer that produces ALTER TABLE statements for each constraint.
+     * A constraint writer that produces ALTER TABLE statements for each
+     * constraint.
      */
     private class AlterTableConstraintWriter {
+
         protected ExpressionSQLWriter expressionSQLWriter = new ExpressionSQLWriter();
         MessageDigest instance = null;
-        
+
         public String writeConstraint(Constraint constraint) {
-            
+
             class ConstraintSQLWriterVisitor implements ConstraintVisitor {
 
                 String sql;
-                
+
                 public String writeConstraint(Constraint constraint) {
                     sql = "";
                     constraint.accept(this);
                     return sql;
                 }
-                
+
                 @Override
                 public void visit(CheckConstraint constraint) {
                     sql = writeCheck(constraint);
@@ -470,16 +583,16 @@ public class MutationAnalysisAlters extends Runner {
                 public void visit(UniqueConstraint constraint) {
                     sql = writeUnique(constraint);
                 }
-                
+
             }
             return (new ConstraintSQLWriterVisitor()).writeConstraint(constraint);
         }
-        
+
         public String writeCheck(CheckConstraint check) {
             String name = getConstraintName(check);
             return "ADD CONSTRAINT " + name + " CHECK (" + expressionSQLWriter.writeExpression(check.getExpression()) + ")";
         }
-        
+
         public String writeForeignKey(ForeignKeyConstraint foreignKey) {
             String name = getConstraintName(foreignKey);
             String sql = "ADD CONSTRAINT " + name + " FOREIGN KEY (";
@@ -488,30 +601,100 @@ public class MutationAnalysisAlters extends Runner {
             sql += "(" + SQLWriter.writeColumnList(foreignKey.getReferenceColumns()) + ")";
             return sql;
         }
-        
+
         public String writeNotNull(NotNullConstraint notNull) {
             return "ALTER " + notNull.getColumn().getName() + " SET NOT NULL";
         }
-        
+
         public String writePrimaryKey(PrimaryKeyConstraint primaryKey) {
             String name = getConstraintName(primaryKey);
             return "ADD CONSTRAINT " + name + " PRIMARY KEY (" + SQLWriter.writeColumnList(primaryKey.getColumns()) + ")";
         }
-        
+
         public String writeUnique(UniqueConstraint unique) {
             String name = getConstraintName(unique);
             return "ADD CONSTRAINT " + name + " UNIQUE (" + SQLWriter.writeColumnList(unique.getColumns()) + ")";
         }
+
+        public List<String> writeDropConstraint(Constraint constraint) {
+
+            class ConstraintSQLWriterVisitor implements ConstraintVisitor {
+
+                List<String> sql;
+
+                public List<String> writeConstraint(Constraint constraint) {
+                    sql = new ArrayList<>();
+                    constraint.accept(this);
+                    return sql;
+                }
+
+                @Override
+                public void visit(CheckConstraint constraint) {
+                    sql.add(writeDropCheck(constraint));
+                }
+
+                @Override
+                public void visit(ForeignKeyConstraint constraint) {
+                    sql.add(writeDropForeignKey(constraint));
+                }
+
+                @Override
+                public void visit(NotNullConstraint constraint) {
+                    sql.add(writeDropNotNull(constraint));
+                }
+
+                @Override
+                public void visit(PrimaryKeyConstraint constraint) {
+                    sql.add(writeDropPrimaryKey(constraint));
+                    for (Column column : constraint.getColumns()) {
+                        sql.add(writeDropNotNull(column.getName()));
+                    }
+                    
+                }
+
+                @Override
+                public void visit(UniqueConstraint constraint) {
+                    sql.add(writeDropUnique(constraint));
+                }
+
+            }
+
+            return (new ConstraintSQLWriterVisitor()).writeConstraint(constraint);
+        }
+
+        private String writeDropCheck(CheckConstraint constraint) {
+            return "DROP CONSTRAINT IF EXISTS " + getConstraintName(constraint);
+        }
+
+        private String writeDropForeignKey(ForeignKeyConstraint constraint) {
+            return "DROP CONSTRAINT IF EXISTS " + getConstraintName(constraint);
+        }
+
+        private String writeDropNotNull(NotNullConstraint constraint) {
+            return writeDropNotNull(constraint.getColumn().getName());
+        }
         
+        private String writeDropNotNull(String column) {
+            String sql = "ALTER COLUMN " + column;
+            sql += " DROP NOT NULL";
+            return sql;
+        }
+
+        private String writeDropPrimaryKey(PrimaryKeyConstraint constraint) {
+            return "DROP CONSTRAINT IF EXISTS " + getConstraintName(constraint);
+        }
+
+        private String writeDropUnique(UniqueConstraint constraint) {
+            return "DROP CONSTRAINT IF EXISTS " + getConstraintName(constraint);
+        }
+
         private String getConstraintName(Constraint constraint) {
             try {
                 if (instance == null) {
                     instance = MessageDigest.getInstance("md5");
-                } else {
-                    instance.reset();
                 }
-                instance.digest(constraint.toString().getBytes());
-                return "constraint" + instance.toString();
+                byte[] digest = instance.digest(constraint.toString().getBytes());
+                return "constraint" + new BigInteger(1, digest).toString(16);
             } catch (NoSuchAlgorithmException ex) {
                 throw new RuntimeException(ex);
             }
