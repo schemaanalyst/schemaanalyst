@@ -69,5 +69,4 @@ public class PrintTestRequirements extends Runner {
     public static void main(String... args) {
         new PrintTestRequirements().run(args);
     }
-
 }

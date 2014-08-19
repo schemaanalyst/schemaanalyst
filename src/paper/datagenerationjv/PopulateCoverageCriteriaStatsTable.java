@@ -1,5 +1,6 @@
 package paper.datagenerationjv;
 
+import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -33,7 +34,7 @@ public class PopulateCoverageCriteriaStatsTable {
 
     protected void populate(String schemaName, String coverageCriterionName) {
         Schema schema = instantiateSchema(schemaName);
-        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema);
+        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, new PostgresDBMS());
 
         TestRequirements tr = coverageCriterion.generateRequirements();
         int numReqs = tr.size();

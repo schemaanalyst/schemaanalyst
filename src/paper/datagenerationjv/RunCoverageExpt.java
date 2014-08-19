@@ -36,8 +36,9 @@ public class RunCoverageExpt {
                         int runNo) {
 
         Schema schema = instantiateSchema(schemaName);
-        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema);
         DBMS dbms = instantiateDBMS(dbmsName);
+        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, dbms);
+
         long seed = resultsDatabase.getSeed(runNo);
 
         TestRequirements testRequirements = coverageCriterion.generateRequirements();
