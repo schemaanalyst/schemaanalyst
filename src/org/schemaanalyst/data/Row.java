@@ -4,10 +4,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Row {
+public class Row implements Serializable {
+
+    private static final long serialVersionUID = 6959607990184236243L;
 
     public static class Duplicator implements org.schemaanalyst.util.Duplicator<Row> {
         @Override

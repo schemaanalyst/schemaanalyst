@@ -3,6 +3,7 @@ package org.schemaanalyst.data;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -11,7 +12,9 @@ import java.util.*;
  * @author Phil McMinn
  *
  */
-public class Data  {
+public class Data implements Serializable {
+
+    private static final long serialVersionUID = 2897215621399301020L;
 
     public static class Duplicator implements org.schemaanalyst.util.Duplicator<Data> {
         @Override

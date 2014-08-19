@@ -3,9 +3,10 @@ package org.schemaanalyst.sqlrepresentation.expression;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.io.Serializable;
 import java.util.List;
 
-public interface Expression {
+public interface Expression extends Serializable {
 
     public static class Duplicator implements org.schemaanalyst.util.Duplicator<Expression> {
         @Override
