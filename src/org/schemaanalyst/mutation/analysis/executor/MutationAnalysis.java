@@ -228,7 +228,7 @@ public class MutationAnalysis extends Runner {
     private TestSuite generateTestSuite() {
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
-        final TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schema).generateRequirements();
+        final TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schema).generateRequirements();
 
         // Filter and reduce test requirements
         testRequirements.filterInfeasible();

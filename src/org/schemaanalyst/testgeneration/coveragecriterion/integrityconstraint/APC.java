@@ -5,6 +5,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
+import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.SCHEMA;
+import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.TABLE;
+
 /**
  * Created by phil on 18/07/2014.
  */
@@ -22,11 +25,11 @@ public class APC extends IntegrityConstraintCriterion {
 
     public TestRequirements generateRequirements() {
         testRequirements = new TestRequirements();
-        testRequirementIDGenerator.reset(schema.getName(), "schema");
+        testRequirementIDGenerator.reset(SCHEMA, schema.getName());
 
         for (Table table : schema.getTables()) {
             if (schema.getNumConstraints(table) > 0) {
-                testRequirementIDGenerator.reset(table.getName(), "table");
+                testRequirementIDGenerator.reset(TABLE, table.getName());
                 generateRequirements(table, true);
                 generateRequirements(table, false);
             }

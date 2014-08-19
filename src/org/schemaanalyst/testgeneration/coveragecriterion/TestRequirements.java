@@ -22,6 +22,10 @@ public class TestRequirements {
         return new ArrayList<>(testRequirements);
     }
 
+    public void addTestRequirements(TestRequirements testRequirements) {
+        this.testRequirements.addAll(testRequirements.getTestRequirements());
+    }
+
     public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate) {
         addTestRequirement(id, msg, predicate, null);
     }

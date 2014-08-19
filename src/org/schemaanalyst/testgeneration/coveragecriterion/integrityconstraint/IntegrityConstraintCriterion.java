@@ -12,11 +12,11 @@ import java.util.List;
 /**
  * Created by phil on 27/07/2014.
  */
-public abstract class IntegrityConstraintCriterion implements CoverageCriterion {
+public abstract class IntegrityConstraintCriterion extends CoverageCriterion {
 
+    protected TestRequirementIDGenerator testRequirementIDGenerator;
     protected Schema schema;
     protected TestRequirements testRequirements;
-    protected TestRequirementIDGenerator testRequirementIDGenerator;
     protected ConstraintSupplier constraintSupplier;
 
     public IntegrityConstraintCriterion(Schema schema,
