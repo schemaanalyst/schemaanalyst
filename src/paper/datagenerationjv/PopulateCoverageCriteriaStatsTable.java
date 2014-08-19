@@ -1,5 +1,6 @@
 package paper.datagenerationjv;
 
+import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.postgres.PostgresDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
@@ -8,6 +9,7 @@ import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import java.util.List;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
+import static paper.datagenerationjv.Instantiator.instantiateDBMS;
 import static paper.datagenerationjv.Instantiator.instantiateSchema;
 
 /**
@@ -27,14 +29,18 @@ public class PopulateCoverageCriteriaStatsTable {
         for (String schemaName : schemaNames) {
             List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
             for (String coverageCriterionName : coverageCriteriaNames) {
-                populate(schemaName, coverageCriterionName);
+                List<String> dbmsNames = resultsDatabase.getNames("dbmses");
+                for (String dbmsName : dbmsNames) {
+                    populate(schemaName, coverageCriterionName, dbmsName);
+                }
             }
         }
     }
 
-    protected void populate(String schemaName, String coverageCriterionName) {
+    protected void populate(String schemaName, String coverageCriterionName, String dbmsName) {
         Schema schema = instantiateSchema(schemaName);
-        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, new PostgresDBMS());
+        DBMS dbms = instantiateDBMS(dbmsName);
+        CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, dbms);
 
         TestRequirements tr = coverageCriterion.generateRequirements();
         int numReqs = tr.size();
@@ -45,7 +51,8 @@ public class PopulateCoverageCriteriaStatsTable {
         tr.filterInfeasible();
         int numReqsMinusInfeasible = tr.size();
 
-        String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", " +  numReqs + ", " +  numReqsMinusDuplicates + ", " +  numReqsMinusInfeasible;
+        String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", \"" + dbmsName + "\", "
+                    +  numReqs + ", " +  numReqsMinusDuplicates + ", " +  numReqsMinusInfeasible;
 
         String sql = "INSERT INTO coverage_criteria_stats VALUES(" + data + ")";
 

@@ -39,9 +39,9 @@ public class BrowserCookies extends Schema {
 		tableCookies.createColumn("id", new IntDataType());
 		tableCookies.createColumn("name", new TextDataType());
 		tableCookies.createColumn("value", new TextDataType());
-		tableCookies.createColumn("expiry", new TimestampDataType());
-		tableCookies.createColumn("last_accessed", new TimestampDataType());
-		tableCookies.createColumn("creation_time", new TimestampDataType());
+		tableCookies.createColumn("expiry", new IntDataType());
+		tableCookies.createColumn("last_accessed", new IntDataType());
+		tableCookies.createColumn("creation_time", new IntDataType());
 		tableCookies.createColumn("host", new TextDataType());
 		tableCookies.createColumn("path", new TextDataType());
 		this.createPrimaryKeyConstraint(tableCookies, tableCookies.getColumn("id"));
