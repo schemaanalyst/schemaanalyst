@@ -263,30 +263,22 @@ public class TestSuiteGenerator {
 
     protected boolean areRefColsUnique(ForeignKeyConstraint foreignKeyConstraint) {
         Table table = foreignKeyConstraint.getTable();
-        List<Column> fkColumns = foreignKeyConstraint.getColumns();
+        List<Column> uniqueColumns = new ArrayList<>();
 
-        List<MultiColumnConstraint> uniquenessConstraints = new ArrayList<>();
         if (schema.hasPrimaryKeyConstraint(table)) {
-            uniquenessConstraints.add(schema.getPrimaryKeyConstraint(table));
+            uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns());
         }
 
-        uniquenessConstraints.addAll(schema.getUniqueConstraints(table));
-        for (MultiColumnConstraint uniquenessConstraint : uniquenessConstraints) {
-            List<Column> columns = uniquenessConstraint.getColumns();
-            if (columns.size() == fkColumns.size()) {
-                boolean columnsSame = true;
-                for (Column column : columns) {
-                    if (!fkColumns.contains(column)) {
-                        columnsSame = false;
-                        break;
-                    }
-                }
-                if (columnsSame) {
-                    return true;
-                }
+        for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
+            uniqueColumns.addAll(uniqueConstraint.getColumns());
+        }
+
+        for (Column column : foreignKeyConstraint.getColumns()) {
+            if (!uniqueColumns.contains(column)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 }
