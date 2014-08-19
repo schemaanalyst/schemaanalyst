@@ -14,6 +14,7 @@ import java.util.List;
  */
 public abstract class IntegrityConstraintCriterion extends CoverageCriterion {
 
+    protected TestRequirementIDGenerator testRequirementIDGenerator;
     protected Schema schema;
     protected TestRequirements testRequirements;
     protected ConstraintSupplier constraintSupplier;
@@ -21,8 +22,8 @@ public abstract class IntegrityConstraintCriterion extends CoverageCriterion {
     public IntegrityConstraintCriterion(Schema schema,
                                         TestRequirementIDGenerator testRequirementIDGenerator,
                                         ConstraintSupplier constraintSupplier) {
-        super(testRequirementIDGenerator);
         this.schema = schema;
+        this.testRequirementIDGenerator = testRequirementIDGenerator;
         this.constraintSupplier = constraintSupplier;
     }
 

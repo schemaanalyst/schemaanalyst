@@ -18,12 +18,12 @@ import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement
 public abstract class ColumnCriterion extends CoverageCriterion {
 
     protected Schema schema;
+    protected TestRequirementIDGenerator testRequirementIDGenerator;
     protected TestRequirements testRequirements;
 
-    public ColumnCriterion(Schema schema,
-                           TestRequirementIDGenerator testRequirementIDGenerator) {
-        super(testRequirementIDGenerator);
+    public ColumnCriterion(Schema schema, TestRequirementIDGenerator testRequirementIDGenerator) {
         this.schema = schema;
+        this.testRequirementIDGenerator = testRequirementIDGenerator;
     }
 
     public abstract String getName();

@@ -5,12 +5,6 @@ package org.schemaanalyst.testgeneration.coveragecriterion;
  */
 public abstract class CoverageCriterion {
 
-    protected TestRequirementIDGenerator testRequirementIDGenerator;
-
-    public CoverageCriterion(TestRequirementIDGenerator testRequirementIDGenerator) {
-        this.testRequirementIDGenerator = testRequirementIDGenerator;
-    }
-
     public abstract String getName();
 
     public abstract TestRequirements generateRequirements();
