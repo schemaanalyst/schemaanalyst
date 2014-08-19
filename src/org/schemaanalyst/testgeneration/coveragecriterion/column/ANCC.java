@@ -49,6 +49,6 @@ public class ANCC extends NCC {
                 testRequirementIDGenerator.nextID(),
                 column + " is " + ((truthValue) ? "NULL" : "NOT NULL"),
                 topLevelPredicate,
-                truthValue);
+                true);
     }
 }
