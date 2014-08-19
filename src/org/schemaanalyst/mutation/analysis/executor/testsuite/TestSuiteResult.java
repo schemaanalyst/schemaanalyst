@@ -35,6 +35,10 @@ public class TestSuiteResult {
         return map.get(testCase);
     }
     
+    public List<MixedPair<TestCase, TestCaseResult>> getResults() {
+        return result;
+    }
+    
     public int getResultCount() {
         return map.size();
     }
