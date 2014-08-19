@@ -4,7 +4,9 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator.*;
 
@@ -58,45 +60,52 @@ public class CondAICC extends AICC {
 
     protected void generateCheckConstraintRequirements(CheckConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate CC=F requirement
-            generateTestRequirement(
-                    constraint,
-                    " is CC=T",
-                    generateCheckConstraintConditionPredicate(constraint, true, false));
-        } else {
             // generate NC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NC=T",
-                    generateCheckConstraintConditionPredicate(constraint, null, true));
+                    generateCheckConstraintConditionPredicate(constraint, null, true),
+                    true);
 
+            // generate CC=T requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=T",
+                    generateCheckConstraintConditionPredicate(constraint, true, false),
+                    true);
+
+        } else {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateCheckConstraintConditionPredicate(constraint, false, false));
+                    generateCheckConstraintConditionPredicate(constraint, false, false),
+                    false);
         }
     }
 
     protected void generateForeignKeyConstraintRequirements(ForeignKeyConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate CC=F requirement
-            generateTestRequirement(
-                    constraint,
-                    " is CC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
-        } else {
             // generate NC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true),
+                    true);
 
+            // generate CC=T requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=T",
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false),
+                    true);
+        } else {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false),
+                    false);
         }
     }
 
@@ -107,13 +116,15 @@ public class CondAICC extends AICC {
             generateTestRequirement(
                     constraint,
                     " is CC=T",
-                    new NullPredicate(constraint.getTable(), constraint.getColumn(), false));
+                    new NullPredicate(constraint.getTable(), constraint.getColumn(), false),
+                    true);
         } else {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    new NullPredicate(constraint.getTable(), constraint.getColumn(), true));
+                    new NullPredicate(constraint.getTable(), constraint.getColumn(), true),
+                    false);
         }
     }
 
@@ -123,50 +134,56 @@ public class CondAICC extends AICC {
             generateTestRequirement(
                     constraint,
                     " is CC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false),
+                    true);
         } else {
             // generate NC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true),
+                    false);
 
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false),
+                    false);
         }
     }
 
     protected void generateUniqueConstraintRequirements(UniqueConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            // generate CC=F requirement
-            generateTestRequirement(
-                    constraint,
-                    " is CC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, false, false));
-
             // generate NC=T requirement
             generateTestRequirement(
                     constraint,
                     " is NC=T",
-                    generateMultiColumnConstraintConditionPredicate(constraint, null, true));
+                    generateMultiColumnConstraintConditionPredicate(constraint, null, true),
+                    true);
+
+            // generate CC=F requirement
+            generateTestRequirement(
+                    constraint,
+                    " is CC=T",
+                    generateMultiColumnConstraintConditionPredicate(constraint, false, false),
+                    true);
         } else {
             // generate CC=F requirement
             generateTestRequirement(
                     constraint,
                     " is CC=F",
-                    generateMultiColumnConstraintConditionPredicate(constraint, true, false));
+                    generateMultiColumnConstraintConditionPredicate(constraint, true, false),
+                    false);
         }
     }
 
-    protected void generateTestRequirement(Constraint constraint, String msgSuffix, Predicate predicate) {
+    protected void generateTestRequirement(Constraint constraint, String msgSuffix, Predicate predicate, Boolean result) {
         String msg = generateMsg(constraint) + msgSuffix;
 
         ComposedPredicate topLevelPredicate = generatePredicate(getConstraints(constraint.getTable()), constraint);
         topLevelPredicate.addPredicate(predicate);
 
-        testRequirements.addTestRequirement(testRequirementIDGenerator.nextID(), msg, topLevelPredicate);
+        testRequirements.addTestRequirement(testRequirementIDGenerator.nextID(), msg, topLevelPredicate, result);
     }
 }

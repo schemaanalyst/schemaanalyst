@@ -4,14 +4,15 @@ import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
+import org.schemaanalyst.data.generation.search.SearchBasedDataGenerationReport;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -52,9 +53,9 @@ public class GenerateTestSuite extends Runner {
 
         // instantiate objects for parameters
         Schema schemaObject = instantiateSchema();
-        TestRequirements testRequirements = CoverageCriterionFactory.integrityConstraintCriterion(criterion, schemaObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
+        TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 0L, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -90,6 +91,7 @@ public class GenerateTestSuite extends Runner {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
                 i ++;
             }
         }
@@ -102,6 +104,19 @@ public class GenerateTestSuite extends Runner {
                 new DatabaseConfiguration(),
                 new LocationsConfiguration());
         executor.execute(testSuite);
+
+        // check the results
+        for (TestCase testCase : testSuite.getTestCases()) {
+            Boolean result = testCase.getTestReqiurement().getResult();
+            Boolean dbmsResult = testCase.getLastDBMSResult();
+            if (result != null && result != dbmsResult) {
+                TestRequirement testRequirement = testCase.getTestReqiurement();
+                System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
+                System.out.println(testRequirement);
+                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
+            }
+        }
+
 
         // write JUnit test suite to file
         if (classname.equals("")) {

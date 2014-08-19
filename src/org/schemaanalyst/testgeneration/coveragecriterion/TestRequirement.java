@@ -12,20 +12,15 @@ public class TestRequirement implements Comparable<TestRequirement> {
 
     private List<TestRequirementDescriptor> descriptors;
     private Predicate predicate;
+    private Boolean result;
 
-    public TestRequirement(Predicate predicate) {
+    public TestRequirement(TestRequirementDescriptor descriptor, Predicate predicate, Boolean result) {
         descriptors = new ArrayList<>();
-        this.predicate = predicate;
-    }
-
-    public TestRequirement(TestRequirementDescriptor descriptor, Predicate predicate) {
-        this(predicate);
         descriptors.add(descriptor);
+        this.predicate = predicate;
+        this.result = result;
     }
 
-    public TestRequirement(TestRequirementID id, String description, Predicate predicate) {
-        this(new TestRequirementDescriptor(id, description), predicate);
-    }
 
     public void addDescriptor(TestRequirementDescriptor descriptor) {
         descriptors.add(descriptor);
@@ -33,8 +28,13 @@ public class TestRequirement implements Comparable<TestRequirement> {
     }
 
     public void addDescriptors(List<TestRequirementDescriptor> descriptorsToAdd) {
-        descriptors.addAll(descriptorsToAdd);
-        Collections.sort(descriptors);
+        for (TestRequirementDescriptor descriptor : descriptorsToAdd) {
+            addDescriptor(descriptor);
+        }
+    }
+
+    public Boolean getResult() {
+        return result;
     }
 
     public List<TestRequirementDescriptor> getDescriptors() {

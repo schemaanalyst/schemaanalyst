@@ -1,6 +1,8 @@
 package org.schemaanalyst.testgeneration.coveragecriterion.predicate;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.List;
 
 /**
  * Created by phil on 18/07/2014.

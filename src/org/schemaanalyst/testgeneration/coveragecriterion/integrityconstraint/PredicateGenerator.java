@@ -3,9 +3,10 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
-import org.schemaanalyst.sqlrepresentation.expression.*;
+import org.schemaanalyst.sqlrepresentation.expression.DepthFirstSubExpressionVisitor;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;

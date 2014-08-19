@@ -22,8 +22,16 @@ public class TestRequirements {
         return new ArrayList<>(testRequirements);
     }
 
+    public void addTestRequirements(TestRequirements testRequirements) {
+        this.testRequirements.addAll(testRequirements.getTestRequirements());
+    }
+
     public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate) {
-        addTestRequirement(new TestRequirement(id, msg, predicate));
+        addTestRequirement(id, msg, predicate, null);
+    }
+
+    public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate, Boolean result) {
+        addTestRequirement(new TestRequirement(new TestRequirementDescriptor(id, msg), predicate, result));
     }
 
     public void addTestRequirement(TestRequirement testRequirement) {
@@ -54,14 +62,19 @@ public class TestRequirements {
             testRequirements = new ArrayList<>();
 
             for (Predicate predicate : reducedSet.keySet()) {
-                TestRequirement testRequirement = new TestRequirement(predicate);
+
 
                 Set<TestRequirement> testRequirementsForPredicate = reducedSet.get(predicate);
                 Iterator<TestRequirement> testRequirementsForPredicateIterator = testRequirementsForPredicate.iterator();
-                while (testRequirementsForPredicateIterator.hasNext()) {
-                    testRequirement.addDescriptors(testRequirementsForPredicateIterator.next().getDescriptors());
-                }
 
+                TestRequirement testRequirement = testRequirementsForPredicateIterator.next();
+                while (testRequirementsForPredicateIterator.hasNext()) {
+                    TestRequirement duplicateTestRequirement = testRequirementsForPredicateIterator.next();
+                    if (testRequirement.getResult() != duplicateTestRequirement.getResult()) {
+                        throw new CoverageCriterionException("Test requirements have same predicate but not same result");
+                    }
+                    testRequirement.addDescriptors(duplicateTestRequirement.getDescriptors());
+                }
                 testRequirements.add(testRequirement);
             }
 

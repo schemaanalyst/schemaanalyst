@@ -1,5 +1,7 @@
 package org.schemaanalyst.testgeneration.tool;
 
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
@@ -11,19 +13,24 @@ import org.schemaanalyst.util.runner.Runner;
 /**
  * Created by phil on 24/02/2014.
  */
-@RequiredParameters("schema criterion")
+@RequiredParameters("schema dbms criterion")
 public class PrintTestRequirements extends Runner {
 
     @Parameter("The name of the schema to use.")
     protected String schema;
+
+    @Parameter("The name of the DBMS.")
+    protected String dbms;
 
     @Parameter("The coverage criterion to use to generate data.")
     protected String criterion;
 
     @Override
     protected void task() {
+        DBMS dbmsObject = DBMSFactory.instantiate(dbms);
+
         TestRequirements testRequirements =
-                CoverageCriterionFactory.integrityConstraintCriterion(criterion, instantiateSchema())
+                CoverageCriterionFactory.instantiateSchemaCriterion(criterion, instantiateSchema(), dbmsObject)
                         .generateRequirements();
 
         int total = testRequirements.size();
@@ -62,5 +69,4 @@ public class PrintTestRequirements extends Runner {
     public static void main(String... args) {
         new PrintTestRequirements().run(args);
     }
-
 }

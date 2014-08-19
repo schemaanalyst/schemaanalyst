@@ -2,9 +2,14 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.*;;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
+
+import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.SCHEMA;
+import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.TABLE;
+
+;
 
 /**
  * Created by phil on 18/07/2014.
@@ -23,10 +28,10 @@ public class ICC extends IntegrityConstraintCriterion {
 
     public TestRequirements generateRequirements() {
         testRequirements = new TestRequirements();
-        testRequirementIDGenerator.reset(schema.getName(), "schema");
+        testRequirementIDGenerator.reset(SCHEMA, schema.getName());
 
         for (Table table : schema.getTables()) {
-            testRequirementIDGenerator.reset(table.getName(), "table");
+            testRequirementIDGenerator.reset(TABLE, table.getName());
 
             for (Constraint constraint : getConstraints(table)) {
                 generateRequirements(constraint, true);
