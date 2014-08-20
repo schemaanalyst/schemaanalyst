@@ -29,20 +29,12 @@ public class TestCaseExecutor {
                             LocationsConfiguration locationConfiguration) {
 
         this.schema = schema;
-
         tables = schema.getTablesInOrder();
         databaseInteractor = dbms.getDatabaseInteractor(schema.getName(), databaseConfiguration, locationConfiguration);
         sqlWriter = dbms.getSQLWriter();
+    }
 
-        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
-        for (String statement : dropTableStatements) {
-            Integer result = databaseInteractor.executeUpdate(statement);
-            if (result < 0) {
-                throw new TestCaseExecutionException(
-                        "Could not execute DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
-            }
-        }
-
+    public void prepare() {
         List<String> createStatements = sqlWriter.writeCreateTableStatements(schema);
         for (String statement : createStatements) {
             Integer result = databaseInteractor.executeUpdate(statement);
@@ -53,10 +45,23 @@ public class TestCaseExecutor {
         }
     }
 
+    public void close() {
+        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
+        for (String statement : dropTableStatements) {
+            Integer result = databaseInteractor.executeUpdate(statement);
+            if (result < 0) {
+                throw new TestCaseExecutionException(
+                        "Could not execute DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
+            }
+        }
+    }
+
     public void execute(TestSuite testSuite) {
+        prepare();
         for (TestCase testCase : testSuite.getTestCases()) {
             execute(testCase);
         }
+        close();
     }
 
     public void execute(TestCase testCase) {
