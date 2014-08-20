@@ -1,18 +1,11 @@
 package paper.datagenerationjv;
 
-import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.DBMSFactory;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.sqlite.SQLiteConfig;
 
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by phil on 13/08/2014.
@@ -84,6 +77,26 @@ public class ResultsDatabase {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean alreadyDoneExpt(String schemaName, String coverageCriterionName, String dataGeneratorName,
+                                   String dbmsName, int runNo) {
+
+        String sql = "SELECT COUNT(*) AS count FROM test_generation_run WHERE "
+                   + "schema_name='" + schemaName + "' AND coverage_criterion_name = '" + coverageCriterionName + "' AND "
+                   + "data_generator_name = '" + dataGeneratorName + "' AND dbms_name = '" + dbmsName + "' AND run_no = '" + runNo + "'";
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            if (rs.next()) {
+                return rs.getInt("count") == 1;
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        throw new RuntimeException("Could not get count from db");
+    }
+
 
     public void executeInsert(String sql) {
         try {
