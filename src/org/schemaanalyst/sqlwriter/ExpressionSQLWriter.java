@@ -85,12 +85,16 @@ public class ExpressionSQLWriter {
     }
 
     public String writeAndExpression(AndExpression expression) {
+        return writeJoinedSubExpressions(expression, " AND ");
+    }
+
+    public String writeJoinedSubExpressions(Expression expression, String separator) {
         List<Expression> subexpressions = expression.getSubexpressions();
         List<String> subexpressionsStrings = new ArrayList<>(subexpressions.size());
         for (Expression expr : subexpressions) {
             subexpressionsStrings.add(writeExpression(expr));
         }
-        return StringUtils.join(subexpressionsStrings, " AND ");
+        return StringUtils.join(subexpressionsStrings, separator);
     }
 
     public String writeBetweenExpression(BetweenExpression expression) {
@@ -137,7 +141,7 @@ public class ExpressionSQLWriter {
     }
 
     public String writeOrExpression(OrExpression expression) {
-		return StringUtils.join(expression.getSubexpressions(), " OR ");	
+        return writeJoinedSubExpressions(expression, " OR ");
     }
 
     public String writeParenthesisedExpression(ParenthesisedExpression expression) {
