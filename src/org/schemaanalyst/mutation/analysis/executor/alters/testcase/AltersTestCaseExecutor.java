@@ -1,5 +1,6 @@
-package org.schemaanalyst.mutation.analysis.executor.alters;
+package org.schemaanalyst.mutation.analysis.executor.alters.testcase;
 
+import org.schemaanalyst.mutation.analysis.executor.alters.sqlwriter.ConstraintlessSQLWriter;
 import java.util.List;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;

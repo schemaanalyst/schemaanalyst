@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.analysis.executor.alters;
+package org.schemaanalyst.mutation.analysis.executor.alters.sqlwriter;
 
 import java.util.ArrayList;
 import java.util.List;
