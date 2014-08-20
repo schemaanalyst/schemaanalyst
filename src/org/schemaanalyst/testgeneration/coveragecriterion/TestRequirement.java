@@ -3,12 +3,15 @@ package org.schemaanalyst.testgeneration.coveragecriterion;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
  * Created by phil on 23/07/2014.
  */
-public class TestRequirement implements Comparable<TestRequirement> {
+public class TestRequirement implements Comparable<TestRequirement>, Serializable {
+
+    private static final long serialVersionUID = 6777745015314686157L;
 
     private List<TestRequirementDescriptor> descriptors;
     private Predicate predicate;

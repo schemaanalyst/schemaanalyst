@@ -2,7 +2,11 @@ package org.schemaanalyst.data;
 
 import org.schemaanalyst.sqlrepresentation.datatype.*;
 
-public class ValueFactory {
+import java.io.Serializable;
+
+public class ValueFactory implements Serializable {
+
+    private static final long serialVersionUID = -7295540027928402645L;
 
     public Value createValue(DataType type) {
 

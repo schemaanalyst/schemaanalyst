@@ -253,7 +253,7 @@ public class ClauseAICC extends CondAICC {
 
         Expression subject = expression.getSubject();
         Expression lhs = expression.getLHS();
-        Expression rhs = expression.getLHS();
+        Expression rhs = expression.getRHS();
         List<Column> columns = expression.getColumnsInvolved();
 
         if (truthValue == null) {
@@ -284,7 +284,7 @@ public class ClauseAICC extends CondAICC {
                 String msgSuffix = " - LHS subexpression "+ lhs + " is F";
                 generateTestRequirement(constraint, msgSuffix, predicate, result);
 
-                // 2) RHS
+                // 2) RHS if false
                 predicate = new AndPredicate();
                 predicate.addPredicate(new ExpressionPredicate(table, lhsRelationalExpression, true));
                 predicate.addPredicate(new ExpressionPredicate(table, rhsRelationalExpression, false));
@@ -365,7 +365,7 @@ public class ClauseAICC extends CondAICC {
                         predicate.addPredicate(new ExpressionPredicate(table, subexpression, truthValueOfExpression));
                     }
                     addNullPredicates(predicate, table, expression.getColumnsInvolved(), false);
-                    String msgSuffix = subexpressions.get(i) + " is T";
+                    String msgSuffix = " - " + subexpressions.get(i) + " is T";
                     generateTestRequirement(constraint, msgSuffix, predicate, result);
                 }
             } else if (truthValue == false) {

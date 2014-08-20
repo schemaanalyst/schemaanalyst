@@ -30,8 +30,7 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
         this.table = matchPredicate.getTable();
         this.referenceTable = matchPredicate.getReferenceTable();
 
-        // if there are non-matching columns this must hold for all rows,
-        // else if they must all match this needs to hold for one row only
+        // matches can hold for one row, non-matches need to hold for all rows
         this.forAll = matchPredicate.getNonMatchingColumns().size() > 0;
     }
 
@@ -45,8 +44,8 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
             ListIterator<Row> rowsIterator = rows.listIterator();
 
             while (rowsIterator.hasNext()) {
-                int index = rowsIterator.nextIndex();
                 Row row = rowsIterator.next();
+                int index = rowsIterator.previousIndex();
                 List<Row> compareRows = getCompareRows(data, index);
 
                 if (compareRows.size() > 0) {
@@ -81,6 +80,10 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
     private List<Row> getCompareRows(Data data, int index) {
         List<Row> compareRows = data.getRows(matchPredicate.getReferenceTable());
         if (table.equals(referenceTable)) {
+            if (!matchPredicate.colsAreRefCols()) {
+                // include the current record  -- this is an FK to the same table
+                index ++;
+            }
             compareRows = compareRows.subList(0, index);
         }
         compareRows.addAll(state.getRows(matchPredicate.getReferenceTable()));

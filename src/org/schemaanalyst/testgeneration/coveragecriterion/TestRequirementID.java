@@ -1,9 +1,13 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
+import java.io.Serializable;
+
 /**
  * Created by phil on 25/07/2014.
  */
-public class TestRequirementID implements Comparable<TestRequirementID> {
+public class TestRequirementID implements Comparable<TestRequirementID>, Serializable {
+
+    private static final long serialVersionUID = -2477609817199475731L;
 
     private String name;
     private int number;
@@ -22,7 +26,6 @@ public class TestRequirementID implements Comparable<TestRequirementID> {
         } else {
             return nameCompare;
         }
-
     }
 
     @Override

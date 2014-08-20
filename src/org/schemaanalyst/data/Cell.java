@@ -2,7 +2,11 @@ package org.schemaanalyst.data;
 
 import org.schemaanalyst.sqlrepresentation.Column;
 
-public class Cell {
+import java.io.Serializable;
+
+public class Cell implements Serializable {
+
+    private static final long serialVersionUID = 3236797977465229648L;
 
     protected Column column;
     protected ValueFactory valueFactory;

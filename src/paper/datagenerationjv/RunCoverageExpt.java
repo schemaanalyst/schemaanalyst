@@ -1,17 +1,19 @@
 package paper.datagenerationjv;
 
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
-import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
-import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
-import java.util.Map;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
 import static paper.datagenerationjv.Instantiator.instantiateDBMS;
@@ -22,11 +24,25 @@ import static paper.datagenerationjv.Instantiator.instantiateSchema;
  */
 public class RunCoverageExpt {
 
+    protected LocationsConfiguration locationsConfiguration;
     protected ResultsDatabase resultsDatabase;
     protected int maxEvaluations = 100000;
 
     public RunCoverageExpt(String resultsDatabaseFileName) {
+        locationsConfiguration = new LocationsConfiguration();
         resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
+    }
+
+    public void runExpts() {
+        List<String> schemaNames = resultsDatabase.getNames("schemas");
+        for (String schemaName : schemaNames) {
+            List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
+            for (String coverageCriterionName : coverageCriteriaNames) {
+                //if (!schemaName.equals("DellStore") && !schemaName.equals("BrowserCookies"))
+                //expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
+                expt(schemaName, coverageCriterionName, "avsDefaults", "SQLite", 1);
+            }
+        }
     }
 
     protected void expt(String schemaName,
@@ -57,24 +73,57 @@ public class RunCoverageExpt {
                 dbms.getValueFactory(),
                 dataGeneratorObject);
 
-        testSuiteGenerator.generate();
+        TestSuite testSuite = testSuiteGenerator.generate();
+
+        // execute each test case to see what the DBMS result is for each row generated (accept / row)
+        TestCaseExecutor executor = new TestCaseExecutor(
+                schema,
+                dbms,
+                new DatabaseConfiguration(),
+                new LocationsConfiguration());
+        executor.execute(testSuite);
+
+        // check the results
+        int numWarnings = 0;
+        for (TestCase testCase : testSuite.getTestCases()) {
+            Boolean result = testCase.getTestRequirement().getResult();
+            Boolean dbmsResult = testCase.getLastDBMSResult();
+            if (result != null && result != dbmsResult) {
+                numWarnings ++;
+            }
+        }
 
         // get the stats
         TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
 
         int numReqsCovered = report.getNumTestRequirementsCovered();
+        int numReqsNotCovered = report.getNumTestRequirementsFailed();
         int successfulEvaluations = report.getNumEvaluations(true);
         int allEvaluations = report.getNumEvaluations(false);
 
         String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", \"" + dataGeneratorName + "\", "
-                    + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + successfulEvaluations
-                    + ", " + allEvaluations;
+                    + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqsNotCovered + ", "
+                    + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
 
         String sql = "INSERT INTO test_generation_run VALUES (NULL, " + data + ")";
 
         System.out.println(sql);
 
-        resultsDatabase.executeInsert(sql);
+        //resultsDatabase.executeInsert(sql);
+
+        // serialize the test suite
+        try {
+            String fileName = locationsConfiguration.getResultsDir() + "/" + schemaName + "-" + coverageCriterionName
+                    + "-" + dataGeneratorName + "-" + dbmsName + "-" + runNo + ".testsuite";
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(testSuite);
+            out.close();
+            fileOut.close();
+            System.out.println("Test suite serialized to " + fileName);
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -84,12 +133,6 @@ public class RunCoverageExpt {
         }
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
-
-        // schemaName,
-        // coverageCriterionName,
-        // dataGeneratorName,
-        // dbmsName,
-        // runNo
-        rce.expt("BrowserCookies", "ClauseAICC", "avsDefaults", "SQLite", 1);
+        rce.runExpts();
     }
 }

@@ -1,9 +1,14 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
+import java.io.Serializable;
+
 /**
  * Created by phil on 18/07/2014.
  */
-public class TestRequirementDescriptor implements Comparable<TestRequirementDescriptor> {
+public class TestRequirementDescriptor implements Comparable<TestRequirementDescriptor>, Serializable {
+
+    private static final long serialVersionUID = -5913936021929831691L;
+
     private TestRequirementID id;
     private String msg;
 
