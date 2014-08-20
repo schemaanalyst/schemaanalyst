@@ -38,9 +38,9 @@ public class RunCoverageExpt {
         for (String schemaName : schemaNames) {
             List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
             for (String coverageCriterionName : coverageCriteriaNames) {
-                //if (!schemaName.equals("DellStore") && !schemaName.equals("BrowserCookies"))
-                //expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
-                expt(schemaName, coverageCriterionName, "avsDefaults", "SQLite", 1);
+                //if (schemaName.equals("BankAccount"))
+                expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
+                //expt(schemaName, coverageCriterionName, "avsDefaults", "Postgres", 1);
             }
         }
     }
@@ -109,7 +109,7 @@ public class RunCoverageExpt {
 
         System.out.println(sql);
 
-        //resultsDatabase.executeInsert(sql);
+        resultsDatabase.executeInsert(sql);
 
         // serialize the test suite
         try {
