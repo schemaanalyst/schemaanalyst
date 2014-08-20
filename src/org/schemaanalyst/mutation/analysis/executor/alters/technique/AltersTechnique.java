@@ -26,8 +26,8 @@ import org.schemaanalyst.util.tuple.MixedPair;
  */
 public class AltersTechnique extends Technique {
 
-        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-            super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+            super(schema, mutants, testSuite, dbms, databaseInteractor, false);
         }
 
         @Override
