@@ -11,6 +11,7 @@ public class DateValue extends Value
         implements CompoundValue {
 
     private static final long serialVersionUID = -2857133215655181386L;
+
     protected NumericValue year, month, day;
 
     public DateValue() {

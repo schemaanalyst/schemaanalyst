@@ -34,13 +34,17 @@ public class RunCoverageExpt {
     }
 
     public void runExpts() {
-        List<String> schemaNames = resultsDatabase.getNames("schemas");
-        for (String schemaName : schemaNames) {
-            List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
-            for (String coverageCriterionName : coverageCriteriaNames) {
-                //if (schemaName.equals("BankAccount"))
-                expt(schemaName, coverageCriterionName, "avsDefaults", "HyperSQL", 1);
-                //expt(schemaName, coverageCriterionName, "avsDefaults", "Postgres", 1);
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
+                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
+                    if (dataGeneratorName.startsWith("avs")) {
+                        for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                            if (dbmsName.equals("HyperSQL"))
+                                for (int i=2; i <= 30; i++ )
+                                    expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                        }
+                    }
+                }
             }
         }
     }
@@ -50,6 +54,12 @@ public class RunCoverageExpt {
                         String dataGeneratorName,
                         String dbmsName,
                         int runNo) {
+
+        if (resultsDatabase.alreadyDoneExpt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, runNo)) {
+            return;
+        }
+
+        System.out.println(schemaName + ", " + coverageCriterionName + ", " + dataGeneratorName + ", " + dbmsName + ", " + runNo);
 
         Schema schema = instantiateSchema(schemaName);
         DBMS dbms = instantiateDBMS(dbmsName);

@@ -2,6 +2,11 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
@@ -40,9 +45,25 @@ public class APC extends IntegrityConstraintCriterion {
 
     private void generateRequirements(Table table, boolean truthValue) {
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                "Acceptance predicate for " + table + " is " + truthValue,
-                PredicateGenerator.generatePredicate(getConstraints(table), truthValue),
-                truthValue);
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                                testRequirementIDGenerator.nextID(),
+                                "Acceptance predicate for " + table + " is " + truthValue
+                        ),
+                        PredicateGenerator.generatePredicate(getConstraints(table), truthValue),
+                        truthValue,
+                        doesRequirementRequiresComparisonRow(table)
+                )
+        );
     }
+
+    protected boolean doesRequirementRequiresComparisonRow(Table table) {
+        for (Constraint constraint : schema.getConstraints(table)) {
+            if (constraint instanceof PrimaryKeyConstraint || constraint instanceof UniqueConstraint) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

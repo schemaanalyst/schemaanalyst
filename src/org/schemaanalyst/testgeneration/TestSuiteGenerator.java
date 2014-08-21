@@ -130,7 +130,7 @@ public class TestSuiteGenerator {
 
             Data state = new Data();
             Data data = new Data();
-            predicate = addAdditionalRows(state, data, predicate, table);
+            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.requiresComparisonRow());
 
             if (predicate != null) {
                 data.addRow(table, valueFactory);
@@ -168,7 +168,7 @@ public class TestSuiteGenerator {
         return tables.iterator().next();
     }
 
-    protected Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table) {
+    protected Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table, boolean requiresComparisonRow) {
         LOGGER.fine("--- adding additional rows");
 
         boolean haveLinkedData = addInitialTableDataToState(state, table);
@@ -176,7 +176,7 @@ public class TestSuiteGenerator {
             return null;
         }
 
-        if (requiresComparisonRow(predicate)) {
+        if (requiresComparisonRow) { // if (requiresComparisonRow(predicate)) {
             Data comparisonRow = initialTableData.get(table);
             if (comparisonRow == null) {
                 LOGGER.fine("--- could not add comparison row, data generation FAILED");
@@ -213,6 +213,7 @@ public class TestSuiteGenerator {
         return true;
     }
 
+    /*
     protected boolean requiresComparisonRow(Predicate predicate) {
         LOGGER.fine("--- checking if comparison row required for " + predicate);
 
@@ -230,6 +231,7 @@ public class TestSuiteGenerator {
             }
         }.requiresComparisonRow(predicate);
     }
+    */
 
     protected Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
 

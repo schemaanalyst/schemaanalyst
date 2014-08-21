@@ -78,7 +78,7 @@ public class ValueSQLWriter {
     }
 
     public String writeDateValue(DateValue dateValue) {
-        return dateValue.toString();
+        return new DateWriter().writeDate(dateValue);
     }
 
     public String writeDateTimeValue(DateTimeValue dateTimeValue) {
