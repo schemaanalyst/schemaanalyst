@@ -37,4 +37,8 @@ public class AltersTechniqueFactory {
         return new AltersTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
     }
     
+    public static Technique altersMinimal(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+        return new AltersMinimalTechnique(schema, mutants, testSuite, dbms, databaseInteractor);
+    }
+    
 }
