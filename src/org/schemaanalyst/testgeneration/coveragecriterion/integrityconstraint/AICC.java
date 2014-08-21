@@ -2,6 +2,8 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
 
@@ -25,9 +27,15 @@ public class AICC extends ICC {
         topLevelPredicate.addPredicate(PredicateGenerator.generateConditionPredicate(constraint, truthValue));
 
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                generateMsg(constraint) + " is " + truthValue,
-                topLevelPredicate,
-                truthValue);
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                            testRequirementIDGenerator.nextID(),
+                            generateMsg(constraint) + " is " + truthValue
+                        ),
+                        topLevelPredicate,
+                        truthValue,
+                        doesRequirementRequiresComparisonRow(constraint)
+                )
+        );
     }
 }

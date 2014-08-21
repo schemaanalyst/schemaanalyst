@@ -3,8 +3,9 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.*;
 
 import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.SCHEMA;
 import static org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator.IDType.TABLE;
@@ -43,12 +44,24 @@ public class ICC extends IntegrityConstraintCriterion {
 
     protected void generateRequirements(Constraint constraint, boolean truthValue) {
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                generateMsg(constraint) + " is " + truthValue,
-                PredicateGenerator.generateConditionPredicate(constraint, truthValue));
+                new TestRequirement(
+                    new TestRequirementDescriptor(
+                            testRequirementIDGenerator.nextID(),
+                            generateMsg(constraint) + " is " + truthValue
+                    ),
+                    PredicateGenerator.generateConditionPredicate(constraint, truthValue),
+                    null,
+                    doesRequirementRequiresComparisonRow(constraint)
+                )
+        );
     }
 
     protected String generateMsg(Constraint constraint) {
         return constraint + " for " + constraint.getTable();
+    }
+
+    protected boolean doesRequirementRequiresComparisonRow(Constraint constraint) {
+        return constraint instanceof PrimaryKeyConstraint ||
+                constraint instanceof UniqueConstraint;
     }
 }

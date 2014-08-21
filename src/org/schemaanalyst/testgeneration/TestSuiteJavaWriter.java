@@ -160,7 +160,7 @@ public class TestSuiteJavaWriter {
         code.appendln("// execute INSERT statements for the test case");
         while (statementsIterator.hasNext()) {
             String statement = statementsIterator.next();
-            boolean dbmsResult = resultsIterator.next();
+            boolean dbmsResult = true; //resultsIterator.next();
             if (dbmsResult) {
                 code.appendln("assertEquals(1, " + writeExecuteUpdate(statement) + ");");
             } else {

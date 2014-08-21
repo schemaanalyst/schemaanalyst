@@ -5,6 +5,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.ConstraintSupplier;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
@@ -46,9 +48,15 @@ public class ANCC extends NCC {
         topLevelPredicate.addPredicate(new NullPredicate(table, column, truthValue));
 
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                column + " is " + ((truthValue) ? "NULL" : "NOT NULL"),
-                topLevelPredicate,
-                true);
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                                testRequirementIDGenerator.nextID(),
+                                column + " is " + ((truthValue) ? "NULL" : "NOT NULL")
+                        ),
+                        topLevelPredicate,
+                        true,
+                        false
+                )
+        );
     }
 }

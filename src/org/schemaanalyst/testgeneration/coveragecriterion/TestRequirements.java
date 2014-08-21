@@ -1,5 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.*;
@@ -24,14 +25,6 @@ public class TestRequirements {
 
     public void addTestRequirements(TestRequirements testRequirements) {
         this.testRequirements.addAll(testRequirements.getTestRequirements());
-    }
-
-    public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate) {
-        addTestRequirement(id, msg, predicate, null);
-    }
-
-    public void addTestRequirement(TestRequirementID id, String msg, Predicate predicate, Boolean result) {
-        addTestRequirement(new TestRequirement(new TestRequirementDescriptor(id, msg), predicate, result));
     }
 
     public void addTestRequirement(TestRequirement testRequirement) {

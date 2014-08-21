@@ -91,11 +91,10 @@ public class GenerateTestSuite extends Runner {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
-                //System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
+                System.out.println((report.getDataGenerationResult(testRequirement).getData()));
                 i ++;
             }
         }
-
 
         // execute each test case to see what the DBMS result is for each row generated (accept / row)
         TestCaseExecutor executor = new TestCaseExecutor(
@@ -112,11 +111,9 @@ public class GenerateTestSuite extends Runner {
             if (result != null && result != dbmsResult) {
                 TestRequirement testRequirement = testCase.getTestRequirement();
                 System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
-                System.out.println(testRequirement);
                 System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
             }
         }
-
 
         // write JUnit test suite to file
         if (classname.equals("")) {

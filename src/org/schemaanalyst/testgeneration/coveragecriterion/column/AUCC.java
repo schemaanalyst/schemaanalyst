@@ -5,6 +5,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.ConstraintSupplier;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
@@ -49,9 +51,15 @@ public class AUCC extends UCC {
         topLevelPredicate.addPredicate(generateMatchPredicate(table, column, truthValue));
 
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                column + " is " + ((truthValue) ? "UNIQUE" : "NOT UNIQUE"),
-                topLevelPredicate,
-                truthValue);
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                                testRequirementIDGenerator.nextID(),
+                                column + " is " + ((truthValue) ? "UNIQUE" : "NOT UNIQUE")
+                        ),
+                        topLevelPredicate,
+                        truthValue,
+                        true
+                )
+        );
     }
 }

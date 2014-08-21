@@ -6,7 +6,7 @@ public class NumericValue extends Value {
 
     private static final long serialVersionUID = -5783509968308882198L;
     protected BigDecimal value = BigDecimal.ZERO;
-    protected BigDecimal min, max;
+    public BigDecimal min, max;
 
     public NumericValue() {
     }
