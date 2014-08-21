@@ -1,6 +1,7 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
 import java.io.Serializable;
@@ -16,14 +17,18 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
     private List<TestRequirementDescriptor> descriptors;
     private Predicate predicate;
     private Boolean result;
+    private boolean requiresComparisonRow;
 
-    public TestRequirement(TestRequirementDescriptor descriptor, Predicate predicate, Boolean result) {
+    public TestRequirement(TestRequirementDescriptor descriptor,
+                           Predicate predicate,
+                           Boolean result,
+                           boolean requiresComparisonRow) {
         descriptors = new ArrayList<>();
         descriptors.add(descriptor);
         this.predicate = predicate;
         this.result = result;
+        this.requiresComparisonRow = requiresComparisonRow;
     }
-
 
     public void addDescriptor(TestRequirementDescriptor descriptor) {
         descriptors.add(descriptor);
@@ -36,16 +41,20 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
         }
     }
 
-    public Boolean getResult() {
-        return result;
-    }
-
     public List<TestRequirementDescriptor> getDescriptors() {
         return new ArrayList<>(descriptors);
     }
 
     public Predicate getPredicate() {
         return predicate;
+    }
+
+    public Boolean getResult() {
+        return result;
+    }
+
+    public boolean requiresComparisonRow() {
+        return requiresComparisonRow;
     }
 
     public Set<Table> getTables() {
@@ -90,6 +99,9 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
             p = p.reduce();
         }
         str += p;
+
+        str += "\nRequires comparison row: " + requiresComparisonRow;
+
         return str;
     }
 

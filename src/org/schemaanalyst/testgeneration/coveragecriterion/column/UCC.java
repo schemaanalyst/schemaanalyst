@@ -3,6 +3,9 @@ package org.schemaanalyst.testgeneration.coveragecriterion.column;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 
@@ -30,9 +33,14 @@ public class UCC extends ColumnCriterion {
 
     protected void generateRequirement(Table table, Column column, boolean truthValue) {
         testRequirements.addTestRequirement(
-                testRequirementIDGenerator.nextID(),
-                column + " is " + ((truthValue) ? "NULL" : "NOT NULL"),
-                generateMatchPredicate(table, column, truthValue),
-                null);
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                                testRequirementIDGenerator.nextID(),
+                                column + " is " + ((truthValue) ? "NULL" : "NOT NULL")),
+                        generateMatchPredicate(table, column, truthValue),
+                        null,
+                        true
+                )
+        );
     }
 }

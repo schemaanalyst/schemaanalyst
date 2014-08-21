@@ -3,6 +3,8 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
@@ -179,11 +181,19 @@ public class CondAICC extends AICC {
     }
 
     protected void generateTestRequirement(Constraint constraint, String msgSuffix, Predicate predicate, Boolean result) {
-        String msg = generateMsg(constraint) + msgSuffix;
-
         ComposedPredicate topLevelPredicate = generatePredicate(getConstraints(constraint.getTable()), constraint);
         topLevelPredicate.addPredicate(predicate);
 
-        testRequirements.addTestRequirement(testRequirementIDGenerator.nextID(), msg, topLevelPredicate, result);
+        testRequirements.addTestRequirement(
+                new TestRequirement(
+                        new TestRequirementDescriptor(
+                                testRequirementIDGenerator.nextID(),
+                                generateMsg(constraint) + msgSuffix
+                        ),
+                        topLevelPredicate,
+                        result,
+                        doesRequirementRequiresComparisonRow(constraint)
+                )
+        );
     }
 }

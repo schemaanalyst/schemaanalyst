@@ -2,7 +2,9 @@ package org.schemaanalyst.testgeneration;
 
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.DateValue;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -45,17 +47,6 @@ public class TestCaseExecutor {
         }
     }
 
-    public void close() {
-        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
-        for (String statement : dropTableStatements) {
-            Integer result = databaseInteractor.executeUpdate(statement);
-            if (result < 0) {
-                throw new TestCaseExecutionException(
-                        "Could not execute DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
-            }
-        }
-    }
-
     public void execute(TestSuite testSuite) {
         prepare();
         for (TestCase testCase : testSuite.getTestCases()) {
@@ -86,6 +77,11 @@ public class TestCaseExecutor {
                     String statement = sqlWriter.writeInsertStatement(row);
                     Integer result = databaseInteractor.executeUpdate(statement);
                     if (result != 1) {
+                        System.out.println(row);
+                        Cell cell = row.getCells().get(row.getCells().size() - 1);
+                        System.out.println(cell.getValue().getClass());
+                        System.out.println(((DateValue) cell.getValue()).getMonth());
+                        System.out.println(((DateValue) cell.getValue()).getDay().max);
                         throw new TestCaseExecutionException(
                                 "INSERT statement for setting database state \"" + statement + "\" should affect exactly one row, was " + result);
                     }
@@ -116,4 +112,16 @@ public class TestCaseExecutor {
 
         testCase.setDBMSResults(results);
     }
+
+    public void close() {
+        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
+        for (String statement : dropTableStatements) {
+            Integer result = databaseInteractor.executeUpdate(statement);
+            if (result < 0) {
+                throw new TestCaseExecutionException(
+                        "Could not execute DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
+            }
+        }
+    }
+
 }
