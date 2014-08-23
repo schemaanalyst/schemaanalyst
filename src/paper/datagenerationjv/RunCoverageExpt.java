@@ -6,6 +6,12 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -37,9 +43,9 @@ public class RunCoverageExpt {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
             for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
                 for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
-                    if (dataGeneratorName.startsWith("avs")) {
+                    if (dataGeneratorName.equals("random")) {
                         for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                            if (dbmsName.equals("HyperSQL"))
+                            if (dbmsName.equals("Postgres"))
                                 for (int i=2; i <= 30; i++ )
                                     expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
                         }
@@ -135,6 +141,7 @@ public class RunCoverageExpt {
             throw new RuntimeException(e);
         }
     }
+
 
     public static void main(String[] args) throws Exception {
         if (args.length != 1) {
