@@ -109,4 +109,27 @@ public class ResultsDatabase {
             throw new RuntimeException(e);
         }
     }
+
+    public List<String> getTestSuiteFileNames(String searchName) {
+        String sql = "select schema_name, coverage_criterion_name, dbms_name, run_no from test_generation_run where data_generator_name='" + searchName + "'";
+        List<String> files = new ArrayList<>();
+
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String schemaName = rs.getString("schema_name");
+                String coverageCriterionName = rs.getString("coverage_criterion_name");
+
+                if (!ProcessTestSuiteFiles.exptNotNeeded(schemaName, coverageCriterionName)) {
+                    String file = schemaName + "-" + coverageCriterionName + "-" + searchName + "-" + rs.getString("dbms_name") + "-" + rs.getString("run_no");
+                    files.add(file);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return files;
+    }
 }
