@@ -46,10 +46,34 @@ public class MinimalMinimalSchemataTechnique extends Technique {
 
     @Override
     public AnalysisResult analyse(TestSuiteResult originalResults) {
-//        mutants = mutants.subList(6, 7);
-
-        // Get normal results
         AnalysisResult result = new AnalysisResult();
+        
+        // Split based on those suitable for MinimalMinimal
+        List<Mutant<Schema>> removalMutants = new ArrayList<>();
+        List<Mutant<Schema>> minimalMutants = new ArrayList<>();
+        for (Mutant<Schema> mutant : mutants) {
+            String operator = mutant.getSimpleDescription();
+//            System.out.println(operator);
+            if (operator.endsWith("R") || operator.endsWith("Nullifier") || operator.endsWith("E")) {
+//                System.out.println("Removal mutant");
+                removalMutants.add(mutant);
+            } else {
+//                System.out.println("Minimal mutant");
+                minimalMutants.add(mutant);
+            }
+        }
+        // Analyse suitable mutants with this technique
+        mutants = minimalMutants;
+        // Analyse removal mutants with Minimal technique
+        AnalysisResult removalResults = new MinimalSchemataTechnique(schema, removalMutants, testSuite, dbms, databaseInteractor, useTransactions).analyse(originalResults);
+        for (Mutant<Schema> mutant : removalResults.getKilled()) {
+//            System.out.println("Killed by Minimal");
+            result.addKilled(mutant);
+        }
+        for (Mutant<Schema> mutant : removalResults.getLive()) {
+//            System.out.println("Alive by Minimal");
+            result.addLive(mutant);
+        }
 
         // Build map of changed tables
         this.changedTableMap = new HashMap<>();
@@ -92,13 +116,6 @@ public class MinimalMinimalSchemataTechnique extends Technique {
             normalTestResult = executeInserts(data, normalTestResult, failedMutants, testedMutants, testCase);
             data = testCase.getData();
             normalTestResult = executeInserts(data, normalTestResult, failedMutants, testedMutants, testCase);
-//            if (normalTestResult == null) {
-//                for (int i = 0; i < mutants.size(); i++) {
-//                    if (!failedMutants.containsKey(i)) {
-//                        resultMap.get(i).add(testCase, TestCaseResult.SuccessfulTestCaseResult);
-//                    }
-//                }
-//            }
             for (Integer id : testedMutants) {
                 if (!failedMutants.containsKey(id)) {
                     resultMap.get(id).add(testCase, TestCaseResult.SuccessfulTestCaseResult);
@@ -110,18 +127,6 @@ public class MinimalMinimalSchemataTechnique extends Technique {
         // Build the TestSuiteResult objects
         for (int i = 0; i < mutants.size(); i++) {
             TestSuiteResult mutantResult = resultMap.get(i);
-//            System.out.println("-----");
-//            System.out.println("Original:");
-//            System.out.println(originalResults);
-//            System.out.println("Mutant:");
-//            System.out.println(mutantResult);
-//            if (!originalResults.equals(mutantResult)) {
-//                result.addKilled(mutants.get(i));
-//                System.out.println("Killed");
-//            } else {
-//                result.addLive(mutants.get(i));
-//                System.out.println("Alive");
-//            }
             boolean killed = false;
             for (int j = 0; j < originalResults.getResults().size(); j++) {
                 MixedPair<TestCase, TestCaseResult> original = originalResults.getResults().get(j);
@@ -132,11 +137,21 @@ public class MinimalMinimalSchemataTechnique extends Technique {
                 }
             }
             if (killed) {
+                System.out.println("-----");
+                System.out.println("MM K: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+                System.out.println("Original:");
+                System.out.println(originalResults);
+                System.out.println("Mutant:");
+                System.out.println(resultMap.get(i));
                 result.addKilled(mutants.get(i));
-                System.out.println("Killed: " + mutants.get(i));
             } else {
+                System.out.println("-----");
+                System.out.println("MM A: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+                System.out.println("Original:");
+                System.out.println(originalResults);
+                System.out.println("Mutant:");
+                System.out.println(resultMap.get(i));
                 result.addLive(mutants.get(i));
-                System.out.println("Alive: " + mutants.get(i));
             }
         }
 
