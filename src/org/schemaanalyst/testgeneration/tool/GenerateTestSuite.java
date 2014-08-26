@@ -55,7 +55,7 @@ public class GenerateTestSuite extends Runner {
         Schema schemaObject = instantiateSchema();
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
         TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -1116206204814428231L, 100000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, 5938267508396193780L, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -111,7 +111,7 @@ public class GenerateTestSuite extends Runner {
             if (result != null && result != dbmsResult) {
                 TestRequirement testRequirement = testCase.getTestRequirement();
                 System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
-                System.out.println(((SearchBasedDataGenerationReport) report.getDataGenerationResult(testRequirement).getReport()).getBestObjectiveValue());
+                System.out.println(testRequirement);
             }
         }
 

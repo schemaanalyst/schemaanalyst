@@ -51,8 +51,8 @@ public class PopulateSchemasTable {
 
             int uniques = schema.getUniqueConstraints().size();
             int multiClauseUniques = 0;
-            for (UniqueConstraint fk : schema.getUniqueConstraints()) {
-                if (fk.getColumns().size() > 1) {
+            for (UniqueConstraint uc : schema.getUniqueConstraints()) {
+                if (uc.getColumns().size() > 1) {
                     multiClauseUniques ++;
                 }
             }
