@@ -20,7 +20,11 @@ import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.concurrent.Callable;
 import org.schemaanalyst.data.generation.DataGenerator;
@@ -93,6 +97,13 @@ public class MutationAnalysis extends Runner {
     @Parameter("Whether to use transactions with this technique (if possible).")
     protected boolean useTransactions = false;
     /**
+     * The location of the input test suite to load, which will be used instead
+     * of generating a new test suite.
+     */
+    @Parameter("The location of the input test suite to load, which will be used"
+            + " instead of generating a new test suite.")
+    protected String inputTestSuite = null;
+    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -130,7 +141,7 @@ public class MutationAnalysis extends Runner {
         final TestSuite suite = timedTask(new Callable<TestSuite>() {
             @Override
             public TestSuite call() throws Exception {
-                return generateTestSuite();
+                return instantiateTestSuite();
             }
         }, testGenerationTime);
         final List<Mutant<Schema>> mutants = timedTask(new Callable<List<Mutant<Schema>>>() {
@@ -161,11 +172,12 @@ public class MutationAnalysis extends Runner {
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
         result.addValue("casestudy", casestudy);
-        result.addValue("criterion", criterion);
-        result.addValue("datagenerator", dataGenerator);
-        result.addValue("coverage", generationReport.coverage());
+        result.addValue("criterion", inputTestSuite == null ? criterion : "NA");
+        result.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
+        result.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
+        result.addValue("coverage", inputTestSuite == null ? generationReport.coverage() : "NA");
         //TODO: Include the coverage according to the comparison coverage criterion
-        result.addValue("evaluations", generationReport.getNumDataEvaluations(false));
+        result.addValue("evaluations", inputTestSuite == null ? generationReport.getNumDataEvaluations(false) : "NA");
         result.addValue("tests", suite.getTestCases().size());
         //TODO: Include the number of insert statements
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
@@ -225,6 +237,14 @@ public class MutationAnalysis extends Runner {
      *
      * @return The test suite
      */
+    private TestSuite instantiateTestSuite() {
+        if (inputTestSuite == null) {
+            return generateTestSuite();
+        } else {
+            return loadTestSuite();
+        }
+    }
+
     private TestSuite generateTestSuite() {
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
@@ -241,13 +261,25 @@ public class MutationAnalysis extends Runner {
                 dbms.getValueFactory(),
                 dataGen
         );
-        
+
         // Generate suite
         final TestSuite testSuite = generator.generate();
         generationReport = generator.getTestSuiteGenerationReport();
         //TODO: Include the coverage according to the comparison coverage criterion
-        
+
         return testSuite;
+    }
+
+    private TestSuite loadTestSuite() {
+        try {
+            FileInputStream fis = new FileInputStream(inputTestSuite);
+            try (ObjectInputStream in = new ObjectInputStream(fis)) {
+                TestSuite testSuite = (TestSuite) in.readObject();
+                return testSuite;
+            }
+        } catch (IOException | ClassNotFoundException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     /**
