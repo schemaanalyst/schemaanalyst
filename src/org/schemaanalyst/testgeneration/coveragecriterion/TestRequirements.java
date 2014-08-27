@@ -1,6 +1,8 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.*;

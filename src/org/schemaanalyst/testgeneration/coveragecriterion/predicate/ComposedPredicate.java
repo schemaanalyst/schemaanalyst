@@ -76,7 +76,10 @@ public abstract class ComposedPredicate extends Predicate {
     }
 
     @Override
+    // This has been modified from the auto-generated version to return a different hashcode depending on the subclass
     public int hashCode() {
-        return subPredicates != null ? subPredicates.hashCode() : 0;
+        return (subPredicates != null)
+                ? this.getClass().hashCode() * subPredicates.hashCode()
+                : 0;
     }
 }
