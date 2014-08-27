@@ -26,6 +26,7 @@ import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
@@ -266,8 +267,25 @@ public class MutationAnalysis extends Runner {
         final TestSuite testSuite = generator.generate();
         generationReport = generator.getTestSuiteGenerationReport();
         //TODO: Include the coverage according to the comparison coverage criterion
-
+        
+        // Ensure the test suite contains no warnings
+        verifyTestSuite(testSuite);
+        
         return testSuite;
+    }
+    
+    private void verifyTestSuite(TestSuite testSuite) {
+        int numWarnings = 0;
+        for (TestCase testCase : testSuite.getTestCases()) {
+            Boolean result = testCase.getTestRequirement().getResult();
+            Boolean dbmsResult = testCase.getLastDBMSResult();
+            if (result != null && !Objects.equals(result, dbmsResult)) {
+                numWarnings ++;
+            }
+        }
+        if (numWarnings != 0) {
+            throw new RuntimeException(String.format("TestSuite contains %s unexpected warnings", numWarnings));
+        }
     }
 
     private TestSuite loadTestSuite() {
