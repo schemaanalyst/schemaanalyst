@@ -54,6 +54,21 @@ public class RunCoverageExpt {
         }
     }
 
+    public void runExpts2() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
+                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
+                    if (dataGeneratorName.equals("avs"))
+                        for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                            for (int i = 1; i <= 30; i++) {
+                                expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                            }
+                        }
+                }
+            }
+        }
+    }
+
     protected void expt(String schemaName,
                         String coverageCriterionName,
                         String dataGeneratorName,
@@ -150,5 +165,6 @@ public class RunCoverageExpt {
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
         rce.runExpts();
+        rce.runExpts2();
     }
 }
