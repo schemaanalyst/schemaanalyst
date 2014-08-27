@@ -32,4 +32,24 @@ public class TestRequirementID implements Comparable<TestRequirementID>, Seriali
     public String toString() {
         return number + "-" + name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TestRequirementID that = (TestRequirementID) o;
+
+        if (number != that.number) return false;
+        if (!name.equals(that.name)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + number;
+        return result;
+    }
 }
