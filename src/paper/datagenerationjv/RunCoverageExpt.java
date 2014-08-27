@@ -43,6 +43,7 @@ public class RunCoverageExpt {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
             for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
                 for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
+                    if (dataGeneratorName.equals("avsDefaults"))
                     for (String dbmsName : resultsDatabase.getNames("dbmses")) {
                         for (int i = 1; i <= 30; i++) {
                             expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
@@ -119,7 +120,7 @@ public class RunCoverageExpt {
                     + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqsNotCovered + ", "
                     + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
 
-        String sql = "INSERT INTO test_generation_run VALUES (NULL, " + data + ")";
+        String sql = "INSERT INTO test_generation_run VALUES (" + data + ", NULL, NULL)";
 
         System.out.println(sql);
 

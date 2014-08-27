@@ -14,6 +14,8 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
 
     private static final long serialVersionUID = 6777745015314686157L;
 
+    // NB if any changes are made to these fields, check the algorithm for reduce() in
+    // TestRequirements, which compares predicates only and not other fields
     private List<TestRequirementDescriptor> descriptors;
     private Predicate predicate;
     private Boolean result;

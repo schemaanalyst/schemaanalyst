@@ -1,6 +1,10 @@
 package org.schemaanalyst.util.collection;
 
-public abstract class IdentifiableEntity {
+import java.io.Serializable;
+
+public abstract class IdentifiableEntity implements Serializable {
+
+    private static final long serialVersionUID = -154302892226550092L;
 
     private Identifier id;
     private IdentifiableEntitySet<?> set;

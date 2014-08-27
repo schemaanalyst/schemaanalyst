@@ -15,7 +15,7 @@ import java.util.List;
  * @author Phil McMinn
  * 
  */
-public abstract class Constraint extends IdentifiableEntity implements Serializable {
+public abstract class Constraint extends IdentifiableEntity {
 
     private static final long serialVersionUID = -1552612200017351725L;
 
