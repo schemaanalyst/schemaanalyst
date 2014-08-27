@@ -250,7 +250,7 @@ public class MutationAnalysis extends Runner {
 
     private TestSuite generateTestSuite() {
         // Initialise from factories
-        final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000);
+        final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000, schema);
         final TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schema, dbms).generateRequirements();
 
         // Filter and reduce test requirements
