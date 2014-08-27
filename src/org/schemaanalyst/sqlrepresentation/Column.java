@@ -11,8 +11,7 @@ import java.io.Serializable;
  * @author Phil McMinn
  *
  */
-public class Column extends IdentifiableEntity 
-                    implements Serializable {
+public class Column extends IdentifiableEntity {
 
     private static final long serialVersionUID = -2680046452756410766L;
     private DataType dataType;

@@ -14,7 +14,7 @@ import java.util.*;
  * @author Phil McMinn
  * 
  */
-public class Schema extends IdentifiableEntity implements Serializable {
+public class Schema extends IdentifiableEntity {
 
 	public static class Duplicator implements
 			org.schemaanalyst.util.Duplicator<Schema> {
@@ -24,7 +24,8 @@ public class Schema extends IdentifiableEntity implements Serializable {
 		}
 	}
 
-	private static final long serialVersionUID = 7338170433995168952L;
+    private static final long serialVersionUID = -212628589124201466L;
+
 	private IdentifiableEntitySet<Table> tables;
 	private List<PrimaryKeyConstraint> primaryKeyConstraints;
 	private List<CheckConstraint> checkConstraints;

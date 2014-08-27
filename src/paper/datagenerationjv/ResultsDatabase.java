@@ -49,6 +49,7 @@ public class ResultsDatabase {
         if (where != null && !where.equals("")) {
             sql += " WHERE " + where;
         }
+        sql += " ORDER BY name COLLATE NOCASE ASC";
 
         try {
             Statement statement = connection.createStatement();

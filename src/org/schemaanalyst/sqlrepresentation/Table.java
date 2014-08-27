@@ -12,7 +12,7 @@ import java.util.List;
  * 
  * @author Phil McMinn
  */
-public class Table extends IdentifiableEntity implements Serializable {
+public class Table extends IdentifiableEntity {
 
 	private static final long serialVersionUID = 781185006248617033L;
 	private IdentifiableEntitySet<Column> columns;
