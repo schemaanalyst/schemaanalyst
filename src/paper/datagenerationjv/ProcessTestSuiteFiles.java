@@ -116,6 +116,9 @@ public class ProcessTestSuiteFiles {
 
             for (CheckConstraint check : schema.getCheckConstraints()) {
                 Expression expression = check.getExpression();
+                if (expression instanceof ParenthesisedExpression) {
+                    expression = ((ParenthesisedExpression) expression).getSubexpression();
+                }
                 if (expression instanceof AndExpression ||
                         expression instanceof OrExpression ||
                         expression instanceof BetweenExpression ||
