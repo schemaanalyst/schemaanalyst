@@ -69,6 +69,36 @@ public class RunCoverageExpt {
         }
     }
 
+    public void runExpts3() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
+                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
+                    if (dataGeneratorName.equals("randomDefaults"))
+                        for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                            for (int i = 1; i <= 30; i++) {
+                                expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                            }
+                        }
+                }
+            }
+        }
+    }
+
+    public void runExpts4() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
+                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
+                    if (dataGeneratorName.equals("random"))
+                        for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                            for (int i = 1; i <= 30; i++) {
+                                expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                            }
+                        }
+                }
+            }
+        }
+    }
+
     protected void expt(String schemaName,
                         String coverageCriterionName,
                         String dataGeneratorName,
@@ -135,7 +165,7 @@ public class RunCoverageExpt {
                     + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqsNotCovered + ", "
                     + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
 
-        String sql = "INSERT INTO test_generation_run VALUES (" + data + ", NULL, NULL)";
+        String sql = "INSERT INTO test_generation_runs VALUES (" + data + ", NULL, NULL)";
 
         System.out.println(sql);
 
@@ -166,5 +196,7 @@ public class RunCoverageExpt {
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
         rce.runExpts();
         rce.runExpts2();
+        rce.runExpts3();
+        rce.runExpts4();
     }
 }
