@@ -1,5 +1,5 @@
 
-package org.schemaanalyst.mutation.analysis.executor.alters;
+package org.schemaanalyst.mutation.analysis.executor.alters.technique;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +10,7 @@ import java.util.Set;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.analysis.executor.alters.testcase.AltersTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
 import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
@@ -25,8 +26,8 @@ import org.schemaanalyst.util.tuple.MixedPair;
  */
 public class AltersTechnique extends Technique {
 
-        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-            super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
+            super(schema, mutants, testSuite, dbms, databaseInteractor, false);
         }
 
         @Override
@@ -61,7 +62,7 @@ public class AltersTechnique extends Technique {
             }
 
             // Drop the tables
-            testCaseExecutor.executeDeletes();
+            testCaseExecutor.executeDrops();
             
             // Compare results
             AnalysisResult result = compareResults(originalResults, resultMap);

@@ -11,9 +11,9 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.alters.AltersTechnique;
-import org.schemaanalyst.mutation.analysis.executor.alters.AltersTestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.alters.AltersTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.alters.technique.AltersTechniqueFactory;
+import org.schemaanalyst.mutation.analysis.executor.alters.testcase.AltersTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.alters.testsuite.AltersTestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
 import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
@@ -81,7 +81,7 @@ public class MutationAnalysisAlters extends Runner {
      * Which mutation analysis technique to use.
      */
     @Parameter("Which mutation analysis technique to use.")
-    protected String technique = "original";
+    protected String technique = "alters";
     /**
      * Whether to use transactions with this technique (if possible).
      */
@@ -201,7 +201,7 @@ public class MutationAnalysisAlters extends Runner {
     }
 
     private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return new AltersTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+        return AltersTechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
     }
 
     /**
