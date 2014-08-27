@@ -53,7 +53,11 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
         return result;
     }
 
-    public boolean requiresComparisonRow() {
+    public void setRequiresComparisonRow(boolean requiresComparisonRow) {
+        this.requiresComparisonRow = requiresComparisonRow;
+    }
+
+    public boolean getRequiresComparisonRow() {
         return requiresComparisonRow;
     }
 

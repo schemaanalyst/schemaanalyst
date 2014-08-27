@@ -8,7 +8,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
@@ -130,7 +129,7 @@ public class TestSuiteGenerator {
 
             Data state = new Data();
             Data data = new Data();
-            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.requiresComparisonRow());
+            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
 
             if (predicate != null) {
                 data.addRow(table, valueFactory);
@@ -176,7 +175,7 @@ public class TestSuiteGenerator {
             return null;
         }
 
-        if (requiresComparisonRow) { // if (requiresComparisonRow(predicate)) {
+        if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
             Data comparisonRow = initialTableData.get(table);
             if (comparisonRow == null) {
                 LOGGER.fine("--- could not add comparison row, data generation FAILED");
@@ -214,22 +213,22 @@ public class TestSuiteGenerator {
     }
 
     /*
-    protected boolean requiresComparisonRow(Predicate predicate) {
+    protected boolean getRequiresComparisonRow(Predicate predicate) {
         LOGGER.fine("--- checking if comparison row required for " + predicate);
 
         return new PredicateAdaptor() {
-            boolean requiresComparisonRow = false;
+            boolean getRequiresComparisonRow = false;
 
-            boolean requiresComparisonRow(Predicate predicate) {
+            boolean getRequiresComparisonRow(Predicate predicate) {
                 predicate.accept(this);
-                return requiresComparisonRow;
+                return getRequiresComparisonRow;
             }
 
             @Override
             public void visit(MatchPredicate predicate) {
-                requiresComparisonRow = true;
+                getRequiresComparisonRow = true;
             }
-        }.requiresComparisonRow(predicate);
+        }.getRequiresComparisonRow(predicate);
     }
     */
 

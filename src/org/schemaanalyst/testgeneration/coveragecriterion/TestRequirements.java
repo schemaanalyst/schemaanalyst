@@ -56,13 +56,18 @@ public class TestRequirements {
 
             for (Predicate predicate : reducedSet.keySet()) {
 
-
                 Set<TestRequirement> testRequirementsForPredicate = reducedSet.get(predicate);
                 Iterator<TestRequirement> testRequirementsForPredicateIterator = testRequirementsForPredicate.iterator();
 
                 TestRequirement testRequirement = testRequirementsForPredicateIterator.next();
                 while (testRequirementsForPredicateIterator.hasNext()) {
                     TestRequirement duplicateTestRequirement = testRequirementsForPredicateIterator.next();
+
+                    // ensure that if a comparison row is ever required, the test requirement used requires one
+                    if (duplicateTestRequirement.getRequiresComparisonRow()) {
+                        testRequirement.setRequiresComparisonRow(true);
+                    }
+
                     if (testRequirement.getResult() != duplicateTestRequirement.getResult()) {
                         throw new CoverageCriterionException("Test requirements have same predicate but not same result");
                     }

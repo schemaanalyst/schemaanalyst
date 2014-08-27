@@ -77,7 +77,7 @@ public class MatchPredicateChecker extends PredicateChecker {
                 List<Row> stateRows = getStateRows();
                 int numCompareRows = dataRows.size() + stateRows.size();
                 if (numCompareRows > 0) {
-                    //if (matchPredicate.requiresComparisonRow()) {
+                    //if (matchPredicate.getRequiresComparisonRow()) {
                     //    compareRowAlwaysPresent = false;
                     //}
                 } else {
