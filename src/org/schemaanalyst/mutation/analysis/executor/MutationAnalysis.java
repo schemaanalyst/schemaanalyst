@@ -175,6 +175,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("casestudy", casestudy);
         result.addValue("criterion", inputTestSuite == null ? criterion : "NA");
         result.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
+        result.addValue("randomseed", randomseed);
         result.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
         result.addValue("coverage", inputTestSuite == null ? generationReport.coverage() : "NA");
         //TODO: Include the coverage according to the comparison coverage criterion
