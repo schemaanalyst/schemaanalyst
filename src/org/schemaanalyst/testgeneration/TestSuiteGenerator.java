@@ -96,7 +96,6 @@ public class TestSuiteGenerator {
                 Data data = new Data();
                 data.addRow(table, valueFactory);
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-
                 if (dataGenerationReport.isSuccess()) {
                     LOGGER.fine("--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
                     LOGGER.fine("--- Data is: \n" + data);
@@ -139,7 +138,6 @@ public class TestSuiteGenerator {
                 LOGGER.fine("--- Reduced predicate is " + predicate);
 
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-
                 if (dataGenerationReport.isSuccess()) {
                     TestCase testCase = new TestCase(testRequirement, data, state);
                     testSuite.addTestCase(testCase);

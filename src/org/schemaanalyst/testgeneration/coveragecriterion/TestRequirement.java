@@ -108,6 +108,8 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
 
         str += "\nRequires comparison row: " + requiresComparisonRow;
 
+        str += "\nResult: " + result;
+
         return str;
     }
 

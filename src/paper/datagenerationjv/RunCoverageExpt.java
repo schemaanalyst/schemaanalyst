@@ -43,7 +43,7 @@ public class RunCoverageExpt {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
             for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
                 for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
-                    if (dataGeneratorName.equals("avsDefaults"))
+                    //if (dataGeneratorName.equals("avsDefaults"))
                     for (String dbmsName : resultsDatabase.getNames("dbmses")) {
                         if (dbmsName.equals("Postgres"))
                         for (int i = 1; i <= 1; i++) {
