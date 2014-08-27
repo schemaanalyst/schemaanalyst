@@ -26,8 +26,9 @@ import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Callable;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
@@ -268,20 +269,27 @@ public class MutationAnalysis extends Runner {
         final TestSuite testSuite = generator.generate();
         generationReport = generator.getTestSuiteGenerationReport();
         //TODO: Include the coverage according to the comparison coverage criterion
-        
+
         // Ensure the test suite contains no warnings
         verifyTestSuite(testSuite);
-        
+
         return testSuite;
     }
-    
+
     private void verifyTestSuite(TestSuite testSuite) {
+        org.schemaanalyst.testgeneration.TestCaseExecutor executor = new org.schemaanalyst.testgeneration.TestCaseExecutor(
+                schema,
+                dbms,
+                new DatabaseConfiguration(),
+                new LocationsConfiguration());
+        executor.execute(testSuite);
+
         int numWarnings = 0;
         for (TestCase testCase : testSuite.getTestCases()) {
             Boolean result = testCase.getTestRequirement().getResult();
             Boolean dbmsResult = testCase.getLastDBMSResult();
-            if (result != null && !Objects.equals(result, dbmsResult)) {
-                numWarnings ++;
+            if (result != null && result != dbmsResult) {
+                numWarnings++;
             }
         }
         if (numWarnings != 0) {
