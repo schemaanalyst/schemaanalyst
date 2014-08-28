@@ -62,7 +62,6 @@ public class TestSuiteJavaWriter {
         code.appendln();
         code.appendln("import java.sql.Connection;");
         code.appendln("import java.sql.DriverManager;");
-        code.appendln("import java.sql.ResultSet;");
         code.appendln("import java.sql.SQLException;");
         code.appendln("import java.sql.Statement;");
         code.appendln();
@@ -139,6 +138,7 @@ public class TestSuiteJavaWriter {
         }
         if (addSAComments) {
             code.appendln("// " + testRequirement.getPredicate());
+            code.appendln("// Result is: " + testRequirement.getResult());
         }
 
         Data state = testCase.getState();
@@ -160,7 +160,7 @@ public class TestSuiteJavaWriter {
         code.appendln("// execute INSERT statements for the test case");
         while (statementsIterator.hasNext()) {
             String statement = statementsIterator.next();
-            boolean dbmsResult = true; //resultsIterator.next();
+            boolean dbmsResult = resultsIterator.next();
             if (dbmsResult) {
                 code.appendln("assertEquals(1, " + writeExecuteUpdate(statement) + ");");
             } else {

@@ -187,8 +187,12 @@ public class ValueFactory implements Serializable {
             if (scale != null) {
                 exponent -= scale;
             }
-            int min = (int) Math.pow(10, -exponent) + 1;
-            int max = (int) Math.pow(10, exponent) - 1;
+
+            int range = (int) Math.pow(10, exponent);
+
+            int min = 1;//-range + 1;
+            int max = range - 1;
+
             return new NumericValue(min, max);
         }
     }

@@ -82,7 +82,7 @@ public class ResultsDatabase {
     public boolean alreadyDoneExpt(String schemaName, String coverageCriterionName, String dataGeneratorName,
                                    String dbmsName, int runNo) {
 
-        String sql = "SELECT COUNT(*) AS count FROM test_generation_run WHERE "
+        String sql = "SELECT COUNT(*) AS count FROM test_generation_runs WHERE "
                    + "schema_name='" + schemaName + "' AND coverage_criterion_name = '" + coverageCriterionName + "' AND "
                    + "data_generator_name = '" + dataGeneratorName + "' AND dbms_name = '" + dbmsName + "' AND run_no = '" + runNo + "'";
 
@@ -112,7 +112,7 @@ public class ResultsDatabase {
     }
 
     public List<String> getTestSuiteFileNames(String searchName) {
-        String sql = "select schema_name, coverage_criterion_name, dbms_name, run_no from test_generation_run where data_generator_name='" + searchName + "'";
+        String sql = "select schema_name, coverage_criterion_name, dbms_name, run_no from test_generation_runs where data_generator_name='" + searchName + "'";
         List<String> files = new ArrayList<>();
 
         try {

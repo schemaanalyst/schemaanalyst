@@ -55,7 +55,7 @@ public class GenerateTestSuite extends Runner {
         Schema schemaObject = instantiateSchema();
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
         TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -1116206204814428231L, 100000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -89457235L, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -74,7 +74,7 @@ public class GenerateTestSuite extends Runner {
         System.out.println("Test requirements covered: " + report.getNumTestRequirementsCovered() + "/" + report.getNumTestRequirementsAttempted());
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
-        System.out.println("Num Evaluations (all): " + report.getNumDataEvaluations(false));
+        System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
 
         // failed initial table data generation attempts
         if (report.getInitialTableDataGenerationAttemptsFailed() > 0) {
