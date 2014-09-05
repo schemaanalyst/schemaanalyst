@@ -67,9 +67,17 @@ public class ANCC extends NCC {
         List<Constraint> constraints = constraintSupplier.getConstraints(schema, table);
 
         Constraint clashingConstraint = clashingConstraints.get(column);
+        ComposedPredicate topLevelPredicate;
 
-        ComposedPredicate topLevelPredicate = PredicateGenerator.generatePredicate(constraints, clashingConstraint);
-        topLevelPredicate.addPredicate(new NullPredicate(table, column, truthValue));
+        if (clashingConstraint != null && !truthValue) {
+            // just satisfy the original constraint if it was supposed to be NOT NULL and
+            // there is a clashing constraint (which could be a PRIMARY KEY and embody the additional
+            // property of uniqueness
+            topLevelPredicate = PredicateGenerator.generatePredicate(constraints);
+        } else {
+            topLevelPredicate = PredicateGenerator.generatePredicate(constraints, clashingConstraint);
+            topLevelPredicate.addPredicate(new NullPredicate(table, column, truthValue));
+        }
 
         boolean result = !truthValue || clashingConstraint == null;
 
