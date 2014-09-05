@@ -26,7 +26,6 @@ public class ICMinimalConstraintSupplier extends ConstraintSupplier {
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
             constraints.add(primaryKeyConstraint);
 
-
                 List<Column> primaryKeyColumns = primaryKeyConstraint.getColumns();
                 Iterator<NotNullConstraint> notNullConstraintsIterator = notNullConstraints.iterator();
                 while (notNullConstraintsIterator.hasNext()) {

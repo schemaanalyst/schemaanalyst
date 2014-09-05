@@ -4,7 +4,9 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+import org.schemaanalyst.sqlrepresentation.constraint.ConstraintAdaptor;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
+import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
@@ -13,7 +15,9 @@ import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.Pr
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by phil on 18/08/2014.
@@ -21,6 +25,7 @@ import java.util.List;
 public class ANCC extends NCC {
 
     protected ConstraintSupplier constraintSupplier;
+    private Map<Column, Constraint> clashingConstraints;
 
     public ANCC(Schema schema,
                 TestRequirementIDGenerator testRequirementIDGenerator,
@@ -33,19 +38,40 @@ public class ANCC extends NCC {
         return "ANCC";
     }
 
-    protected List<Column> getColumns(Table table) {
-        List<Column> columns = table.getColumns();
-        for (NotNullConstraint notNullConstraint : schema.getNotNullConstraints(table)) {
-            columns.remove(notNullConstraint.getColumn());
+    private void buildClashingConstraintMap(Table table) {
+        clashingConstraints = new HashMap<>();
+
+        for (Constraint constraint : constraintSupplier.getConstraints(schema, table)) {
+            constraint.accept(new ConstraintAdaptor() {
+                @Override
+                public void visit(NotNullConstraint constraint) {
+                    clashingConstraints.put(constraint.getColumn(), constraint);
+                }
+
+                @Override
+                public void visit(PrimaryKeyConstraint constraint) {
+                    for (Column column : constraint.getColumns()) {
+                        clashingConstraints.put(column, constraint);
+                    }
+                }
+            });
         }
-        return columns;
+    }
+
+    protected void generateRequirements(Table table) {
+        buildClashingConstraintMap(table);
+        super.generateRequirements(table);
     }
 
     protected void generateRequirement(Table table, Column column, boolean truthValue) {
         List<Constraint> constraints = constraintSupplier.getConstraints(schema, table);
 
-        ComposedPredicate topLevelPredicate = PredicateGenerator.generatePredicate(constraints);
+        Constraint clashingConstraint = clashingConstraints.get(column);
+
+        ComposedPredicate topLevelPredicate = PredicateGenerator.generatePredicate(constraints, clashingConstraint);
         topLevelPredicate.addPredicate(new NullPredicate(table, column, truthValue));
+
+        boolean result = !truthValue || clashingConstraint == null;
 
         testRequirements.addTestRequirement(
                 new TestRequirement(
@@ -54,7 +80,7 @@ public class ANCC extends NCC {
                                 column + " is " + ((truthValue) ? "NULL" : "NOT NULL")
                         ),
                         topLevelPredicate,
-                        true,
+                        result,
                         false
                 )
         );

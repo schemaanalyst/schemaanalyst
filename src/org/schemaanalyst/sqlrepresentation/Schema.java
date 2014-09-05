@@ -808,7 +808,7 @@ public class Schema extends IdentifiableEntity {
 	/**
 	 * Returns the list of <tt>UNIQUE</tt> constraints on the table, in the
 	 * order they were created.
-	 * 
+	 *
 	 * @param table
 	 *            The table whose constraints are sought.
 	 * @return The list of <tt>UNIQUE</tt> constraints on the table.
@@ -826,7 +826,7 @@ public class Schema extends IdentifiableEntity {
 		return new ArrayList<>(uniqueConstraints);
 	}
 
-	/**
+    /**
 	 * Returns a list of all constraints for a table.
      * @param table The table whose constraints are sought.
 	 *
