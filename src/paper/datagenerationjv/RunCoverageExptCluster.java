@@ -6,56 +6,43 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.util.List;
+import java.io.*;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
 import static paper.datagenerationjv.Instantiator.instantiateDBMS;
 import static paper.datagenerationjv.Instantiator.instantiateSchema;
 
 /**
- * Created by phil on 13/08/2014.
+ * Created by phil on 05/09/2014.
  */
-public class RunCoverageExpt {
+public class RunCoverageExptCluster {
 
-    protected LocationsConfiguration locationsConfiguration;
-    protected ResultsDatabase resultsDatabase;
+    protected String resultsDir;
     protected int maxEvaluations = 100000;
 
-    public RunCoverageExpt(String resultsDatabaseFileName) {
-        locationsConfiguration = new LocationsConfiguration();
-        resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
+    protected long[] seeds = {
+            -1116206204814428231L, 7985954954880731531L, 3611094813579055564L, 4060776535588632553L, -6282041857351115261L, -7753126579393043552L, 7301670248648733814L, 1415212444129790595L, 2056109940551094279L, -2200648009882847974L, 2083899252996892155L, -8446221986149258676L, 6487470329507455693L, -3188839645469611430L, 1107647187144990782L, -7172454676826905329L, -6350374941054523216L, 7238962508293136181L, -6118606874157917260L, -4279319149851968693L, 1152127634058037217L, 4977817611943876980L, 343476588327669223L, -2889233434285636943L, -6496068917548900125L, 5599934909352710994L, 5938267508396193780L, -6267000089346451287L, -257943939492821747L, -2185319758834608639L
+    };
+
+
+    public RunCoverageExptCluster() {
+        resultsDir = new LocationsConfiguration().getResultsDir();
     }
 
-    public String[] coverageCriteria() {
-        String[] coverageCriteria = {"NCC", "ANCC", "UCC", "AUCC"};
-        return coverageCriteria;
-    }
-
-    public void runExpts() {
-        for (String schemaName : resultsDatabase.getNames("schemas")) {
-            for (String coverageCriterionName : coverageCriteria()) {
-                //for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
-                    //if (dataGeneratorName.equals("avsDefaults"))
-                    String dataGeneratorName = "avsDefaults";
-                    for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                        for (int i = 1; i <= 30; i++) {
-                            expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
-                        }
-                    }
-                //}
+    public void runExpt(String schemaName,
+                        String coverageCriterionName,
+                        String dataGeneratorName,
+                        String dbmsName) {
+        for (int i = 0; i < 30; i++) {
+            try {
+                expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+            } catch (Exception e) {
+                // don't let the termination of one experiment kill the whole job ...
+                e.printStackTrace();
             }
         }
     }
@@ -66,17 +53,11 @@ public class RunCoverageExpt {
                         String dbmsName,
                         int runNo) {
 
-        if (resultsDatabase.alreadyDoneExpt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, runNo)) {
-            return;
-        }
-
-        System.out.println(schemaName + ", " + coverageCriterionName + ", " + dataGeneratorName + ", " + dbmsName + ", " + runNo);
-
         Schema schema = instantiateSchema(schemaName);
         DBMS dbms = instantiateDBMS(dbmsName);
         CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, dbms);
 
-        long seed = resultsDatabase.getSeed(runNo);
+        long seed = seeds[runNo];
 
         TestRequirements testRequirements = coverageCriterion.generateRequirements();
 
@@ -123,38 +104,37 @@ public class RunCoverageExpt {
         int allEvaluations = report.getNumEvaluations(false);
 
         String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", \"" + dataGeneratorName + "\", "
-                    + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqs + ", "
-                    + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
+                + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqs + ", "
+                + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
 
-        String sql = "INSERT INTO test_generation_runs VALUES (" + data + ", NULL, NULL)";
-
-        System.out.println(sql);
-
-        resultsDatabase.executeInsert(sql);
+        // output the data
+        try {
+            String fileName = resultsDir + "/" + schemaName + "-" + coverageCriterionName
+                    + "-" + dataGeneratorName + "-" + dbmsName + "-" + runNo + ".txt";
+            FileWriter fw = new FileWriter(fileName);
+            PrintWriter pw = new PrintWriter(fw);
+            pw.println(data);
+            fw.close();
+        } catch(IOException e) {
+            throw new RuntimeException(e);
+        }
 
         // serialize the test suite
         try {
-            String fileName = locationsConfiguration.getResultsDir() + "/" + schemaName + "-" + coverageCriterionName
+            String fileName = resultsDir + "/" + schemaName + "-" + coverageCriterionName
                     + "-" + dataGeneratorName + "-" + dbmsName + "-" + runNo + ".testsuite";
             FileOutputStream fileOut = new FileOutputStream(fileName);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(testSuite);
             out.close();
             fileOut.close();
-            System.out.println("Test suite serialized to " + fileName);
         } catch(IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-
     public static void main(String[] args) throws Exception {
-        if (args.length != 1) {
-            System.out.println("No results database file name provided");
-            System.exit(1);
-        }
-
-        RunCoverageExpt rce = new RunCoverageExpt(args[0]);
-        rce.runExpts();
+        RunCoverageExptCluster rce = new RunCoverageExptCluster();
+        rce.runExpt(args[0], args[1], args[2], args[3]);
     }
 }
