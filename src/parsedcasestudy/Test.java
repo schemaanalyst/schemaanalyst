@@ -15,15 +15,12 @@ public class Test extends Schema {
         super("test");
         Table one = createTable("one");
         one.createColumn("a", new IntDataType());
-        one.createColumn("b", new IntDataType());
-        one.createColumn("c", new IntDataType());
         createPrimaryKeyConstraint(one, one.getColumn("a"));
-        createUniqueConstraint(one, one.getColumn("b"));
-        createNotNullConstraint(one, one.getColumn("c"));
         
         Table two = createTable("two");
         two.createColumn("a", new IntDataType());
-        createForeignKeyConstraint(two, two.getColumn("a"), one, one.getColumn("a"));
+//        createForeignKeyConstraint(two, two.getColumn("a"), one, one.getColumn("a"));
+//        createCheckConstraint(two, new NullExpression(new ColumnExpression(two, two.getColumn("a")), true));
     }
     
 }

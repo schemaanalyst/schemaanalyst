@@ -39,6 +39,14 @@ public class MinimalSchemata2Technique extends Technique {
 
     @Override
     public AnalysisResult analyse(TestSuiteResult originalResults) {
+        // Remove any FK mutants (not supported by Minimal)
+//        for (Iterator<Mutant<Schema>> it = mutants.iterator(); it.hasNext();) {
+//            Mutant<Schema> mutant = it.next();
+//            if (mutant.getSimpleDescription().startsWith("FK")) {
+//                it.remove();
+//            }
+//        }
+        
         AnalysisResult result = new AnalysisResult();
 
         // Build map of changed tables
@@ -88,8 +96,20 @@ public class MinimalSchemata2Technique extends Technique {
         for (int i = 0; i < mutants.size(); i++) {
             TestSuiteResult mutantResult = resultMap.get(i);
             if (!originalTestSuiteResult.equals(mutantResult)) {
+                System.out.println("-----");
+                System.out.println("MM K: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+                System.out.println("Original:");
+                System.out.println(originalTestSuiteResult);
+                System.out.println("Mutant:");
+                System.out.println(resultMap.get(i));
                 result.addKilled(mutants.get(i));
             } else {
+                System.out.println("-----");
+                System.out.println("MM A: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+                System.out.println("Original:");
+                System.out.println(originalTestSuiteResult);
+                System.out.println("Mutant:");
+                System.out.println(resultMap.get(i));
                 result.addLive(mutants.get(i));
             }
         }
