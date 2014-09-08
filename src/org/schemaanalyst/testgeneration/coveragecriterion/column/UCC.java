@@ -36,7 +36,7 @@ public class UCC extends ColumnCriterion {
                 new TestRequirement(
                         new TestRequirementDescriptor(
                                 testRequirementIDGenerator.nextID(),
-                                column + " is " + ((truthValue) ? "NULL" : "NOT NULL")),
+                                column + " is " + ((truthValue) ? "UNIQUE" : "NOT UNIQUE")),
                         generateMatchPredicate(table, column, truthValue),
                         null,
                         true

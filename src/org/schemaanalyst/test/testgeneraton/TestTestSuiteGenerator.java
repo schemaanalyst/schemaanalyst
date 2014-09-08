@@ -31,8 +31,8 @@ public class TestTestSuiteGenerator {
             return super.addLinkedTableRowsToData(data, predicate, table);
         }
 
-        public boolean areRefColsUnique(ForeignKeyConstraint foreignKeyConstraint) {
-            return super.areRefColsUnique(foreignKeyConstraint);
+        public boolean areRefColsUnique(Predicate predicate, ForeignKeyConstraint foreignKeyConstraint) {
+            return super.areRefColsUnique(predicate, foreignKeyConstraint);
         }
     }
 
@@ -75,7 +75,7 @@ public class TestTestSuiteGenerator {
         TestSuiteGeneratorMock tsg = new TestSuiteGeneratorMock(testSchema);
 
         Predicate predicate = PredicateGenerator.generatePredicate(testSchema.getConstraints(testSchema.t2));
-        assertTrue(tsg.areRefColsUnique(testSchema.fk1));
+        assertTrue(tsg.areRefColsUnique(predicate, testSchema.fk1));
 
         Data data = new Data();
         tsg.addLinkedTableRowsToData(data, predicate, testSchema.t2);
@@ -88,8 +88,8 @@ public class TestTestSuiteGenerator {
         TestSuiteGeneratorMock tsg = new TestSuiteGeneratorMock(testSchema);
 
         Predicate predicate = PredicateGenerator.generatePredicate(testSchema.getConstraints(testSchema.t4));
-        assertTrue(tsg.areRefColsUnique(testSchema.fk2));
-        assertTrue(tsg.areRefColsUnique(testSchema.fk3));
+        assertTrue(tsg.areRefColsUnique(predicate, testSchema.fk2));
+        assertTrue(tsg.areRefColsUnique(predicate, testSchema.fk3));
 
         Data data = new Data();
         tsg.addLinkedTableRowsToData(data, predicate, testSchema.t4);

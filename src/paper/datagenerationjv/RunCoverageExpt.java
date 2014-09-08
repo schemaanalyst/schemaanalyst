@@ -39,16 +39,44 @@ public class RunCoverageExpt {
         resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
     }
 
+    public String[] coverageCriteria() {
+        String[] coverageCriteria = {"NCC", "ANCC", "UCC", "AUCC"};
+        return coverageCriteria;
+    }
+
     public void runExpts() {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
-            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
-                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
-                    //if (dataGeneratorName.equals("avsDefaults"))
-                    for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                        if (dbmsName.equals("Postgres"))
-                        for (int i = 1; i <= 1; i++) {
-                            expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
-                        }
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "avs";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                    }
+                }
+            }
+        }
+    }
+
+    public void runExpts1() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "avsDefaults";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                    }
+                }
+            }
+        }
+    }
+
+    public void runExpts2() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "randomDefaults";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
                     }
                 }
             }
@@ -151,5 +179,7 @@ public class RunCoverageExpt {
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
         rce.runExpts();
+        rce.runExpts1();
+        rce.runExpts2();
     }
 }
