@@ -25,7 +25,12 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
@@ -88,6 +93,11 @@ public class MutationAnalysis extends Runner {
      */
     @Parameter("Whether to print live mutants.")
     protected boolean printLive = false;
+    /**
+     * Whether to output live mutant data.
+     */
+    @Parameter("Whether to output mutant data.")
+    protected boolean outputMutants = false;
     /**
      * Which mutation analysis technique to use.
      */
@@ -200,6 +210,10 @@ public class MutationAnalysis extends Runner {
             for (Mutant<Schema> mutant : analysisResult.getLive()) {
                 System.out.println("Alive: " + mutant.getSimpleDescription() + " (" + mutant.getDescription() + ")");
             }
+        }
+
+        if (outputMutants) {
+            writeMutantReport(analysisResult);
         }
     }
 
@@ -336,6 +350,58 @@ public class MutationAnalysis extends Runner {
         TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbms, databaseInteractor);
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
+    }
+    
+    private void writeMutantReport(AnalysisResult analysisResult) {
+        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "mutantreport.dat");
+        UUID identifier = UUID.randomUUID();
+        
+        Map<String, Integer> aliveCount = new HashMap<>();
+        Map<String, Integer> killedCount = new HashMap<>();
+        
+        for (Mutant<Schema> mutant : analysisResult.getLive()) {
+            final String operator = mutant.getSimpleDescription();
+            int count = 1;
+            if (aliveCount.containsKey(operator)) {
+                count = 1 + aliveCount.get(operator);
+            }
+            aliveCount.put(operator, count);
+        }
+        
+        for (Mutant<Schema> mutant : analysisResult.getKilled()) {
+            final String operator = mutant.getSimpleDescription();
+            int count = 1;
+            if (killedCount.containsKey(operator)) {
+                count = 1 + killedCount.get(operator);
+            }
+            killedCount.put(operator, count);
+        }
+        
+        Set<String> keyset = new HashSet<>(aliveCount.keySet().size() + killedCount.keySet().size());
+        keyset.addAll(aliveCount.keySet());
+        keyset.addAll(killedCount.keySet());
+        
+        for (String operator : keyset) {
+            Integer alive = aliveCount.get(operator);
+            Integer killed = killedCount.get(operator);
+            alive = alive == null ? 0 : alive;
+            killed = killed == null ? 0 : killed;
+            
+            CSVResult mResult = new CSVResult();
+            mResult.addValue("identifier", identifier);
+            mResult.addValue("dbms", databaseConfiguration.getDbms());
+            mResult.addValue("casestudy", casestudy);
+            mResult.addValue("criterion", inputTestSuite == null ? criterion : "NA");
+            mResult.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
+            mResult.addValue("randomseed", randomseed);
+            mResult.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
+            
+            mResult.addValue("operator", operator);
+            mResult.addValue("alive", alive);
+            mResult.addValue("killed", killed);
+            
+            writer.write(mResult);
+        }
     }
 
     @Override
