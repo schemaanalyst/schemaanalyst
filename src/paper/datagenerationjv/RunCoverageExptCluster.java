@@ -37,9 +37,9 @@ public class RunCoverageExptCluster {
                         String coverageCriterionName,
                         String dataGeneratorName,
                         String dbmsName) {
-        for (int i = 0; i < 30; i++) {
+        for (int i = 1; i <= 30; i++) {
             try {
-                expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                runExpt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
             } catch (Exception e) {
                 // don't let the termination of one experiment kill the whole job ...
                 e.printStackTrace();
@@ -47,17 +47,16 @@ public class RunCoverageExptCluster {
         }
     }
 
-    protected void expt(String schemaName,
+    public void runExpt(String schemaName,
                         String coverageCriterionName,
                         String dataGeneratorName,
                         String dbmsName,
                         int runNo) {
-
         Schema schema = instantiateSchema(schemaName);
         DBMS dbms = instantiateDBMS(dbmsName);
         CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, dbms);
 
-        long seed = seeds[runNo];
+        long seed = seeds[runNo-1];
 
         TestRequirements testRequirements = coverageCriterion.generateRequirements();
 
@@ -135,6 +134,15 @@ public class RunCoverageExptCluster {
 
     public static void main(String[] args) throws Exception {
         RunCoverageExptCluster rce = new RunCoverageExptCluster();
-        rce.runExpt(args[0], args[1], args[2], args[3]);
+        if (args.length == 5) {
+            // expt with run number
+            rce.runExpt(args[0], args[1], args[2], args[3], Integer.parseInt(args[4]));
+        } else if (args.length == 4) {
+            // expt with all runs
+            rce.runExpt(args[0], args[1], args[2], args[3]);
+        } else {
+            System.out.println("Wrong number of args!");
+        }
+
     }
 }
