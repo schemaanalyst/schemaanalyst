@@ -440,12 +440,6 @@ public class MutationAnalysis extends Runner {
                 }
             }
         });
-        
-        for (Mutant<Schema> mutant : mutants) {
-            System.out.println(mutant.hashCode());
-        }
-        
-        
 
         // Build sets of killed/alive for quick lookups
         Set<Mutant<Schema>> killedSet = new HashSet<>(killed);
