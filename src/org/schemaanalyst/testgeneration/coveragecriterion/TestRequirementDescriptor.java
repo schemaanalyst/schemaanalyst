@@ -34,4 +34,24 @@ public class TestRequirementDescriptor implements Comparable<TestRequirementDesc
     public int compareTo(TestRequirementDescriptor other) {
         return id.compareTo(other.id);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TestRequirementDescriptor that = (TestRequirementDescriptor) o;
+
+        if (!id.equals(that.id)) return false;
+        if (!msg.equals(that.msg)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + msg.hashCode();
+        return result;
+    }
 }

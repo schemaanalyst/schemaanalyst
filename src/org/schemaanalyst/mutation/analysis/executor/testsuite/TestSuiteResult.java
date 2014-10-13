@@ -34,6 +34,14 @@ public class TestSuiteResult {
     public TestCaseResult getResult(TestCase testCase) {
         return map.get(testCase);
     }
+    
+    public List<MixedPair<TestCase, TestCaseResult>> getResults() {
+        return result;
+    }
+    
+    public int getResultCount() {
+        return map.size();
+    }
 
     @Override
     public int hashCode() {

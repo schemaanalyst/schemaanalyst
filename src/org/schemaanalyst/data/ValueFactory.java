@@ -175,8 +175,26 @@ public class ValueFactory implements Serializable {
     }
 
     public Value createNumericDataTypeValue(NumericDataType type) {
-        return new NumericValue();
-        // TODO: set ranges
+        // quick fix...
+
+        Integer precision = type.getPrecision();
+        Integer scale = type.getScale();
+
+        if (precision == null) {
+            return new NumericValue();
+        } else {
+            int exponent = precision;
+            if (scale != null) {
+                exponent -= scale;
+            }
+
+            int range = (int) Math.pow(10, exponent);
+
+            int min = 1;//-range + 1;
+            int max = range - 1;
+
+            return new NumericValue(min, max);
+        }
     }
 
     public Value createRealDataTypeValue(RealDataType type) {

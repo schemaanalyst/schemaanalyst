@@ -35,7 +35,7 @@ public class RandomDataGenerator extends DataGenerator {
     public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
         initialize(data, state, predicate);
         boolean success = objectiveFunction.evaluate(data).isOptimal();
-        int evaluations = 0;
+        int evaluations = 1;
         while (!success && evaluations < maxEvaluations) {
             attemptFix(data);
             evaluations ++;

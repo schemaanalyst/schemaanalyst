@@ -8,7 +8,6 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.MultiColumnConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
@@ -97,7 +96,6 @@ public class TestSuiteGenerator {
                 Data data = new Data();
                 data.addRow(table, valueFactory);
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-
                 if (dataGenerationReport.isSuccess()) {
                     LOGGER.fine("--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
                     LOGGER.fine("--- Data is: \n" + data);
@@ -130,7 +128,7 @@ public class TestSuiteGenerator {
 
             Data state = new Data();
             Data data = new Data();
-            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.requiresComparisonRow());
+            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
 
             if (predicate != null) {
                 data.addRow(table, valueFactory);
@@ -140,7 +138,6 @@ public class TestSuiteGenerator {
                 LOGGER.fine("--- Reduced predicate is " + predicate);
 
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-
                 if (dataGenerationReport.isSuccess()) {
                     TestCase testCase = new TestCase(testRequirement, data, state);
                     testSuite.addTestCase(testCase);
@@ -176,7 +173,7 @@ public class TestSuiteGenerator {
             return null;
         }
 
-        if (requiresComparisonRow) { // if (requiresComparisonRow(predicate)) {
+        if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
             Data comparisonRow = initialTableData.get(table);
             if (comparisonRow == null) {
                 LOGGER.fine("--- could not add comparison row, data generation FAILED");
@@ -213,26 +210,6 @@ public class TestSuiteGenerator {
         return true;
     }
 
-    /*
-    protected boolean requiresComparisonRow(Predicate predicate) {
-        LOGGER.fine("--- checking if comparison row required for " + predicate);
-
-        return new PredicateAdaptor() {
-            boolean requiresComparisonRow = false;
-
-            boolean requiresComparisonRow(Predicate predicate) {
-                predicate.accept(this);
-                return requiresComparisonRow;
-            }
-
-            @Override
-            public void visit(MatchPredicate predicate) {
-                requiresComparisonRow = true;
-            }
-        }.requiresComparisonRow(predicate);
-    }
-    */
-
     protected Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
 
         for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
@@ -240,7 +217,7 @@ public class TestSuiteGenerator {
             Table refTable = foreignKeyConstraint.getReferenceTable();
             if (!refTable.equals(table)) {
 
-                boolean refColsUnique = areRefColsUnique(foreignKeyConstraint);
+                boolean refColsUnique = areRefColsUnique(predicate, foreignKeyConstraint);
 
                 if (refColsUnique) {
                     LOGGER.fine("--- foreign key columns are unique in " + table);
@@ -263,10 +240,11 @@ public class TestSuiteGenerator {
         return predicate;
     }
 
-    protected boolean areRefColsUnique(ForeignKeyConstraint foreignKeyConstraint) {
-        Table table = foreignKeyConstraint.getTable();
-        List<Column> uniqueColumns = new ArrayList<>();
+    protected boolean areRefColsUnique(Predicate predicate, ForeignKeyConstraint foreignKeyConstraint) {
+        //Table table = foreignKeyConstraint.getTable();
+        final List<Column> uniqueColumns = new ArrayList<>();
 
+        /*
         if (schema.hasPrimaryKeyConstraint(table)) {
             uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns());
         }
@@ -274,6 +252,16 @@ public class TestSuiteGenerator {
         for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
             uniqueColumns.addAll(uniqueConstraint.getColumns());
         }
+        */
+
+        predicate.accept(new PredicateAdaptor() {
+            @Override
+            public void visit(MatchPredicate predicate) {
+                if (predicate.tableIsRefTable()) {
+                    uniqueColumns.addAll(predicate.getColumns());
+                }
+            }
+        });
 
         for (Column column : foreignKeyConstraint.getColumns()) {
             if (!uniqueColumns.contains(column)) {

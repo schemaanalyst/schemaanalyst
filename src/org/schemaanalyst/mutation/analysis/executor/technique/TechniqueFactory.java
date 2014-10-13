@@ -44,6 +44,10 @@ public class TechniqueFactory {
         return new MinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
+    public static Technique minimalSchemata2 (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new MinimalSchemata2Technique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
     public static Technique upFrontSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         return new UpFrontSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
@@ -58,6 +62,18 @@ public class TechniqueFactory {
     
     public static Technique partialParallelMinimalSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         return new PartialParallelMinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
+    public static Technique minimalMinimalSchemata (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new MinimalMinimalSchemataTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
+    public static Technique minimalMinimalSchemata2 (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new MinimalMinimalSchemata2Technique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
+    public static Technique checks (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new ChecksTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
     public static Technique dummy (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {

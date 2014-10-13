@@ -14,6 +14,8 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
 
     private static final long serialVersionUID = 6777745015314686157L;
 
+    // NB if any changes are made to these fields, check the algorithm for reduce() in
+    // TestRequirements, which compares predicates only and not other fields
     private List<TestRequirementDescriptor> descriptors;
     private Predicate predicate;
     private Boolean result;
@@ -53,7 +55,11 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
         return result;
     }
 
-    public boolean requiresComparisonRow() {
+    public void setRequiresComparisonRow(boolean requiresComparisonRow) {
+        this.requiresComparisonRow = requiresComparisonRow;
+    }
+
+    public boolean getRequiresComparisonRow() {
         return requiresComparisonRow;
     }
 
@@ -101,6 +107,8 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
         str += p;
 
         str += "\nRequires comparison row: " + requiresComparisonRow;
+
+        str += "\nResult: " + result;
 
         return str;
     }

@@ -9,6 +9,7 @@ import java.util.concurrent.ForkJoinTask;
 import java.util.concurrent.RecursiveTask;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.util.SchemaMerger;
+import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
 import org.schemaanalyst.mutation.equivalence.ChangedTableFinder;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -32,6 +33,30 @@ public class MutationAnalysisUtils {
      * @return The name of the table
      */
     public static String computeChangedTable(Schema original, Mutant<Schema> mutant) {
+        Schema modifiedSchema = reapplyRemovers(mutant, original);
+
+        // Find the changed table
+        Table table = ChangedTableFinder.getDifferentTable(modifiedSchema, mutant.getMutatedArtefact());
+        if (table != null) {
+            return table.getName();
+        } else {
+            throw new RuntimeException("Could not find changed table for mutant (" + mutant.getMutatedArtefact().getName() + ": " + mutant.getDescription() + ")");
+        }
+    }
+
+    public static Constraint computeChangedConstraint(Schema original, Mutant<Schema> mutant) {
+        Schema modifiedSchema = reapplyRemovers(mutant, original);
+        
+        // Find the changed constraint
+        Constraint constraint = ChangedConstraintFinder.getDifferentConstraint(modifiedSchema, mutant.getMutatedArtefact());
+        if (constraint != null) {
+            return constraint;
+        } else {
+            throw new RuntimeException("Could not find changed constraint for mutant (" + mutant.getMutatedArtefact().getName() + ": " + mutant.getDescription() + ")");
+        }
+    }
+    
+    private static Schema reapplyRemovers(Mutant<Schema> mutant, Schema original) throws RuntimeException {
         // Reapply removers if needed
         Schema modifiedSchema;
         if (mutant.getRemoversApplied().size() > 0) {
@@ -49,14 +74,7 @@ public class MutationAnalysisUtils {
         } else {
             modifiedSchema = original.duplicate();
         }
-
-        // Find the changed table
-        Table table = ChangedTableFinder.getDifferentTable(modifiedSchema, mutant.getMutatedArtefact());
-        if (table != null) {
-            return table.getName();
-        } else {
-            throw new RuntimeException("Could not find changed table for mutant (" + mutant.getMutatedArtefact().getName() + ": " + mutant.getDescription() + ")");
-        }
+        return modifiedSchema;
     }
 
     /**

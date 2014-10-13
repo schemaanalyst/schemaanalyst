@@ -68,10 +68,8 @@ public class TestCaseResult {
         StringBuilder b = new StringBuilder();
         b.append("TestCaseResult{successful=");
         b.append(successful);
-        b.append(", exception=");
-        b.append(exception == null ? "null" : exception.getClass().getSimpleName() + exception.getMessage());
-        b.append(", statement=");
-        b.append(exception == null ? "null" : exception.getStatement().replaceAll("\n", " "));
+        b.append(exception == null ? "" : ", exception=" + exception.getClass().getSimpleName() + exception.getMessage());
+        b.append(exception == null ? "" : ", statement=" + exception.getStatement().replaceAll("\n", " "));
         b.append('}');
         return b.toString();
     }

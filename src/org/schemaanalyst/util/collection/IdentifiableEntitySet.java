@@ -18,8 +18,7 @@ import java.util.*;
  *            the type of element to store in the set.
  */
 
-public class IdentifiableEntitySet<E extends IdentifiableEntity> implements
-        Set<E>, Serializable {
+public class IdentifiableEntitySet<E extends IdentifiableEntity> implements Set<E>, Serializable {
 
     private static final long serialVersionUID = -20454495160065002L;
 

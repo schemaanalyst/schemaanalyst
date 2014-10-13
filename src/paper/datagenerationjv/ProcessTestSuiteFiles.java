@@ -31,7 +31,7 @@ public class ProcessTestSuiteFiles {
         File[] files = new File(resultsDir).listFiles();
         List<String> resultsFiles = new ArrayList<>();
         for (File file : files) {
-            if (file.isFile() && !file.getName().equals(".DS_Store")) {
+            if (file.isFile() && !file.getName().equals(".DS_Store") && file.getName().endsWith(".testsuite")) {
                 resultsFiles.add(file.getName());
             }
         }
@@ -116,6 +116,9 @@ public class ProcessTestSuiteFiles {
 
             for (CheckConstraint check : schema.getCheckConstraints()) {
                 Expression expression = check.getExpression();
+                if (expression instanceof ParenthesisedExpression) {
+                    expression = ((ParenthesisedExpression) expression).getSubexpression();
+                }
                 if (expression instanceof AndExpression ||
                         expression instanceof OrExpression ||
                         expression instanceof BetweenExpression ||
@@ -130,6 +133,6 @@ public class ProcessTestSuiteFiles {
     }
 
     public static void main(String[] args) {
-        new ProcessTestSuiteFiles(true);
+        new ProcessTestSuiteFiles(false);
     }
 }

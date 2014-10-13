@@ -40,6 +40,15 @@ public abstract class DatabaseInteractor {
      */
     protected static final String CREATE_TABLE_SIGNATURE = "CREATE TABLE";
     /**
+     * The return code to specify that there was an error in altering the SQL
+     * schema with an ALTER TABLE.
+     */
+    protected static final int ALTER_TABLE_ERROR = -2;
+    /**
+     * The signature for the ALTER TABLE statement.
+     */
+    protected static final String ALTER_TABLE_SIGNATURE = "ALTER TABLE";
+    /**
      * The return code indicates an UPDATE, INSERT, DELETE.
      */
     protected static final boolean UPDATE_COUNT = false;
@@ -68,6 +77,9 @@ public abstract class DatabaseInteractor {
     protected long dropInteractions = 0;
     protected long insertInteractions = 0;
     protected long deleteInteractions = 0;
+    protected long functionInteractions = 0;
+    protected long updateInteractions = 0;
+    protected long alterInteractions = 0;
 
     /**
      * Constructor.
@@ -116,9 +128,11 @@ public abstract class DatabaseInteractor {
             // an exception, then set the return code to -1 to indicate 
             // that there was a special failure in creating the schema
             if (command.toUpperCase().contains(CREATE_TABLE_SIGNATURE)) {
-                LOGGER.log(Level.FINE, "Create table failed: {0}", command);
-                LOGGER.log(Level.FINEST, "Create table failed because: ", e);
+                LOGGER.log(Level.FINE, "Create table failed: " + command, e);
                 returnCount = CREATE_TABLE_ERROR;
+            } else if (command.toUpperCase().contains(ALTER_TABLE_SIGNATURE)) {
+                LOGGER.log(Level.FINE, "Alter table failed: " + command, e);
+                returnCount = ALTER_TABLE_ERROR;
             } else {
                 LOGGER.log(Level.FINE, "Statement failed: " + command, e);
             }
@@ -329,6 +343,12 @@ public abstract class DatabaseInteractor {
             dropInteractions++;
         } else if (statement.startsWith("delete")) {
             deleteInteractions++;
+        } else if (statement.contains("create or replace function")) {
+            functionInteractions++;
+        } else if (statement.startsWith("update")) {
+            updateInteractions++;
+        } else if (statement.startsWith("alter")) {
+            alterInteractions++;
         } else {
             LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", stmt);
         }
@@ -344,16 +364,25 @@ public abstract class DatabaseInteractor {
     public synchronized void addInteractions(String type, long number) {
         switch (type) {
             case "insert":
-                insertInteractions++;
+                insertInteractions += number;
                 break;
             case "create":
-                createInteractions++;
+                createInteractions += number;
                 break;
             case "drop":
-                dropInteractions++;
+                dropInteractions += number;
                 break;
             case "delete":
-                deleteInteractions++;
+                deleteInteractions += number;
+                break;
+            case "function":
+                functionInteractions += number;
+                break;
+            case "update":
+                updateInteractions += number;
+                break;
+            case "alter":
+                alterInteractions += number;
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unclassified database interaction: {0}", type);
@@ -372,6 +401,7 @@ public abstract class DatabaseInteractor {
         addInteractions("create",interactor.getCreateInteractions());
         addInteractions("drop", interactor.getDropInteractions());
         addInteractions("delete", interactor.getDeleteInteractions());
+        addInteractions("function", interactor.getFunctionInteractions());
     }
 
     /**
@@ -413,4 +443,21 @@ public abstract class DatabaseInteractor {
     public long getDeleteInteractions() {
         return deleteInteractions;
     }
+
+    /**
+     * Get the number of FUNCTION interactions executed by this DatabaseInteractor
+     * @return 
+     */
+    public long getFunctionInteractions() {
+        return functionInteractions;
+    }
+    
+    /**
+     * Get the number of ALTER interactions executed by this DatabaseInteractor
+     * @return 
+     */
+    public long getAlterInteractions() {
+        return alterInteractions;
+    }
+    
 }

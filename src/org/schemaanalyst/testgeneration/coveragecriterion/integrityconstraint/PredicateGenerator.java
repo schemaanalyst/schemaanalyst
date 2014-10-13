@@ -9,6 +9,7 @@ import org.schemaanalyst.sqlrepresentation.expression.NullExpression;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -202,6 +203,10 @@ public class PredicateGenerator {
                 refColumns,
                 MatchPredicate.EMPTY_COLUMN_LIST,
                 MatchPredicate.Mode.AND);
+    }
+
+    public static ComposedPredicate addNullPredicate(ComposedPredicate composedPredicate, Table table, Column column, boolean truthValue) {
+        return addNullPredicates(composedPredicate, table, Arrays.asList(column), truthValue);
     }
 
     public static ComposedPredicate addNullPredicates(ComposedPredicate composedPredicate, Table table, List<Column> columns, boolean truthValue) {

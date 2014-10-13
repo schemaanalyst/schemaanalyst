@@ -55,10 +55,12 @@ public class NullPredicate extends Predicate {
     }
 
     @Override
+    // This has been modified from the auto-generated version to return a more different hashcode
+    // subcomponent for truthValue (previously it just added 1 if the truthValue was true)
     public int hashCode() {
         int result = table.hashCode();
         result = 31 * result + column.hashCode();
-        result = 31 * result + (truthValue ? 1 : 0);
+        result = 31 * result * (truthValue ? 3 : 1);
         return result;
     }
 }

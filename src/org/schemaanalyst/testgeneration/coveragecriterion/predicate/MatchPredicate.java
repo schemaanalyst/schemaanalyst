@@ -173,6 +173,8 @@ public class MatchPredicate extends Predicate {
     }
 
     @Override
+    // This has been modified from the auto-generated version to ignore the mode field if there is
+    // only one column
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -181,16 +183,18 @@ public class MatchPredicate extends Predicate {
 
         if (!matchingCols.equals(that.matchingCols)) return false;
         if (!matchingRefCols.equals(that.matchingRefCols)) return false;
-        if (mode != that.mode) return false;
         if (!nonMatchingCols.equals(that.nonMatchingCols)) return false;
         if (!nonMatchingRefCols.equals(that.nonMatchingRefCols)) return false;
         if (!refTable.equals(that.refTable)) return false;
         if (!table.equals(that.table)) return false;
+        if (getColumns().size() > 1 && mode != that.mode) return false;
 
         return true;
     }
 
     @Override
+    // This has been modified from the auto-generated version to ignore the mode field if there is
+    // only one column
     public int hashCode() {
         int result = table.hashCode();
         result = 31 * result + refTable.hashCode();
@@ -198,7 +202,9 @@ public class MatchPredicate extends Predicate {
         result = 31 * result + nonMatchingCols.hashCode();
         result = 31 * result + matchingRefCols.hashCode();
         result = 31 * result + nonMatchingRefCols.hashCode();
-        result = 31 * result + mode.hashCode();
+        if (getColumns().size() > 1) {
+            result = 31 * result + mode.hashCode();
+        }
         return result;
     }
 }

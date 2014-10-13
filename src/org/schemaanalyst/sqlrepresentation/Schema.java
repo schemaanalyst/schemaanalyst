@@ -14,7 +14,7 @@ import java.util.*;
  * @author Phil McMinn
  * 
  */
-public class Schema extends IdentifiableEntity implements Serializable {
+public class Schema extends IdentifiableEntity {
 
 	public static class Duplicator implements
 			org.schemaanalyst.util.Duplicator<Schema> {
@@ -24,7 +24,8 @@ public class Schema extends IdentifiableEntity implements Serializable {
 		}
 	}
 
-	private static final long serialVersionUID = 7338170433995168952L;
+    private static final long serialVersionUID = -212628589124201466L;
+
 	private IdentifiableEntitySet<Table> tables;
 	private List<PrimaryKeyConstraint> primaryKeyConstraints;
 	private List<CheckConstraint> checkConstraints;
@@ -807,7 +808,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 	/**
 	 * Returns the list of <tt>UNIQUE</tt> constraints on the table, in the
 	 * order they were created.
-	 * 
+	 *
 	 * @param table
 	 *            The table whose constraints are sought.
 	 * @return The list of <tt>UNIQUE</tt> constraints on the table.
@@ -825,7 +826,7 @@ public class Schema extends IdentifiableEntity implements Serializable {
 		return new ArrayList<>(uniqueConstraints);
 	}
 
-	/**
+    /**
 	 * Returns a list of all constraints for a table.
      * @param table The table whose constraints are sought.
 	 *

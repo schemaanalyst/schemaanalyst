@@ -66,7 +66,7 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
                 // // PM: Legacy code from when this used to be specified at a predicate level
                 // // PM: It's now the responsibility of the test data generator to ensure a row exists.
                 //
-                // else if (matchPredicate.requiresComparisonRow()) {
+                // else if (matchPredicate.getRequiresComparisonRow()) {
                 //  objVal.add(ObjectiveValue.worstObjectiveValue("Comparison row not available"));
                 // }
             }

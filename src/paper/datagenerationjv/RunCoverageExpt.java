@@ -6,12 +6,6 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -19,7 +13,6 @@ import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.List;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
 import static paper.datagenerationjv.Instantiator.instantiateDBMS;
@@ -39,21 +32,51 @@ public class RunCoverageExpt {
         resultsDatabase = new ResultsDatabase(resultsDatabaseFileName);
     }
 
+    public String[] coverageCriteria() {
+        String[] coverageCriteria = {"NCC", "ANCC", "UCC", "AUCC"};
+        return coverageCriteria;
+    }
+
     public void runExpts() {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
-            for (String coverageCriterionName : resultsDatabase.getNames("coverage_criteria")) {
-                for (String dataGeneratorName : resultsDatabase.getNames("data_generators")) {
-                    for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                        for (int i = 1; i <= 30; i++) {
-                            expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
-                        }
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "avs";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
                     }
                 }
             }
         }
     }
 
-    protected void expt(String schemaName,
+    public void runExpts1() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "avsDefaults";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                    }
+                }
+            }
+        }
+    }
+
+    public void runExpts2() {
+        for (String schemaName : resultsDatabase.getNames("schemas")) {
+            for (String coverageCriterionName : coverageCriteria()) {
+                String dataGeneratorName = "randomDefaults";
+                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
+                    for (int i = 1; i <= 30; i++) {
+                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                    }
+                }
+            }
+        }
+    }
+
+    public void expt(String schemaName,
                         String coverageCriterionName,
                         String dataGeneratorName,
                         String dbmsName,
@@ -111,15 +134,15 @@ public class RunCoverageExpt {
         TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
 
         int numReqsCovered = report.getNumTestRequirementsCovered();
-        int numReqsNotCovered = report.getNumTestRequirementsFailed();
+        int numReqs = numReqsCovered + report.getNumTestRequirementsFailed();
         int successfulEvaluations = report.getNumEvaluations(true);
         int allEvaluations = report.getNumEvaluations(false);
 
         String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", \"" + dataGeneratorName + "\", "
-                    + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqsNotCovered + ", "
+                    + "\"" + dbmsName + "\", " + runNo + ", " + numReqsCovered + ", " + numReqs + ", "
                     + successfulEvaluations + ", " + allEvaluations + ", " + numWarnings;
 
-        String sql = "INSERT INTO test_generation_run VALUES (NULL, " + data + ")";
+        String sql = "INSERT INTO test_generation_runs VALUES (" + data + ", NULL, NULL)";
 
         System.out.println(sql);
 
@@ -149,5 +172,7 @@ public class RunCoverageExpt {
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
         rce.runExpts();
+        rce.runExpts1();
+        rce.runExpts2();
     }
 }

@@ -34,8 +34,8 @@ public class ClauseAICC extends CondAICC {
 
     protected void generateCheckConstraintRequirements(CheckConstraint constraint, boolean truthValue) {
         if (truthValue) {
-            generateExpressionRequirements(constraint, true, true);
             generateExpressionRequirements(constraint, null, true);
+            generateExpressionRequirements(constraint, true, true);
         } else {
             generateExpressionRequirements(constraint, false, false);
         }

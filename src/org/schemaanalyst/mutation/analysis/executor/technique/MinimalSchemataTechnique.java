@@ -38,7 +38,6 @@ public class MinimalSchemataTechnique extends Technique {
 
     @Override
     public AnalysisResult analyse(TestSuiteResult originalResults) {
-        // Get normal results
         AnalysisResult result = new AnalysisResult();
 
         // Build map of changed tables
@@ -55,7 +54,7 @@ public class MinimalSchemataTechnique extends Technique {
                 changedTableMap.put(differentTable, list);
             }
         }
-        
+
         // Build the meta-mutant schema and SQL statements
         Schema metamutant = MutationAnalysisUtils.renameAndMergeMutants(schema, mutants);
         createStmts = sqlWriter.writeCreateTableStatements(metamutant);
