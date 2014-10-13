@@ -1,19 +1,24 @@
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import org.schemaanalyst.data.*;
-import org.schemaanalyst.dbms.*;
-import org.schemaanalyst.mutation.*;
+import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.Row;
+import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.InsertStatementException;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.analysis.executor.util.MutationAnalysisUtils;
-import org.schemaanalyst.sqlrepresentation.*;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
-import org.schemaanalyst.testgeneration.*;
+import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestSuite;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A re-implementation of the Minimal Schemata technique, where all inserts are

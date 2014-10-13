@@ -3,8 +3,6 @@ package org.schemaanalyst.sqlrepresentation;
 import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 
-import java.io.Serializable;
-
 /**
  * Represents a table column in a database schema.
  * 

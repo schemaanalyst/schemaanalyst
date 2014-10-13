@@ -1,7 +1,6 @@
 package org.schemaanalyst.unittest.data.generation.directedrandom;
 
 import org.junit.Test;
-
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.generation.directedrandom.ExpressionPredicateFixer;

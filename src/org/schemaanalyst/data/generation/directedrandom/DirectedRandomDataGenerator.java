@@ -27,8 +27,7 @@ public class DirectedRandomDataGenerator extends RandomDataGenerator {
     protected void initialize(Data data, Data state, Predicate predicate) {
         super.initialize(data, state, predicate);
         predicateFixer = PredicateFixerFactory.instantiate(
-                predicate, random, randomCellValueGenerator, true, data, state
-        );
+                predicate, true, data, state, random, randomCellValueGenerator);
     }
 
     @Override

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.schemaanalyst.data.DateTimeValueDefaults.*;
-import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_MINUTE;
-import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_SECOND;
 
 public class TimeValue extends Value implements CompoundValue {
 

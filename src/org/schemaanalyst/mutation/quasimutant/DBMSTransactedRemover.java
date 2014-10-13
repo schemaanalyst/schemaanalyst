@@ -1,7 +1,5 @@
 package org.schemaanalyst.mutation.quasimutant;
 
-import java.util.Iterator;
-import java.util.List;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
@@ -11,6 +9,9 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+
+import java.util.Iterator;
+import java.util.List;
 
 /**
  *

@@ -2,9 +2,8 @@ package org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

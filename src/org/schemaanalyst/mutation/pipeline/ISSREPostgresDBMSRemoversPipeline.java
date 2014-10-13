@@ -1,31 +1,19 @@
 
 package org.schemaanalyst.mutation.pipeline;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
-import org.schemaanalyst.mutation.operator.CCInExpressionRHSListExpressionElementR;
-import org.schemaanalyst.mutation.operator.CCNullifier;
-import org.schemaanalyst.mutation.operator.CCRelationalExpressionOperatorE;
-import org.schemaanalyst.mutation.operator.FKCColumnPairA;
-import org.schemaanalyst.mutation.operator.FKCColumnPairE;
-import org.schemaanalyst.mutation.operator.FKCColumnPairR;
-import org.schemaanalyst.mutation.operator.NNCA;
-import org.schemaanalyst.mutation.operator.NNCR;
-import org.schemaanalyst.mutation.operator.PKCColumnA;
-import org.schemaanalyst.mutation.operator.PKCColumnE;
-import org.schemaanalyst.mutation.operator.PKCColumnR;
-import org.schemaanalyst.mutation.operator.UCColumnA;
-import org.schemaanalyst.mutation.operator.UCColumnE;
-import org.schemaanalyst.mutation.operator.UCColumnR;
+import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresDBMSRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
-import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *

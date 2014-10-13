@@ -9,10 +9,10 @@ import org.schemaanalyst.mutation.operator.PKCColumnARE;
 import org.schemaanalyst.mutation.operator.UCColumnARE;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
-import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;

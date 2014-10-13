@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 import org.schemaanalyst.util.collection.IdentifiableEntitySet;
 
-import java.io.Serializable;
 import java.util.*;
 
 /**

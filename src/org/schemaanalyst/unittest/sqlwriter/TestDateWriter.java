@@ -3,9 +3,7 @@ package org.schemaanalyst.unittest.sqlwriter;
 import org.junit.Test;
 import org.schemaanalyst.sqlwriter.DateWriter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by phil on 21/08/2014.
