@@ -35,21 +35,22 @@ public class PrintTestRequirements extends Runner {
 
         int total = testRequirements.size();
 
+        testRequirements.filterInfeasible();
+
+        int totalMinusInfeasible = testRequirements.size();
+
         testRequirements.reduce();
 
-        int totalMinusDuplicates = testRequirements.size();
+        int totalMinusDuplicatesMinusInfeasible = testRequirements.size();
 
         for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
             boolean infeasible = testRequirement.getPredicate().reduce().isTriviallyInfeasible();
             System.out.println(testRequirement.toString(true) + "\n" + (infeasible ? "(Infeasible)\n" : "") );
         }
 
-        testRequirements.filterInfeasible();
-
-        int totalMinusDuplicatesMinusInfeasible = testRequirements.size();
 
         System.out.println("Total number of test requirements: " + total);
-        System.out.println("Minus duplicates:                  " + totalMinusDuplicates);
+        System.out.println("Minus infeasible:                  " + totalMinusInfeasible);
         System.out.println("Minus duplicates and infeasible:   " + totalMinusDuplicatesMinusInfeasible);
     }
 
