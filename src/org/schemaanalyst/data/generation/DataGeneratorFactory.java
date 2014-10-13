@@ -8,6 +8,7 @@ import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializ
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
+import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.Search;
@@ -120,7 +121,6 @@ public class DataGeneratorFactory {
                 randomCellInitializer);
     }
 
-    /*
     public static DirectedRandomDataGenerator directedRandomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
@@ -143,7 +143,6 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 randomCellInitializer);
     }
-    */
 
     public static RandomDataGenerator randomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
