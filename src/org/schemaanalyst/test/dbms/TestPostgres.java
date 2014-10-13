@@ -10,7 +10,7 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 /**
  * Created by phil on 11/08/2014.
  */
-public class TestPostgres extends TestDBMS {
+public class TestPostgres extends AbstractTestDBMS {
 
     protected DatabaseInteractor databaseInteractor;
 

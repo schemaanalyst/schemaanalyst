@@ -6,7 +6,6 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.value.NullValueObjectiveFunction;
-import org.schemaanalyst.logic.predicate.clause.NullClause;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
 import java.util.List;

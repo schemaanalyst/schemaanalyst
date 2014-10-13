@@ -1,4 +1,4 @@
-package org.schemaanalyst.test.testgeneraton;
+package org.schemaanalyst.test.testgeneration;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Data;

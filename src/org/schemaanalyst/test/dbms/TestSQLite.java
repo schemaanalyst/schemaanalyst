@@ -10,7 +10,7 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 /**
  * Created by phil on 11/08/2014.
  */
-public class TestSQLite extends TestDBMS {
+public class TestSQLite extends AbstractTestDBMS {
 
     protected DatabaseInteractor databaseInteractor;
 
