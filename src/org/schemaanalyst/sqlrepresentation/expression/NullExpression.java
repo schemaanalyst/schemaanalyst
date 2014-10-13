@@ -62,7 +62,7 @@ public class NullExpression extends ExpressionTree {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = NullExpression.class.getName().hashCode();
         result = prime * result + (notNull ? 1231 : 1237);
         result = prime * result
                 + ((subexpression == null) ? 0 : subexpression.hashCode());

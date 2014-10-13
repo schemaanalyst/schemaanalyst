@@ -56,7 +56,7 @@ public class ParenthesisedExpression extends ExpressionTree {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = ParenthesisedExpression.class.getName().hashCode();
         result = prime * result
                 + ((subexpression == null) ? 0 : subexpression.hashCode());
         return result;
