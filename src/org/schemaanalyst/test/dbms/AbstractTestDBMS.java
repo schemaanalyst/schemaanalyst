@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 /**
  * Created by phil on 11/08/2014.
  */
-public abstract class TestDBMS {
+public abstract class AbstractTestDBMS {
 
     public static final boolean DEBUG = false;
 
