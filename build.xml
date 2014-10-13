@@ -51,7 +51,7 @@
 	<!-- TESTING TASK - "ant test" -->
 	<target name="test" depends="compile">
 		<junit fork="false">
-			<test name="org.schemaanalyst.test.AllTests" />
+			<test name="org.schemaanalyst.unittest.AllTests" />
 			<classpath refid="run_classpath" />
 			<formatter type="brief" usefile="false" />
 		</junit>
@@ -61,7 +61,7 @@
 	<target name="coverage" depends="compile">
 		<jacoco:coverage excludes="dbmonster.*">
 			<junit fork="true">
-				<test name="org.schemaanalyst.test.AllTests" />
+				<test name="org.schemaanalyst.unittest.AllTests" />
 				<classpath refid="run_classpath" />
 				<formatter type="brief" usefile="false" />
 			</junit>

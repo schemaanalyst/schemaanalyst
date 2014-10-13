@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.schemaanalyst.javawriter.SchemaJavaWriter;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.tool.SchemaSQLParser;
 
 public class CreateSchemas {
 
