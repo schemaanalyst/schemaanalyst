@@ -18,7 +18,7 @@ public class OrPredicateChecker extends ComposedPredicateChecker {
 
     @Override
     public Predicate getPredicate() {
-        return null;
+        return orPredicate;
     }
 
     @Override
