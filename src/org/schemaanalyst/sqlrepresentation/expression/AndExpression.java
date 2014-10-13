@@ -29,4 +29,34 @@ public class AndExpression extends CompoundExpression {
     public String toString() {
         return StringUtils.join(subexpressions, " AND ");
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        AndExpression other = (AndExpression) obj;
+        if (subexpressions == null) {
+            if (other.subexpressions != null) {
+                return false;
+            }
+        } else if (!subexpressions.equals(other.subexpressions)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = AndExpression.class.getName().hashCode();
+        result = prime * result + ((subexpressions == null) ? 0 : subexpressions.hashCode());
+        return result;
+    }
 }
