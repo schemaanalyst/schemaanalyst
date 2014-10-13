@@ -30,6 +30,7 @@ public class FrenchTowns extends Schema {
 		this.createUniqueConstraint(tableRegions, tableRegions.getColumn("code"));
 		this.createUniqueConstraint(tableRegions, tableRegions.getColumn("name"));
 
+        /*
 		Table tableDepartments = this.createTable("Departments");
 		tableDepartments.createColumn("id", new IntDataType());
 		tableDepartments.createColumn("code", new VarCharDataType(4));
@@ -59,7 +60,7 @@ public class FrenchTowns extends Schema {
 		this.createNotNullConstraint(tableTowns, tableTowns.getColumn("name"));
 		this.createNotNullConstraint(tableTowns, tableTowns.getColumn("department"));
 		this.createUniqueConstraint(tableTowns, tableTowns.getColumn("id"));
-		this.createUniqueConstraint(tableTowns, tableTowns.getColumn("code"), tableTowns.getColumn("department"));
+		this.createUniqueConstraint(tableTowns, tableTowns.getColumn("code"), tableTowns.getColumn("department"));     */
 	}
 }
 

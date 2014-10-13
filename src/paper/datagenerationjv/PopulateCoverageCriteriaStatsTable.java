@@ -42,17 +42,17 @@ public class PopulateCoverageCriteriaStatsTable {
         DBMS dbms = instantiateDBMS(dbmsName);
         CoverageCriterion coverageCriterion = instantiateCoverageCriterion(coverageCriterionName, schema, dbms);
 
-        TestRequirements tr = coverageCriterion.generateRequirements();
-        int numReqs = tr.size();
+        TestRequirements testRequirements = coverageCriterion.generateRequirements();
+        int numReqs = testRequirements.size();
 
-        tr.reduce();
-        int numReqsMinusDuplicates = tr.size();
+        testRequirements.filterInfeasible();
+        int numReqsMinusInfeasible = testRequirements.size();
 
-        tr.filterInfeasible();
-        int numReqsMinusInfeasible = tr.size();
+        testRequirements.reduce();
+        int numReqsMinusDuplicates = testRequirements.size();
 
         String data = "\"" + schemaName + "\", \"" + coverageCriterionName + "\", \"" + dbmsName + "\", "
-                    +  numReqs + ", " +  numReqsMinusDuplicates + ", " +  numReqsMinusInfeasible;
+                    +  numReqs + ", " + numReqsMinusInfeasible + ", " +  numReqsMinusDuplicates;
 
         String sql = "INSERT INTO coverage_criteria_stats VALUES(" + data + ")";
 

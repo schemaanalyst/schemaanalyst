@@ -70,11 +70,14 @@ public class ANCC extends NCC {
         ComposedPredicate topLevelPredicate;
 
         if (clashingConstraint != null && !truthValue) {
+            // THERE IS A clashing constraint AND we want the column to be NOT NULL....
+
             // just satisfy the original constraint if it was supposed to be NOT NULL and
             // there is a clashing constraint (which could be a PRIMARY KEY and embody the additional
-            // property of uniqueness
+            // property of uniqueness)
             topLevelPredicate = PredicateGenerator.generatePredicate(constraints);
         } else {
+            // remove clashing constraint to prevent an infeasible requirement
             topLevelPredicate = PredicateGenerator.generatePredicate(constraints, clashingConstraint);
             topLevelPredicate.addPredicate(new NullPredicate(table, column, truthValue));
         }
