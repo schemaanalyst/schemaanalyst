@@ -34,6 +34,7 @@ public class MatchPredicateChecker extends PredicateChecker {
         this.state = state;
     }
 
+    @Override
     public MatchPredicate getPredicate() {
         return matchPredicate;
     }

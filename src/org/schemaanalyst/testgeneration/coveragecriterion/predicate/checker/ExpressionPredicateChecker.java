@@ -24,6 +24,7 @@ public class ExpressionPredicateChecker extends PredicateChecker {
         this.data = data;
     }
 
+    @Override
     public ExpressionPredicate getPredicate() {
         return expressionPredicate;
     }
