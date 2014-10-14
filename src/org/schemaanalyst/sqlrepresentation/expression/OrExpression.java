@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class OrExpression extends CompoundExpression {
+    
+    private static final long serialVersionUID = -7248930568916280298L;
 
     public OrExpression(Expression... subexpressions) {
         this(Arrays.asList(subexpressions));

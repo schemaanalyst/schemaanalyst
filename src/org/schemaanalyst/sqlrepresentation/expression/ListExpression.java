@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.List;
 
 public class ListExpression extends CompoundExpression {
+    
+    private static final long serialVersionUID = -1439840191933978361L;
 
     public ListExpression(Expression... subexpressions) {
         this(Arrays.asList(subexpressions));
