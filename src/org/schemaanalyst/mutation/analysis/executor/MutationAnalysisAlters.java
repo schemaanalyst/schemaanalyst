@@ -1,9 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
-import java.io.File;
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.concurrent.Callable;
 import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
@@ -33,6 +29,11 @@ import org.schemaanalyst.util.monitoring.Timing;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
+
+import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  *

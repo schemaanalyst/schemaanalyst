@@ -5,7 +5,6 @@ import org.schemaanalyst.sqlrepresentation.SQLRepresentationException;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.util.collection.IdentifiableEntity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 

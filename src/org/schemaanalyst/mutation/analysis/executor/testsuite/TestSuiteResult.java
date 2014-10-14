@@ -3,14 +3,10 @@ package org.schemaanalyst.mutation.analysis.executor.testsuite;
 
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.util.tuple.MixedPair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import org.schemaanalyst.testgeneration.TestSuite;
+import java.util.*;
 
 /**
  * <p>The results of executing a {@link TestSuite}.</p>

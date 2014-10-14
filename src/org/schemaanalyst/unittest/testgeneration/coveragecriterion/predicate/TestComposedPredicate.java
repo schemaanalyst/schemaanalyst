@@ -5,11 +5,11 @@ import org.junit.Test;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.datatype.IntDataType;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.AndPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 /**
  * Created by phil on 24/07/2014.

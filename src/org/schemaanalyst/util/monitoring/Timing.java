@@ -1,8 +1,9 @@
 
 package org.schemaanalyst.util.monitoring;
 
-import java.util.concurrent.Callable;
 import org.apache.commons.lang3.time.StopWatch;
+
+import java.util.concurrent.Callable;
 
 /**
  * Utility functions for timing operations.

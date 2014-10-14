@@ -1,12 +1,6 @@
 
 package org.schemaanalyst.mutation.analysis.executor.alters.technique;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
@@ -19,6 +13,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.util.tuple.MixedPair;
+
+import java.util.*;
 
 /**
  *

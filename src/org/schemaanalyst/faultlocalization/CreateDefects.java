@@ -1,15 +1,15 @@
 package org.schemaanalyst.faultlocalization;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.logging.Logger;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.logging.Logger;
 
 public class CreateDefects extends Runner{
 	

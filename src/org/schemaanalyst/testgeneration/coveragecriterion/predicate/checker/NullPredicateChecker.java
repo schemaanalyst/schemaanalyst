@@ -22,6 +22,7 @@ public class NullPredicateChecker extends PredicateChecker {
         this.data = data;
     }
 
+    @Override
     public NullPredicate getPredicate() {
         return nullPredicate;
     }

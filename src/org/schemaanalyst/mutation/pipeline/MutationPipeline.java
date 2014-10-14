@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.pipeline;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.MutantProducer;
 
@@ -7,7 +8,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.time.StopWatch;
 
 /**
  * <p>

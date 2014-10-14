@@ -1,15 +1,16 @@
 package org.schemaanalyst.mutation.redundancy;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
 import org.apache.commons.lang3.reflect.MethodUtils;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.equivalence.EquivalenceChecker;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.util.DataCapturer;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * Retains only those mutants that are equivalent (even if some are also redundant)

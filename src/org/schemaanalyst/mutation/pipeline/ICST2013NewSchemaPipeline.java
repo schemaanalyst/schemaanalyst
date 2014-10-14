@@ -5,10 +5,10 @@ package org.schemaanalyst.mutation.pipeline;
 
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckChecker;
 import org.schemaanalyst.mutation.operator.*;
-import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 /**

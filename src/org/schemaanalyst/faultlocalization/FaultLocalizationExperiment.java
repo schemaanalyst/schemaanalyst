@@ -1,12 +1,5 @@
 package org.schemaanalyst.faultlocalization;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
@@ -21,24 +14,19 @@ import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.testgeneration.*;
+import org.schemaanalyst.testgeneration.TestCase;
+import org.schemaanalyst.testgeneration.TestCaseExecutor;
+import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.Runner;
+import parsedcasestudy.*;
 
-import parsedcasestudy.BankAccount;
-import parsedcasestudy.CoffeeOrders;
-import parsedcasestudy.Flav_R03_1Repaired;
-import parsedcasestudy.Flights;
-import parsedcasestudy.GeoMetaDB;
-import parsedcasestudy.IsoFlav_R2Repaired;
-import parsedcasestudy.JWhoisServer;
-import parsedcasestudy.NistDML182;
-import parsedcasestudy.NistDML183;
-import parsedcasestudy.NistWeather;
-import parsedcasestudy.Products;
-import parsedcasestudy.RiskIt;
-import parsedcasestudy.StackOverflow;
-import parsedcasestudy.WordNet;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class FaultLocalizationExperiment extends Runner {

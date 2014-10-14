@@ -2,9 +2,9 @@ package org.schemaanalyst.unittest.testgeneration.coveragecriterion.predicate.ch
 
 import org.junit.Test;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.NullPredicateChecker;
 import org.schemaanalyst.unittest.testutil.mock.OneColumnMockDatabase;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.NullPredicate;
 
 import java.util.ArrayList;
 import java.util.List;

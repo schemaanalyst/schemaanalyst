@@ -1,7 +1,6 @@
 
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.List;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
@@ -14,6 +13,8 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestSuite;
+
+import java.util.List;
 
 /**
  *

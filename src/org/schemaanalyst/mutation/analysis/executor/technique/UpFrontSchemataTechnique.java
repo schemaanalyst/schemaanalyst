@@ -1,22 +1,19 @@
 package org.schemaanalyst.mutation.analysis.executor.technique;
 
-import java.util.HashMap;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.testgeneration.TestSuite;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import org.schemaanalyst.mutation.analysis.executor.testcase.FullSchemataDeletingTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.testgeneration.TestSuite;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.*;
 
 /**
  * <p>

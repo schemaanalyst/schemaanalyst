@@ -2,7 +2,8 @@ package org.schemaanalyst.unittest.dbms;
 
 import org.schemaanalyst.dbms.DatabaseInteractor;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Created by phil on 11/08/2014.

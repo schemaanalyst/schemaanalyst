@@ -1,14 +1,14 @@
 package org.schemaanalyst.mutation.analysis.executor.alters.sqlwriter;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlwriter.SQLWriter;
-import static org.schemaanalyst.sqlwriter.SQLWriter.quoteIdentifier;
 import org.schemaanalyst.util.IndentableStringBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An SQLWriter that omits constraints, which can be separately produced as

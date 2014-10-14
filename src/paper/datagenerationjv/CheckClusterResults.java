@@ -4,7 +4,6 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.io.*;
-import java.nio.file.Files;
 
 /**
  * Created by phil on 10/09/2014.
@@ -47,7 +46,8 @@ public class CheckClusterResults {
     };
 
     private static String[] dbmsNames = {
-            "HyperSQL", "SQLite",
+            "HyperSQL",
+            "SQLite",
             "Postgres"
     };
 
@@ -56,10 +56,13 @@ public class CheckClusterResults {
     };
 
     private static String[] coverageNames = {
-            "NCC", "ANCC", "UCC", "AUCC"
+            "NCC",
+            "ANCC",
+            "UCC",
+            "AUCC"
     };
 
-    public static void doSubmitScript() {
+    public static void makeSubmitScript() {
 
         LocationsConfiguration locationsConfiguration = new LocationsConfiguration();
         String resultsDir = locationsConfiguration.getResultsDir();
@@ -151,6 +154,7 @@ public class CheckClusterResults {
     }
 
     public static void main(String[] args) {
+        //makeSubmitScript();
         makeSQLStatements();
     }
 }

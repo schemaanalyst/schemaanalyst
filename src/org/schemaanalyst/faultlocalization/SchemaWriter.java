@@ -1,18 +1,14 @@
 package org.schemaanalyst.faultlocalization;
 
 
-	import org.schemaanalyst.javawriter.ConstraintJavaWriter;
-import org.schemaanalyst.javawriter.DataTypeJavaWriter;
-import org.schemaanalyst.javawriter.ExpressionJavaWriter;
-import org.schemaanalyst.javawriter.JavaWriter;
-import org.schemaanalyst.javawriter.ValueJavaWriter;
+import org.schemaanalyst.javawriter.*;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.util.IndentableStringBuilder;
 
-	import java.text.SimpleDateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 

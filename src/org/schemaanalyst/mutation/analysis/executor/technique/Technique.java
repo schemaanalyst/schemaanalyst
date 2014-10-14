@@ -4,11 +4,11 @@ package org.schemaanalyst.mutation.analysis.executor.technique;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.util.List;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 
 /**
  * <p>Abstract parent class of techniques performing mutation analysis.</p>
