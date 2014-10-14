@@ -80,7 +80,7 @@ public class InExpression extends ExpressionTree {
     @Override
     public int hashCode() {
         final int prime = 31;
-        int result = 1;
+        int result = InExpression.class.getName().hashCode();
         result = prime * result + ((lhs == null) ? 0 : lhs.hashCode());
         result = prime * result + (notIn ? 1231 : 1237);
         result = prime * result + ((rhs == null) ? 0 : rhs.hashCode());

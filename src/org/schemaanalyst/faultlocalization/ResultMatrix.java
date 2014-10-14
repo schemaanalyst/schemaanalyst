@@ -1,8 +1,8 @@
 package org.schemaanalyst.faultlocalization;
 
-import java.util.ArrayList;
-
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.util.ArrayList;
 
 public class ResultMatrix {
 	

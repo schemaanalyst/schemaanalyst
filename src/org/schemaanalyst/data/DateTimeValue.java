@@ -1,6 +1,7 @@
 package org.schemaanalyst.data;
 
 import java.util.List;
+
 import static org.schemaanalyst.data.DateTimeValueDefaults.*;
 
 public class DateTimeValue extends DateValue {

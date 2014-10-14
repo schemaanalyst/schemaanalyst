@@ -1,7 +1,6 @@
 package org.schemaanalyst.testgeneration.coveragecriterion;
 
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 
 import java.io.Serializable;

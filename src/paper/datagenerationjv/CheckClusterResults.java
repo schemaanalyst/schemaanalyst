@@ -96,7 +96,7 @@ public class CheckClusterResults {
                             }
 
                             if (rerun) {
-                                System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' expt.sh");
+                                System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' ../sa-expts/postgres-expt.sh");
                                 //System.out.println("java -Xmx3G -cp build:lib/* paper.datagenerationjv.RunCoverageExptCluster "+schemaName+" "+coverageName+" "+dataGeneratorName+" "+dbmsName+" "+i);
                                 //RunCoverageExptCluster rce = new RunCoverageExptCluster();
                                 //rce.runExpt(schemaName,coverageName,dataGeneratorName,dbmsName,i);
@@ -132,7 +132,7 @@ public class CheckClusterResults {
                                         sb.append(System.lineSeparator());
                                         line = br.readLine();
                                     }
-                                    String data = sb.toString();
+                                    String data = sb.toString().trim();
 
                                     String sql = "INSERT INTO test_generation_runs VALUES (" + data + ", NULL, NULL);";
 
@@ -142,6 +142,9 @@ public class CheckClusterResults {
                                     e.printStackTrace();
                                 }
 
+                            }  else {
+                                System.out.println(dataFile + " is missing");
+                                System.exit(1);
                             }
                         }
                     }
@@ -151,6 +154,7 @@ public class CheckClusterResults {
     }
 
     public static void main(String[] args) {
-        makeSubmitScript();
+        //makeSubmitScript();
+        makeSQLStatements();
     }
 }

@@ -4,8 +4,6 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 import static org.schemaanalyst.data.DateTimeValueDefaults.*;
-import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_MINUTE;
-import static org.schemaanalyst.data.DateTimeValueDefaults.DEFAULT_SECOND;
 
 public class TimestampValue extends NumericValue {
 

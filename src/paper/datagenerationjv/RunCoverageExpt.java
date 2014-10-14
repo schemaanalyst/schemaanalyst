@@ -6,12 +6,6 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -19,7 +13,6 @@ import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.List;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
 import static paper.datagenerationjv.Instantiator.instantiateDBMS;
@@ -83,7 +76,7 @@ public class RunCoverageExpt {
         }
     }
 
-    protected void expt(String schemaName,
+    public void expt(String schemaName,
                         String coverageCriterionName,
                         String dataGeneratorName,
                         String dbmsName,

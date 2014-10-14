@@ -1,14 +1,12 @@
 package org.schemaanalyst.faultlocalization;
 
-import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
+import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
-import org.schemaanalyst.javawriter.SchemaJavaWriter;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.tool.SchemaSQLParser;
+import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
 public class CreateSchemas {
 

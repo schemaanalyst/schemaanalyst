@@ -1,12 +1,12 @@
 package org.schemaanalyst.faultlocalization;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 
 public class CreateDefectiveSchemas {
 

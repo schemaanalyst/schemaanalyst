@@ -1,10 +1,9 @@
 package org.schemaanalyst.mutation.analysis.executor.alters.testcase;
 
-import org.schemaanalyst.mutation.analysis.executor.alters.sqlwriter.ConstraintlessSQLWriter;
-import java.util.List;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.mutation.analysis.executor.alters.sqlwriter.ConstraintlessSQLWriter;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.CreateStatementException;
 import org.schemaanalyst.mutation.analysis.executor.exceptions.StatementException;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
@@ -13,6 +12,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestCase;
+
+import java.util.List;
 
 /**
  * Executes a test case for ALTER-style mutation analysis

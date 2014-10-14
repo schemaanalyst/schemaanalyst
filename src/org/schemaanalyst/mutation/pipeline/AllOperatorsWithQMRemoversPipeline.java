@@ -1,6 +1,7 @@
 package org.schemaanalyst.mutation.pipeline;
 
 import org.schemaanalyst.mutation.operator.*;
+import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
@@ -9,7 +10,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 
 /**
  *

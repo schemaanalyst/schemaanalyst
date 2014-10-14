@@ -6,7 +6,6 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.row.ExpressionRowObjectiveFunctionFactory;
-import org.schemaanalyst.logic.predicate.clause.ExpressionClause;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPredicate;
 
 import java.util.List;

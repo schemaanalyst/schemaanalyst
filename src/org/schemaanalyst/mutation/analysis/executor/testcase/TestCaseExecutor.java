@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import java.util.ArrayList;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
@@ -14,6 +13,7 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestCase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -34,6 +34,7 @@ public class MatchPredicateChecker extends PredicateChecker {
         this.state = state;
     }
 
+    @Override
     public MatchPredicate getPredicate() {
         return matchPredicate;
     }
@@ -60,32 +61,27 @@ public class MatchPredicateChecker extends PredicateChecker {
 
     @Override
     public boolean check() {
-
         nonMatchingCells = new ArrayList<>();
         matchingCells = new ArrayList<>();
-
         List<Row> rows = data.getRows(matchPredicate.getTable());
+        List<Row> stateRows = getStateRows();
 
         if (rows.size() > 0) {
-            boolean compareRowAlwaysPresent = true;
             ListIterator<Row> rowsIterator = rows.listIterator();
 
             while (rowsIterator.hasNext()) {
                 Row row = rowsIterator.next();
 
-                List<Row> dataRows = getDataRows(rowsIterator.nextIndex() - 1);
-                List<Row> stateRows = getStateRows();
+                int index = rowsIterator.previousIndex();
+                List<Row> dataRows = getDataRows(index);
+
                 int numCompareRows = dataRows.size() + stateRows.size();
                 if (numCompareRows > 0) {
-                    //if (matchPredicate.getRequiresComparisonRow()) {
-                    //    compareRowAlwaysPresent = false;
-                    //}
-                } else {
                     checkRow(row, stateRows, dataRows);
                 }
             }
 
-            return compareRowAlwaysPresent && nonMatchingCells.size() == 0 && matchingCells.size() == 0;
+            return nonMatchingCells.size() == 0 && matchingCells.size() == 0;
         }
 
         return false;

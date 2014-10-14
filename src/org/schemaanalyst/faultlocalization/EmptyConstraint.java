@@ -1,11 +1,11 @@
 package org.schemaanalyst.faultlocalization;
 
-import java.util.List;
-
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ConstraintVisitor;
+
+import java.util.List;
 
 @SuppressWarnings("serial")
 public class EmptyConstraint extends Constraint {

@@ -9,21 +9,16 @@ import org.schemaanalyst.mutation.analysis.executor.exceptions.InsertStatementEx
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.analysis.executor.util.MutationAnalysisUtils;
+import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
+import org.schemaanalyst.util.tuple.MixedPair;
 
 import java.util.*;
-import org.schemaanalyst.mutation.equivalence.ChangedConstraintFinder;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
-import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
-import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.util.tuple.MixedPair;
 
 /**
  *

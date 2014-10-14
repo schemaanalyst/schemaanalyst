@@ -1,6 +1,5 @@
 package org.schemaanalyst.mutation.analysis.executor.testcase;
 
-import java.util.ArrayList;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.dbms.DBMS;
@@ -9,6 +8,7 @@ import org.schemaanalyst.mutation.analysis.executor.exceptions.InsertStatementEx
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FullSchemataDeletingTestCaseExecutor extends DeletingTestCaseExecutor {

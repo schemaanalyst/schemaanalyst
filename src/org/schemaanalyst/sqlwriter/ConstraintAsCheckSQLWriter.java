@@ -1,10 +1,12 @@
 package org.schemaanalyst.sqlwriter;
 
+import org.schemaanalyst.sqlrepresentation.Column;
+import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.*;
+import org.schemaanalyst.sqlrepresentation.expression.Expression;
+
 import java.util.Iterator;
 import java.util.List;
-import org.schemaanalyst.sqlrepresentation.*;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
-import org.schemaanalyst.sqlrepresentation.expression.*;
 
 /**
  * Writer to transform all types of constraints into CHECK constraints.

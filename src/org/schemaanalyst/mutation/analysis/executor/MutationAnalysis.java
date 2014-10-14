@@ -1,6 +1,10 @@
 package org.schemaanalyst.mutation.analysis.executor;
 
 import org.apache.commons.lang3.time.StopWatch;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
+import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
@@ -8,11 +12,21 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.technique.AnalysisResult;
 import org.schemaanalyst.mutation.analysis.executor.technique.Technique;
 import org.schemaanalyst.mutation.analysis.executor.technique.TechniqueFactory;
+import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
+import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
+import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
+import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.Parameter;
@@ -25,27 +39,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.Callable;
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.generation.DataGenerator;
-import org.schemaanalyst.data.generation.DataGeneratorFactory;
-import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
-import org.schemaanalyst.testgeneration.TestCase;
-import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
-import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -98,6 +93,11 @@ public class MutationAnalysis extends Runner {
      */
     @Parameter("Whether to output mutant data.")
     protected boolean outputMutants = false;
+    /**
+     * Whether to output detailed live mutant data.
+     */
+    @Parameter("Whether to output mutant data.")
+    protected boolean outputMutantsDetailed = false;
     /**
      * Which mutation analysis technique to use.
      */
@@ -214,6 +214,10 @@ public class MutationAnalysis extends Runner {
 
         if (outputMutants) {
             writeMutantReport(analysisResult);
+        }
+
+        if (outputMutantsDetailed) {
+            writeDetailedMutantReport(analysisResult);
         }
     }
 
@@ -351,14 +355,14 @@ public class MutationAnalysis extends Runner {
         TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
-    
+
     private void writeMutantReport(AnalysisResult analysisResult) {
         CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "mutantreport.dat");
         UUID identifier = UUID.randomUUID();
-        
+
         Map<String, Integer> aliveCount = new HashMap<>();
         Map<String, Integer> killedCount = new HashMap<>();
-        
+
         for (Mutant<Schema> mutant : analysisResult.getLive()) {
             final String operator = mutant.getSimpleDescription();
             int count = 1;
@@ -367,7 +371,7 @@ public class MutationAnalysis extends Runner {
             }
             aliveCount.put(operator, count);
         }
-        
+
         for (Mutant<Schema> mutant : analysisResult.getKilled()) {
             final String operator = mutant.getSimpleDescription();
             int count = 1;
@@ -376,17 +380,17 @@ public class MutationAnalysis extends Runner {
             }
             killedCount.put(operator, count);
         }
-        
+
         Set<String> keyset = new HashSet<>(aliveCount.keySet().size() + killedCount.keySet().size());
         keyset.addAll(aliveCount.keySet());
         keyset.addAll(killedCount.keySet());
-        
+
         for (String operator : keyset) {
             Integer alive = aliveCount.get(operator);
             Integer killed = killedCount.get(operator);
             alive = alive == null ? 0 : alive;
             killed = killed == null ? 0 : killed;
-            
+
             CSVResult mResult = new CSVResult();
             mResult.addValue("identifier", identifier);
             mResult.addValue("dbms", databaseConfiguration.getDbms());
@@ -395,11 +399,56 @@ public class MutationAnalysis extends Runner {
             mResult.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
             mResult.addValue("randomseed", randomseed);
             mResult.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
-            
+
             mResult.addValue("operator", operator);
             mResult.addValue("alive", alive);
             mResult.addValue("killed", killed);
-            
+
+            writer.write(mResult);
+        }
+    }
+
+    private void writeDetailedMutantReport(AnalysisResult analysisResult) {
+        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport.dat");
+        UUID identifier = UUID.randomUUID();
+
+        // Get a single collection of all mutants
+        List<Mutant<Schema>> killed = analysisResult.getKilled();
+        List<Mutant<Schema>> alive = analysisResult.getLive();
+        ArrayList<Mutant<Schema>> mutants = new ArrayList<>(killed.size() + alive.size());
+        mutants.addAll(killed);
+        mutants.addAll(alive);
+
+        // Sort into a predictable ordering
+        Collections.sort(mutants, new Comparator<Mutant<Schema>>() {
+            @Override
+            public int compare(Mutant<Schema> o1, Mutant<Schema> o2) {
+                if (o2.hashCode() > o1.hashCode()) {
+                    return -1;
+                } else if (o1.hashCode() > o2.hashCode()) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        });
+
+        // Build sets of killed/alive for quick lookups
+        Set<Mutant<Schema>> killedSet = new HashSet<>(killed);
+
+        for (int id = 0; id < mutants.size(); id++) {
+            Mutant<Schema> mutant = mutants.get(id);
+            CSVResult mResult = new CSVResult();
+            mResult.addValue("identifier", identifier);
+            mResult.addValue("mutant", id + 1);
+            mResult.addValue("dbms", databaseConfiguration.getDbms());
+            mResult.addValue("casestudy", casestudy);
+            mResult.addValue("criterion", inputTestSuite == null ? criterion : "NA");
+            mResult.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
+            mResult.addValue("randomseed", randomseed);
+            mResult.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
+            mResult.addValue("operator", mutant.getSimpleDescription());
+            mResult.addValue("killed", killedSet.contains(mutant) ? "true" : "false");
             writer.write(mResult);
         }
     }

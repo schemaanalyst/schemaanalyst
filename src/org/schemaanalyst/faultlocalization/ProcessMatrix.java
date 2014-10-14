@@ -1,14 +1,12 @@
 package org.schemaanalyst.faultlocalization;
 
+import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.constraint.Constraint;
 
 public class ProcessMatrix {
 	public static Schema schema;
