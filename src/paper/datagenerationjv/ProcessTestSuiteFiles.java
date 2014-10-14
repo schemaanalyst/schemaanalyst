@@ -133,6 +133,6 @@ public class ProcessTestSuiteFiles {
     }
 
     public static void main(String[] args) {
-        new ProcessTestSuiteFiles(false);
+        new ProcessTestSuiteFiles(true);
     }
 }

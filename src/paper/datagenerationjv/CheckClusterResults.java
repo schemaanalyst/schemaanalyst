@@ -4,7 +4,6 @@ import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.io.*;
-import java.nio.file.Files;
 
 /**
  * Created by phil on 10/09/2014.
@@ -47,7 +46,9 @@ public class CheckClusterResults {
     };
 
     private static String[] dbmsNames = {
-            "HyperSQL", "SQLite"
+            "HyperSQL",
+            "SQLite",
+            "Postgres"
     };
 
     private static String[] dataGeneratorNames = {
@@ -55,10 +56,13 @@ public class CheckClusterResults {
     };
 
     private static String[] coverageNames = {
-            "NCC", "ANCC", "UCC", "AUCC"
+            "NCC",
+            "ANCC",
+            "UCC",
+            "AUCC"
     };
 
-    public static void doSubmitScript() {
+    public static void makeSubmitScript() {
 
         LocationsConfiguration locationsConfiguration = new LocationsConfiguration();
         String resultsDir = locationsConfiguration.getResultsDir();
@@ -92,8 +96,8 @@ public class CheckClusterResults {
                             }
 
                             if (rerun) {
-                                //System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' expt.sh");
-                                System.out.println("java -Xmx3G -cp build:lib/* paper.datagenerationjv.RunCoverageExptCluster "+schemaName+" "+coverageName+" "+dataGeneratorName+" "+dbmsName+" "+i);
+                                System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' expt.sh");
+                                //System.out.println("java -Xmx3G -cp build:lib/* paper.datagenerationjv.RunCoverageExptCluster "+schemaName+" "+coverageName+" "+dataGeneratorName+" "+dbmsName+" "+i);
                                 //RunCoverageExptCluster rce = new RunCoverageExptCluster();
                                 //rce.runExpt(schemaName,coverageName,dataGeneratorName,dbmsName,i);
                             }
@@ -147,6 +151,6 @@ public class CheckClusterResults {
     }
 
     public static void main(String[] args) {
-        doSubmitScript();
+        makeSubmitScript();
     }
 }
