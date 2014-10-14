@@ -31,7 +31,7 @@ public class DirectedRandomDataGenerator extends RandomDataGenerator {
     public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
         initialize(data, state, predicate);
         boolean success = predicateChecker.check();
-        int evaluations = 0;
+        int evaluations = 1;
         while (!success && evaluations < maxEvaluations) {
             attemptFix(data);
             evaluations ++;
