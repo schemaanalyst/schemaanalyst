@@ -36,23 +36,35 @@ public class TestCaseExecutor {
         sqlWriter = dbms.getSQLWriter();
     }
 
-    public void prepare() {
+    private void dropTablesIfExist() {
+        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
+        for (String statement : dropTableStatements) {
+            Integer result = databaseInteractor.executeUpdate(statement);
+            if (result < 0) {
+                throw new TestCaseExecutionException(
+                        "Problem while executing DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
+            }
+        }
+    }
+
+    private void createTables() {
         List<String> createStatements = sqlWriter.writeCreateTableStatements(schema);
         for (String statement : createStatements) {
             Integer result = databaseInteractor.executeUpdate(statement);
             if (result < 0) {
                 throw new TestCaseExecutionException(
-                        "Could not execute CREATE TABLE statement \"" + statement + "\" while executing test case, result was " + result);
+                    "Could not execute CREATE TABLE statement \"" + statement + "\" while executing test case, result was " + result);
             }
         }
     }
 
     public void execute(TestSuite testSuite) {
-        prepare();
+        dropTablesIfExist(); // tables may still be hanging around in the case of a previous crash
+        createTables();
         for (TestCase testCase : testSuite.getTestCases()) {
             execute(testCase);
         }
-        close();
+        dropTablesIfExist();
     }
 
     public void execute(TestCase testCase) {
@@ -112,16 +124,4 @@ public class TestCaseExecutor {
 
         testCase.setDBMSResults(results);
     }
-
-    public void close() {
-        List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
-        for (String statement : dropTableStatements) {
-            Integer result = databaseInteractor.executeUpdate(statement);
-            if (result < 0) {
-                throw new TestCaseExecutionException(
-                        "Could not execute DROP TABLE statement \"" + statement + "\" while executing test case, result was " + result);
-            }
-        }
-    }
-
 }
