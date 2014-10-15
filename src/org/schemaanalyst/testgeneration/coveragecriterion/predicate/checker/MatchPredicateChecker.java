@@ -23,10 +23,6 @@ public class MatchPredicateChecker extends PredicateChecker {
     private List<MatchRecord> nonMatchingCells;
     private List<MatchRecord> matchingCells;
 
-    public MatchPredicateChecker(MatchPredicate matchPredicate, boolean allowNull, Data data) {
-        this(matchPredicate, allowNull, data, new Data());
-    }
-
     public MatchPredicateChecker(MatchPredicate matchPredicate, boolean allowNull, Data data, Data state) {
         this.matchPredicate = matchPredicate;
         this.allowNull = allowNull;
@@ -81,7 +77,8 @@ public class MatchPredicateChecker extends PredicateChecker {
                 }
             }
 
-            return nonMatchingCells.size() == 0 && matchingCells.size() == 0;
+            boolean result = nonMatchingCells.size() == 0 && matchingCells.size() == 0;
+            return result;
         }
 
         return false;

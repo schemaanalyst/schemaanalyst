@@ -48,7 +48,7 @@ public class TestMatchPredicateChecker {
                 mode
         );
 
-        MatchPredicateChecker checker = new MatchPredicateChecker(matchPredicate, true, data);
+        MatchPredicateChecker checker = new MatchPredicateChecker(matchPredicate, true, data, new Data());
 
         assertEquals(result, checker.check());
 
@@ -95,7 +95,7 @@ public class TestMatchPredicateChecker {
                 mode
         );
 
-        MatchPredicateChecker checker = new MatchPredicateChecker(matchPredicate, true, data);
+        MatchPredicateChecker checker = new MatchPredicateChecker(matchPredicate, true, data, new Data());
 
         assertEquals(result, checker.check());
 

@@ -8,9 +8,6 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
  */
 public class PredicateCheckerFactory {
 
-    public static PredicateChecker instantiate(Predicate predicate, boolean allowNull, Data data) {
-        return instantiate(predicate, allowNull, data, null);
-    }
 
     public static PredicateChecker instantiate(final Predicate predicate, final boolean allowNull, final Data data, final Data state) {
 
@@ -29,7 +26,7 @@ public class PredicateCheckerFactory {
 
             @Override
             public void visit(MatchPredicate predicate) {
-                predicateChecker = new MatchPredicateChecker(predicate, allowNull, data);
+                predicateChecker = new MatchPredicateChecker(predicate, allowNull, data, state);
             }
 
             @Override
