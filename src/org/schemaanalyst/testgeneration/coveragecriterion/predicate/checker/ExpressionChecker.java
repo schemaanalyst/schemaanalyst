@@ -139,7 +139,7 @@ public class ExpressionChecker extends Checker {
             public void visit(NullExpression expression) {
                 Value subject = new ExpressionEvaluator(expression.getSubexpression(), row).evaluate();
                 boolean result = subject == null;
-                boolean requiredResult = satisfy && !expression.isNotNull();
+                boolean requiredResult = satisfy && expression.isNotNull();
 
                 if (result != requiredResult) {
                     setNonCompliant(expression);
