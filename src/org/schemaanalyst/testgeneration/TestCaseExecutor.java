@@ -89,11 +89,6 @@ public class TestCaseExecutor {
                     String statement = sqlWriter.writeInsertStatement(row);
                     Integer result = databaseInteractor.executeUpdate(statement);
                     if (result != 1) {
-                        System.out.println(row);
-                        Cell cell = row.getCells().get(row.getCells().size() - 1);
-                        System.out.println(cell.getValue().getClass());
-                        System.out.println(((DateValue) cell.getValue()).getMonth());
-                        System.out.println(((DateValue) cell.getValue()).getDay().max);
                         throw new TestCaseExecutionException(
                                 "INSERT statement for setting database state \"" + statement + "\" should affect exactly one row, was " + result);
                     }

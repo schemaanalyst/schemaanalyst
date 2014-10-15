@@ -93,7 +93,10 @@ public class ExpressionChecker extends Checker {
 
 
                 boolean result = lhsResult && rhsResult;
-                boolean requiredResult = satisfy && !expression.isNotBetween();
+                boolean requiredResult = satisfy;
+                if (expression.isNotBetween()) {
+                    requiredResult = !requiredResult;
+                }
 
                 if (result != requiredResult) {
                     setNonCompliant(expression);
@@ -128,7 +131,10 @@ public class ExpressionChecker extends Checker {
                     }
                 }
 
-                boolean requiredResult = satisfy && !expression.isNotIn();
+                boolean requiredResult = satisfy;
+                if (expression.isNotIn()) {
+                    requiredResult = !requiredResult;
+                }
 
                 if (result != requiredResult) {
                     setNonCompliant(expression);
@@ -139,7 +145,10 @@ public class ExpressionChecker extends Checker {
             public void visit(NullExpression expression) {
                 Value subject = new ExpressionEvaluator(expression.getSubexpression(), row).evaluate();
                 boolean result = subject == null;
-                boolean requiredResult = satisfy && expression.isNotNull();
+                boolean requiredResult = satisfy;
+                if (expression.isNotNull()) {
+                    requiredResult = !requiredResult;
+                }
 
                 if (result != requiredResult) {
                     setNonCompliant(expression);
