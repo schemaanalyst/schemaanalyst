@@ -46,6 +46,10 @@ public class MatchPredicateChecker extends PredicateChecker {
     private List<Row> getDataRows(int index) {
         List<Row> compareRows = data.getRows(matchPredicate.getReferenceTable());
         if (matchPredicate.tableIsRefTable()) {
+            if (!matchPredicate.colsAreRefCols()) {
+                // include the current record  -- this is an FK to the same table
+                index ++;
+            }
             compareRows = compareRows.subList(0, index);
         }
         return compareRows;
