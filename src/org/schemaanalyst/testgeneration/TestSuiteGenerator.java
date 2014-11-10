@@ -40,11 +40,11 @@ public class TestSuiteGenerator {
     public TestSuiteGenerator(Schema schema,
                               TestRequirements testRequirements,
                               ValueFactory valueFactory,
-                              DataGenerator testCaseGenerator) {
+                              DataGenerator dataGenerator) {
         this.schema = schema;
         this.testRequirements = testRequirements;
         this.valueFactory = valueFactory;
-        this.dataGenerator = testCaseGenerator;
+        this.dataGenerator = dataGenerator;
 
         initialTableData = new HashMap<>();
     }
