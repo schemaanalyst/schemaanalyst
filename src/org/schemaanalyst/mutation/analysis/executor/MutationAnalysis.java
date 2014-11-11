@@ -41,6 +41,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -96,8 +98,13 @@ public class MutationAnalysis extends Runner {
     /**
      * Whether to output detailed live mutant data.
      */
-    @Parameter("Whether to output mutant data.")
+    @Parameter("Whether to output mutant data (detailed report).")
     protected boolean outputMutantsDetailed = false;
+    /**
+     * Whether to output mutant data (detailed report v2).
+     */
+    @Parameter("Whether to output mutant data (detailed report v2).")
+    protected boolean outputMutantsDetailed_v2 = false;
     /**
      * Which mutation analysis technique to use.
      */
@@ -135,6 +142,8 @@ public class MutationAnalysis extends Runner {
      * The report produced when generating the test suite.
      */
     private TestSuiteGenerationReport generationReport;
+
+    private static final Logger LOGGER = Logger.getLogger(MutationAnalysis.class.getName());
 
     @Override
     protected void task() {
@@ -218,6 +227,10 @@ public class MutationAnalysis extends Runner {
 
         if (outputMutantsDetailed) {
             writeDetailedMutantReport(analysisResult);
+        }
+
+        if (outputMutantsDetailed_v2) {
+            writeDetailedMutantReport_v2(analysisResult);
         }
     }
 
@@ -441,6 +454,55 @@ public class MutationAnalysis extends Runner {
             CSVResult mResult = new CSVResult();
             mResult.addValue("identifier", identifier);
             mResult.addValue("mutant", id + 1);
+            mResult.addValue("dbms", databaseConfiguration.getDbms());
+            mResult.addValue("casestudy", casestudy);
+            mResult.addValue("criterion", inputTestSuite == null ? criterion : "NA");
+            mResult.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
+            mResult.addValue("randomseed", randomseed);
+            mResult.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
+            mResult.addValue("operator", mutant.getSimpleDescription());
+            mResult.addValue("killed", killedSet.contains(mutant) ? "true" : "false");
+            writer.write(mResult);
+        }
+    }
+
+    private void writeDetailedMutantReport_v2(AnalysisResult analysisResult) {
+        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport_v2.dat");
+        UUID identifier = UUID.randomUUID();
+
+        // Get a single collection of all mutants
+        List<Mutant<Schema>> killed = analysisResult.getKilled();
+        List<Mutant<Schema>> alive = analysisResult.getLive();
+        ArrayList<Mutant<Schema>> mutants = new ArrayList<>(killed.size() + alive.size());
+        mutants.addAll(killed);
+        mutants.addAll(alive);
+
+        Collections.sort(mutants, new Comparator<Mutant<Schema>>() {
+            @Override
+            public int compare(Mutant<Schema> o1, Mutant<Schema> o2) {
+                int i1 = o1.getIdentifier();
+                int i2 = o2.getIdentifier();
+                if (i1 < i2) {
+                    return -1;
+                } else if (i1 > i2) {
+                    return 1;
+                } else {
+                    LOGGER.log(Level.SEVERE, "Mutant list contains two mutants "
+                            + "with matching identifiers. The ordering of contents"
+                            + " of 'detailedmutantreport_v2.dat' may become "
+                            + "unpredictable as a result.");
+                    return 0;
+                }
+            }
+        });
+
+        // Build sets of killed/alive for quick lookups
+        Set<Mutant<Schema>> killedSet = new HashSet<>(killed);
+
+        for (Mutant<Schema> mutant : mutants) {
+            CSVResult mResult = new CSVResult();
+            mResult.addValue("identifier", identifier);
+            mResult.addValue("mutant", mutant.getIdentifier());
             mResult.addValue("dbms", databaseConfiguration.getDbms());
             mResult.addValue("casestudy", casestudy);
             mResult.addValue("criterion", inputTestSuite == null ? criterion : "NA");

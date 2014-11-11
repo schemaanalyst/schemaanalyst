@@ -47,6 +47,7 @@ public class MutationPipeline<A> implements MutantProducer<A> {
         List<Mutant<A>> mutants = new ArrayList<>();
         applyProducers(mutants);
         mutants = applyRemovers(mutants);
+        addIdentifiers(mutants);
         return mutants;
     }
 
@@ -94,6 +95,13 @@ public class MutationPipeline<A> implements MutantProducer<A> {
         }
         return mutants;
     }
+    
+     private void addIdentifiers(List<Mutant<A>> mutants) {
+         for (int i = 0; i < mutants.size(); i++) {
+             Mutant<A> mutant = mutants.get(i);
+             mutant.setIdentifier(i + 1);
+         }
+    }
 
     public Map<Class, Integer> getProducerCounts() {
         return producerCounts;
@@ -117,4 +125,5 @@ public class MutationPipeline<A> implements MutantProducer<A> {
         producerTimings.clear();
         removerTimings.clear();
     }
+
 }
