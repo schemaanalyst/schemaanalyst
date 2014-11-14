@@ -422,7 +422,7 @@ public class MutationAnalysis extends Runner {
     }
 
     private void writeDetailedMutantReport(AnalysisResult analysisResult) {
-        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport.dat");
+        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport_old.dat");
         UUID identifier = UUID.randomUUID();
 
         // Get a single collection of all mutants
@@ -467,7 +467,7 @@ public class MutationAnalysis extends Runner {
     }
 
     private void writeDetailedMutantReport_v2(AnalysisResult analysisResult) {
-        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport_v2.dat");
+        CSVFileWriter writer = new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "detailedmutantreport.dat");
         UUID identifier = UUID.randomUUID();
 
         // Get a single collection of all mutants
