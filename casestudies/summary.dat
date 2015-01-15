@@ -5,6 +5,7 @@ ArtistTerm,MillionSong - made for research,No,Yes,No,No
 BankAccount,Greg's teaching,No,No,Yes,No
 BioSQL,Biological database,Yes,No,No,No
 BookTown,PG sample,No,No,Yes,No
+BrowserCookies,Phil's implementation inspired by Mozilla schemas,No,No,No,No
 Campaign,MS Access sample,No,No,No,No
 ChromeDB,Google Chrome,Yes,No,No,No
 Cloc,LOC counter export format,Yes,No,Yes,Yes
