@@ -134,6 +134,26 @@ public class MutationAnalysisUtils {
         String newName = String.format("mutant_%d_%s", id, changedTableName);
         changedTable.setName(newName);
     }
+    
+    /**
+     * Renames the constraints in the changed table in a single mutant, with the
+     *  format 'mutant_ID_CONSTRAINT'.
+     * 
+     * @param mutant The mutant schema
+     * @param id The mutant id
+     * @param changedTableName The name of the changed table
+     */
+    public static void renameChangedTableConstraints(Mutant<Schema> mutant, int id, String changedTableName) {
+        Schema mutantSchema = mutant.getMutatedArtefact();
+        Table changedTable = mutantSchema.getTable(changedTableName);
+        List<Constraint> constraints = mutantSchema.getConstraints(changedTable);
+        for (Constraint constraint : constraints) {
+            if (constraint.hasIdentifier()) {
+                String newName = String.format("mutnat_%d_%s", id, constraint.getName());
+                constraint.setName(newName);
+            }
+        }
+    }
 
     /**
      * Merges a schema and mutants together into a meta-mutant.

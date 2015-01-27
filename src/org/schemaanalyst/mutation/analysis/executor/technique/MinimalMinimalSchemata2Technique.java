@@ -273,6 +273,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
             }
             
             // Rename the remaining constraints and tables
+            MutationAnalysisUtils.renameChangedTableConstraints(mutant, i, mutation.getTable().getName());
             MutationAnalysisUtils.renameChangedTable(mutant, i, mutation.getTable().getName());
         }
     }
