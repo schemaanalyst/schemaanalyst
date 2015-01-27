@@ -33,32 +33,19 @@ public class RunCoverageExpt {
     }
 
     public String[] coverageCriteria() {
-        String[] coverageCriteria = {"APC", "ICC", "AICC", "CondAICC", "ClauseAICC", "NCC", "ANCC", "UCC", "AUCC"};
+        String[] coverageCriteria = {"UCC"};
         return coverageCriteria;
     }
 
     public void runExpts() {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
             for (String coverageCriterionName : coverageCriteria()) {
-                String dataGeneratorName = "directedRandomDefaults";
                 for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                    if (!dbmsName.equals("Postgres"))
-                    for (int i = 1; i <= 30; i++) {
-                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
-                    }
-                }
-            }
-        }
-    }
-
-    public void runExpts1() {
-        for (String schemaName : resultsDatabase.getNames("schemas")) {
-            for (String coverageCriterionName : coverageCriteria()) {
-                String dataGeneratorName = "directedRandom";
-                for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                    if (!dbmsName.equals("Postgres"))
-                    for (int i = 1; i <= 30; i++) {
-                        expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                    if (!dbmsName.equals("Postgres")) {
+                        String dataGeneratorName="random";
+                        for (int i = 1; i <= 30; i++) {
+                            expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
+                        }
                     }
                 }
             }
@@ -161,6 +148,5 @@ public class RunCoverageExpt {
 
         RunCoverageExpt rce = new RunCoverageExpt(args[0]);
         rce.runExpts();
-        rce.runExpts1();
     }
 }

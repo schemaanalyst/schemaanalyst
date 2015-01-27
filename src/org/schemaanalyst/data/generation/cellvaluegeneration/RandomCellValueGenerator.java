@@ -32,7 +32,8 @@ public class RandomCellValueGenerator {
 
     public void generateCellValue(Cell cell) {
 
-        // set the value to null?
+        // set the value to null? -- should it be set to a value as well for when the NULL status
+        // is flipped?
         boolean setToNull = random.nextDouble() < nullProbability;
         cell.setNull(setToNull);
         if (setToNull) {
