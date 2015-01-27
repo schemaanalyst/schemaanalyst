@@ -132,20 +132,20 @@ public class MinimalMinimalSchemataTechnique extends Technique {
                 }
             }
             if (killed) {
-                System.out.println("-----");
-                System.out.println("MM K: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
-                System.out.println("Original:");
-                System.out.println(originalResults);
-                System.out.println("Mutant:");
-                System.out.println(resultMap.get(i));
+//                System.out.println("-----");
+//                System.out.println("MM K: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+//                System.out.println("Original:");
+//                System.out.println(originalResults);
+//                System.out.println("Mutant:");
+//                System.out.println(resultMap.get(i));
                 result.addKilled(mutants.get(i));
             } else {
-                System.out.println("-----");
-                System.out.println("MM A: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
-                System.out.println("Original:");
-                System.out.println(originalResults);
-                System.out.println("Mutant:");
-                System.out.println(resultMap.get(i));
+//                System.out.println("-----");
+//                System.out.println("MM A: " + mutants.get(i).getDescription() + " (" + mutants.get(i).getSimpleDescription() + ")");
+//                System.out.println("Original:");
+//                System.out.println(originalResults);
+//                System.out.println("Mutant:");
+//                System.out.println(resultMap.get(i));
                 result.addLive(mutants.get(i));
             }
         }
