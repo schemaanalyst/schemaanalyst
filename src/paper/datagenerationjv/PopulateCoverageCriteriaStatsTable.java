@@ -6,6 +6,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static paper.datagenerationjv.Instantiator.instantiateCoverageCriterion;
@@ -27,7 +28,16 @@ public class PopulateCoverageCriteriaStatsTable {
 
         List<String> schemaNames = resultsDatabase.getNames("schemas");
         for (String schemaName : schemaNames) {
-            List<String> coverageCriteriaNames = resultsDatabase.getNames("coverage_criteria");
+            List<String> coverageCriteriaNames = new ArrayList<>();
+            coverageCriteriaNames.add("APC");
+            coverageCriteriaNames.add("ICC");
+            coverageCriteriaNames.add("AICC");
+            coverageCriteriaNames.add("CondAICC");
+            coverageCriteriaNames.add("ClauseAICC");
+            coverageCriteriaNames.add("UCC");
+            coverageCriteriaNames.add("AUCC");
+            coverageCriteriaNames.add("NCC");
+            coverageCriteriaNames.add("ANCC");
             for (String coverageCriterionName : coverageCriteriaNames) {
                 List<String> dbmsNames = resultsDatabase.getNames("dbmses");
                 for (String dbmsName : dbmsNames) {

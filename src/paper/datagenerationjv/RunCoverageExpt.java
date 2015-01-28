@@ -39,11 +39,12 @@ public class RunCoverageExpt {
 
     public void runExpts() {
         for (String schemaName : resultsDatabase.getNames("schemas")) {
+            if (schemaName.equals("iTrust"))
             for (String coverageCriterionName : coverageCriteria()) {
                 for (String dbmsName : resultsDatabase.getNames("dbmses")) {
-                    if (!dbmsName.equals("Postgres")) {
+                    if (dbmsName.equals("SQLite")) {
                         String dataGeneratorName="random";
-                        for (int i = 1; i <= 30; i++) {
+                        for (int i = 16; i <= 30; i++) {
                             expt(schemaName, coverageCriterionName, dataGeneratorName, dbmsName, i);
                         }
                     }
@@ -51,6 +52,8 @@ public class RunCoverageExpt {
             }
         }
     }
+
+
 
     public void expt(String schemaName,
                         String coverageCriterionName,
