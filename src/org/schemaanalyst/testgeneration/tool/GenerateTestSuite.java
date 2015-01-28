@@ -6,6 +6,7 @@ import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
+import org.schemaanalyst.mutation.analysis.executor.testcase.VirtualTestCaseExecutor;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.*;
@@ -19,6 +20,8 @@ import org.schemaanalyst.util.runner.Runner;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 
@@ -54,7 +57,7 @@ public class GenerateTestSuite extends Runner {
         Schema schemaObject = instantiateSchema();
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
         TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -89457235L, 100000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -0L, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -111,6 +114,26 @@ public class GenerateTestSuite extends Runner {
                 TestRequirement testRequirement = testCase.getTestRequirement();
                 System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
                 System.out.println(testRequirement);
+            }
+
+            // check the real test case executor against the virtual one
+            VirtualTestCaseExecutor virtualTestCaseExecutor = new VirtualTestCaseExecutor(schemaObject, dbmsObject);
+            List<Boolean> virtualResults = virtualTestCaseExecutor.executeTestCase(testCase);
+            List<Boolean> realResults = new ArrayList<>();
+            for (int i=0; i < testCase.getState().getNumRows(); i++) {
+                realResults.add(true);
+            }
+            realResults.addAll(testCase.getDBMSResults());
+
+            if (virtualResults.size() != realResults.size()) {
+                System.out.println("WARNING--Number of virtual results (" + virtualResults.size() +
+                        ") does not match number of real results (" + realResults.size() + ")");
+            }
+
+            for (int i=0; i < Math.min(virtualResults.size(), realResults.size()); i++) {
+                if (virtualResults.get(i) != realResults.get(i)) {
+                    System.out.println("WARNING--real result differs from virtual result at INSERT statement " + i);
+                }
             }
         }
 

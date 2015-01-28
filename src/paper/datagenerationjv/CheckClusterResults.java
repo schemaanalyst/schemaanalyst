@@ -46,9 +46,9 @@ public class CheckClusterResults {
     };
 
     private static String[] dbmsNames = {
-            "HyperSQL",
+            //"HyperSQL",
             "SQLite",
-            "Postgres"
+            //"Postgres"
     };
 
     private static String[] dataGeneratorNames = {
@@ -56,10 +56,10 @@ public class CheckClusterResults {
     };
 
     private static String[] coverageNames = {
-            "NCC",
-            "ANCC",
+            //"NCC",
+            //"ANCC",
             "UCC",
-            "AUCC"
+            //"AUCC"
     };
 
     public static void makeSubmitScript() {
@@ -96,7 +96,8 @@ public class CheckClusterResults {
                             }
 
                             if (rerun) {
-                                System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' ../sa-expts/postgres-expt.sh");
+                                //System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' ../sa-expts/postgres-expt.sh");
+                                System.out.println("qsub -v SCHEMA_NAME="+schemaName+",CRITERION_NAME="+coverageName+",DATA_GENERATOR_NAME="+dataGeneratorName+",DBMS_NAME="+dbmsName+",TRIAL="+i+" -l h_rt='08:00:00' ../sa-expts/expt.sh");
                                 //System.out.println("java -Xmx3G -cp build:lib/* paper.datagenerationjv.RunCoverageExptCluster "+schemaName+" "+coverageName+" "+dataGeneratorName+" "+dbmsName+" "+i);
                                 //RunCoverageExptCluster rce = new RunCoverageExptCluster();
                                 //rce.runExpt(schemaName,coverageName,dataGeneratorName,dbmsName,i);
@@ -143,8 +144,8 @@ public class CheckClusterResults {
                                 }
 
                             }  else {
-                                System.out.println(dataFile + " is missing");
-                                System.exit(1);
+                                //System.out.println(dataFile + " is missing");
+                                //System.exit(1);
                             }
                         }
                     }

@@ -6,10 +6,13 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementIDGenerator;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.AndPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator.addNullPredicate;
 
 /**
  * Created by phil on 18/08/2014.
@@ -31,12 +34,17 @@ public class UCC extends ColumnCriterion {
     }
 
     protected void generateRequirement(Table table, Column column, boolean truthValue) {
+
+        AndPredicate predicate = new AndPredicate();
+        predicate.addPredicate(generateMatchPredicate(table, column, truthValue));
+        addNullPredicate(predicate, table, column, false);
+
         testRequirements.addTestRequirement(
                 new TestRequirement(
                         new TestRequirementDescriptor(
                                 testRequirementIDGenerator.nextID(),
                                 column + " is " + ((truthValue) ? "UNIQUE" : "NOT UNIQUE")),
-                        generateMatchPredicate(table, column, truthValue),
+                        predicate,
                         null,
                         true
                 )
