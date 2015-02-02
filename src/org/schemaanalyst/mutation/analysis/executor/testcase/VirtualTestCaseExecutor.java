@@ -39,14 +39,14 @@ public class VirtualTestCaseExecutor {
      * @param testCase
      * @return A list of booleans corresponding to whether the nth statement was accepted or rejected by the DBMS
      */
-    public List<Boolean> executeTestCase(TestCase testCase) {
+    public VirtualTestCaseResult executeTestCase(TestCase testCase) {
         Data state = testCase.getState();
         Data data = testCase.getData();
 
         List<Boolean> results = executeInserts(state, new Data());
         results.addAll(executeInserts(data, state));
 
-        return results;
+        return new VirtualTestCaseResult(results);
     }
 
     private List<Boolean> executeInserts(Data data, Data state) {
