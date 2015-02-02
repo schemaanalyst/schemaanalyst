@@ -118,7 +118,7 @@ public class GenerateTestSuite extends Runner {
 
             // check the real test case executor against the virtual one
             VirtualTestCaseExecutor virtualTestCaseExecutor = new VirtualTestCaseExecutor(schemaObject, dbmsObject);
-            List<Boolean> virtualResults = virtualTestCaseExecutor.executeTestCase(testCase);
+            List<Boolean> virtualResults = virtualTestCaseExecutor.executeTestCaseBoolean(testCase);
             List<Boolean> realResults = new ArrayList<>();
             for (int i=0; i < testCase.getState().getNumRows(); i++) {
                 realResults.add(true);

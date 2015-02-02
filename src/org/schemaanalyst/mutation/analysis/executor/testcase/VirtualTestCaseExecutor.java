@@ -37,7 +37,7 @@ public class VirtualTestCaseExecutor {
     /**
      * Executes test case
      * @param testCase
-     * @return A list of booleans corresponding to whether the nth statement was accepted or rejected by the DBMS
+     * @return A {@link VirtualTestCaseResult} detailing the statement acceptance.
      */
     public VirtualTestCaseResult executeTestCase(TestCase testCase) {
         Data state = testCase.getState();
@@ -47,6 +47,21 @@ public class VirtualTestCaseExecutor {
         results.addAll(executeInserts(data, state));
 
         return new VirtualTestCaseResult(results);
+    }
+    
+    /**
+     * Executes test case
+     * @param testCase
+     * @return A list of booleans corresponding to whether the nth statement was accepted or rejected by the DBMS
+     */
+    public List<Boolean> executeTestCaseBoolean(TestCase testCase) {
+        Data state = testCase.getState();
+        Data data = testCase.getData();
+
+        List<Boolean> results = executeInserts(state, new Data());
+        results.addAll(executeInserts(data, state));
+
+        return results;
     }
 
     private List<Boolean> executeInserts(Data data, Data state) {
