@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -58,7 +59,7 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
             if (!databaseConfiguration.getHsqldb_in_memory()) {
                 databaseUrl = "jdbc:hsqldb:file:/" + hsqldbDirectory.getAbsolutePath() + URL_SUFFIX;
             } else {
-                databaseUrl = "jdbc:hsqldb:mem:/database" + URL_SUFFIX;
+                databaseUrl = "jdbc:hsqldb:mem:/database" + UUID.randomUUID().toString() + URL_SUFFIX;
             }
             LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
 
