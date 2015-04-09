@@ -223,7 +223,7 @@ public abstract class DatabaseInteractor {
                 upper = commands.size();
             }
             result = executeUpdatesAsTransaction(commands.subList(lower, upper));
-            if (result == 1) {
+            if (result != 1) {
                 return result;
             }
         }
