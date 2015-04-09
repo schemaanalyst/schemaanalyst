@@ -20,14 +20,35 @@ import org.schemaanalyst.util.tuple.MixedPair;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import org.schemaanalyst.mutation.MutantProducer;
+import org.schemaanalyst.mutation.operator.*;
 
 /**
  *
  * @author Chris J. Wright
  */
 public class MinimalMinimalSchemata2Technique extends Technique {
+
+    private static class MutantFilter {
+
+        final protected static Set<Class<? extends MutantProducer>> SUPPORTED_OPERATORS = new HashSet<>();
+
+        static {
+            SUPPORTED_OPERATORS.add(PKCColumnA.class);
+            SUPPORTED_OPERATORS.add(UCColumnA.class);
+            SUPPORTED_OPERATORS.add(NNCA.class);
+        }
+
+        public static boolean isSupported(Schema original, Mutant<Schema> mutant) {
+            return SUPPORTED_OPERATORS.contains(mutant.getMutantProducer().getClass()) &&
+                    (original.getPrimaryKeyConstraints().size() != mutant.getMutatedArtefact().getPrimaryKeyConstraints().size() ||
+                    original.getUniqueConstraints().size() != mutant.getMutatedArtefact().getUniqueConstraints().size());
+        }
+    }
 
     final protected static int TRANSACTION_SIZE = 100;
     private final SQLWriter sqlWriter;
@@ -50,23 +71,18 @@ public class MinimalMinimalSchemata2Technique extends Technique {
         List<Mutant<Schema>> unsuitableMutants = new ArrayList<>();
         List<Mutant<Schema>> suitableMutants = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
-            String operator = mutant.getSimpleDescription();
-            if (operator.startsWith("FK") || operator.endsWith("R") || operator.endsWith("Nullifier") || operator.endsWith("E")) {
-                unsuitableMutants.add(mutant);
-            } else {
+            if (MutantFilter.isSupported(schema, mutant)) {
                 suitableMutants.add(mutant);
+            } else {
+                unsuitableMutants.add(mutant);
             }
         }
-        // Print mutant type ratio
-        int suitableMutantsSize = suitableMutants.size();
-        double suitableMutantsPercent = ((suitableMutantsSize / (double) mutants.size())*100);
-        System.out.println(String.format("MinimalMinimal suitability: %s/%s (%s%%)", suitableMutantsSize, mutants.size(), suitableMutantsPercent));
-        
+
         // Analyse suitable mutants with this technique
         mutants = suitableMutants;
 
         // Analyse unsuitable mutants with Minimal technique
-        AnalysisResult removalResults = new MinimalSchemataTechnique(schema, unsuitableMutants, testSuite, dbms, databaseInteractor, useTransactions).analyse(originalResults);
+        AnalysisResult removalResults = new MinimalSchemataTechnique(schema.duplicate(), unsuitableMutants, testSuite, dbms, databaseInteractor, useTransactions).analyse(originalResults);
         for (Mutant<Schema> mutant : removalResults.getKilled()) {
             result.addKilled(mutant);
         }
@@ -74,7 +90,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
             result.addLive(mutant);
         }
         // Analyse suitable mutants as normal
-        
+
         // Build map of changed tables
         this.changedTableMap = new HashMap<>();
         for (int id = 0; id < mutants.size(); id++) {
@@ -89,7 +105,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
                 changedTableMap.put(differentTable, list);
             }
         }
-        
+
         // Build the meta-mutant schema and SQL statements
         removeOriginalConstraintsAndRename(schema, mutants);
         Schema metamutant = MutationAnalysisUtils.mergeMutants(schema, mutants);
@@ -123,13 +139,17 @@ public class MinimalMinimalSchemata2Technique extends Technique {
         for (int i = 0; i < mutants.size(); i++) {
             TestSuiteResult mutantResult = resultMap.get(i);
             boolean killed = false;
-            for (int j = 0; j < originalTestSuiteResult.getResults().size(); j++) {
-                MixedPair<TestCase, TestCaseResult> original = originalTestSuiteResult.getResults().get(j);
-                MixedPair<TestCase, TestCaseResult> mutant = mutantResult.getResults().get(j);
-                if (original.getSecond().wasSuccessful() && !mutant.getSecond().wasSuccessful()) {
-                    killed = true;
-                    break;
+            if (originalTestSuiteResult.getResults().size() == mutantResult.getResults().size()) {
+                for (int j = 0; j < originalTestSuiteResult.getResults().size(); j++) {
+                    MixedPair<TestCase, TestCaseResult> original = originalTestSuiteResult.getResults().get(j);
+                    MixedPair<TestCase, TestCaseResult> mutant = mutantResult.getResults().get(j);
+                    if (original.getSecond().wasSuccessful() && !mutant.getSecond().wasSuccessful()) {
+                        killed = true;
+                        break;
+                    }
                 }
+            } else {
+                killed = true;
             }
             if (killed) {
                 result.addKilled(mutants.get(i));
@@ -229,9 +249,9 @@ public class MinimalMinimalSchemata2Technique extends Technique {
             databaseInteractor.executeUpdatesAsTransaction(deleteStmts);
         }
     }
-    
+
     /**
-     * Removes all constraints from a schema except the mutated constraint, and 
+     * Removes all constraints from a schema except the mutated constraint, and
      * renames the table in the mutant.
      *
      * @param original The original schema
@@ -240,7 +260,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
     private void removeOriginalConstraintsAndRename(Schema original, List<Mutant<Schema>> mutants) {
         for (int i = 0; i < mutants.size(); i++) {
             Mutant<Schema> mutant = mutants.get(i);
-            
+
             // Find the mutated constraint
             Schema mutantSchema = mutant.getMutatedArtefact();
             Constraint mutation = ChangedConstraintFinder.getDifferentConstraint(original, mutantSchema);
@@ -271,7 +291,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
                     mutantSchema.removeUniqueConstraint(uniqueConstraint);
                 }
             }
-            
+
             // Rename the remaining constraints and tables
             MutationAnalysisUtils.renameChangedTableConstraints(mutant, i, mutation.getTable().getName());
             MutationAnalysisUtils.renameChangedTable(mutant, i, mutation.getTable().getName());
