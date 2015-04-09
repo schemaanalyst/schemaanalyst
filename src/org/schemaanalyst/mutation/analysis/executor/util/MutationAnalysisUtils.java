@@ -149,7 +149,7 @@ public class MutationAnalysisUtils {
         List<Constraint> constraints = mutantSchema.getConstraints(changedTable);
         for (Constraint constraint : constraints) {
             if (constraint.hasIdentifier()) {
-                String newName = String.format("mutnat_%d_%s", id, constraint.getName());
+                String newName = String.format("mutant_%d_%s", id, constraint.getName());
                 constraint.setName(newName);
             }
         }
