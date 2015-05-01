@@ -23,6 +23,7 @@ public class Mutant<A> {
     private String simpleDescription;
     private MutantProducer mutantProducer;
     private final List<MutantRemover> removersApplied;
+    private MutantType mutantType;
 
     /**
      * Constructor
@@ -34,6 +35,7 @@ public class Mutant<A> {
         this.artefact = artefact;
         this.description = description;
         removersApplied = new LinkedList<>();
+        mutantType = MutantType.NORMAL;
     }
 
     /**
@@ -138,5 +140,19 @@ public class Mutant<A> {
                     + " and therefore cause mistakes in analysis of results.");
         }
         this.identifier = identifier;
+    }
+
+    /**
+     * @return the mutantType
+     */
+    public MutantType getMutantType() {
+        return mutantType;
+    }
+
+    /**
+     * @param mutantType the mutantType to set
+     */
+    public void setMutantType(MutantType mutantType) {
+        this.mutantType = mutantType;
     }
 }

@@ -72,6 +72,10 @@ public class TechniqueFactory {
         return new MinimalMinimalSchemata2Technique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }
     
+    public static Technique mutantTiming (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+        return new MutantTimingTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    }
+    
     public static Technique checks (Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
         return new ChecksTechnique(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
     }

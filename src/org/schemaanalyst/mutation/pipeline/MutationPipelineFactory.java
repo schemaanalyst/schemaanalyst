@@ -80,6 +80,7 @@ public class MutationPipelineFactory {
         choices.add("ISSRERetainEquivalentMutants");
         choices.add("ISSRERetainRedundantMutants");
         choices.add("AllOperatorsWithRemovers");
+        choices.add("AllOperatorsWithClassifiers");
         choices.add("AllOperatorsWithQMRemovers");
         choices.add("Mutation2013");
         choices.add("Programmatic");
