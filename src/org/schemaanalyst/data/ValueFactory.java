@@ -144,8 +144,7 @@ public class ValueFactory implements Serializable {
     }
 
     public Value createDecimalDataTypeValue(DecimalDataType type) {
-        return new NumericValue();
-        // TODO: set ranges
+        return createPrecisionedAndScaledValue(type);
     }
 
     public Value createDoubleDataTypeValue(DoubleDataType type) {
@@ -175,8 +174,10 @@ public class ValueFactory implements Serializable {
     }
 
     public Value createNumericDataTypeValue(NumericDataType type) {
-        // quick fix...
+        return createPrecisionedAndScaledValue(type);
+    }
 
+    private Value createPrecisionedAndScaledValue(PrecisionedAndScaled type) {
         Integer precision = type.getPrecision();
         Integer scale = type.getScale();
 
@@ -190,7 +191,7 @@ public class ValueFactory implements Serializable {
 
             int range = (int) Math.pow(10, exponent);
 
-            int min = 1;//-range + 1;
+            int min = 1;//-range + 1; // Should this be 0?
             int max = range - 1;
 
             return new NumericValue(min, max);
