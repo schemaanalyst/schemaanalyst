@@ -46,7 +46,7 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
                                int totalNumTables, int totalNumColumns, // int totalUniqueColumnTypes,
                                int totalNumChecks, int totalNumForeignKeys, int totalNumNotNulls,
                                int totalNumPrimaryKeys, int totalNumUniques) {
-        table.append("\\hrule \n");
+        table.append("\\hline \n");
 
         writeRow(table, "Total", totalNumTables, totalNumColumns, // totalUniqueColumnTypes,
                 totalNumChecks, totalNumForeignKeys, totalNumNotNulls, totalNumPrimaryKeys, totalNumUniques);
