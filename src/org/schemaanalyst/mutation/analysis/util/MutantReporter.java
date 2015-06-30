@@ -62,11 +62,12 @@ public class MutantReporter extends Runner {
         // Iterate mutants and print
         for (String idString : ids.split(",")) {
             int id = Integer.valueOf(idString);
-            if (id < mutants.size()) {
-                Mutant<Schema> mutant = mutants.get(id);
+            int index = id - 1;
+            if (index < mutants.size()) {
+                Mutant<Schema> mutant = mutants.get(index);
                 print(id,writer,mutant);
             } else {
-                LOGGER.log(Level.SEVERE, "Mutant ID out of bounds, skipping (index {0} from list of {1})", new Object[] {id, mutants.size()});
+                LOGGER.log(Level.SEVERE, "Mutant ID out of bounds, skipping (index {0} from list of {1})", new Object[] {index, mutants.size()});
             }
         }
     }
@@ -80,11 +81,12 @@ public class MutantReporter extends Runner {
         // Iterate mutants and print
         for (String idString : ids.split(",")) {
             int id = Integer.valueOf(idString);
-            if (id < mutants.size()) {
-                Mutant<Schema> mutant = mutants.get(id);
+            int index = id - 1;
+            if (index < mutants.size()) {
+                Mutant<Schema> mutant = mutants.get(index);
                 print(id,writer,mutant,path + id);
             } else {
-                LOGGER.log(Level.SEVERE, "Mutant ID out of bounds, skipping (index {0} from list of {1})", new Object[] {id, mutants.size()});
+                LOGGER.log(Level.SEVERE, "Mutant ID out of bounds, skipping (index {0} from list of {1})", new Object[] {index, mutants.size()});
             }
         }
     }
