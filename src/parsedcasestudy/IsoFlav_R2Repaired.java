@@ -15,7 +15,7 @@ import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 public class IsoFlav_R2Repaired extends Schema {
 
 	public IsoFlav_R2Repaired() {
-		super("IsoFlav_R2Repaired");
+		super("IsoFlav_R2");
 
 		Table tableDataSrc = this.createTable("DATA_SRC");
 		tableDataSrc.createColumn("DataSrc_ID", new DecimalDataType());

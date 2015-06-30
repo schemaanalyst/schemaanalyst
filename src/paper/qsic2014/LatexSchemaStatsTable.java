@@ -23,7 +23,7 @@ public class LatexSchemaStatsTable extends SchemaStatsTable {
         super(" & ", " \\\\\n");
     }
 
-//    @Override
+//  @Override
 //    protected void writeHeader(StringBuffer table) {
 //        table.append("%!TEX root=mut13-schemata.tex\n");
 //    }
