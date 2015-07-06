@@ -191,7 +191,7 @@ public class ValueFactory implements Serializable {
 
             int range = (int) Math.pow(10, exponent);
 
-            int min = 1;//-range + 1; // Should this be 0?
+            int min = -range + 1;
             int max = range - 1;
 
             return new NumericValue(min, max);
