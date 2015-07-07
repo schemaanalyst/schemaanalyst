@@ -57,7 +57,7 @@ public class ListElementExchanger<A, E> extends Mutator<A, Pair<List<E>>> {
             if (currentElement.equals(element)) {
                 mutatedElements.add(alternative);
             } else {
-                mutatedElements.add(element);
+                mutatedElements.add(currentElement);
             }
         }
 
