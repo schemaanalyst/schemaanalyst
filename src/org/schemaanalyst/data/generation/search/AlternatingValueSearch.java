@@ -8,6 +8,7 @@ import org.schemaanalyst.util.random.Random;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class AlternatingValueSearch extends Search<Data> {
 
@@ -58,6 +59,7 @@ public class AlternatingValueSearch extends Search<Data> {
 
     protected boolean evaluate() {
         ObjectiveValue nextObjVal = evaluate(data);
+
         boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
 
         if (improvement) {
