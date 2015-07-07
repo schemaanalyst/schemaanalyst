@@ -10,35 +10,42 @@ import org.schemaanalyst.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
- * Supplies pairs of columns from a {@link ForeignKeyConstraint} with possible 
+ * Supplies pairs of columns from a {@link ForeignKeyConstraint} with possible
  * alternative pairs of columns for that key.
  * </p>
- * 
+ *
  * <p>
  * Note that this will not allow the creation of duplicated columns in a foreign
- *  key, e.g. (a, b) references (b, c).
+ * key, e.g. (a, b) references (b, c).
  * </p>
  *
  * @author Chris J. Wright
  */
 public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSupplier<ForeignKeyConstraint, Pair<List<Pair<Column>>>> {
-    
+
     @Override
     protected List<Pair<List<Pair<Column>>>> getComponents(ForeignKeyConstraint fkey) {
         List<Pair<List<Pair<Column>>>> components = new ArrayList<>();
         for (Pair<Column> pair : fkey.getColumnPairs()) {
             List<Pair<Column>> original = Arrays.asList(pair);
+            System.out.println("original: " + original);
             List<Pair<Column>> alternatives = getAlternatives(fkey, pair);
+            System.out.println("alternatives: " + alternatives);
             components.add(new Pair<>(original, alternatives));
+            System.out.println("new components: " + components);
         }
+        deduplicate(components);
         return components;
     }
 
+    // This version ensures that at least one column is the same
     private List<Pair<Column>> getAlternatives(ForeignKeyConstraint fkey, Pair<Column> originalPair) {
         List<Pair<Column>> alternatives = new ArrayList<>();
         Column local = originalPair.getFirst();
@@ -47,12 +54,15 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         Table referenceTable = fkey.getReferenceTable();
         for (Column localReplacement : localTable.getColumns()) {
             for (Column referenceReplacement : referenceTable.getColumns()) {
-                if (!referenceReplacement.equals(reference) || !localReplacement.equals(local)) {
+                // If reference has changed and local hasn't, or local has changed and reference hasn't
+                if ((referenceReplacement.equals(reference) && !localReplacement.equals(local))
+                        || (!referenceReplacement.equals(reference) && localReplacement.equals(local))) {
                     if (localReplacement.getDataType().equals(referenceReplacement.getDataType())) {
                         Pair<Column> pair = new Pair<>(localReplacement, referenceReplacement);
-                        if (!fkey.getColumnPairs().contains(pair)) {
-                            alternatives.add(pair);
-                        }
+                        System.out.println("existing pairs: " + alternatives);
+                        System.out.println("new pair: " + pair);
+                        alternatives.add(pair);
+                        
                     }
                 }
             }
@@ -78,5 +88,24 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         pairs.addAll(oldPairs);
         pairs.addAll(newPairs);
         currentDuplicate.setColumnPairs(pairs);
+    }
+
+    private List<Pair<List<Pair<Column>>>> deduplicate(List<Pair<List<Pair<Column>>>> components) {
+        System.out.println("\nDeduplicate\n");
+        for (Pair<List<Pair<Column>>> component : components) {
+            Set<Column> localCols = new HashSet<>();
+            Set<Column> refCols = new HashSet<>();
+            Set<Pair<Column>> validPairs = new HashSet<>();
+//            validPairs.add(null)
+//            validPairs.addAll(component.getFirst());
+//            for (Pair<Column> possiblePair : component.getSecond()) {
+//                for (Pair<Column> validPair : validPairs) {
+//                    
+//                }
+//            }
+            System.out.println(component);
+        }
+        System.out.println();
+        return null;
     }
 }
