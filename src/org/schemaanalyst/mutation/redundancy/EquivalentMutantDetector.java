@@ -9,6 +9,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * A {@link MutantRemover} that detects mutants equivalent to the original 
@@ -20,6 +22,8 @@ import java.util.List;
 public abstract class EquivalentMutantDetector<T> extends EquivalenceTesterMutantRemover<T> {
     
     private T originalArtefact;
+    
+    private static final Logger LOGGER = Logger.getLogger(EquivalentMutantDetector.class.getName());
 
     /**
      * Constructor.
@@ -42,9 +46,11 @@ public abstract class EquivalentMutantDetector<T> extends EquivalenceTesterMutan
         for (Iterator<Mutant<T>> it = mutants.iterator(); it.hasNext();) {
             Mutant<T> mutant = it.next();
             if (checker.areEquivalent(originalArtefact, mutant.getMutatedArtefact())) {
+                LOGGER.log(Level.INFO, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
                 process(mutant, it);
             } else if (hasDuplicateMethod(originalArtefact.getClass())) {
                 if (checker.areEquivalent(applyRemoversToOriginal(originalArtefact, mutant), mutant.getMutatedArtefact())) {
+                    LOGGER.log(Level.INFO, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
                     process(mutant, it);
                 }
             }
