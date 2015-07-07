@@ -40,7 +40,7 @@
 	<!-- COMPILING TASK - "ant compile" -->  
 	<target name="compile">
 		<mkdir dir="${build_dir}"/>
-		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source">
+		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source"  target="1.7" source="1.7">
 			<classpath refid="build_classpath"/>
 			<exclude name="deprecated/**"/>
 			<!-- <exclude name="paper/**"/> -->
