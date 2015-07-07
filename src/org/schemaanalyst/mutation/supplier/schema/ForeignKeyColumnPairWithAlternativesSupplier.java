@@ -10,10 +10,8 @@ import org.schemaanalyst.util.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -35,13 +33,10 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         List<Pair<List<Pair<Column>>>> components = new ArrayList<>();
         for (Pair<Column> pair : fkey.getColumnPairs()) {
             List<Pair<Column>> original = Arrays.asList(pair);
-            System.out.println("original: " + original);
             List<Pair<Column>> alternatives = getAlternatives(fkey, pair);
-            System.out.println("alternatives: " + alternatives);
             components.add(new Pair<>(original, alternatives));
-            System.out.println("new components: " + components);
         }
-        deduplicate(components);
+        components = deduplicate(fkey, components);
         return components;
     }
 
@@ -59,8 +54,6 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
                         || (!referenceReplacement.equals(reference) && localReplacement.equals(local))) {
                     if (localReplacement.getDataType().equals(referenceReplacement.getDataType())) {
                         Pair<Column> pair = new Pair<>(localReplacement, referenceReplacement);
-                        System.out.println("existing pairs: " + alternatives);
-                        System.out.println("new pair: " + pair);
                         alternatives.add(pair);
                         
                     }
@@ -90,22 +83,39 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         currentDuplicate.setColumnPairs(pairs);
     }
 
-    private List<Pair<List<Pair<Column>>>> deduplicate(List<Pair<List<Pair<Column>>>> components) {
-        System.out.println("\nDeduplicate\n");
+    private List<Pair<List<Pair<Column>>>> deduplicate(ForeignKeyConstraint fkey, List<Pair<List<Pair<Column>>>> components) {
+        List<Pair<List<Pair<Column>>>> result = new ArrayList<>();        
+        List<List<Pair<Column>>> mutants = new ArrayList<>();
         for (Pair<List<Pair<Column>>> component : components) {
-            Set<Column> localCols = new HashSet<>();
-            Set<Column> refCols = new HashSet<>();
-            Set<Pair<Column>> validPairs = new HashSet<>();
-//            validPairs.add(null)
-//            validPairs.addAll(component.getFirst());
-//            for (Pair<Column> possiblePair : component.getSecond()) {
-//                for (Pair<Column> validPair : validPairs) {
-//                    
-//                }
-//            }
-            System.out.println(component);
+            Pair<Column> original = component.getFirst().get(0);
+            for (Pair<Column> mutant : component.getSecond()) {
+                // Apply the mutation
+                List<Pair<Column>> constraints = new ArrayList<>();
+                constraints.add(mutant);
+                for (Pair<Column> columnPair : fkey.getColumnPairs()) {
+                    if (!columnPair.equals(original) && !isPairDuplicate(columnPair, constraints)) {
+                        constraints.add(columnPair);
+                    }
+                }
+                ArrayList<Pair<Column>> replacements = new ArrayList<>();
+                if (!mutants.contains(constraints)) {
+                    mutants.add(constraints);
+                    replacements.add(mutant);
+                }
+                result.add(new Pair<>(component.getFirst(), replacements));
+            }
         }
-        System.out.println();
-        return null;
+        return result;
+    }
+    
+    private static boolean isPairDuplicate(Pair<Column> possiblePair, List<Pair<Column>> constraints) {
+        boolean found = false;
+        for (Pair<Column> pair : constraints) {
+            if (possiblePair.getFirst().equals(pair.getFirst()) || possiblePair.getSecond().equals(pair.getSecond())) {
+                found = true;
+                break;
+            }
+        }
+        return found;
     }
 }
