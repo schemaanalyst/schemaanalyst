@@ -38,16 +38,13 @@ public class PrimaryKeyColumnNotNullRemover extends MutantRemover<Schema> {
         for (Mutant<Schema> mutant : mutants) {
             Schema schema = mutant.getMutatedArtefact();
             List<PrimaryKeyConstraint> primaryKeyConstraints = schema.getPrimaryKeyConstraints();
-            int startCount = schema.getNotNullConstraints().size();
             for (PrimaryKeyConstraint primaryKey : primaryKeyConstraints) {
                 Table table = primaryKey.getTable();
                 for (Column column : primaryKey.getColumns()) {
                     schema.removeNotNullConstraint(new NotNullConstraint(table, column));
                 }
             }
-//            if (startCount != schema.getNotNullConstraints().size()) {
-                mutant.addRemoverApplied(this);
-//            }
+            mutant.addRemoverApplied(this);
         }
         return mutants;
     }
