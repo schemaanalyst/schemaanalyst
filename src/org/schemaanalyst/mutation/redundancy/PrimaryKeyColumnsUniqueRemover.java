@@ -41,9 +41,9 @@ public class PrimaryKeyColumnsUniqueRemover extends MutantRemover<Schema> {
                 schema.removeUniqueConstraint(
                         new UniqueConstraint(primaryKey.getTable(), primaryKey.getColumns()));
             }
-            if (startCount != schema.getUniqueConstraints().size()) {
+//            if (startCount != schema.getUniqueConstraints().size()) {
                 mutant.addRemoverApplied(this);
-            }
+//            }
         }
 
         return mutants;

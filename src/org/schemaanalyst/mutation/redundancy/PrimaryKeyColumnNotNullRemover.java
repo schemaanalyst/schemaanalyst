@@ -45,9 +45,9 @@ public class PrimaryKeyColumnNotNullRemover extends MutantRemover<Schema> {
                     schema.removeNotNullConstraint(new NotNullConstraint(table, column));
                 }
             }
-            if (startCount != schema.getNotNullConstraints().size()) {
+//            if (startCount != schema.getNotNullConstraints().size()) {
                 mutant.addRemoverApplied(this);
-            }
+//            }
         }
         return mutants;
     }
