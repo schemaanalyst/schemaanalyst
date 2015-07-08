@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.schemaanalyst.mutation.MutantType;
 
 /**
  * A {@link MutantRemover} that detects mutants equivalent to other mutants,
@@ -42,7 +43,7 @@ public abstract class RedundantMutantDetector<T> extends EquivalenceTesterMutant
             Mutant<T> outer = outerIter.next();
             for (ListIterator<Mutant<T>> innerIter = mutants.listIterator(outerIter.nextIndex()); innerIter.hasNext();) {
                 Mutant<T> inner = innerIter.next();
-                if (checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
+                if (inner.getMutantType().equals(MutantType.NORMAL) && checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
                     LOGGER.log(Level.INFO, "Redundant mutant pair:\n{0}\n{1}\n", new Object[]{outer.getDescription(), inner.getDescription()});
                     process(outer, outerIter);
                     break;
