@@ -58,6 +58,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.mutation.operator.TestNNCAR.class,
 	org.schemaanalyst.unittest.mutation.operator.TestPKCColumnARE.class,
 	org.schemaanalyst.unittest.mutation.operator.TestUCColumnARE.class,
+    org.schemaanalyst.unittest.mutation.operator.TestUCColumnE.class,
 	org.schemaanalyst.unittest.mutation.reduction.TestNSelectiveRemover.class,
 	org.schemaanalyst.unittest.mutation.reduction.TestPercentageSamplingRemover.class,
 	org.schemaanalyst.unittest.mutation.reduction.TestSamplingRemover.class,
