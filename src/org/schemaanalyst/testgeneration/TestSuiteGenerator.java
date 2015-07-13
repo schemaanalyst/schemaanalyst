@@ -69,6 +69,11 @@ public class TestSuiteGenerator {
             ComposedPredicate acceptancePredicate = PredicateGenerator.generatePredicate(schema.getConstraints(table));
 
             // add not null predicates
+            List<Column> notNullColumns = table.getColumns();
+
+            /*
+            // NOTE: selecting individual columns like this will cause AUCC test requirements to fail.
+
             List<Column> notNullColumns = new ArrayList<>();
             PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
             if (primaryKeyConstraint != null) {
@@ -81,6 +86,7 @@ public class TestSuiteGenerator {
             for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
                 notNullColumns.addAll(foreignKeyConstraint.getColumns());
             }
+            */
             AndPredicate predicate = new AndPredicate();
             predicate.addPredicate(acceptancePredicate);
             PredicateGenerator.addNullPredicates(predicate, table, notNullColumns, false);
