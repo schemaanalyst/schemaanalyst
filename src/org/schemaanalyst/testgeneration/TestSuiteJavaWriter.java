@@ -4,6 +4,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.dbms.DBMS;
+import org.schemaanalyst.dbms.hypersql.HyperSQLDBMS;
+import org.schemaanalyst.dbms.sqlite.SQLiteDBMS;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
@@ -74,8 +76,18 @@ public class TestSuiteJavaWriter {
         code.appendln();
         code.appendln("public class " + className + " {");
         code.appendln(1);
-        code.appendln("private static final String JDBC_CLASS = \"org.sqlite.JDBC\";");
-        code.appendln("private static final String CONNECTION_URL = \"jdbc:sqlite:" + schema.getName() + "\";");
+
+        // TODO -- would be nicer to replace this with a visitor pattern
+        if (dbms instanceof SQLiteDBMS) {
+            // TO DO -- take these from config files or interactor classes ?
+            code.appendln("private static final String JDBC_CLASS = \"org.sqlite.JDBC\";");
+            code.appendln("private static final String CONNECTION_URL = \"jdbc:sqlite:" + schema.getName() + "\";");
+        } else if (dbms instanceof HyperSQLDBMS) {
+            // TO DO -- take these from config files or interactor classes ?
+            code.appendln("private static final String JDBC_CLASS = \"org.hsqldb.jdbc.JDBCDriver\";");
+            code.appendln("private static final String CONNECTION_URL = \"jdbc:hsqldb:mem:/database;hsqldb.write_delay=false\";");
+        }
+
         code.appendln();
         code.appendln("private static Connection connection;");
         code.appendln("private static Statement statement;");
@@ -92,9 +104,12 @@ public class TestSuiteJavaWriter {
         code.appendln("connection = DriverManager.getConnection(CONNECTION_URL);");
         code.appendln("statement = connection.createStatement();");
 
-        code.appendln();
-        code.appendln("// enable FOREIGN KEY support");
-        code.appendln(writeExecuteUpdate("PRAGMA foreign_keys = ON") + ";");
+        // TODO -- would be nicer to replace this with a visitor pattern
+        if (dbms instanceof SQLiteDBMS) {
+            code.appendln();
+            code.appendln("// enable FOREIGN KEY support");
+            code.appendln(writeExecuteUpdate("PRAGMA foreign_keys = ON") + ";");
+        }
 
         code.appendln();
         code.appendln("// drop the tables for this database (if they exist)");
