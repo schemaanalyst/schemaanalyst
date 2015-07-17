@@ -34,9 +34,9 @@ public class MutantReporter extends Runner {
     protected String casestudy;
     
     /**
-     * The comma-separated list of mutants to print details of (0 indexed)
+     * The comma-separated list of mutants to print details of (starting from 1)
      */
-    @Parameter("The comma-separated list of mutants to print details of (0 indexed)")
+    @Parameter("The comma-separated list of mutants to print details of (starting from 1)")
     protected String ids;
     
     /**
