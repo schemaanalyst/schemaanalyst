@@ -49,13 +49,12 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         Table referenceTable = fkey.getReferenceTable();
         for (Column localReplacement : localTable.getColumns()) {
             for (Column referenceReplacement : referenceTable.getColumns()) {
-                // If reference has changed and local hasn't, or local has changed and reference hasn't
+                // If reference has changed and local hasn't, or local has changed and reference hasn't -- Ensures that only one thing is changed - could be two separate loops rather than a nested one.
                 if ((referenceReplacement.equals(reference) && !localReplacement.equals(local))
                         || (!referenceReplacement.equals(reference) && localReplacement.equals(local))) {
                     if (localReplacement.getDataType().equals(referenceReplacement.getDataType())) {
                         Pair<Column> pair = new Pair<>(localReplacement, referenceReplacement);
                         alternatives.add(pair);
-                        
                     }
                 }
             }
