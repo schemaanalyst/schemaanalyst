@@ -28,7 +28,7 @@ import java.util.List;
  */
 public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSupplier<ForeignKeyConstraint, Pair<List<Pair<Column>>>> {
 
-    protected boolean supplyByTypes;
+    private boolean supplyByTypes;
 
     public ForeignKeyColumnPairWithAlternativesSupplier() {
         supplyByTypes = true;

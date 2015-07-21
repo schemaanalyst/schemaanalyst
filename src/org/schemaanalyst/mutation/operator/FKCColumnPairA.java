@@ -27,9 +27,15 @@ import java.util.List;
 public class FKCColumnPairA implements MutantProducer<Schema> {
 
     private Schema schema;
+    private boolean sameColumnTypes;
 
     public FKCColumnPairA(Schema schema) {
+        this(schema, false);
+    }
+
+    public FKCColumnPairA(Schema schema, boolean sameColumnTypes) {
         this.schema = schema;
+        this.sameColumnTypes = sameColumnTypes;
     }
 
     @Override
@@ -38,7 +44,7 @@ public class FKCColumnPairA implements MutantProducer<Schema> {
         Supplier<Schema, Pair<List<Pair<Column>>>> supplier =
                 SupplyChain.chain(
                         new ForeignKeyConstraintSupplier(),
-                        new ForeignKeyColumnPairsWithAlternativesSupplier());
+                        new ForeignKeyColumnPairsWithAlternativesSupplier(sameColumnTypes));
         supplier.initialise(schema);
         ListElementAdder<Schema, Pair<Column>> columnExchanger = new ListElementAdder<>(supplier);
         mutants.addAll(columnExchanger.mutate());

@@ -127,8 +127,13 @@ public class TestFKCColumnPairE {
     @Test
     public void testNoFKey() {
         SchemaNoFK schemaNoFK = new SchemaNoFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaNoFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaNoFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
+        assertEquals("Mutating a schema with no foreign keys should produce no "
+                + "mutants", 0, mutants.size());
+
+        exchanger = new FKCColumnPairE(schemaNoFK, false);
+        mutants = exchanger.mutate();
         assertEquals("Mutating a schema with no foreign keys should produce no "
                 + "mutants", 0, mutants.size());
     }
@@ -136,7 +141,7 @@ public class TestFKCColumnPairE {
     @Test
     public void testOneColFKey() {
         SchemaOneColFK schemaOneColFK = new SchemaOneColFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with one foreign key should produce 2 "
                 + "mutants", 2, mutants.size());
@@ -159,7 +164,7 @@ public class TestFKCColumnPairE {
     @Test
     public void testOneColFKeyMutants() {
         SchemaOneColFK schemaOneColFK = new SchemaOneColFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
 
         // Check mutant 1
@@ -190,7 +195,7 @@ public class TestFKCColumnPairE {
     @Test
     public void testOneColFKeyNoAlternatives() {
         SchemaOneColFKNoAlternatives schemaOneColFK = new SchemaOneColFKNoAlternatives();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaOneColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with one foreign key but no alternative "
                 + "columns should produce 0 mutants", 0, mutants.size());
@@ -199,7 +204,7 @@ public class TestFKCColumnPairE {
     @Test
     public void testTwoColFKey() {
         SchemaTwoColFK schemaTwoColFK = new SchemaTwoColFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaTwoColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaTwoColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with two foreign key columns should "
                 + "produce 2 mutants", 2, mutants.size());
@@ -222,7 +227,7 @@ public class TestFKCColumnPairE {
     @Test
     public void testTwoColFKeyMutants() {
         SchemaTwoColFK schemaTwoColFK = new SchemaTwoColFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaTwoColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaTwoColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
 
         // Check mutant 1
@@ -253,7 +258,7 @@ public class TestFKCColumnPairE {
     @Test
     public void SchemaThreeColFKNoAlternatives() {
         SchemaThreeColFKNoAlternatives schemaThreeColFK = new SchemaThreeColFKNoAlternatives();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaThreeColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaThreeColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with three foreign key columns but no "
                 + "alternative columns should produce 2 mutants", 2, mutants.size());
@@ -262,7 +267,7 @@ public class TestFKCColumnPairE {
     @Test
     public void SchemaThreeColFK() {
         SchemaThreeColFK schemaThreeColFK = new SchemaThreeColFK();
-        FKCColumnPairE exchanger = new FKCColumnPairE(schemaThreeColFK);
+        FKCColumnPairE exchanger = new FKCColumnPairE(schemaThreeColFK, true);
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with three foreign key columns should "
                 + "produce 6 mutants", 6, mutants.size());
