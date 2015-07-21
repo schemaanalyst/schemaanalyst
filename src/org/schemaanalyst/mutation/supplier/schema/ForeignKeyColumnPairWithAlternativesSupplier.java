@@ -28,6 +28,16 @@ import java.util.List;
  */
 public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSupplier<ForeignKeyConstraint, Pair<List<Pair<Column>>>> {
 
+    protected boolean supplyByTypes;
+
+    public ForeignKeyColumnPairWithAlternativesSupplier() {
+        supplyByTypes = true;
+    }
+
+    public ForeignKeyColumnPairWithAlternativesSupplier(boolean supplyByTypes) {
+        this.supplyByTypes = supplyByTypes;
+    }
+
     @Override
     protected List<Pair<List<Pair<Column>>>> getComponents(ForeignKeyConstraint fkey) {
         List<Pair<List<Pair<Column>>>> components = new ArrayList<>();
@@ -49,10 +59,16 @@ public class ForeignKeyColumnPairWithAlternativesSupplier extends IteratingSuppl
         Table referenceTable = fkey.getReferenceTable();
         for (Column localReplacement : localTable.getColumns()) {
             for (Column referenceReplacement : referenceTable.getColumns()) {
-                // If reference has changed and local hasn't, or local has changed and reference hasn't -- Ensures that only one thing is changed - could be two separate loops rather than a nested one.
+                // If reference has changed and local hasn't, or local has changed and reference hasn't
+                // (PM: Ensures that only one thing is changed - could be two separate loops rather than a nested one.)
                 if ((referenceReplacement.equals(reference) && !localReplacement.equals(local))
                         || (!referenceReplacement.equals(reference) && localReplacement.equals(local))) {
-                    if (localReplacement.getDataType().equals(referenceReplacement.getDataType())) {
+
+                    // should this pair be supplied?
+                    boolean addPair =
+                            !supplyByTypes ||
+                                    (supplyByTypes && localReplacement.getDataType().equals(referenceReplacement.getDataType()));
+                    if (addPair) {
                         Pair<Column> pair = new Pair<>(localReplacement, referenceReplacement);
                         alternatives.add(pair);
                     }

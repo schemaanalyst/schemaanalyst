@@ -27,6 +27,16 @@ import java.util.List;
  */
 public class ForeignKeyColumnPairsWithAlternativesSupplier extends IteratingSupplier<ForeignKeyConstraint, Pair<List<Pair<Column>>>> {
 
+    protected boolean supplyByTypes;
+
+    public ForeignKeyColumnPairsWithAlternativesSupplier() {
+        supplyByTypes = true;
+    }
+
+    public ForeignKeyColumnPairsWithAlternativesSupplier(boolean supplyByTypes) {
+        this.supplyByTypes = supplyByTypes;
+    }
+
     @Override
     protected List<Pair<List<Pair<Column>>>> getComponents(ForeignKeyConstraint fkey) {
         List<Pair<List<Pair<Column>>>> components = new ArrayList<>();
@@ -48,8 +58,16 @@ public class ForeignKeyColumnPairsWithAlternativesSupplier extends IteratingSupp
         for (Column local : localTable.getColumns()) {
             if (!localColumns.contains(local)) {
                 for (Column ref : refTable.getColumns()) {
-                    if (!refColumns.contains(ref) && (local.getDataType().equals(ref.getDataType()))) {
-                        additions.add(new Pair<>(local,ref));
+
+                    if (!refColumns.contains(ref)) {
+                        // should this pair be supplied?
+                        boolean addPair =
+                                !supplyByTypes ||
+                                        (supplyByTypes && local.getDataType().equals(ref.getDataType()));
+
+                        if (addPair) {
+                            additions.add(new Pair<>(local, ref));
+                        }
                     }
                 }
             }
