@@ -330,6 +330,11 @@ public class TestFKCColumnPairE {
         List<Mutant<Schema>> mutants = exchanger.mutate();
         assertEquals("Mutating a schema with three foreign key columns "
                 + "alternative columns should produce 6 mutants when types are off", 6, mutants.size());
+
+        for (Mutant<Schema> mutant : mutants) {
+            System.out.println(mutant);
+            System.out.println(new SQLWriter().writeCreateTableStatements(mutant.getMutatedArtefact()));
+        }
     }
 
     @Test

@@ -30,7 +30,7 @@ public class FKCColumnPairA implements MutantProducer<Schema> {
     private boolean sameColumnTypes;
 
     public FKCColumnPairA(Schema schema) {
-        this(schema, false);
+        this(schema, true);
     }
 
     public FKCColumnPairA(Schema schema, boolean sameColumnTypes) {
