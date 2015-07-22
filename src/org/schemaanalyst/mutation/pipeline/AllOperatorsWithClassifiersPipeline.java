@@ -4,13 +4,13 @@ import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceChecker;
 import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
-import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapConstraintRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.schemaanalyst.mutation.quasimutant.SQLiteClassifier;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantClassifier;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantClassifier;
 
@@ -51,7 +51,7 @@ public class AllOperatorsWithClassifiersPipeline extends MutationPipeline<Schema
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
-                addRemoverToFront(new SQLiteRemover());
+                addRemoverToFront(new SQLiteClassifier());
                 break;
             case "HyperSQL":
                 addRemoverToFront(new HyperSQLRemover());
