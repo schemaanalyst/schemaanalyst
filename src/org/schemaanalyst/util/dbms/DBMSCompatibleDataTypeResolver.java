@@ -55,7 +55,18 @@ public class DBMSCompatibleDataTypeResolver {
                 System.out.println("\t\tcompatibleTypes.put(" + getClassString(sourceType) +
                         ", new HashSet<Class<?>>());");
 
-                for (DataType targetType : targetTypes) {
+
+                // produce a sorted list
+                List<DataType> targetTypesList = new ArrayList<>();
+                targetTypesList.addAll(targetTypes);
+                Collections.sort(targetTypesList, new Comparator<DataType>() {
+                    @Override
+                    public int compare(DataType o1, DataType o2) {
+                        return o1.getClass().toString().compareTo(o2.getClass().toString());
+                    }
+                });
+
+                for (DataType targetType : targetTypesList) {
                     System.out.println(
                             "\t\tcompatibleTypes.get(" + getClassString(sourceType) +
                                     ").add(" + getClassString(targetType) + ");");
@@ -182,9 +193,9 @@ public class DBMSCompatibleDataTypeResolver {
     }
 
     public static void main(String[] args) {
-        DBMS dbms = new HyperSQLDBMS();
+        // DBMS dbms = new HyperSQLDBMS();
         // DBMS dbms = new PostgresDBMS();
-        // DBMS dbms = new SQLiteDBMS();
+        DBMS dbms = new SQLiteDBMS();
         DBMSCompatibleDataTypeResolver cdt = new DBMSCompatibleDataTypeResolver();
         cdt.writeCompatibleDataTypes(dbms);
     }
