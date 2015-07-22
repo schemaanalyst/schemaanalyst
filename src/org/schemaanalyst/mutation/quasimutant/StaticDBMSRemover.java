@@ -7,6 +7,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
+import org.schemaanalyst.sqlrepresentation.datatype.DataType;
 import org.schemaanalyst.util.DataCapturer;
 
 import java.util.Iterator;
@@ -33,7 +34,9 @@ public abstract class StaticDBMSRemover extends MutantRemover<Schema> {
             for (ForeignKeyConstraint fkey : schema.getForeignKeyConstraints()) {
                 boolean fUnique = isUnique(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
                 boolean fPrimary = isPrimary(schema, fkey.getReferenceTable(), fkey.getReferenceColumns());
-                if (!fUnique && !fPrimary) {
+                boolean compatibleTypes = areCompatible(fkey.getColumns(), fkey.getReferenceColumns());
+
+                if ((!fUnique && !fPrimary) || !compatibleTypes) {
                     DataCapturer.capture("removedmutants", "quasimutant", schema + "-" + mutant.getSimpleDescription());
                     it.remove();
                     break;
@@ -59,6 +62,27 @@ public abstract class StaticDBMSRemover extends MutantRemover<Schema> {
         } else {
             return false;
         }
+    }
+
+    protected boolean areCompatible(List<Column> columns, List<Column> referenceColumns) {
+
+        Iterator<Column> columnsIterator = columns.iterator();
+        Iterator<Column> referenceColumnsIterator = referenceColumns.iterator();
+
+        while (columnsIterator.hasNext()) {
+            Column column = columnsIterator.next();
+            Column referenceColumn = referenceColumnsIterator.next();
+
+            if (!compatibleTypes(column.getDataType(), referenceColumn.getDataType())) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected boolean compatibleTypes(DataType dataType1, DataType dataType2) {
+        return compatibleTypes.get(dataType1.getClass()).contains(dataType2.getClass());
     }
 
     protected abstract void initializeCompatibleTypes();

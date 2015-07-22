@@ -96,12 +96,12 @@ public class DBMSCompatibleDataTypeResolver {
             compatibleDataTypes.put(type, new HashSet<DataType>());
         }
 
-        for (DataType sourceType : dataTypeList) {
-            for (DataType targetType : dataTypeList) {
-                boolean result = checkType(sourceType, targetType);
+        for (DataType type : dataTypeList) {
+            for (DataType referenceType : dataTypeList) {
+                boolean result = checkType(type, referenceType);
 
                 if (result) {
-                    compatibleDataTypes.get(sourceType).add(targetType);
+                    compatibleDataTypes.get(type).add(referenceType);
                 }
             }
         }
@@ -109,8 +109,8 @@ public class DBMSCompatibleDataTypeResolver {
         return compatibleDataTypes;
     }
 
-    private boolean checkType(DataType sourceType, DataType targetType) {
-        Schema schema = makeSchema(sourceType, targetType);
+    private boolean checkType(DataType type, DataType referenceType) {
+        Schema schema = makeSchema(type, referenceType);
 
         dropTablesIfExist(schema);
 
@@ -148,13 +148,13 @@ public class DBMSCompatibleDataTypeResolver {
 
     private Schema makeSchema(DataType sourceType, DataType targetType) {
         Schema schema = new Schema(DB_NAME);
-        Table sourceTable = schema.createTable("source");
-        Table targetTable = schema.createTable("target");
-        Column sourceColumn = sourceTable.createColumn("sourceColumn", sourceType);
-        Column targetColumn = targetTable.createColumn("targetColumn", targetType);
-        schema.createPrimaryKeyConstraint(sourceTable, sourceColumn);
-        schema.createPrimaryKeyConstraint(targetTable, targetColumn);
-        schema.createForeignKeyConstraint(sourceTable, sourceColumn, targetTable, targetColumn);
+        Table table = schema.createTable("table");
+        Table referenceTable = schema.createTable("referenceTable");
+        Column column = table.createColumn("column", sourceType);
+        Column referenceColumn = referenceTable.createColumn("referenceColumn", targetType);
+        schema.createPrimaryKeyConstraint(table, column);
+        schema.createPrimaryKeyConstraint(referenceTable, referenceColumn);
+        schema.createForeignKeyConstraint(table, column, referenceTable, referenceColumn);
         return schema;
     }
 
@@ -182,9 +182,9 @@ public class DBMSCompatibleDataTypeResolver {
     }
 
     public static void main(String[] args) {
-        // DBMS dbms = new HyperSQLDBMS();
+        DBMS dbms = new HyperSQLDBMS();
         // DBMS dbms = new PostgresDBMS();
-        DBMS dbms = new SQLiteDBMS();
+        // DBMS dbms = new SQLiteDBMS();
         DBMSCompatibleDataTypeResolver cdt = new DBMSCompatibleDataTypeResolver();
         cdt.writeCompatibleDataTypes(dbms);
     }
