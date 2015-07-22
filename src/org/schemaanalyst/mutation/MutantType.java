@@ -9,5 +9,6 @@ package org.schemaanalyst.mutation;
 public enum MutantType {
     NORMAL,
     EQUIVALENT,
-    DUPLICATE
+    DUPLICATE,
+    IMPAIRED
 }
