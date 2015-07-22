@@ -6,7 +6,7 @@ import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.quasimutant.DBMSTransactedRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
@@ -38,7 +38,7 @@ public class QSICDBMSTransactedRemoversPipeline extends MutationPipeline<Schema>
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyColumnsUniqueRemover());
+        addRemover(new PrimaryKeyUniqueOverlapRemover());
         addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceChecker()));
     }

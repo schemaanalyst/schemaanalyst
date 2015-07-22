@@ -9,7 +9,7 @@ import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
@@ -66,7 +66,7 @@ public class ProgrammaticPipeline extends MutationPipeline<Schema> {
         switch (dbms) {
             case "Postgres":
                 addRemoverToFront(new PostgresRemover());
-                addRemoverToFront(new PrimaryKeyColumnsUniqueRemover());
+                addRemoverToFront(new PrimaryKeyUniqueOverlapRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":

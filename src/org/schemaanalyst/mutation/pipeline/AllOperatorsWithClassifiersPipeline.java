@@ -6,7 +6,7 @@ import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnsUniqueRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
@@ -39,7 +39,7 @@ public class AllOperatorsWithClassifiersPipeline extends MutationPipeline<Schema
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyColumnsUniqueRemover());
+        addRemover(new PrimaryKeyUniqueOverlapRemover());
         addRemover(new EquivalentMutantClassifier<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new RedundantMutantClassifier<>(new SchemaEquivalenceChecker()));
     }
