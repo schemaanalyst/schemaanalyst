@@ -10,6 +10,7 @@ import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
+import org.schemaanalyst.util.DataCapturer;
 
 import java.util.Iterator;
 import java.util.List;
@@ -39,6 +40,7 @@ public class DBMSRemover extends MutantRemover<Schema> {
                 Integer result = interactor.executeUpdate(stmt);
                 if (result == -1) {
                     it.remove();
+                    DataCapturer.capture("removedmutants", "quasimutant", schema + "-" + mutant.getSimpleDescription());
                     break;
                 }
             }
