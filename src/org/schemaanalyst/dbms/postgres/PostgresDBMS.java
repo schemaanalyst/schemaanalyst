@@ -1,10 +1,13 @@
 package org.schemaanalyst.dbms.postgres;
 
+import javafx.geometry.Pos;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.dbms.DatabaseInteractor;
+import org.schemaanalyst.dbms.hypersql.HyperSQLSQLWriter;
 
 /**
  * <p>
@@ -14,6 +17,11 @@ import org.schemaanalyst.dbms.DatabaseInteractor;
 public class PostgresDBMS extends DBMS {
 
     private PostgresDatabaseInteractor databaseInteractor;
+
+    public PostgresDBMS() {
+        sqlWriter = new PostgresSQLWriter();
+        valueFactory = new ValueFactory();
+    }
 
     @Override
     public DatabaseInteractor getDatabaseInteractor(String databaseName, DatabaseConfiguration databaseConfiguration, LocationsConfiguration locationConfiguration) {
