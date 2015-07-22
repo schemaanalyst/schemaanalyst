@@ -47,10 +47,12 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema> {
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new PostgresRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":

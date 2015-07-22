@@ -46,10 +46,12 @@ public class QSICDBMSTransactedRemoversPipeline extends MutationPipeline<Schema>
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new DBMSTransactedRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new DBMSTransactedRemover());
                 break;
             case "HyperSQL":

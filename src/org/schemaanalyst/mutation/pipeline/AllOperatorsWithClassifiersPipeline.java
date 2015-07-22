@@ -39,7 +39,6 @@ public class AllOperatorsWithClassifiersPipeline extends MutationPipeline<Schema
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
         addRemover(new EquivalentMutantClassifier<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new RedundantMutantClassifier<>(new SchemaEquivalenceChecker()));
     }
@@ -47,10 +46,12 @@ public class AllOperatorsWithClassifiersPipeline extends MutationPipeline<Schema
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new PostgresRemover());
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new SQLiteClassifier());
                 break;
             case "HyperSQL":
