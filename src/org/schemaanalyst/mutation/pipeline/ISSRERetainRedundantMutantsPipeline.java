@@ -8,7 +8,7 @@ import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.NonRedundantMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapConstraintRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
@@ -39,7 +39,7 @@ public class ISSRERetainRedundantMutantsPipeline extends MutationPipeline<Schema
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyUniqueOverlapRemover());
+        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
         addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new NonRedundantMutantRemover<>(new SchemaEquivalenceChecker()));
     }

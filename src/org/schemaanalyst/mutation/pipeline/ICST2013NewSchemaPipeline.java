@@ -7,7 +7,7 @@ import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceWithNotNullCheckC
 import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantRemover;
 import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapRemover;
+import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapConstraintRemover;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
@@ -28,7 +28,7 @@ public class ICST2013NewSchemaPipeline extends MutationPipeline<Schema> {
         addProducer(new UCColumnARE(schema));
 
         addRemover(new PrimaryKeyColumnNotNullRemover());
-        addRemover(new PrimaryKeyUniqueOverlapRemover());
+        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
         addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker(), schema));
         addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceWithNotNullCheckChecker()));
     }

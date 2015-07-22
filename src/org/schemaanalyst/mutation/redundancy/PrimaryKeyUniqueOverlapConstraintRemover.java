@@ -24,7 +24,7 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
  * @author Chris J. Wright
  *
  */
-public class PrimaryKeyUniqueOverlapRemover extends PrimaryKeyUniqueOverlapDetector {
+public class PrimaryKeyUniqueOverlapConstraintRemover extends PrimaryKeyUniqueOverlapDetector {
 
     /**
      * {@inheritDoc }
