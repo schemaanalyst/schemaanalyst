@@ -40,12 +40,10 @@ public class PrimaryKeyUniqueOverlapConstraintRemover extends PrimaryKeyUniqueOv
         Class mutantProducer = mutant.getMutantProducer().getClass();
         if (mutantProducer.equals(PKCColumnA.class) || mutantProducer.equals(PKCColumnE.class) || mutantProducer.equals(PKCColumnARE.class)) {
             // Remove the offending PK
-            System.out.println("Removing PK");
             mutant.getMutatedArtefact().removePrimaryKeyConstraint(primaryKey.getTable());
         } else if (mutantProducer.equals(UCColumnA.class) || mutantProducer.equals(UCColumnE.class) || mutantProducer.equals(UCColumnARE.class)) {
             // Remove the offending UC
             // The loop here is required in case there is more than one overlapping UC
-            System.out.println("Removing UC");
             for (UniqueConstraint uc : schema.getUniqueConstraints(primaryKey.getTable())) {
                 if (uc.getColumns().equals(primaryKey.getColumns())) {
                     schema.removeUniqueConstraint(uc);
