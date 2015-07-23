@@ -39,7 +39,6 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema> {
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
         addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceChecker()));
     }
