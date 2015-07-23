@@ -1,6 +1,5 @@
 package org.schemaanalyst.dbms.postgres;
 
-import javafx.geometry.Pos;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.ValueFactory;
