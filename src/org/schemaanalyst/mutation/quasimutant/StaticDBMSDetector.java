@@ -4,6 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.pipeline.MutantRemover;
 import org.schemaanalyst.sqlrepresentation.Column;
@@ -19,6 +21,8 @@ import org.schemaanalyst.sqlrepresentation.datatype.DataType;
  */
 public abstract class StaticDBMSDetector extends MutantRemover<Schema> {
 
+    private static final Logger LOGGER = Logger.getLogger(StaticDBMSDetector.class.getName());
+    
     protected Map<Class<?>, Set<Class<?>>> compatibleTypes;
 
     public StaticDBMSDetector() {
@@ -36,6 +40,7 @@ public abstract class StaticDBMSDetector extends MutantRemover<Schema> {
                 boolean compatibleTypes = areCompatible(fkey.getColumns(), fkey.getReferenceColumns());
 
                 if ((!fUnique && !fPrimary) || !compatibleTypes) {
+                    LOGGER.log(Level.INFO, "Quasi mutant:\n{0}\n", new Object[]{mutant.getDescription()});
                     process(mutant, it);
                     break;
                 }
