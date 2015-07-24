@@ -38,7 +38,6 @@ public class QSICDBMSRemoversPipeline extends MutationPipeline<Schema> {
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
 
-        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
         addRemover(new EquivalentMutantRemover<>(new SchemaEquivalenceChecker(), schema));
         addRemover(new RedundantMutantRemover<>(new SchemaEquivalenceChecker()));
     }
@@ -51,7 +50,7 @@ public class QSICDBMSRemoversPipeline extends MutationPipeline<Schema> {
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
-                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover(true));
                 addRemoverToFront(new DBMSRemover());
                 break;
             case "HyperSQL":

@@ -51,7 +51,7 @@ public class AllOperatorsWithRemoversPipeline extends MutationPipeline<Schema> {
                 addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
-                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
+                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover(true));
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":

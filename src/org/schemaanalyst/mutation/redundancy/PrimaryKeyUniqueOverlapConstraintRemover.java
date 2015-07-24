@@ -32,17 +32,27 @@ import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
 public class PrimaryKeyUniqueOverlapConstraintRemover extends PrimaryKeyUniqueOverlapDetector {
 
     /**
+     * Whether to treat Unique and Primary Key constraints as equivalent
+     */
+    private final boolean uniqueAndPrimaryKeyEquivalent;
+
+    public PrimaryKeyUniqueOverlapConstraintRemover() {
+        uniqueAndPrimaryKeyEquivalent = false;
+    }
+
+    public PrimaryKeyUniqueOverlapConstraintRemover(boolean uniqueAndPrimaryKeyEquivalent) {
+        this.uniqueAndPrimaryKeyEquivalent = uniqueAndPrimaryKeyEquivalent;
+    }
+
+    /**
      * {@inheritDoc }
      */
     @Override
     protected void process(Mutant<Schema> mutant, Iterator<Mutant<Schema>> it, PrimaryKeyConstraint primaryKey) {
         Schema schema = mutant.getMutatedArtefact();
         Class mutantProducer = mutant.getMutantProducer().getClass();
-        if (mutantProducer.equals(PKCColumnA.class) || mutantProducer.equals(PKCColumnE.class) || mutantProducer.equals(PKCColumnARE.class)) {
-            // Remove the offending PK
-            mutant.getMutatedArtefact().removePrimaryKeyConstraint(primaryKey.getTable());
-        } else if (mutantProducer.equals(UCColumnA.class) || mutantProducer.equals(UCColumnE.class) || mutantProducer.equals(UCColumnARE.class)) {
-            // Remove the offending UC
+        if (!uniqueAndPrimaryKeyEquivalent) {
+            // If Unique != Primary Key, then remove the unique
             // The loop here is required in case there is more than one overlapping UC
             for (UniqueConstraint uc : schema.getUniqueConstraints(primaryKey.getTable())) {
                 if (uc.getColumns().equals(primaryKey.getColumns())) {
@@ -50,7 +60,21 @@ public class PrimaryKeyUniqueOverlapConstraintRemover extends PrimaryKeyUniqueOv
                 }
             }
         } else {
-            throw new RuntimeException("Could not determine mutation responsible for Primary key / Unique overlap (mutantProducer = " + mutantProducer + ")");
+            // If Unique == Primary Key, then remove whichever was added by a mutation
+            if (mutantProducer.equals(PKCColumnA.class) || mutantProducer.equals(PKCColumnE.class) || mutantProducer.equals(PKCColumnARE.class)) {
+                // Remove the offending PK
+                mutant.getMutatedArtefact().removePrimaryKeyConstraint(primaryKey.getTable());
+            } else if (mutantProducer.equals(UCColumnA.class) || mutantProducer.equals(UCColumnE.class) || mutantProducer.equals(UCColumnARE.class)) {
+                // Remove the offending UC
+                // The loop here is required in case there is more than one overlapping UC
+                for (UniqueConstraint uc : schema.getUniqueConstraints(primaryKey.getTable())) {
+                    if (uc.getColumns().equals(primaryKey.getColumns())) {
+                        schema.removeUniqueConstraint(uc);
+                    }
+                }
+            } else {
+                throw new RuntimeException("Could not determine mutation responsible for Primary key / Unique overlap (mutantProducer = " + mutantProducer + ")");
+            }
         }
     }
 
