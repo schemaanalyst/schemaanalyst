@@ -43,10 +43,20 @@
 		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source"  target="1.7" source="1.7">
 			<classpath refid="build_classpath"/>
 			<exclude name="deprecated/**"/>
+			<exclude name="org/schemaanalyst/sqlparser/**"/>
 			<!-- <exclude name="paper/**"/> -->
 		</javac>
 	</target>
 
+	<!-- COMPILING TASK WITH PARSER - "ant compile" -->  
+	<target name="compile-with-parser">
+		<mkdir dir="${build_dir}"/>
+		<javac srcdir="${src_dir}" destdir="${build_dir}" includeantruntime="false" debug="true" debuglevel="vars,lines,source"  target="1.7" source="1.7">
+			<classpath refid="build_classpath"/>
+			<exclude name="deprecated/**"/>
+			<!-- <exclude name="paper/**"/> -->
+		</javac>
+	</target>
 
 	<!-- TESTING TASK - "ant test" -->
 	<target name="test" depends="compile">
