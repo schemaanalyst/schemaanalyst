@@ -29,6 +29,9 @@ public class RelationalChecker extends Checker {
         }
 
         if (!lhs.getClass().equals(rhs.getClass())) {
+            // This is a dirty hack for getting SQLite FK column values
+            // of incompatible types to be checked:
+
             lhs = new StringValue(lhs.toString());
             rhs = new StringValue(rhs.toString());
 
