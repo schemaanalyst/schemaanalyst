@@ -29,9 +29,12 @@ public class RelationalChecker extends Checker {
         }
 
         if (!lhs.getClass().equals(rhs.getClass())) {
-            throw new CheckerException(
-                    lhs + "(type + " + lhs.getClass().getSimpleName() + ") is of a different type to " +
-                            rhs + "(type + " + rhs.getClass().getSimpleName() + ")");
+            lhs = new StringValue(lhs.toString());
+            rhs = new StringValue(rhs.toString());
+
+            //throw new CheckerException(
+            //        lhs + "(type + " + lhs.getClass().getSimpleName() + ") is of a different type to " +
+            //                rhs + "(type + " + rhs.getClass().getSimpleName() + ")");
         }
 
         return new ValueVisitor() {
