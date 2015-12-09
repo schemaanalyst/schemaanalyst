@@ -1,7 +1,7 @@
 #!/bin/bash
 
 CLASSPATH='lib/*:build/'
-VIRTCLASS='org.schemaanalyst.mutation.analysis.executor.MutationAnalysisVirtual'
+VIRTCLASS='org.schemaanalyst.mutation.analysis.executor.MutationAnalysisVirtualWithTiming'
 DATAGENERATOR='avsDefaults'
 PIPELINE='AllOperatorsNormalisedWithRemovers'
 
