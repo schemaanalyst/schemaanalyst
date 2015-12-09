@@ -81,7 +81,7 @@ public class MutationPipelineFactory {
         choices.add("ISSRERetainRedundantMutants");
         choices.add("AllOperatorsWithRemovers");
         choices.add("AllOperatorsNormalisedWithRemovers");
-        choices.add("AllOperatorsNormalisedWithClassifiersPipeline");
+        choices.add("AllOperatorsNormalisedWithClassifiers");
         choices.add("AllOperatorsWithClassifiers");
         choices.add("AllOperatorsWithQMRemovers");
         choices.add("Mutation2013");

@@ -3,7 +3,7 @@
 CLASSPATH='lib/*:build/'
 VIRTCLASS='org.schemaanalyst.mutation.analysis.executor.MutationAnalysisVirtualWithTiming'
 DATAGENERATOR='avsDefaults'
-PIPELINE='AllOperatorsNormalisedWithClassifiersPipeline'
+PIPELINE='AllOperatorsNormalisedWithClassifiers'
 
 while getopts s:c:r:b: option
 do
