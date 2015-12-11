@@ -14,11 +14,18 @@ import org.schemaanalyst.util.runner.Runner;
  * 
  * @author Chris J. Wright
  */
-@RequiredParameters("file")
+@RequiredParameters("file mutationPipeline")
 public class MutantFromDatReporter extends Runner {
     
     @Parameter("The file to read from")
     protected String file;
+    
+    /**
+     * The mutation pipeline to use to generate mutants.
+     */
+    @Parameter(value = "The mutation pipeline to use to generate mutants.",
+            choicesMethod = "org.schemaanalyst.mutation.pipeline.MutationPipelineFactory.getPipelineChoices")
+    protected String mutationPipeline = "AllOperatorsWithClassifiers";
     
     private static final Logger LOGGER = Logger.getLogger(MutantFromDatReporter.class.getName());
 
@@ -35,7 +42,9 @@ public class MutantFromDatReporter extends Runner {
                 
                 String path = file.replaceAll(".dat", "") + "/" + casestudy + "/";
                 new File(path).mkdirs();
-                new MutantReporter().reportToFile(casestudy, dbms, ids, path);
+                MutantReporter reporter = new MutantReporter();
+                reporter.mutationPipeline = this.mutationPipeline;
+                reporter.reportToFile(casestudy, dbms, ids, path);
             }
         } catch (IOException ex) {
             throw new RuntimeException(ex);
