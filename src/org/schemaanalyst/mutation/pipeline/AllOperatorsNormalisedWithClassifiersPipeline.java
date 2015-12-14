@@ -3,7 +3,6 @@ package org.schemaanalyst.mutation.pipeline;
 import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
-import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
@@ -12,6 +11,7 @@ import org.schemaanalyst.dbms.hypersql.HyperSQLSchemaNormaliser;
 import org.schemaanalyst.dbms.postgres.PostgresSchemaNormaliser;
 import org.schemaanalyst.dbms.sqlite.SQLiteSchemaNormaliser;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceCheckerWithNormalisation;
+import org.schemaanalyst.mutation.quasimutant.SQLiteClassifier;
 import org.schemaanalyst.mutation.redundancy.EquivalentMutantClassifier;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantClassifier;
 
@@ -52,7 +52,7 @@ public class AllOperatorsNormalisedWithClassifiersPipeline extends MutationPipel
                 addRemover(new RedundantMutantClassifier<>(new SchemaEquivalenceCheckerWithNormalisation(new PostgresSchemaNormaliser())));
                 break;
             case "SQLite":
-                addRemoverToFront(new SQLiteRemover());
+                addRemoverToFront(new SQLiteClassifier());
                 addRemover(new EquivalentMutantClassifier<>(new SchemaEquivalenceCheckerWithNormalisation(new SQLiteSchemaNormaliser()), schema));
                 addRemover(new RedundantMutantClassifier<>(new SchemaEquivalenceCheckerWithNormalisation(new SQLiteSchemaNormaliser())));
                 break;
