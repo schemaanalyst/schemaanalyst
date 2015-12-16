@@ -13,6 +13,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestSuite;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.StopWatch;
@@ -30,7 +31,7 @@ import org.schemaanalyst.util.monitoring.Timing;
  * @author Chris J. Wright
  */
 public class MutantTimingTechnique extends OriginalTechnique {
-    
+
     /**
      * A pseudo-unique identifier for each execution.
      */
@@ -50,21 +51,22 @@ public class MutantTimingTechnique extends OriginalTechnique {
 
     @Override
     public AnalysisResult analyse(final TestSuiteResult originalResults) {
-        AnalysisResult result = new AnalysisResult();
+        final AnalysisResult result = new AnalysisResult();
         for (final Mutant<Schema> mutant : mutants) {
             StopWatch timer = new StopWatch();
-            TestSuiteResult mutantResults = Timing.timedTask(new Callable<TestSuiteResult>() {
+            boolean killed = Timing.timedTask(new Callable<Boolean>() {
                 @Override
-                public TestSuiteResult call() throws Exception {
-                    return executeTestSuite(mutant.getMutatedArtefact(), testSuite, originalResults);
+                public Boolean call() throws Exception {
+                    TestSuiteResult mutantResult = executeTestSuite(mutant.getMutatedArtefact(), testSuite, originalResults);
+                    boolean killed = !Objects.equals(originalResults, mutantResult);
+                    if (killed) {
+                        result.addKilled(mutant);
+                    } else {
+                        result.addLive(mutant);
+                    }
+                    return killed;
                 }
             }, timer);
-            boolean killed = !originalResults.equals(mutantResults);
-            if (killed) {
-                result.addKilled(mutant);
-            } else {
-                result.addLive(mutant);
-            }
             outputMutant(mutant, killed, timer.getTime());
         }
         return result;

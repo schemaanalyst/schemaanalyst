@@ -1,4 +1,3 @@
-
 package org.schemaanalyst.mutation.analysis.executor;
 
 import java.io.File;
@@ -42,14 +41,14 @@ import org.schemaanalyst.util.runner.Runner;
 
 /**
  * An alternative implementation of mutation analysis, using the
- * {@link VirtualTestSuiteExecutor}, inserting data from a {@link TestSuite} and 
+ * {@link VirtualTestSuiteExecutor}, inserting data from a {@link TestSuite} and
  * including mutant level timing data capture.
- * 
+ *
  * @author Chris J. Wright
  */
 @RequiredParameters("casestudy")
 public class MutationAnalysisVirtualWithTiming extends Runner {
-    
+
     /**
      * The name of the schema to use.
      */
@@ -112,14 +111,14 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
      * The writer for persisting results.
      */
     private static final CSVFileWriter OUTPUT_WRITER = new CSVFileWriter(OUTPUT_FILE);
-    
+
     private static final Logger LOGGER = Logger.getLogger(MutationAnalysisVirtualWithTiming.class.getName());
-    
+
     @Override
     protected void task() {
         // Instantiate fields from parameters
         instantiateParameters();
-        
+
         // Start timing
         StopWatch totalTime = new StopWatch();
         StopWatch testGenerationTime = new StopWatch();
@@ -127,7 +126,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
         StopWatch originalResultsTime = new StopWatch();
         StopWatch mutationAnalysisTime = new StopWatch();
         totalTime.start();
-        
+
         // Generate test suite and mutants, apply mutation analysis technique
         final TestSuite suite = timedTask(new Callable<TestSuite>() {
             @Override
@@ -141,23 +140,23 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
                 return generateMutants();
             }
         }, mutantGenerationTime);
-        final VirtualTestSuiteResult originalResults = timedTask(new Callable<VirtualTestSuiteResult>(){
+        final VirtualTestSuiteResult originalResults = timedTask(new Callable<VirtualTestSuiteResult>() {
             @Override
             public VirtualTestSuiteResult call() throws Exception {
                 return executeTestSuite(schema, suite);
             }
         }, originalResultsTime);
-        
+
         final AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
             @Override
             public AnalysisResult call() throws Exception {
                 return analyse(suite, mutants, originalResults);
             }
-        },mutationAnalysisTime);
-        
+        }, mutationAnalysisTime);
+
         // Stop timing
         totalTime.stop();
-        
+
         // Write results
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
@@ -181,10 +180,10 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
         result.addValue("originalresultstime", originalResultsTime.getTime());
         result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
-        
+
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
     }
-    
+
     private static <T> T timedTask(Callable<T> callable, StopWatch watch) {
         try {
             watch.start();
@@ -195,7 +194,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
             throw new RuntimeException(ex);
         }
     }
-    
+
     /**
      * Instantiates the DBMS class, SQL writer and interactor.
      */
@@ -210,7 +209,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
             throw new RuntimeException(ex);
         }
     }
-    
+
     /**
      * Generates the test suite according to the algorithm and criterion.
      *
@@ -223,7 +222,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
             return loadTestSuite();
         }
     }
-    
+
     private TestSuite generateTestSuite() {
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000, schema);
@@ -284,7 +283,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
             throw new RuntimeException(ex);
         }
     }
-    
+
     /**
      * Generates mutants of the instantiated schema using the named pipeline.
      *
@@ -299,34 +298,35 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
         }
         return pipeline.mutate();
     }
-    
+
     private VirtualTestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
         VirtualTestCaseExecutor caseExecutor = new VirtualTestCaseExecutor(schema, dbms);
         VirtualTestSuiteExecutor suiteExecutor = new VirtualTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
-    
-    private AnalysisResult analyse(final TestSuite suite, List<Mutant<Schema>> mutants, VirtualTestSuiteResult originalResult) {
-        AnalysisResult result = new AnalysisResult();
+
+    private AnalysisResult analyse(final TestSuite suite, final List<Mutant<Schema>> mutants, final VirtualTestSuiteResult originalResult) {
+        final AnalysisResult result = new AnalysisResult();
         for (final Mutant<Schema> mutant : mutants) {
             StopWatch timer = new StopWatch();
-            VirtualTestSuiteResult mutantResult = Timing.timedTask(new Callable<VirtualTestSuiteResult>() {
+            boolean killed = Timing.timedTask(new Callable<Boolean>() {
                 @Override
-                public VirtualTestSuiteResult call() throws Exception {
-                    return executeTestSuite(mutant.getMutatedArtefact(), suite);
+                public Boolean call() {
+                    VirtualTestSuiteResult mutantResult = executeTestSuite(mutant.getMutatedArtefact(), suite);
+                    boolean killed = !Objects.equals(originalResult, mutantResult);
+                    if (!killed) {
+                        result.addLive(mutant);
+                    } else {
+                        result.addKilled(mutant);
+                    }
+                    return killed;
                 }
             }, timer);
-            boolean killed = !Objects.equals(originalResult, mutantResult);
-            if (!killed) {
-                result.addLive(mutant);
-            } else {
-                result.addKilled(mutant);
-            }
             outputMutant(mutant, killed, timer.getTime());
         }
         return result;
     }
-    
+
     private void outputMutant(Mutant<Schema> mutant, boolean killed, long time) {
         CSVResult result = new CSVResult();
         result.addValue("identifier", IDENTIFIER);
@@ -338,7 +338,7 @@ public class MutationAnalysisVirtualWithTiming extends Runner {
         result.addValue("time", time);
         OUTPUT_WRITER.write(result);
     }
-    
+
     @Override
     protected void validateParameters() {
         // Do nothing
