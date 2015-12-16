@@ -31,4 +31,20 @@ public class Timing {
         }
     }
     
+    /**
+     * Times the duration it takes for a runnable to be executed using a StopWatch.
+     * 
+     * @param runnable The runnable
+     * @param watch The stopwatch
+     */
+    public static void timedTask(Runnable runnable, StopWatch watch) {
+        try {
+            watch.start();
+            runnable.run();
+            watch.stop();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+    
 }
