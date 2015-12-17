@@ -84,6 +84,7 @@ public class MutationPipelineFactory {
         choices.add("AllOperatorsNormalisedWithClassifiers");
         choices.add("AllOperatorsWithClassifiers");
         choices.add("AllOperatorsWithQMRemovers");
+        choices.add("AllOperatorsWithImpaired");
         choices.add("Mutation2013");
         choices.add("Programmatic");
         choices.add("ProgrammaticDBMSRemovers");
