@@ -34,6 +34,7 @@ import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFacto
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.util.csv.CSVFileWriter;
 import org.schemaanalyst.util.csv.CSVResult;
+import org.schemaanalyst.util.monitoring.Timing;
 import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
@@ -114,26 +115,26 @@ public class MutationAnalysisVirtual extends Runner {
         totalTime.start();
         
         // Generate test suite and mutants, apply mutation analysis technique
-        final TestSuite suite = timedTask(new Callable<TestSuite>() {
+        final TestSuite suite = Timing.timedTask(new Callable<TestSuite>() {
             @Override
             public TestSuite call() throws Exception {
                 return instantiateTestSuite();
             }
         }, testGenerationTime);
-        final List<Mutant<Schema>> mutants = timedTask(new Callable<List<Mutant<Schema>>>() {
+        final List<Mutant<Schema>> mutants = Timing.timedTask(new Callable<List<Mutant<Schema>>>() {
             @Override
             public List<Mutant<Schema>> call() throws Exception {
                 return generateMutants();
             }
         }, mutantGenerationTime);
-        final VirtualTestSuiteResult originalResults = timedTask(new Callable<VirtualTestSuiteResult>(){
+        final VirtualTestSuiteResult originalResults = Timing.timedTask(new Callable<VirtualTestSuiteResult>(){
             @Override
             public VirtualTestSuiteResult call() throws Exception {
                 return executeTestSuite(schema, suite);
             }
         }, originalResultsTime);
         
-        final AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
+        final AnalysisResult analysisResult = Timing.timedTask(new Callable<AnalysisResult>() {
             @Override
             public AnalysisResult call() throws Exception {
                 return analyse(suite, mutants, originalResults);
@@ -168,17 +169,6 @@ public class MutationAnalysisVirtual extends Runner {
         result.addValue("timetaken", totalTime.getTime());
         
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
-    }
-    
-    private static <T> T timedTask(Callable<T> callable, StopWatch watch) {
-        try {
-            watch.start();
-            T result = callable.call();
-            watch.stop();
-            return result;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
     }
     
     /**

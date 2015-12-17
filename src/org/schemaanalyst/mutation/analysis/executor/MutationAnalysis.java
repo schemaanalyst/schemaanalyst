@@ -43,6 +43,7 @@ import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.schemaanalyst.util.monitoring.Timing;
 
 /**
  * An alternative implementation of mutation analysis, using the
@@ -159,19 +160,19 @@ public class MutationAnalysis extends Runner {
         totalTime.start();
 
         // Generate test suite and mutants, apply mutation analysis technique
-        final TestSuite suite = timedTask(new Callable<TestSuite>() {
+        final TestSuite suite = Timing.timedTask(new Callable<TestSuite>() {
             @Override
             public TestSuite call() throws Exception {
                 return instantiateTestSuite();
             }
         }, testGenerationTime);
-        final List<Mutant<Schema>> mutants = timedTask(new Callable<List<Mutant<Schema>>>() {
+        final List<Mutant<Schema>> mutants = Timing.timedTask(new Callable<List<Mutant<Schema>>>() {
             @Override
             public List<Mutant<Schema>> call() throws Exception {
                 return generateMutants();
             }
         }, mutantGenerationTime);
-        final TestSuiteResult originalResults = timedTask(new Callable<TestSuiteResult>() {
+        final TestSuiteResult originalResults = Timing.timedTask(new Callable<TestSuiteResult>() {
             @Override
             public TestSuiteResult call() throws Exception {
                 return executeTestSuite(schema, suite);
@@ -179,7 +180,7 @@ public class MutationAnalysis extends Runner {
         }, originalResultsTime);
 
         final Technique mutTechnique = instantiateTechnique(schema, mutants, suite, dbms, databaseInteractor);
-        AnalysisResult analysisResult = timedTask(new Callable<AnalysisResult>() {
+        AnalysisResult analysisResult = Timing.timedTask(new Callable<AnalysisResult>() {
             @Override
             public AnalysisResult call() throws Exception {
                 return mutTechnique.analyse(originalResults);
@@ -231,17 +232,6 @@ public class MutationAnalysis extends Runner {
 
         if (outputMutantsDetailed_v2) {
             writeDetailedMutantReport_v2(analysisResult);
-        }
-    }
-
-    private static <T> T timedTask(Callable<T> callable, StopWatch watch) {
-        try {
-            watch.start();
-            T result = callable.call();
-            watch.stop();
-            return result;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
         }
     }
 
