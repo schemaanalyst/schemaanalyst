@@ -116,13 +116,11 @@ public class GenerateTestSuites {
         writeClassHeader(code, packageName, className, dbms, schema, mutantNumber, mutants.size());
         writeBeforeClassMethod(code, dbms);
         writeDropTablesMethod(code, sqlWriter, schema);
-
         writeOriginalSchemaMethod(code, schema, sqlWriter);
         writeMutantSchemaMethod(code, selectedMutant, sqlWriter);
+        writeStubs(code);
         writeOtherMutantSchemaMethod(code, mutants, mutantNumber, sqlWriter);
-
-        writeRemainingMethods(code);
-
+        writeHelperMethods(code);
         writeAfterClassMethod(code);
         writeClassFooter(code);
 
@@ -272,7 +270,7 @@ public class GenerateTestSuites {
         }
     }
 
-    private void writeRemainingMethods(IndentableStringBuilder code) {
+    private void writeHelperMethods(IndentableStringBuilder code) {
         code.appendln(1, "public boolean doInsert(String insertStatement) {");
         code.appendln(2, "try {");
         code.appendln(3, "statement.executeUpdate(insertStatement);");
@@ -368,20 +366,6 @@ public class GenerateTestSuites {
         code.appendln("    return SUCCESS;");
         code.appendln("}");
         code.appendln();
-        code.appendln("@Test");
-        code.appendln("public void notImpaired() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("@Test");
-        code.appendln("public void notEquivalent() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("@Test");
-        code.appendln("public void notRedundant() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("}");
     }
 
     private String writeExecuteUpdate(IndentableStringBuilder code, String sqlStatement) {
@@ -416,6 +400,40 @@ public class GenerateTestSuites {
         code.appendln(3, "connection.close();");
         code.appendln(2, "}");
         code.appendln(1, "}");
+    }
+
+    private void writeStubs(IndentableStringBuilder code) {
+        code.appendln();
+        code.appendln("/*****************************/");
+        code.appendln("/*** BEGIN MANUAL ANALYSIS ***/");
+        code.appendln("/*****************************/");
+        code.appendln();
+        code.appendln("// String statement1 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln("// String statement2 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln("// String statement3 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln("// String statement4 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln("// String statement5 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln();
+        code.appendln();
+        code.appendln("@Test");
+        code.appendln("public void notImpaired() throws SQLException {");
+        code.appendln("    // ... or maybe it is ...");
+        code.appendln("}");
+        code.appendln();
+        code.appendln("@Test");
+        code.appendln("public void notEquivalent() throws SQLException {");
+        code.appendln("    // ... or maybe it is ...");
+        code.appendln("}");
+        code.appendln();
+        code.appendln("@Test");
+        code.appendln("public void notRedundant() throws SQLException {");
+        code.appendln("    // ... or maybe it is ...");
+        code.appendln("}");
+        code.appendln();
+        code.appendln("/*****************************/");
+        code.appendln("/***  END MANUAL ANALYSIS  ***/");
+        code.appendln("/*****************************/");
+        code.appendln();
     }
 
     private void writeClassFooter(IndentableStringBuilder code) {

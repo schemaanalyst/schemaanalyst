@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestSQLiteBrowserCookies98_DONE {
+public class TestSQLiteBrowserCookies98_DONE_OLD {
 	
 	private static final int SUCCESS = 0;
 	private static final boolean QUIET = false;
@@ -3874,6 +3874,13 @@ public class TestSQLiteBrowserCookies98_DONE {
 	    return SUCCESS;
 	}
 
+	@AfterClass
+	public static void close() throws SQLException {
+		if (connection != null) {
+			connection.close();
+		}
+	}
+
 	String statement1 = "INSERT INTO places VALUES('A', 'B', 'C', 1, 'D')";
 	String statement2 = "INSERT INTO places VALUES('a', 'B', 'c', 2, 'd')";
 	String statement3 = "INSERT INTO cookies VALUES(1, 'x', 'y', 0, 1, 1, 'A', 'B')";
@@ -3881,6 +3888,7 @@ public class TestSQLiteBrowserCookies98_DONE {
 	@Test
 	public void notImpaired() throws SQLException {
 		assertTrue(insertToMutant(statement1));
+		assertTrue(insertToMutant(statement3));
 	}
 
 	@Test
@@ -3893,11 +3901,6 @@ public class TestSQLiteBrowserCookies98_DONE {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement3), SUCCESS);
 	}
 	
-	@AfterClass
-	public static void close() throws SQLException {
-		if (connection != null) {
-			connection.close();
-		}
-	}
+
 }
 
