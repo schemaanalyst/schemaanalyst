@@ -19,43 +19,6 @@ import java.util.List;
  */
 public class OutputOriginalSchemas {
 
-    private static Schema[] schemas = {
-            new ArtistSimilarity(),
-            new ArtistTerm(),
-            new BankAccount(),
-            new BookTown(),
-            new BrowserCookies(),
-            new Cloc(),
-            new CoffeeOrders(),
-            new CustomerOrder(),
-            new DellStore(),
-            new Employee(),
-            new Examination(),
-            new Flights(),
-            new FrenchTowns(),
-            new Inventory(),
-            new Iso3166(),
-            new IsoFlav_R2Repaired(),
-            new iTrust(),
-            new JWhoisServer(),
-            new MozillaExtensions(),
-            new MozillaPermissions(),
-            new NistDML181(),
-            new NistDML182(),
-            new NistDML183(),
-            new NistWeather(),
-            new NistXTS748(),
-            new NistXTS749(),
-            new Person(),
-            new Products(),
-            new RiskIt(),
-            new StackOverflow(),
-            new StudentResidence(),
-            new UnixUsage(),
-            new Usda(),
-            new WordNet()
-    };
-
     private static String BASE_DIR = "/Users/phil/Projects/schemaanalyst/ineffective-mutants/_data/_normalisation-reruns/mutants/";
 
     private static String MUTANT_DIR_SUFFIX = "-minus-stillborn/";
@@ -85,7 +48,7 @@ public class OutputOriginalSchemas {
     }
 
     public static void main(String[] args) throws FileNotFoundException {
-        for (Schema schema : schemas) {
+        for (Schema schema : Schemas.schemas) {
             SQLWriter sqlWriter = new PostgresSQLWriter();
             writeMutant(sqlWriter, schema, "postgres");
 
