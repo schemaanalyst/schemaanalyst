@@ -4,8 +4,6 @@ import org.schemaanalyst.mutation.operator.*;
 import org.schemaanalyst.mutation.quasimutant.HyperSQLRemover;
 import org.schemaanalyst.mutation.quasimutant.PostgresRemover;
 import org.schemaanalyst.mutation.quasimutant.SQLiteRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyColumnNotNullRemover;
-import org.schemaanalyst.mutation.redundancy.PrimaryKeyUniqueOverlapConstraintRemover;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 import java.util.logging.Level;
@@ -35,24 +33,18 @@ public class AllOperatorsWithQMRemoversPipeline extends MutationPipeline<Schema>
         addProducer(new UCColumnA(schema));
         addProducer(new UCColumnR(schema));
         addProducer(new UCColumnE(schema));
-
-        addRemover(new PrimaryKeyUniqueOverlapConstraintRemover());
     }
 
     public void addDBMSSpecificRemovers(String dbms) {
         switch (dbms) {
             case "Postgres":
-                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new PostgresRemover());
-                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             case "SQLite":
-                addRemoverToFront(new PrimaryKeyUniqueOverlapConstraintRemover());
                 addRemoverToFront(new SQLiteRemover());
                 break;
             case "HyperSQL":
                 addRemoverToFront(new HyperSQLRemover());
-                addRemoverToFront(new PrimaryKeyColumnNotNullRemover());
                 break;
             default:
                 LOGGER.log(Level.WARNING, "Unknown DBMS name in pipeline");
