@@ -174,7 +174,7 @@ public class MutationAnalysisVirtual extends Runner {
     /**
      * Instantiates the DBMS class, SQL writer and interactor.
      */
-    private void instantiateParameters() {
+    protected void instantiateParameters() {
         // Get the required DBMS class, writer and interactor
         dbms = DBMSFactory.instantiate(databaseConfiguration.getDbms());
 
@@ -191,7 +191,7 @@ public class MutationAnalysisVirtual extends Runner {
      *
      * @return The test suite
      */
-    private TestSuite instantiateTestSuite() {
+    protected TestSuite instantiateTestSuite() {
         if (inputTestSuite == null) {
             return generateTestSuite();
         } else {
@@ -265,7 +265,7 @@ public class MutationAnalysisVirtual extends Runner {
      *
      * @return The mutants
      */
-    private List<Mutant<Schema>> generateMutants() {
+    protected List<Mutant<Schema>> generateMutants() {
         MutationPipeline<Schema> pipeline;
         try {
             pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema, databaseConfiguration.getDbms());
@@ -275,13 +275,13 @@ public class MutationAnalysisVirtual extends Runner {
         return pipeline.mutate();
     }
     
-    private VirtualTestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
+    protected VirtualTestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
         VirtualTestCaseExecutor caseExecutor = new VirtualTestCaseExecutor(schema, dbms);
         VirtualTestSuiteExecutor suiteExecutor = new VirtualTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
     
-    private AnalysisResult analyse(TestSuite suite, List<Mutant<Schema>> mutants, VirtualTestSuiteResult originalResult) {
+    protected AnalysisResult analyse(TestSuite suite, List<Mutant<Schema>> mutants, VirtualTestSuiteResult originalResult) {
         AnalysisResult result = new AnalysisResult();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
