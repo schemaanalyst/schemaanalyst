@@ -280,9 +280,14 @@ public class GenerateTestSuites {
         code.appendln(2, "}");
         code.appendln(1, "}");
         code.appendln();
-        code.appendln("public boolean insertToMutant(String insertStatement) throws SQLException {");
+        code.appendln("public boolean insertToMutant(String... insertStatements) throws SQLException {");
         code.appendln("    createMutantSchema();");
-        code.appendln("    return doInsert(insertStatement);");
+        code.appendln("    for (String insertStatement : insertStatements) {");
+        code.appendln("        if (!doInsert(insertStatement)) {");
+        code.appendln("            return false;");
+        code.appendln("        }");
+        code.appendln("    }");
+        code.appendln("    return true;");
         code.appendln("}");
         code.appendln();
         code.appendln("public boolean originalAndMutantHaveDifferentBehavior(String... insertStatements) throws SQLException {");
@@ -429,6 +434,8 @@ public class GenerateTestSuites {
         code.appendln("public void notRedundant() throws SQLException {");
         code.appendln("    // ... or maybe it is ...");
         code.appendln("}");
+        code.appendln();
+        code.appendln("// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal");
         code.appendln();
         code.appendln("/*****************************/");
         code.appendln("/***  END MANUAL ANALYSIS  ***/");

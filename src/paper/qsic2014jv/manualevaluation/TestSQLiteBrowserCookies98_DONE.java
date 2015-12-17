@@ -13,7 +13,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class TestSQLiteBrowserCookies98 {
+public class TestSQLiteBrowserCookies98_DONE {
 	
 	private static final int SUCCESS = 0;
 	private static final boolean QUIET = false;
@@ -115,8 +115,7 @@ public class TestSQLiteBrowserCookies98 {
 
 	@Test
 	public void notImpaired() throws SQLException {
-		assertTrue(insertToMutant(statement1));
-		assertTrue(insertToMutant(statement3));
+		assertTrue(insertToMutant(statement1, statement3));
 	}
 
 	@Test
@@ -128,6 +127,8 @@ public class TestSQLiteBrowserCookies98 {
 	public void notRedundant() throws SQLException {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement3), SUCCESS);
 	}
+
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
@@ -3817,9 +3818,14 @@ public class TestSQLiteBrowserCookies98 {
 		}
 	}
 
-	public boolean insertToMutant(String insertStatement) throws SQLException {
+	public boolean insertToMutant(String... insertStatements) throws SQLException {
 	    createMutantSchema();
-	    return doInsert(insertStatement);
+	    for (String insertStatement : insertStatements) {
+	        if (!doInsert(insertStatement)) {
+	            return false;
+	        }
+	    }
+	    return true;
 	}
 
 	public boolean originalAndMutantHaveDifferentBehavior(String... insertStatements) throws SQLException {
