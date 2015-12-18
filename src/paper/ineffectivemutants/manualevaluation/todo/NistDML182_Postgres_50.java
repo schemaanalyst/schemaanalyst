@@ -8,18 +8,17 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class UnixUsage_HyperSQL_7 extends ManualAnalysisTestSuite {
+public class NistDML182_Postgres_50 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.postgresql.Driver");
+		connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "gkapfham", "postgres");
 
-		// tell HyperSQL to always persist the data right away
+		// tell Postgres to always persist the data right away
 		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
@@ -32,51 +31,53 @@ public class UnixUsage_HyperSQL_7 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "UnixUsage";
+	    return "NistDML182";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "Postgres";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 7;
+	    return 50;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 94;
+	    return 81;
 	}
 	
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"USAGE_HISTORY\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"UNIX_COMMAND\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"TRANSCRIPT\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"USER_INFO\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"RACE_INFO\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"OFFICE_INFO\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"COURSE_INFO\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DEPT_INFO\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
 	}
 
 	/*****************************/
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"USAGE_HISTORY\" VALUES('A', 1, 1, 1, 50)";
+	// String statement1 = "INSERT INTO " " VALUES( )";
+	// String statement2 = "INSERT INTO " " VALUES( )";
+	// String statement3 = "INSERT INTO " " VALUES( )";
+	// String statement4 = "INSERT INTO " " VALUES( )";
+	// String statement5 = "INSERT INTO " " VALUES( )";
+
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+	    // ... or maybe it is ...
+	    // assertTrue(insertToMutant(statement1, ...));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    // ... or maybe it is ...
+	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    // ... or maybe it is ...
+	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
