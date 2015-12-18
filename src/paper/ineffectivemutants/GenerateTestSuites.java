@@ -31,6 +31,8 @@ public class GenerateTestSuites {
 
     final int NUM_TEST_SUITES = 1;
     final String MUTATION_PIPELINE = "AllOperatorsWithImpaired";
+    final String BASE_DIR_NAME =
+            new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
 
     public static void main(String[] args) {
         new GenerateTestSuites();
@@ -65,7 +67,7 @@ public class GenerateTestSuites {
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
 
-        writeTestSuite(number, dbms, schema, mutants, selectedMutant, mutantNumber);
+        writeTestSuiteAndSchemas(dbms, schema, mutants, selectedMutant, mutantNumber);
     }
 
     private List<Mutant<Schema>> generateMutants(Schema schema, String dbms) {
@@ -90,16 +92,15 @@ public class GenerateTestSuites {
         return new SimpleRandom(System.currentTimeMillis()).nextInt(max);
     }
 
-    private boolean writeTestSuite(int number, DBMS dbms, Schema schema, List<Mutant<Schema>> mutants, Mutant<Schema> selectedMutant, int mutantNumber) {
-
+    private boolean writeTestSuiteAndSchemas(
+            DBMS dbms, Schema schema, List<Mutant<Schema>> mutants, Mutant<Schema> selectedMutant, int mutantNumber) {
         SQLWriter sqlWriter = dbms.getSQLWriter();
         IndentableStringBuilder code = new IndentableStringBuilder();
 
         String packageName = "paper.ineffectivemutants.manualevaluation.todo";
         String className = schema.getName() + "_" + dbms.getName() + "_" + mutantNumber;
 
-        String baseDirName = new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
-        String toDoFileName = baseDirName + "todo/" + className + ".java";
+        String toDoFileName = BASE_DIR_NAME + "todo/" + className + ".java";
         File file = new File(toDoFileName);
 
         if (file.exists()) {
@@ -108,8 +109,7 @@ public class GenerateTestSuites {
         } else {
             String[] suffixes = {"NORMAL", "EQUIVALENT", "REDUNDANT", "IMPAIRED"};
             for (String suffix : suffixes) {
-                File completeFile = new File(baseDirName + "complete/" + className + "_" + suffix + ".java");
-                System.out.println(completeFile);
+                File completeFile = new File(BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
                 if (completeFile.exists()) {
                     System.out.println(className + " is COMPLETE! (Classification: " + suffix +
                             "). Delete it if you really want to regenerate it)");
@@ -123,25 +123,16 @@ public class GenerateTestSuites {
         writeAfterClassMethod(code);
 
         writeTestInfoMethods(code, dbms, schema, mutantNumber, mutants.size());
-        writeDropTablesMethod(code, sqlWriter, schema);
 
-        // to remove in time...
-        writeOriginalSchemaMethod(code, schema, sqlWriter);
-        writeMutantSchemaMethod(code, selectedMutant, sqlWriter);
-        writeOtherMutantSchemaMethod(code, mutants, mutantNumber, sqlWriter);
+        writeDropTablesMethod(code, sqlWriter, schema);
 
         writeStubs(code);
         writeClassFooter(code);
 
-        System.out.println(code);
+        writeOutputToFile(file, code.toString());
+        System.out.println("Code generated and successfully written to " + file);
 
-        try {
-            PrintWriter out = new PrintWriter(file);
-            out.println(code);
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        generateSchemaDirectory(schema, dbms, mutants);
 
         return true;
     }
@@ -235,64 +226,60 @@ public class GenerateTestSuites {
         code.appendln(1, "}");
     }
 
-    private void writeOriginalSchemaMethod(IndentableStringBuilder code, Schema schema, SQLWriter sqlWriter) {
-        code.appendln(1);
-        code.appendln("public void createOriginalSchema() throws SQLException {");
-        code.appendln(2, "dropTables();");
-        code.appendln(2);
-        writeSchema(code, 2, schema, sqlWriter);
-        code.appendln(1, "}");
-    }
+    private void generateSchemaDirectory(Schema schema, DBMS dbms, List<Mutant<Schema>> mutants) {
+        String dirName = BASE_DIR_NAME + schema.getName() + "_" + dbms.getName() + "/";
+        File dir = new File(dirName);
 
-    private void writeMutantSchemaMethod(IndentableStringBuilder code, Mutant<Schema> selectedMutant, SQLWriter sqlWriter) {
-        code.appendln(1);
-        code.appendln("public void createMutantSchema() throws SQLException {");
-        code.appendln(2, "dropTables();");
-        code.appendln(2);
-        writeMutant(code, 2, selectedMutant, sqlWriter);
-        code.appendln(1, "}");
-    }
+        if (dir.exists()) {
+            System.out.println("Schema directory already exists for " + schema.getName() + " and " + dbms.getName());
+            return;
+        }
 
-    private void writeOtherMutantSchemaMethod(IndentableStringBuilder code, List<Mutant<Schema>> mutants, int mutantNumber, SQLWriter sqlWriter) {
-        code.appendln(1);
-        code.appendln("public void createOtherMutantSchema(int number) throws SQLException {");
-        code.appendln(2, "dropTables();");
-        code.appendln(2);
+        if (!dir.mkdirs()) {
+            System.out.println("Failed to create directory " + dir);
+        }
 
-        boolean first = true;
-        int number = 1;
+        SQLWriter sqlWriter = dbms.getSQLWriter();
+        String output = "-- Original schema\n";
+        output += writeSchema(schema, sqlWriter);
+        writeOutputToFile(dirName + "0.sql", output);
         for (Mutant<Schema> mutant : mutants) {
-            if (number != mutantNumber) {
-                String line = "if (number == " + number + ") {";
-                if (first) {
-                    first = false;
-                } else {
-                    line = "} else " + line;
-                }
-                code.appendln(2, line);
-                writeMutant(code, 3, mutant, sqlWriter);
-            }
-            number++;
+            output = writeMutantSchema(mutant, sqlWriter);
+            writeOutputToFile(dirName + mutant.getIdentifier() + ".sql", output);
         }
-
-        code.appendln(2, "} else {");
-        code.appendln(3, "fail(\"No such mutant number -- \" + number);");
-        code.appendln(2, "}");
-        code.appendln(1, "}");
     }
 
-    private void writeMutant(IndentableStringBuilder code, int level, Mutant<Schema> mutant, SQLWriter sqlWriter) {
-        code.appendln(level, "//" + mutant.getIdentifier());
-        code.appendln(level, "//" + mutant.getSimpleDescription());
-        code.appendln(level, "//" + mutant.getDescription());
-        writeSchema(code, level, mutant.getMutatedArtefact(), sqlWriter);
+    private void writeOutputToFile(String fileName, String output) {
+        writeOutputToFile(new File(fileName), output);
     }
 
-    private void writeSchema(IndentableStringBuilder code, int level, Schema schema, SQLWriter sqlWriter) {
-        List<String> createTableStatements = sqlWriter.writeCreateTableStatements(schema);
-        for (String statement : createTableStatements) {
-            code.appendln(level, writeExecuteUpdate(code, statement) + ";");
+    private void writeOutputToFile(File file, String output) {
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(output);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
+
+    private String writeSchema(Schema schema, SQLWriter sqlWriter) {
+        String output = "";
+        List<String> statements = sqlWriter.writeCreateTableStatements(schema);
+        for (String statement : statements) {
+            output += "\n";
+            output += statement + "\n";
+        }
+        return output;
+    }
+
+    private String writeMutantSchema(Mutant<Schema> mutant, SQLWriter sqlWriter) {
+        String output = "";
+        output += "-- " + mutant.getIdentifier() + "\n";
+        output += "-- " + mutant.getSimpleDescription() + "\n";
+        output += "-- " + mutant.getDescription() + "\n";
+        output += writeSchema(mutant.getMutatedArtefact(), sqlWriter);
+        return output;
     }
 
     private String writeExecuteUpdate(IndentableStringBuilder code, String sqlStatement) {
