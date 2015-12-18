@@ -17,6 +17,8 @@ public class BrowserCookies_SQLite_98_NORMAL extends ManualAnalysisTestSuite {
 		// load the JDBC driver and create the connection and statement object used by this test suite
 		Class.forName("org.sqlite.JDBC");
 		connection = DriverManager.getConnection("jdbc:sqlite:BrowserCookies");
+
+		// create the statement
 		statement = connection.createStatement();
 
 		// enable FOREIGN KEY support

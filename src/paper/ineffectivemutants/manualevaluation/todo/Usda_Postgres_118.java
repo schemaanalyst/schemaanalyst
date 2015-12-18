@@ -20,8 +20,9 @@ public class Usda_Postgres_118 extends ManualAnalysisTestSuite {
 
 		// tell Postgres to always persist the data right away
 		connection.setAutoCommit(true);
-		statement = connection.createStatement();
 
+		// create the statement
+		statement = connection.createStatement();
 	}
 	
 	@AfterClass

@@ -30,10 +30,11 @@ import java.util.List;
  */
 public class GenerateTestSuites {
 
-    final int NUM_TEST_SUITES = 1;
-    final String MUTATION_PIPELINE = "AllOperatorsWithImpaired";
-    final String MUTANTS_BASE_DIR_NAME =
+    public static final String BASE_DIR_NAME =
             new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
+    public static final String MUTATION_PIPELINE = "AllOperatorsWithImpaired";
+
+    final int NUM_TEST_SUITES = 1;
 
     public static void main(String[] args) {
         new GenerateTestSuites();
@@ -99,7 +100,7 @@ public class GenerateTestSuites {
         String packageName = "paper.ineffectivemutants.manualevaluation.todo";
         String className = schema.getName() + "_" + dbms.getName() + "_" + mutantNumber;
 
-        String toDoFileName = MUTANTS_BASE_DIR_NAME + "todo/" + className + ".java";
+        String toDoFileName = BASE_DIR_NAME + "todo/" + className + ".java";
         File file = new File(toDoFileName);
 
         if (file.exists()) {
@@ -108,7 +109,7 @@ public class GenerateTestSuites {
         } else {
             String[] suffixes = {"NORMAL", "EQUIVALENT", "REDUNDANT", "IMPAIRED"};
             for (String suffix : suffixes) {
-                File completeFile = new File(MUTANTS_BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
+                File completeFile = new File(BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
                 if (completeFile.exists()) {
                     System.out.println(className + " is COMPLETE! (Classification: " + suffix +
                             "). Delete it if you really want to regenerate it)");
@@ -247,7 +248,7 @@ public class GenerateTestSuites {
     }
 
     private void generateSchemaDirectory(Schema schema, DBMS dbms, List<Mutant<Schema>> mutants) {
-        String dirName = MUTANTS_BASE_DIR_NAME + "mutants/" + schema.getName() + "_" + dbms.getName() + "/";
+        String dirName = BASE_DIR_NAME + "mutants/" + schema.getName() + "_" + dbms.getName() + "/";
         File dir = new File(dirName);
 
         if (dir.exists()) {
