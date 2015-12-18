@@ -335,11 +335,11 @@ public class GenerateTestSuites {
         code.appendln("/*** BEGIN MANUAL ANALYSIS ***/");
         code.appendln("/*****************************/");
         code.appendln();
-        code.appendln("// String statement1 = \"INSERT INTO \"[table]\" VALUES([...])\"");
-        code.appendln("// String statement2 = \"INSERT INTO \"[table]\" VALUES([...])\"");
-        code.appendln("// String statement3 = \"INSERT INTO \"[table]\" VALUES([...])\"");
-        code.appendln("// String statement4 = \"INSERT INTO \"[table]\" VALUES([...])\"");
-        code.appendln("// String statement5 = \"INSERT INTO \"[table]\" VALUES([...])\"");
+        code.appendln("// String statement1 = \"INSERT INTO \" \" VALUES( )\";");
+        code.appendln("// String statement2 = \"INSERT INTO \" \" VALUES( )\";");
+        code.appendln("// String statement3 = \"INSERT INTO \" \" VALUES( )\";");
+        code.appendln("// String statement4 = \"INSERT INTO \" \" VALUES( )\";");
+        code.appendln("// String statement5 = \"INSERT INTO \" \" VALUES( )\";");
         code.appendln();
         code.appendln();
         code.appendln("@Test");

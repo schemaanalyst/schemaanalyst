@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,10 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class Usda_Postgres_118 extends ManualAnalysisTestSuite {
+public class Usda_Postgres_118_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -65,27 +66,32 @@ public class Usda_Postgres_118 extends ManualAnalysisTestSuite {
 	/*****************************/
 
 	String statement1 = "INSERT INTO \"data_src\" VALUES('id', 'author', 'title', 2000, 'journal', 'city', 'state', '1', '100')";
-	// String statement2 = "INSERT INTO [table] VALUES([...])"
-	// String statement3 = "INSERT INTO [table] VALUES([...])"
-	// String statement4 = "INSERT INTO [table] VALUES([...])"
-	// String statement5 = "INSERT INTO [table] VALUES([...])"
+	String statement2 = "INSERT INTO \"datsrcln\" VALUES('no', 'no', 'id')";
+	String statement3 = "INSERT INTO \"deriv_cd\" VALUES('a', 'a')";
+	String statement4 = "INSERT INTO \"fd_group\" VALUES('a', 'a')";
+	String statement5 = "INSERT INTO \"food_des\" VALUES('a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a', 1, 1, 1, 1)";
+	String statement6 = "INSERT INTO \"footnote\" VALUES('a', NULL, 'a', 'a', 'a')";
+	String statement7 = "INSERT INTO \"nut_data\" VALUES('a', 'a', 1, 1, 1, 1, 'a', 'a', 'a', 1, 1, 1, 1, 1, 1, 'a', 'a')";
+	String statement8 = "INSERT INTO \"nutr_def\" VALUES('a', 'a', 'a', 'a', 1, 1)";
+	String statement9 = "INSERT INTO \"src_cd\" VALUES(1, 'a')";
+	String statement10 = "INSERT INTO \"weight\" VALUES('a', 'a', 1, 'a', 1, 1, 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-		assertTrue(insertToMutant(statement1));
+		assertTrue(insertToMutant(statement1, statement2, statement3, statement4, statement5, statement6, statement7, statement8, statement9, statement10));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
+		assertTrue(originalAndMutantHaveDifferentBehavior(statement6));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement6), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
