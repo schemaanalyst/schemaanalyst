@@ -2,6 +2,7 @@ package paper.ineffectivemutants;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
@@ -15,6 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
+import parsedcasestudy.Usda;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class GenerateTestSuites {
 
     final int NUM_TEST_SUITES = 1;
     final String MUTATION_PIPELINE = "AllOperatorsWithImpaired";
-    final String BASE_DIR_NAME =
+    final String MUTANTS_BASE_DIR_NAME =
             new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
 
     public static void main(String[] args) {
@@ -48,21 +50,22 @@ public class GenerateTestSuites {
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
         // for testing:
-        dbmsName = "HyperSQL";
+        dbmsName = "Postgres";
 
         DBMS dbms = DBMSFactory.instantiate(dbmsName);
 
         // Select a schema
         Schema schema = Schemas.schemas[randomIndex(Schemas.schemas)];
+        schema = new Usda();
 
         // Get mutants
         List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
 
         // Select a mutant at random
         int mutantIndex = randomIndex(mutants);
+        mutantIndex = 117;
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
-
         writeTestSuiteAndSchemas(dbms, schema, mutants, selectedMutant, mutantNumber);
     }
 
@@ -96,7 +99,7 @@ public class GenerateTestSuites {
         String packageName = "paper.ineffectivemutants.manualevaluation.todo";
         String className = schema.getName() + "_" + dbms.getName() + "_" + mutantNumber;
 
-        String toDoFileName = BASE_DIR_NAME + "todo/" + className + ".java";
+        String toDoFileName = MUTANTS_BASE_DIR_NAME + "todo/" + className + ".java";
         File file = new File(toDoFileName);
 
         if (file.exists()) {
@@ -105,7 +108,7 @@ public class GenerateTestSuites {
         } else {
             String[] suffixes = {"NORMAL", "EQUIVALENT", "REDUNDANT", "IMPAIRED"};
             for (String suffix : suffixes) {
-                File completeFile = new File(BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
+                File completeFile = new File(MUTANTS_BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
                 if (completeFile.exists()) {
                     System.out.println(className + " is COMPLETE! (Classification: " + suffix +
                             "). Delete it if you really want to regenerate it)");
@@ -151,16 +154,20 @@ public class GenerateTestSuites {
     }
 
     private void writeBeforeClassMethod(IndentableStringBuilder code, DBMS dbms) {
+        DatabaseConfiguration databaseConfiguration = new DatabaseConfiguration();
         String jdbcClass = "", connectionURL = "";
 
         if (dbms instanceof HyperSQLDBMS) {
-            jdbcClass = "org.hsqldb.jdbc.JDBCDriver";
+            jdbcClass = databaseConfiguration.getHsqldbDriver();
             connectionURL = "jdbc:hsqldb:mem:/database;hsqldb.write_delay=false";
         } else if (dbms instanceof PostgresDBMS) {
-            // TODO -- complete!!!
-
+            jdbcClass = databaseConfiguration.getPostgresDriver();
+            connectionURL = "jdbc:postgresql://"
+                    + databaseConfiguration.getPostgresHost() + ":"
+                    + databaseConfiguration.getPostgresPort() + "/"
+                    + databaseConfiguration.getPostgresDatabase();
         } else if (dbms instanceof SQLiteDBMS) {
-            jdbcClass = "org.sqlite.JDBC";
+            jdbcClass = databaseConfiguration.getSqliteDriver();
             connectionURL = "jdbc:sqlite:manualanalysis";
         }
 
@@ -170,7 +177,24 @@ public class GenerateTestSuites {
         // DBMS specific code for creating a connection
         code.appendln(2, "// load the JDBC driver and create the connection and statement object used by this test suite");
         code.appendln("Class.forName(\"" + jdbcClass + "\");");
-        code.appendln("connection = DriverManager.getConnection(\"" + connectionURL + "\");");
+
+        if (dbms instanceof HyperSQLDBMS || dbms instanceof SQLiteDBMS) {
+            code.appendln("connection = DriverManager.getConnection(\"" + connectionURL + "\");");
+        }
+
+        if (dbms instanceof PostgresDBMS) {
+            code.appendln("connection = DriverManager.getConnection(\"" + connectionURL + "\", \"" +
+                    databaseConfiguration.getPostgresUsername() + "\", \"" +
+                    databaseConfiguration.getPostgresPassword() + "\");");
+        }
+        code.appendln();
+
+        if (dbms instanceof HyperSQLDBMS || dbms instanceof PostgresDBMS) {
+            code.appendln("// tell " + dbms.getName() + " to always persist the data right away");
+            code.appendln("connection.setAutoCommit(true);");
+        }
+
+        code.appendln("// create the statement");
         code.appendln("statement = connection.createStatement();");
 
         if (dbms instanceof SQLiteDBMS) {
@@ -223,7 +247,7 @@ public class GenerateTestSuites {
     }
 
     private void generateSchemaDirectory(Schema schema, DBMS dbms, List<Mutant<Schema>> mutants) {
-        String dirName = BASE_DIR_NAME + schema.getName() + "_" + dbms.getName() + "/";
+        String dirName = MUTANTS_BASE_DIR_NAME + "mutants/" + schema.getName() + "_" + dbms.getName() + "/";
         File dir = new File(dirName);
 
         if (dir.exists()) {
@@ -243,6 +267,8 @@ public class GenerateTestSuites {
             output = writeMutantSchema(mutant, sqlWriter);
             writeOutputToFile(dirName + mutant.getIdentifier() + ".sql", output);
         }
+
+        System.out.println("Successfully created mutants directory");
     }
 
     private void writeOutputToFile(String fileName, String output) {
@@ -308,26 +334,29 @@ public class GenerateTestSuites {
         code.appendln("/*** BEGIN MANUAL ANALYSIS ***/");
         code.appendln("/*****************************/");
         code.appendln();
-        code.appendln("// String statement1 = \"INSERT INTO [table] VALUES([...])\"");
-        code.appendln("// String statement2 = \"INSERT INTO [table] VALUES([...])\"");
-        code.appendln("// String statement3 = \"INSERT INTO [table] VALUES([...])\"");
-        code.appendln("// String statement4 = \"INSERT INTO [table] VALUES([...])\"");
-        code.appendln("// String statement5 = \"INSERT INTO [table] VALUES([...])\"");
+        code.appendln("// String statement1 = \"INSERT INTO \"[table]\" VALUES([...])\"");
+        code.appendln("// String statement2 = \"INSERT INTO \"[table]\" VALUES([...])\"");
+        code.appendln("// String statement3 = \"INSERT INTO \"[table]\" VALUES([...])\"");
+        code.appendln("// String statement4 = \"INSERT INTO \"[table]\" VALUES([...])\"");
+        code.appendln("// String statement5 = \"INSERT INTO \"[table]\" VALUES([...])\"");
         code.appendln();
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notImpaired() throws SQLException {");
         code.appendln("    // ... or maybe it is ...");
+        code.appendln("    // assertTrue(insertToMutant(statement1, ...));");
         code.appendln("}");
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notEquivalent() throws SQLException {");
         code.appendln("    // ... or maybe it is ...");
+        code.appendln("    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));");
         code.appendln("}");
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notRedundant() throws SQLException {");
         code.appendln("    // ... or maybe it is ...");
+        code.appendln("    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);");
         code.appendln("}");
         code.appendln();
         code.appendln("// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal");

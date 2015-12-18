@@ -17,7 +17,12 @@ public class CoffeeOrders_HyperSQL_39_NORMAL extends ManualAnalysisTestSuite {
 		// load the JDBC driver and create the connection and statement object used by this test suite
 		Class.forName("org.hsqldb.jdbc.JDBCDriver");
 		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
-		statement = connection.createStatement();
+
+        // tell HyperSQL to always persist the data right away
+        connection.setAutoCommit(true);
+
+        // create the statement
+        statement = connection.createStatement();
 	}
 	
 	@AfterClass

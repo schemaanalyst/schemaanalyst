@@ -14,7 +14,7 @@ import static org.junit.Assert.fail;
 
 public abstract class ManualAnalysisTestSuite {
 
-    protected static final String BASE_DIR = "src/paper/ineffectivemutants/manualevaluation/";
+    protected static final String BASE_DIR = "src/paper/ineffectivemutants/manualevaluation/mutants/";
 
     protected static final int SUCCESS = 0;
     protected static final boolean QUIET = false;
