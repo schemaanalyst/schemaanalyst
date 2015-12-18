@@ -1,44 +1,53 @@
-package paper.qsic2014jv.manualevaluation;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 
-import static org.junit.Assert.*;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
-public class TestSQLiteBrowserCookies98_DONE {
-	
-	private static final int SUCCESS = 0;
-	private static final boolean QUIET = false;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-	private static final int FIRST_MUTANT_NUMBER = 1;
-	private static final int MUTANT_BEING_EVALUATED = 98;
-	private static final int LAST_MUTANT_NUMBER = 132;
+public class BrowserCookies_SQLite_98_NORMAL extends ManualAnalysisTestSuite {
 
-	private static final String JDBC_CLASS = "org.sqlite.JDBC";
-	private static final String CONNECTION_URL = "jdbc:sqlite:BrowserCookies";
-
-	private static Connection connection;
-	private static Statement statement;
-	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName(JDBC_CLASS);
-		connection = DriverManager.getConnection(CONNECTION_URL);
+		Class.forName("org.sqlite.JDBC");
+		connection = DriverManager.getConnection("jdbc:sqlite:BrowserCookies");
 		statement = connection.createStatement();
 
 		// enable FOREIGN KEY support
 		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
-	
+
+	@AfterClass
+	public static void close() throws SQLException {
+		if (connection != null) {
+			connection.close();
+		}
+	}
+
+	protected String getSchemaName() {
+		return "BrowserCookies";
+	}
+
+	protected String getDBMSName() {
+		return "SQLite";
+	}
+
+	protected int getMutantNumberBeingEvaluated() {
+		return 98;
+	}
+
+	protected int getLastMutantNumber() {
+		return 132;
+	}
+
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"cookies\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"places\"");
@@ -105,36 +114,6 @@ public class TestSQLiteBrowserCookies98_DONE {
 			")");
 	}
 
-	/*****************************/
-	/*** BEGIN MANUAL ANALYSIS ***/
-	/*****************************/
-
-	String statement1 = "INSERT INTO places VALUES('A', 'B', 'C', 1, 'D')";
-	String statement2 = "INSERT INTO places VALUES('a', 'B', 'c', 2, 'd')";
-	String statement3 = "INSERT INTO cookies VALUES(1, 'x', 'y', 0, 1, 1, 'A', 'B')";
-
-	@Test
-	public void notImpaired() throws SQLException {
-		assertTrue(insertToMutant(statement1, statement3));
-	}
-
-	@Test
-	public void notEquivalent() throws SQLException {
-		assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
-	}
-
-	@Test
-	public void notRedundant() throws SQLException {
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement3), SUCCESS);
-	}
-
-	// ENTER END VERDICT (delete as appropriate): normal
-
-	/*****************************/
-	/***  END MANUAL ANALYSIS  ***/
-	/*****************************/
-
-	
 	public void createOtherMutantSchema(int number) throws SQLException {
 		dropTables();
 		
@@ -152,19 +131,19 @@ public class TestSQLiteBrowserCookies98_DONE {
 				"    PRIMARY KEY (\"host\", \"path\")" + 
 				")");
 			statement.executeUpdate(
-				"CREATE TABLE \"cookies\" (" + 
-				"    \"id\"    INT    PRIMARY KEY    NOT NULL," + 
-				"    \"name\"    TEXT    NOT NULL," + 
-				"    \"value\"    TEXT," + 
-				"    \"expiry\"    INT," + 
-				"    \"last_accessed\"    INT," + 
-				"    \"creation_time\"    INT," + 
-				"    \"host\"    TEXT," + 
-				"    \"path\"    TEXT," + 
-				"    FOREIGN KEY (\"host\", \"path\") REFERENCES \"places\" (\"host\", \"path\")," + 
-				"    UNIQUE (\"name\", \"host\", \"path\")," + 
-				"    CHECK (\"last_accessed\" >= \"creation_time\")" + 
-				")");
+					"CREATE TABLE \"cookies\" (" +
+							"    \"id\"    INT    PRIMARY KEY    NOT NULL," +
+							"    \"name\"    TEXT    NOT NULL," +
+							"    \"value\"    TEXT," +
+							"    \"expiry\"    INT," +
+							"    \"last_accessed\"    INT," +
+							"    \"creation_time\"    INT," +
+							"    \"host\"    TEXT," +
+							"    \"path\"    TEXT," +
+							"    FOREIGN KEY (\"host\", \"path\") REFERENCES \"places\" (\"host\", \"path\")," +
+							"    UNIQUE (\"name\", \"host\", \"path\")," +
+							"    CHECK (\"last_accessed\" >= \"creation_time\")" +
+							")");
 		} else if (number == 2) {
 			//2
 			//CCNullifier
@@ -3809,112 +3788,34 @@ public class TestSQLiteBrowserCookies98_DONE {
 			fail("No such mutant number -- " + number);
 		}
 	}
-	public boolean doInsert(String insertStatement) {
-		try {
-			statement.executeUpdate(insertStatement);
-			return true;
-		} catch (SQLException e) {
-			return false;
-		}
+
+	/*****************************/
+	/*** BEGIN MANUAL ANALYSIS ***/
+	/*****************************/
+
+	String statement1 = "INSERT INTO places VALUES('A', 'B', 'C', 1, 'D')";
+	String statement2 = "INSERT INTO places VALUES('a', 'B', 'c', 2, 'd')";
+	String statement3 = "INSERT INTO cookies VALUES(1, 'x', 'y', 0, 1, 1, 'A', 'B')";
+
+	@Test
+	public void notImpaired() throws SQLException {
+		assertTrue(insertToMutant(statement1, statement3));
 	}
 
-	public boolean insertToMutant(String... insertStatements) throws SQLException {
-	    createMutantSchema();
-	    for (String insertStatement : insertStatements) {
-	        if (!doInsert(insertStatement)) {
-	            return false;
-	        }
-	    }
-	    return true;
+	@Test
+	public void notEquivalent() throws SQLException {
+		assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
 	}
 
-	public boolean originalAndMutantHaveDifferentBehavior(String... insertStatements) throws SQLException {
-	    List<Boolean> originalSchemaResults = new ArrayList<>();
-	    List<Boolean> mutantSchemaResults = new ArrayList<>();
-
-	    createOriginalSchema();
-	    for (String insertStatement : insertStatements) {
-	        originalSchemaResults.add(doInsert(insertStatement));
-	    }
-
-	    createMutantSchema();
-	    for (String insertStatement : insertStatements) {
-	        mutantSchemaResults.add(doInsert(insertStatement));
-	    }
-
-	    if (!QUIET) {
-	        System.out.println("Orig/mutant: " + originalSchemaResults + "/" + mutantSchemaResults);
-	    }
-
-	    for (int i=0; i < insertStatements.length; i++) {
-	        if (originalSchemaResults.get(i) != mutantSchemaResults.get(i)) {
-	            return true;
-	        }
-	    }
-
-	    return false;
+	@Test
+	public void notRedundant() throws SQLException {
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement3), SUCCESS);
 	}
 
-	public int mutantAndOtherMutantsHaveDifferentBehavior(String... insertStatements) throws SQLException {
-	    return mutantAndOtherMutantsHaveDifferentBehavior(FIRST_MUTANT_NUMBER, LAST_MUTANT_NUMBER, insertStatements);
-	}
+	// ENTER END VERDICT (delete as appropriate): normal
 
-	public int mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(int mutantNumber, String... insertStatements) throws SQLException {
-	    return mutantAndOtherMutantsHaveDifferentBehavior(mutantNumber, LAST_MUTANT_NUMBER, insertStatements);
-	}
-
-	public int mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(int mutantNumber, String... insertStatements) throws SQLException {
-	    return mutantAndOtherMutantsHaveDifferentBehavior(FIRST_MUTANT_NUMBER, mutantNumber, insertStatements);
-	}
-
-	public int mutantAndOtherMutantsHaveDifferentBehavior(int mutantNumber, String... insertStatements) throws SQLException {
-	    return mutantAndOtherMutantsHaveDifferentBehavior(mutantNumber, mutantNumber, insertStatements);
-	}
-
-	public int mutantAndOtherMutantsHaveDifferentBehavior(int firstMutantNumber, int lastMutantNumber, String... insertStatements) throws SQLException {
-	    List<Boolean> mutantSchemaResults = new ArrayList<>();
-	    createMutantSchema();
-	    for (String insertStatement : insertStatements) {
-	        mutantSchemaResults.add(doInsert(insertStatement));
-	    }
-
-	    for (int i=firstMutantNumber; i <= lastMutantNumber; i++) {
-	        if (i == MUTANT_BEING_EVALUATED) {
-	            continue;
-	        }
-
-	        List<Boolean> otherMutantSchemaResults = new ArrayList<>();
-	        createOtherMutantSchema(i);
-
-	        for (String insertStatement : insertStatements) {
-	            otherMutantSchemaResults.add(doInsert(insertStatement));
-	        }
-
-	        if (!QUIET) {
-	            System.out.println("Mutant/mutant" + i + ": " + mutantSchemaResults + "/" + otherMutantSchemaResults);
-	        }
-
-	        boolean different = false;
-	        for (int j=0; j < insertStatements.length; j++) {
-	            if (mutantSchemaResults.get(j) != otherMutantSchemaResults.get(j)) {
-	                different = true;
-	            }
-	        }
-
-	        if (!different) {
-	            return i;
-	        }
-	    }
-
-	    return SUCCESS;
-	}
-
-	
-	@AfterClass
-	public static void close() throws SQLException {
-		if (connection != null) {
-			connection.close();
-		}
-	}
+	/*****************************/
+	/***  END MANUAL ANALYSIS  ***/
+	/*****************************/
 }
 

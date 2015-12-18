@@ -1,4 +1,4 @@
-package paper.qsic2014jv;
+package paper.ineffectivemutants;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -37,7 +37,7 @@ public class GenerateTestSuites {
     }
 
     public GenerateTestSuites() {
-        for (int i=1; i <= NUM_TEST_SUITES; i++) {
+        for (int i = 1; i <= NUM_TEST_SUITES; i++) {
             generateTestSuite(i);
         }
     }
@@ -61,7 +61,7 @@ public class GenerateTestSuites {
 
         // Select a mutant at random
         int mutantIndex = randomIndex(mutants);
-        mutantIndex = 97;
+        mutantIndex = 96;
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
 
@@ -95,33 +95,42 @@ public class GenerateTestSuites {
         SQLWriter sqlWriter = dbms.getSQLWriter();
         IndentableStringBuilder code = new IndentableStringBuilder();
 
-        String packageName = "paper.qsic2014jv.manualevaluation";
-        String className = "Test" + dbms.getName() + schema.getName() + mutantNumber;
+        String packageName = "paper.ineffectivemutants.manualevaluation.todo";
+        String className = schema.getName() + "_" + dbms.getName() + "_" + mutantNumber;
 
-        String dirName = new LocationsConfiguration().getSrcDir() + "/paper/qsic2014jv/manualevaluation/";
-        String fileName = dirName + className + ".java";
-        String doneFileName = dirName + className + "_DONE.java";
-
-        File file = new File(fileName);
-        File doneFile = new File(doneFileName);
+        String baseDirName = new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
+        String toDoFileName = baseDirName + "todo/" + className + ".java";
+        File file = new File(toDoFileName);
 
         if (file.exists()) {
             System.out.println(file + " exists -- delete it to regenerate it");
             return false;
-        } else if (doneFile.exists()) {
-            System.out.println(doneFile + " is DONE! (Delete it if you really want to regenerate it)");
-            return false;
+        } else {
+            String[] suffixes = {"NORMAL", "EQUIVALENT", "REDUNDANT", "IMPAIRED"};
+            for (String suffix : suffixes) {
+                File completeFile = new File(baseDirName + "complete/" + className + "_" + suffix + ".java");
+                System.out.println(completeFile);
+                if (completeFile.exists()) {
+                    System.out.println(className + " is COMPLETE! (Classification: " + suffix +
+                            "). Delete it if you really want to regenerate it)");
+                    return false;
+                }
+            }
         }
 
-        writeClassHeader(code, packageName, className, dbms, schema, mutantNumber, mutants.size());
+        writeClassHeader(code, packageName, className);
         writeBeforeClassMethod(code, dbms);
+        writeAfterClassMethod(code);
+
+        writeTestInfoMethods(code, dbms, schema, mutantNumber, mutants.size());
         writeDropTablesMethod(code, sqlWriter, schema);
+
+        // to remove in time...
         writeOriginalSchemaMethod(code, schema, sqlWriter);
         writeMutantSchemaMethod(code, selectedMutant, sqlWriter);
-        writeStubs(code);
         writeOtherMutantSchemaMethod(code, mutants, mutantNumber, sqlWriter);
-        writeHelperMethods(code);
-        writeAfterClassMethod(code);
+
+        writeStubs(code);
         writeClassFooter(code);
 
         System.out.println(code);
@@ -137,57 +146,44 @@ public class GenerateTestSuites {
         return true;
     }
 
-    private void writeClassHeader(IndentableStringBuilder code, String packageName, String className, DBMS dbms, Schema schema, int mutantNumber, int lastMutantNumber) {
+    private void writeClassHeader(IndentableStringBuilder code, String packageName, String className) {
         code.appendln("package " + packageName + ";");
-        code.appendln();
-        code.appendln("import java.sql.Connection;");
-        code.appendln("import java.sql.DriverManager;");
-        code.appendln("import java.sql.SQLException;");
-        code.appendln("import java.sql.Statement;");
-        code.appendln("import java.util.ArrayList;");
-        code.appendln("import java.util.List;");
         code.appendln();
         code.appendln("import org.junit.AfterClass;");
         code.appendln("import org.junit.BeforeClass;");
         code.appendln("import org.junit.Test;");
-        code.appendln();
+        code.appendln("import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;");
+        code.appendln("");
+        code.appendln("import java.sql.DriverManager;");
+        code.appendln("import java.sql.SQLException;");
+        code.appendln("");
         code.appendln("import static org.junit.Assert.*;");
         code.appendln();
-        code.appendln("public class " + className + " {");
+        code.appendln("public class " + className + " extends ManualAnalysisTestSuite {");
         code.appendln(1);
-        code.appendln("private static final int SUCCESS = 0;");
-        code.appendln("private static final boolean QUIET = false;");
-        code.appendln();
-        code.appendln("private static final int FIRST_MUTANT_NUMBER = 1;");
-        code.appendln("private static final int MUTANT_BEING_EVALUATED = " + mutantNumber + ";");
-        code.appendln("private static final int LAST_MUTANT_NUMBER = " + lastMutantNumber + ";");
-        code.appendln();
-
-        if (dbms instanceof HyperSQLDBMS) {
-            code.appendln("private static final String JDBC_CLASS = \"org.hsqldb.jdbc.JDBCDriver\";");
-            code.appendln("private static final String CONNECTION_URL = \"jdbc:hsqldb:mem:/database;hsqldb.write_delay=false\";");
-        } else if (dbms instanceof PostgresDBMS) {
-            // TODO -- complete!!!
-            code.appendln("// TODO -- write the code for Postgres");
-        } if (dbms instanceof SQLiteDBMS) {
-            code.appendln("private static final String JDBC_CLASS = \"org.sqlite.JDBC\";");
-            code.appendln("private static final String CONNECTION_URL = \"jdbc:sqlite:" + schema.getName() + "\";");
-        }
-
-        code.appendln();
-        code.appendln("private static Connection connection;");
-        code.appendln("private static Statement statement;");
     }
 
     private void writeBeforeClassMethod(IndentableStringBuilder code, DBMS dbms) {
-        code.appendln(1);
+        String jdbcClass = "", connectionURL = "";
+
+        if (dbms instanceof HyperSQLDBMS) {
+            jdbcClass = "org.hsqldb.jdbc.JDBCDriver";
+            connectionURL = "jdbc:hsqldb:mem:/database;hsqldb.write_delay=false";
+        } else if (dbms instanceof PostgresDBMS) {
+            // TODO -- complete!!!
+
+        } else if (dbms instanceof SQLiteDBMS) {
+            jdbcClass = "org.sqlite.JDBC";
+            connectionURL = "jdbc:sqlite:manualanalysis";
+        }
+
         code.appendln("@BeforeClass");
         code.appendln("public static void initialise() throws ClassNotFoundException, SQLException {");
 
         // DBMS specific code for creating a connection
         code.appendln(2, "// load the JDBC driver and create the connection and statement object used by this test suite");
-        code.appendln("Class.forName(JDBC_CLASS);");
-        code.appendln("connection = DriverManager.getConnection(CONNECTION_URL);");
+        code.appendln("Class.forName(\"" + jdbcClass + "\");");
+        code.appendln("connection = DriverManager.getConnection(\"" + connectionURL + "\");");
         code.appendln("statement = connection.createStatement();");
 
         if (dbms instanceof SQLiteDBMS) {
@@ -197,6 +193,35 @@ public class GenerateTestSuites {
         }
 
         code.appendln(1, "}");
+    }
+
+    private void writeAfterClassMethod(IndentableStringBuilder code) {
+        code.appendln(1);
+        code.appendln("@AfterClass");
+        code.appendln("public static void close() throws SQLException {");
+        code.appendln(2, "if (connection != null) {");
+        code.appendln(3, "connection.close();");
+        code.appendln(2, "}");
+        code.appendln(1, "}");
+    }
+
+    private void writeTestInfoMethods(
+            IndentableStringBuilder code, DBMS dbms, Schema schema, int mutantNumber, int lastMutantNumber) {
+        code.appendln("protected String getSchemaName() {");
+        code.appendln("    return \"" + schema.getName() + "\";");
+        code.appendln("}");
+        code.appendln("");
+        code.appendln("protected String getDBMSName() {");
+        code.appendln("    return \"" + dbms.getName() + "\";");
+        code.appendln("}");
+        code.appendln("");
+        code.appendln("protected int getMutantNumberBeingEvaluated() {");
+        code.appendln("    return " + mutantNumber + ";");
+        code.appendln("}");
+        code.appendln("");
+        code.appendln("protected int getLastMutantNumber() {");
+        code.appendln("    return " + lastMutantNumber + ";");
+        code.appendln("}");
     }
 
     private void writeDropTablesMethod(IndentableStringBuilder code, SQLWriter sqlWriter, Schema schema) {
@@ -247,7 +272,7 @@ public class GenerateTestSuites {
                 code.appendln(2, line);
                 writeMutant(code, 3, mutant, sqlWriter);
             }
-            number ++;
+            number++;
         }
 
         code.appendln(2, "} else {");
@@ -268,109 +293,6 @@ public class GenerateTestSuites {
         for (String statement : createTableStatements) {
             code.appendln(level, writeExecuteUpdate(code, statement) + ";");
         }
-    }
-
-    private void writeHelperMethods(IndentableStringBuilder code) {
-        code.appendln(1, "public boolean doInsert(String insertStatement) {");
-        code.appendln(2, "try {");
-        code.appendln(3, "statement.executeUpdate(insertStatement);");
-        code.appendln(3, "return true;");
-        code.appendln(2, "} catch (SQLException e) {");
-        code.appendln(3, "return false;");
-        code.appendln(2, "}");
-        code.appendln(1, "}");
-        code.appendln();
-        code.appendln("public boolean insertToMutant(String... insertStatements) throws SQLException {");
-        code.appendln("    createMutantSchema();");
-        code.appendln("    for (String insertStatement : insertStatements) {");
-        code.appendln("        if (!doInsert(insertStatement)) {");
-        code.appendln("            return false;");
-        code.appendln("        }");
-        code.appendln("    }");
-        code.appendln("    return true;");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public boolean originalAndMutantHaveDifferentBehavior(String... insertStatements) throws SQLException {");
-        code.appendln("    List<Boolean> originalSchemaResults = new ArrayList<>();");
-        code.appendln("    List<Boolean> mutantSchemaResults = new ArrayList<>();");
-        code.appendln();
-        code.appendln("    createOriginalSchema();");
-        code.appendln("    for (String insertStatement : insertStatements) {");
-        code.appendln("        originalSchemaResults.add(doInsert(insertStatement));");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    createMutantSchema();");
-        code.appendln("    for (String insertStatement : insertStatements) {");
-        code.appendln("        mutantSchemaResults.add(doInsert(insertStatement));");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    if (!QUIET) {");
-        code.appendln("        System.out.println(\"Orig/mutant: \" + originalSchemaResults + \"/\" + mutantSchemaResults);");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    for (int i=0; i < insertStatements.length; i++) {");
-        code.appendln("        if (originalSchemaResults.get(i) != mutantSchemaResults.get(i)) {");
-        code.appendln("            return true;");
-        code.appendln("        }");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    return false;");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public int mutantAndOtherMutantsHaveDifferentBehavior(String... insertStatements) throws SQLException {");
-        code.appendln("    return mutantAndOtherMutantsHaveDifferentBehavior(FIRST_MUTANT_NUMBER, LAST_MUTANT_NUMBER, insertStatements);");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public int mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(int mutantNumber, String... insertStatements) throws SQLException {");
-        code.appendln("    return mutantAndOtherMutantsHaveDifferentBehavior(mutantNumber, LAST_MUTANT_NUMBER, insertStatements);");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public int mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(int mutantNumber, String... insertStatements) throws SQLException {");
-        code.appendln("    return mutantAndOtherMutantsHaveDifferentBehavior(FIRST_MUTANT_NUMBER, mutantNumber, insertStatements);");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public int mutantAndOtherMutantsHaveDifferentBehavior(int mutantNumber, String... insertStatements) throws SQLException {");
-        code.appendln("    return mutantAndOtherMutantsHaveDifferentBehavior(mutantNumber, mutantNumber, insertStatements);");
-        code.appendln("}");
-        code.appendln();
-        code.appendln("public int mutantAndOtherMutantsHaveDifferentBehavior(int firstMutantNumber, int lastMutantNumber, String... insertStatements) throws SQLException {");
-        code.appendln("    List<Boolean> mutantSchemaResults = new ArrayList<>();");
-        code.appendln("    createMutantSchema();");
-        code.appendln("    for (String insertStatement : insertStatements) {");
-        code.appendln("        mutantSchemaResults.add(doInsert(insertStatement));");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    for (int i=firstMutantNumber; i <= lastMutantNumber; i++) {");
-        code.appendln("        if (i == MUTANT_BEING_EVALUATED) {");
-        code.appendln("            continue;");
-        code.appendln("        }");
-        code.appendln();
-        code.appendln("        List<Boolean> otherMutantSchemaResults = new ArrayList<>();");
-        code.appendln("        createOtherMutantSchema(i);");
-        code.appendln();
-        code.appendln("        for (String insertStatement : insertStatements) {");
-        code.appendln("            otherMutantSchemaResults.add(doInsert(insertStatement));");
-        code.appendln("        }");
-        code.appendln();
-        code.appendln("        if (!QUIET) {");
-        code.appendln("            System.out.println(\"Mutant/mutant\" + i + \": \" + mutantSchemaResults + \"/\" + otherMutantSchemaResults);");
-        code.appendln("        }");
-        code.appendln();
-        code.appendln("        boolean different = false;");
-        code.appendln("        for (int j=0; j < insertStatements.length; j++) {");
-        code.appendln("            if (mutantSchemaResults.get(j) != otherMutantSchemaResults.get(j)) {");
-        code.appendln("                different = true;");
-        code.appendln("            }");
-        code.appendln("        }");
-        code.appendln();
-        code.appendln("        if (!different) {");
-        code.appendln("            return i;");
-        code.appendln("        }");
-        code.appendln("    }");
-        code.appendln();
-        code.appendln("    return SUCCESS;");
-        code.appendln("}");
-        code.appendln();
     }
 
     private String writeExecuteUpdate(IndentableStringBuilder code, String sqlStatement) {
@@ -395,16 +317,6 @@ public class GenerateTestSuites {
     private String formatOneLineStatement(String sqlStatement) {
         String tabsToSpaces = sqlStatement.replace("\t", "    ");
         return "\"" + StringEscapeUtils.escapeJava(tabsToSpaces) + "\"";
-    }
-
-    private void writeAfterClassMethod(IndentableStringBuilder code) {
-        code.appendln(1);
-        code.appendln("@AfterClass");
-        code.appendln("public static void close() throws SQLException {");
-        code.appendln(2, "if (connection != null) {");
-        code.appendln(3, "connection.close();");
-        code.appendln(2, "}");
-        code.appendln(1, "}");
     }
 
     private void writeStubs(IndentableStringBuilder code) {

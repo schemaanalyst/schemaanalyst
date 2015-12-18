@@ -1,11 +1,10 @@
-package paper.qsic2014jv;
+package paper.ineffectivemutants;
 
 import org.schemaanalyst.dbms.hypersql.HyperSQLSQLWriter;
 import org.schemaanalyst.dbms.postgres.PostgresSQLWriter;
 import org.schemaanalyst.dbms.sqlite.SQLiteSQLWriter;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
-import parsedcasestudy.*;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;

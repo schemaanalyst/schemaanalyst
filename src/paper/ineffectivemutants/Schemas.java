@@ -1,4 +1,4 @@
-package paper.qsic2014jv;
+package paper.ineffectivemutants;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 import parsedcasestudy.*;

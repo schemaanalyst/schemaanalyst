@@ -1,8 +1,6 @@
-package paper.qsic2014jv;
+package paper.ineffectivemutants;
 
-import org.schemaanalyst.sqlrepresentation.Schema;
 import paper.util.SchemaStatsTable;
-import parsedcasestudy.*;
 
 public class LatexSchemaStatsTable extends SchemaStatsTable {
 
