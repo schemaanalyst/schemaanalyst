@@ -61,6 +61,7 @@ public class CheckManualAnalysis {
                 output += "**** NOT ****";
                 output += " " + classification;
                 System.out.println(output);
+                System.out.println("(It's " + mutant.getMutantType()+")");
                 System.exit(1);
             }
         }
