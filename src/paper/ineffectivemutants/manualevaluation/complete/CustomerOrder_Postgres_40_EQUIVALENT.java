@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,10 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-public class CustomerOrder_Postgres_40 extends ManualAnalysisTestSuite {
+public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -60,7 +61,10 @@ public class CustomerOrder_Postgres_40 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
+	String statement1 = "INSERT INTO \"db_category\" VALUES('1', '1', '1')";
+	String statement2 = "INSERT INTO \"db_product\" VALUES('1', '1', '1', 0, '1', '1', '1')";
+	String statement3 = "INSERT INTO \"db_product\" VALUES(NULL, '1', '1', 0, '1', '1', '1')";
+
 	// String statement2 = "INSERT INTO " " VALUES( )";
 	// String statement3 = "INSERT INTO " " VALUES( )";
 	// String statement4 = "INSERT INTO " " VALUES( )";
@@ -69,23 +73,16 @@ public class CustomerOrder_Postgres_40 extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+	    assertTrue(insertToMutant(statement1, statement2));
 	}
 
 	@Test
-	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+	public void isEquivalent() throws SQLException {
+		assertFalse(originalAndMutantHaveDifferentBehavior(statement1, statement2));
+		assertFalse(originalAndMutantHaveDifferentBehavior(statement1, statement3));
 	}
 
-	@Test
-	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
-	}
-
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): equivalent
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
