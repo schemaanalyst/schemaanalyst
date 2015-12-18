@@ -56,7 +56,6 @@ public class CheckManualAnalysis {
                 ourClassification = MutantType.DUPLICATE;
             }
 
-
             if (ourClassification != mutant.getMutantType()) {
                 String output = schema + " " + dbms + " " + mutantIdenitifier + " IS ";
                 output += "**** NOT ****";

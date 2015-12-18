@@ -16,7 +16,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
-import parsedcasestudy.Usda;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,21 +49,17 @@ public class GenerateTestSuites {
         // Select a DBMS / SQL writer
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
-        // for testing:
-        dbmsName = "Postgres";
 
         DBMS dbms = DBMSFactory.instantiate(dbmsName);
 
         // Select a schema
         Schema schema = Schemas.schemas[randomIndex(Schemas.schemas)];
-        schema = new Usda();
 
         // Get mutants
         List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
 
         // Select a mutant at random
         int mutantIndex = randomIndex(mutants);
-        mutantIndex = 117;
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
         writeTestSuiteAndSchemas(dbms, schema, mutants, selectedMutant, mutantNumber);

@@ -95,6 +95,12 @@ public abstract class ManualAnalysisTestSuite {
                 getFirstMutantNumber(), mutantNumber, insertStatements);
     }
 
+    protected int mutantAndOtherMutantsHaveDifferentBehaviorFromTo(
+            int firstMutantNumber, int lastMutantNumber, String... insertStatements) throws SQLException {
+        return mutantAndOtherMutantsHaveDifferentBehavior(
+                firstMutantNumber, lastMutantNumber, insertStatements);
+    }
+
     protected int mutantAndOtherMutantsHaveDifferentBehavior(
             int mutantNumber, String... insertStatements) throws SQLException {
         return mutantAndOtherMutantsHaveDifferentBehavior(
