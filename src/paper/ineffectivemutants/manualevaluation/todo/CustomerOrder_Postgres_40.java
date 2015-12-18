@@ -8,10 +8,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class NistDML182_Postgres_50 extends ManualAnalysisTestSuite {
+public class CustomerOrder_Postgres_40 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -32,7 +31,7 @@ public class NistDML182_Postgres_50 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "NistDML182";
+	    return "CustomerOrder";
 	}
 	
 	protected String getDBMSName() {
@@ -40,42 +39,50 @@ public class NistDML182_Postgres_50 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 50;
+	    return 40;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 81;
+	    return 96;
 	}
 	
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order_item\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_customer\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_user\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_role\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_product\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"db_category\"");
 	}
 
 	/*****************************/
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"ID_CODES\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
-	String statement2 = "INSERT INTO \"ID_CODES\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,1)";
-	String statement3 = "INSERT INTO \"ID_CODES\" VALUES(1,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
-	String statement4 = "INSERT INTO \"ORDERS\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+	// String statement1 = "INSERT INTO " " VALUES( )";
+	// String statement2 = "INSERT INTO " " VALUES( )";
+	// String statement3 = "INSERT INTO " " VALUES( )";
+	// String statement4 = "INSERT INTO " " VALUES( )";
+	// String statement5 = "INSERT INTO " " VALUES( )";
+
 
 	@Test
 	public void notImpaired() throws SQLException {
-		assertTrue(insertToMutant(statement1, statement4));
+	    // ... or maybe it is ...
+	    // assertTrue(insertToMutant(statement1, ...));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-		assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
+	    // ... or maybe it is ...
+	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 50, statement1, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(51, 64, statement1, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(65, 81, statement1, statement2), SUCCESS);
+	    // ... or maybe it is ...
+	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
