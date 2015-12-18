@@ -15,7 +15,6 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
-import parsedcasestudy.BrowserCookies;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,21 +48,18 @@ public class GenerateTestSuites {
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
         // for testing:
-        dbmsName = "SQLite";
+        dbmsName = "HyperSQL";
 
         DBMS dbms = DBMSFactory.instantiate(dbmsName);
 
         // Select a schema
         Schema schema = Schemas.schemas[randomIndex(Schemas.schemas)];
-        // for testing:
-        schema = new BrowserCookies();
 
         // Get mutants
         List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
 
         // Select a mutant at random
         int mutantIndex = randomIndex(mutants);
-        mutantIndex = 96;
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
 
