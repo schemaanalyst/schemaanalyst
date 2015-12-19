@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class WordNet_HyperSQL_22_REDUNDANT extends ManualAnalysisTestSuite {
+public class WordNet_HyperSQL_22_REDUNDANT_85 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -87,7 +87,7 @@ public class WordNet_HyperSQL_22_REDUNDANT extends ManualAnalysisTestSuite {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(88, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): redundant
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
