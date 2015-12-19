@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class NistDML182_HyperSQL_28 extends ManualAnalysisTestSuite {
+public class NistDML182_HyperSQL_28_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -55,29 +55,30 @@ public class NistDML182_HyperSQL_28 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
+	String statementA = "INSERT INTO \"ID_CODES\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+	String statementA2 = "INSERT INTO \"ID_CODES\" VALUES(1,1,1,1,1,1,1,1,1,1,1,1,0,1,1)";
 
+	String statementB = "INSERT INTO \"ORDERS\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, '', 0)";
+	String statementB2 = "INSERT INTO \"ORDERS\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, '', 0)";
+	String statementB3 = "INSERT INTO \"ORDERS\" VALUES(1,1,1,1,1,1,1,1,1,1,1,1,0,1,1, 'A', 1)";
+	String statementB4 = "INSERT INTO \"ORDERS\" VALUES(1,1,1,1,1,1,1,1,1,1,1,1,NULL,1,1, 'A', 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+		assertTrue(insertToMutant(statementA, statementB));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statementA, statementA2, statementB, statementB2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(15, statementA, statementB, statementB2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(16, 91, statementA, statementA2, statementB, statementB3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(92, 92, statementA, statementA2, statementB, statementB4), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(93, statementA, statementA2, statementB, statementB3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
