@@ -1,5 +1,6 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,9 +9,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class WordNet_Postgres_9 extends ManualAnalysisTestSuite {
+public class WordNet_Postgres_9_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -45,7 +46,8 @@ public class WordNet_Postgres_9 extends ManualAnalysisTestSuite {
 	protected int getLastMutantNumber() {
 	    return 107;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"word\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"synset\"");
@@ -61,32 +63,32 @@ public class WordNet_Postgres_9 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
+	String statement1 = "INSERT INTO \"sense\" VALUES(1, 1, 1, 1, 1, 1)";
+	String statement2 = "INSERT INTO \"sense\" VALUES(1, 1, 1, 1, 1, 2)";
+	String statement3 = "INSERT INTO \"sense\" VALUES(1, 2, 2, 2, 2, 1)";
+	String statement4 = "INSERT INTO \"sense\" VALUES(1, 2, 1, 2, 2, 1)";
+	String statement5 = "INSERT INTO \"sense\" VALUES(2, 1, 1, 1, 1, 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+	    assertTrue(insertToMutant(statement1));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+		assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 38, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(39, statement1, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(40, 42, statement1, statement4), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(43, statement1, statement5), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(44, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

@@ -1,0 +1,19 @@
+-- 29
+-- PKCColumnE
+-- ListElementExchanger with ChainedSupplier with PrimaryKeyConstraintSupplier and PrimaryKeyColumnsWithAlternativesSupplier - Exchanged TNUM1 with TCHAR
+
+CREATE TABLE "STAFF" (
+	"SALARY"	INT,
+	"EMPNAME"	CHAR(20),
+	"GRADE"	DECIMAL,
+	"EMPNUM"	CHAR(3)	PRIMARY KEY	NOT NULL
+)
+
+CREATE TABLE "TEST12649" (
+	"TNUM1"	NUMERIC(5, 0)	NOT NULL,
+	"TNUM2"	NUMERIC(5, 0)	NOT NULL,
+	"TCHAR"	CHAR(3)	CONSTRAINT "CND12649C"  REFERENCES "STAFF" ("EMPNUM"),
+	CONSTRAINT "CND12649A" PRIMARY KEY ("TCHAR", "TNUM2"),
+	CONSTRAINT "CND12649B" CHECK ("TNUM2" > 0)
+)
+
