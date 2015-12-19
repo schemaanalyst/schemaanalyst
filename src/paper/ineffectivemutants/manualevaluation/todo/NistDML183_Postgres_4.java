@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class ArtistSimilarity_Postgres_11 extends ManualAnalysisTestSuite {
+public class NistDML183_Postgres_4 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -32,7 +32,7 @@ public class ArtistSimilarity_Postgres_11 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "ArtistSimilarity";
+	    return "NistDML183";
 	}
 	
 	protected String getDBMSName() {
@@ -40,17 +40,17 @@ public class ArtistSimilarity_Postgres_11 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 11;
+	    return 4;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 12;
+	    return 20;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"similarity\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"artists\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"S\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"T\"");
 	}
 
 	/*****************************/
