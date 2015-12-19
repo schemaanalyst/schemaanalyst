@@ -8,20 +8,21 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+//import static org.junit.Assert.*;
 
-public class WordNet_HyperSQL_22 extends ManualAnalysisTestSuite {
+public class NistDML182_SQLite_341 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.sqlite.JDBC");
+		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
 
-		// tell HyperSQL to always persist the data right away
-		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
+
+		// enable FOREIGN KEY support
+		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -31,30 +32,24 @@ public class WordNet_HyperSQL_22 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "WordNet";
+	    return "NistDML182";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "SQLite";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 22;
+	    return 341;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 101;
+	    return 351;
 	}
 	
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"word\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"synset\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"sense\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"semlinkref\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"sample\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"linkdef\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"lexlinkref\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"categorydef\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
 	}
 
 	/*****************************/

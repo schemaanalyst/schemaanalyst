@@ -143,7 +143,7 @@ public class GenerateTestSuites {
         code.appendln("import java.sql.DriverManager;");
         code.appendln("import java.sql.SQLException;");
         code.appendln("");
-        code.appendln("import static org.junit.Assert.*;");
+        code.appendln("//import static org.junit.Assert.*;");
         code.appendln();
         code.appendln("public class " + className + " extends ManualAnalysisTestSuite {");
         code.appendln(1);
