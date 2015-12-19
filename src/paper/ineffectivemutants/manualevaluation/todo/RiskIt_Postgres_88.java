@@ -11,15 +11,15 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class Cloc_HyperSQL_1 extends ManualAnalysisTestSuite {
+public class RiskIt_Postgres_88 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.postgresql.Driver");
+		connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "gkapfham", "postgres");
 
-		// tell HyperSQL to always persist the data right away
+		// tell Postgres to always persist the data right away
 		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
@@ -32,25 +32,36 @@ public class Cloc_HyperSQL_1 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "Cloc";
+	    return "RiskIt";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "Postgres";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 1;
+	    return 88;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 30;
+	    return 209;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"t\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"metadata\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ziptable\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"youth\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"wage\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"stateabbv\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"migration\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"job\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"occupation\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"investment\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"industry\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"geo\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"employmentstat\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"education\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"userrecord\"");
 	}
 
 	/*****************************/
