@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class iTrust_HyperSQL_1322 extends ManualAnalysisTestSuite {
+public class iTrust_HyperSQL_1322_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -95,29 +95,25 @@ public class iTrust_HyperSQL_1322 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
+	String statement1 = "INSERT INTO \"ReportRequests\" VALUES(0, 0, 0, 0, '2000-01-01 00:00:00', '2000-01-01 00:00:00', '2000-01-01 00:00:00', '', '')";
+	String statement2 = "INSERT INTO \"ReportRequests\" VALUES(1, 1, 1, 1, '2001-01-01 00:00:00', '2001-01-01 00:00:00', '2001-01-01 00:00:00', 'a', '')";
+	String statement3 = "INSERT INTO \"ReportRequests\" VALUES(0, 1, 1, 1, '2001-01-01 00:00:00', '2001-01-01 00:00:00', '2001-01-01 00:00:00', 'a', 'a')";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+	    assertTrue(insertToMutant(statement1));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 746, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(747, 747, statement1, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(748, 1407, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
