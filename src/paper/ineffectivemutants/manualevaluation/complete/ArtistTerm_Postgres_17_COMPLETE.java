@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class ArtistTerm_Postgres_17 extends ManualAnalysisTestSuite {
+public class ArtistTerm_Postgres_17_COMPLETE extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -58,32 +58,29 @@ public class ArtistTerm_Postgres_17 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
+	String statement1 = "INSERT INTO \"artists\" VALUES('a')";
+	String statement2 = "INSERT INTO \"mbtags\" VALUES('a')";
+	String statement3 = "INSERT INTO \"artist_mbtag\" VALUES('a', 'a')";
+	String statement4 = "INSERT INTO \"artist_mbtag\" VALUES('a', NULL)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+	    assertTrue(insertToMutant(statement1, statement2, statement3));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement4));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 9, statement1, statement2, statement4), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(10, statement1, statement2, statement3, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(11, statement1, statement2, statement4), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
