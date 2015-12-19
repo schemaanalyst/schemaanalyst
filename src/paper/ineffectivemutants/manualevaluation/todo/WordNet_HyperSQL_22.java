@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class MozillaPermissions_HyperSQL_22 extends ManualAnalysisTestSuite {
+public class WordNet_HyperSQL_22 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -31,7 +31,7 @@ public class MozillaPermissions_HyperSQL_22 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "MozillaPermissions";
+	    return "WordNet";
 	}
 	
 	protected String getDBMSName() {
@@ -43,11 +43,18 @@ public class MozillaPermissions_HyperSQL_22 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 30;
+	    return 101;
 	}
 	
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"moz_hosts\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"word\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"synset\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"sense\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"semlinkref\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"sample\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"linkdef\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"lexlinkref\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"categorydef\"");
 	}
 
 	/*****************************/
