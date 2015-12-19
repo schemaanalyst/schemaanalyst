@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -8,9 +8,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-//import static org.junit.Assert.*;
+import static org.junit.Assert.*;
 
-public class DellStore_HyperSQL_16 extends ManualAnalysisTestSuite {
+public class DellStore_HyperSQL_16_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -61,32 +61,27 @@ public class DellStore_HyperSQL_16 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	// String statement1 = "INSERT INTO " " VALUES( )";
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
+	String statement1 = "INSERT INTO \"customers\" VALUES(0, '', '', '', '', '', '', 0, '', 0, 'email', '', 0, '', '', '', '', 0, 0, '')";
+	String statement2 = "INSERT INTO \"customers\" VALUES(1, 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a', 1, 'email', 'a', 1, 'a', 'a', 'a', 'a', 1, 1, 'a')";
+    String statement3 = "INSERT INTO \"customers\" VALUES(1, 'a', 'a', 'a', 'a', 'a', 'a', 1, 'a', 1, NULL,    'a', 1, 'a', 'a', 'a', 'a', 1, 1, 'a')";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(insertToMutant(statement1, ...));
+	    assertTrue(insertToMutant(statement1));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    // ... or maybe it is ...
-	    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(119, statement1, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(120, statement1, statement3), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
