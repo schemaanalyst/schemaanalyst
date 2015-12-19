@@ -2,9 +2,10 @@ package org.schemaanalyst.dbms.postgres;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.schemaanalyst.mutation.equivalence.SchemaNormaliser;
+import org.schemaanalyst.mutation.normalisation.SchemaNormaliser;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.NotNullConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
@@ -51,6 +52,28 @@ public class PostgresSchemaNormaliser extends SchemaNormaliser {
             }
             schema.removePrimaryKeyConstraint(pk.getTable());
         }
+    }
+    
+    private void normaliseUnique(Schema schema) {
+        for (Table table : schema.getTables()) {
+            List<UniqueConstraint> ucs = schema.getUniqueConstraints(table);
+            for (UniqueConstraint uc : ucs) {
+                if (isSimplerUnique(uc, ucs)) {
+                    schema.removeUniqueConstraint(uc);
+                }
+            }
+        }
+    }
+    
+    private boolean isSimplerUnique(UniqueConstraint uc, List<UniqueConstraint> ucs) {
+        List<Column> ucCols = uc.getColumns();
+        for (UniqueConstraint other : ucs) {
+            List<Column> otherCols = other.getColumns();
+            if (uc != other && otherCols.containsAll(ucCols)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

@@ -2,7 +2,7 @@ package org.schemaanalyst.dbms.sqlite;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.schemaanalyst.mutation.equivalence.SchemaNormaliser;
+import org.schemaanalyst.mutation.normalisation.SchemaNormaliser;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;

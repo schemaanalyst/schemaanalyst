@@ -1,5 +1,6 @@
 package org.schemaanalyst.mutation.equivalence;
 
+import org.schemaanalyst.mutation.normalisation.SchemaNormaliser;
 import org.schemaanalyst.sqlrepresentation.Schema;
 
 
