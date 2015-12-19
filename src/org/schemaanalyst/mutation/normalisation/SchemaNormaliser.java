@@ -1,4 +1,4 @@
-package org.schemaanalyst.mutation.equivalence;
+package org.schemaanalyst.mutation.normalisation;
 
 import org.schemaanalyst.sqlrepresentation.Schema;
 
