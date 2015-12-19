@@ -18,6 +18,7 @@ public abstract class ManualAnalysisTestSuite {
 
     protected static final int SUCCESS = 0;
     protected static final boolean QUIET = false;
+    protected static final boolean EXPLAIN_INSERT_FAILURE = false;
 
     protected static Connection connection;
     protected static Statement statement;
@@ -37,6 +38,9 @@ public abstract class ManualAnalysisTestSuite {
             statement.executeUpdate(insertStatement);
             return true;
         } catch (SQLException e) {
+            if (EXPLAIN_INSERT_FAILURE) {
+                e.printStackTrace();
+            }
             return false;
         }
     }

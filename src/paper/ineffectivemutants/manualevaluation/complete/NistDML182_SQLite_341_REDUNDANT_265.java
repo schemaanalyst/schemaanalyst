@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,7 +9,8 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite {
 	
@@ -46,7 +48,8 @@ public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite
 	protected int getLastMutantNumber() {
 	    return 351;
 	}
-	
+
+    @After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");

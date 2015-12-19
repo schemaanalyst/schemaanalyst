@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuit
 	protected int getLastMutantNumber() {
 	    return 96;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order_item\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order\"");

@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class UnixUsage_HyperSQL_7_NORMAL extends ManualAnalysisTestSuite {
 	protected int getLastMutantNumber() {
 	    return 94;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"USAGE_HISTORY\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"UNIX_COMMAND\"");

@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -31,6 +32,7 @@ public class WordNet_HyperSQL_22_REDUNDANT_85 extends ManualAnalysisTestSuite {
 			connection.close();
 		}
 	}
+
 	protected String getSchemaName() {
 	    return "WordNet";
 	}
@@ -46,8 +48,9 @@ public class WordNet_HyperSQL_22_REDUNDANT_85 extends ManualAnalysisTestSuite {
 	protected int getLastMutantNumber() {
 	    return 101;
 	}
-	
-	public void dropTables() throws SQLException {
+
+	@After
+	public  void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"word\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"synset\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"sense\"");

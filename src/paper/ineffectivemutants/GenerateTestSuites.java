@@ -135,6 +135,7 @@ public class GenerateTestSuites {
     private void writeClassHeader(IndentableStringBuilder code, String packageName, String className) {
         code.appendln("package " + packageName + ";");
         code.appendln();
+        code.appendln("import org.junit.After;");
         code.appendln("import org.junit.AfterClass;");
         code.appendln("import org.junit.BeforeClass;");
         code.appendln("import org.junit.Test;");
@@ -233,6 +234,7 @@ public class GenerateTestSuites {
 
     private void writeDropTablesMethod(IndentableStringBuilder code, SQLWriter sqlWriter, Schema schema) {
         code.appendln(1);
+        code.appendln("@After");
         code.appendln("public void dropTables() throws SQLException {");
 
         List<String> dropTableStatements = sqlWriter.writeDropTableStatements(schema, true);
@@ -330,29 +332,22 @@ public class GenerateTestSuites {
         code.appendln("/*** BEGIN MANUAL ANALYSIS ***/");
         code.appendln("/*****************************/");
         code.appendln();
-        code.appendln("// String statement1 = \"INSERT INTO \" \" VALUES( )\";");
-        code.appendln("// String statement2 = \"INSERT INTO \" \" VALUES( )\";");
-        code.appendln("// String statement3 = \"INSERT INTO \" \" VALUES( )\";");
-        code.appendln("// String statement4 = \"INSERT INTO \" \" VALUES( )\";");
-        code.appendln("// String statement5 = \"INSERT INTO \" \" VALUES( )\";");
+        code.appendln("// String statement1 = \"INSERT INTO \\\"\\\" VALUES( )\";");
         code.appendln();
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notImpaired() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("    // assertTrue(insertToMutant(statement1, ...));");
+        code.appendln("    // assertTrue(insertToMutant(statement1));");
         code.appendln("}");
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notEquivalent() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1, ...));");
+        code.appendln("    // assertTrue(originalAndMutantHaveDifferentBehavior(statement1));");
         code.appendln("}");
         code.appendln();
         code.appendln("@Test");
         code.appendln("public void notRedundant() throws SQLException {");
-        code.appendln("    // ... or maybe it is ...");
-        code.appendln("    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, ...), SUCCESS);");
+        code.appendln("    // assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);");
         code.appendln("}");
         code.appendln();
         code.appendln("// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal");
