@@ -85,7 +85,7 @@ public class ArtistSimilarity_Postgres_12_NORMAL extends ManualAnalysisTestSuite
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(11, 12, statement1, statement2, statement4, statement3), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

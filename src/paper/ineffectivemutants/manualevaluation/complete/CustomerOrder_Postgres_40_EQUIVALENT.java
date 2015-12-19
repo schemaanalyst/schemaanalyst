@@ -65,12 +65,6 @@ public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuit
 	String statement2 = "INSERT INTO \"db_product\" VALUES('1', '1', '1', 0, '1', '1', '1')";
 	String statement3 = "INSERT INTO \"db_product\" VALUES(NULL, '1', '1', 0, '1', '1', '1')";
 
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
-
 	@Test
 	public void notImpaired() throws SQLException {
 	    assertTrue(insertToMutant(statement1, statement2));

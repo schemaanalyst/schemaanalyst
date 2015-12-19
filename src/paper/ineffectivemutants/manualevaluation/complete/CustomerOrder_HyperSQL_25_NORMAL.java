@@ -132,7 +132,7 @@ public class CustomerOrder_HyperSQL_25_NORMAL extends ManualAnalysisTestSuite {
         ), SUCCESS);
     }
 
-    // ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+    // ENTER END VERDICT (delete as appropriate): normal
 
     /*****************************/
     /***  END MANUAL ANALYSIS  ***/

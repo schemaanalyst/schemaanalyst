@@ -80,7 +80,7 @@ public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(263, statementA, statementB, statementA2, statementB2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): redundant
+	// ENTER END VERDICT (delete as appropriate): redundant with respect to 265
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

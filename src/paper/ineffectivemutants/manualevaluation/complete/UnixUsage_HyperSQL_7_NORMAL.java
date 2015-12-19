@@ -79,7 +79,7 @@ public class UnixUsage_HyperSQL_7_NORMAL extends ManualAnalysisTestSuite {
 	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

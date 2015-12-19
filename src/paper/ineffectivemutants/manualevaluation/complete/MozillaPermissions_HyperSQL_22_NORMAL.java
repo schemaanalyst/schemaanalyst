@@ -59,12 +59,6 @@ public class MozillaPermissions_HyperSQL_22_NORMAL extends ManualAnalysisTestSui
 	String statement3 = "INSERT INTO \"moz_hosts\" VALUES(1, 'a', 'a', 1, 1, 1, 2, 1)";
 	String statement4 = "INSERT INTO \"moz_hosts\" VALUES(2, 'a', 'a', 1, 1, 1, 1, 1)";
 
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
-
 	@Test
 	public void notImpaired() throws SQLException {
 		assertTrue(insertToMutant(statement1));
