@@ -11,19 +11,18 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class NistDML182_SQLite_105 extends ManualAnalysisTestSuite {
+public class StudentResidence_HyperSQL_26 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
+		Class.forName("org.hsqldb.jdbc.JDBCDriver");
+		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
 
+		// tell HyperSQL to always persist the data right away
+		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
-
-		// enable FOREIGN KEY support
-		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -33,25 +32,25 @@ public class NistDML182_SQLite_105 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "NistDML182";
+	    return "StudentResidence";
 	}
 	
 	protected String getDBMSName() {
-	    return "SQLite";
+	    return "HyperSQL";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 105;
+	    return 26;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 351;
+	    return 38;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"Student\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"Residence\"");
 	}
 
 	/*****************************/
