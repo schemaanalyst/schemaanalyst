@@ -349,7 +349,7 @@ public class GenerateTestSuites {
         code.appendln("    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);");
         code.appendln("}");
         code.appendln();
-        code.appendln("// ENTER END VERDICT (delete as appropriate): normal");
+        code.appendln("// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired");
         code.appendln();
         code.appendln("/*****************************/");
         code.appendln("/***  END MANUAL ANALYSIS  ***/");
