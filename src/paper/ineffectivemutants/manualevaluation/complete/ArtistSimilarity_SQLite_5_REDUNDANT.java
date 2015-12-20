@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class ArtistSimilarity_SQLite_5 extends ManualAnalysisTestSuite {
+public class ArtistSimilarity_SQLite_5_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -58,24 +58,28 @@ public class ArtistSimilarity_SQLite_5 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"artists\" VALUES('1')";
+	String statement2 = "INSERT INTO \"similarity\" VALUES('1', NULL)";
+    String statement3 = "INSERT INTO \"similarity\" VALUES(NULL, NULL)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+	    assertTrue(insertToMutant(statement1, statement2));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement2));
 	}
 
 	@Test
-	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	public void isRedundant() throws SQLException {
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 11, statement1, statement2, statement2), SUCCESS);
+        // can't distinguish from 12 (add UNIQUE to same column)
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(13, statement1, statement2, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): redundant
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
