@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -8,7 +9,8 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class MozillaPermissions_HyperSQL_22_NORMAL extends ManualAnalysisTestSuite {
 	
@@ -45,7 +47,8 @@ public class MozillaPermissions_HyperSQL_22_NORMAL extends ManualAnalysisTestSui
 	protected int getLastMutantNumber() {
 	    return 30;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"moz_hosts\"");
 	}
@@ -58,12 +61,6 @@ public class MozillaPermissions_HyperSQL_22_NORMAL extends ManualAnalysisTestSui
 	String statement2 = "INSERT INTO \"moz_hosts\" VALUES(1, 'a', 'a', 1, 1, 1, NULL, 1)";
 	String statement3 = "INSERT INTO \"moz_hosts\" VALUES(1, 'a', 'a', 1, 1, 1, 2, 1)";
 	String statement4 = "INSERT INTO \"moz_hosts\" VALUES(2, 'a', 'a', 1, 1, 1, 1, 1)";
-
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
 
 	@Test
 	public void notImpaired() throws SQLException {

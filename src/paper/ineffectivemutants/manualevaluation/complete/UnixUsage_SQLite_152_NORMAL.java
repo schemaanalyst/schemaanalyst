@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +48,8 @@ public class UnixUsage_SQLite_152_NORMAL extends ManualAnalysisTestSuite {
 	protected int getLastMutantNumber() {
 	    return 301;
 	}
-	
+
+    @After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"USAGE_HISTORY\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"UNIX_COMMAND\"");
@@ -127,7 +129,7 @@ public class UnixUsage_SQLite_152_NORMAL extends ManualAnalysisTestSuite {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(148, 301, statement1, statement2, statement6, statement7), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

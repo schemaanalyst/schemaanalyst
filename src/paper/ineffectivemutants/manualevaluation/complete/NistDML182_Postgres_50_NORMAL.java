@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class NistDML182_Postgres_50_NORMAL extends ManualAnalysisTestSuite {
 	protected int getLastMutantNumber() {
 	    return 81;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
@@ -78,7 +80,7 @@ public class NistDML182_Postgres_50_NORMAL extends ManualAnalysisTestSuite {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(65, 81, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

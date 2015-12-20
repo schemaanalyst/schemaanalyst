@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -47,7 +48,8 @@ public class MozillaExtensions_SQLite_288_NORMAL extends ManualAnalysisTestSuite
 	protected int getLastMutantNumber() {
 	    return 360;
 	}
-	
+
+    @After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"targetPlatform\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"targetApplication\"");

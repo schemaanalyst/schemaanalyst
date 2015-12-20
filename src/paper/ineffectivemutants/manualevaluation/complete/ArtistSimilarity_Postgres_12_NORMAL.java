@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class ArtistSimilarity_Postgres_12_NORMAL extends ManualAnalysisTestSuite
 	protected int getLastMutantNumber() {
 	    return 12;
 	}
-	
+
+    @After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"similarity\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"artists\"");
@@ -85,7 +87,7 @@ public class ArtistSimilarity_Postgres_12_NORMAL extends ManualAnalysisTestSuite
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(11, 12, statement1, statement2, statement4, statement3), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

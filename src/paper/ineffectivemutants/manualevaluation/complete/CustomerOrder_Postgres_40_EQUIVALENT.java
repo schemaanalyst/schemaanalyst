@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuit
 	protected int getLastMutantNumber() {
 	    return 96;
 	}
-	
+
+	@After
 	public void dropTables() throws SQLException {
 		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order_item\"");
 		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order\"");
@@ -64,12 +66,6 @@ public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuit
 	String statement1 = "INSERT INTO \"db_category\" VALUES('1', '1', '1')";
 	String statement2 = "INSERT INTO \"db_product\" VALUES('1', '1', '1', 0, '1', '1', '1')";
 	String statement3 = "INSERT INTO \"db_product\" VALUES(NULL, '1', '1', 0, '1', '1', '1')";
-
-	// String statement2 = "INSERT INTO " " VALUES( )";
-	// String statement3 = "INSERT INTO " " VALUES( )";
-	// String statement4 = "INSERT INTO " " VALUES( )";
-	// String statement5 = "INSERT INTO " " VALUES( )";
-
 
 	@Test
 	public void notImpaired() throws SQLException {

@@ -1,5 +1,6 @@
 package paper.ineffectivemutants.manualevaluation.complete;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -48,6 +49,7 @@ public class CustomerOrder_HyperSQL_25_NORMAL extends ManualAnalysisTestSuite {
         return 91;
     }
 
+    @After
     public void dropTables() throws SQLException {
         statement.executeUpdate("DROP TABLE IF EXISTS \"db_order_item\"");
         statement.executeUpdate("DROP TABLE IF EXISTS \"db_order\"");
@@ -132,7 +134,7 @@ public class CustomerOrder_HyperSQL_25_NORMAL extends ManualAnalysisTestSuite {
         ), SUCCESS);
     }
 
-    // ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+    // ENTER END VERDICT (delete as appropriate): normal
 
     /*****************************/
     /***  END MANUAL ANALYSIS  ***/
