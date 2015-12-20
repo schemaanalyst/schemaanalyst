@@ -11,18 +11,19 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class BrowserCookies_Postgres_37 extends ManualAnalysisTestSuite {
+public class NistDML182_SQLite_105 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.postgresql.Driver");
-		connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "gkapfham", "postgres");
+		Class.forName("org.sqlite.JDBC");
+		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
 
-		// tell Postgres to always persist the data right away
-		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
+
+		// enable FOREIGN KEY support
+		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -32,25 +33,25 @@ public class BrowserCookies_Postgres_37 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "BrowserCookies";
+	    return "NistDML182";
 	}
 	
 	protected String getDBMSName() {
-	    return "Postgres";
+	    return "SQLite";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 37;
+	    return 105;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 85;
+	    return 351;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"cookies\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"places\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
 	}
 
 	/*****************************/
