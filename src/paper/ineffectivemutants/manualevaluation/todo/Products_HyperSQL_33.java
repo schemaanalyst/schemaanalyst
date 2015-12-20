@@ -11,19 +11,18 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class IsoFlav_R2_SQLite_76 extends ManualAnalysisTestSuite {
+public class Products_HyperSQL_33 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
+		Class.forName("org.hsqldb.jdbc.JDBCDriver");
+		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
 
+		// tell HyperSQL to always persist the data right away
+		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
-
-		// enable FOREIGN KEY support
-		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -33,29 +32,26 @@ public class IsoFlav_R2_SQLite_76 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "IsoFlav_R2";
+	    return "Products";
 	}
 	
 	protected String getDBMSName() {
-	    return "SQLite";
+	    return "HyperSQL";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 76;
+	    return 33;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 219;
+	    return 51;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"SYBN_DTL\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"NUTR_DEF\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ISFL_DAT\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"FOOD_DES\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATSRCLN\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATA_SRC\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"order_items\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"orders\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"products\"");
 	}
 
 	/*****************************/
