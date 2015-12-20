@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class FrenchTowns_HyperSQL_9 extends ManualAnalysisTestSuite {
+public class FrenchTowns_HyperSQL_9_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -58,21 +58,26 @@ public class FrenchTowns_HyperSQL_9 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"Regions\" VALUES(1, 'b', 'a', 'a' )";
+	String statement2 = "INSERT INTO \"Departments\" VALUES(1, 'b', 'b', 'b', 'b')";
+	String statement3 = "INSERT INTO \"Towns\" VALUES(1, 'a', 'a', 'b', 'a')";
+	String statement4 = "INSERT INTO \"Towns\" VALUES(1, 'c', 'c', 'c', 'c')";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+	    assertTrue(insertToMutant(statement1, statement2, statement3));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement3));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(2, statement1, statement2, statement4), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(3, statement1, statement2, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
