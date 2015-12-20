@@ -6,24 +6,24 @@ import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
+import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
-import org.schemaanalyst.mutation.analysis.executor.testcase.VirtualTestCaseExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testcase.VirtualTestCaseResult;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.VirtualTestSuiteExecutor;
-import org.schemaanalyst.mutation.analysis.executor.testsuite.VirtualTestSuiteResult;
+import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.DeletingTestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
+import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
@@ -53,7 +53,7 @@ public class OutputMutantsPossiblyImpaired extends Runner {
      * The coverage criterion to use to generate data.
      */
     @Parameter("The coverage criterion to use to generate data.")
-    protected String criterion = "CondAICC";
+    protected String criterion = "ClauseAICC+AUCC+ANCC";
     /**
      * The data generator to use.
      */
@@ -83,6 +83,11 @@ public class OutputMutantsPossiblyImpaired extends Runner {
             + " instead of generating a new test suite.")
     protected String inputTestSuite = null;
     /**
+     * Whether to show the SchemaAnalyst verdict on mutant type.
+     */
+    @Parameter(value = "Whether to show the SchemaAnalyst verdict on mutant type.", valueAsSwitch = "true")
+    protected boolean showVerdict = false;
+    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -95,8 +100,10 @@ public class OutputMutantsPossiblyImpaired extends Runner {
      * The instantiated DBMS.
      */
     protected DBMS dbmsInstance;
+    protected DatabaseInteractor databaseInteractor;
 
     private static final Logger LOGGER = Logger.getLogger(OutputMutantsPossiblyImpaired.class.getName());
+    
 
     @Override
     protected void task() {
@@ -107,41 +114,14 @@ public class OutputMutantsPossiblyImpaired extends Runner {
         final TestSuite suite = instantiateTestSuite();
         final List<Mutant<Schema>> mutants = generateMutants();
         final List<Mutant<Schema>> notCovered = findNotCovered(suite, mutants);
-        
-        System.out.println("mutants.size() = " + mutants.size());
-        System.out.println("notCovered.size() = " + notCovered.size());
-        for (Mutant<Schema> mutant : mutants) {
-            System.out.println(mutant.getIdentifier() + ": " + mutant.getMutantType());
-        }
 
+        System.out.println("Total mutants: " + mutants.size());
+        System.out.println("Possible impaired: " + notCovered.size());
+        System.out.println("Mutant details:");
         for (Mutant<Schema> mutant : notCovered) {
-            System.out.println(mutant.getIdentifier() + ": " + mutant.toString());
+            System.out.println("\t" + mutant.getIdentifier() + ": " + mutant.toString() +
+                    (showVerdict ? " (SA verdict: " + mutant.getMutantType() + ")" : ""));
         }
-        
-//        // Write results
-//        CSVResult result = new CSVResult();
-//        result.addValue("dbms", databaseConfiguration.getDbms());
-//        result.addValue("casestudy", casestudy);
-//        result.addValue("criterion", inputTestSuite == null ? criterion : "NA");
-//        result.addValue("datagenerator", inputTestSuite == null ? dataGenerator : "NA");
-//        result.addValue("randomseed", randomseed);
-//        result.addValue("testsuitefile", inputTestSuite == null ? "NA" : Paths.get(inputTestSuite).getFileName());
-//        result.addValue("coverage", inputTestSuite == null ? generationReport.coverage() : "NA");
-//        //TODO: Include the coverage according to the comparison coverage criterion
-//        result.addValue("evaluations", inputTestSuite == null ? generationReport.getNumDataEvaluations(false) : "NA");
-//        result.addValue("tests", suite.getTestCases().size());
-//        //TODO: Include the number of insert statements
-//        result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
-//        result.addValue("scorenumerator", analysisResult.getKilled().size());
-//        result.addValue("scoredenominator", mutants.size());
-//        result.addValue("technique", "virtual");
-//        result.addValue("transactions", "false");
-//        result.addValue("testgenerationtime", testGenerationTime.getTime());
-//        result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
-//        result.addValue("originalresultstime", originalResultsTime.getTime());
-//        result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
-//        result.addValue("timetaken", totalTime.getTime())
-//        new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
     }
 
     /**
@@ -150,6 +130,7 @@ public class OutputMutantsPossiblyImpaired extends Runner {
     private void instantiateParameters() {
         // Get the required DBMS class, writer and interactor
         dbmsInstance = DBMSFactory.instantiate(dbms);
+        databaseInteractor = dbmsInstance.getDatabaseInteractor(casestudy, databaseConfiguration, locationsConfiguration);
 
         // Get the required schema class
         try {
@@ -239,16 +220,16 @@ public class OutputMutantsPossiblyImpaired extends Runner {
     private List<Mutant<Schema>> generateMutants() {
         MutationPipeline<Schema> pipeline;
         try {
-            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema, databaseConfiguration.getDbms());
+            pipeline = MutationPipelineFactory.<Schema>instantiate(mutationPipeline, schema, dbms);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
         return pipeline.mutate();
     }
 
-    private VirtualTestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
-        VirtualTestCaseExecutor caseExecutor = new VirtualTestCaseExecutor(schema, dbmsInstance);
-        VirtualTestSuiteExecutor suiteExecutor = new VirtualTestSuiteExecutor();
+    private TestSuiteResult executeTestSuite(Schema schema, TestSuite suite) {
+        TestCaseExecutor caseExecutor = new DeletingTestCaseExecutor(schema, dbmsInstance, databaseInteractor);
+        TestSuiteExecutor suiteExecutor = new DeletingTestSuiteExecutor();
         return suiteExecutor.executeTestSuite(caseExecutor, suite);
     }
 
@@ -256,47 +237,35 @@ public class OutputMutantsPossiblyImpaired extends Runner {
         List<Mutant<Schema>> tablesNotCovered = new ArrayList<>();
         for (Mutant<Schema> mutant : mutants) {
             Schema mutantSchema = mutant.getMutatedArtefact();
-            VirtualTestSuiteResult mutantResult = executeTestSuite(mutantSchema, suite);
-            if(!aretablesCovered(mutant, mutantResult)) {
+            TestSuiteResult mutantResult = executeTestSuite(mutantSchema, suite);
+            LOGGER.log(Level.FINE, mutantResult.toString());
+            if (!aretablesCovered(mutant, mutantResult)) {
                 tablesNotCovered.add(mutant);
             }
         }
         return tablesNotCovered;
     }
 
-    private boolean aretablesCovered(Mutant<Schema> mutant, VirtualTestSuiteResult mutantResult) {
+    private boolean aretablesCovered(Mutant<Schema> mutant, TestSuiteResult mutantResult) {
         Schema mutantSchema = mutant.getMutatedArtefact();
         LOGGER.log(Level.FINE, "mutant.getIdentifier() = {0}", mutant.getIdentifier());
         Set<Table> tables = new HashSet<>(mutantSchema.getTables());
-        for (MixedPair<TestCase, VirtualTestCaseResult> pair : mutantResult.getResults()) {
-            Data state = pair.getFirst().getState();
-            Iterator<Boolean> iter = pair.getSecond().getSuccessful().iterator();
-            for (Table table : state.getTables()) {
-                List<Row> rows = state.getRows(table);
-                for (Row row : rows) {
-                    boolean accepted = iter.next();
-                    LOGGER.log(Level.FINE, "{0} into {1} ({2})", new Object[]{row, table, accepted});
-                    if (accepted) {
-                        tables.remove(table);
-                        if (tables.isEmpty()) {
-                            LOGGER.log(Level.FINE, "All tables covered for mutant {0}", mutant.getIdentifier());
-                            return true;
-                        }
+        for (MixedPair<TestCase, TestCaseResult> pair : mutantResult.getResults()) {
+            TestCase testCase = pair.getFirst();
+            TestCaseResult testResult = pair.getSecond();
+            if (testResult.wasSuccessful()) {
+                for (Table table : testCase.getState().getTables()) {
+                    tables.remove(table);
+                    if (tables.isEmpty()) {
+                        LOGGER.log(Level.FINE, "All tables covered for mutant {0}", mutant.getIdentifier());
+                        return true;
                     }
                 }
-            }
-            Data data = pair.getFirst().getData();
-            for (Table table : data.getTables()) {
-                List<Row> rows = data.getRows(table);
-                for (Row row : rows) {
-                    boolean accepted = iter.next();
-                    LOGGER.log(Level.FINE, "{0} into {1} ({2})", new Object[]{row, table, accepted});
-                    if (accepted) {
-                        tables.remove(table);
-                        if (tables.isEmpty()) {
-                            LOGGER.log(Level.FINE, "All tables covered for mutant {0}", mutant.getIdentifier());
-                            return true;
-                        }
+                for (Table table : testCase.getData().getTables()) {
+                    tables.remove(table);
+                    if (tables.isEmpty()) {
+                        LOGGER.log(Level.FINE, "All tables covered for mutant {0}", mutant.getIdentifier());
+                        return true;
                     }
                 }
             }

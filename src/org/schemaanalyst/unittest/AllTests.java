@@ -50,6 +50,7 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.mutation.equivalence.TestUniqueEquivalenceChecker.class,
 	org.schemaanalyst.unittest.mutation.mutator.TestListElementRemover.class,
 	org.schemaanalyst.unittest.mutation.mutator.TestRelationalOperatorExchanger.class,
+        org.schemaanalyst.unittest.mutation.normalisation.TestNormaliseUniquesToMostConstrainedUniques.class,
 	org.schemaanalyst.unittest.mutation.operator.TestCCInExpressionRHSListExpressionElementR.class,
 	org.schemaanalyst.unittest.mutation.operator.TestCCNullifier.class,
 	org.schemaanalyst.unittest.mutation.operator.TestCCRelationalExpressionOperatorE.class,
