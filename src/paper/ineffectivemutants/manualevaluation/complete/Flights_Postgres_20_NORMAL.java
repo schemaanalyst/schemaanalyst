@@ -76,11 +76,11 @@ public class Flights_Postgres_20_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 9, statement1, statement2, statement3), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 9, statement1, statement2, statement3), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(10, statement1, statement4, statement3, statement5), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(11, 15, statement1, statement2, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(16, 18, statement1, statement4, statement3, statement5), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(19, 48, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(11, 15, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(16, 18, statement1, statement4, statement3, statement5), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(19, 48, statement1, statement2, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

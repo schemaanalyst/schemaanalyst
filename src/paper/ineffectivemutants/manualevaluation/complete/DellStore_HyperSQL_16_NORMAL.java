@@ -80,8 +80,8 @@ public class DellStore_HyperSQL_16_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(119, statement1, statement2), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(120, statement1, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorTo(119, statement1, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(120, statement1, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

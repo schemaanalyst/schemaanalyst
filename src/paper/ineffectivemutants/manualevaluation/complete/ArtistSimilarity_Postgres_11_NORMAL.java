@@ -73,9 +73,9 @@ public class ArtistSimilarity_Postgres_11_NORMAL extends ManualAnalysisTestSuite
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 4, statement1, statement2, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(5, 6, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(7, statement1, statement2, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 4, statement1, statement2, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(5, 6, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(7, statement1, statement2, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

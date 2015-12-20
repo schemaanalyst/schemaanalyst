@@ -77,9 +77,9 @@ public class IsoFlav_R2_SQLite_76_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 66, statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 66, statement1), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(67, 80, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(81, statement1), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(81, statement1), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

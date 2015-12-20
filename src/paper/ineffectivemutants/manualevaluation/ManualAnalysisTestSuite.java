@@ -87,22 +87,16 @@ public abstract class ManualAnalysisTestSuite {
                 getFirstMutantNumber(), getLastMutantNumber(), insertStatements);
     }
 
-    protected int mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(
+    protected int mutantAndOtherMutantsHaveDifferentBehaviorFrom(
             int mutantNumber, String... insertStatements) throws SQLException {
         return mutantAndOtherMutantsHaveDifferentBehavior(
                 mutantNumber, getLastMutantNumber(), insertStatements);
     }
 
-    protected int mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(
+    protected int mutantAndOtherMutantsHaveDifferentBehaviorTo(
             int mutantNumber, String... insertStatements) throws SQLException {
         return mutantAndOtherMutantsHaveDifferentBehavior(
                 getFirstMutantNumber(), mutantNumber, insertStatements);
-    }
-
-    protected int mutantAndOtherMutantsHaveDifferentBehaviorFromTo(
-            int firstMutantNumber, int lastMutantNumber, String... insertStatements) throws SQLException {
-        return mutantAndOtherMutantsHaveDifferentBehavior(
-                firstMutantNumber, lastMutantNumber, insertStatements);
     }
 
     protected int mutantAndOtherMutantsHaveDifferentBehavior(

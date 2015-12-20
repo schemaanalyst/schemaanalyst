@@ -81,13 +81,13 @@ public class WordNet_HyperSQL_22_REDUNDANT_85 extends ManualAnalysisTestSuite {
 
 	@Test
 	public void isRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 34, statement1, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 34, statement1, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(35, statement1, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(36, 84, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(36, 84, statement1, statement2), SUCCESS);
 		// I can't DISTINGUISH 22 from 85
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(86, statement1, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(87, statement1, statement4), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(88, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(88, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): redundant

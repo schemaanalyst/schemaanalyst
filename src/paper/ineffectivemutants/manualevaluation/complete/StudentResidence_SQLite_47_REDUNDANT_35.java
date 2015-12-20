@@ -74,9 +74,9 @@ public class StudentResidence_SQLite_47_REDUNDANT_35 extends ManualAnalysisTestS
 
 	@Test
 	public void isRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 34, statement1, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 34, statement1, statement2), SUCCESS);
 		// redundant with respect to 35
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(36, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(36, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): redundant

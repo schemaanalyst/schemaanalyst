@@ -78,10 +78,10 @@ public class NistDML182_HyperSQL_28_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(15, statementA, statementB, statementB2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(16, 91, statementA, statementA2, statementB, statementB3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(92, 92, statementA, statementA2, statementB, statementB4), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(93, statementA, statementA2, statementB, statementB3), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorTo(15, statementA, statementB, statementB2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(16, 91, statementA, statementA2, statementB, statementB3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(92, 92, statementA, statementA2, statementB, statementB4), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(93, statementA, statementA2, statementB, statementB3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal

@@ -74,7 +74,7 @@ public class ArtistSimilarity_SQLite_5_REDUNDANT extends ManualAnalysisTestSuite
 
 	@Test
 	public void isRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 11, statement1, statement2, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 11, statement1, statement2, statement2), SUCCESS);
         // can't distinguish from 12 (add UNIQUE to same column)
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(13, statement1, statement2, statement2), SUCCESS);
 	}

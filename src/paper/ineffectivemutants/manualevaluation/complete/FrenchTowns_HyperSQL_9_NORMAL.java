@@ -77,7 +77,7 @@ public class FrenchTowns_HyperSQL_9_NORMAL extends ManualAnalysisTestSuite {
 	public void notRedundant() throws SQLException {
 	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, statement1, statement2, statement3), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(2, statement1, statement2, statement4), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(3, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(3, statement1, statement2, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal

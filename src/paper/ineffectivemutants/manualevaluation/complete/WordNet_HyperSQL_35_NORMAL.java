@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class WordNet_HyperSQL_35 extends ManualAnalysisTestSuite {
+public class WordNet_HyperSQL_35_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -63,7 +63,10 @@ public class WordNet_HyperSQL_35 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"sample\" VALUES(1, 1, '1')";
+	String statement2 = "INSERT INTO \"sample\" VALUES(1, 1, '2')";
+    String statement3 = "INSERT INTO \"sample\" VALUES(1, 2, '1')";
+    String statement4 = "INSERT INTO \"sample\" VALUES(2, 1, '1')";
 
 	@Test
 	public void notImpaired() throws SQLException {
@@ -72,12 +75,16 @@ public class WordNet_HyperSQL_35 extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 4, statement1, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(5, statement1, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(6, 33, statement1, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(34, statement1, statement4), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(36, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired

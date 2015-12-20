@@ -88,9 +88,9 @@ public class RiskIt_Postgres_88_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 192, statement1, statement2, statement3, statement4), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 192, statement1, statement2, statement3, statement4), SUCCESS);
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(193, statement1, statement5), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(194, statement1, statement2, statement3, statement4), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(194, statement1, statement2, statement3, statement4), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal

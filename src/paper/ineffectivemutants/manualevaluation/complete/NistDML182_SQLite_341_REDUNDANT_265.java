@@ -77,10 +77,10 @@ public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite
 
 	@Test
 	public void isRedundant() throws SQLException {
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(0, 255, statementA, statementB, statementB), SUCCESS);
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(256, 261, statementA, statementB, statementA2, statementB2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(0, 255, statementA, statementB, statementB), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(256, 261, statementA, statementB, statementA2, statementB2), SUCCESS);
 		// I can't distinguish this one from 262 (PK on UNIQUE column)
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(263, statementA, statementB, statementA2, statementB2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(263, statementA, statementB, statementA2, statementB2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): redundant with respect to 265

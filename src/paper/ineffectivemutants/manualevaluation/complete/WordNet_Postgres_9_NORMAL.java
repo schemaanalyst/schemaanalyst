@@ -81,11 +81,11 @@ public class WordNet_Postgres_9_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 38, statement1, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 38, statement1, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(39, statement1, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(40, 42, statement1, statement4), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(40, 42, statement1, statement4), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(43, statement1, statement5), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(44, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(44, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

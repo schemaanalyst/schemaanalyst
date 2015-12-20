@@ -79,7 +79,7 @@ public class Products_HyperSQL_33_NORMAL extends ManualAnalysisTestSuite {
 	public void notRedundant() throws SQLException {
 	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 34, statement1, statement2), SUCCESS);
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(35, statement3, statement4, statement5), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(36, 51, statement1, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(36, 51, statement1, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired

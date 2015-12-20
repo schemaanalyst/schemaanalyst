@@ -78,9 +78,9 @@ public class ArtistTerm_Postgres_17_COMPLETE extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 9, statement1, statement2, statement4), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 9, statement1, statement2, statement4), SUCCESS);
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(10, statement1, statement2, statement3, statement3), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(11, statement1, statement2, statement4), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(11, statement1, statement2, statement4), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal
