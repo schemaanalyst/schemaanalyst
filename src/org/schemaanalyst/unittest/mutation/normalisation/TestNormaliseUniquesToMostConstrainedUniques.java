@@ -58,6 +58,15 @@ public class TestNormaliseUniquesToMostConstrainedUniques {
         return s;
     }
     
+    private Schema createSchemaWithThreeIntersectingUniques() {
+        Schema s = createBaseSchema();
+        Table table  = s.getTable("table");
+        s.createUniqueConstraint(table, table.getColumn("a"));
+        s.createUniqueConstraint(table, table.getColumn("b"));
+        s.createUniqueConstraint(table, table.getColumn("a"), table.getColumn("b"));
+        return s;
+    }
+    
     private Schema createSchemaWithTwoIntersectingUniquesAndOneNot() {
         Schema s = createBaseSchema();
         Table table  = s.getTable("table");
@@ -117,6 +126,20 @@ public class TestNormaliseUniquesToMostConstrainedUniques {
                 cols, normalised.getUniqueConstraints().get(0).getColumns());
     }
     
+    @Test
+    public void testThreeIntersectingUniques() {
+        Schema original = createSchemaWithThreeIntersectingUniques();
+        Schema normalised = norm.normalise(original.duplicate());
+        assertEquals("Normalising schema with three intersecting uniques should yield two uniques",
+                2, normalised.getUniqueConstraints().size());
+        Table table = normalised.getTable("table");
+        List<Column> cols1 = Arrays.asList(new Column[]{table.getColumn("a")});
+        List<Column> cols2 = Arrays.asList(new Column[]{table.getColumn("b")});
+        assertEquals("Normalising schema with (a), (b), (a,b) should yield (a), (b)",
+                cols1, normalised.getUniqueConstraints().get(0).getColumns());
+        assertEquals("Normalising schema with (a), (b), (a,b) should yield (a), (b)",
+                cols2, normalised.getUniqueConstraints().get(1).getColumns());
+    }
     
     @Test
     public void testTwoIntersectingUniquesAndOneNot() {
