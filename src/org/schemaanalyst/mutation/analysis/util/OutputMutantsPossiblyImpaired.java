@@ -83,6 +83,11 @@ public class OutputMutantsPossiblyImpaired extends Runner {
             + " instead of generating a new test suite.")
     protected String inputTestSuite = null;
     /**
+     * Whether to show the SchemaAnalyst verdict on mutant type.
+     */
+    @Parameter(value = "Whether to show the SchemaAnalyst verdict on mutant type.", valueAsSwitch = "true")
+    protected boolean showVerdict = false;
+    /**
      * The instantiated schema.
      */
     protected Schema schema;
@@ -110,14 +115,12 @@ public class OutputMutantsPossiblyImpaired extends Runner {
         final List<Mutant<Schema>> mutants = generateMutants();
         final List<Mutant<Schema>> notCovered = findNotCovered(suite, mutants);
 
-        System.out.println("mutants.size() = " + mutants.size());
-        System.out.println("notCovered.size() = " + notCovered.size());
-        for (Mutant<Schema> mutant : mutants) {
-            System.out.println(mutant.getIdentifier() + ": " + mutant.getMutantType());
-        }
-
+        System.out.println("Total mutants: " + mutants.size());
+        System.out.println("Possible impaired: " + notCovered.size());
+        System.out.println("Mutant details:");
         for (Mutant<Schema> mutant : notCovered) {
-            System.out.println(mutant.getIdentifier() + ": " + mutant.toString());
+            System.out.println("\t" + mutant.getIdentifier() + ": " + mutant.toString() +
+                    (showVerdict ? " (SA verdict: " + mutant.getMutantType() + ")" : ""));
         }
     }
 
