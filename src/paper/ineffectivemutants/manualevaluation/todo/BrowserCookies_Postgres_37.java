@@ -11,15 +11,15 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class CustomerOrder_HyperSQL_56 extends ManualAnalysisTestSuite {
+public class BrowserCookies_Postgres_37 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.postgresql.Driver");
+		connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "gkapfham", "postgres");
 
-		// tell HyperSQL to always persist the data right away
+		// tell Postgres to always persist the data right away
 		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
@@ -32,30 +32,25 @@ public class CustomerOrder_HyperSQL_56 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "CustomerOrder";
+	    return "BrowserCookies";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "Postgres";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 56;
+	    return 37;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 91;
+	    return 85;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order_item\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_order\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_customer\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_user\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_role\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_product\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"db_category\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"cookies\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"places\"");
 	}
 
 	/*****************************/
