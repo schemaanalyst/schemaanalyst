@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class CoffeeOrders_Postgres_54 extends ManualAnalysisTestSuite {
+public class Employee_Postgres_25 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -32,7 +32,7 @@ public class CoffeeOrders_Postgres_54 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "CoffeeOrders";
+	    return "Employee";
 	}
 	
 	protected String getDBMSName() {
@@ -40,20 +40,16 @@ public class CoffeeOrders_Postgres_54 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 54;
+	    return 25;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 61;
+	    return 45;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"order_items\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"orders\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"customers\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"salespeople\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"coffees\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"Employee\"");
 	}
 
 	/*****************************/
