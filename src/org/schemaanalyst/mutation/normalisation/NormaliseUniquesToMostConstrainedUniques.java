@@ -30,7 +30,7 @@ public class NormaliseUniquesToMostConstrainedUniques extends SchemaNormaliser {
         List<Column> ucCols = uc.getColumns();
         for (UniqueConstraint other : ucs) {
             List<Column> otherCols = other.getColumns();
-            if (uc != other && otherCols.containsAll(ucCols)) {
+            if (uc != other && ucCols.size() > otherCols.size() && ucCols.containsAll(otherCols)) {
                 return true;
             }
         }
