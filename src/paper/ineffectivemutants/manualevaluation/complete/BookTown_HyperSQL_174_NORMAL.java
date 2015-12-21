@@ -102,7 +102,7 @@ public class BookTown_HyperSQL_174_NORMAL extends ManualAnalysisTestSuite {
         assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(176, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

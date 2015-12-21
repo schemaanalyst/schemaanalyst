@@ -102,7 +102,7 @@ public class CustomerOrder_HyperSQL_56_NORMAL extends ManualAnalysisTestSuite {
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement4), SUCCESS);
     }
 
-    // ENTER END VERDICT (delete as appropriate): equivalent
+    // ENTER END VERDICT (delete as appropriate): normal
 
     /*****************************/
     /***  END MANUAL ANALYSIS  ***/

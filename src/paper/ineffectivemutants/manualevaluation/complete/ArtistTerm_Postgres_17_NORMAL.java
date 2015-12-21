@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class ArtistTerm_Postgres_17_COMPLETE extends ManualAnalysisTestSuite {
+public class ArtistTerm_Postgres_17_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
