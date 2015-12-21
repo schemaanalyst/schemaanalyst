@@ -78,6 +78,8 @@ public class CustomerOrder_Postgres_40_EQUIVALENT extends ManualAnalysisTestSuit
 		assertFalse(originalAndMutantHaveDifferentBehavior(statement1, statement3));
 	}
 
+
+
 	// ENTER END VERDICT (delete as appropriate): equivalent
 
 	/*****************************/

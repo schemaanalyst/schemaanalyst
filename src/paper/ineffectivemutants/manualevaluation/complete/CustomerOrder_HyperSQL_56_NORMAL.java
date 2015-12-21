@@ -9,9 +9,11 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class CustomerOrder_HyperSQL_56_EQUIVALENT extends ManualAnalysisTestSuite {
+public class CustomerOrder_HyperSQL_56_NORMAL extends ManualAnalysisTestSuite {
 
     @BeforeClass
     public static void initialise() throws ClassNotFoundException, SQLException {
@@ -78,20 +80,26 @@ public class CustomerOrder_HyperSQL_56_EQUIVALENT extends ManualAnalysisTestSuit
             ") VALUES (" +
             "    0, '', '', '', '', '2000-01-01'" +
             ")";
-    String statement4 = "INSERT INTO \"db_order\"(" +
-            "    \"id\", \"customer_id\", \"total_price\", \"created_at\"" +
+
+    String statement4 = "INSERT INTO \"db_customer\"(" +
+            "    \"id\", \"category\", \"salutation\", \"first_name\", \"last_name\", \"birth_date\"" +
             ") VALUES (" +
-            "    0, 0, 0, '2000-01-01 00:00:00'" +
+            "    0, '', '', NULL, '', '2000-01-01'" +
             ")";
 
     @Test
     public void notImpaired() throws SQLException {
-        assertTrue(insertToMutant(statement1, statement2, statement3, statement4));
+        assertTrue(insertToMutant(statement1, statement2, statement3));
     }
 
     @Test
-    public void isEquivalent() throws SQLException {
-        // removal of NOT NULL on a primary key - for postgres it's equivalent to the original
+    public void notEquivalent() throws SQLException {
+        assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement4));
+    }
+
+    @Test
+    public void notRedundant() throws SQLException {
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1, statement2, statement4), SUCCESS);
     }
 
     // ENTER END VERDICT (delete as appropriate): equivalent
