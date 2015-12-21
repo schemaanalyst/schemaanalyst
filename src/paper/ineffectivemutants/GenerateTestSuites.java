@@ -16,6 +16,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
+import parsedcasestudy.BookTown;
+import parsedcasestudy.FrenchTowns;
 import parsedcasestudy.JWhoisServer;
 import parsedcasestudy.NistDML181;
 
@@ -51,12 +53,10 @@ public class GenerateTestSuites {
         // Select a DBMS / SQL writer
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
-
         DBMS dbms = DBMSFactory.instantiate(dbmsName);
 
         // Select a schema
         Schema schema = Schemas.schemas[randomIndex(Schemas.schemas)];
-        schema= new NistDML181();
 
         // Get mutants
         List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
