@@ -9,10 +9,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite {
+public class ArtistSimilarity_SQLite_5w12_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -34,7 +33,7 @@ public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite
 		}
 	}
 	protected String getSchemaName() {
-	    return "NistDML182";
+	    return "ArtistSimilarity";
 	}
 	
 	protected String getDBMSName() {
@@ -42,48 +41,45 @@ public class NistDML182_SQLite_341_REDUNDANT_265 extends ManualAnalysisTestSuite
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 341;
+	    return 5;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 351;
+	    return 13;
 	}
-
-    @After
+	
+	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"similarity\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"artists\"");
 	}
 
 	/*****************************/
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statementA = "INSERT INTO \"ID_CODES\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
-	String statementA2 = "INSERT INTO \"ID_CODES\" VALUES(1,1,1,1,1,1,0,1,1,1,1,1,1,1,1)";
-
-	String statementB = "INSERT INTO \"ORDERS\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, '', 0)";
-	String statementB2 = "INSERT INTO \"ORDERS\" VALUES(1,1,1,1,1,1,0,1,1,1,1,1,1,1,1, 'A', 1)";
+	String statement1 = "INSERT INTO \"artists\" VALUES('1')";
+	String statement2 = "INSERT INTO \"similarity\" VALUES('1', NULL)";
+    String statement3 = "INSERT INTO \"similarity\" VALUES(NULL, NULL)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statementA, statementB));
+	    assertTrue(insertToMutant(statement1, statement2));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statementA, statementB, statementB));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement2));
 	}
 
 	@Test
 	public void isRedundant() throws SQLException {
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(0, 255, statementA, statementB, statementB), SUCCESS);
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(256, 261, statementA, statementB, statementA2, statementB2), SUCCESS);
-		// I can't distinguish this one from 262 (PK on UNIQUE column)
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(263, statementA, statementB, statementA2, statementB2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 11, statement1, statement2, statement2), SUCCESS);
+        // can't distinguish from 12 (add UNIQUE to same column)
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(13, statement1, statement2, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): redundant with respect to 265
+	// ENTER END VERDICT (delete as appropriate): redundant
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

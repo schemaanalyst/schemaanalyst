@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class WordNet_HyperSQL_22_REDUNDANT_85 extends ManualAnalysisTestSuite {
+public class WordNet_HyperSQL_22w85_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {

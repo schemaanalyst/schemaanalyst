@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class NistWeather_SQLite_57_REDUNDANT_34 extends ManualAnalysisTestSuite {
+public class NistWeather_SQLite_57w34_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {

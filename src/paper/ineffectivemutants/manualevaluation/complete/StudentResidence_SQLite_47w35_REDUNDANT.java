@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class StudentResidence_SQLite_47_REDUNDANT_35 extends ManualAnalysisTestSuite {
+public class StudentResidence_SQLite_47w35_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
