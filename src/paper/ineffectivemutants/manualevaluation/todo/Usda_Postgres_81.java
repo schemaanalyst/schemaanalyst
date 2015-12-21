@@ -11,15 +11,15 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class Inventory_HyperSQL_4 extends ManualAnalysisTestSuite {
+public class Usda_Postgres_81 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.postgresql.Driver");
+		connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "gkapfham", "postgres");
 
-		// tell HyperSQL to always persist the data right away
+		// tell Postgres to always persist the data right away
 		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
@@ -32,24 +32,33 @@ public class Inventory_HyperSQL_4 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "Inventory";
+	    return "Usda";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "Postgres";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 4;
+	    return 81;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 18;
+	    return 201;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"Inventory\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"weight\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"src_cd\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"nutr_def\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"nut_data\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"footnote\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"food_des\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"fd_group\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"deriv_cd\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"datsrcln\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"data_src\"");
 	}
 
 	/*****************************/
