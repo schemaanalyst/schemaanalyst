@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class Usda_Postgres_81 extends ManualAnalysisTestSuite {
+public class Usda_Postgres_81_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -65,7 +65,11 @@ public class Usda_Postgres_81 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"food_des\"(\"ndb_no\", \"fdgrp_cd\", \"long_desc\", \"shrt_desc\", \"n_factor\") " +
+			"VALUES('a', 'a', 'a', 'a', 1)";
+
+	String statement2 = "INSERT INTO \"food_des\"(\"ndb_no\", \"fdgrp_cd\", \"long_desc\", \"shrt_desc\", \"n_factor\") " +
+			"VALUES('a', 'a', 'a', 'a', NULL)";
 
 	@Test
 	public void notImpaired() throws SQLException {
@@ -74,12 +78,16 @@ public class Usda_Postgres_81 extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement2));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 20, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(21, 30, statement1, statement1), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(31, 74, statement2), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(75, 84, statement1), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(85, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
