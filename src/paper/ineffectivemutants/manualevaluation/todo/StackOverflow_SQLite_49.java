@@ -11,18 +11,19 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class IsoFlav_R2_HyperSQL_85 extends ManualAnalysisTestSuite {
+public class StackOverflow_SQLite_49 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.hsqldb.jdbc.JDBCDriver");
-		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
+		Class.forName("org.sqlite.JDBC");
+		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
 
-		// tell HyperSQL to always persist the data right away
-		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
+
+		// enable FOREIGN KEY support
+		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -32,29 +33,27 @@ public class IsoFlav_R2_HyperSQL_85 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "IsoFlav_R2";
+	    return "StackOverflow";
 	}
 	
 	protected String getDBMSName() {
-	    return "HyperSQL";
+	    return "SQLite";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 85;
+	    return 49;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 216;
+	    return 129;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"SYBN_DTL\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"NUTR_DEF\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ISFL_DAT\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"FOOD_DES\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATSRCLN\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATA_SRC\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"votes\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"users\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"posts\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"comments\"");
 	}
 
 	/*****************************/
