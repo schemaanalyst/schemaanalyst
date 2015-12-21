@@ -76,14 +76,14 @@ public class BankAccount_SQLite_24_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 28, statement1, statement2, statement3), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 28, statement1, statement2, statement3), SUCCESS);
 	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(29, statement1, statement2, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(30, 32, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(30, 32, statement1, statement2, statement3), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(33, statement1, statement2, statement4), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(34, 54, statement1, statement2, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(34, 54, statement1, statement2, statement3), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

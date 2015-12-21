@@ -83,8 +83,8 @@ public class ArtistSimilarity_Postgres_12_NORMAL extends ManualAnalysisTestSuite
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(4, statement1, statement2, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(5, statement1, statement2, statement4, statement3), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(6, statement1, statement2, statement5), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(7, 10, statement1, statement2, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(11, 12, statement1, statement2, statement4, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(7, 10, statement1, statement2, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(11, 12, statement1, statement2, statement4, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

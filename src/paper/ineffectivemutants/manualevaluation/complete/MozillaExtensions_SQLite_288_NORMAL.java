@@ -86,18 +86,18 @@ public class MozillaExtensions_SQLite_288_NORMAL extends ManualAnalysisTestSuite
 
 	@Test
 	public void notRedundant() throws SQLException {
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromFirstTo(188, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(189, 190, statement1, statement8), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(191, 211, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(212, 254, statement1, statement9), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(255, 256, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(257, 264, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(265, 266, statement1, statement8), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(267, 295, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(296, 297, statement1, statement8), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(298, 318, statement1, statement7), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(319, 328, statement1, statement9), SUCCESS);
-        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorToLastFrom(329, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorTo(188, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(189, 190, statement1, statement8), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(191, 211, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(212, 254, statement1, statement9), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(255, 256, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(257, 264, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(265, 266, statement1, statement8), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(267, 295, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(296, 297, statement1, statement8), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(298, 318, statement1, statement7), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(319, 328, statement1, statement9), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(329, statement1, statement7), SUCCESS);
     }
 	// ENTER END VERDICT (delete as appropriate): normal
 

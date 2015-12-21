@@ -74,11 +74,11 @@ public class MozillaPermissions_HyperSQL_22_NORMAL extends ManualAnalysisTestSui
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 5, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 5, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(6, statement1, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(7, 13, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(7, 13, statement2), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(14, statement1, statement4), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(15, 30, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(15, 30, statement2), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

@@ -123,10 +123,10 @@ public class UnixUsage_SQLite_152_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 112, statement1, statement2, statement3, statement5), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 112, statement1, statement2, statement3, statement5), SUCCESS);
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(113, statement1, statement2, statement3, statement7), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(114, 147, statement1, statement2, statement3, statement5), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(148, 301, statement1, statement2, statement6, statement7), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(114, 147, statement1, statement2, statement3, statement5), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(148, 301, statement1, statement2, statement6, statement7), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal

@@ -57,6 +57,7 @@ public class PrintMutants extends Runner {
         System.out.println(mutant.getIdentifier());
         System.out.println(mutant.getSimpleDescription());
         System.out.println(mutant.getDescription());
+        System.out.println("Type: " + mutant.getMutantType());
         List<String> stmts = writer.writeCreateTableStatements(mutant.getMutatedArtefact());
         for (String stmt : stmts) {
             System.out.println(stmt);

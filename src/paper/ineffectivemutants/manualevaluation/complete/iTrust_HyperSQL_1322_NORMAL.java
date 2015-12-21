@@ -114,12 +114,12 @@ public class iTrust_HyperSQL_1322_NORMAL extends ManualAnalysisTestSuite {
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(1, 746, statement1, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(747, 747, statement1, statement3), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFromTo(748, 1407, statement1, statement2), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 746, statement1, statement2), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(747, 747, statement1, statement3), SUCCESS);
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(748, 1407, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

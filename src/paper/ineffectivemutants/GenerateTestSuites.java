@@ -16,6 +16,10 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
+import parsedcasestudy.BookTown;
+import parsedcasestudy.FrenchTowns;
+import parsedcasestudy.JWhoisServer;
+import parsedcasestudy.NistDML181;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +53,6 @@ public class GenerateTestSuites {
         // Select a DBMS / SQL writer
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
-
         DBMS dbms = DBMSFactory.instantiate(dbmsName);
 
         // Select a schema
@@ -349,7 +352,7 @@ public class GenerateTestSuites {
         code.appendln("    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);");
         code.appendln("}");
         code.appendln();
-        code.appendln("// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal");
+        code.appendln("// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired");
         code.appendln();
         code.appendln("/*****************************/");
         code.appendln("/***  END MANUAL ANALYSIS  ***/");

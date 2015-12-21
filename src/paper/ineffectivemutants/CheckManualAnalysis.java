@@ -31,18 +31,33 @@ public class CheckManualAnalysis {
             List<String> parts = Arrays.asList(name.split("_"));
 
             String classification = parts.get(parts.size() - 1);
-            int mutantIdenitifier = Integer.parseInt(parts.get(parts.size() - 2));
+            String mutantIdentifier = parts.get(parts.size() - 2);
+            int mutant1ID = -1;
+            int mutant2ID = -1;
+            if (mutantIdentifier.contains("w")) {
+                List<String> mutantIDParts = Arrays.asList(mutantIdentifier.split("w"));
+                mutant1ID = Integer.parseInt(mutantIDParts.get(0));
+                mutant2ID = Integer.parseInt(mutantIDParts.get(1));
+            } else {
+                mutant1ID = Integer.parseInt(mutantIdentifier);
+            }
+
+
             String dbms = parts.get(parts.size() - 3);
 
             String schema = parts.get(0);
             if (parts.size() > 4) {
-                for (int i=1; i < parts.size()-4; i++) {
+                System.out.println(parts.size());
+                for (int i=1; i <= parts.size()-4; i++) {
+                    System.out.println(i);
                     schema += "_" + parts.get(i);
+
+                    System.out.println("schema name is: " + schema);
                 }
             }
 
             List<Mutant<Schema>> mutants = generateMutants(instantiateSchema(schema), dbms);
-            int mutantIndex = mutantIdenitifier-1;
+            int mutantIndex = mutant1ID - 1 ;
             Mutant<Schema> mutant = mutants.get(mutantIndex);
 
             MutantType ourClassification = MutantType.NORMAL;
@@ -56,15 +71,28 @@ public class CheckManualAnalysis {
                 ourClassification = MutantType.DUPLICATE;
             }
 
+            String output = schema + " " + dbms + " " + mutantIdentifier + " IS ";
             if (ourClassification != mutant.getMutantType()) {
-                String output = schema + " " + dbms + " " + mutantIdenitifier + " IS ";
-                output += "**** NOT ****";
-                output += " " + classification;
-                System.out.println(output);
-                System.out.println("(It's " + mutant.getMutantType()+")");
-                System.out.println(mutant);
+                boolean isOk = false;
+                if (classification.equals("REDUNDANT")) {
+                    int mutant2Index = mutant2ID - 1 ;
+                    Mutant<Schema> mutant2 = mutants.get(mutant2Index);
+                    if (ourClassification == mutant2.getMutantType()) {
+                        isOk = true;
+                        mutant = mutant2;
+                    }
+                }
+                if (!isOk) {
+                    output += "**** NOT ****";
+                }
+            }
+            output += " " + classification;
+            System.out.println(output);
+            if (ourClassification != mutant.getMutantType()) {
+                System.out.println("(It's " + mutant.getMutantType() + ")");
                 System.exit(1);
             }
+            System.out.println(mutant);
         }
     }
 
@@ -79,7 +107,7 @@ public class CheckManualAnalysis {
     private static List<Mutant<Schema>> generateMutants(Schema schema, String dbms) {
         MutationPipeline<Schema> pipeline;
         try {
-            pipeline = MutationPipelineFactory.instantiate(GenerateTestSuites.MUTATION_PIPELINE, schema, dbms);
+            pipeline = MutationPipelineFactory.instantiate("AllOperatorsNormalisedWithClassifiers", schema, dbms);
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
             throw new RuntimeException(ex);
         }
