@@ -9,9 +9,10 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class IsoFlav_R2_SQLite_76_NORMAL extends ManualAnalysisTestSuite {
+public class NistDML182_SQLite_341w262_REDUNDANT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -33,7 +34,7 @@ public class IsoFlav_R2_SQLite_76_NORMAL extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "IsoFlav_R2";
+	    return "NistDML182";
 	}
 	
 	protected String getDBMSName() {
@@ -41,48 +42,48 @@ public class IsoFlav_R2_SQLite_76_NORMAL extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 76;
+	    return 341;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 219;
+	    return 351;
 	}
-	
-	@After
+
+    @After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"SYBN_DTL\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"NUTR_DEF\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"ISFL_DAT\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"FOOD_DES\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATSRCLN\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"DATA_SRC\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ID_CODES\"");
 	}
 
 	/*****************************/
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"SYBN_DTL\"(\"AnalMeth_Rtg\") VALUES(NULL)";
-	String statement2 = "INSERT INTO \"SYBN_DTL\" VALUES(NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, NULL, NULL)";
+	String statementA = "INSERT INTO \"ID_CODES\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)";
+	String statementA2 = "INSERT INTO \"ID_CODES\" VALUES(1,1,1,1,1,1,0,1,1,1,1,1,1,1,1)";
+
+	String statementB = "INSERT INTO \"ORDERS\" VALUES(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0, '', 0)";
+	String statementB2 = "INSERT INTO \"ORDERS\" VALUES(1,1,1,1,1,1,0,1,1,1,1,1,1,1,1, 'A', 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement2));
+	    assertTrue(insertToMutant(statementA, statementB));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statementA, statementB, statementB));
 	}
 
 	@Test
-	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 66, statement1), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(67, 80, statement2), SUCCESS);
-		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(81, statement1), SUCCESS);
+	public void isRedundant() throws SQLException {
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(0, 255, statementA, statementB, statementB), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(256, 261, statementA, statementB, statementA2, statementB2), SUCCESS);
+		// I can't distinguish this one from 262 (PK on UNIQUE column)
+		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(263, statementA, statementB, statementA2, statementB2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal
+	// ENTER END VERDICT (delete as appropriate): redundant with respect to 265
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

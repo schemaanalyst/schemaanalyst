@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class IsoFlav_R2_HyperSQL_85_NORMAL extends ManualAnalysisTestSuite {
+public class IsoFlav_R2Repaired_HyperSQL_85_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {

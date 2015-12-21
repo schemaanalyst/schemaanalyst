@@ -47,9 +47,12 @@ public class CheckManualAnalysis {
 
             String schema = parts.get(0);
             if (parts.size() > 4) {
-                System.out.println("HERE");
-                for (int i=1; i < parts.size()-4; i++) {
+                System.out.println(parts.size());
+                for (int i=1; i <= parts.size()-4; i++) {
+                    System.out.println(i);
                     schema += "_" + parts.get(i);
+
+                    System.out.println("schema name is: " + schema);
                 }
             }
 
@@ -71,11 +74,12 @@ public class CheckManualAnalysis {
             String output = schema + " " + dbms + " " + mutantIdentifier + " IS ";
             if (ourClassification != mutant.getMutantType()) {
                 boolean isOk = false;
-                if (ourClassification.equals("REDUNDANT")) {
+                if (classification.equals("REDUNDANT")) {
                     int mutant2Index = mutant2ID - 1 ;
                     Mutant<Schema> mutant2 = mutants.get(mutant2Index);
                     if (ourClassification == mutant2.getMutantType()) {
                         isOk = true;
+                        mutant = mutant2;
                     }
                 }
                 if (!isOk) {
