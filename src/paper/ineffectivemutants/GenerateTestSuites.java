@@ -16,6 +16,8 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
+import parsedcasestudy.JWhoisServer;
+import parsedcasestudy.NistDML181;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,6 +56,7 @@ public class GenerateTestSuites {
 
         // Select a schema
         Schema schema = Schemas.schemas[randomIndex(Schemas.schemas)];
+        schema= new NistDML181();
 
         // Get mutants
         List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
