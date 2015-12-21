@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class BookTown_HyperSQL_174 extends ManualAnalysisTestSuite {
+public class NistDML181_HyperSQL_12 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -32,7 +32,7 @@ public class BookTown_HyperSQL_174 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "BookTown";
+	    return "NistDML181";
 	}
 	
 	protected String getDBMSName() {
@@ -40,37 +40,17 @@ public class BookTown_HyperSQL_174 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 174;
+	    return 12;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 224;
+	    return 20;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"schedules\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"book_backup\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"alternate_stock\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"subjects\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"varchar(100)_sorting\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"distinguished_authors\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"editions\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"employees\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"favorite_books\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"stock_backup\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"book_queue\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"customers\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"shipments\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"money_example\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"daily_inventory\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"numeric_values\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"stock\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"my_list\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"states\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"authors\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"publishers\"");
-		statement.executeUpdate("DROP TABLE IF EXISTS \"books\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"LONG_NAMED_PEOPLE\"");
 	}
 
 	/*****************************/
