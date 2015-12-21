@@ -15,7 +15,17 @@ import org.schemaanalyst.mutation.redundancy.EquivalentMutantClassifier;
 import org.schemaanalyst.mutation.redundancy.RedundantMutantClassifier;
 
 /**
- *
+ * A mutation pipeline with all operators and classifiers for equivalent and 
+ * redundant mutants, with schema modification. This has the following 
+ * properties:
+ * <p><ul>
+ * <li> Includes all mutation operators
+ * <li> Includes equivalence/redundancy detection, using schema modification
+ * <li> Equivalent/redundant mutants are retained
+ * <li> Stillborn mutants are removed
+ * <li> Impaired mutants are retained
+ * </ul><p>
+ * 
  * @author Chris J. Wright
  */
 public class AllOperatorsWithClassifiersPipeline extends MutationPipeline<Schema> {

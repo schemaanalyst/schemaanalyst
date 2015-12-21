@@ -10,7 +10,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * A mutation pipeline with all operators. This has the following properties:
+ * <p><ul>
+ * <li> Includes all mutation operators
+ * <li> Stillborn mutants are removed
+ * <li> Impaired mutants are removed
+ * </ul><p>
+ * 
  * @author Chris J. Wright
  */
 public class AllOperatorsWithQMRemoversPipeline extends MutationPipeline<Schema> {

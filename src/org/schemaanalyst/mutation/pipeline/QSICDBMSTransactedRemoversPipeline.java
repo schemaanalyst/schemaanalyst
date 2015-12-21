@@ -14,7 +14,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ * A mutation pipeline with all operators and classifiers for equivalent and 
+ * redundant mutants, with schema modification, using the DBMS with 
+ * transactions to identify quasi-mutants. This has the following properties:
+ * <p><ul>
+ * <li> Includes all mutation operators
+ * <li> Includes equivalence/redundancy detection, using schema modification
+ * <li> Equivalent/redundant mutants are removed
+ * <li> Stillborn mutants are removed
+ * <li> Impaired mutants are retained
+ * </ul><p>
+ * 
  * @author Chris J. Wright
  */
 public class QSICDBMSTransactedRemoversPipeline extends MutationPipeline<Schema> {

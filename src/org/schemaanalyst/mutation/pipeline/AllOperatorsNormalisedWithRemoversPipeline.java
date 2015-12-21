@@ -16,7 +16,17 @@ import org.schemaanalyst.dbms.sqlite.SQLiteSchemaNormaliser;
 import org.schemaanalyst.mutation.equivalence.SchemaEquivalenceCheckerWithNormalisation;
 
 /**
- *
+ * A mutation pipeline with all operators and removers for equivalent and 
+ * redundant mutants, with schema normalisation. This has the following 
+ * properties:
+ * <p><ul>
+ * <li> Includes all mutation operators
+ * <li> Includes equivalence/redundancy detection, using schema normalisation
+ * <li> Equivalent/redundant mutants are removed
+ * <li> Stillborn mutants are removed
+ * <li> Impaired mutants are removed
+ * </ul><p>
+ * 
  * @author Chris J. Wright
  */
 public class AllOperatorsNormalisedWithRemoversPipeline extends MutationPipeline<Schema> {
