@@ -79,7 +79,7 @@ public class StudentResidence_SQLite_47_NORMAL extends ManualAnalysisTestSuite {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(36, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): redundant
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

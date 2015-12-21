@@ -119,7 +119,7 @@ public class iTrust_HyperSQL_1322_NORMAL extends ManualAnalysisTestSuite {
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(748, 1407, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

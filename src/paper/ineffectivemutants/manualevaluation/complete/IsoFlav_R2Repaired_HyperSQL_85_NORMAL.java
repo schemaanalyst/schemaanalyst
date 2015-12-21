@@ -84,7 +84,7 @@ public class IsoFlav_R2Repaired_HyperSQL_85_NORMAL extends ManualAnalysisTestSui
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(88, statement1, statement1), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

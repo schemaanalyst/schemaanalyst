@@ -86,7 +86,7 @@ public class NistWeather_SQLite_57w34_REDUNDANT extends ManualAnalysisTestSuite 
         assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(59, statement1, statement2, statement4, statement6), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): redundant
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

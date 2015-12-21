@@ -82,7 +82,7 @@ public class Products_HyperSQL_33_NORMAL extends ManualAnalysisTestSuite {
         assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(36, 51, statement1, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

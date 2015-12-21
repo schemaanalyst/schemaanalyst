@@ -93,7 +93,7 @@ public class RiskIt_Postgres_88_NORMAL extends ManualAnalysisTestSuite {
         assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(194, statement1, statement2, statement3, statement4), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): impaired/equivalent/redundant/normal
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

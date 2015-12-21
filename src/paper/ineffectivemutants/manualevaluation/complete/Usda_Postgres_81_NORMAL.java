@@ -90,7 +90,7 @@ public class Usda_Postgres_81_NORMAL extends ManualAnalysisTestSuite {
         assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(85, statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

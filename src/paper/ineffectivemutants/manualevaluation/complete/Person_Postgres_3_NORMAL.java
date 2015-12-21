@@ -74,7 +74,7 @@ public class Person_Postgres_3_NORMAL extends ManualAnalysisTestSuite {
 	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement2), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

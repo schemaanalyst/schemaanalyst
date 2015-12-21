@@ -80,7 +80,7 @@ public class StudentResidence_HyperSQL_26_NORMAL extends ManualAnalysisTestSuite
 		assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(36, statement5), SUCCESS);
 	}
 
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): normal
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
