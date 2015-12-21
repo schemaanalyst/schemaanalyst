@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class NistWeather_SQLite_57 extends ManualAnalysisTestSuite {
+public class NistWeather_SQLite_57_REDUNDANT_34 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -58,21 +58,32 @@ public class NistWeather_SQLite_57 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
-
+    String statement1 = "INSERT INTO \"Station\" VALUES(1, 'a', 'a', 0, 0)";
+	String statement2 = "INSERT INTO \"Stats\" VALUES(1, 1, 80, 0)";
+	String statement3 = "INSERT INTO \"Stats\" VALUES(1, 2, 80, 0)";
+    String statement4 = "INSERT INTO \"Station\" VALUES(2, 'a', 'a', 0, 0)";
+    String statement5 = "INSERT INTO \"Stats\" VALUES(1, 1, 90, 1)";
+    String statement6 = "INSERT INTO \"Stats\" VALUES(2, 1, 80, 0)";
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+	    assertTrue(insertToMutant(statement1, statement2));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1, statement2, statement3));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 22, statement1, statement2, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(23, statement1, statement2, statement4, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(24, 33, statement1, statement2, statement3), SUCCESS);
+        // cannot distinguish from 34
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(35, 40, statement1, statement2, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(41, 42, statement1, statement2, statement5), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(43, 58, statement1, statement2, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(59, statement1, statement2, statement4, statement6), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
