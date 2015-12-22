@@ -86,6 +86,34 @@ public class TestNormaliseUniquesToMostConstrainedUniques {
         return s;
     }
     
+    private Schema createSchemaWithFKNotDependent() {
+        Schema s = createBaseSchema();
+        Table table = s.getTable("table");
+        Table table2 = s.createTable("table2");
+        table2.addColumn(new Column("a", new IntDataType()));
+        table2.addColumn(new Column("b", new IntDataType()));
+        table2.addColumn(new Column("c", new IntDataType()));
+        s.createUniqueConstraint(table, table.getColumn("a"));
+        s.createUniqueConstraint(table, table.getColumn("a"), table.getColumn("b"));
+        s.createForeignKeyConstraint(table2, table2.getColumn("a"), table, table.getColumn("a"));
+        return s;
+    }
+    
+    private Schema createSchemaWithFKDependent() {
+        Schema s = createBaseSchema();
+        Table table = s.getTable("table");
+        Table table2 = s.createTable("table2");
+        table2.addColumn(new Column("a", new IntDataType()));
+        table2.addColumn(new Column("b", new IntDataType()));
+        table2.addColumn(new Column("c", new IntDataType()));
+        s.createUniqueConstraint(table, table.getColumn("a"));
+        s.createUniqueConstraint(table, table.getColumn("a"), table.getColumn("b"));
+        List<Column> localCols = Arrays.asList(new Column[]{table2.getColumn("a"), table2.getColumn("b")});
+        List<Column> refCols = Arrays.asList(new Column[]{table.getColumn("a"), table.getColumn("b")});
+        s.createForeignKeyConstraint(table2, localCols, table, refCols);
+        return s;
+    }
+    
     @Test
     public void testOneUnique() {
         Schema original = createSchemaWithOneUnique();
@@ -168,6 +196,37 @@ public class TestNormaliseUniquesToMostConstrainedUniques {
         assertEquals("Normalising schema with (a), (b,a), (b), (b,c) should yield (a), (b)",
                 cols1, normalised.getUniqueConstraints().get(0).getColumns());
         assertEquals("Normalising schema with (a), (b,a), (b), (b,c) should yield (a), (b)",
+                cols2, normalised.getUniqueConstraints().get(1).getColumns());
+    }
+    
+    @Test
+    public void testFKNotDependent() {
+        Schema original = createSchemaWithFKNotDependent();
+        Schema normalised = norm.normalise(original);
+        assertEquals("Normalising schema with two uniques and a non-dependent FK should have one unique",
+                1, normalised.getUniqueConstraints().size());
+        assertEquals("Normalising schema with two uniques and a non-dependent FK should have one FK",
+                1, normalised.getForeignKeyConstraints().size());
+        Table table = normalised.getTable("table");
+        List<Column> cols = Arrays.asList(new Column[]{table.getColumn("a")});
+        assertEquals("Normalising schema with (a), (a,b), FK(a->a) should yield (a), FK(a->a)",
+                cols, normalised.getUniqueConstraints().get(0).getColumns());
+    }
+    
+    @Test
+    public void testFKDependent() {
+        Schema original = createSchemaWithFKDependent();
+        Schema normalised = norm.normalise(original);
+        assertEquals("Normalising schema with two uniques and a dependent FK should have two uniques",
+                2, normalised.getUniqueConstraints().size());
+        assertEquals("Normalising schema with two uniques and a dependent FK should have one FK",
+                1, normalised.getForeignKeyConstraints().size());
+        Table table = normalised.getTable("table");
+        List<Column> cols1 = Arrays.asList(new Column[]{table.getColumn("a")});
+        List<Column> cols2 = Arrays.asList(new Column[]{table.getColumn("a"), table.getColumn("b")});
+        assertEquals("Normalising schema with (a), (a,b), FK(a->a) should yield (a), (a,b) FK(a,b->a,b)",
+                cols1, normalised.getUniqueConstraints().get(0).getColumns());
+        assertEquals("Normalising schema with (a), (a,b), FK(a->a) should yield (a), (a,b) FK(a,b->a,b)",
                 cols2, normalised.getUniqueConstraints().get(1).getColumns());
     }
 }
