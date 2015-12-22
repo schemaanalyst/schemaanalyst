@@ -44,7 +44,7 @@ public abstract class RedundantMutantDetector<T> extends EquivalenceTesterMutant
             for (ListIterator<Mutant<T>> innerIter = mutants.listIterator(outerIter.nextIndex()); innerIter.hasNext();) {
                 Mutant<T> inner = innerIter.next();
                 if (inner.getMutantType().equals(MutantType.NORMAL) && checker.areEquivalent(outer.getMutatedArtefact(), inner.getMutatedArtefact())) {
-                    LOGGER.log(Level.INFO, "Redundant mutant pair:\n{0}\n{1}\n", new Object[]{outer.getDescription(), inner.getDescription()});
+                    LOGGER.log(Level.FINE, "Redundant mutant pair:\n{0}\n{1}\n", new Object[]{outer.getDescription(), inner.getDescription()});
                     process(outer, outerIter);
                     break;
                 }

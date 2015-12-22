@@ -46,11 +46,11 @@ public abstract class EquivalentMutantDetector<T> extends EquivalenceTesterMutan
         for (Iterator<Mutant<T>> it = mutants.iterator(); it.hasNext();) {
             Mutant<T> mutant = it.next();
             if (checker.areEquivalent(originalArtefact, mutant.getMutatedArtefact())) {
-                LOGGER.log(Level.INFO, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
+                LOGGER.log(Level.FINE, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
                 process(mutant, it);
             } else if (hasDuplicateMethod(originalArtefact.getClass())) {
                 if (checker.areEquivalent(applyRemoversToOriginal(originalArtefact, mutant), mutant.getMutatedArtefact())) {
-                    LOGGER.log(Level.INFO, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
+                    LOGGER.log(Level.FINE, "Equivalent mutant:\n{0}\n", new Object[]{mutant.getDescription()});
                     process(mutant, it);
                 }
             }
