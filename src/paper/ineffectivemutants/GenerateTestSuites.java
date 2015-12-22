@@ -16,7 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
-import parsedcasestudy.BookTown;
+import parsedcasestudy.CustomerOrder;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,7 @@ public class GenerateTestSuites {
     }
 
     public GenerateTestSuites() {
-        generateTestSuite(new BookTown(), "Postgres", 3);
+        generateTestSuite(new CustomerOrder(), "SQLite", 2);
     }
 
     private void generateTestSuite() {
