@@ -81,10 +81,15 @@ public class MutationPipelineFactory {
         choices.add("ISSRERetainRedundantMutants");
         choices.add("AllOperatorsWithRemovers");
         choices.add("AllOperatorsNormalisedWithRemovers");
+        choices.add("AllOperatorsNoFKANormalisedWithRemovers");
+        choices.add("AllOperatorsNoFKANormalisedWithRemoversDBMSRemovers");
+        choices.add("AllOperatorsNoFKANormalisedWithRemoversTransactedDBMSRemovers");
         choices.add("AllOperatorsNormalisedWithClassifiers");
+        choices.add("AllOperatorsNoFKANormalisedWithClassifiers");
         choices.add("AllOperatorsWithClassifiers");
         choices.add("AllOperatorsWithQMRemovers");
         choices.add("AllOperatorsWithImpaired");
+        choices.add("AllOperatorsNoFKAWithImpaired");
         choices.add("Mutation2013");
         choices.add("Programmatic");
         choices.add("ProgrammaticDBMSRemovers");
