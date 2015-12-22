@@ -1,15 +1,5 @@
 package org.schemaanalyst.mutation.analysis.util;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 import org.schemaanalyst.data.generation.DataGenerator;
@@ -18,6 +8,7 @@ import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.dbms.DatabaseInteractor;
 import org.schemaanalyst.mutation.Mutant;
+import org.schemaanalyst.mutation.MutantType;
 import org.schemaanalyst.mutation.analysis.executor.testcase.DeletingTestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testcase.TestCaseResult;
@@ -37,6 +28,17 @@ import org.schemaanalyst.util.runner.Parameter;
 import org.schemaanalyst.util.runner.RequiredParameters;
 import org.schemaanalyst.util.runner.Runner;
 import org.schemaanalyst.util.tuple.MixedPair;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author Chris J. Wright
@@ -119,8 +121,10 @@ public class OutputMutantsPossiblyImpaired extends Runner {
         System.out.println("Possible impaired: " + notCovered.size());
         System.out.println("Mutant details:");
         for (Mutant<Schema> mutant : notCovered) {
-            System.out.println("\t" + mutant.getIdentifier() + ": " + mutant.toString() +
-                    (showVerdict ? " (SA verdict: " + mutant.getMutantType() + ")" : ""));
+            if (mutant.getMutantType() != MutantType.IMPAIRED) {
+                System.out.println("\t" + mutant.getIdentifier() + ": " + mutant.toString() +
+                        (showVerdict ? " (SA verdict: " + mutant.getMutantType() + ")" : ""));
+            }
         }
     }
 

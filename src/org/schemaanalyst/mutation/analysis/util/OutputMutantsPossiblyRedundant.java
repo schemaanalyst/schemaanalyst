@@ -2,10 +2,6 @@ package org.schemaanalyst.mutation.analysis.util;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 import org.schemaanalyst.mutation.Mutant;
 import org.schemaanalyst.mutation.analysis.executor.MutationAnalysisVirtual;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.VirtualTestSuiteResult;
@@ -13,6 +9,11 @@ import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.TestSuite;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -36,7 +37,8 @@ public class OutputMutantsPossiblyRedundant extends MutationAnalysisVirtual {
                 builder.append(": \n");
                 for (Mutant mutant : group) {
                     builder.append("\tMutant ").append(mutant.getIdentifier());
-                    builder.append(": ").append(mutant.getDescription()).append("\n");
+                    builder.append(": ").append(mutant.getDescription());
+                    builder.append(" ").append(mutant.getMutantType()).append("\n");
                 }
                 System.out.println(builder.toString());
             }
