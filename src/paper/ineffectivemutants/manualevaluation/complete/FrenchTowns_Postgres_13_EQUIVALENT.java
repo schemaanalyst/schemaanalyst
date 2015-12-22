@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class FrenchTowns_Postgres_13 extends ManualAnalysisTestSuite {
+public class FrenchTowns_Postgres_13_EQUIVALENT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -58,7 +58,8 @@ public class FrenchTowns_Postgres_13 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 =
+			"INSERT INTO \"Regions\" VALUES(1, '1', '1', '1')";
 
 	@Test
 	public void notImpaired() throws SQLException {
@@ -66,16 +67,12 @@ public class FrenchTowns_Postgres_13 extends ManualAnalysisTestSuite {
 	}
 
 	@Test
-	public void notEquivalent() throws SQLException {
+	public void isEquivalent() throws SQLException {
 	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+		// is equivalent -- added a PK to a UNIQUE column
 	}
 
-	@Test
-	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
-	}
-
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): equivalent
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/

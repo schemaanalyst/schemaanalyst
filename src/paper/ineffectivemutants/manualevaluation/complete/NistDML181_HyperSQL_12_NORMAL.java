@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,19 +11,18 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class NistXTS748_SQLite_4 extends ManualAnalysisTestSuite {
+public class NistDML181_HyperSQL_12_NORMAL extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
 		// load the JDBC driver and create the connection and statement object used by this test suite
-		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jdbc:sqlite:manualanalysis");
+		Class.forName("org.hsqldb.jdbc.JDBCDriver");
+		connection = DriverManager.getConnection("jdbc:hsqldb:mem:/database;hsqldb.write_delay=false");
 
+		// tell HyperSQL to always persist the data right away
+		connection.setAutoCommit(true);
 		// create the statement
 		statement = connection.createStatement();
-
-		// enable FOREIGN KEY support
-		statement.executeUpdate("PRAGMA foreign_keys = ON");
 	}
 	
 	@AfterClass
@@ -33,45 +32,51 @@ public class NistXTS748_SQLite_4 extends ManualAnalysisTestSuite {
 		}
 	}
 	protected String getSchemaName() {
-	    return "NistXTS748";
+	    return "NistDML181";
 	}
 	
 	protected String getDBMSName() {
-	    return "SQLite";
+	    return "HyperSQL";
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 4;
+	    return 12;
 	}
 	
 	protected int getLastMutantNumber() {
-	    return 19;
+	    return 20;
 	}
 	
 	@After
 	public void dropTables() throws SQLException {
-		statement.executeUpdate("DROP TABLE IF EXISTS \"TEST12549\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"ORDERS\"");
+		statement.executeUpdate("DROP TABLE IF EXISTS \"LONG_NAMED_PEOPLE\"");
 	}
 
 	/*****************************/
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"ORDERS\" VALUES(NULL, NULL, 'A', 0)";
+
+	String statement2 = "INSERT INTO \"LONG_NAMED_PEOPLE\" VALUES('a', 'b', 30)";
+	String statement3 = "INSERT INTO \"ORDERS\" VALUES('a', 'b', NULL, 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+	    assertTrue(insertToMutant(statement1, statement2));
 	}
 
 	@Test
 	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	    assertTrue(originalAndMutantHaveDifferentBehavior(statement2, statement3));
 	}
 
 	@Test
 	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
+	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(1, 4, statement2, statement3), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(5, statement1, statement1), SUCCESS);
+        assertEquals(mutantAndOtherMutantsHaveDifferentBehaviorFrom(6, statement2, statement3), SUCCESS);
 	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired

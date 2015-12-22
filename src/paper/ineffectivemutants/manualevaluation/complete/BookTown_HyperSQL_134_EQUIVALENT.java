@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation.todo;
+package paper.ineffectivemutants.manualevaluation.complete;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.*;
 
-public class BookTown_HyperSQL_134 extends ManualAnalysisTestSuite {
+public class BookTown_HyperSQL_134_EQUIVALENT extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -77,7 +77,7 @@ public class BookTown_HyperSQL_134 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"editions\" VALUES('1', 1, 1, 1, '2000-1-1', '1' )";
 
 	@Test
 	public void notImpaired() throws SQLException {
@@ -85,16 +85,11 @@ public class BookTown_HyperSQL_134 extends ManualAnalysisTestSuite {
 	}
 
 	@Test
-	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
+	public void isEquivalent() throws SQLException {
+	    //it's equivalent!
 	}
 
-	@Test
-	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
-	}
-
-	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
+	// ENTER END VERDICT (delete as appropriate): equivalent
 
 	/*****************************/
 	/***  END MANUAL ANALYSIS  ***/
