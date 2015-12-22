@@ -16,10 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
-import parsedcasestudy.BookTown;
-import parsedcasestudy.FrenchTowns;
-import parsedcasestudy.JWhoisServer;
-import parsedcasestudy.NistDML181;
+import parsedcasestudy.NistWeather;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,19 +34,16 @@ public class GenerateTestSuites {
             new LocationsConfiguration().getSrcDir() + "/paper/ineffectivemutants/manualevaluation/";
     public static final String MUTATION_PIPELINE = "AllOperatorsWithImpaired";
 
-    final int NUM_TEST_SUITES = 1;
-
     public static void main(String[] args) {
         new GenerateTestSuites();
     }
 
     public GenerateTestSuites() {
-        for (int i = 1; i <= NUM_TEST_SUITES; i++) {
-            generateTestSuite(i);
-        }
+        generateTestSuite(new NistWeather(), "HyperSQL", 7);
+        generateTestSuite(new NistWeather(), "HyperSQL", 8);
     }
 
-    private void generateTestSuite(int number) {
+    private void generateTestSuite() {
         // Select a DBMS / SQL writer
         List<String> dbmses = DBMSFactory.getDBMSChoices();
         String dbmsName = dbmses.get(randomIndex(dbmses));
@@ -65,6 +59,13 @@ public class GenerateTestSuites {
         int mutantIndex = randomIndex(mutants);
         Mutant<Schema> selectedMutant = mutants.get(mutantIndex);
         int mutantNumber = mutantIndex + 1;
+        writeTestSuiteAndSchemas(dbms, schema, mutants, selectedMutant, mutantNumber);
+    }
+
+    private void generateTestSuite(Schema schema, String dbmsName, int mutantNumber) {
+        DBMS dbms = DBMSFactory.instantiate(dbmsName);
+        List<Mutant<Schema>> mutants = generateMutants(schema, dbmsName);
+        Mutant<Schema> selectedMutant = mutants.get(mutantNumber - 1);
         writeTestSuiteAndSchemas(dbms, schema, mutants, selectedMutant, mutantNumber);
     }
 
@@ -95,10 +96,10 @@ public class GenerateTestSuites {
         SQLWriter sqlWriter = dbms.getSQLWriter();
         IndentableStringBuilder code = new IndentableStringBuilder();
 
-        String packageName = "paper.ineffectivemutants.manualevaluation.todo";
+        String packageName = "paper.ineffectivemutants.manualevaluation";
         String className = schema.getName() + "_" + dbms.getName() + "_" + mutantNumber;
 
-        String toDoFileName = BASE_DIR_NAME + "todo/" + className + ".java";
+        String toDoFileName = BASE_DIR_NAME + className + ".java";
         File file = new File(toDoFileName);
 
         if (file.exists()) {
