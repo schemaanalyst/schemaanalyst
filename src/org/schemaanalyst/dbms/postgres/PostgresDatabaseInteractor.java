@@ -34,7 +34,7 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor {
     public void initializeDatabaseConnection() {
         try {
             Class.forName(databaseConfiguration.getPostgresDriver());
-            LOGGER.log(Level.INFO, "Loading Postgres driver: {0}", databaseConfiguration.getPostgresDriver());
+            LOGGER.log(Level.FINE, "Loading Postgres driver: {0}", databaseConfiguration.getPostgresDriver());
 
             // note that right now the Postgres database management
             // system is hosting the "database" in the default
@@ -46,7 +46,7 @@ public class PostgresDatabaseInteractor extends DatabaseInteractor {
                     + databaseConfiguration.getPostgresHost() + ":"
                     + databaseConfiguration.getPostgresPort() + "/"
                     + databaseConfiguration.getPostgresDatabase();
-            LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
+            LOGGER.log(Level.FINE, "JDBC Connection URL: {0}", databaseUrl);
             connection =
                     DriverManager.
                     getConnection(databaseUrl,

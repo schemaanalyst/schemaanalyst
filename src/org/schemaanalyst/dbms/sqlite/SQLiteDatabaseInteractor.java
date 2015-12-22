@@ -41,7 +41,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
     public void initializeDatabaseConnection() {
         try {
             Class.forName(databaseConfiguration.getSqliteDriver());
-            LOGGER.log(Level.INFO, "Loading SQLite driver: {0}", databaseConfiguration.getSqliteDriver());
+            LOGGER.log(Level.FINE, "Loading SQLite driver: {0}", databaseConfiguration.getSqliteDriver());
 
             File sqliteDirectory = new File(locationConfiguration.getDatabaseDir()
                     + File.separator + databaseConfiguration.getSqlitePath());
@@ -56,7 +56,7 @@ public class SQLiteDatabaseInteractor extends DatabaseInteractor {
             } else {
                 databaseUrl = "jdbc:sqlite::memory:";
             }
-            LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
+            LOGGER.log(Level.FINE, "JDBC Connection URL: {0}", databaseUrl);
 
             // enforce the foreign keys that are specified in the
             // relational schema; this could be turned off if you are

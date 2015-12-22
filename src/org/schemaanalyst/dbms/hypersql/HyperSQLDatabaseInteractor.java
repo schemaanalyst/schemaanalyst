@@ -40,7 +40,7 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
     public void initializeDatabaseConnection() {
         try {
             Class.forName(databaseConfiguration.getHsqldbDriver());
-            LOGGER.log(Level.INFO, "Loading HSQLDB driver: {0}", databaseConfiguration.getHsqldbDriver());
+            LOGGER.log(Level.FINE, "Loading HSQLDB driver: {0}", databaseConfiguration.getHsqldbDriver());
 
             File hsqldbDirectory = new File(locationConfiguration.getDatabaseDir()
                     + File.separator + databaseConfiguration.getHsqldbPath()
@@ -61,7 +61,7 @@ public class HyperSQLDatabaseInteractor extends DatabaseInteractor {
             } else {
                 databaseUrl = "jdbc:hsqldb:mem:/database" + UUID.randomUUID().toString() + URL_SUFFIX;
             }
-            LOGGER.log(Level.INFO, "JDBC Connection URL: {0}", databaseUrl);
+            LOGGER.log(Level.FINE, "JDBC Connection URL: {0}", databaseUrl);
 
             // create the connection to the database, 
             connection = DriverManager.getConnection(databaseUrl,
