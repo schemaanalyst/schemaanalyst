@@ -16,7 +16,7 @@ import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.util.IndentableStringBuilder;
 import org.schemaanalyst.util.random.SimpleRandom;
-import parsedcasestudy.CustomerOrder;
+import parsedcasestudy.NistWeather;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,7 +39,8 @@ public class GenerateTestSuites {
     }
 
     public GenerateTestSuites() {
-        generateTestSuite(new CustomerOrder(), "SQLite", 2);
+        generateTestSuite(new NistWeather(), "HyperSQL", 7);
+        generateTestSuite(new NistWeather(), "HyperSQL", 8);
     }
 
     private void generateTestSuite() {
