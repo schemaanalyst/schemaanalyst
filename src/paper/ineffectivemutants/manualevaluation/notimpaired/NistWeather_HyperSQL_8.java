@@ -1,4 +1,4 @@
-package paper.ineffectivemutants.manualevaluation;
+package paper.ineffectivemutants.manualevaluation.notimpaired;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -9,9 +9,9 @@ import paper.ineffectivemutants.manualevaluation.ManualAnalysisTestSuite;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
-public class NistWeather_HyperSQL_7 extends ManualAnalysisTestSuite {
+public class NistWeather_HyperSQL_8 extends ManualAnalysisTestSuite {
 	
 	@BeforeClass
 	public static void initialise() throws ClassNotFoundException, SQLException {
@@ -40,7 +40,7 @@ public class NistWeather_HyperSQL_7 extends ManualAnalysisTestSuite {
 	}
 	
 	protected int getMutantNumberBeingEvaluated() {
-	    return 7;
+	    return 8;
 	}
 	
 	protected int getLastMutantNumber() {
@@ -57,22 +57,14 @@ public class NistWeather_HyperSQL_7 extends ManualAnalysisTestSuite {
 	/*** BEGIN MANUAL ANALYSIS ***/
 	/*****************************/
 
-	String statement1 = "INSERT INTO \"\" VALUES( )";
+	String statement1 = "INSERT INTO \"Station\" VALUES(80, 'a', 'a', 1, 1)";
+	String statement2 = "INSERT INTO \"Stats\" VALUES(1, 1, 80, 1)";
 
 	@Test
 	public void notImpaired() throws SQLException {
-	    assertTrue(insertToMutant(statement1));
+		assertTrue(insertToMutant(statement1, statement2));
 	}
 
-	@Test
-	public void notEquivalent() throws SQLException {
-	    assertTrue(originalAndMutantHaveDifferentBehavior(statement1));
-	}
-
-	@Test
-	public void notRedundant() throws SQLException {
-	    assertEquals(mutantAndOtherMutantsHaveDifferentBehavior(statement1), SUCCESS);
-	}
 
 	// ENTER END VERDICT (delete as appropriate): normal/equivalent/redundant/impaired
 
