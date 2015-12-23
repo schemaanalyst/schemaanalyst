@@ -59,11 +59,11 @@ public class LocationsConfiguration extends Configuration {
      */
     private String case_study_package;
     /**
-     * The folder where we write Java code corresponding to the complete test suite.
+     * The folder where we write Java code corresponding to the classified test suite.
      */
     private String test_src_dir;
     /**
-     * The package where we write Java code corresponding to the complete test suite.
+     * The package where we write Java code corresponding to the classified test suite.
      */
     private String test_package;
     /**

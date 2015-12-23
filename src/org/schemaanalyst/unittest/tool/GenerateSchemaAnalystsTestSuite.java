@@ -17,7 +17,7 @@ import java.util.List;
 import static org.schemaanalyst.util.java.JavaUtils.JAVA_FILE_SUFFIX;
 import static org.schemaanalyst.util.java.JavaUtils.fileNameToClassName;
 
-@Description("Generates a complete test suite from individual test classes")
+@Description("Generates a classified test suite from individual test classes")
 public class GenerateSchemaAnalystsTestSuite extends Runner {
 
     @Parameter("The name of the class name to put the test suite")
