@@ -32,17 +32,17 @@ public class EasyData extends Data {
 
             @Override
             public void visit(BooleanValue value) {
-                // to classified...
+                // to complete...
             }
 
             @Override
             public void visit(DateValue value) {
-                // to classified...
+                // to complete...
             }
 
             @Override
             public void visit(DateTimeValue value) {
-                // to classified...
+                // to complete...
             }
 
             @Override
@@ -61,12 +61,12 @@ public class EasyData extends Data {
 
             @Override
             public void visit(TimeValue value) {
-                // to classified...
+                // to complete...
             }
 
             @Override
             public void visit(TimestampValue value) {
-                // to classified...
+                // to complete...
             }
         }
 
