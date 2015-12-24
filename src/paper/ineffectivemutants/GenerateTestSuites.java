@@ -108,7 +108,7 @@ public class GenerateTestSuites {
         } else {
             String[] suffixes = {"NORMAL", "EQUIVALENT", "REDUNDANT", "IMPAIRED"};
             for (String suffix : suffixes) {
-                File completeFile = new File(BASE_DIR_NAME + "complete/" + className + "_" + suffix + ".java");
+                File completeFile = new File(BASE_DIR_NAME + "classified/" + className + "_" + suffix + ".java");
                 if (completeFile.exists()) {
                     System.out.println(className + " is COMPLETE! (Classification: " + suffix +
                             "). Delete it if you really want to regenerate it)");

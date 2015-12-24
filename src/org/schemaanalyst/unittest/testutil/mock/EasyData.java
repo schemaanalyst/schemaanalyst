@@ -61,12 +61,12 @@ public class EasyData extends Data {
 
             @Override
             public void visit(TimeValue value) {
-                // to complete...				
+                // to complete...
             }
 
             @Override
             public void visit(TimestampValue value) {
-                // to complete...				
+                // to complete...
             }
         }
 
