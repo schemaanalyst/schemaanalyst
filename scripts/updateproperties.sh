@@ -10,7 +10,7 @@ do
 	esac
 done
 
-if [ -z $FILE ] || [ -z $KEY ] || [ -z $VALUE ] ; then
+if [ -z $FILE ] || [ -z $KEY ] ; then
 	echo "Update properties failed - requires -f FILE -k KEY -v VALUE"
 	exit 1
 fi
