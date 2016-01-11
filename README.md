@@ -354,7 +354,7 @@ Executing this class produces a single results file in CSV format that details t
 |count|The number of mutants produced, retained, or removed|
 |timetaken|The time taken to process the mutant|
 
-###### Example and Interpretation <a name=""></a>
+###### Example and Interpretation <a name="mutant-analysis-example"></a>
 
 Run mutant analysis for the default mutation pipeline, the `ArtistSimilarity` schema and the `Postgres` database:
 
@@ -439,16 +439,6 @@ TODO: Need to put specs of Alden Linux comp here
 
 ---
 
-
-# General SQL Parser <a name="sqlparser"></a>
-
-We have purchased a license of [General SQLParser](http://www.sqlparser.com/) to generate `Java` code interpretting `SQL` statements for the various supported databases. You will not be able to convert SQL code to the Java without either purchasing a license of the [General SQL
-Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code. Removing General SQL Parser is what allows us to release this product free and open-source!
-
-[^^^ To Top ^^^](#table-of-contents)
-
----
-
 # Publications
 
 [1. ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-seke2015/)Kinneer, Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015). "Automatically evaluating the efficiency of search-based test data generation for relational database schemas," in Proceedings of the 27th International Conference on Software Engineering and Knowledge Engineering.
@@ -464,6 +454,15 @@ ceedings of the 6th International Conference on Software Testing, Verification a
 [4. ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-mutation2013/)Wright, Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation analysis
 of relational database structure using mutant schemata and parallelisation," in Proceedings of
 the 8th International Workshop on Mutation Analysis. Just, Rene, Gregory M. Kapfhammer, and Franz Schweiggert.
+
+[^^^ To Top ^^^](#table-of-contents)
+
+---
+
+# General SQL Parser <a name="sqlparser"></a>
+
+We have purchased a license of [General SQLParser](http://www.sqlparser.com/) to generate `Java` code interpretting `SQL` statements for the various supported databases. You will not be able to convert SQL code to the Java without either purchasing a license of the [General SQL
+Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code. Removing General SQL Parser is what allows us to release this product free and open-source!
 
 [^^^ To Top ^^^](#table-of-contents)
 
