@@ -73,9 +73,9 @@ public class PrintTestSuite extends Runner {
         SQLWriter writer = dbmsObject.getSQLWriter();
         List<TestCase> testCases = testSuite.getTestCases();
         for (int i = 0; i < testCases.size(); i++) {
-            System.out.println("------------------------------");
-            System.out.println("Test case " + (i + 1));
-            System.out.println();
+            /* System.out.println("------------------------------"); */
+            /* System.out.println("Test case " + (i + 1)); */
+            /* System.out.println(); */
             TestCase testCase = testCases.get(i);
             System.out.println("Test requirement: ");
             System.out.println(testCase.getTestRequirement().getPredicate());
