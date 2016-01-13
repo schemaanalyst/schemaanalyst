@@ -16,6 +16,7 @@ import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.*;
 import org.schemaanalyst.util.runner.*;
+import org.schemaanalyst.mutation.analysis.executor.MutationAnalysis;
 
 import java.io.*;
 import java.util.*;
@@ -25,7 +26,15 @@ public class Go {
     public static void main(String[] args){
 
         JCommanderParams jcp = new JCommanderParams();
-        JCommander cmd = new JCommander(jcp, args);
+        JCommander cmd = new JCommander(jcp);
+
+        MutationCommand mc = new MutationCommand();
+
+        cmd.addCommand("mutation",mc);
+
+        cmd.parse(args);
+
+        String command = cmd.getParsedCommand();
 
         // set arguments
 
@@ -52,6 +61,27 @@ public class Go {
         String packagename = jcp.testSuitePackage;
 
         String sql = jcp.sql;
+
+        if (command.equals("mutation")){
+            
+            /* ArrayList<String> pargs = new ArrayList<String>(); */
+
+            String[] pargs = new String[] {
+                schema,
+                "--criterion="+criterion,
+                "--dataGenerator="+datagenerator,	
+                "--maxevaluations="+mc.maxEvaluations,	
+                "--randomseed="+mc.seed, 		
+                "--mutationPipeline="+ mc.pipeline,
+                "--technique="+mc.technique,
+                "--useTransactions="+	mc.transactions};
+                   
+            MutationAnalysis.main(pargs);
+
+            return;
+
+        }
+
 
         // Copied code from GenerateTestSuite and PrintTestSuite
 
