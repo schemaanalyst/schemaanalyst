@@ -62,7 +62,7 @@ public class Go {
 
         String sql = jcp.sql;
 
-        if (command.equals("mutation")){
+        if (command != null && command.equals("mutation")){
             
             /* ArrayList<String> pargs = new ArrayList<String>(); */
 
