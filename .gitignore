@@ -1,4 +1,9 @@
 *.class
+*.swp
+build
+generatedtest
+gradle
+.gradle
 /dist/*.*
 .classpath
 .project
