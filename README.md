@@ -1,7 +1,27 @@
 # SchemaAnalyst Manual
 
-# Purpose
-SchemaAnalyst is a tool for evaluating the design of database schemas using any of the following relational database management systems (RDBMS): SQLite, HyperSQL (HSQLDB), and Postgres (PostgreSQL).  By validating the integrity constraints of your schemas, SchemaAnalyst allows you to assess your design early in the development process and make corrections as needed.  Early detection of such problems can help prevent significant time, effort, and monetary costs that arise from faulty schema identified later in the development cycle.
+# Description
+There has been little work that has sought to test that a relational
+database's schema has correctly specified integrity constraints
+[\[1\]](#one).
+Testing a database's schema verifies that _all_ integrity constraints are
+satisfied, confirming the integrity and security of a database.
+Early testing not only verifies that integrity constraints are
+satisfied, but it can reduce implementation and maintenance
+costs associated with managing a database.
+
+SchemaAnalyst uses a search-based approach
+to test the complex relationships of integrity constraints in relational
+databases. Other schema-analyzing tools test a
+database's schema in a less efficient method but, more importantly,
+use a less effective technique. A study in
+[this paper](http://www.cs.allegheny.edu/~gkapfham/research/publish/kapfhammer-icst2013-schemaanalyst.pdf) finds that, for all of the case studies,
+SchemaAnalyst obtains higher constraint coverage than
+a similar schema-analyzing tool while reaching 100% coverage on two schemas
+for which the competing tool covers less than 10% of the constraints.
+SchemaAnalyst achieves these results with generated data
+sets that are substantially smaller than the competing tool and in
+an amount of execution time that is competitive or faster [\[2\]](#two).
 
 # Table of Contents <a name="table-of-contents"></a>
 + [Overview](#overview)
@@ -99,7 +119,7 @@ Alternatively, you may download a compressed copy of this repository by clicking
 [^^^ To Top ^^^](#table-of-contents)
 
 ### Dependencies <a name="dependencies"></a>
-To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of the Java programs, along with Apache Ant to compile the system before actual use.  See the table below for a full description of the required and optional dependencies. 
+To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of the Java programs, along with Apache Ant to compile the system before actual use.  See the table below for a full description of the required and optional dependencies.
 
 | Software | Required? | Purpose |
 |:--------:|:---------:|:-------:|
@@ -132,7 +152,7 @@ HSQLDB and SQLite require no additional configuration for use with SchemaAnalyst
 
 	Username: user
 	Password: pass
-	
+
 In addition, you must give this user full privileges over the `postgres` database.
 
 [^^^ To Top ^^^](#table-of-contents)
@@ -196,7 +216,7 @@ Please watch this Asciicinema recording that shows some of the key features of S
 ---
 
 ### Help Menu <a name="help"></a>
-You are able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows: 
+You are able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows:
 
 Open a terminal window in the main `schemaanalyst` folder and tye:
 
@@ -252,8 +272,8 @@ Where `casestudy` is replaced with the path to the parsed case study (i.e. the s
 |:---------:|:--------:|:-----------:|
 | casestudy | X | The class name of the schema to use, which has been parsed into the SchemaAnalyst intermediate representation.|
 | criterion |   | The coverage criterion to use to generate data.|
-| dataGenerator |  | The data generator to use to produce SQL INSERT statements.| 
-| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
+| dataGenerator |  | The data generator to use to produce SQL INSERT statements.|
+| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.|
 | randomseed |  | The seed used to produce random values for the data generation process.|
 | mutationPipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
 | technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata).|
@@ -306,9 +326,9 @@ The output produced by mutation analysis contains a significant amount of inform
 2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC` coverage criterion, the `random` data generator and the `ArtistSimilarity` schema:
 
 	`java -cp build:lib/* org.schemaanalyst.mutation.analysis.executor.MutationAnalysis parsedcasestudy.ArtistSimilarity --randomseed=1000 --criterion=ClauseAICC --dataGenerator=random`
-	
+
 	Which produces the following data in the `results/newmutationanalysis.dat` file:
-	
+
 	```
 	dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
 SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
@@ -391,8 +411,8 @@ Where `casestudy` is replaced with the path to the parsed case study (i.e. the s
 | dbms | X | The DBMS|
 | casestudy | X | The class name of the schema to use, which has been parsed into the SchemaAnalyst intermediate representation.|
 | criterion | X  | The coverage criterion to use to generate data.|
-| dataGenerator | X | The data generator to use to produce SQL INSERT statements.| 
-| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
+| dataGenerator | X | The data generator to use to produce SQL INSERT statements.|
+| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.|
 | randomseed |  | The seed used to produce random values for the data generation process.|
 
 ###### Output <a name="test-data-generation-output"></a>
@@ -409,7 +429,7 @@ This will produce a series of `INSERT` statements for each mutant of the schema.
 ------------------------------
 Test case 1
 
-Test requirement: 
+Test requirement:
 (Match[?[artists: artist_id]] ? ¬Null[artists: artist_id])
 
 Insert statements:
@@ -426,9 +446,9 @@ INSERT INTO "artists"(
 )
 ...
 ```
-   
-[^^^ To Top ^^^](#table-of-contents)  
-   
+
+[^^^ To Top ^^^](#table-of-contents)
+
 ---
 
 # Building and Execution Environment <a name="environment"></a>
