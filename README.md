@@ -35,6 +35,7 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
 + [Tutorial](#tutorial)
 	- [Asciicinema Recording](#asciicinema)
 	- [Help Menu](#help)
+	- [Options](#options)
 	- [Mutation Analysis](#mutation-analysis)
 		* [Syntax](#mutation-analysis-syntax)
 		* [Parameters](#mutation-analysis-parameters)
@@ -154,13 +155,38 @@ The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please foll
 1. Open a terminal and navigate to the default `schemaanalyst` directory.
 2. Type `./gradlew` to first download the necessary Gradle dependencies.
 	- Expected output:
-	`TODO: ADD ./gradew initial output!--michael`
+	
+	```
+	$ ./gradlew
+	Downloading https://services.gradle.org/distributions/gradle-2.9-bin.zip
+	...
+	Unzipping user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd\gradle-2.9-bin.zip to user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd
+	:help
+	
+	Welcome to Gradle 2.9.
+	
+	To run a build, run gradlew <task> ...
+	
+	To see a list of available tasks, run gradlew tasks
+	
+	To see a list of command-line options, run gradlew --help
+	
+	To see more detail about a task, run gradlew help --task <task>
+	
+	BUILD SUCCESSFUL
+	
+	Total time: 36.272 secs
+	```
 
 3. Type `./gradlew compile` to download necessary `.jar` files in the `lib` directory and compile the system into the `build` directory.
 	- Expected output:
 	
 	```
 	$./gradlew compile
+	Download https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.pom
+	Download https://jcenter.bintray.com/org/slf4j/slf4j-parent/1.7.13/slf4j-parent-1.7.13.pom
+	Download https://jcenter.bintray.com/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.pom
+	...
 	:compileJava
 	Note: Some input files use unchecked or unsafe operations.
 	Note: Recompile with -Xlint:unchecked for details.
@@ -190,9 +216,7 @@ A `BUILD SUCCESSFUL` message should appear, indicating that testing has complete
 
 ### Set Classpath <a name="classpath"></a>
 
-Before running any of the commands listed in the [Tutorial](#tutorial) section, set your classpath as follows:
-
-Open a terminal window in the default `schemaanalyst` directory and type:
+Before running any of the commands listed in the [Tutorial](#tutorial) section, set your classpath as follows while in the `schemaanalyst` directory:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
@@ -208,16 +232,16 @@ Please watch this Asciicinema recording that shows some of the key features of S
 
 [![asciicast](https://asciinema.org/a/5qttak0iqg1db1r38bdfyviod.png)](https://asciinema.org/a/5qttak0iqg1db1r38bdfyviod)
 
+[^^^ To Top ^^^](#table-of-contents)
+
 ---
 
 ### Help Menu <a name="help"></a>
 You are able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows: 
 
-Open a terminal window in the default `schemaanalyst` directory and type:
-
 `java org.schemaanalyst.util.Go -h`
 
-Which produces the following console output:
+Which produces the following output:
 
 ```
 Usage: <main class> [options] [command] [command options]
@@ -269,32 +293,43 @@ Usage: <main class> [options] [command] [command options]
 
 ```
 
+[^^^ To Top ^^^](#table-of-contents)
+
+### Options <a name="options"></a>
+
+The following general options can be used with any command in the `Go` class:
+
+| Parameter | Required | Description |
+|:---------:|:--------:|:-----------:|
+| --criterion |   | The coverage criterion to use to generate data.|
+| --dbms |   | The database management system to use (SQLite, HyperSQL, Postgres).|
+| --generator |  | The data generator to use to produce SQL INSERT statements.| 
+| --help |  | Show the help menu.| 
+| --schema | X | The schema chosen for analysis.|
+
+*__Note:__ If you attempt to execute any of the `Runner` classes of SchemaAnalyst without the necessary parameters, or if you type the `--help` tag, you should be presented with information describing the parameters and detailing which of these are required. Where parameters are not required, the defaults values should usually be sensible.  While there are other parameters available for this class, it is generally not necessary to understand their purpose.*
+
+[^^^ To Top ^^^](#table-of-contents)
+
 ### Mutation Analysis <a name="mutation-analysis"></a>
 
 ###### Syntax <a name="mutation-analysis-syntax"></a>
 
-To create data to exercise the integrity constraints of a schema using the data generation component of SchemaAnalyst, and then perform mutation analysis using it, the `MutationAnalysis` class from the `org.schemaanalyst.mutation.analysis.executor` package can be used as follows:
+To create data to exercise the integrity constraints of a schema using the data generation component of SchemaAnalyst, and then perform mutation analysis using it, use the following syntax:
 
-Open a terminal window in the main `schemaanalyst` directory and type:
+`java org.schemaanalyst.util.Go -s schema <options> mutation <parameters>`
 
-`java -cp build:lib/* org.schemaanalyst.mutation.analysis.executor.MutationAnalysis casestudy <options>`
-
-Where `casestudy` is replaced with the path to the parsed case study (i.e. the schema of interest), and `<options>` can be replaced by any number of parameters described below.
+Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
 
 ###### Parameters <a name="mutation-analysis-parameters"></a>
 
 | Parameter | Required | Description |
-|:---------:|:--------:|:-----------:|
-| casestudy | X | The class name of the schema to use, which has been parsed into the SchemaAnalyst intermediate representation.|
-| criterion |   | The coverage criterion to use to generate data.|
-| dataGenerator |  | The data generator to use to produce SQL INSERT statements.| 
-| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
-| randomseed |  | The seed used to produce random values for the data generation process.|
-| mutationPipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
-| technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata).|
-| useTransactions |  | Whether to use SQL transactions to improve the performance of a technique, if possible.|
-
-*__Note:__ If you attempt to execute any of the `Runner` classes of SchemaAnalyst without the necessary parameters, or if you type the `--help` tag, you should be presented with information describing the parameters and detailing which of these are required. Where parameters are not required, the defaults values should usually be sensible.  While there are other parameters available for this class, it is generally not necessary to understand their purpose.*
+|:---------:|:--------:|:-----------:| 
+| --maxEvaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
+| --pipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
+| --seed |  | The seed used to produce random values for the data generation process.|
+| --technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata).|
+| --transactions |  | Whether to use SQL transactions to improve the performance of a technique, if possible.|
 
 ###### Output <a name="mutation-analysis-output"></a>
 Executing this class produces a single results file in CSV format that contains one line per execution, located at `results/newmutationanalysis.dat`. This contains a number of columns:
@@ -320,8 +355,6 @@ Executing this class produces a single results file in CSV format that contains 
 | mutationanalysistime | The time taken to perform analysis of all of the mutant schemas.|
 | timetaken | The total time taken by the entire process.|
 
-If it is necessary to retrieve information about the execution time for each mutant individually, the `MutantTiming` technique is provided. This is a specialised version of the `Original` technique that is instrumented to record this additional information.
-
 ###### Intepretation <a name="mutation-analysis-interpretation"></a>
 The output produced by mutation analysis contains a significant amount of information, some of which might not be needed for your purposes.  If you are simply concerned with the correctness of your schema, focus on the `scorenumerator` and `scoredenominator` columns, as defined previously.  By dividing the numerator by the denominator you will generate a mutation score in the range [0, 1].  This score provides an estimate for how well the schema has performed when its integrity constraints were exercised, with higher scores indicating that the schema is more likely to permit valid data from entering a table and to reject any invalid data.  Although there does not currently exist a standard for this metric, scores between 0.6 - 0.7 (60% - 70%) are generally considered good.  If your schema's score falls below this, consider viewing the [Mutant Analysis](#mutant-analysis) section to gain further insight on the types of mutants created and removed during the process.
 
@@ -329,7 +362,7 @@ The output produced by mutation analysis contains a significant amount of inform
 
 1.  Perform mutation analysis with the default configuration and the `ArtistSimilarity` schema:
 
-	`java -cp build:lib/* org.schemaanalyst.mutation.analysis.executor.MutationAnalysis parsedcasestudy.ArtistSimilarity`
+	`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation`
 
 	Which produces the following data in the `results/newmutationanalysis.dat` file:
 
@@ -340,7 +373,7 @@ The output produced by mutation analysis contains a significant amount of inform
 
 2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC` coverage criterion, the `random` data generator and the `ArtistSimilarity` schema:
 
-	`java -cp build:lib/* org.schemaanalyst.mutation.analysis.executor.MutationAnalysis parsedcasestudy.ArtistSimilarity --randomseed=1000 --criterion=ClauseAICC --dataGenerator=random`
+	`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
 	
 	Which produces the following data in the `results/newmutationanalysis.dat` file:
 	
@@ -360,48 +393,43 @@ SchemaAnalyst will create a series of `INSERT` statements to test the integrity 
 
 Open a terminal window in the main `schemaanalyst` directory and type:
 
-`java -cp build:lib/* org.schemaanalyst.testgeneration.tool.PrintTestSuite casestudy dbms coverageCriterion dataGenerator <options>`
+`java org.schemaanalyst.util.Go -s schema <options> --inserts fileName <parameters>`
 
-Where `casestudy` is replaced with the path to the parsed case study (i.e. the schema of interest), `dbms` is replaced with one of (SQLite, Postgres, HyperSQL), and `<options>` can be replaced by any of the other parameters described below.
+Where `schema` is replaced with the path to the schema of interest, `fileName` is replaced with the name of the desired output file (saved in `.sql` format), `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
 
 ###### Parameters <a name="test-data-generation-parameters"></a>
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
-| dbms | X | The DBMS|
-| casestudy | X | The class name of the schema to use, which has been parsed into the SchemaAnalyst intermediate representation.|
-| criterion | X  | The coverage criterion to use to generate data.|
-| dataGenerator | X | The data generator to use to produce SQL INSERT statements.| 
-| maxevaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
-| randomseed |  | The seed used to produce random values for the data generation process.|
+| --testSuite |  | Target file for writing JUnit test suite.|
+| --testSuitePackage |  | Target package for writing JUnit test suite.|
 
 ###### Output <a name="test-data-generation-output"></a>
-The created `INSERT` statements are saved as a `.java` file in the `generatedtest` directory.  These statements are also automatically displayed in the console window after execution.  See the example below for the output from a specific schema.
+By default, the created `INSERT` statements are saved as a `.sql` file in the `generatedtest` directory.  These statements are also automatically displayed in the console window after execution. If you want to also create a JUnit test suite using these insert statements, use the `--testSuite` parameter described previously.  See the example below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
-Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, and the `avsDefaults` dataGenerator:
+Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and save the output in the file `SampleOutput.sql`:
 
-`java -cp build:lib/* org.schemaanalyst.testgeneration.tool.PrintTestSuite parsedcasestudy.ArtistSimilarity Postgres UCC avsDefaults`
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults --inserts SampleOutput`
 
 This will produce a series of `INSERT` statements for each mutant of the schema.  Some abbreviated output from the above execution is included below:
 
 ```
-------------------------------
-Test case 1
-
-Test requirement: 
-(Match[?[artists: artist_id]] ? �Null[artists: artist_id])
-
-Insert statements:
 INSERT INTO "artists"(
-	"artist_id"
+        "artist_id"
 ) VALUES (
-	''
+        ''
 )
 
 INSERT INTO "artists"(
-	"artist_id"
+        "artist_id"
 ) VALUES (
-	'a'
+        'a'
+)
+
+INSERT INTO "artists"(
+        "artist_id"
+) VALUES (
+        ''
 )
 ...
 ```
