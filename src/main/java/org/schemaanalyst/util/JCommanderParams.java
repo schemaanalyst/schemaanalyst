@@ -21,19 +21,6 @@ public class JCommanderParams {
   @Parameter(names = {"--dbms","-d","--database"}, description = "Database Management System")
   protected String dbms = "SQLite";
 
-  @Parameter(names = {"--sql","--inserts"}, description = "Target file for writing INSERT statements")
-  protected String sql = null;
-
-  @Parameter(names = {"--mutation","-m"}, description = "Perform mutation testing")
-  protected boolean mutation = false;
-
-  @Parameter(names = {"--testSuitePackage","-p"}, description = "Target package for writing JUnit test suite")
-  protected String testSuitePackage = "generatedtest";
-
-  // should default to Test + schema + .java
-  @Parameter(names = {"--testSuite","-t"}, description = "Target file for writing JUnit test suite")
-  protected String testSuite = null;
-
   /* @Parameter(names = {"--help","-h"}, description = "Print the help menu") */
   /* protected boolean help = false; */
 

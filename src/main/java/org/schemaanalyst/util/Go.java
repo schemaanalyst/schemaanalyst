@@ -29,7 +29,9 @@ public class Go {
         JCommander cmd = new JCommander(jcp);
 
         MutationCommand mc = new MutationCommand();
+        GenerationCommand gc = new GenerationCommand();
 
+        cmd.addCommand("generation",gc);        
         cmd.addCommand("mutation",mc);
 
         cmd.parse(args);
@@ -53,15 +55,6 @@ public class Go {
             return;
         }
 
-        if (jcp.testSuite == null)
-            classname = "Test" + schema;
-        else
-            classname = jcp.testSuite;
-
-        String packagename = jcp.testSuitePackage;
-
-        String sql = jcp.sql;
-
         if (command != null && command.equals("mutation")){
             
             /* ArrayList<String> pargs = new ArrayList<String>(); */
@@ -80,8 +73,16 @@ public class Go {
 
             return;
 
-        }
+        } else if (command != null && command.equals("generation")){
 
+        if (gc.testSuite == "TestSchema")
+            classname = "Test" + schema;
+        else
+            classname = gc.testSuite;
+
+        String packagename = gc.testSuitePackage;
+
+        String sql = gc.sql;
 
         // Copied code from GenerateTestSuite and PrintTestSuite
 
@@ -196,6 +197,11 @@ public class Go {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
+
+        }else{
+            cmd.usage();
+        }
+
     }
 
     private static Schema instantiateSchema(String schema) {
