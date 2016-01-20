@@ -237,7 +237,7 @@ Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code.
 
 Please watch this Asciicinema recording that shows some of the key features of SchemaAnalyst, which are explained in more detail below.
 
-[![asciicast](https://asciinema.org/a/eldbdezfivcq2mybmcj0040gr.png)](https://asciinema.org/a/eldbdezfivcq2mybmcj0040gr)
+[![asciicast](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi.png)](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi)
 
 [^^^ To Top ^^^](#table-of-contents)
 
