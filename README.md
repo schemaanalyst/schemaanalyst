@@ -258,20 +258,22 @@ Usage: <main class> [options] [command] [command options]
     --help, -h
        Prints this help menu
        Default: false
-    --sql, --inserts
-       Target file for writing INSERT statements
-    --mutation, -m
-       Perform mutation testing
-       Default: false
   * --schema, -s
        Target Schema
        Default: <empty string>
-    --testSuite, -t
-       Target file for writing JUnit test suite
-    --testSuitePackage, -p
-       Target package for writing JUnit test suite
-       Default: generatedtest
   Commands:
+    generation      Generate test data with SchemaAnalyst
+      Usage: generation [options]
+        Options:
+          --sql, --inserts
+             Target file for writing INSERT statements
+          --testSuite, -t
+             Target file for writing JUnit test suite
+             Default: TestSchema
+          --testSuitePackage, -p
+             Target package for writing JUnit test suite
+             Default: generatedtest
+
     mutation      Perform mutation testing of SchemaAnalyst
       Usage: mutation [options]
         Options:
@@ -290,7 +292,6 @@ Usage: <main class> [options] [command] [command options]
           --transactions
              Whether to use transactions with this technique (if possible).
              Default: false
-
 ```
 
 [^^^ To Top ^^^](#table-of-contents)
@@ -332,6 +333,7 @@ Where `schema` is replaced with the path to the schema of interest, `<options>` 
 | --transactions |  | Whether to use SQL transactions to improve the performance of a technique, if possible.|
 
 ###### Output <a name="mutation-analysis-output"></a>
+
 Executing this class produces a single results file in CSV format that contains one line per execution, located at `results/newmutationanalysis.dat`. This contains a number of columns:
 
 | Column | Description |
@@ -356,6 +358,7 @@ Executing this class produces a single results file in CSV format that contains 
 | timetaken | The total time taken by the entire process.|
 
 ###### Intepretation <a name="mutation-analysis-interpretation"></a>
+
 The output produced by mutation analysis contains a significant amount of information, some of which might not be needed for your purposes.  If you are simply concerned with the correctness of your schema, focus on the `scorenumerator` and `scoredenominator` columns, as defined previously.  By dividing the numerator by the denominator you will generate a mutation score in the range [0, 1].  This score provides an estimate for how well the schema has performed when its integrity constraints were exercised, with higher scores indicating that the schema is more likely to permit valid data from entering a table and to reject any invalid data.  Although there does not currently exist a standard for this metric, scores between 0.6 - 0.7 (60% - 70%) are generally considered good.  If your schema's score falls below this, consider viewing the [Mutant Analysis](#mutant-analysis) section to gain further insight on the types of mutants created and removed during the process.
 
 ###### Examples <a name="mutation-analysis-examples"></a>
@@ -389,27 +392,30 @@ SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888
 ### Test Data Generation <a name="test-data-generation"></a>
 
 ###### Syntax <a name="test-data-generation-syntax"></a>
-SchemaAnalyst will create a series of `INSERT` statements to test the integrity constraints that are altered via mutation, as described in the [Overview](#overview) section.  This data is typically hidden from the user, but if you wish to see what data the system is using for this process, then you can do the following:
 
-Open a terminal window in the main `schemaanalyst` directory and type:
+SchemaAnalyst will create a series of `INSERT` statements to test the integrity constraints that are altered via mutation, as described in the [Overview](#overview) section.  This data is typically hidden from the user during the analysis, but if you wish to see what data the system is generating for this process, then you can use the following syntax:
 
-`java org.schemaanalyst.util.Go -s schema <options> --inserts fileName <parameters>`
+`java org.schemaanalyst.util.Go -s schema <options> generation <parameters>`
 
-Where `schema` is replaced with the path to the schema of interest, `fileName` is replaced with the name of the desired output file (saved in `.sql` format), `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
+Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
 
 ###### Parameters <a name="test-data-generation-parameters"></a>
+
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
+| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file | 
 | --testSuite |  | Target file for writing JUnit test suite.|
 | --testSuitePackage |  | Target package for writing JUnit test suite.|
 
 ###### Output <a name="test-data-generation-output"></a>
-By default, the created `INSERT` statements are saved as a `.sql` file in the `generatedtest` directory.  These statements are also automatically displayed in the console window after execution. If you want to also create a JUnit test suite using these insert statements, use the `--testSuite` parameter described previously.  See the example below for the output from a specific schema.
+
+By default, the `generation` command creates a JUnit test suite in the `generatedtest` directory.   The name of the file can be changed with the `--testSuite` parameter, while the package can be changed with the `--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can be used to generate a `.sql` file with all of the `INSERT` statements used to test the integrity constraints of the schema.  These statements are also automatically displayed in the console window after execution.  See the example below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
+
 Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and save the output in the file `SampleOutput.sql`:
 
-`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults --inserts SampleOutput`
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
 
 This will produce a series of `INSERT` statements for each mutant of the schema.  Some abbreviated output from the above execution is included below:
 
