@@ -244,7 +244,9 @@ Please watch this Asciicinema recording that shows some of the key features of S
 ---
 
 ### Help Menu <a name="help"></a>
-You are able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows: 
+SchemaAnalyst uses a command line interface with a variety of execution options.  Two primary commands are included: `mutation` for [Mutation Analysis](#mutation-analysis), and `generation` for [Test Data Generation](#test-data-generation).  Note that one of these two commands *must* be chosen, and their syntax is discussed later on.
+
+You are also able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows: 
 
 `java org.schemaanalyst.util.Go -h`
 
@@ -305,7 +307,7 @@ Usage: <main class> [options] [command] [command options]
 
 ### Options <a name="options"></a>
 
-The following general options can be used with any command in the `Go` class:
+The following options can precede the `mutation` and `generation` commands for additional functionality (note that the `--schema` option is required):
 
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
