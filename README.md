@@ -114,7 +114,7 @@ Alternatively, you may download a compressed copy of this repository by clicking
 [^^^ To Top ^^^](#table-of-contents)
 
 ### Dependencies <a name="dependencies"></a>
-To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of the Java programs.  See the table below for a full description of the required and optional dependencies. 
+To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of the Java programs.  See the table below for a full description of the required and optional dependencies.
 
 | Software | Required? | Purpose |
 |:--------:|:---------:|:-------:|
@@ -143,7 +143,7 @@ HSQLDB and SQLite require no additional configuration for use with SchemaAnalyst
 
 	Username: user
 	Password: pass
-	
+
 In addition, you must give this user full privileges over the `postgres` database.
 
 [^^^ To Top ^^^](#table-of-contents)
@@ -155,32 +155,32 @@ The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please foll
 1. Open a terminal and navigate to the default `schemaanalyst` directory.
 2. Type `./gradlew` to first download the necessary Gradle dependencies.
 	- Expected output:
-	
+
 	```
 	$ ./gradlew
 	Downloading https://services.gradle.org/distributions/gradle-2.9-bin.zip
 	...
 	Unzipping user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd\gradle-2.9-bin.zip to user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd
 	:help
-	
+
 	Welcome to Gradle 2.9.
-	
+
 	To run a build, run gradlew <task> ...
-	
+
 	To see a list of available tasks, run gradlew tasks
-	
+
 	To see a list of command-line options, run gradlew --help
-	
+
 	To see more detail about a task, run gradlew help --task <task>
-	
+
 	BUILD SUCCESSFUL
-	
+
 	Total time: 36.272 secs
 	```
 
 3. Type `./gradlew compile` to download necessary `.jar` files in the `lib` directory and compile the system into the `build` directory.
 	- Expected output:
-	
+
 	```
 	$./gradlew compile
 	Download https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.pom
@@ -191,9 +191,9 @@ The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please foll
 	Note: Some input files use unchecked or unsafe operations.
 	Note: Recompile with -Xlint:unchecked for details.
 	:compile
-	
+
 	BUILD SUCCESSFUL
-	
+
 	Total time: 34.48 secs
 	```
 
@@ -237,7 +237,7 @@ Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code.
 
 Please watch this Asciicinema recording that shows some of the key features of SchemaAnalyst, which are explained in more detail below.
 
-[![asciicast](https://asciinema.org/a/5qttak0iqg1db1r38bdfyviod.png)](https://asciinema.org/a/5qttak0iqg1db1r38bdfyviod)
+[![asciicast](https://asciinema.org/a/eldbdezfivcq2mybmcj0040gr.png)](https://asciinema.org/a/eldbdezfivcq2mybmcj0040gr)
 
 [^^^ To Top ^^^](#table-of-contents)
 
@@ -246,7 +246,7 @@ Please watch this Asciicinema recording that shows some of the key features of S
 ### Help Menu <a name="help"></a>
 SchemaAnalyst uses a command line interface with a variety of execution options.  Two primary commands are included: `mutation` for [Mutation Analysis](#mutation-analysis), and `generation` for [Test Data Generation](#test-data-generation).  Note that one of these two commands *must* be chosen, and their syntax is discussed later on.
 
-You are also able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows: 
+You are also able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows:
 
 `java org.schemaanalyst.util.Go -h`
 
@@ -313,8 +313,8 @@ The following options can precede the `mutation` and `generation` commands for a
 |:---------:|:--------:|:-----------:|
 | --criterion |   | The coverage criterion to use to generate data.|
 | --dbms |   | The database management system to use (SQLite, HyperSQL, Postgres).|
-| --generator |  | The data generator to use to produce SQL INSERT statements.| 
-| --help |  | Show the help menu.| 
+| --generator |  | The data generator to use to produce SQL INSERT statements.|
+| --help |  | Show the help menu.|
 | --schema | X | The schema chosen for analysis.|
 
 *__Note:__ If you attempt to execute any of the `Runner` classes of SchemaAnalyst without the necessary parameters, or if you type the `--help` tag, you should be presented with information describing the parameters and detailing which of these are required. Where parameters are not required, the defaults values should usually be sensible.  While there are other parameters available for this class, it is generally not necessary to understand their purpose.*
@@ -334,8 +334,8 @@ Where `schema` is replaced with the path to the schema of interest, `<options>` 
 ###### Parameters <a name="mutation-analysis-parameters"></a>
 
 | Parameter | Required | Description |
-|:---------:|:--------:|:-----------:| 
-| --maxEvaluations |  | The maximum fitness evaluations for the search algorithm to use.| 
+|:---------:|:--------:|:-----------:|
+| --maxEvaluations |  | The maximum fitness evaluations for the search algorithm to use.|
 | --pipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
 | --seed |  | The seed used to produce random values for the data generation process.|
 | --technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata).|
@@ -386,9 +386,9 @@ The output produced by mutation analysis contains a significant amount of inform
 2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC` coverage criterion, the `random` data generator and the `ArtistSimilarity` schema:
 
 	`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
-	
+
 	Which produces the following data in the `results/newmutationanalysis.dat` file:
-	
+
 	```
 	dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
 SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
@@ -412,7 +412,7 @@ Where `schema` is replaced with the path to the schema of interest, `<options>` 
 
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
-| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file | 
+| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file |
 | --testSuite |  | Target file for writing JUnit test suite.|
 | --testSuitePackage |  | Target package for writing JUnit test suite.|
 
@@ -448,9 +448,9 @@ INSERT INTO "artists"(
 )
 ...
 ```
-   
-[^^^ To Top ^^^](#table-of-contents)  
-   
+
+[^^^ To Top ^^^](#table-of-contents)
+
 ---
 
 # Building and Execution Environment <a name="environment"></a>
