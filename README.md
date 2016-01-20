@@ -32,6 +32,7 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
 	- [Compiling](#compiling)
 	- [Testing](#testing)
 	- [Set Classpath](#classpath)
+	- [Convert Schema to Java](#sqlparser)
 + [Tutorial](#tutorial)
 	- [Asciicinema Recording](#asciicinema)
 	- [Help Menu](#help)
@@ -49,7 +50,6 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
 		* [Example](#test-data-generation-example)
 + [Building and Execution Environment](#environment)
 + [Publications](#publications)
-+ [General SQL Parser](#sqlparser)
 + [License](#license)
 
 # Overview <a name="overview"></a>
@@ -219,6 +219,13 @@ A `BUILD SUCCESSFUL` message should appear, indicating that testing has complete
 Before running any of the commands listed in the [Tutorial](#tutorial) section, set your classpath as follows while in the `schemaanalyst` directory:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
+
+[^^^ To Top ^^^](#table-of-contents)
+
+### Convert Schema to Java <a name="sqlparser"></a>
+
+We have purchased a license of [General SQLParser](http://www.sqlparser.com/) to generate `Java` code interpreting `SQL` statements for the various supported databases. You will not be able to convert SQL code to Java without either purchasing a license of the [General SQL
+Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code. Removing General SQL Parser is what allows us to release this product free and open-source!  We have included a number of sample schema to use with SchemaAnalyst: the original `.sql` files can be found in the `schemaanalyst/casestudies/schema` directory, while the converted `.java` files can be found in the `schemaanalyst/build/classes/main/parsedcasestudy/` directory after compiling the system.
 
 [^^^ To Top ^^^](#table-of-contents)
 
@@ -470,15 +477,6 @@ the 8th International Workshop on Mutation Analysis. Just, Rene, Gregory M. Kapf
 redundant, and quasi mutants on database schema mutation analysis," in Proceedings of the
 14th International Conference on Quality Software. <a name="five"></a>
 
-
-[^^^ To Top ^^^](#table-of-contents)
-
----
-
-# General SQL Parser <a name="sqlparser"></a>
-
-We have purchased a license of [General SQLParser](http://www.sqlparser.com/) to generate `Java` code interpretting `SQL` statements for the various supported databases. You will not be able to convert SQL code to the Java without either purchasing a license of the [General SQL
-Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code. Removing General SQL Parser is what allows us to release this product free and open-source!
 
 [^^^ To Top ^^^](#table-of-contents)
 
