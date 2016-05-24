@@ -1,4 +1,4 @@
-# SchemaAnalyst Manual
+# SchemaAnalyst
 
 # Description
 There has been little work that has sought to test that a relational
