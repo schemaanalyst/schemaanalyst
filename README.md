@@ -26,28 +26,28 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
 # Table of Contents <a name="table-of-contents"></a>
 + [Overview](#overview)
 + [Getting Started](#getting-started)
-	- [Downloading](#downloading)
-	- [Dependencies](#dependencies)
-	- [Configuring](#configuring)
-	- [Compiling](#compiling)
-	- [Testing](#testing)
-	- [Set Classpath](#classpath)
-	- [Convert Schema to Java](#sqlparser)
+    - [Downloading](#downloading)
+    - [Dependencies](#dependencies)
+    - [Configuring](#configuring)
+    - [Compiling](#compiling)
+    - [Testing](#testing)
+    - [Set Classpath](#classpath)
+    - [Convert Schema to Java](#sqlparser)
 + [Tutorial](#tutorial)
-	- [Asciicinema Recording](#asciicinema)
-	- [Help Menu](#help)
-	- [Options](#options)
-	- [Mutation Analysis](#mutation-analysis)
-		* [Syntax](#mutation-analysis-syntax)
-		* [Parameters](#mutation-analysis-parameters)
-		* [Output](#mutation-analysis-output)
-		* [Interpretation](#mutation-analysis-interpretation)
-		* [Examples](#mutation-analysis-examples)
-	- [Test Data Generation](#test-data-generation)
-		* [Syntax](#test-data-generation-syntax)
-		* [Parameters](#test-data-generation-parameters)
-		* [Output](#test-data-generation-output)
-		* [Example](#test-data-generation-example)
+    - [Asciicinema Recording](#asciicinema)
+    - [Help Menu](#help)
+    - [Options](#options)
+    - [Mutation Analysis](#mutation-analysis)
+        * [Syntax](#mutation-analysis-syntax)
+        * [Parameters](#mutation-analysis-parameters)
+        * [Output](#mutation-analysis-output)
+        * [Interpretation](#mutation-analysis-interpretation)
+        * [Examples](#mutation-analysis-examples)
+    - [Test Data Generation](#test-data-generation)
+        * [Syntax](#test-data-generation-syntax)
+        * [Parameters](#test-data-generation-parameters)
+        * [Output](#test-data-generation-output)
+        * [Example](#test-data-generation-example)
 + [Building and Execution Environment](#environment)
 + [Publications](#publications)
 + [License](#license)
@@ -141,8 +141,8 @@ SchemaAnalyst uses a number of _properties_ files to specify some configuration 
 ###### Databases <a name="databases"></a>
 HSQLDB and SQLite require no additional configuration for use with SchemaAnalyst.  If using PostgreSQL, then note that the `database.properties` file is preconfigured to connect to a PostgreSQL database with the following credentials:
 
-	Username: user
-	Password: pass
+    Username: user
+    Password: pass
 
 In addition, you must give this user full privileges over the `postgres` database.
 
@@ -154,48 +154,48 @@ The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please foll
 
 1. Open a terminal and navigate to the default `schemaanalyst` directory.
 2. Type `./gradlew` to first download the necessary Gradle dependencies.
-	- Expected output:
+    - Expected output:
 
-	```
-	$ ./gradlew
-	Downloading https://services.gradle.org/distributions/gradle-2.9-bin.zip
-	...
-	Unzipping user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd\gradle-2.9-bin.zip to user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd
-	:help
+    ```
+    $ ./gradlew
+    Downloading https://services.gradle.org/distributions/gradle-2.9-bin.zip
+    ...
+    Unzipping user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd\gradle-2.9-bin.zip to user\.gradle\wrapper\dists\gradle-2.9-bin\ebaspjjvvkuki3ldbldx7hexd
+    :help
 
-	Welcome to Gradle 2.9.
+    Welcome to Gradle 2.9.
 
-	To run a build, run gradlew <task> ...
+    To run a build, run gradlew <task> ...
 
-	To see a list of available tasks, run gradlew tasks
+    To see a list of available tasks, run gradlew tasks
 
-	To see a list of command-line options, run gradlew --help
+    To see a list of command-line options, run gradlew --help
 
-	To see more detail about a task, run gradlew help --task <task>
+    To see more detail about a task, run gradlew help --task <task>
 
-	BUILD SUCCESSFUL
+    BUILD SUCCESSFUL
 
-	Total time: 36.272 secs
-	```
+    Total time: 36.272 secs
+    ```
 
 3. Type `./gradlew compile` to download necessary `.jar` files in the `lib` directory and compile the system into the `build` directory.
-	- Expected output:
+    - Expected output:
 
-	```
-	$./gradlew compile
-	Download https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.pom
-	Download https://jcenter.bintray.com/org/slf4j/slf4j-parent/1.7.13/slf4j-parent-1.7.13.pom
-	Download https://jcenter.bintray.com/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.pom
-	...
-	:compileJava
-	Note: Some input files use unchecked or unsafe operations.
-	Note: Recompile with -Xlint:unchecked for details.
-	:compile
+    ```
+    $./gradlew compile
+    Download https://jcenter.bintray.com/org/slf4j/slf4j-api/1.7.13/slf4j-api-1.7.13.pom
+    Download https://jcenter.bintray.com/org/slf4j/slf4j-parent/1.7.13/slf4j-parent-1.7.13.pom
+    Download https://jcenter.bintray.com/org/apache/commons/commons-lang3/3.0/commons-lang3-3.0.pom
+    ...
+    :compileJava
+    Note: Some input files use unchecked or unsafe operations.
+    Note: Recompile with -Xlint:unchecked for details.
+    :compile
 
-	BUILD SUCCESSFUL
+    BUILD SUCCESSFUL
 
-	Total time: 34.48 secs
-	```
+    Total time: 34.48 secs
+    ```
 
 *__Note__: The commands above may take a short time to execute due to the size of the required libraries.*
 
@@ -374,25 +374,25 @@ The output produced by mutation analysis contains a significant amount of inform
 
 1.  Perform mutation analysis with the default configuration and the `ArtistSimilarity` schema:
 
-	`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation`
+    `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation`
 
-	Which produces the following data in the `results/newmutationanalysis.dat` file:
+    Which produces the following data in the `results/newmutationanalysis.dat` file:
 
-	```
-	dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
-	SQLite,parsedcasestudy.ArtistSimilarity,CondAICC,avsDefaults,0,NA,100.0,22,9,AllOperatorsWithRemovers,5,9,original,false,259,67,5,31,371
-	```
+    ```
+    dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
+    SQLite,parsedcasestudy.ArtistSimilarity,CondAICC,avsDefaults,0,NA,100.0,22,9,AllOperatorsWithRemovers,5,9,original,false,259,67,5,31,371
+    ```
 
 2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC` coverage criterion, the `random` data generator and the `ArtistSimilarity` schema:
 
-	`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
+    `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
 
-	Which produces the following data in the `results/newmutationanalysis.dat` file:
+    Which produces the following data in the `results/newmutationanalysis.dat` file:
 
-	```
-	dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
+    ```
+    dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
 SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
-	```
+    ```
 
 [^^^ To Top ^^^](#table-of-contents)
 
