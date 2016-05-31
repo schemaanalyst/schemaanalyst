@@ -10,8 +10,8 @@ import com.beust.jcommander.Parameters;
 @Parameters(separators = "=", commandDescription = "Generate test data with SchemaAnalyst")
 public class GenerationCommand {
 
-  @Parameter(names = {"--sql","--inserts"}, description = "Target file for writing INSERT statements")
-  protected String sql = null;
+  @Parameter(names = {"--sql","--inserts"}, description = "Enable writing INSERT statements")
+  protected boolean sql = false;
 
   @Parameter(names = {"--testSuitePackage","-p"}, description = "Target package for writing JUnit test suite")
   protected String testSuitePackage = "generatedtest";

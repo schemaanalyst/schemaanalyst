@@ -82,7 +82,7 @@ public class Go {
 
         String packagename = gc.testSuitePackage;
 
-        String sql = gc.sql;
+        boolean sql = gc.sql;
 
         // Copied code from GenerateTestSuite and PrintTestSuite
 
@@ -105,8 +105,9 @@ public class Go {
         TestSuite testSuite = testSuiteGenerator.generate();
 
         // if desired, write the INSERTs to a file for inspection
-        if (sql != null){
-            File file = new File(packagename + "/" + sql + ".sql");
+        if (sql){
+
+            File file = new File(packagename + "/" + schema + ".sql");
 
             writeInserts(testSuite, dbmsObject, file, schemaObject);
 
