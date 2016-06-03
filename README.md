@@ -1,6 +1,6 @@
 # SchemaAnalyst
 
-<img src="https://github.com/schemaanalyst-team/schemaanalyst-logo/blob/master/schemaanalyst-logo-gh.png" height="170" alt="fzf - a command-line fuzzy finder"> [![travis-ci](https://travis-ci.org/junegunn/fzf.svg?branch=master)](https://travis-ci.org/junegunn/fzf)
+<img src="https://raw.githubusercontent.com/schemaanalyst-team/schemaanalyst-logo/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for database schemas.">
 ===
 
 # Description
@@ -40,17 +40,17 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
     - [Asciicinema Recording](#asciicinema)
     - [Help Menu](#help)
     - [Options](#options)
+    - [Test Data Generation](#test-data-generation)
+        * [Syntax](#test-data-generation-syntax)
+        * [Parameters](#test-data-generation-parameters)
+        * [Output](#test-data-generation-output)
+        * [Example](#test-data-generation-example)
     - [Mutation Analysis](#mutation-analysis)
         * [Syntax](#mutation-analysis-syntax)
         * [Parameters](#mutation-analysis-parameters)
         * [Output](#mutation-analysis-output)
         * [Interpretation](#mutation-analysis-interpretation)
         * [Examples](#mutation-analysis-examples)
-    - [Test Data Generation](#test-data-generation)
-        * [Syntax](#test-data-generation-syntax)
-        * [Parameters](#test-data-generation-parameters)
-        * [Output](#test-data-generation-output)
-        * [Example](#test-data-generation-example)
 + [Building and Execution Environment](#environment)
 + [Publications](#publications)
 + [License](#license)
@@ -135,12 +135,10 @@ Please watch this Asciicinema recording that shows some of the key features of S
 
 [![asciicast](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi.png)](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi)
 
-[^^^ To Top ^^^](#table-of-contents)
-
 ---
 
 ### Help Menu <a name="help"></a>
-SchemaAnalyst uses a command line interface with a variety of execution options.  Two primary commands are included: `mutation` for [Mutation Analysis](#mutation-analysis), and `generation` for [Test Data Generation](#test-data-generation).  Note that one of these two commands *must* be chosen, and their syntax is discussed later on.
+SchemaAnalyst uses a command line interface with a variety of execution options.  Two primary commands are included: `generation` for [Test Data Generation](#test-data-generation) and `mutation` for [Mutation Analysis](#mutation-analysis).  Note that one of these two commands *must* be applied, and their syntax is discussed later on.
 
 You are also able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows:
 
@@ -199,11 +197,9 @@ Usage: <main class> [options] [command] [command options]
              Default: false
 ```
 
-[^^^ To Top ^^^](#table-of-contents)
-
 ### Options <a name="options"></a>
 
-The following options can precede the `mutation` and `generation` commands for additional functionality (note that the `--schema` option is required):
+The following options can precede the `generation` and `mutation` commands for additional functionality (note that the `--schema` option is required):
 
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
@@ -215,7 +211,56 @@ The following options can precede the `mutation` and `generation` commands for a
 
 *__Note:__ If you attempt to execute any of the `Runner` classes of SchemaAnalyst without the necessary parameters, or if you type the `--help` tag, you should be presented with information describing the parameters and detailing which of these are required. Where parameters are not required, the defaults values should usually be sensible.  While there are other parameters available for this class, it is generally not necessary to understand their purpose.*
 
-[^^^ To Top ^^^](#table-of-contents)
+### Test Data Generation <a name="test-data-generation"></a>
+
+###### Syntax <a name="test-data-generation-syntax"></a>
+
+SchemaAnalyst will create a series of `INSERT` statements to test the integrity constraints that are altered via mutation, as described in the [Overview](#overview) section.  This data is typically hidden from the user during the analysis, but if you wish to see what data the system is generating for this process, then you can use the following syntax:
+
+`java org.schemaanalyst.util.Go -s schema <options> generation <parameters>`
+
+Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
+
+###### Parameters <a name="test-data-generation-parameters"></a>
+
+| Parameter | Required | Description |
+|:---------:|:--------:|:-----------:|
+| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file |
+| --testSuite |  | Target file for writing JUnit test suite.|
+| --testSuitePackage |  | Target package for writing JUnit test suite.|
+
+###### Output <a name="test-data-generation-output"></a>
+
+By default, the `generation` command creates a JUnit test suite in the `generatedtest` directory.   The name of the file can be changed with the `--testSuite` parameter, while the package can be changed with the `--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can be used to generate a `.sql` file with all of the `INSERT` statements used to test the integrity constraints of the schema.  These statements are also automatically displayed in the console window after execution.  See the example below for the output from a specific schema.
+
+###### Example <a name="test-data-generation-example"></a>
+
+Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and save the output in the file `SampleOutput.sql`:
+
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
+
+This will produce a series of `INSERT` statements for each mutant of the schema.  Some abbreviated output from the above execution is included below:
+
+```
+INSERT INTO "artists"(
+        "artist_id"
+) VALUES (
+        ''
+)
+
+INSERT INTO "artists"(
+        "artist_id"
+) VALUES (
+        'a'
+)
+
+INSERT INTO "artists"(
+        "artist_id"
+) VALUES (
+        ''
+)
+...
+```
 
 ### Mutation Analysis <a name="mutation-analysis"></a>
 
@@ -290,60 +335,8 @@ The output produced by mutation analysis contains a significant amount of inform
 SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
     ```
 
-[^^^ To Top ^^^](#table-of-contents)
-
 ---
 
-### Test Data Generation <a name="test-data-generation"></a>
-
-###### Syntax <a name="test-data-generation-syntax"></a>
-
-SchemaAnalyst will create a series of `INSERT` statements to test the integrity constraints that are altered via mutation, as described in the [Overview](#overview) section.  This data is typically hidden from the user during the analysis, but if you wish to see what data the system is generating for this process, then you can use the following syntax:
-
-`java org.schemaanalyst.util.Go -s schema <options> generation <parameters>`
-
-Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
-
-###### Parameters <a name="test-data-generation-parameters"></a>
-
-| Parameter | Required | Description |
-|:---------:|:--------:|:-----------:|
-| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file |
-| --testSuite |  | Target file for writing JUnit test suite.|
-| --testSuitePackage |  | Target package for writing JUnit test suite.|
-
-###### Output <a name="test-data-generation-output"></a>
-
-By default, the `generation` command creates a JUnit test suite in the `generatedtest` directory.   The name of the file can be changed with the `--testSuite` parameter, while the package can be changed with the `--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can be used to generate a `.sql` file with all of the `INSERT` statements used to test the integrity constraints of the schema.  These statements are also automatically displayed in the console window after execution.  See the example below for the output from a specific schema.
-
-###### Example <a name="test-data-generation-example"></a>
-
-Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and save the output in the file `SampleOutput.sql`:
-
-`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
-
-This will produce a series of `INSERT` statements for each mutant of the schema.  Some abbreviated output from the above execution is included below:
-
-```
-INSERT INTO "artists"(
-        "artist_id"
-) VALUES (
-        ''
-)
-
-INSERT INTO "artists"(
-        "artist_id"
-) VALUES (
-        'a'
-)
-
-INSERT INTO "artists"(
-        "artist_id"
-) VALUES (
-        ''
-)
-...
-```
 
 ---
 
