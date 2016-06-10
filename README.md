@@ -131,9 +131,9 @@ Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code.
 
 ### Asciinema Recording <a name="asciicinema"></a>
 
-Please watch this Asciicinema recording that shows some of the key features of SchemaAnalyst, which are explained in more detail below.
+Please watch this Asciinema recording that shows some of the key features of SchemaAnalyst, which are explained in more detail below.
 
-[![asciicast](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi.png)](https://asciinema.org/a/3lp4hrsnz5327m04rwu9biewi)
+[![asciicast](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5.png)](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5)
 
 ---
 
