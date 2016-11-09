@@ -302,7 +302,7 @@ will be further discussed in the table below.
 
 Performing mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
 
-`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation technique=mutantTiming`
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation --technique=mutantTiming`
 
 Which produces the following data in the `results/mutanttiming.dat` file:
 
