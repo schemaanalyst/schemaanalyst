@@ -296,26 +296,27 @@ will be further discussed in the table below.
 | schema | The schema.|
 | operator | The mutation operator used to generate the mutant.|
 | type | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT).|
-| killed | The kill status of a mutant i.e., killed=true, alive=false.|
+| killed | The kill status of a mutant i.e., true=killed, false=alive.|
 | time | The time, in ms, to generate the mutant.|
 
-Perform mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
 
-    `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation technique=mutantTiming`
+Performing mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
 
-    Which produces the following data in the `results/mutanttiming.dat` file:
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation technique=mutantTiming`
 
-    ```
-    identifier,dbms,schema,operator,type,killed,time
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,89
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,96
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,89
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,92
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,75
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,73
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,84
-    mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,91
-    ```
+Which produces the following data in the `results/mutanttiming.dat` file:
+
+```
+identifier,dbms,schema,operator,type,killed,time
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,89
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,96
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,89
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,92
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,75
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,73
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,84
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,91
+```
 
 Executing this class produces a single results file in CSV format that contains one line per execution, located at `results/newmutationanalysis.dat`. This contains a number of columns:
 
