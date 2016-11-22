@@ -19,6 +19,16 @@ public class Cell implements Serializable {
         this.value = createValue();
     }
 
+    // Added By Abdullah
+    public Cell(Column column, Value value) {
+        this.column = column;
+        this.value = value;
+        //this.valueFactory = valueFactory;
+        this.lastValue = null;
+        //this.value = createValue();
+    }
+
+
     protected Value createValue() {
         return valueFactory.createValue(column.getDataType());
     }

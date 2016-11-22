@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
+import org.schemaanalyst.data.NumericValue;
+
 public class IntDataType extends DataType implements Signed {
 
     private static final long serialVersionUID = 748636310116552558L;
@@ -28,6 +30,11 @@ public class IntDataType extends DataType implements Signed {
         typeVisitor.visit(this);
     }
 
+    @Override
+    public void accept(DataTypePlusVisitor typePlusVisitor) {
+    	typePlusVisitor.visit(this, new NumericValue());
+    }
+    
     @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((Signed) this);

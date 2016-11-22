@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
+import org.schemaanalyst.data.NumericValue;
+
 public class FloatDataType extends DataType {
 
     private static final long serialVersionUID = -1350006344393093990L;
@@ -9,6 +11,11 @@ public class FloatDataType extends DataType {
         typeVisitor.visit(this);
     }
 
+    @Override
+    public void accept(DataTypePlusVisitor typePlusVisitor) {
+    	typePlusVisitor.visit(this, new NumericValue());
+    }
+    
     @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit(this);

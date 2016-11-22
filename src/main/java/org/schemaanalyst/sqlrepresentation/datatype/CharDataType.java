@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
+import org.schemaanalyst.data.StringValue;
+
 public class CharDataType extends DataType
         implements LengthLimited {
 
@@ -27,6 +29,11 @@ public class CharDataType extends DataType
     @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
+    }
+    
+    @Override
+    public void accept(DataTypePlusVisitor typePlusVisitor) {
+    	typePlusVisitor.visit(this, new StringValue());
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
+import org.schemaanalyst.data.generation.selector.SelectorDataGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
@@ -15,6 +16,7 @@ import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescrip
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.util.DataMapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,7 +37,10 @@ public class TestSuiteGenerator {
     private DataGenerator dataGenerator;
     private HashMap<Table, Data> initialTableData;
     private TestSuite testSuite;
+    //private Data selectorState;
     private TestSuiteGenerationReport testSuiteGenerationReport;
+    
+	private DataMapper mapper = new DataMapper();
 
     public TestSuiteGenerator(Schema schema,
                               TestRequirements testRequirements,
@@ -54,6 +59,18 @@ public class TestSuiteGenerator {
 
         testSuite = new TestSuite();
         testSuiteGenerationReport = new TestSuiteGenerationReport();
+        
+        if (dataGenerator instanceof SelectorDataGenerator) {
+        	mapper.connectDB(schema);
+        	mapper.mapData();
+        	/*
+            DataMapper mapper = new DataMapper();
+            mapper.connectDB(schema);
+            mapper.mapData();
+            selectorState = mapper.getData();
+            */
+        }
+        
         generateInitialTableData();
         generateTestCases();
         return testSuite;
@@ -93,9 +110,19 @@ public class TestSuiteGenerator {
 
             LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
             LOGGER.fine("--- Predicate is " + predicate);
-
+            Data state = null;
+            
+            if (dataGenerator instanceof SelectorDataGenerator) {
+            	//state = selectorState.duplicate();
+        		//DataMapper mapper = new DataMapper();
+        		//mapper.connectDB(schema);
+        		//mapper.mapData();
+            	state = mapper.returnPerfectState(table);
+            } else {
+                state = new Data();
+            }
             // add referenced tables to the state
-            Data state = new Data();
+            //Data state = new Data();
             boolean haveLinkedData = addInitialTableDataToState(state, table);
             if (haveLinkedData) {
                 // generate the row
@@ -132,8 +159,20 @@ public class TestSuiteGenerator {
             }
             LOGGER.fine("--- Predicate is " + predicate);
 
-            Data state = new Data();
+            Data state = null;
+            
+            if (dataGenerator instanceof SelectorDataGenerator) {
+            	//state = selectorState.duplicate();
+        		//DataMapper mapper = new DataMapper();
+        		//mapper.connectDB(schema);
+        		//mapper.mapData();
+            	state = mapper.returnPerfectState(table);
+            } else {
+                state = new Data();
+            }
+            
             Data data = new Data();
+            
             predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
 
             if (predicate != null) {

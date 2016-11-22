@@ -1,0 +1,6 @@
+install.packages("ggplot2")
+install.packages("plyr")
+install.packages("dplyr")
+install.packages("tidyr")
+install.packages("stringr")
+install.packages("readr")

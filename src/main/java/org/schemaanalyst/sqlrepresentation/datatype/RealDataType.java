@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
+import org.schemaanalyst.data.NumericValue;
+
 public class RealDataType extends DataType {
 
     private static final long serialVersionUID = -4773368969321372732L;
@@ -7,6 +9,11 @@ public class RealDataType extends DataType {
     @Override
     public void accept(DataTypeVisitor typeVisitor) {
         typeVisitor.visit(this);
+    }
+    
+    @Override
+    public void accept(DataTypePlusVisitor typePlusVisitor) {
+    	typePlusVisitor.visit(this, new NumericValue());
     }
     
     @Override

@@ -17,6 +17,7 @@ import org.schemaanalyst.data.generation.search.termination.CombinedTerminationC
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
+import org.schemaanalyst.data.generation.selector.SelectorDataGenerator;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.util.random.Random;
 import org.schemaanalyst.util.random.SimpleRandom;
@@ -164,4 +165,12 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 new DefaultCellInitializer());
     }
+
+    public static SelectorDataGenerator selectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        //RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
+        return new SelectorDataGenerator(maxEvaluations, randomSeed);
+    }
+
 }

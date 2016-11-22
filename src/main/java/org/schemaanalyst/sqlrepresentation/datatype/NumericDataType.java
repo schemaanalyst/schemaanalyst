@@ -1,5 +1,7 @@
 package org.schemaanalyst.sqlrepresentation.datatype;
 
+import org.schemaanalyst.data.NumericValue;
+
 public class NumericDataType extends DataType
         implements PrecisionedAndScaled {
 
@@ -44,6 +46,11 @@ public class NumericDataType extends DataType
         typeVisitor.visit(this);
     }
 
+    @Override
+    public void accept(DataTypePlusVisitor typePlusVisitor) {
+    	typePlusVisitor.visit(this, new NumericValue());
+    }
+    
     @Override
     public void accept(DataTypeCategoryVisitor categoryVisitor) {
         categoryVisitor.visit((PrecisionedAndScaled) this);

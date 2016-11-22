@@ -66,7 +66,7 @@ public class StringValue extends Value implements CompoundValue {
         this.characterDefault = characterDefault;
     }
 
-    protected void setCharacterRange(int characterMin, int characterMax) {
+    public void setCharacterRange(int characterMin, int characterMax) {
         this.characterMin = characterMin;
         this.characterMax = characterMax;
     }

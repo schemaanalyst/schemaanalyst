@@ -13,6 +13,9 @@ public abstract class DataType implements Serializable {
 
     public abstract void accept(DataTypeVisitor typeVisitor);
 
+    // Added By Abdullah    
+    public abstract void accept(DataTypePlusVisitor typePlusVisitor);
+
     public abstract void accept(DataTypeCategoryVisitor categoryVisitor);
     
     public abstract DataType duplicate();
