@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 
 import org.schemaanalyst.data.BooleanValue;
@@ -129,7 +130,7 @@ public class DataMapper {
 												//System.out.println(newVal.getRealString());
 												condition = c.getSecond().getName() + " = '" + newVal.get() + "'"; 
 											}
-											String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" WHERE " + condition + ";";
+											String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" WHERE " + condition + " LIMIT 1;";
 											fk_cells.add(aStm);
 											//System.out.println(aStm);
 										}
@@ -678,16 +679,60 @@ public class DataMapper {
 		//this.mapData();
 		
 		List<Table> tbls = schema.getConnectedTables(table);
-		tbls.add(table);
+		//tbls.add(table);
 		
+		
+		Random randomGenerator = new Random();
+		int index = randomGenerator.nextInt(data.getRows(table).size());
+		
+		Row firstRow = data.getRows(table).get(index);
+//		System.err.println("TABLE = " + table);
+//		System.err.println("CONNECTED TABLES = " + tbls);
+//		System.err.println("Random ROW = " + firstRow);
+//		System.err.println("FKs = " + schema.getForeignKeyConstraints(table));
+		for (ForeignKeyConstraint fk : schema.getForeignKeyConstraints(table)) {
+			for (Pair<Column> pair_c : fk.getColumnPairs()) {
+				for (Table tbl : tbls) {
+					if (tbl.hasColumn(pair_c.getFirst())) {
+						//System.out.println("Referenced Table = " + tbl + "; Column Ref = " + tbl.getColumn(pair_c.getSecond().toString()));
+						Column refColunm = tbl.getColumn(pair_c.getSecond().toString());
+						//System.out.println(firstRow.getCell(pair_c.getSecond()));
+						for (Row row : data.getRows(tbl)) {
+							if (row.getCell(refColunm).getValue().equals(firstRow.getCell(pair_c.getSecond()).getValue())) {
+								newData.addRow(tbl, row);
+								//System.err.println(row);
+							}
+						}
+					}
+				}
+				//System.out.println(firstRow.getCell(pair_c.getFirst()));
+				//System.out.println(pair_c.getFirst());
+				//System.out.println(pair_c.getSecond());
+
+			}
+		}
+		//newData.addRow(table, firstRow);
+		/*
 		for (Table tbl : tbls) {
 			newData.addRows(tbl, data.getRows(tbl));
 		}
-		/*
+		
 		System.out.println("===================================New Data==============================================");
 		System.out.println(newData);
 		System.out.println("=========================================================================================");
 		*/
+		return newData;
+		
+	}
+	
+	
+	public Data returnPerfectRandomState(Table table) {
+		Data newData = new Data();
+		Random randomGenerator = new Random();
+		int index = randomGenerator.nextInt(data.getRows(table).size());
+		Row firstRow = data.getRows(table).get(index);
+		newData.addRow(table, firstRow);
+
 		return newData;
 		
 	}

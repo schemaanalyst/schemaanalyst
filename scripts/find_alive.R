@@ -18,4 +18,4 @@ process <- function(file) {
 		write_csv(paste(sep="",str_replace(file,".dat",""),"-alive.dat"))
 }
 
-process('/home/abdullah/workspace/SchemaAnalyst/results/mutanttiming.dat')
+process('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming.dat')

@@ -6,7 +6,7 @@ import subprocess
 import random
 import shutil
 import glob
-
+import csv
 cmd1 = './gradlew compile'
 cmd2 = 'export CLASSPATH="build/classes/main:lib/*:build/lib/*:."'
 subprocess.check_output(cmd1, shell=True)
@@ -35,20 +35,40 @@ for data in databases:
                 result = subprocess.check_output("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --dbms SQLite --criterion " + cov + " --generator " + gen + " mutation --pipeline AllOperatorsWithRemovers --technique=mutantTiming --seed " + str(random.randint(0, 100000)),shell=True,)
                 print result
                 #print os.system("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --criterion " + cov + " --generator " + gen + " generation")
-            if (os.path.isfile('/home/abdullah/workspace/SchemaAnalyst/results/mutanttiming.dat')):
+            if (os.path.isfile('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming.dat')):
                 # Define command and arguments
                 command = 'Rscript '
-                path2script = '/home/abdullah/workspace/SchemaAnalyst/scripts/find_alive.R'
+                path2script = '/home/abdullah/workspace/schemaanalyst-main/scripts/find_alive.R'
 
                 # Build subprocess command
                 cmd = command + path2script
                 subprocess.check_output(cmd, shell=True)
+                # Add generator and Critira at the end of the columns of the file
+                with open('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming.dat','r') as csvinput:
+                    with open('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming-output.dat', 'w') as csvoutput:
+                        writer = csv.writer(csvoutput, lineterminator='\n')
+                        reader = csv.reader(csvinput)
+
+                        all = []
+                        row = next(reader)
+                        row.append('generator')
+                        row.append('criterion')
+                        all.append(row)
+
+                        for row in reader:
+                            row.append(gen)
+                            row.append(cov)
+                            all.append(row)
+
+                        writer.writerows(all)
+
                 # reading mutanttiming
-                shutil.copy2('/home/abdullah/workspace/SchemaAnalyst/results/mutanttiming-alive.dat', '/home/abdullah/workspace/SchemaAnalyst/results/alive_mutant/mutant-alive-' + data + '-' + gen + '-' + cov + '.dat')
-                shutil.copy2('/home/abdullah/workspace/SchemaAnalyst/results/mutanttiming.dat', '/home/abdullah/workspace/SchemaAnalyst/results/alive_mutant/mutant-results-' + data + '-' + gen + '-' + cov + '.dat')
+                shutil.copy2('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming-alive.dat', '/home/abdullah/workspace/schemaanalyst-main/results/alive_mutant/mutant-alive-' + data + '-' + gen + '-' + cov + '.dat')
+                shutil.copy2('/home/abdullah/workspace/schemaanalyst-main/results/mutanttiming-output.dat', '/home/abdullah/workspace/schemaanalyst-main/results/alive_mutant/mutant-results-' + data + '-' + gen + '-' + cov + '.dat')
                 #remove files
-                subprocess.check_output("rm /home/abdullah/workspace/SchemaAnalyst/results/mutanttiming.dat", shell=True)
-                subprocess.check_output("rm /home/abdullah/workspace/SchemaAnalyst/results/mutanttiming-alive.dat", shell=True)
+                subprocess.check_output("rm /home/abdullah/workspace/schemaanalyst-main/results/mutanttiming.dat", shell=True)
+                subprocess.check_output("rm /home/abdullah/workspace/schemaanalyst-main/results/mutanttiming-alive.dat", shell=True)
+                subprocess.check_output("rm /home/abdullah/workspace/schemaanalyst-main/results/mutanttiming-output.dat", shell=True)
             else:
                 iterations = iterations + 1
 
@@ -60,7 +80,7 @@ def rename(dir, pattern, titlePattern):
                   os.path.join(dir, titlePattern % title + ext))
 
 
-dir = r'/home/abdullah/workspace/SchemaAnalyst/results/alive_mutant'
+dir = r'/home/abdullah/workspace/schemaanalyst-main/results/alive_mutant'
 pattern = r'*.dat'
 titlePatern = r'%s-SQLite'
 
@@ -80,19 +100,19 @@ def runit(dir, pattern):
         #os.rename(pathAndFilename, os.path.join(dir, titlePattern % title + ext))
 
 
-dir = r'/home/abdullah/workspace/SchemaAnalyst/results/alive_mutant'
+dir = r'/home/abdullah/workspace/schemaanalyst-main/results/alive_mutant'
 pattern = r'*.dat'
 #titlePatern = r'%s-SQLite'
 
 runit(dir, pattern)
 
 # Combain alive mutant Dat files into one file
-dir = r'/home/abdullah/workspace/SchemaAnalyst/results/alive_mutant'
+dir = r'/home/abdullah/workspace/schemaanalyst-main/results/alive_mutant'
 pattern = r'*.dat'
 interesting_files = glob.iglob(os.path.join(dir, pattern)) 
 
 header_saved = False
-with open('/home/abdullah/workspace/SchemaAnalyst/results/output.dat','wb') as fout:
+with open('/home/abdullah/workspace/schemaanalyst-main/results/output.dat','wb') as fout:
     for filename in interesting_files:
         title, ext = os.path.splitext(os.path.basename(filename))
         if title.startswith('mutant-results') and ext == '.dat':

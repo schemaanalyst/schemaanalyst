@@ -110,17 +110,13 @@ public class TestSuiteGenerator {
 
             LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
             LOGGER.fine("--- Predicate is " + predicate);
-            Data state = null;
-            
+            Data state = new Data();
+            /*
             if (dataGenerator instanceof SelectorDataGenerator) {
-            	//state = selectorState.duplicate();
-        		//DataMapper mapper = new DataMapper();
-        		//mapper.connectDB(schema);
-        		//mapper.mapData();
-            	state = mapper.returnPerfectState(table);
-            } else {
-                state = new Data();
+            	//state.appendData(mapper.returnPerfectState(table));
+            	state.appendData(mapper.getData());
             }
+            */
             // add referenced tables to the state
             //Data state = new Data();
             boolean haveLinkedData = addInitialTableDataToState(state, table);
@@ -135,6 +131,10 @@ public class TestSuiteGenerator {
                     initialTableData.put(table, data);
                 } else {
                     LOGGER.fine("--- Failed");
+                    System.err.println("Generating Initial Data --- Failed");
+                    System.err.println(predicate);
+                    System.err.println(state);
+                    System.err.println(data);
                 }
 
                 testSuiteGenerationReport.addInitialTableDataResult(
@@ -159,20 +159,14 @@ public class TestSuiteGenerator {
             }
             LOGGER.fine("--- Predicate is " + predicate);
 
-            Data state = null;
-            
-            if (dataGenerator instanceof SelectorDataGenerator) {
-            	//state = selectorState.duplicate();
-        		//DataMapper mapper = new DataMapper();
-        		//mapper.connectDB(schema);
-        		//mapper.mapData();
-            	state = mapper.returnPerfectState(table);
-            } else {
-                state = new Data();
-            }
-            
+            Data state = new Data();
             Data data = new Data();
-            
+            /*
+            if (dataGenerator instanceof SelectorDataGenerator) {
+            	//state.appendData(mapper.returnPerfectState(table));
+            	state.appendData(mapper.getData());
+            }
+            */
             predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
 
             if (predicate != null) {
@@ -191,6 +185,10 @@ public class TestSuiteGenerator {
                     LOGGER.fine("--- Data is \n" + data);
                 } else {
                     LOGGER.fine("--- FAILED");
+                    System.err.println("Generating Data --- Failed");
+                    System.err.println(predicate);
+                    System.err.println(state);
+                    System.err.println(data);
                 }
 
                 testSuiteGenerationReport.addTestRequirementResult(
@@ -243,8 +241,12 @@ public class TestSuiteGenerator {
             // a row should always have been previously-generated
             // for a linked table
             if (!linkedTable.equals(table)) {
-                Data initialData = initialTableData.get(linkedTable);
-
+            	Data initialData = null;
+                if (!(dataGenerator instanceof SelectorDataGenerator)) {
+                	initialData = initialTableData.get(linkedTable);
+                } else {
+                	initialData = mapper.returnPerfectRandomState(linkedTable);
+                }
                 // cannot generate data in this instance
                 if (initialData == null) {
                     return false;

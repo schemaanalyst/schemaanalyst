@@ -40,6 +40,7 @@ public class SelectorCellValueGenerator {
 	        
 	        
 	        boolean generentRandom = random.nextDouble() < useLibraryProbability;
+	        //System.err.println(generentRandom);
 	        if (generentRandom) {
 	        	generateRandomValue(cell);
 	        	return;
@@ -54,9 +55,9 @@ public class SelectorCellValueGenerator {
 
 	            boolean success = false;
 
-	            void setCell(Cell cell) {
+	            boolean setCell(Cell cell) {
 	                cell.getValue().accept(this);
-	                //return success;
+	                return success;
 	            }
 
 	            @Override

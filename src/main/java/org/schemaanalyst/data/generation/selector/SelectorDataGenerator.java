@@ -7,6 +7,7 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
+import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
@@ -20,7 +21,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.util.DataMapper;
-import org.schemaanalyst.sqlrepresentation.Schema;
+import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.util.random.*;
 
 /**
@@ -42,6 +43,15 @@ public class SelectorDataGenerator extends DataGenerator {
 		this.maxEvaluations = maxEvaluations;
 		this.randomSeed = randomSeed;
 	}
+	
+	public SelectorDataGenerator(int maxEvaluations,
+			SelectorCellValueGenerator selectorCellValueGenerator,
+            CellInitializer cellInitializer, long randomSeed) {
+        this.maxEvaluations = maxEvaluations;
+        this.selectorCellValueGenerator = selectorCellValueGenerator;
+        this.cellInitializer = cellInitializer;
+		this.randomSeed = randomSeed;
+	}
 
 	public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
 		random = new SimpleRandom(randomSeed);
@@ -51,29 +61,22 @@ public class SelectorDataGenerator extends DataGenerator {
 
 		initialize(data, state, predicate);
 		//this.selctorGenerator(data, state);
-		//System.out.println("=======================================================================================================");
-		//System.out.println(data);
-		//System.out.println("=======================================================================================================");
-		//System.out.println(state);
 
 		boolean success = objectiveFunction.evaluate(data).isOptimal();
 		int evaluations = 1;
 		while (!success && evaluations < maxEvaluations) {
-			//System.out.println("=======================================================================================================");
 			attemptFix_orginal(data);
-			//System.out.println(data.getTables());
 			evaluations++;
 			success = objectiveFunction.evaluate(data).isOptimal();
-			/*
-			System.out.println("Number of Evalutions = " + evaluations);
-			System.out.println("Is it successful     = " + success);
-			System.out.println("Predicate object     = " + predicate.toString());
-			System.out.println("=======================================================================================================");
-			*/
 		}
-		//System.out.println("=======================================================================================================");
-		//System.out.println(state);
-		//System.out.println("=======================================================================================================");
+		/*
+	    if (!success && evaluations == maxEvaluations) {
+			System.out.println("=======================================================================================================");
+			System.out.println(data);
+			System.out.println(state);
+			System.out.println("=======================================================================================================");
+		}
+		*/
 		return new DataGenerationReport(success, evaluations);
 	}
 
@@ -89,7 +92,7 @@ public class SelectorDataGenerator extends DataGenerator {
             selectorCellValueGenerator.generateCellValue(cell);
         }
     }
-
+    
 	protected void attemptFix(Data data) {
 		//Generate new row out of the old data and generate random cells if you can
 		for (Table table : data.getTables()) {
@@ -98,7 +101,8 @@ public class SelectorDataGenerator extends DataGenerator {
 			for (Cell cell : row.getCells()) {
 				RandomReadableValueGenerator vf = new RandomReadableValueGenerator();
 				Value val = vf.createValue(cell.getColumn().getDataType(), cell.getValue());
-				Cell new_cell = new Cell(cell.getColumn(), val);
+				Cell new_cell = new Cell(cell.getColumn(), new ValueFactory());
+				new_cell.setValue(val);
 				boolean setNewCell = ThreadLocalRandom.current().nextInt(5) == 0;
 				if (setNewCell) {
 					boolean setToNull = ThreadLocalRandom.current().nextInt(5) == 0;
@@ -125,7 +129,8 @@ public class SelectorDataGenerator extends DataGenerator {
 					List<Cell> cells = state.getCells(table, col);
 					int index = ThreadLocalRandom.current().nextInt(cells.size());
 					Cell old_cell = cells.get(index);
-					Cell new_cell = new Cell(col, old_cell.getValue());
+					Cell new_cell = new Cell(col, new ValueFactory());
+					new_cell.setValue(old_cell.getValue());
 					/*
 					boolean setToNull = ThreadLocalRandom.current().nextInt(5) == 0;
 					if (setToNull) {

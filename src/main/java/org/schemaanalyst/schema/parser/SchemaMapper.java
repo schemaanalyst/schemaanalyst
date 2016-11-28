@@ -9,7 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.schemaanalyst.sqlrepresentation.*;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.*;
+
+import net.sf.jsqlparser.JSQLParserException;
+
 import org.schemaanalyst.javawriter.*;
 import org.schemaanalyst.configuration.LocationsConfiguration;
 
@@ -102,9 +106,9 @@ public class SchemaMapper {
 			rs = metadata.getColumns(null, null, actualTable.toString(), null);
 			while (rs.next()) {
 				String nullable = "";
-				boolean nulling = false;
+				boolean nulling = true;
 				if (rs.getBoolean("NULLABLE"))
-					nulling = true;
+					nulling = false;
 				Column col = new Column(rs.getString("COLUMN_NAME"), this.getDataType(rs.getInt("DATA_TYPE"), rs.getString("TYPE_NAME"), rs.getInt("COLUMN_SIZE")));
 				schema.getTable(t.toString()).addColumn(col);;
 				if (nulling)
@@ -165,18 +169,33 @@ public class SchemaMapper {
 
 				schema.createForeignKeyConstraint(t, t.getColumn(fkColName), schema.getTable(pkTableName), schema.getTable(pkTableName).getColumn(pkColName));
 			}
+
+	        
+		}
+		
+		for (Table table : schema.getTables()) {
+		
 		    Statement stmt = null;
 	        stmt = connection.createStatement();
-	        System.out.println("SELECT * FROM sqlite_master WEHRE tbl_name = \""+ actualTable.toString() +"\" and type = \"table\";");
-	        rs = stmt.executeQuery("SELECT * FROM sqlite_master WHERE tbl_name = \""+ actualTable.toString() +"\" and type = \"table\";");
+	        //System.out.println("SELECT * FROM sqlite_master WEHRE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
+	        rs = stmt.executeQuery("SELECT * FROM sqlite_master WHERE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
 	        
 	        
 			while (rs.next()) {
-				CheckParser check = new CheckParser(rs.getString("sql"));
-				check.printCheckStatments();
+				CheckParser check = new CheckParser(table, rs.getString("sql"));
+				try {
+					check.printCheckStatments();
+					List<CheckConstraint> checks = check.getChecks();
+					for (CheckConstraint c : checks) {
+						schema.addCheckConstraint(c);
+					}
+				} catch (JSQLParserException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
-	        
 		}
+		this.writeJavaSchema();
 		/*
 		for (Table t : schema.getTables()) {
 			System.out.println(t);
@@ -191,6 +210,7 @@ public class SchemaMapper {
 		}
 		*/
 	}
+	
 	private DataType getDataType (int dataType, String datatypeDesc, Integer length) {
         switch (dataType) {
 			case java.sql.Types.BOOLEAN:
