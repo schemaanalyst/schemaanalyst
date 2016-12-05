@@ -55,9 +55,9 @@ public class SelectorCellValueGenerator {
 
 	            boolean success = false;
 
-	            boolean setCell(Cell cell) {
+	            void setCell(Cell cell) {
 	                cell.getValue().accept(this);
-	                return success;
+	                //return success;
 	            }
 
 	            @Override
@@ -124,8 +124,13 @@ public class SelectorCellValueGenerator {
 	                List<StringValue> stringValues = valueLibrary.getStringValues();
 	                int size = stringValues.size();
 	                if (size > 0) {
-	                    StringValue newValue = stringValues.get(random.nextInt(stringValues.size()));
-	                    value.set(newValue.get());
+	                    //StringValue newValue = stringValues.get(random.nextInt(stringValues.size())).duplicate();
+	                    //newValue.setCharacterRange(32, 126);
+	                    //newValue.set(stringValues.get(random.nextInt(stringValues.size())));
+	                    //value.set(newValue.get());
+	                	value.setCharacterRange(32, 126);
+	                	value.set(stringValues.get(random.nextInt(stringValues.size())).get());
+	                    //System.out.println(value.get());
 	                    success = true;
 	                } else {
 	                    success = false;

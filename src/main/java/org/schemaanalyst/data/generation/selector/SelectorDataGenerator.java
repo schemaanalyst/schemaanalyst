@@ -37,6 +37,7 @@ public class SelectorDataGenerator extends DataGenerator {
     protected CellInitializer cellInitializer;
     private long randomSeed;
     private Schema schema;
+    private ValueLibrary vl = new ValueLibrary();
 
 
 	public SelectorDataGenerator(int maxEvaluations, long randomSeed) {
@@ -55,8 +56,12 @@ public class SelectorDataGenerator extends DataGenerator {
 
 	public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
 		random = new SimpleRandom(randomSeed);
+		//Data temp = state.duplicate();
+		//temp.appendData(data);
+		makeValueLibrary(state);
+		makeValueLibrary(data);
 		//Data readableValues = this.generateReadableValues();
-		selectorCellValueGenerator = new SelectorCellValueGenerator(random, ValueInitializationProfile.SMALL, 0.1, makeValueLibrary(state), 0.25);
+		selectorCellValueGenerator = new SelectorCellValueGenerator(random, ValueInitializationProfile.SMALL, 0.1, vl, 0.25);
 		cellInitializer = new SelectorCellInitializer(selectorCellValueGenerator);
 
 		initialize(data, state, predicate);
@@ -81,7 +86,8 @@ public class SelectorDataGenerator extends DataGenerator {
 	}
 
 	protected void initialize(Data data, Data state, Predicate predicate) {
-        cellInitializer.initialize(data);
+		if (data.getCells().isEmpty())
+			cellInitializer.initialize(data);
         //System.out.println(data);
 		//this.selctorGenerator(data, state, 10);
 		objectiveFunction = PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state);
@@ -149,17 +155,21 @@ public class SelectorDataGenerator extends DataGenerator {
 		}
 	}
 	
-    private static ValueLibrary makeValueLibrary(Data state) {
-    	ValueLibrary vallib = new ValueLibrary();
+    private void makeValueLibrary(Data state) {
+    	//vl = new ValueLibrary();
     	for (Cell cell : state.getCells()) {
     		if (!cell.isNull())
-    			vallib.addValue(cell.getValue());
+    			vl.addValue(cell.getValue());
     	}
-    	return vallib;
+    	//return vl;
     }
     
     public void setSchema(Schema schema) {
     	this.schema = schema;
+    }
+    
+    public void setValueLibrary(Data data) {
+    	this.makeValueLibrary(data);
     }
     
     private Data generateReadableValues() {

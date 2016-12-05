@@ -132,13 +132,14 @@ public class Northwind extends Schema {
 		tableProducts.createColumn("UnitsInStock", new SmallIntDataType());
 		tableProducts.createColumn("UnitsOnOrder", new SmallIntDataType());
 		tableProducts.createColumn("ReorderLevel", new SmallIntDataType());
-		tableProducts.createColumn("Discontinued", new IntDataType());
+		tableProducts.createColumn("Discontinued", new TextDataType());
+		//tableProducts.createColumn("Discontinued", new IntDataType());
 		this.createPrimaryKeyConstraint("pk_products", tableProducts, tableProducts.getColumn("ProductID"));
 		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("ProductID"));
 		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("ProductName"));
 		this.createNotNullConstraint(tableProducts, tableProducts.getColumn("Discontinued"));
 
-		Table tableRegion = this.createTable("region");
+		Table tableRegion = this.createTable("regions");
 		tableRegion.createColumn("RegionID", new SmallIntDataType());
 		tableRegion.createColumn("RegionDescription", new SingleCharDataType());
 		this.createPrimaryKeyConstraint("pk_region", tableRegion, tableRegion.getColumn("RegionID"));
@@ -152,7 +153,7 @@ public class Northwind extends Schema {
 		this.createPrimaryKeyConstraint("pk_shippers", tableShippers, tableShippers.getColumn("ShipperID"));
 		this.createNotNullConstraint(tableShippers, tableShippers.getColumn("ShipperID"));
 		this.createNotNullConstraint(tableShippers, tableShippers.getColumn("CompanyName"));
-
+		/*
 		Table tableShippersTmp = this.createTable("shippers_tmp");
 		tableShippersTmp.createColumn("ShipperID", new SmallIntDataType());
 		tableShippersTmp.createColumn("CompanyName", new VarCharDataType(40));
@@ -160,7 +161,7 @@ public class Northwind extends Schema {
 		this.createPrimaryKeyConstraint("pk_shippers_tmp", tableShippersTmp, tableShippersTmp.getColumn("ShipperID"));
 		this.createNotNullConstraint(tableShippersTmp, tableShippersTmp.getColumn("ShipperID"));
 		this.createNotNullConstraint(tableShippersTmp, tableShippersTmp.getColumn("CompanyName"));
-
+	*/
 		Table tableSuppliers = this.createTable("suppliers");
 		tableSuppliers.createColumn("SupplierID", new SmallIntDataType());
 		tableSuppliers.createColumn("CompanyName", new VarCharDataType(40));
@@ -186,13 +187,14 @@ public class Northwind extends Schema {
 		this.createNotNullConstraint(tableTerritories, tableTerritories.getColumn("TerritoryID"));
 		this.createNotNullConstraint(tableTerritories, tableTerritories.getColumn("TerritoryDescription"));
 		this.createNotNullConstraint(tableTerritories, tableTerritories.getColumn("RegionID"));
-
+		/*
 		Table tableUsstates = this.createTable("usstates");
 		tableUsstates.createColumn("StateID", new SmallIntDataType());
 		tableUsstates.createColumn("StateName", new VarCharDataType(100));
 		tableUsstates.createColumn("StateAbbr", new VarCharDataType(2));
 		tableUsstates.createColumn("StateRegion", new VarCharDataType(50));
 		this.createNotNullConstraint(tableUsstates, tableUsstates.getColumn("StateID"));
+		*/
 	}
 }
 

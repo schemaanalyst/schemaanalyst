@@ -111,19 +111,39 @@ public class TestSuiteGenerator {
             LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
             LOGGER.fine("--- Predicate is " + predicate);
             Data state = new Data();
+            Data data = new Data();
+
             /*
             if (dataGenerator instanceof SelectorDataGenerator) {
             	//state.appendData(mapper.returnPerfectState(table));
-            	state.appendData(mapper.getData());
+            	state.appendData(mapper.returnPerfectState(table));
             }
             */
             // add referenced tables to the state
-            //Data state = new Data();
             boolean haveLinkedData = addInitialTableDataToState(state, table);
+            /*
+            if (dataGenerator instanceof SelectorDataGenerator) {
+            	//state.appendData(mapper.returnPerfectState(table));
+            	mapper.returnPerfectoState(table);
+            	if (schema.getConnectedTables(table).size() > 0) {
+            		state = mapper.returnState(table).duplicate();
+            	}
+            	data = mapper.returnData(table).duplicate();
+
+            }
+            */
             if (haveLinkedData) {
+                if (!(dataGenerator instanceof SelectorDataGenerator)) {
+                	data.addRow(table, valueFactory);
+                } else {
+                	mapper.returnPerfectoState(table);
+                	if (mapper.returnData(table).getNumRows() == 0)
+                    	data.addRow(table, valueFactory);
+                	else
+                		data = mapper.returnData(table).duplicate();
+                }
+
                 // generate the row
-                Data data = new Data();
-                data.addRow(table, valueFactory);
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
                 if (dataGenerationReport.isSuccess()) {
                     LOGGER.fine("--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
@@ -132,8 +152,11 @@ public class TestSuiteGenerator {
                 } else {
                     LOGGER.fine("--- Failed");
                     System.err.println("Generating Initial Data --- Failed");
+                    System.err.println("PREDICATE");
                     System.err.println(predicate);
+                    System.err.println("STATE");
                     System.err.println(state);
+                    System.err.println("DATA");
                     System.err.println(data);
                 }
 
@@ -164,14 +187,25 @@ public class TestSuiteGenerator {
             /*
             if (dataGenerator instanceof SelectorDataGenerator) {
             	//state.appendData(mapper.returnPerfectState(table));
-            	state.appendData(mapper.getData());
+            	mapper.returnPerfectoState(table);
+            	if (schema.getConnectedTables(table).size() > 0) {
+            		state = mapper.returnState(table).duplicate();
+            	}
+            	data = mapper.returnData(table).duplicate();
+
             }
             */
             predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
-
             if (predicate != null) {
-                data.addRow(table, valueFactory);
-
+                if (!(dataGenerator instanceof SelectorDataGenerator)) {
+                	data.addRow(table, valueFactory);
+                } else {
+                	//mapper.returnPerfectoState(table);
+                	if (mapper.returnData(table).getNumRows() == 0)
+                    	data.addRow(table, valueFactory);
+                	else
+                		data.appendData(mapper.returnData(table).duplicate());
+                }
                 LOGGER.fine("--- Pre-reduced predicate is " + predicate);
                 predicate = predicate.reduce();
                 LOGGER.fine("--- Reduced predicate is " + predicate);
@@ -186,8 +220,14 @@ public class TestSuiteGenerator {
                 } else {
                     LOGGER.fine("--- FAILED");
                     System.err.println("Generating Data --- Failed");
-                    System.err.println(predicate);
+                    System.err.println("TestRequirementDescriptor");
+                    for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
+                    	System.err.println(testRequirementDescriptor.toString());
+                    }
+                    System.err.println("Result is: " + testRequirement.getResult());
+                    System.err.println("STATE");
                     System.err.println(state);
+                    System.err.println("DATA");
                     System.err.println(data);
                 }
 
@@ -217,12 +257,21 @@ public class TestSuiteGenerator {
         }
 
         if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
-            Data comparisonRow = initialTableData.get(table);
+            Data comparisonRow;
+            if ((dataGenerator instanceof SelectorDataGenerator)) {
+            	if (mapper.returnData(table).getNumRows() == 0)
+                	comparisonRow = initialTableData.get(table);
+            	else
+            		comparisonRow = mapper.returnData(table).duplicate();
+            } else {
+            	comparisonRow = initialTableData.get(table);
+            }
             if (comparisonRow == null) {
                 LOGGER.fine("--- could not add comparison row, data generation FAILED");
                 return null;
             }
 
+            
             LOGGER.fine("--- added comparison row");
             state.appendData(comparisonRow);
 
@@ -245,7 +294,13 @@ public class TestSuiteGenerator {
                 if (!(dataGenerator instanceof SelectorDataGenerator)) {
                 	initialData = initialTableData.get(linkedTable);
                 } else {
-                	initialData = mapper.returnPerfectRandomState(linkedTable);
+                	mapper.returnPerfectoState(table);
+                	if (mapper.returnStatedTable(table).getNumRows() == 0)
+                    	initialData = initialTableData.get(linkedTable);
+                	else
+                		initialData = mapper.returnStatedTable(linkedTable).duplicate();
+                	//initialData = mapper.returnState(linkedTable);
+                	//System.out.println(initialData);
                 }
                 // cannot generate data in this instance
                 if (initialData == null) {
@@ -279,7 +334,16 @@ public class TestSuiteGenerator {
 
                     LOGGER.fine("--- adding foreign key row for " + refTable);
                     predicate = addLinkedTableRowsToData(data, predicate, refTable);
-                    data.addRow(refTable, valueFactory);
+                    //data.addRow(refTable, valueFactory);
+                    if (!(dataGenerator instanceof SelectorDataGenerator)) {
+                    	data.addRow(refTable, valueFactory);
+                    } else {
+                    	//mapper.returnPerfectoState(table);
+                    	if (mapper.returnData(table).getNumRows() == 0)
+                        	data.addRow(refTable, valueFactory);
+                    	else
+                    		data.appendData(mapper.returnData(refTable).duplicate());
+                    }
                 }
             }
         }

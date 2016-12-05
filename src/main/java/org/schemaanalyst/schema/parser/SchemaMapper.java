@@ -105,7 +105,7 @@ public class SchemaMapper {
 			schema.addTable(t);
 			rs = metadata.getColumns(null, null, actualTable.toString(), null);
 			while (rs.next()) {
-				String nullable = "";
+				//String nullable = "";
 				boolean nulling = true;
 				if (rs.getBoolean("NULLABLE"))
 					nulling = false;
@@ -119,7 +119,7 @@ public class SchemaMapper {
 			List<Column> pks = new ArrayList<Column>();
 			while (rs.next()) {
 				String columnName = rs.getString("COLUMN_NAME");
-
+				System.out.println("PKs => " +columnName);
 				pks.add(t.getColumn(columnName));
 			}
 			
@@ -162,36 +162,37 @@ public class SchemaMapper {
 			while (rs.next()) {
 				String pkTableName = rs.getString("PKTABLE_NAME");
 				String pkColName = rs.getString("PKCOLUMN_NAME");
-				String fkTableName = rs.getString("FKTABLE_NAME");
+				//String fkTableName = rs.getString("FKTABLE_NAME");
 				String fkColName = rs.getString("FKCOLUMN_NAME");
-				String fkname = rs.getString("FK_NAME");
-				String pkname = rs.getString("PK_NAME");
+				//String fkname = rs.getString("FK_NAME");
+				//String pkname = rs.getString("PK_NAME");
 
 				schema.createForeignKeyConstraint(t, t.getColumn(fkColName), schema.getTable(pkTableName), schema.getTable(pkTableName).getColumn(pkColName));
 			}
 
 	        
 		}
-		
-		for (Table table : schema.getTables()) {
-		
-		    Statement stmt = null;
-	        stmt = connection.createStatement();
-	        //System.out.println("SELECT * FROM sqlite_master WEHRE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
-	        rs = stmt.executeQuery("SELECT * FROM sqlite_master WHERE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
-	        
-	        
-			while (rs.next()) {
-				CheckParser check = new CheckParser(table, rs.getString("sql"));
-				try {
-					check.printCheckStatments();
-					List<CheckConstraint> checks = check.getChecks();
-					for (CheckConstraint c : checks) {
-						schema.addCheckConstraint(c);
+		if (dbEngine.equals("SQLite")) {
+			for (Table table : schema.getTables()) {
+			
+			    Statement stmt = null;
+		        stmt = connection.createStatement();
+		        //System.out.println("SELECT * FROM sqlite_master WEHRE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
+		        rs = stmt.executeQuery("SELECT * FROM sqlite_master WHERE tbl_name = \""+ table.toString() +"\" and type = \"table\";");
+		        
+		        
+				while (rs.next()) {
+					CheckParser check = new CheckParser(table, rs.getString("sql"));
+					try {
+						check.printCheckStatments();
+						List<CheckConstraint> checks = check.getChecks();
+						for (CheckConstraint c : checks) {
+							schema.addCheckConstraint(c);
+						}
+					} catch (JSQLParserException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (JSQLParserException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}

@@ -711,7 +711,7 @@ public class DataMapper {
 
 			}
 		}
-		//newData.addRow(table, firstRow);
+		newData.addRow(table, firstRow);
 		/*
 		for (Table tbl : tbls) {
 			newData.addRows(tbl, data.getRows(tbl));
@@ -725,16 +725,140 @@ public class DataMapper {
 		
 	}
 	
+	public Data returnStatedTable(Table table) {
+		Data dataA = new Data();
+		//Random randomGenerator = new Random();
+				
+		//int index = randomGenerator.nextInt(data.getRows(table).size());
+		//Row firstRow = data.getRows(table).get(index);
+		dataA.addRows(table, newData.getRows(table));
+		//newData.addRows(table, data.getRows(table));
+
+		return dataA;
+	}
 	
+
 	public Data returnPerfectRandomState(Table table) {
 		Data newData = new Data();
 		Random randomGenerator = new Random();
+				
 		int index = randomGenerator.nextInt(data.getRows(table).size());
 		Row firstRow = data.getRows(table).get(index);
 		newData.addRow(table, firstRow);
+		//newData.addRows(table, data.getRows(table));
 
 		return newData;
 		
 	}
 
+	private Data newData;
+	public void returnPerfectoState(Table table) {
+		newData = new Data();
+		
+		List<Table> tbls = schema.getConnectedTables(table);
+		
+		Random randomGenerator = new Random();
+		if (data.getRows(table).size() > 0) {
+			int index = randomGenerator.nextInt(data.getRows(table).size());
+			Row firstRow = data.getRows(table).get(index);
+			List<ForeignKeyConstraint> keys = schema.getForeignKeyConstraints(table);
+			for (ForeignKeyConstraint fk : schema.getForeignKeyConstraints(table)) {
+				int size = fk.getReferenceColumns().size();
+				int counter = 0;
+				// mutlti FKs from another table
+				if (size > 1) {
+					Data tmpData = new Data();
+					for (Pair<Column> pair_c : fk.getColumnPairs()) {
+						for (Table tbl : tbls) {
+							if (tbl.hasColumn(pair_c.getSecond())) {
+								Column refColunm = tbl.getColumn(pair_c.getSecond().toString());
+								//List<Row> rows = data.getRows(tbl);
+								if (counter == 0) {
+									for (Row row : data.getRows(tbl)) {
+										//Value v1 = row.getCell(refColunm).getValue();
+										//Value v2 = firstRow.getCell(pair_c.getFirst()).getValue();
+										if (row.getCell(refColunm).getValue().equals(firstRow.getCell(pair_c.getFirst()).getValue())) {
+											tmpData.addRow(tbl, row);
+										}
+									}
+									counter++;
+								} else {
+									for (Row row : tmpData.getRows(tbl)) {
+										//Value v1 = row.getCell(refColunm).getValue();
+										//Value v2 = firstRow.getCell(pair_c.getFirst()).getValue();
+										if (row.getCell(refColunm).getValue().equals(firstRow.getCell(pair_c.getFirst()).getValue())) {
+											newData.addRow(tbl, row);
+										}
+									}
+									counter++;
+								}
+							}
+						}
+					}
+					
+				} else {
+					for (Pair<Column> pair_c : fk.getColumnPairs()) {
+						for (Table tbl : tbls) {
+							if (tbl.hasColumn(pair_c.getSecond())) {
+								Column refColunm = tbl.getColumn(pair_c.getSecond().toString());
+								//List<Row> rows = data.getRows(tbl);
+								for (Row row : data.getRows(tbl)) {
+									//Value v1 = row.getCell(refColunm).getValue();
+									//Value v2 = firstRow.getCell(pair_c.getFirst()).getValue();
+									if (row.getCell(refColunm).getValue().equals(firstRow.getCell(pair_c.getFirst()).getValue())) {
+										newData.addRow(tbl, row);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			newData.addRow(table, firstRow);
+		}
+		//return newData;
+	}
+	
+	public Data returnState(Table table) {
+		Data returnedData = new Data();
+		
+		for (Table tbl : newData.getTables()) {
+			if (!(table.toString().equals(tbl.toString()))) {
+				returnedData.addRows(tbl, newData.getRows(tbl));
+				//System.out.println("TABLE > " + table + " != STATE TABLE > " + tbl);
+			}
+		}
+		//newData.addRow(table, firstRow);
+		return returnedData;
+	}
+	
+	public Data returnTableState(Table table) {
+		Data returnedData = new Data();
+		returnedData.addRows(table, newData.getRows(table));
+
+		//newData.addRow(table, firstRow);
+		return returnedData;
+	}
+	
+	public Data returnData(Table table) {
+		Data returnedData = new Data();
+		
+		for (Table tbl : newData.getTables()) {
+			if (table.toString().equals(tbl.toString())) {
+				returnedData.addRows(tbl, newData.getRows(tbl));
+				//System.out.println("TABLE > " + table + " == DATA TABLE > " + tbl);
+			}
+		}
+		
+		if (returnedData.getCells().isEmpty()) {
+			if (data.getNumRows(table) > 0) {
+				Random randomGenerator = new Random();
+				int index = randomGenerator.nextInt(data.getRows(table).size());
+				returnedData.addRow(table, data.getRows(table).get(index));
+			}
+		}
+		//newData.addRow(table, firstRow);
+		//System.out.println("RETURED STATE === > " + new);
+		return returnedData;
+	}
 }

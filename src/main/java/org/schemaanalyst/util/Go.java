@@ -131,11 +131,11 @@ public class Go {
         }
 
         if (report.getNumTestRequirementsFailed() > 0) {
-            System.out.println("Failed test requirements:");
+            System.out.println(report.getNumTestRequirementsFailed() + " Failed test requirements:");
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
-                System.out.println(i + ") " + testRequirement);
-                System.out.println((report.getDataGenerationResult(testRequirement).getData()));
+                //System.out.println(i + ") " + testRequirement);
+                //System.out.println((report.getDataGenerationResult(testRequirement).getData()));
                 i ++;
             }
         }
@@ -147,15 +147,15 @@ public class Go {
                 new DatabaseConfiguration(),
                 new LocationsConfiguration());
         executor.execute(testSuite);
-
+        
         // check the results
         for (TestCase testCase : testSuite.getTestCases()) {
             Boolean result = testCase.getTestRequirement().getResult();
             Boolean dbmsResult = testCase.getLastDBMSResult();
             if (result != null && result != dbmsResult) {
                 TestRequirement testRequirement = testCase.getTestRequirement();
-                System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
-                System.out.println(testRequirement);
+                //System.out.println("WARNING--test requirement result (" + result + ") differs from DBMS result (" + dbmsResult + "):");
+                //System.out.println(testRequirement);
             }
 
             // check the real test case executor against the virtual one
