@@ -16,18 +16,18 @@ databases = ["BankAccount", "BrowserCookies", "ArtistTerm", "ArtistSimilarity", 
 #databases = ["Northwind", "SongTrackMetadata"]
 coverages = ["ClauseAICC", "CondAICC", "AICC", "APC", "ICC", "AUCC", "UCC", "ANCC", "NCC"]
 generators = ["directedRandom", "avs", "random", "selector"]
-iterations = 5
+#iterations = 5
 
 print "runs,schema,generator,criterion,time,Test requirements covered,coverage,Num Evaluations (test cases only),Num Evaluations (all)"
 
 for data in databases:
     for gen in generators:
         for cov in coverages:
-            for _ in range(iterations):
-                #print "================================================================================================================================================"
-                #print "Runs == " + str(_) + " Schema == " + data + "Generator == " + gen + " Coverage == " + cov
-                start = time.time()
-                result = subprocess.check_output("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --criterion " + cov + " --generator " + gen + " generation",shell=True,)
-                end = time.time()
-                print str(_) + "," + data + "," + gen + "," + cov + "," + str(end - start) + "," +result
-                #print os.system("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --criterion " + cov + " --generator " + gen + " generation")
+            #for _ in range(iterations):
+            #print "================================================================================================================================================"
+            #print "Runs == " + str(_) + " Schema == " + data + "Generator == " + gen + " Coverage == " + cov
+            #start = time.time()
+            result = subprocess.check_output("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --criterion " + cov + " --generator " + gen + " generation",shell=True,)
+            #end = time.time()
+            #print str(_) + "," + data + "," + gen + "," + cov + "," + str(end - start) + "," +result
+            #print os.system("java org.schemaanalyst.util.Go -s parsedcasestudy."+ data +" --criterion " + cov + " --generator " + gen + " generation")

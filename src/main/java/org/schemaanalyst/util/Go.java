@@ -15,14 +15,18 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.*;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.*;
 import org.schemaanalyst.mutation.analysis.executor.MutationAnalysis;
+import org.schemaanalyst.configuration.LocationsConfiguration;
 
 import java.io.*;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class Go {
-
+    /** The locations configuration field. */
     public static void main(String[] args){
 
         JCommanderParams jcp = new JCommanderParams();
@@ -119,6 +123,20 @@ public class Go {
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
+        System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
+        
+        // CSV For readable test suites
+        CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+        
+        CSVResult mResult = new CSVResult();
+        mResult.addValue("schema", schema.toString());
+        mResult.addValue("dbms", dbms);
+        mResult.addValue("criterion", criterion);
+        mResult.addValue("datagenerator", datagenerator);
+        mResult.addValue("readableScore", testSuite.getReadableScore());
+        mResult.addValue("coverage", report.coverage());
+
+        writer.write(mResult);
 
         // failed initial table data generation attempts
         if (report.getInitialTableDataGenerationAttemptsFailed() > 0) {

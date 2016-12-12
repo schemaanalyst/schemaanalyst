@@ -1,6 +1,8 @@
 package org.schemaanalyst.testgeneration;
 
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
@@ -11,6 +13,9 @@ import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.VarCharDataType;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
@@ -212,9 +217,28 @@ public class TestSuiteGenerator {
 
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
                 if (dataGenerationReport.isSuccess()) {
+                	// Scoring Readable strings and VarChars
+                	double readableState = 0;
+                	double readableData = 0;
+                	for (Cell cell : data.getCells()) {
+                		if (cell.getColumn().getDataType() instanceof CharDataType || cell.getColumn().getDataType() instanceof TextDataType ) {
+                			if (!cell.isNull())
+                				readableData += this.langModelScore(cell.getValue().toString());
+                		}
+                	}
+                	
+                	for (Cell cell : state.getCells()) {
+                		if (cell.getColumn().getDataType() instanceof CharDataType || cell.getColumn().getDataType() instanceof TextDataType ) {
+                			if (!cell.isNull())
+                				readableState += this.langModelScore(cell.getValue().toString());
+                		}
+                	}
                     TestCase testCase = new TestCase(testRequirement, data, state);
                     testSuite.addTestCase(testCase);
-
+                    
+                    // Adding the total score of T-suffiecnt and test data together
+                    testSuite.addReadableScore(readableData + readableState);
+                    
                     LOGGER.fine("--- SUCCESS, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
                     LOGGER.fine("--- Data is \n" + data);
                 } else {
@@ -382,4 +406,15 @@ public class TestSuiteGenerator {
 
         return true;
     }
-}
+    
+    protected double langModelScore(String string) {
+    	try {
+    	    // LangModel lm = new LangModel("../moby_dick_char_lm");
+    	    LangModel lm = new LangModel("ukwac_char_lm");
+    	    return lm.score(string, false);
+	    } catch (Exception e) {
+    	    System.err.println("Error: " + e.getMessage());
+    	    return 0;
+	    }
+    }
+} 
