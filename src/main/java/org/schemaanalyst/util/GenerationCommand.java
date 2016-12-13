@@ -20,4 +20,7 @@ public class GenerationCommand {
   @Parameter(names = {"--testSuite","-t"}, description = "Target file for writing JUnit test suite")
   protected String testSuite = "TestSchema";
 
+  // should default to Test + schema + .java
+  @Parameter(names = {"--seed"}, description = "Seed for generation")
+  protected Long seed = -0L;
 }

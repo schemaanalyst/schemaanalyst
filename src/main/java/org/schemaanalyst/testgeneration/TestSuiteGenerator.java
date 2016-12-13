@@ -217,24 +217,39 @@ public class TestSuiteGenerator {
 
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
                 if (dataGenerationReport.isSuccess()) {
+
+                    TestCase testCase = new TestCase(testRequirement, data, state);
+                    testSuite.addTestCase(testCase);
+                    
                 	// Scoring Readable strings and VarChars
                 	double readableState = 0;
                 	double readableData = 0;
                 	for (Cell cell : data.getCells()) {
-                		if (cell.getColumn().getDataType() instanceof CharDataType || cell.getColumn().getDataType() instanceof TextDataType ) {
-                			if (!cell.isNull())
+                		if (cell.getValueInstance() instanceof StringValue) {
+                			if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
                 				readableData += this.langModelScore(cell.getValue().toString());
+                				testSuite.addlengthOfStrings(cell.getValue().toString().length());
+                			}
+                			
+                			if (cell.getValue().toString().equals("\"\"")) {
+                				testSuite.addnumberOfEmptyStrings(1);
+                			}
                 		}
                 	}
                 	
                 	for (Cell cell : state.getCells()) {
                 		if (cell.getColumn().getDataType() instanceof CharDataType || cell.getColumn().getDataType() instanceof TextDataType ) {
-                			if (!cell.isNull())
+                			if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
                 				readableState += this.langModelScore(cell.getValue().toString());
+                				testSuite.addlengthOfStrings(cell.getValue().toString().length());
+                			}
+                			
+                			
+                			if (cell.getValue().toString().equals("\"\"")) {
+                				testSuite.addnumberOfEmptyStrings(1);
+                			}
                 		}
                 	}
-                    TestCase testCase = new TestCase(testRequirement, data, state);
-                    testSuite.addTestCase(testCase);
                     
                     // Adding the total score of T-suffiecnt and test data together
                     testSuite.addReadableScore(readableData + readableState);

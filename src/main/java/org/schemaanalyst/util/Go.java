@@ -94,7 +94,7 @@ public class Go {
         Schema schemaObject = instantiateSchema(schema);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
         TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -0L, 100000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, gc.seed, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -124,7 +124,8 @@ public class Go {
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
         System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
-        
+        System.out.println("Averge Length of Strings: " + testSuite.getlengthOfStringsAverage());
+        System.out.println("Number of Empty: " + testSuite.getnumberOfEmptyStrings());
         // CSV For readable test suites
         CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
         
@@ -134,6 +135,8 @@ public class Go {
         mResult.addValue("criterion", criterion);
         mResult.addValue("datagenerator", datagenerator);
         mResult.addValue("readableScore", testSuite.getReadableScore());
+        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
+        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
         mResult.addValue("coverage", report.coverage());
 
         writer.write(mResult);
