@@ -21,7 +21,7 @@ public class RandomLM {
 			double topscore = 0;
 			for (int i = 0; i < 100000; i++) {
 				//int averageEnglishWord = RANDOM.nextInt(6 - 4 + 1) + 4;
-				String rand = this.randomAlphabetic(4);
+				String rand = this.randomAlphabetic(5);
 				double randscore = langModelScore(rand, lm);
 				if (randscore > topscore) {
 					top = rand;
@@ -49,7 +49,7 @@ public class RandomLM {
 			//lm = new LangModel("ukwac_char_lm");
 			double topscore = 0;
 			for (int i = 0; i < 100000; i++) {
-				String rand = this.randomAlphabetic(4);
+				String rand = this.randomAlphabetic(5);
 				double randscore = langModelScore(rand, lm);
 				if (randscore > topscore) {
 					top = rand;
