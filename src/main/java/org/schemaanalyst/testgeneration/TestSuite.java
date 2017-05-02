@@ -61,7 +61,7 @@ public class TestSuite implements Serializable {
     	    for (Integer mark : lengthOfStrings) {
     	        sum += mark;
     	    }
-    	    return sum / lengthOfStrings.size();
+    	    sum = sum / lengthOfStrings.size();
     	  }
     	  return sum;
     }

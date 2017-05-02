@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="EclipseModuleManager">
+    <libelement value="jar://$MODULE_DIR$/build/lib/aopalliance-1.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/asm-2.2.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cloning-1.8.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/combinatoricslib-2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/commons-collections-3.2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/commons-lang-2.5.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/commons-lang3-3.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/commons-logging-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/commons-pool-1.5.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-api-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-common-schemas-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-common-utilities-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-bindings-soap-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-bindings-xml-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-core-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-databinding-jaxb-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-frontend-jaxws-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-frontend-simple-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-management-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-transports-jms-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-rt-ws-addr-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/cxf-tools-common-2.2.12.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/dbunit-2.4.9.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/derby-10.12.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-activation_1.1_spec-1.0.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-annotation_1.0_spec-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-javamail_1.4_spec-1.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-jaxws_2.1_spec-1.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-stax-api_1.0_spec-1.0.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/geronimo-ws-metadata_2.0_spec-1.1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/guava-19.0.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/hamcrest-core-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/hsqldb-2.3.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/jaxb-api-2.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/jaxb-impl-2.1.13.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/jaxb-xjc-2.1.13.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/jcommander-1.48.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/junit-4.11.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/JUnitParams-1.0.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/mdb-modules-api-2.2.12-0.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/mdb-modules-transport-2.2.12-0.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/neethi-2.0.4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/objenesis-1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/p6spy-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/postgresql-9.1-901.jdbc4.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/saaj-api-1.3.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/saaj-impl-1.3.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/slf4j-api-1.7.13.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-beans-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-context-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-context-support-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-core-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-jms-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/spring-tx-2.5.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/sqlite-jdbc-3.7.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/sqltool-2.2.6.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/stax-api-1.0-2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/wsdl4j-1.6.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/wstx-asl-3.2.9.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/xml-resolver-1.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/xmlpull-1.1.3.1.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/XmlSchema-1.4.7.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/xpp3_min-1.1.4c.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/xstream-1.4.2.jar!/" />
+    <libelement value="jar://$MODULE_DIR$/build/lib/jsqlparser-0.9.6.jar!/" />
+    <src_description expected_position="0">
+      <src_folder value="file://$MODULE_DIR$/src/main/java" expected_position="0" />
+      <src_folder value="file://$MODULE_DIR$/src/test/java" expected_position="1" />
+    </src_description>
+  </component>
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/bin" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="false" />
+    </content>
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="jdk" jdkName="JavaSE-1.7" jdkType="JavaSDK" />
+    <orderEntry type="module-library">
+      <library name="aopalliance-1.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/aopalliance-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="asm-2.2.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/asm-2.2.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cloning-1.8.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cloning-1.8.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="combinatoricslib-2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/combinatoricslib-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-collections-3.2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/commons-collections-3.2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-lang-2.5.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/commons-lang-2.5.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-lang3-3.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/commons-lang3-3.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-logging-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/commons-logging-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="commons-pool-1.5.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/commons-pool-1.5.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-api-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-api-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-common-schemas-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-common-schemas-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-common-utilities-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-common-utilities-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-bindings-soap-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-bindings-soap-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-bindings-xml-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-bindings-xml-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-core-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-core-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-databinding-jaxb-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-databinding-jaxb-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-frontend-jaxws-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-frontend-jaxws-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-frontend-simple-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-frontend-simple-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-management-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-management-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-transports-jms-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-transports-jms-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-rt-ws-addr-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-rt-ws-addr-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="cxf-tools-common-2.2.12.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/cxf-tools-common-2.2.12.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="dbunit-2.4.9.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/dbunit-2.4.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="derby-10.12.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/derby-10.12.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-activation_1.1_spec-1.0.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-activation_1.1_spec-1.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-annotation_1.0_spec-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-annotation_1.0_spec-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-javamail_1.4_spec-1.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-javamail_1.4_spec-1.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-jaxws_2.1_spec-1.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-jaxws_2.1_spec-1.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-jms_1.1_spec-1.1.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-jms_1.1_spec-1.1.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-stax-api_1.0_spec-1.0.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-stax-api_1.0_spec-1.0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="geronimo-ws-metadata_2.0_spec-1.1.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/geronimo-ws-metadata_2.0_spec-1.1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="guava-19.0.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/guava-19.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="hamcrest-core-1.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/hamcrest-core-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="hsqldb-2.3.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/hsqldb-2.3.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jaxb-api-2.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/jaxb-api-2.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jaxb-impl-2.1.13.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/jaxb-impl-2.1.13.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jaxb-xjc-2.1.13.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/jaxb-xjc-2.1.13.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jcommander-1.48.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/jcommander-1.48.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="junit-4.11.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/junit-4.11.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="JUnitParams-1.0.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/JUnitParams-1.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="mdb-modules-api-2.2.12-0.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/mdb-modules-api-2.2.12-0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="mdb-modules-transport-2.2.12-0.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/mdb-modules-transport-2.2.12-0.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="neethi-2.0.4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/neethi-2.0.4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="objenesis-1.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/objenesis-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="p6spy-1.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/p6spy-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="postgresql-9.1-901.jdbc4.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/postgresql-9.1-901.jdbc4.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="saaj-api-1.3.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/saaj-api-1.3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="saaj-impl-1.3.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/saaj-impl-1.3.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="slf4j-api-1.7.13.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/slf4j-api-1.7.13.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-beans-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-beans-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-context-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-context-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-context-support-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-context-support-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-core-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-core-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-jms-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-jms-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="spring-tx-2.5.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/spring-tx-2.5.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sqlite-jdbc-3.7.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/sqlite-jdbc-3.7.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="sqltool-2.2.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/sqltool-2.2.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="stax-api-1.0-2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/stax-api-1.0-2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wsdl4j-1.6.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/wsdl4j-1.6.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="wstx-asl-3.2.9.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/wstx-asl-3.2.9.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xml-resolver-1.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/xml-resolver-1.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xmlpull-1.1.3.1.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/xmlpull-1.1.3.1.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="XmlSchema-1.4.7.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/XmlSchema-1.4.7.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xpp3_min-1.1.4c.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/xpp3_min-1.1.4c.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="xstream-1.4.2.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/xstream-1.4.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library name="jsqlparser-0.9.6.jar">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/build/lib/jsqlparser-0.9.6.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+  </component>
+</module>

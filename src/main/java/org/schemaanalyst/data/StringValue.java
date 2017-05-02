@@ -186,9 +186,9 @@ public class StringValue extends Value implements CompoundValue {
 
     @Override
     public String toString() {
-        //return "'" + get() + "'";
+        return "'" + get() + "'";
     	// Added and changed by Abdullah for qoutation issues
-    	String s = get().replaceAll("\"", "\'");;
-        return "\"" + s + "\"";
+    	//String s = get().replaceAll("\"", "\'");;
+        //return "\"" + s + "\"";
     }
 }

@@ -64,6 +64,7 @@ public class DataMapper {
 		//System.out.println("Opened database successfully");
 	}
 
+	@SuppressWarnings("deprecation")
 	public void mapData() {
 		Statement stmt = null;
 		try {

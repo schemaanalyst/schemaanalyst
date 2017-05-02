@@ -279,13 +279,23 @@ public class MutationAnalysis extends Runner {
         testRequirements.reduce();
 
         // Construct generator
+        /*
         final TestSuiteGenerator generator = new TestSuiteGenerator(
                 schema,
                 testRequirements,
                 dbms.getValueFactory(),
                 dataGen
         );
-
+	*/
+        
+        final TestSuiteGenerator generator = new TestSuiteGenerator(
+                schema,
+                testRequirements,
+                dbms.getValueFactory(),
+                dataGen,
+                dataGenerator,
+                randomseed
+        );
         // Generate suite
         final TestSuite testSuite = generator.generate();
         generationReport = generator.getTestSuiteGenerationReport();
@@ -293,7 +303,22 @@ public class MutationAnalysis extends Runner {
 
         // Ensure the test suite contains no warnings
         verifyTestSuite(testSuite);
+        
+        // CSV For readable test suites
+        CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+        
+        CSVResult mResult = new CSVResult();
+        mResult.addValue("schema", schema.toString());
+        mResult.addValue("dbms", dbms.getName());
+        mResult.addValue("criterion", criterion);
+        mResult.addValue("datagenerator", dataGenerator);
+        mResult.addValue("readableScore", testSuite.getReadableScore());
+        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
+        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
+        mResult.addValue("coverage", generationReport.coverage());
 
+        writer.write(mResult);
+        
         return testSuite;
     }
 

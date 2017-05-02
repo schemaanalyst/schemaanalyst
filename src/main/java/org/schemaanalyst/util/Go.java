@@ -105,7 +105,9 @@ public class Go {
                 schemaObject,
                 testRequirements,
                 dbmsObject.getValueFactory(),
-                dataGeneratorObject);
+                dataGeneratorObject,
+                datagenerator,
+                gc.seed);
         TestSuite testSuite = testSuiteGenerator.generate();
 
         // if desired, write the INSERTs to a file for inspection
@@ -130,7 +132,7 @@ public class Go {
         CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
         
         CSVResult mResult = new CSVResult();
-        mResult.addValue("schema", schema.toString());
+        mResult.addValue("schema", schemaObject.toString());
         mResult.addValue("dbms", dbms);
         mResult.addValue("criterion", criterion);
         mResult.addValue("datagenerator", datagenerator);
@@ -155,8 +157,8 @@ public class Go {
             System.out.println(report.getNumTestRequirementsFailed() + " Failed test requirements:");
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
-                //System.out.println(i + ") " + testRequirement);
-                //System.out.println((report.getDataGenerationResult(testRequirement).getData()));
+                System.out.println(i + ") " + testRequirement);
+                System.out.println((report.getDataGenerationResult(testRequirement).getData()));
                 i ++;
             }
         }

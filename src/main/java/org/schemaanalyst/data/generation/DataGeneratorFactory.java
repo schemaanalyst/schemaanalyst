@@ -231,6 +231,13 @@ public class DataGeneratorFactory {
     }
     */
     
+    
+    /*
+     * Selector
+     * AVM + Selector
+     * Random + Selector
+     */
+    
     private static ValueLibrary makeSelectorValueLibrary(Schema schema) {
     	DataMapper mapper = new DataMapper();
     	mapper.connectDB(schema);
@@ -242,5 +249,50 @@ public class DataGeneratorFactory {
     			vallib.addValue(cell.getValue());
     	}
     	return vallib;
+    }
+    
+    public static SearchBasedDataGenerator avsDefaultsSelectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                new DefaultCellInitializer(),
+                new RandomCellInitializer(randomCellValueGenerator));
+    }
+    
+    public static SearchBasedDataGenerator avsDefaultsLangModelRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                new DefaultCellInitializer(),
+                new RandomCellInitializer(randomCellValueGenerator));
+    }
+    
+    public static RandomDataGenerator randomSelectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new RandomDataGenerator(
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static SearchBasedDataGenerator avsLangModelRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
+                randomCellInitializer);
     }
 }

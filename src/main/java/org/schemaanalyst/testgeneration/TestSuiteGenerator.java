@@ -23,8 +23,10 @@ import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.Pr
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 import org.schemaanalyst.util.DataMapper;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -34,402 +36,544 @@ import java.util.logging.Logger;
  */
 public class TestSuiteGenerator {
 
-    private final static Logger LOGGER = Logger.getLogger(TestSuiteGenerator.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(TestSuiteGenerator.class.getName());
 
-    private Schema schema;
-    private TestRequirements testRequirements;
-    private ValueFactory valueFactory;
-    private DataGenerator dataGenerator;
-    private HashMap<Table, Data> initialTableData;
-    private TestSuite testSuite;
-    //private Data selectorState;
-    private TestSuiteGenerationReport testSuiteGenerationReport;
-    
+	private Schema schema;
+	private TestRequirements testRequirements;
+	private ValueFactory valueFactory;
+	private DataGenerator dataGenerator;
+	private HashMap<Table, Data> initialTableData;
+	private TestSuite testSuite;
+	private String datagen = "";
+	// private Data selectorState;
+	private TestSuiteGenerationReport testSuiteGenerationReport;
+
 	private DataMapper mapper = new DataMapper();
+	private LangModel lm;
+	private long seed;
 
-    public TestSuiteGenerator(Schema schema,
-                              TestRequirements testRequirements,
-                              ValueFactory valueFactory,
-                              DataGenerator dataGenerator) {
-        this.schema = schema;
-        this.testRequirements = testRequirements;
-        this.valueFactory = valueFactory;
-        this.dataGenerator = dataGenerator;
+	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
+			DataGenerator dataGenerator) {
+		this.schema = schema;
+		this.testRequirements = testRequirements;
+		this.valueFactory = valueFactory;
+		this.dataGenerator = dataGenerator;
 
-        initialTableData = new HashMap<>();
-    }
+		initialTableData = new HashMap<>();
+	}
 
-    public TestSuite generate() {
-        LOGGER.fine("Generating test suite for " + schema);
+	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
+			DataGenerator dataGenerator, String datagen, long seed) {
+		this.schema = schema;
+		this.testRequirements = testRequirements;
+		this.valueFactory = valueFactory;
+		this.dataGenerator = dataGenerator;
+		this.datagen = datagen;
+		this.seed = seed;
+		initialTableData = new HashMap<>();
+	}
 
-        testSuite = new TestSuite();
-        testSuiteGenerationReport = new TestSuiteGenerationReport();
-        
-        if (dataGenerator instanceof SelectorDataGenerator) {
-        	mapper.connectDB(schema);
-        	mapper.mapData();
-        	/*
-            DataMapper mapper = new DataMapper();
-            mapper.connectDB(schema);
-            mapper.mapData();
-            selectorState = mapper.getData();
-            */
-        }
-        
-        generateInitialTableData();
-        generateTestCases();
-        return testSuite;
-    }
+	public TestSuite generate() {
+		LOGGER.fine("Generating test suite for " + schema);
 
-    public TestSuiteGenerationReport getTestSuiteGenerationReport() {
-        return testSuiteGenerationReport;
-    }
+		testSuite = new TestSuite();
+		testSuiteGenerationReport = new TestSuiteGenerationReport();
+		// Selctor
+		if (datagen.toLowerCase().contains("selector")) {
 
-    protected void generateInitialTableData() {
-        for (Table table : schema.getTablesInOrder()) {
+			mapper.connectDB(schema);
+			mapper.mapData();
+		}
+		// Language Model
+		try {
+			lm = new LangModel("ukwac_char_lm");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		generateInitialTableData();
+		generateTestCases();
+		if (datagen.toLowerCase().contains("langmodel")) {
+			this.langModelTestSuite();
+		}
+		this.calculateReadableTestSuite();
+		return testSuite;
+	}
 
-            ComposedPredicate acceptancePredicate = PredicateGenerator.generatePredicate(schema.getConstraints(table));
+	public TestSuiteGenerationReport getTestSuiteGenerationReport() {
+		return testSuiteGenerationReport;
+	}
 
-            // add not null predicates
-            List<Column> notNullColumns = table.getColumns();
+	protected void generateInitialTableData() {
+		for (Table table : schema.getTablesInOrder()) {
 
-            /*
-            // NOTE: selecting individual columns like this will cause AUCC test requirements to fail.
+			ComposedPredicate acceptancePredicate = PredicateGenerator.generatePredicate(schema.getConstraints(table));
 
-            List<Column> notNullColumns = new ArrayList<>();
-            PrimaryKeyConstraint primaryKeyConstraint = schema.getPrimaryKeyConstraint(table);
-            if (primaryKeyConstraint != null) {
-                // TODO: some check as to whether it's been added already ...
-                notNullColumns.addAll(primaryKeyConstraint.getColumns());
-            }
-            for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
-                notNullColumns.addAll(uniqueConstraint.getColumns());
-            }
-            for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
-                notNullColumns.addAll(foreignKeyConstraint.getColumns());
-            }
-            */
-            AndPredicate predicate = new AndPredicate();
-            predicate.addPredicate(acceptancePredicate);
-            PredicateGenerator.addNullPredicates(predicate, table, notNullColumns, false);
+			// add not null predicates
+			List<Column> notNullColumns = table.getColumns();
 
-            LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
-            LOGGER.fine("--- Predicate is " + predicate);
-            Data state = new Data();
-            Data data = new Data();
+			/*
+			 * // NOTE: selecting individual columns like this will cause AUCC
+			 * test requirements to fail.
+			 * 
+			 * List<Column> notNullColumns = new ArrayList<>();
+			 * PrimaryKeyConstraint primaryKeyConstraint =
+			 * schema.getPrimaryKeyConstraint(table); if (primaryKeyConstraint
+			 * != null) { // TODO: some check as to whether it's been added
+			 * already ...
+			 * notNullColumns.addAll(primaryKeyConstraint.getColumns()); } for
+			 * (UniqueConstraint uniqueConstraint :
+			 * schema.getUniqueConstraints(table)) {
+			 * notNullColumns.addAll(uniqueConstraint.getColumns()); } for
+			 * (ForeignKeyConstraint foreignKeyConstraint :
+			 * schema.getForeignKeyConstraints(table)) {
+			 * notNullColumns.addAll(foreignKeyConstraint.getColumns()); }
+			 */
+			AndPredicate predicate = new AndPredicate();
+			predicate.addPredicate(acceptancePredicate);
+			PredicateGenerator.addNullPredicates(predicate, table, notNullColumns, false);
 
-            /*
-            if (dataGenerator instanceof SelectorDataGenerator) {
-            	//state.appendData(mapper.returnPerfectState(table));
-            	state.appendData(mapper.returnPerfectState(table));
-            }
-            */
-            // add referenced tables to the state
-            boolean haveLinkedData = addInitialTableDataToState(state, table);
-            /*
-            if (dataGenerator instanceof SelectorDataGenerator) {
-            	//state.appendData(mapper.returnPerfectState(table));
-            	mapper.returnPerfectoState(table);
-            	if (schema.getConnectedTables(table).size() > 0) {
-            		state = mapper.returnState(table).duplicate();
-            	}
-            	data = mapper.returnData(table).duplicate();
+			LOGGER.fine("\nGENERATING INITIAL TABLE DATA FOR " + table);
+			LOGGER.fine("--- Predicate is " + predicate);
+			Data state = new Data();
+			Data data = new Data();
 
-            }
-            */
-            if (haveLinkedData) {
-                if (!(dataGenerator instanceof SelectorDataGenerator)) {
-                	data.addRow(table, valueFactory);
-                } else {
-                	mapper.returnPerfectoState(table);
-                	if (mapper.returnData(table).getNumRows() == 0)
-                    	data.addRow(table, valueFactory);
-                	else
-                		data = mapper.returnData(table).duplicate();
-                }
+			/*
+			 * if (dataGenerator instanceof SelectorDataGenerator) {
+			 * //state.appendData(mapper.returnPerfectState(table));
+			 * state.appendData(mapper.returnPerfectState(table)); }
+			 */
+			// add referenced tables to the state
+			boolean haveLinkedData = addInitialTableDataToState(state, table);
+			/*
+			 * if (dataGenerator instanceof SelectorDataGenerator) {
+			 * //state.appendData(mapper.returnPerfectState(table));
+			 * mapper.returnPerfectoState(table); if
+			 * (schema.getConnectedTables(table).size() > 0) { state =
+			 * mapper.returnState(table).duplicate(); } data =
+			 * mapper.returnData(table).duplicate();
+			 * 
+			 * }
+			 */
+			if (haveLinkedData) {
+				boolean a = !(dataGenerator instanceof SelectorDataGenerator);
+				boolean b = !datagen.toLowerCase().contains("selector");
+				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
+				// (!datagen.toLowerCase().contains("selector"))) {
+				if (!datagen.toLowerCase().contains("selector")) {
+					data.addRow(table, valueFactory);
+				} else {
+					mapper.returnPerfectoState(table);
+					if (mapper.returnData(table).getNumRows() == 0)
+						data.addRow(table, valueFactory);
+					else
+						data = mapper.returnData(table).duplicate();
+				}
 
-                // generate the row
-                DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-                if (dataGenerationReport.isSuccess()) {
-                    LOGGER.fine("--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
-                    LOGGER.fine("--- Data is: \n" + data);
-                    initialTableData.put(table, data);
-                } else {
-                    LOGGER.fine("--- Failed");
-                    System.err.println("Generating Initial Data --- Failed");
-                    System.err.println("PREDICATE");
-                    System.err.println(predicate);
-                    System.err.println("STATE");
-                    System.err.println(state);
-                    System.err.println("DATA");
-                    System.err.println(data);
-                }
+				// generate the row
+				DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
 
-                testSuiteGenerationReport.addInitialTableDataResult(
-                        table, new DataGenerationResult(data, state, dataGenerationReport));
-            } else {
-                // there was no linked data generated to add to the state, so generated of this row failed by default
-                testSuiteGenerationReport.addInitialTableDataResult(
-                        table, null);
-            }
-        }
-    }
+				if (dataGenerationReport.isSuccess()) {
 
-    protected void generateTestCases() {
-        for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
+					LOGGER.fine(
+							"--- Success, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
+					LOGGER.fine("--- Data is: \n" + data);
+					initialTableData.put(table, data);
+				} else {
+					LOGGER.fine("--- Failed");
+					System.err.println("Generating Initial Data --- Failed");
+					System.err.println("PREDICATE");
+					System.err.println(predicate);
+					System.err.println("STATE");
+					System.err.println(state);
+					System.err.println("DATA");
+					System.err.println(data);
+				}
 
-            Predicate predicate = testRequirement.getPredicate();
-            Table table = getTestRequirementTable(testRequirement);
+				testSuiteGenerationReport.addInitialTableDataResult(table,
+						new DataGenerationResult(data, state, dataGenerationReport));
+			} else {
+				// there was no linked data generated to add to the state, so
+				// generated of this row failed by default
+				testSuiteGenerationReport.addInitialTableDataResult(table, null);
+			}
+		}
+	}
 
-            LOGGER.fine("\nGENERATING TEST CASE");
-            for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
-                LOGGER.fine(testRequirementDescriptor.toString());
-            }
-            LOGGER.fine("--- Predicate is " + predicate);
+	protected void generateTestCases() {
+		int counter = 1;
+		for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
 
-            Data state = new Data();
-            Data data = new Data();
-            /*
-            if (dataGenerator instanceof SelectorDataGenerator) {
-            	//state.appendData(mapper.returnPerfectState(table));
-            	mapper.returnPerfectoState(table);
-            	if (schema.getConnectedTables(table).size() > 0) {
-            		state = mapper.returnState(table).duplicate();
-            	}
-            	data = mapper.returnData(table).duplicate();
+			Predicate predicate = testRequirement.getPredicate();
+			Table table = getTestRequirementTable(testRequirement);
 
-            }
-            */
-            predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
-            if (predicate != null) {
-                if (!(dataGenerator instanceof SelectorDataGenerator)) {
-                	data.addRow(table, valueFactory);
-                } else {
-                	//mapper.returnPerfectoState(table);
-                	if (mapper.returnData(table).getNumRows() == 0)
-                    	data.addRow(table, valueFactory);
-                	else
-                		data.appendData(mapper.returnData(table).duplicate());
-                }
-                LOGGER.fine("--- Pre-reduced predicate is " + predicate);
-                predicate = predicate.reduce();
-                LOGGER.fine("--- Reduced predicate is " + predicate);
+			LOGGER.fine("\nGENERATING TEST CASE");
+			for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
+				LOGGER.fine(testRequirementDescriptor.toString());
+			}
+			LOGGER.fine("--- Predicate is " + predicate);
 
-                DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
-                if (dataGenerationReport.isSuccess()) {
+			Data state = new Data();
+			Data data = new Data();
+			/*
+			 * if (dataGenerator instanceof SelectorDataGenerator) {
+			 * //state.appendData(mapper.returnPerfectState(table));
+			 * mapper.returnPerfectoState(table); if
+			 * (schema.getConnectedTables(table).size() > 0) { state =
+			 * mapper.returnState(table).duplicate(); } data =
+			 * mapper.returnData(table).duplicate();
+			 * 
+			 * }
+			 */
+			predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
+			if (predicate != null) {
+				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
+				// !datagen.toLowerCase().contains("selector")) {
+				if (!datagen.toLowerCase().contains("selector")) {
+					data.addRow(table, valueFactory);
+				} else {
+					// mapper.returnPerfectoState(table);
+					if (mapper.returnData(table).getNumRows() == 0)
+						data.addRow(table, valueFactory);
+					else
+						data.appendData(mapper.returnData(table).duplicate());
+				}
+				LOGGER.fine("--- Pre-reduced predicate is " + predicate);
+				predicate = predicate.reduce();
+				LOGGER.fine("--- Reduced predicate is " + predicate);
 
-                    TestCase testCase = new TestCase(testRequirement, data, state);
-                    testSuite.addTestCase(testCase);
-                    
-                	// Scoring Readable strings and VarChars
-                	double readableState = 0;
-                	double readableData = 0;
-                	for (Cell cell : data.getCells()) {
-                		if (cell.getValueInstance() instanceof StringValue) {
-                			if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
-                				readableData += this.langModelScore(cell.getValue().toString());
-                				testSuite.addlengthOfStrings(cell.getValue().toString().length());
-                			}
-                			
-                			if (cell.getValue().toString().equals("\"\"")) {
-                				testSuite.addnumberOfEmptyStrings(1);
-                			}
-                		}
-                	}
-                	
-                	for (Cell cell : state.getCells()) {
-                		if (cell.getColumn().getDataType() instanceof CharDataType || cell.getColumn().getDataType() instanceof TextDataType ) {
-                			if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
-                				readableState += this.langModelScore(cell.getValue().toString());
-                				testSuite.addlengthOfStrings(cell.getValue().toString().length());
-                			}
-                			
-                			
-                			if (cell.getValue().toString().equals("\"\"")) {
-                				testSuite.addnumberOfEmptyStrings(1);
-                			}
-                		}
-                	}
-                    
-                    // Adding the total score of T-suffiecnt and test data together
-                    testSuite.addReadableScore(readableData + readableState);
-                    
-                    LOGGER.fine("--- SUCCESS, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
-                    LOGGER.fine("--- Data is \n" + data);
-                } else {
-                    LOGGER.fine("--- FAILED");
-                    System.err.println("Generating Data --- Failed");
-                    System.err.println("TestRequirementDescriptor");
-                    for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
-                    	System.err.println(testRequirementDescriptor.toString());
-                    }
-                    System.err.println("Result is: " + testRequirement.getResult());
-                    System.err.println("STATE");
-                    System.err.println(state);
-                    System.err.println("DATA");
-                    System.err.println(data);
-                }
+				DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
 
-                testSuiteGenerationReport.addTestRequirementResult(
-                        testRequirement, new DataGenerationResult(data, state, dataGenerationReport));
-            } else  {
-                testSuiteGenerationReport.addTestRequirementResult(
-                        testRequirement, null);
-            }
-        }
-    }
+				if (dataGenerationReport.isSuccess()) {
 
-    protected Table getTestRequirementTable(TestRequirement testRequirement) {
-        Set<Table> tables = testRequirement.getTables();
-        if (tables.size() != 1) {
-            throw new TestGenerationException("Test requirement  should have predicates involving exactly one table, has " + tables.size() + ". Test requirement is: \n" + testRequirement);
-        }
-        return tables.iterator().next();
-    }
+					TestCase testCase = new TestCase(testRequirement, data, state);
+					testSuite.addTestCase(testCase);
 
-    protected Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table, boolean requiresComparisonRow) {
-        LOGGER.fine("--- adding additional rows");
+					LOGGER.fine(
+							"--- SUCCESS, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
+					LOGGER.fine("--- Data is \n" + data);
+				} else {
+					LOGGER.fine("--- FAILED");
+					System.err.println("Generating Data --- Failed");
+					System.err.println("TestRequirementDescriptor");
+					for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
+						System.err.println(testRequirementDescriptor.toString());
+					}
+					System.err.println("Result is: " + testRequirement.getResult());
+					System.err.println("STATE");
+					System.err.println(state);
+					System.err.println("DATA");
+					System.err.println(data);
+				}
 
-        boolean haveLinkedData = addInitialTableDataToState(state, table);
-        if (!haveLinkedData) {
-            return null;
-        }
+				testSuiteGenerationReport.addTestRequirementResult(testRequirement,
+						new DataGenerationResult(data, state, dataGenerationReport));
+			} else {
+				testSuiteGenerationReport.addTestRequirementResult(testRequirement, null);
+			}
+			counter++;
+		}
+	}
 
-        if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
-            Data comparisonRow;
-            if ((dataGenerator instanceof SelectorDataGenerator)) {
-            	if (mapper.returnData(table).getNumRows() == 0)
-                	comparisonRow = initialTableData.get(table);
-            	else
-            		comparisonRow = mapper.returnData(table).duplicate();
-            } else {
-            	comparisonRow = initialTableData.get(table);
-            }
-            if (comparisonRow == null) {
-                LOGGER.fine("--- could not add comparison row, data generation FAILED");
-                return null;
-            }
+	protected Table getTestRequirementTable(TestRequirement testRequirement) {
+		Set<Table> tables = testRequirement.getTables();
+		if (tables.size() != 1) {
+			throw new TestGenerationException(
+					"Test requirement  should have predicates involving exactly one table, has " + tables.size()
+							+ ". Test requirement is: \n" + testRequirement);
+		}
+		return tables.iterator().next();
+	}
 
-            
-            LOGGER.fine("--- added comparison row");
-            state.appendData(comparisonRow);
+	protected Predicate addAdditionalRows(Data state, Data data, Predicate predicate, Table table,
+			boolean requiresComparisonRow) {
+		LOGGER.fine("--- adding additional rows");
 
-            predicate = addLinkedTableRowsToData(data, predicate, table);
-        }
-        return predicate;
-    }
+		boolean haveLinkedData = addInitialTableDataToState(state, table);
+		if (!haveLinkedData) {
+			return null;
+		}
 
-    protected boolean addInitialTableDataToState(Data state, Table table) {
-        LOGGER.fine("--- adding initial data to state for linked tables");
+		if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate))
+										// {
+			Data comparisonRow;
+			// if ((dataGenerator instanceof SelectorDataGenerator ||
+			// datagen.toLowerCase().contains("selector"))) {
+			if (datagen.toLowerCase().contains("selector")) {
+				if (mapper.returnData(table).getNumRows() == 0)
+					comparisonRow = initialTableData.get(table);
+				else
+					comparisonRow = mapper.returnData(table).duplicate();
+			} else {
+				comparisonRow = initialTableData.get(table);
+			}
+			if (comparisonRow == null) {
+				LOGGER.fine("--- could not add comparison row, data generation FAILED");
+				return null;
+			}
 
-        // add rows for tables linked via foreign keys to the state
-        List<Table> linkedTables = schema.getConnectedTables(table);
-        for (Table linkedTable : linkedTables) {
+			LOGGER.fine("--- added comparison row");
+			state.appendData(comparisonRow);
 
-            // a row should always have been previously-generated
-            // for a linked table
-            if (!linkedTable.equals(table)) {
-            	Data initialData = null;
-                if (!(dataGenerator instanceof SelectorDataGenerator)) {
-                	initialData = initialTableData.get(linkedTable);
-                } else {
-                	mapper.returnPerfectoState(table);
-                	if (mapper.returnStatedTable(table).getNumRows() == 0)
-                    	initialData = initialTableData.get(linkedTable);
-                	else
-                		initialData = mapper.returnStatedTable(linkedTable).duplicate();
-                	//initialData = mapper.returnState(linkedTable);
-                	//System.out.println(initialData);
-                }
-                // cannot generate data in this instance
-                if (initialData == null) {
-                    return false;
-                }
-                state.appendData(initialData);
-            }
-        }
-        return true;
-    }
+			predicate = addLinkedTableRowsToData(data, predicate, table);
+		}
+		return predicate;
+	}
 
-    protected Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
+	protected boolean addInitialTableDataToState(Data state, Table table) {
+		LOGGER.fine("--- adding initial data to state for linked tables");
 
-        for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
+		// add rows for tables linked via foreign keys to the state
+		List<Table> linkedTables = schema.getConnectedTables(table);
+		for (Table linkedTable : linkedTables) {
 
-            Table refTable = foreignKeyConstraint.getReferenceTable();
-            if (!refTable.equals(table)) {
+			// a row should always have been previously-generated
+			// for a linked table
+			if (!linkedTable.equals(table)) {
+				Data initialData = null;
+				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
+				// !datagen.toLowerCase().contains("selector")) {
+				if (!datagen.toLowerCase().contains("selector")) {
+					initialData = initialTableData.get(linkedTable);
+				} else {
+					mapper.returnPerfectoState(table);
+					if (mapper.returnStatedTable(table).getNumRows() == 0)
+						initialData = initialTableData.get(linkedTable);
+					else
+						initialData = mapper.returnStatedTable(linkedTable).duplicate();
+					// initialData = mapper.returnState(linkedTable);
+					// System.out.println(initialData);
+				}
+				// cannot generate data in this instance
+				if (initialData == null) {
+					return false;
+				}
+				state.appendData(initialData);
+			}
+		}
+		return true;
+	}
 
-                boolean refColsUnique = areRefColsUnique(predicate, foreignKeyConstraint);
+	protected Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
 
-                if (refColsUnique) {
-                    LOGGER.fine("--- foreign key columns are unique in " + table);
+		for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
 
-                    // append the predicate with the acceptance predicate of the original
-                    AndPredicate newPredicate = new AndPredicate();
-                    newPredicate.addPredicate(predicate);
-                    newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
-                    predicate = newPredicate;
+			Table refTable = foreignKeyConstraint.getReferenceTable();
+			if (!refTable.equals(table)) {
 
-                    LOGGER.fine("--- new predicate is " + predicate);
+				boolean refColsUnique = areRefColsUnique(predicate, foreignKeyConstraint);
 
-                    LOGGER.fine("--- adding foreign key row for " + refTable);
-                    predicate = addLinkedTableRowsToData(data, predicate, refTable);
-                    //data.addRow(refTable, valueFactory);
-                    if (!(dataGenerator instanceof SelectorDataGenerator)) {
-                    	data.addRow(refTable, valueFactory);
-                    } else {
-                    	//mapper.returnPerfectoState(table);
-                    	if (mapper.returnData(table).getNumRows() == 0)
-                        	data.addRow(refTable, valueFactory);
-                    	else
-                    		data.appendData(mapper.returnData(refTable).duplicate());
-                    }
-                }
-            }
-        }
+				if (refColsUnique) {
+					LOGGER.fine("--- foreign key columns are unique in " + table);
 
-        return predicate;
-    }
+					// append the predicate with the acceptance predicate of the
+					// original
+					AndPredicate newPredicate = new AndPredicate();
+					newPredicate.addPredicate(predicate);
+					newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
+					predicate = newPredicate;
 
-    protected boolean areRefColsUnique(Predicate predicate, ForeignKeyConstraint foreignKeyConstraint) {
-        //Table table = foreignKeyConstraint.getTable();
-        final List<Column> uniqueColumns = new ArrayList<>();
+					LOGGER.fine("--- new predicate is " + predicate);
 
-        /*
-        if (schema.hasPrimaryKeyConstraint(table)) {
-            uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns());
-        }
+					LOGGER.fine("--- adding foreign key row for " + refTable);
+					predicate = addLinkedTableRowsToData(data, predicate, refTable);
+					// data.addRow(refTable, valueFactory);
+					// if (!(dataGenerator instanceof SelectorDataGenerator) ||
+					// !datagen.toLowerCase().contains("selector")) {
+					if (!datagen.toLowerCase().contains("selector")) {
+						data.addRow(refTable, valueFactory);
+					} else {
+						// mapper.returnPerfectoState(table);
+						if (mapper.returnData(table).getNumRows() == 0)
+							data.addRow(refTable, valueFactory);
+						else
+							data.appendData(mapper.returnData(refTable).duplicate());
+					}
+				}
+			}
+		}
 
-        for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table)) {
-            uniqueColumns.addAll(uniqueConstraint.getColumns());
-        }
-        */
+		return predicate;
+	}
 
-        predicate.accept(new PredicateAdaptor() {
-            @Override
-            public void visit(MatchPredicate predicate) {
-                if (predicate.tableIsRefTable()) {
-                    uniqueColumns.addAll(predicate.getColumns());
-                }
-            }
-        });
+	protected boolean areRefColsUnique(Predicate predicate, ForeignKeyConstraint foreignKeyConstraint) {
+		// Table table = foreignKeyConstraint.getTable();
+		final List<Column> uniqueColumns = new ArrayList<>();
 
-        for (Column column : foreignKeyConstraint.getColumns()) {
-            if (!uniqueColumns.contains(column)) {
-                return false;
-            }
-        }
+		/*
+		 * if (schema.hasPrimaryKeyConstraint(table)) {
+		 * uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns
+		 * ()); }
+		 * 
+		 * for (UniqueConstraint uniqueConstraint :
+		 * schema.getUniqueConstraints(table)) {
+		 * uniqueColumns.addAll(uniqueConstraint.getColumns()); }
+		 */
 
-        return true;
-    }
-    
-    protected double langModelScore(String string) {
-    	try {
-    	    // LangModel lm = new LangModel("../moby_dick_char_lm");
-    	    LangModel lm = new LangModel("ukwac_char_lm");
-    	    return lm.score(string, false);
-	    } catch (Exception e) {
-    	    System.err.println("Error: " + e.getMessage());
-    	    return 0;
-	    }
-    }
-} 
+		predicate.accept(new PredicateAdaptor() {
+			@Override
+			public void visit(MatchPredicate predicate) {
+				if (predicate.tableIsRefTable()) {
+					uniqueColumns.addAll(predicate.getColumns());
+				}
+			}
+		});
+
+		for (Column column : foreignKeyConstraint.getColumns()) {
+			if (!uniqueColumns.contains(column)) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	protected double langModelScore(String string) {
+		try {
+			// LangModel lm = new LangModel("../moby_dick_char_lm");
+			return lm.score(string, false);
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+			return 0;
+		}
+	}
+
+	private void langModelTestSuite() {
+		final Set<StringValue> set1 = new HashSet<StringValue>();
+		HashMap<StringValue, StringValue> hmap = new HashMap<StringValue, StringValue>();
+		RandomLM randWord = new RandomLM(this.seed);
+		int counter = 0;
+		int testCaseCounter = 0;
+		for (TestCase tc : testSuite.getTestCases()) {
+			if (testCaseCounter == 9) {
+				System.out.println("There");
+			}
+			List<StringValue> stringvalues = new ArrayList<>();
+
+			// final Set<StringValue> setToReturn = new
+			// HashSet<StringValue>();
+			// String key = randWord.generateRandomLMWork(lm);
+			for (Cell cell : tc.getState().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						boolean added = set1.add((StringValue) cell.getValue());
+						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
+						if (added && !hAdded) {
+							if (hAdded)
+								hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+							else
+								hmap.put((StringValue) cell.getValue(),
+										new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
+							counter++;
+						}
+					}
+				}
+			}
+
+			for (Cell cell : tc.getState().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						// stringvalues.add((StringValue)
+						// cell.getValue());
+						/*
+						 * if (!set1.add((StringValue) cell.getValue())) {
+						 * cell.setValue(new
+						 * StringValue(randWord.generateRandomLMWork(lm,2))); }
+						 * else { cell.setValue(new StringValue(key)); }
+						 */
+						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
+						if (!hAdded) {
+							StringValue g = hmap.get(cell.getValue());
+							cell.setValue(g);
+							stringvalues.add((StringValue) cell.getValue());
+						}
+					}
+				}
+			}
+
+			for (Cell cell : tc.getData().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						// set1.add((StringValue) cell.getValue());
+						boolean added = set1.add((StringValue) cell.getValue());
+						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
+						if (added && !hAdded) {
+							if (hAdded)
+								hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+							else
+								hmap.put((StringValue) cell.getValue(),
+										new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
+							counter++;
+						}
+					}
+				}
+			}
+
+			for (Cell cell : tc.getData().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						// stringvalues.add((StringValue)
+						// cell.getValue());
+						/*
+						 * if (!set1.add((StringValue) cell.getValue())) {
+						 * cell.setValue(new
+						 * StringValue(randWord.generateRandomLMWork(lm,2))); }
+						 * else { cell.setValue(new StringValue(key)); }
+						 */
+
+						StringValue g = hmap.get(cell.getValue());
+						cell.setValue(g);
+						stringvalues.add((StringValue) cell.getValue());
+					}
+				}
+			}
+			// System.out.println(data.getCells());
+			// System.out.println(state.getCells());
+			// System.out.println(stringvalues);
+			testCaseCounter++;
+		}
+	}
+
+	private void calculateReadableTestSuite() {
+		for (TestCase tc : testSuite.getTestCases()) {
+
+			// Scoring Readable strings and VarChars
+			double readableState = 0;
+			double readableData = 0;
+			for (Cell cell : tc.getData().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
+						readableData += this.langModelScore(cell.getValue().toString());
+						testSuite.addlengthOfStrings(cell.getValue().toString().length());
+					}
+
+					if (cell.getValue().toString().equals("\"\"")) {
+						testSuite.addnumberOfEmptyStrings(1);
+					}
+				}
+			}
+
+			for (Cell cell : tc.getState().getCells()) {
+				if (!cell.isNull() || cell.getValue() != null) {
+					if (cell.getColumn().getDataType() instanceof CharDataType
+							|| cell.getColumn().getDataType() instanceof TextDataType) {
+						if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
+							readableState += this.langModelScore(cell.getValue().toString());
+							testSuite.addlengthOfStrings(cell.getValue().toString().length());
+						}
+
+						if (cell.getValue().toString().equals("\"\"")) {
+							testSuite.addnumberOfEmptyStrings(1);
+						}
+					}
+				}
+			}
+
+			// Adding the total score of T-suffiecnt and test data
+			// together
+			testSuite.addReadableScore(readableData + readableState);
+
+		}
+	}
+
+}
