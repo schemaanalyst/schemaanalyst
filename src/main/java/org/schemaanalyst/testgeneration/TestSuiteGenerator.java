@@ -542,12 +542,13 @@ public class TestSuiteGenerator {
 			double readableData = 0;
 			for (Cell cell : tc.getData().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
-					if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
+					if (!cell.isNull() && !cell.getValue().toString().equals("''")) {
 						readableData += this.langModelScore(cell.getValue().toString());
+						int l = cell.getValue().toString().length();
 						testSuite.addlengthOfStrings(cell.getValue().toString().length());
 					}
 
-					if (cell.getValue().toString().equals("\"\"")) {
+					if (cell.getValue().toString().equals("''")) {
 						testSuite.addnumberOfEmptyStrings(1);
 					}
 				}
@@ -557,12 +558,12 @@ public class TestSuiteGenerator {
 				if (!cell.isNull() || cell.getValue() != null) {
 					if (cell.getColumn().getDataType() instanceof CharDataType
 							|| cell.getColumn().getDataType() instanceof TextDataType) {
-						if (!cell.isNull() && !cell.getValue().toString().equals("\"\"")) {
+						if (!cell.isNull() && !cell.getValue().toString().equals("''")) {
 							readableState += this.langModelScore(cell.getValue().toString());
 							testSuite.addlengthOfStrings(cell.getValue().toString().length());
 						}
 
-						if (cell.getValue().toString().equals("\"\"")) {
+						if (cell.getValue().toString().equals("''")) {
 							testSuite.addnumberOfEmptyStrings(1);
 						}
 					}
