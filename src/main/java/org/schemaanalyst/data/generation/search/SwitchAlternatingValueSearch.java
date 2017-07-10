@@ -1,40 +1,53 @@
 package org.schemaanalyst.data.generation.search;
 
-import org.schemaanalyst.data.*;
-import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
-import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
-import org.schemaanalyst.util.random.Random;
-
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
-public class AlternatingValueSearch extends Search<Data> {
+import org.schemaanalyst.data.BooleanValue;
+import org.schemaanalyst.data.Cell;
+import org.schemaanalyst.data.CompoundValue;
+import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.DateTimeValue;
+import org.schemaanalyst.data.DateValue;
+import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.data.StringValue;
+import org.schemaanalyst.data.TimeValue;
+import org.schemaanalyst.data.TimestampValue;
+import org.schemaanalyst.data.Value;
+import org.schemaanalyst.data.ValueVisitor;
+import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
+import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.directedrandom.PredicateFixer;
+import org.schemaanalyst.data.generation.directedrandom.PredicateFixerFactory;
+import org.schemaanalyst.data.generation.search.objective.predicate.ComposedPredicateObjectiveFunction;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateCheckerFactory;
+import org.schemaanalyst.util.random.Random;
 
-    protected static final int ACCELERATION_BASE = 2;
-    protected Random random;
-    protected CellInitializer startInitialiser;
-    protected CellInitializer restartInitialiser;
-    protected Data data; // protected so that test class can access
-    protected List<Cell> cells;
-    protected ObjectiveValue lastObjVal;
+public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 
-    public AlternatingValueSearch(Random random,
-                                  CellInitializer startInitializer,
-                                  CellInitializer restartInitializer) {
-        super(new Data.Duplicator());
-        this.random = random;
-        this.startInitialiser = startInitializer;
-        this.restartInitialiser = restartInitializer;
-    }
+	private PredicateChecker predicateChecker;
+	private PredicateFixer predicateFixer;
+	protected RandomCellValueGenerator randomCellValueGenerator;
 
+	
+	public SwitchAlternatingValueSearch(Random random, CellInitializer startInitializer,
+			CellInitializer restartInitializer, RandomCellValueGenerator randomCellValueGenerator) {
+		super(random, startInitializer, restartInitializer);
+		this.randomCellValueGenerator = randomCellValueGenerator;
+	}
+	
     @Override
     public void search(Data data) {
         // set up
         this.data = data;
         cells = data.getCells();
-
+        
+        
         // start
         startInitialiser.initialize(data);
         lastObjVal = null;
@@ -42,7 +55,7 @@ public class AlternatingValueSearch extends Search<Data> {
 
         // main loop
         while (!terminationCriterion.satisfied()) {
-
+        	
             alternateThroughValues();
 
             if (!terminationCriterion.satisfied()) {
@@ -56,69 +69,8 @@ public class AlternatingValueSearch extends Search<Data> {
             }
         }
     }
-
-    protected boolean evaluate() {
-        ObjectiveValue nextObjVal = evaluate(data);
-
-        boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
-
-        if (improvement) {
-            lastObjVal = nextObjVal;
-        }
-
-        return improvement;
-    }
-
-    protected void alternateThroughValues() {
-        int numValues = cells.size();
-        int valuesWithoutImprovement = 0;
-        Iterator<Cell> iterator = cells.iterator();
-
-        while (valuesWithoutImprovement < numValues && !terminationCriterion.satisfied()) {
-
-            // restart the iteration process through the columns
-            if (!iterator.hasNext()) {
-                iterator = cells.iterator();
-            }
-
-            Cell cell = iterator.next();
-
-            if (valueSearch(cell)) {
-                valuesWithoutImprovement = 0;
-            } else {
-                valuesWithoutImprovement++;
-            }
-        }
-    }
-
-    protected boolean valueSearch(Cell cell) {
-        boolean improvement = invertNullMove(cell);
-
-        if (!cell.isNull()) {
-            if (valueSearch(cell.getValue())) {
-                improvement = true;
-            }
-        }
-
-        return improvement;
-    }
-
-    protected boolean invertNullMove(Cell cell) {
-        boolean improvement = false;
-
-        if (!terminationCriterion.satisfied()) {
-            Value originalValue = cell.getValue();
-            cell.setNull(originalValue != null);
-
-            improvement = evaluate();
-            if (!improvement) {
-                cell.setValue(originalValue);
-            }
-        }
-
-        return improvement;
-    }
-
+    
+    @Override
     protected boolean valueSearch(Value value) {
         class ValueDispatcher implements ValueVisitor {
 
@@ -167,11 +119,49 @@ public class AlternatingValueSearch extends Search<Data> {
 
         return (new ValueDispatcher()).improvement(value);
     }
+    
+    protected boolean switchValueSearch(Value value) {
+        boolean improvement = false;
+        boolean iterationImprovement = true;
+
+            
+            // Try to copy if there is a need to copy
+            // Get state data
+            // Then copy corresponding (Same data value) values
+            // if improvement == keep
+            // not improvement == revert
+            
+            // Check objective function is composed
+            if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+            	// Get state
+        		Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+        	    List<Cell> stateCells = state.getCells();
+        	    Iterator<Cell> iterator = cells.iterator();
+
+                while (iterationImprovement && !terminationCriterion.satisfied()) {
+                    iterationImprovement = false;
+                    Value originalValue = value.duplicate();
+                    Value newvalue = iterator.next().getValue().duplicate();
+                    value = newvalue;
+                    
+                    improvement = evaluate();
+                    if (!improvement) {
+                        value = originalValue;
+                    }
+
+                }
+        		
+            }
+            
+        return improvement;
+    }
+    
 
     protected boolean booleanValueSearch(BooleanValue value) {
         boolean improvement = false;
 
         if (!terminationCriterion.satisfied()) {
+        	        	
             boolean originalValue = value.get();
             value.set(!originalValue);
 
@@ -189,7 +179,7 @@ public class AlternatingValueSearch extends Search<Data> {
         boolean iterationImprovement = true;
         List<Value> elements = value.getElements();
         int length = elements.size();
-
+        
         while (iterationImprovement && !terminationCriterion.satisfied()) {
             iterationImprovement = false;
 
@@ -215,7 +205,41 @@ public class AlternatingValueSearch extends Search<Data> {
     protected boolean stringValueSearch(StringValue value) {
         boolean improvement = false;
         boolean iterationImprovement = true;
+        boolean copyImprovement = true;
 
+
+        // Try to copy if there is a need to copy
+        // Get state data
+        // Then copy corresponding (Same data value) values
+        // if improvement == keep
+        // not improvement == revert
+        
+        // Check objective function is composed
+        if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+        	// Get state
+    		Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+    	    List<Cell> stateCells = state.getCells();
+
+            while (copyImprovement && !terminationCriterion.satisfied()) {
+            	copyImprovement =  false;
+                for (Cell c : stateCells) {
+                	if (c.getValueInstance() instanceof StringValue) {
+                        StringValue originalValue = value.duplicate();
+                		StringValue stateValue = ((StringValue) c.getValue()).duplicate();
+                		value.set(stateValue.get());
+                        improvement = evaluate();
+                        if (!improvement) {
+                            value.set(originalValue.get());
+                            copyImprovement =  false;
+                        } else {
+                        	break;
+                        }
+                	}
+                }
+            }
+    		
+        }
+        
         while (iterationImprovement && !terminationCriterion.satisfied()) {
             iterationImprovement = false;
 
@@ -288,7 +312,41 @@ public class AlternatingValueSearch extends Search<Data> {
 
         boolean improvement = false;
         boolean directionalImprovement = true;
+        boolean copyImprovement = true;
 
+        // Try to copy if there is a need to copy
+        // Get state data
+        // Then copy corresponding (Same data value) values
+        // if improvement == keep
+        // not improvement == revert
+        
+        // Check objective function is composed
+        if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+        	// Get state
+    		Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+    	    List<Cell> stateCells = state.getCells();
+
+            while (copyImprovement && !terminationCriterion.satisfied()) {
+            	copyImprovement =  false;
+                for (Cell c : stateCells) {
+                	if (c.getValueInstance() instanceof NumericValue) {
+                        BigDecimal originalValue = value.get();
+                		BigDecimal stateValue = ((NumericValue) c.getValue()).get();
+                		value.set(stateValue);
+                        improvement = evaluate();
+                        if (!improvement) {
+                            value.set(originalValue);
+                            copyImprovement =  false;
+                        } else {
+                        	break;
+                        }
+                	}
+                }
+            }
+    		
+        }
+
+        
         while (directionalImprovement && !terminationCriterion.satisfied()) {
             directionalImprovement = false;
 
@@ -343,4 +401,5 @@ public class AlternatingValueSearch extends Search<Data> {
     protected boolean timestampValueSearch(TimestampValue value) {
         return numericValueSearch(value);
     }
+    
 }
