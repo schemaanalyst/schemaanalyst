@@ -21,12 +21,14 @@ public abstract class ComposedPredicateObjectiveFunction extends ObjectiveFuncti
     private static final int NULL_PREDICATE_WEIGHT = 5;
     private static final int OR_PREDICATE_WEIGHT = 1;
 
-    private Predicate predicate;
+    public Data state;
+    public Predicate predicate;
     private List<ObjectiveFunction<Data>> objectiveFunctions;
     private List<Integer> weights;
 
     public ComposedPredicateObjectiveFunction(ComposedPredicate predicate, final Data state) {
         this.predicate = predicate;
+        this.state = state;
         objectiveFunctions = new ArrayList<>();
         weights = new ArrayList<>();
 
