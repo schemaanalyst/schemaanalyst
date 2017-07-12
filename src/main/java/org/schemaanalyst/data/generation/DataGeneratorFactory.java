@@ -14,6 +14,7 @@ import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.data.generation.search.SwitchAlternatingValueSearch;
+import org.schemaanalyst.data.generation.search.SwitcherAVS;
 import org.schemaanalyst.data.generation.search.HyperAlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
@@ -210,7 +211,7 @@ public class DataGeneratorFactory {
             CellInitializer startInitializer,
             CellInitializer restartInitializer) {
 
-        Search<Data> search = new SwitchAlternatingValueSearch(
+        Search<Data> search = new SwitcherAVS(
                 random,
                 startInitializer,
                 restartInitializer, randomCellValueGenerator);

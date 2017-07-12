@@ -20,7 +20,10 @@ import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.directedrandom.PredicateFixer;
 import org.schemaanalyst.data.generation.directedrandom.PredicateFixerFactory;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.predicate.ComposedPredicateObjectiveFunction;
+import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
@@ -33,6 +36,8 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 	private PredicateChecker predicateChecker;
 	private PredicateFixer predicateFixer;
 	protected RandomCellValueGenerator randomCellValueGenerator;
+	private int stringValueStateIndex = 0;
+	private int numericValueStateIndex = 0;
 
 	public SwitchAlternatingValueSearch(Random random, CellInitializer startInitializer,
 			CellInitializer restartInitializer, RandomCellValueGenerator randomCellValueGenerator) {
@@ -53,7 +58,8 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 
 		// main loop
 		while (!terminationCriterion.satisfied()) {
-
+			stringValueStateIndex = 0;
+			numericValueStateIndex = 0;
 			alternateThroughValues();
 
 			if (!terminationCriterion.satisfied()) {
@@ -67,6 +73,19 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 			}
 		}
 	}
+	
+	@Override
+    protected boolean valueSearch(Cell cell) {
+        boolean improvement = invertNullMove(cell);
+
+        if (!cell.isNull()) {
+        	if (valueSearch(cell.getValue())) {
+                improvement = true;
+            }
+        }
+
+        return improvement;
+    }
 
 	@Override
 	protected boolean valueSearch(Value value) {
@@ -152,6 +171,38 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 
 		return improvement;
 	}
+	
+	protected boolean switchIdeaByPredicate(NumericValue value) {
+		boolean improvement = false;
+		
+		
+    	if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+    		// Get Predicates and states
+    		ComposedPredicate predicate = (ComposedPredicate) ((ComposedPredicateObjectiveFunction) this.objFun).predicate;
+    		Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+    		
+    		for (Predicate p : predicate.getSubPredicates()) {
+    			if (p instanceof ComposedPredicate) {
+    				for (Predicate p1 : ((ComposedPredicate) p).getSubPredicates()) {
+    	    			if (p1 instanceof ComposedPredicate) {
+    	    				for (Predicate p2 : ((ComposedPredicate) p1).getSubPredicates()) {
+    	    	    			System.out.println(p2);
+    	    				}
+    	    			} else {
+    	    				System.out.println(p1);
+    	    			}
+    				}
+    			} else {
+    				System.out.println(p);
+    			}
+    		}
+    		
+    		// iterate through predicates
+    		System.out.println(predicate.getSubPredicates());
+    	}
+		
+		return improvement;
+	}
 
 	protected boolean booleanValueSearch(BooleanValue value) {
 		boolean improvement = false;
@@ -205,7 +256,7 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 		while (iterationImprovement && !terminationCriterion.satisfied()) {
 			iterationImprovement = false;
 
-			if (copyStringValueMove(value)) {
+			if (copyStringValueMoveIndex(value)) {
 				improvement = true;
 				iterationImprovement = true;
 			}
@@ -252,9 +303,55 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 						StringValue stateValue = ((StringValue) c.getValue()).duplicate();
 						value.set(stateValue.get());
 						improvement = evaluate();
+						
+						System.err.println("String Copying N0 Eva = " + this.getNumEvaluations() + " improvement = " + improvement);
+						
 						if (!improvement) {
 							value.set(originalValue.get());
 							improvement = false;
+						} else {
+							break;
+						}
+					}
+				}
+			}
+
+		}
+
+		return improvement;
+
+	}
+	
+	protected boolean copyStringValueMoveIndex(StringValue value) {
+		boolean improvement = false;
+		boolean copyImprove = true;
+
+		// Try to copy if there is a need to copy
+		// Get state data
+		// Then copy corresponding (Same data value) values
+		// if improvement == keep
+		// not improvement == revert
+
+		// Check objective function is composed
+		if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+			// Get state
+			Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+			List<Cell> stateCells = state.getCells();
+			while (copyImprove && !terminationCriterion.satisfied()) {
+				copyImprove = false;
+				for (int i = 0;stringValueStateIndex < state.getCells().size(); stringValueStateIndex++) {
+					if (state.getCells().get(stringValueStateIndex).getValueInstance() instanceof StringValue) {
+						StringValue originalValue = value.duplicate();
+						StringValue stateValue = ((StringValue) state.getCells().get(stringValueStateIndex).getValue()).duplicate();
+						value.set(stateValue.get());
+						improvement = evaluate();
+						
+						System.err.println("String Copying N0 Eva = " + this.getNumEvaluations() + " improvement = " + improvement);
+						
+						if (!improvement) {
+							value.set(originalValue.get());
+							improvement = false;
+							break;
 						} else {
 							break;
 						}
@@ -318,11 +415,13 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 
 		boolean improvement = false;
 		boolean directionalImprovement = true;
+		
+		switchIdeaByPredicate(value);
 
 		while (directionalImprovement && !terminationCriterion.satisfied()) {
 			directionalImprovement = false;
 
-			if (numericCopyMove(value)) {
+			if (numericCopyMoveIndex(value)) {
 				improvement = true;
 			}
 
@@ -375,6 +474,8 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 						BigDecimal stateValue = ((NumericValue) c.getValue()).get();
 						value.set(stateValue);
 						improvement = evaluate();
+						System.err.println("Numeric Copying N0 Eva = " + this.getNumEvaluations() + " Value: " + value.get() + " improvement = " + improvement);
+
 						if (!improvement) {
 							value.set(originalValue);
 							improvement = false;
@@ -382,6 +483,58 @@ public class SwitchAlternatingValueSearch extends AlternatingValueSearch {
 							break;
 						}
 					}
+				}
+			}
+
+		}
+
+		return improvement;
+
+	}
+	
+	protected boolean numericCopyMoveIndex(NumericValue value) {
+
+		boolean improvement = false;
+		boolean copyImprove = true;
+
+
+		// Try to copy if there is a need to copy
+		// Get state data
+		// Then copy corresponding (Same data value) values
+		// if improvement == keep
+		// not improvement == revert
+
+		// Check objective function is composed
+		if (this.objFun instanceof ComposedPredicateObjectiveFunction) {
+			// Get state
+			Data state = ((ComposedPredicateObjectiveFunction) this.objFun).state;
+			List<Cell> stateCells = state.getCells();
+
+			while (copyImprove && !terminationCriterion.satisfied()) {
+				copyImprove = false;
+				for (int i = 0;numericValueStateIndex < state.getCells().size(); i++)  {
+					
+					if (state.getCells().get(numericValueStateIndex).getValueInstance() instanceof NumericValue) {
+						BigDecimal originalValue = value.get();
+						BigDecimal stateValue = ((NumericValue) state.getCells().get(numericValueStateIndex).getValue()).get();
+						numericValueStateIndex++;
+						System.out.println("DATA:");
+						System.out.println(data);
+						System.out.println("STATE:");
+						System.out.println(state);
+						value.set(stateValue);
+						improvement = evaluate();
+						System.err.println("Numeric Copying No Eva = " + this.getNumEvaluations() + " Value: " + value.get() + " improvement = " + improvement);
+
+						if (!improvement) {
+							value.set(originalValue);
+							improvement = false;
+							//break;
+						} else {
+							break;
+						}
+					}
+					numericValueStateIndex++;
 				}
 			}
 
