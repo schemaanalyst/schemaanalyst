@@ -450,7 +450,7 @@ Executing this class produces a single results file in CSV format that contains 
 | mutationanalysistime | The time taken to perform analysis of all of the mutant schemas.|
 | timetaken | The total time taken by the entire process.|
 
-###### Intepretation <a name="mutation-analysis-interpretation"></a>
+###### Interpretation <a name="mutation-analysis-interpretation"></a>
 
 The output produced by mutation analysis contains a significant amount of information, some of which might not be needed for your purposes.  If you are simply concerned with the correctness of your schema, focus on the `scorenumerator` and `scoredenominator` columns, as defined previously.  By dividing the numerator by the denominator you will generate a mutation score in the range [0, 1].  This score provides an estimate for how well the schema has performed when its integrity constraints were exercised, with higher scores indicating that the schema is more likely to permit valid data from entering a table and to reject any invalid data.  Although there does not currently exist a standard for this metric, scores between 0.6 - 0.7 (60% - 70%) are generally considered good.  If your schema's score falls below this, consider viewing the [Mutant Analysis](#mutant-analysis) section to gain further insight on the types of mutants created and removed during the process.
 
