@@ -542,6 +542,13 @@ Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
 in Transactions on Software Engineering and Methodology, 25(1). <a
 name="five"></a>
 
+[(ICSME 2016)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
+Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
+Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
+for Relational Database Schemas" in Proceedings of the 32nd International
+Conference on Software Maintenance and Evolution, 2016. <a name="six"></a>
+
 ## License
 
 [GNU General Public License v3.0](./LICENSE.txt)
