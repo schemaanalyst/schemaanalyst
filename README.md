@@ -336,11 +336,14 @@ below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
 
-Generate test data for the ArtistSimilarity schema using the `Postgres` database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and save the output in the file `SampleOutput.sql`:
+Generate test data for the ArtistSimilarity schema using the `Postgres`
+database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and
+save the output in the file `SampleOutput.sql`:
 
 `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
 
-This will produce a series of `INSERT` statements for each mutant of the schema.  Some abbreviated output from the above execution is included below:
+This will produce a series of `INSERT` statements for each mutant of the
+schema.  Some abbreviated output from the above execution is included below:
 
 ```
 INSERT INTO "artists"(
@@ -367,11 +370,16 @@ INSERT INTO "artists"(
 
 ###### Syntax <a name="mutation-analysis-syntax"></a>
 
-To create data to exercise the integrity constraints of a schema using the data generation component of SchemaAnalyst, and then perform mutation analysis using it, use the following syntax:
+To create data to exercise the integrity constraints of a schema using the data
+generation component of SchemaAnalyst, and then perform mutation analysis using
+it, use the following syntax:
 
 `java org.schemaanalyst.util.Go -s schema <options> mutation <parameters>`
 
-Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
+Where `schema` is replaced with the path to the schema of interest, `<options>`
+can be replaced by any number of the options described in the
+[Options](#options) section, and `<parameters>` can be replaced by any number
+of parameters described below.
 
 ###### Parameters <a name="mutation-analysis-parameters"></a>
 
