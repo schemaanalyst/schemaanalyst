@@ -203,16 +203,24 @@ directory after compiling the system.
 
 ### Asciinema Recording <a name="asciicinema"></a>
 
-Please watch this Asciinema recording that shows some of the key features of SchemaAnalyst, which are explained in more detail below.
+Please watch this Asciinema recording that shows some of the key features of
+SchemaAnalyst, which are explained in more detail below.
 
 [![asciicast](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5.png)](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5)
 
 ---
 
 ### Help Menu <a name="help"></a>
-SchemaAnalyst uses a command line interface with a variety of execution options.  Two primary commands are included: `generation` for [Test Data Generation](#test-data-generation) and `mutation` for [Mutation Analysis](#mutation-analysis).  Note that one of these two commands *must* be applied, and their syntax is discussed later on.
 
-You are also able to print the help menu at any time with the `--help`, or `-h` command of the `Go` class within the `java org.schemaanalyst.util` package as follows:
+SchemaAnalyst uses a command line interface with a variety of execution
+options. Two primary commands are included: `generation` for [Test Data
+Generation](#test-data-generation) and `mutation` for [Mutation
+Analysis](#mutation-analysis). Note that one of these two commands *must* be
+applied, and their syntax is discussed later on.
+
+You are also able to print the help menu at any time with the `--help`, or `-h`
+command of the `Go` class within the `java org.schemaanalyst.util` package as
+follows:
 
 `java org.schemaanalyst.util.Go -h`
 
