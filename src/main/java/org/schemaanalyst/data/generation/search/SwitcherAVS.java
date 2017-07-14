@@ -1,47 +1,27 @@
 package org.schemaanalyst.data.generation.search;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import org.schemaanalyst.data.BooleanValue;
 import org.schemaanalyst.data.Cell;
-import org.schemaanalyst.data.CompoundValue;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.DateTimeValue;
-import org.schemaanalyst.data.DateValue;
-import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.Row;
-import org.schemaanalyst.data.StringValue;
-import org.schemaanalyst.data.TimeValue;
-import org.schemaanalyst.data.TimestampValue;
 import org.schemaanalyst.data.Value;
-import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
-import org.schemaanalyst.data.generation.directedrandom.PredicateFixer;
-import org.schemaanalyst.data.generation.directedrandom.PredicateFixerFactory;
-import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
-import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.predicate.ComposedPredicateObjectiveFunction;
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ComposedPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateCheckerFactory;
 import org.schemaanalyst.util.random.Random;
 
 public class SwitcherAVS extends AlternatingValueSearch {
 
 	protected RandomCellValueGenerator randomCellValueGenerator;
-	List<Predicate> matches = null;
-	Data state = null;
-	Data combained = null;
-	boolean foundmatches = false;
+	private List<Predicate> matches = null;
+	private Data state = null;
+	private Data combained = null;
+	private boolean foundmatches = false;
 
 	public SwitcherAVS(Random random, CellInitializer startInitializer, CellInitializer restartInitializer,
 			RandomCellValueGenerator randomCellValueGenerator) {
