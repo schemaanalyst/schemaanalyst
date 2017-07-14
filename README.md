@@ -187,12 +187,19 @@ set your classpath as follows while in the `schemaanalyst` directory:
 
 ### Convert Schema to Java <a name="sqlparser"></a>
 
-We have purchased a license of [General SQLParser](http://www.sqlparser.com/) to generate `Java` code interpreting `SQL` statements for the various supported databases. You will not be able to convert SQL code to Java without either purchasing a license of the [General SQL
-Parser](http://www.sqlparser.com/shopping.php) or generating your own Java code. Removing General SQL Parser is what allows us to release this product free and open-source!  We have included a number of sample schema to use with SchemaAnalyst: the original `.sql` files can be found in the `schemaanalyst/casestudies/schema` directory, while the converted `.java` files can be found in the `schemaanalyst/build/classes/main/parsedcasestudy/` directory after compiling the system.
+We have purchased a license of [General SQLParser](http://www.sqlparser.com/)
+to generate `Java` code interpreting `SQL` statements for the various supported
+databases. You will not be able to convert SQL code to Java without either
+purchasing a license of the [General SQL
+Parser](http://www.sqlparser.com/shopping.php) or generating your own Java
+code. Removing General SQL Parser is what allows us to release this product
+free and open-source!  We have included a number of sample schema to use with
+SchemaAnalyst: the original `.sql` files can be found in the
+`schemaanalyst/casestudies/schema` directory, while the converted `.java` files
+can be found in the `schemaanalyst/build/classes/main/parsedcasestudy/`
+directory after compiling the system.
 
----
-
-# Tutorial <a name="tutorial"></a>
+## Tutorial <a name="tutorial"></a>
 
 ### Asciinema Recording <a name="asciicinema"></a>
 
