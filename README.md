@@ -279,7 +279,8 @@ Usage: <main class> [options] [command] [command options]
 
 ### Options <a name="options"></a>
 
-The following options can precede the `generation` and `mutation` commands for additional functionality (note that the `--schema` option is required):
+The following options can precede the `generation` and `mutation` commands for
+additional functionality (note that the `--schema` option is required):
 
 | Parameter | Required | Description |
 |:---------:|:--------:|:-----------:|
@@ -289,17 +290,30 @@ The following options can precede the `generation` and `mutation` commands for a
 | --help |  | Show the help menu.|
 | --schema | X | The schema chosen for analysis.|
 
-*__Note:__ If you attempt to execute any of the `Runner` classes of SchemaAnalyst without the necessary parameters, or if you type the `--help` tag, you should be presented with information describing the parameters and detailing which of these are required. Where parameters are not required, the defaults values should usually be sensible.  While there are other parameters available for this class, it is generally not necessary to understand their purpose.*
+*__Note:__ If you attempt to execute any of the `Runner` classes of
+SchemaAnalyst without the necessary parameters, or if you type the `--help`
+tag, you should be presented with information describing the parameters and
+detailing which of these are required. Where parameters are not required, the
+defaults values should usually be sensible.  While there are other parameters
+available for this class, it is generally not necessary to understand their
+purpose.*
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
 ###### Syntax <a name="test-data-generation-syntax"></a>
 
-SchemaAnalyst will create a series of `INSERT` statements to test the integrity constraints that are altered via mutation, as described in the [Overview](#overview) section.  This data is typically hidden from the user during the analysis, but if you wish to see what data the system is generating for this process, then you can use the following syntax:
+SchemaAnalyst will create a series of `INSERT` statements to test the integrity
+constraints that are altered via mutation, as described in the
+[Overview](#overview) section.  This data is typically hidden from the user
+during the analysis, but if you wish to see what data the system is generating
+for this process, then you can use the following syntax:
 
 `java org.schemaanalyst.util.Go -s schema <options> generation <parameters>`
 
-Where `schema` is replaced with the path to the schema of interest, `<options>` can be replaced by any number of the options described in the [Options](#options) section, and `<parameters>` can be replaced by any number of parameters described below.
+Where `schema` is replaced with the path to the schema of interest, `<options>`
+can be replaced by any number of the options described in the
+[Options](#options) section, and `<parameters>` can be replaced by any number
+of parameters described below.
 
 ###### Parameters <a name="test-data-generation-parameters"></a>
 
@@ -311,7 +325,14 @@ Where `schema` is replaced with the path to the schema of interest, `<options>` 
 
 ###### Output <a name="test-data-generation-output"></a>
 
-By default, the `generation` command creates a JUnit test suite in the `generatedtest` directory.   The name of the file can be changed with the `--testSuite` parameter, while the package can be changed with the `--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can be used to generate a `.sql` file with all of the `INSERT` statements used to test the integrity constraints of the schema.  These statements are also automatically displayed in the console window after execution.  See the example below for the output from a specific schema.
+By default, the `generation` command creates a JUnit test suite in the
+`generatedtest` directory.   The name of the file can be changed with the
+`--testSuite` parameter, while the package can be changed with the
+`--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can
+be used to generate a `.sql` file with all of the `INSERT` statements used to
+test the integrity constraints of the schema.  These statements are also
+automatically displayed in the console window after execution.  See the example
+below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
 
