@@ -4,13 +4,13 @@
 
 ## Description
 
-There has been little work that has sought to test that a relational database's
-schema has correctly specified integrity constraints [(TOSEM 2015)](#five).
-Testing a database's schema verifies that _all_ integrity constraints are
-satisfied, confirming the integrity and security of a database. Early testing
-not only ensures that the integrity constraints are satisfied, it can also
-reduce implementation and maintenance costs associated with managing a
-relational database.
+There has been little work that has sought to ensure that a relational
+database's schema contains correctly specified integrity constraints [(TOSEM
+2015)](#five). Testing a database's schema verifies that all of its integrity
+constraints are satisfied and negated, confirming the integrity and security of
+the database itself. Early testing not only helps to ensure that the integrity
+constraints are correct, it can also reduce implementation and maintenance
+costs associated with managing a relational database.
 
 SchemaAnalyst uses a search-based approach to test the complex relationships
 between the integrity constraints in relational databases. Other
