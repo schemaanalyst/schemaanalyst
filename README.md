@@ -500,7 +500,13 @@ SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888
 
 # Building and Execution Environment <a name="environment"></a>
 
-All of the previous instructions for building, installing, and using SchemaAnalyst have been tested on Mac OS X 10.11 "El Capitan" and Ubuntu Linux 14.04 "Trusty Tahr". All of the development and testing on both workstations was done with Java Standard Edition 1.8. While SchemaAnalyst is very likely to work on other Unix-based development environments, we cannot guarantee correct results for systems different than the ones mentioned previously. Currently, we do not provide full support for the building, installation, and use of SchemaAnalyst on Windows.
+All of the previous instructions for building, installing, and using
+SchemaAnalyst have been tested on Mac OS X 10.11 and Ubuntu Linux 16.04. All of
+the development and testing on both workstations was done with Java Standard
+Edition 1.8. While SchemaAnalyst is very likely to work on other Unix-based
+development environments, we cannot guarantee correct results for systems
+different than the ones mentioned previously. Currently, we do not provide full
+support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ---
 
