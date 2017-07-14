@@ -79,7 +79,7 @@ public class SwitcherAVS extends AlternatingValueSearch {
 
 		return improvement;
 	}
-
+	
 	/**
 	 * Get a list of match predicates
 	 * 
@@ -88,26 +88,15 @@ public class SwitcherAVS extends AlternatingValueSearch {
 	 */
 	protected List<Predicate> getMatchPredicates(Predicate predicate) {
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		
+		if (predicate instanceof MatchPredicate) {
+			predicates.add(predicate);
+		}
+		
 		if (predicate instanceof ComposedPredicate) {
 			for (Predicate p : ((ComposedPredicate) predicate).getSubPredicates()) {
-				if (p instanceof ComposedPredicate) {
-					for (Predicate p1 : ((ComposedPredicate) p).getSubPredicates()) {
-						if (p1 instanceof ComposedPredicate) {
-							for (Predicate p2 : ((ComposedPredicate) p1).getSubPredicates()) {
-								if (p2 instanceof MatchPredicate) {
-									predicates.add(p2);
-								}
-							}
-						} else if (p1 instanceof MatchPredicate) {
-							predicates.add(p1);
-						}
-					}
-				} else if (p instanceof MatchPredicate) {
-					predicates.add(p);
-				}
+				predicates.addAll(this.getMatchPredicates(p));
 			}
-		} else if (predicate instanceof MatchPredicate) {
-			predicates.add(predicate);
 		}
 
 		return predicates;
@@ -165,4 +154,36 @@ public class SwitcherAVS extends AlternatingValueSearch {
 		return improvement;
 	}
 
+	/**
+	 * Get a list of match predicates
+	 * 
+	 * @param predicate
+	 * @return predicates List of match predicates
+	 */
+	protected List<Predicate> getMatchPredicatesBAD(Predicate predicate) {
+		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (predicate instanceof ComposedPredicate) {
+			for (Predicate p : ((ComposedPredicate) predicate).getSubPredicates()) {
+				if (p instanceof ComposedPredicate) {
+					for (Predicate p1 : ((ComposedPredicate) p).getSubPredicates()) {
+						if (p1 instanceof ComposedPredicate) {
+							for (Predicate p2 : ((ComposedPredicate) p1).getSubPredicates()) {
+								if (p2 instanceof MatchPredicate) {
+									predicates.add(p2);
+								}
+							}
+						} else if (p1 instanceof MatchPredicate) {
+							predicates.add(p1);
+						}
+					}
+				} else if (p instanceof MatchPredicate) {
+					predicates.add(p);
+				}
+			}
+		} else if (predicate instanceof MatchPredicate) {
+			predicates.add(predicate);
+		}
+
+		return predicates;
+	}
 }
