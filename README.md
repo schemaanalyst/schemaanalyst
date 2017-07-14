@@ -498,7 +498,7 @@ SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888
 
 ---
 
-# Building and Execution Environment <a name="environment"></a>
+## Building and Execution Environment <a name="environment"></a>
 
 All of the previous instructions for building, installing, and using
 SchemaAnalyst have been tested on Mac OS X 10.11 and Ubuntu Linux 16.04. All of
@@ -510,7 +510,7 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ---
 
-# Publications
+## Publications
 
 [1. ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-tosem2015/)McMinn, Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of Test Coverage Criteria for Relational Database Schema Integrity Constraints," in Transactions on Software Engineering and Methodology, 25(1). <a name="one"></a>
 
