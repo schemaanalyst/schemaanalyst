@@ -2,30 +2,29 @@
 
 <img src="https://raw.githubusercontent.com/schemaanalyst-team/schemaanalyst-logo/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for database schemas.">
 
-# Description
-There has been little work that has sought to test that a relational
-database's schema has correctly specified integrity constraints
-[\[1\]](#one).
-Testing a database's schema verifies that _all_ integrity constraints are
-satisfied, confirming the integrity and security of a database.
-Early testing not only verifies that integrity constraints are
-satisfied, but it can reduce implementation and maintenance
-costs associated with managing a database.
+## Description
 
-SchemaAnalyst uses a search-based approach
-to test the complex relationships of integrity constraints in relational
-databases. Other schema-analyzing tools test a
-database's schema in a less efficient method but, more importantly,
-use a less effective technique. A study in
-[this paper](http://www.cs.allegheny.edu/~gkapfham/research/publish/kapfhammer-icst2013-schemaanalyst.pdf) finds that, for all of the case studies,
-SchemaAnalyst obtains higher constraint coverage than
-a similar schema-analyzing tool while reaching 100% coverage on two schemas
-for which the competing tool covers less than 10% of the constraints.
-SchemaAnalyst achieves these results with generated data
-sets that are substantially smaller than the competing tool and in
-an amount of execution time that is competitive or faster [\[2\]](#two).
+There has been little work that has sought to test that a relational database's
+schema has correctly specified integrity constraints [\[1\]](#one). Testing a
+database's schema verifies that _all_ integrity constraints are satisfied,
+confirming the integrity and security of a database. Early testing not only
+verifies that integrity constraints are satisfied, but it can reduce
+implementation and maintenance costs associated with managing a database.
 
-# Table of Contents <a name="table-of-contents"></a>
+SchemaAnalyst uses a search-based approach to test the complex relationships of
+integrity constraints in relational databases. Other schema-analyzing tools
+test a database's schema in a less efficient method but, more importantly, use
+a less effective technique. A study in [this
+paper](http://www.cs.allegheny.edu/~gkapfham/research/publish/kapfhammer-icst2013-schemaanalyst.pdf)
+finds that, for all of the case studies, SchemaAnalyst obtains higher
+constraint coverage than a similar schema-analyzing tool while reaching 100%
+coverage on two schemas for which the competing tool covers less than 10% of
+the constraints. SchemaAnalyst achieves these results with generated data sets
+that are substantially smaller than the competing tool and in an amount of
+execution time that is competitive or faster [\[2\]](#two).
+
+## Table of Contents <a name="table-of-contents"></a>
+
 + [Overview](#overview)
 + [Getting Started](#getting-started)
     - [Downloading](#downloading)
@@ -54,17 +53,48 @@ an amount of execution time that is competitive or faster [\[2\]](#two).
 + [Publications](#publications)
 + [License](#license)
 
-# Overview <a name="overview"></a>
-A database schema acts as the cornerstone for any application that relies on a RDBMS.  It specifies the types of allowed data, as well as the organization and relationship between the data.  Any oversight at this fundamental level can easily propagate errors toward future development stages.  Such oversights might include incomplete foreign or primary key declarations, or incorrect use or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity constraints.  Such seemingly small mistakes at this stage can prove costly to correct, thus SchemaAnalyst was created to allow for early detection of such problems prior to integration of a schema with an application.  Ultimately, SchemaAnalyst meticulously tests the correctness of a schema: it ensures that valid data is permitted entry into a database and that erroneous data is rejected.
+## Overview <a name="overview"></a>
 
-To do this, various "mutants" are created from a given schema using a defined set of mutation operators.  These operators change the schema's integrity constraints in different ways.  For instance, a mutant may be created by removing a column from a primary key, or from removing a `NOT_NULL` constraint from a column, among many other possibilities.  These schemas are then evaluated through a process known as mutation analysis.  Using a search-based technique described in [this paper](http://www.cs.allegheny.edu/sites/gkapfham/download/research/papers/icst2013-kapfhammer-mcminn-wright.pdf), test suites are created that execute `INSERT` statements into tables for both the original schema and the mutant schema.  If the `INSERT` statement is accepted by the original schema but rejected by the mutant schema, then it shows that the inserted data adheres to the integrity constraints of the original schema, and the test suite is able to detect and respond appropriately to the change.  This is said to "kill" the mutant, and after all mutants have been analyzed in this fashion, a mutation score is generated as follows: mutation score = number of killed mutants / number of mutants.  In general, the higher this score the better the robustness of the schema being tested; i.e. it is more likely to only accept valid data and reject invalid data [\[2\]](#two).
+A database schema acts as the cornerstone for any application that relies on a
+RDBMS.  It specifies the types of allowed data, as well as the organization and
+relationship between the data.  Any oversight at this fundamental level can
+easily propagate errors toward future development stages.  Such oversights
+might include incomplete foreign or primary key declarations, or incorrect use
+or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity constraints.
+Such seemingly small mistakes at this stage can prove costly to correct, thus
+SchemaAnalyst was created to allow for early detection of such problems prior
+to integration of a schema with an application.  Ultimately, SchemaAnalyst
+meticulously tests the correctness of a schema: it ensures that valid data is
+permitted entry into a database and that erroneous data is rejected.
 
----
+To do this, various "mutants" are created from a given schema using a defined
+set of mutation operators.  These operators change the schema's integrity
+constraints in different ways.  For instance, a mutant may be created by
+removing a column from a primary key, or from removing a `NOT_NULL` constraint
+from a column, among many other possibilities.  These schemas are then
+evaluated through a process known as mutation analysis.  Using a search-based
+technique described in [this
+paper](http://www.cs.allegheny.edu/sites/gkapfham/download/research/papers/icst2013-kapfhammer-mcminn-wright.pdf),
+test suites are created that execute `INSERT` statements into tables for both
+the original schema and the mutant schema.  If the `INSERT` statement is
+accepted by the original schema but rejected by the mutant schema, then it
+shows that the inserted data adheres to the integrity constraints of the
+original schema, and the test suite is able to detect and respond appropriately
+to the change.  This is said to "kill" the mutant, and after all mutants have
+been analyzed in this fashion, a mutation score is generated as follows:
+mutation score = number of killed mutants / number of mutants.  In general, the
+higher this score the better the robustness of the schema being tested; i.e. it
+is more likely to only accept valid data and reject invalid data [\[2\]](#two).
 
-# Getting Started <a name="getting-started"></a>
+
+## Getting Started <a name="getting-started"></a>
 
 ### Downloading <a name="downloading"></a>
-The source code is hosted in a [GitHub repository] (https://github.com/schemaanalyst-team/schemaanalyst). To obtain SchemaAnalyst, simply clone this repository on your machine using the following command:
+
+The source code is hosted in a [GitHub
+repository](https://github.com/schemaanalyst-team/schemaanalyst). To obtain
+SchemaAnalyst, simply clone this repository on your machine using the following
+command:
 
 `git clone git@github.com:schemaanalyst-team/schemaanalyst.git`
 
