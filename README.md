@@ -86,7 +86,6 @@ mutation score = number of killed mutants / number of mutants.  In general, the
 higher this score the better the robustness of the schema being tested; i.e. it
 is more likely to only accept valid data and reject invalid data [\[2\]](#two).
 
-
 ## Getting Started <a name="getting-started"></a>
 
 ### Downloading <a name="downloading"></a>
@@ -99,7 +98,10 @@ command:
 `git clone git@github.com:schemaanalyst-team/schemaanalyst.git`
 
 ### Dependencies <a name="dependencies"></a>
-To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of the Java programs.  See the table below for a full description of the required and optional dependencies.
+
+To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of
+the Java programs.  See the table below for a full description of the required
+and optional dependencies.
 
 | Software | Required? | Purpose |
 |:--------:|:---------:|:-------:|
@@ -112,14 +114,31 @@ To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of t
 
 ###### Properties <a name="properties"></a>
 
-SchemaAnalyst uses a number of _properties_ files to specify some configuration options. These are located in the `config` directory. These files are structured as follows:
+SchemaAnalyst uses a number of _properties_ files to specify some configuration
+options. These are located in the `config` directory. These files are
+structured as follows:
 
-* `database.properties`: contains properties relating to database connections, such as usernames and passwords. The `dbms` property at the top of this file specifies which database to use (SQLite, Postgres, or HyperSQL).
-* `locations.properties`: specifies the layout of the SchemaAnalyst directories, and should not require any changes (but may be useful if adding to the Ant script, which automatically loads it).
+* `database.properties`: contains properties relating to database connections,
+  such as usernames and passwords. The `dbms` property at the top of this file
+  specifies which database to use (SQLite, Postgres, or HyperSQL).
+
+* `locations.properties`: specifies the layout of the SchemaAnalyst
+  directories, and should not require any changes (but may be useful if adding
+  to the Ant script, which automatically loads it).
+
 * `experiment.properties`: _The contents of this file can be ignored._
-* `logging.properties`: specifies the level of logging output that should be produced. Changing the `.level` and `java.util.logging.ConsoleHandler.level` options allows the level to be altered. Note that unless you enable logging to a file, effectively the lower of the two levels is used.
 
-*__Note__: To allow you to specify your own _local_ versions of these files, which you will not commit to the Git repository, SchemaAnalyst runners will automatically load versions suffixed with `.local` over those without the suffix. If you need to change any of the properties, you should therefore create your own local version by copying the file and adding the suffix (e.g. `database.properties` becomes `database.properties.local`).*
+* `logging.properties`: specifies the level of logging output that should be
+  produced. Changing the `.level` and `java.util.logging.ConsoleHandler.level`
+  options allows the level to be altered. Note that unless you enable logging
+  to a file, effectively the lower of the two levels is used.
+
+*__Note__: To allow you to specify your own _local_ versions of these files,
+which you will not commit to the Git repository, SchemaAnalyst runners will
+automatically load versions suffixed with `.local` over those without the
+suffix. If you need to change any of the properties, you should therefore
+create your own local version by copying the file and adding the suffix (e.g.
+`database.properties` becomes `database.properties.local`).*
 
 ###### Databases <a name="databases"></a>
 HSQLDB and SQLite require no additional configuration for use with SchemaAnalyst.  If using PostgreSQL, then note that the `database.properties` file is preconfigured to connect to a PostgreSQL database using the default credentials. In addition, you must give this user full privileges over the `postgres` database.
