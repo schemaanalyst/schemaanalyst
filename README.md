@@ -468,7 +468,8 @@ types of mutants created and removed during the process.
 
 ###### Examples <a name="mutation-analysis-examples"></a>
 
-1.  Perform mutation analysis with the default configuration and the `ArtistSimilarity` schema:
+1.  Perform mutation analysis with the default configuration and the
+    `ArtistSimilarity` schema:
 
     `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation`
 
@@ -479,7 +480,9 @@ types of mutants created and removed during the process.
     SQLite,parsedcasestudy.ArtistSimilarity,CondAICC,avsDefaults,0,NA,100.0,22,9,AllOperatorsWithRemovers,5,9,original,false,259,67,5,31,371
     ```
 
-2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC` coverage criterion, the `random` data generator and the `ArtistSimilarity` schema:
+2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC`
+    coverage criterion, the `random` data generator and the `ArtistSimilarity`
+    schema:
 
     `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
 
