@@ -506,7 +506,7 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 ## Publications
 
 [(ICST 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-icst2013/)Kapfhammer,
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
 Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
 relational schema integrity constraints across multiple database management
 systems," in Proceedings of the 6th International Conference on Software
