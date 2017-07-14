@@ -5,23 +5,23 @@
 ## Description
 
 There has been little work that has sought to test that a relational database's
-schema has correctly specified integrity constraints [(TOSEM 2015\]](#five). Testing a
-database's schema verifies that _all_ integrity constraints are satisfied,
-confirming the integrity and security of a database. Early testing not only
-verifies that integrity constraints are satisfied, but it can reduce
-implementation and maintenance costs associated with managing a database.
+schema has correctly specified integrity constraints [(TOSEM 2015)](#five).
+Testing a database's schema verifies that _all_ integrity constraints are
+satisfied, confirming the integrity and security of a database. Early testing
+not only ensures that the integrity constraints are satisfied, it can also
+reduce implementation and maintenance costs associated with managing a
+relational database.
 
-SchemaAnalyst uses a search-based approach to test the complex relationships of
-integrity constraints in relational databases. Other schema-analyzing tools
-test a database's schema in a less efficient method but, more importantly, use
-a less effective technique. A study in [this
-paper](http://www.cs.allegheny.edu/~gkapfham/research/publish/kapfhammer-icst2013-schemaanalyst.pdf)
-finds that, for all of the case studies, SchemaAnalyst obtains higher
-constraint coverage than a similar schema-analyzing tool while reaching 100%
-coverage on two schemas for which the competing tool covers less than 10% of
-the constraints. SchemaAnalyst achieves these results with generated data sets
-that are substantially smaller than the competing tool and in an amount of
-execution time that is competitive or faster [\[2\]](#two).
+SchemaAnalyst uses a search-based approach to test the complex relationships
+between the integrity constraints in relational databases. Other
+schema-analyzing tools test a database's schema in a less efficient manner but,
+more importantly, use a less effective technique. A study in [(ICST
+2013)](#two) finds that, for all of the case studies, SchemaAnalyst obtains
+higher constraint coverage than a similar schema-analyzing tool while reaching
+100% coverage on two schemas for which the competing tool covers less than 10%
+of the constraints. SchemaAnalyst also achieves these results with generated
+data sets that are substantially smaller than the competing tool and in an
+amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
 ## Table of Contents <a name="table-of-contents"></a>
 
