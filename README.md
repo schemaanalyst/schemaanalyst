@@ -141,30 +141,47 @@ create your own local version by copying the file and adding the suffix (e.g.
 `database.properties` becomes `database.properties.local`).*
 
 ###### Databases <a name="databases"></a>
-HSQLDB and SQLite require no additional configuration for use with SchemaAnalyst.  If using PostgreSQL, then note that the `database.properties` file is preconfigured to connect to a PostgreSQL database using the default credentials. In addition, you must give this user full privileges over the `postgres` database.
+
+HSQLDB and SQLite require no additional configuration for use with
+SchemaAnalyst.  If using PostgreSQL, then note that the `database.properties`
+file is preconfigured to connect to a PostgreSQL database using the default
+credentials. In addition, you must give this user full privileges over the
+`postgres` database.
 
 ### Compiling <a name="compiling"></a>
 
-The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please follow these steps to compile the system using a provided Gradle wrapper:
+The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please
+follow these steps to compile the system using a provided Gradle wrapper:
 
 1. Open a terminal and navigate to the default `schemaanalyst` directory.
 
-2. Type `./gradlew compile` to first download the Gradle dependencies then the necessary `.jar` files in the `lib` directory and compile the system into the `build` directory.
+2. Type `./gradlew compile` to first download the Gradle dependencies then the
+   necessary `.jar` files in the `lib` directory and compile the system into
+   the `build` directory.
 
-*__Note__: The message `Some input files use unchecked or unsafe operations` may be ignored if it appears during compilation.*
+*__Note__: The message `Some input files use unchecked or unsafe operations`
+may be ignored if it appears during compilation.*
 
 ### Testing <a name="testing"></a>
-To confirm that the code has properly compiled, you should be able to run the provided test suite by typing the following command:
+
+To confirm that the code has properly compiled, you should be able to run the
+provided test suite by typing the following command:
 
 `./gradlew test`
 
-A `BUILD SUCCESSFUL` message should appear, indicating that testing has completed with no failures or errors.
+A `BUILD SUCCESSFUL` message should appear, indicating that testing has
+completed with no failures or errors.
 
-*__Note__: This assumes that all three DBMS (HyperSQL, SQLite, and Postgres) are accessible.  If they are not, then any tests related to the unavailable databases may fail by default.  Please refer to the [Dependencies](#dependencies) section for links to download and install these DBMS.*
+*__Note__: This assumes that all three DBMS (HyperSQL, SQLite, and Postgres)
+are accessible.  If they are not, then any tests related to the unavailable
+databases may fail by default.  Please refer to the
+[Dependencies](#dependencies) section for links to download and install these
+DBMS.*
 
 ### Set Classpath <a name="classpath"></a>
 
-Before running any of the commands listed in the [Tutorial](#tutorial) section, set your classpath as follows while in the `schemaanalyst` directory:
+Before running any of the commands listed in the [Tutorial](#tutorial) section,
+set your classpath as follows while in the `schemaanalyst` directory:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
