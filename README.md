@@ -493,11 +493,6 @@ types of mutants created and removed during the process.
 SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
     ```
 
----
-
-
----
-
 ## Building and Execution Environment <a name="environment"></a>
 
 All of the previous instructions for building, installing, and using
@@ -507,8 +502,6 @@ Edition 1.8. While SchemaAnalyst is very likely to work on other Unix-based
 development environments, we cannot guarantee correct results for systems
 different than the ones mentioned previously. Currently, we do not provide full
 support for the building, installation, and use of SchemaAnalyst on Windows.
-
----
 
 ## Publications
 
