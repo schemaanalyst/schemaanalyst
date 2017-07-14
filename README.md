@@ -5,7 +5,7 @@
 ## Description
 
 There has been little work that has sought to test that a relational database's
-schema has correctly specified integrity constraints [\[1\]](#one). Testing a
+schema has correctly specified integrity constraints [(TOSEM 2015\]](#five). Testing a
 database's schema verifies that _all_ integrity constraints are satisfied,
 confirming the integrity and security of a database. Early testing not only
 verifies that integrity constraints are satisfied, but it can reduce
@@ -505,21 +505,42 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
-[TOSEM 2015 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-tosem2015/)McMinn, Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of Test Coverage Criteria for Relational Database Schema Integrity Constraints," in Transactions on Software Engineering and Methodology, 25(1). <a name="one"></a>
+[(ICST 2013)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-icst2013/)Kapfhammer,
+Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
+relational schema integrity constraints across multiple database management
+systems," in Proceedings of the 6th International Conference on Software
+Testing, Verification and Validation. <a name="one"></a>
 
-[ICST 2013 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-icst2013/)Kapfhammer, Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
-relational schema integrity constraints across multiple database management systems," in Pro-
-ceedings of the 6th International Conference on Software Testing, Verification and Validation. <a name="two"></a>
+[(Mutation 2013)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-mutation2013/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
+analysis of relational database structure using mutant schemata and
+parallelisation," in Proceedings of the 8th International Workshop on Mutation
+Analysis. Just, Rene, Gregory M. Kapfhammer, and Franz Schweiggert. <a
+name="two"></a>
 
-[Mutation 2013 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-mutation2013/)Wright, Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation analysis
-of relational database structure using mutant schemata and parallelisation," in Proceedings of
-the 8th International Workshop on Mutation Analysis. Just, Rene, Gregory M. Kapfhammer, and Franz Schweiggert. <a name="three"></a>
+[(QSIC 2014)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-qsic2014a/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
+equivalent, redundant, and quasi mutants on database schema mutation analysis,"
+in Proceedings of the 14th International Conference on Quality Software. <a
+name="three"></a>
 
-[SEKE 2015 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-seke2015/)Kinneer, Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015). "Automatically evaluating the efficiency of search-based test data generation for relational database schemas," in Proceedings of the 27th International Conference on Software Engineering and Knowledge Engineering. <a name="four"></a>
+[(SEKE 2015)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-seke2015/)Kinneer,
+Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015).
+"Automatically evaluating the efficiency of search-based test data generation
+for relational database schemas," in Proceedings of the 27th International
+  Conference on Software Engineering and Knowledge Engineering. <a
+  name="four"></a>
 
-[QSIC 2014 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-qsic2014a/)Wright, Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of equivalent,
-redundant, and quasi mutants on database schema mutation analysis," in Proceedings of the
-14th International Conference on Quality Software. <a name="five"></a>
+[(TOSEM 2015)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-tosem2015/)McMinn,
+Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
+Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
+in Transactions on Software Engineering and Methodology, 25(1). <a
+name="five"></a>
 
 ## License
 
