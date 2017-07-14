@@ -11,6 +11,7 @@ import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitialization
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
+import org.schemaanalyst.data.generation.search.HyperAVS;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.data.generation.search.SwitchAlternatingValueSearch;
@@ -176,7 +177,7 @@ public class DataGeneratorFactory {
             CellInitializer startInitializer,
             CellInitializer restartInitializer) {
 
-        Search<Data> search = new HyperAlternatingValueSearch(
+        Search<Data> search = new HyperAVS(
                 random,
                 startInitializer,
                 restartInitializer, randomCellValueGenerator);
