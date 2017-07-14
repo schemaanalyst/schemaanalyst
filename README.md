@@ -532,8 +532,8 @@ name="three"></a>
 Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015).
 "Automatically evaluating the efficiency of search-based test data generation
 for relational database schemas," in Proceedings of the 27th International
-  Conference on Software Engineering and Knowledge Engineering. <a
-  name="four"></a>
+Conference on Software Engineering and Knowledge Engineering. <a
+name="four"></a>
 
 [(TOSEM 2015)
 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/paper-tosem2015/)McMinn,
