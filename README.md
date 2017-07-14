@@ -1,7 +1,6 @@
 # SchemaAnalyst
 
 <img src="https://raw.githubusercontent.com/schemaanalyst-team/schemaanalyst-logo/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for database schemas.">
-===
 
 # Description
 There has been little work that has sought to test that a relational
