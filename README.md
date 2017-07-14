@@ -278,10 +278,44 @@ Where `schema` is replaced with the path to the schema of interest, `<options>` 
 | --maxEvaluations |  | The maximum fitness evaluations for the search algorithm to use.|
 | --pipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
 | --seed |  | The seed used to produce random values for the data generation process.|
-| --technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata).|
+| --technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata, mutantTiming).|
 | --transactions |  | Whether to use SQL transactions to improve the performance of a technique, if possible.|
 
 ###### Output <a name="mutation-analysis-output"></a>
+
+Specifying the `technique` parameter to output the mutant timing results will create a CSV file located
+at `results/mutanttiming.csv`. This file is useful if you are interested in looking at individual mutants.
+This file contains seven attributes: identifier, dbms, schema, operator, type, killed, time. These attributes
+will be further discussed in the table below.
+
+| Column | Description |
+|:------:|:-----------:|
+| identifier | The unique identifier for the dbms, schema and operator configuration.|
+| dbms | The DBMS.|
+| schema | The schema.|
+| operator | The mutation operator used to generate the mutant.|
+| type | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT).|
+| killed | The kill status of a mutant i.e., true=killed, false=alive.|
+| time | The time, in ms, to generate the mutant.|
+
+
+Performing mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
+
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation --technique=mutantTiming`
+
+Which produces the following data in the `results/mutanttiming.dat` file:
+
+```
+identifier,dbms,schema,operator,type,killed,time
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,89
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,FKCColumnPairE,NORMAL,true,96
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,89
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,PKCColumnA,NORMAL,false,92
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,75
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,NNCA,NORMAL,false,73
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,84
+mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,91
+```
 
 Executing this class produces a single results file in CSV format that contains one line per execution, located at `results/newmutationanalysis.dat`. This contains a number of columns:
 
