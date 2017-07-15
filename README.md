@@ -1,6 +1,6 @@
 # SchemaAnalyst
 
-<img src="https://raw.githubusercontent.com/schemaanalyst/schemaanalyst-logo/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
+<img src="https://github.com/schemaanalyst/schemaanalyst/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
 
 ## Quick Start
 
