@@ -91,7 +91,7 @@ of the generated test suite [(ICST 2013)](#two).
 ### Downloading <a name="downloading"></a>
 
 The source code is hosted in a [GitHub
-repository](https://github.com/schemaanalyst-team/schemaanalyst). To obtain
+repository](https://github.com/schemaanalyst/schemaanalyst). To obtain
 SchemaAnalyst, simply clone this repository on your machine using the following
 command:
 
@@ -103,12 +103,12 @@ To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of
 the Java programs.  See the table below for a full description of the required
 and optional dependencies.
 
-| Software | Required? | Purpose |
-|:--------:|:---------:|:-------:|
-| [Java 1.7 JDK (or higher)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) | X | Running the system |
-| [PostgreSQL](http://www.postgresql.org/download) |  | Using Postgres with selected schema |
-| [SQLite](http://www.sqlite.org/download.html) |  | Using SQLite with selected schema |
-| [HSQLDB](http://hsqldb.org/) |  | Using HyperSQL with selected schema |
+| Software                                                                                       | Required?   | Purpose                             |
+| :--------:                                                                                     | :---------: | :-------:                           |
+| [Java 1.7 JDK (or higher)](http://www.oracle.com/technetwork/java/javase/downloads/index.html) | X           | Running the system                  |
+| [PostgreSQL](http://www.postgresql.org/download)                                               |             | Using Postgres with selected schema |
+| [SQLite](http://www.sqlite.org/download.html)                                                  |             | Using SQLite with selected schema   |
+| [HSQLDB](http://hsqldb.org/)                                                                   |             | Using HyperSQL with selected schema |
 
 ### Configuring <a name="configuring"></a>
 
