@@ -152,11 +152,11 @@ files are as follows:
   options allows the level to be altered. Note that unless you enable logging
   to a file, effectively the lower of the two levels is used.
 
-*__Note__: To allow you to specify your own _local_ versions of these files,
-which you will not commit to the Git repository, SchemaAnalyst runners will
+*__Note__: To allow you to specify your own local versions of these files, which
+you will not commit to the Git repository, SchemaAnalyst runners will
 automatically load versions suffixed with `.local` over those without the
-suffix. If you need to change any of the properties, you should therefore
-create your own local version by copying the file and adding the suffix (e.g.
+suffix. If you need to change any of the properties, you should therefore create
+your own local version by copying the file and adding the suffix (e.g.,
 `database.properties` becomes `database.properties.local`).*
 
 ###### Databases <a name="databases"></a>
