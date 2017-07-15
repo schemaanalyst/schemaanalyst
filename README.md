@@ -356,14 +356,15 @@ below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
 
-Generate test data for the ArtistSimilarity schema using the `Postgres`
+To generate test data for the ArtistSimilarity schema using the `Postgres`
 database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and
-save the output in the file `SampleOutput.sql`:
+save the output in the file `SampleOutput.sql`, type the following command in
+your terminal window:
 
 `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
 
 This will produce a series of `INSERT` statements for each mutant of the
-schema.  Some abbreviated output from the above execution is included below:
+schema.  Some abbreviated output from the previous command includes:
 
 ```
 INSERT INTO "artists"(
@@ -391,8 +392,8 @@ INSERT INTO "artists"(
 ###### Syntax <a name="mutation-analysis-syntax"></a>
 
 To create data to exercise the integrity constraints of a schema using the data
-generation component of SchemaAnalyst, and then perform mutation analysis using
-it, use the following syntax:
+generation component of SchemaAnalyst and then perform mutation analysis using
+the generated data type the following command in your terminal:
 
 `java org.schemaanalyst.util.Go -s schema <options> mutation <parameters>`
 
@@ -403,30 +404,31 @@ of parameters described below.
 
 ###### Parameters <a name="mutation-analysis-parameters"></a>
 
-| Parameter | Required | Description |
-|:---------:|:--------:|:-----------:|
-| --maxEvaluations |  | The maximum fitness evaluations for the search algorithm to use.|
-| --pipeline |  | The mutation pipeline to use to produce and, optionally, remove mutants.|
-| --seed |  | The seed used to produce random values for the data generation process.|
-| --technique |  | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata, mutantTiming).|
-| --transactions |  | Whether to use SQL transactions to improve the performance of a technique, if possible.|
+| Parameter        | Required   | Description                                                                                    |
+| :---------:      | :--------: | :-----------:                                                                                  |
+| --maxEvaluations |            | The maximum fitness evaluations for the search algorithm to use                                |
+| --pipeline       |            | The mutation pipeline to use to produce and, optionally, remove mutants                        |
+| --seed           |            | The seed used to produce random values for the data generator                                  |
+| --technique      |            | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata, or mutantTiming) |
+| --transactions   |            | Whether to use SQL transactions to improve the performance of a technique, if possible         |
 
 ###### Output <a name="mutation-analysis-output"></a>
 
-Specifying the `technique` parameter to output the mutant timing results will create a CSV file located
-at `results/mutanttiming.csv`. This file is useful if you are interested in looking at individual mutants.
-This file contains seven attributes: identifier, dbms, schema, operator, type, killed, time. These attributes
-will be further discussed in the table below.
+Specifying the `technique` parameter to output the mutant timing results will
+create a CSV file located at `results/mutanttiming.csv`. This file is useful if
+you are interested in looking at individual mutants. It contains seven
+attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
+`time.` More details about these attributes are available in the following table:
 
-| Column | Description |
-|:------:|:-----------:|
-| identifier | The unique identifier for the dbms, schema and operator configuration.|
-| dbms | The DBMS.|
-| schema | The schema.|
-| operator | The mutation operator used to generate the mutant.|
-| type | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT).|
-| killed | The kill status of a mutant i.e., true=killed, false=alive.|
-| time | The time, in ms, to generate the mutant.|
+| Column     | Description                                                           |
+| :------:   | :-----------:                                                         |
+| identifier | The unique identifier for the dbms, schema and operator configuration |
+| dbms       | The DBMS                                                              |
+| schema     | The schema                                                            |
+| operator   | The mutation operator used to generate the mutant                     |
+| type       | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT)              |
+| killed     | The kill status of a mutant (i.e., true=killed, false=alive)          |
+| time       | The time, in ms, to generate the mutant                               |
 
 
 Performing mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
