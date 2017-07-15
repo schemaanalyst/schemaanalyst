@@ -57,35 +57,34 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 ## Overview <a name="overview"></a>
 
 A database schema acts as the cornerstone for any application that relies on a
-RDBMS.  It specifies the types of allowed data, as well as the organization and
-relationship between the data.  Any oversight at this fundamental level can
-easily propagate errors toward future development stages.  Such oversights
-might include incomplete foreign or primary key declarations, or incorrect use
-or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity constraints.
-Such seemingly small mistakes at this stage can prove costly to correct, thus
-SchemaAnalyst was created to allow for early detection of such problems prior
-to integration of a schema with an application.  Ultimately, SchemaAnalyst
-meticulously tests the correctness of a schema: it ensures that valid data is
-permitted entry into a database and that erroneous data is rejected.
+relational database. It specifies the types of allowed data, as well as the
+organization and relationship between the data.  Any oversight at this
+fundamental level can easily propagate errors toward future development stages.
+Such oversights might include incomplete foreign or primary key declarations,
+or incorrect use or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity
+constraints. Such seemingly small mistakes at this stage can prove costly to
+correct, thus we created SchemaAnalyst to allow for the early detection of such
+problems prior to integration of a schema with an application.  Ultimately,
+SchemaAnalyst meticulously tests the correctness of a schema &mdash; it ensures that
+valid data is permitted entry into a database and that erroneous data is
+rejected.
 
 To do this, various "mutants" are created from a given schema using a defined
-set of mutation operators.  These operators change the schema's integrity
-constraints in different ways.  For instance, a mutant may be created by
+set of mutation operators. These operators change the schema's integrity
+constraints in different ways. For instance, a mutant may be created by
 removing a column from a primary key, or from removing a `NOT_NULL` constraint
-from a column, among many other possibilities.  These schemas are then
-evaluated through a process known as mutation analysis.  Using a search-based
-technique described in [this
-paper](http://www.cs.allegheny.edu/sites/gkapfham/download/research/papers/icst2013-kapfhammer-mcminn-wright.pdf),
+from a column, among many other possibilities. These schemas are then evaluated
+through a process known as mutation analysis. Using a search-based technique,
 test suites are created that execute `INSERT` statements into tables for both
-the original schema and the mutant schema.  If the `INSERT` statement is
-accepted by the original schema but rejected by the mutant schema, then it
-shows that the inserted data adheres to the integrity constraints of the
-original schema, and the test suite is able to detect and respond appropriately
-to the change.  This is said to "kill" the mutant, and after all mutants have
-been analyzed in this fashion, a mutation score is generated as follows:
-mutation score = number of killed mutants / number of mutants.  In general, the
-higher this score the better the robustness of the schema being tested; i.e. it
-is more likely to only accept valid data and reject invalid data [\[2\]](#two).
+the original schema and the mutant schema [(ICST 2013)](#two). If the `INSERT`
+statement is accepted by the original schema but rejected by the mutant schema,
+then it shows that the inserted data adheres to the integrity constraints of
+the original schema, and the test suite is able to detect and respond
+appropriately to the change. This is said to "kill" the mutant. After all
+mutants have been analyzed in this fashion, a mutation score is generated as
+follows: <em>mutation score = number of killed mutants / number of
+mutants</em>. In general, the higher the mutation score the better the quality
+of the generated test suite [(ICST 2013)](#two).
 
 ## Getting Started <a name="getting-started"></a>
 
