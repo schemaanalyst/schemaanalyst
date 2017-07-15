@@ -2,6 +2,12 @@
 
 <img src="https://raw.githubusercontent.com/schemaanalyst/schemaanalyst-logo/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
 
+## Quick Start
+
+Want to get started right away? Then, jump to [Getting
+Started](#getting-started)! Otherwise, read on for additional details about the
+SchemaAnalyst tool for testing relational database schemas.
+
 ## Description
 
 There has been little work that has sought to ensure that a relational
