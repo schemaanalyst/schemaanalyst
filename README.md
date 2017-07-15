@@ -197,10 +197,11 @@ unavailable databases may fail by default.  Please refer to the
 [Dependencies](#dependencies) section for links to download and install these
 DBMS.*
 
-### Set Classpath <a name="classpath"></a>
+### Set CLASSPATH <a name="classpath"></a>
 
 Before running any of the commands listed in the [Tutorial](#tutorial) section,
-set your classpath as follows while in the `schemaanalyst` directory:
+set your CLASSPATH environment variable by typing the following command in your
+terminal window:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
