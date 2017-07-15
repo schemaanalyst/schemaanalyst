@@ -431,11 +431,14 @@ attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
 | time       | The time, in ms, to generate the mutant                               |
 
 
-Performing mutation analysis with `technique=mutantTiming` and the `ArtistSimilarity` schema:
+To perform mutation analysis with `technique=mutantTiming` and the
+`ArtistSimilarity` schema you can type the following command in your terminal
+window:
 
 `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation --technique=mutantTiming`
 
-Which produces the following data in the `results/mutanttiming.dat` file:
+This command will produce the following rows of data in the
+`results/mutanttiming.dat` file:
 
 ```
 identifier,dbms,schema,operator,type,killed,time
