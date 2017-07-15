@@ -110,6 +110,17 @@ and optional dependencies.
 | [SQLite](http://www.sqlite.org/download.html)                                                  |             | Using SQLite with selected schema   |
 | [HSQLDB](http://hsqldb.org/)                                                                   |             | Using HyperSQL with selected schema |
 
+If you are getting started with SchemaAnalyst and relational databases, then it
+will likely be easiest if you use the SQLite database management system. In
+fact, SQLite is often installed by default by many Linux operating systems. If
+you are running the Ubuntu operating system and you discover that SQLite is not
+currently installed, then you can install it by running the following command in
+your terminal window:
+
+```
+sudo apt install sqlite3
+```
+
 ### Configuring <a name="configuring"></a>
 
 ###### Properties <a name="properties"></a>
