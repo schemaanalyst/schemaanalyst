@@ -232,19 +232,19 @@ SchemaAnalyst, which are explained in more detail below.
 
 ### Help Menu <a name="help"></a>
 
-SchemaAnalyst uses a command line interface with a variety of execution
+SchemaAnalyst uses a command-line interface with a variety of execution
 options. Two primary commands are included: `generation` for [Test Data
 Generation](#test-data-generation) and `mutation` for [Mutation
 Analysis](#mutation-analysis). Note that one of these two commands *must* be
-applied, and their syntax is discussed later on.
+applied, and their syntax is discussed at a later point in this document.
 
 You are also able to print the help menu at any time with the `--help`, or `-h`
-command of the `Go` class within the `java org.schemaanalyst.util` package as
-follows:
+command of the `Go` class within the `java org.schemaanalyst.util` package by
+typing the following command in your terminal window:
 
 `java org.schemaanalyst.util.Go -h`
 
-Which produces the following output:
+This command will then produce the following output:
 
 ```
 Usage: <main class> [options] [command] [command options]
@@ -314,7 +314,7 @@ additional functionality (note that the `--schema` option is required):
 SchemaAnalyst without the necessary parameters, or if you type the `--help`
 tag, you should be presented with information describing the parameters and
 detailing which of these are required. Where parameters are not required, the
-defaults values should usually be sensible.  While there are other parameters
+defaults values should usually be sensible. While there are other parameters
 available for this class, it is generally not necessary to understand their
 purpose.*
 
