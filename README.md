@@ -337,11 +337,11 @@ of parameters described below.
 
 ###### Parameters <a name="test-data-generation-parameters"></a>
 
-| Parameter | Required | Description |
-|:---------:|:--------:|:-----------:|
-| --inserts |  | Target file for writing `INSERT` statements into a `.sql` file |
-| --testSuite |  | Target file for writing JUnit test suite.|
-| --testSuitePackage |  | Target package for writing JUnit test suite.|
+| Parameter          | Required   | Description                                                    |
+| :---------:        | :--------: | :-----------:                                                  |
+| --inserts          |            | Target file for writing `INSERT` statements into a `.sql` file |
+| --testSuite        |            | Target file for writing JUnit test suite                       |
+| --testSuitePackage |            | Target package for writing JUnit test suite                    |
 
 ###### Output <a name="test-data-generation-output"></a>
 
