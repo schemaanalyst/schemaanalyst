@@ -22,11 +22,11 @@ database.
 SchemaAnalyst uses a search-based approach to test the complex relationships
 between the integrity constraints in relational databases. Other
 schema-analyzing tools test a database's schema in a less efficient manner but,
-more importantly, use a less effective technique. A recent study [(ICST
-2013)](#two) finds that, for all of the case studies, SchemaAnalyst obtains
-higher constraint coverage than a similar schema-analyzing tool while reaching
-100% coverage on two schemas for which the competing tool covers less than 10%
-of the constraints. SchemaAnalyst also achieves these results with generated
+more importantly, use a less effective technique. A recent study  finds that,
+for all of the case studies, SchemaAnalyst obtains higher constraint coverage
+than a similar schema-analyzing tool while reaching 100% coverage on two
+schemas for which the competing tool covers less than 10% of the constraints
+[(ICST 2013)](#two). SchemaAnalyst also achieves these results with generated
 data sets that are substantially smaller than the competing tool and in an
 amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
