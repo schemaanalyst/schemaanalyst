@@ -132,8 +132,8 @@ sudo apt install sqlite3
 ###### Properties <a name="properties"></a>
 
 SchemaAnalyst uses a number of _properties_ files to specify some configuration
-options. These are located in the `config` directory. These files are
-structured as follows:
+options. These are located in the `config/` directory. These names of these
+files are as follows:
 
 * `database.properties`: contains properties relating to database connections,
   such as usernames and passwords. The `dbms` property at the top of this file
@@ -143,7 +143,9 @@ structured as follows:
   directories, and should not require any changes (but may be useful if adding
   to the Ant script, which automatically loads it).
 
-* `experiment.properties`: _The contents of this file can be ignored._
+* `experiment.properties`: _The contents of this file can be ignored as it is no
+  longer used in the current version of SchemaAnalyst. Subsequent versions of
+  SchemaAnalyst will likely not include this file and the code that reads it._
 
 * `logging.properties`: specifies the level of logging output that should be
   produced. Changing the `.level` and `java.util.logging.ConsoleHandler.level`
