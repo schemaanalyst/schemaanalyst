@@ -101,7 +101,7 @@ repository](https://github.com/schemaanalyst/schemaanalyst). To obtain
 SchemaAnalyst, simply clone this repository on your machine using the following
 command:
 
-`git clone git@github.com:schemaanalyst-team/schemaanalyst.git`
+`git clone git@github.com:schemaanalyst/schemaanalyst.git`
 
 ### Dependencies <a name="dependencies"></a>
 
@@ -346,12 +346,12 @@ of parameters described below.
 ###### Output <a name="test-data-generation-output"></a>
 
 By default, the `generation` command creates a JUnit test suite in the
-`generatedtest` directory.   The name of the file can be changed with the
+`generatedtest` directory.  The name of the file can be changed with the
 `--testSuite` parameter, while the package can be changed with the
-`--testSuitePackage` parameter.  Alternatively, the `--inserts` parameter can
+`--testSuitePackage` parameter. Alternatively, the `--inserts` parameter can
 be used to generate a `.sql` file with all of the `INSERT` statements used to
-test the integrity constraints of the schema.  These statements are also
-automatically displayed in the console window after execution.  See the example
+test the integrity constraints of the schema. These statements are also
+automatically displayed in the console window after execution. See the example
 below for the output from a specific schema.
 
 ###### Example <a name="test-data-generation-example"></a>
