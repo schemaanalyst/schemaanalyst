@@ -191,7 +191,7 @@ provided test suite by typing the following command:
 A `BUILD SUCCESSFUL` message should appear, indicating that testing has
 completed with no failures or errors.
 
-*__Note__: This assumes that all three DBMS (i.e., HyperSQL, SQLite, and
+*__Note__: This assumes that all three DBMSs (i.e., HyperSQL, SQLite, and
 Postgres) are accessible. If they are not, then any tests related to the
 unavailable databases may fail by default.  Please refer to the
 [Dependencies](#dependencies) section for links to download and install these
@@ -452,28 +452,30 @@ mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,84
 mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,91
 ```
 
-Executing this class produces a single results file in CSV format that contains one line per execution, located at `results/newmutationanalysis.dat`. This contains a number of columns:
+Executing this class produces a single results file in CSV format that contains
+one line per execution, located at `results/newmutationanalysis.dat`. This
+file contains the following columns that have this description:
 
-| Column | Description |
-|:------:|:-----------:|
-| dbms | The DBMS.|
-| casestudy | The schema.|
-| criterion | The integrity constraint coverage criterion.|
-| datagenerator | The data generation algorithm.|
-| randomseed | The value used to seed the pseudo-random number generator.|
-| coverage | The level of coverage the produced data achieves according to the criterion.|
-| evaluations | The number of fitness evaluations used by the search algorithm.|
-| tests | The number of test cases in the produced test suite.|
-| mutationpipeline | The mutation pipeline used to generate mutants.|
-| scorenumerator | The number of mutants killed by the generated data.|
-| scoredenominator | The total number of mutants used for mutation analysis.|
-| technique | The mutation analysis technique.|
-| transactions | Whether SQL transactions were applied, if possible.|
-| testgenerationtime | The time taken to generate test data in milliseconds.|
-| mutantgenerationtime | The time taken to generate mutants in milliseconds.|
-| originalresultstime | The time taken to execute the test suite against the non-mutated schema.|
-| mutationanalysistime | The time taken to perform analysis of all of the mutant schemas.|
-| timetaken | The total time taken by the entire process.|
+| Column               | Description                                                                 |
+| :------:             | :-----------:                                                               |
+| dbms                 | The DBMS                                                                    |
+| casestudy            | The schema                                                                  |
+| criterion            | The integrity constraint coverage criterion                                 |
+| datagenerator        | The data generation algorithm                                               |
+| randomseed           | The value used to seed the pseudo-random number generator                   |
+| coverage             | The level of coverage the produced data achieves according to the criterion |
+| evaluations          | The number of fitness evaluations used by the search algorithm              |
+| tests                | The number of test cases in the produced test suite                         |
+| mutationpipeline     | The mutation pipeline used to generate mutants                              |
+| scorenumerator       | The number of mutants killed by the generated data                          |
+| scoredenominator     | The total number of mutants used for mutation analysis                      |
+| technique            | The mutation analysis technique                                             |
+| transactions         | Whether SQL transactions were applied, if possible                          |
+| testgenerationtime   | The time taken to generate test data in milliseconds                        |
+| mutantgenerationtime | The time taken to generate mutants in milliseconds                          |
+| originalresultstime  | The time taken to execute the test suite against the non-mutated schema     |
+| mutationanalysistime | The time taken to perform analysis of all of the mutant schemas             |
+| timetaken            | The total time taken by the entire process                                  |
 
 ###### Interpretation <a name="mutation-analysis-interpretation"></a>
 
