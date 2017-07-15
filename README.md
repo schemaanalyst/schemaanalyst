@@ -490,8 +490,8 @@ indicating that the schema is more likely to permit valid data from entering a
 table and to reject any invalid data. Although there does not currently exist a
 standard for this metric, scores between 0.6 -- 0.7 (60% -- 70%) are generally
 considered good. If your schema's score falls below this level, consider
-viewing the [Mutant Analysis](#mutant-analysis) section to gain further insight
-on the types of mutants created and killed during the process.
+viewing the [Mutation Analysis](#mutant-analysis) section to gain further insight
+into the types of mutants created and killed during the process.
 
 ###### Examples <a name="mutation-analysis-examples"></a>
 
