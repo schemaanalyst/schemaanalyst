@@ -137,7 +137,7 @@ files are as follows:
 
 * `database.properties`: contains properties relating to database connections,
   such as usernames and passwords. The `dbms` property at the top of this file
-  specifies which database to use (SQLite, Postgres, or HyperSQL).
+  specifies which database to use (i.e., SQLite, Postgres, or HyperSQL).
 
 * `locations.properties`: specifies the layout of the SchemaAnalyst
   directories, and should not require any changes (but may be useful if adding
@@ -161,7 +161,7 @@ your own local version by copying the file and adding the suffix (e.g.,
 
 ###### Databases <a name="databases"></a>
 
-HSQLDB and SQLite require no additional configuration for use with
+HSQLDB and SQLite both require no additional configuration for use with
 SchemaAnalyst. If you are using PostgreSQL, then please note that the
 `database.properties` file is preconfigured to connect to a PostgreSQL database
 using the default credentials. In addition, you must give this user full
@@ -208,7 +208,7 @@ command in your terminal window:
 ### Convert Schema to Java <a name="sqlparser"></a>
 
 We have purchased a license of [General SQLParser](http://www.sqlparser.com/)
-to generate `Java` code interpreting `SQL` statements for the various supported
+to generate `Java` code interpreting SQL statements for the various supported
 databases. You will not be able to convert SQL code to Java without either
 purchasing a license of the [General SQL
 Parser](http://www.sqlparser.com/shopping.php) or generating your own Java
@@ -306,7 +306,7 @@ additional functionality (note that the `--schema` option is required):
 | :---------: | :--------: | :-----------:                                                      |
 | --criterion |            | The coverage criterion to use to generate data                     |
 | --dbms      |            | The database management system to use (SQLite, HyperSQL, Postgres) |
-| --generator |            | The data generator to use to produce SQL INSERT statements         |
+| --generator |            | The data generator to use to produce SQL `INSERT`` statements      |
 | --help      |            | Show the help menu                                                 |
 | --schema    | X          | The schema chosen for analysis                                     |
 
@@ -487,33 +487,33 @@ dividing the numerator by the denominator you will generate a mutation score in
 the range [0, 1]. This score provides an estimate for how well the schema has
 performed when its integrity constraints were exercised, with higher scores
 indicating that the schema is more likely to permit valid data from entering a
-table and to reject any invalid data. Although there does not currently exist
-a standard for this metric, scores between 0.6 - 0.7 (60% - 70%) are generally
-considered good. If your schema's score falls below this, consider viewing the
-[Mutant Analysis](#mutant-analysis) section to gain further insight on the
-types of mutants created and removed during the process.
+table and to reject any invalid data. Although there does not currently exist a
+standard for this metric, scores between 0.6 -- 0.7 (60% -- 70%) are generally
+considered good. If your schema's score falls below this level, consider
+viewing the [Mutant Analysis](#mutant-analysis) section to gain further insight
+on the types of mutants created and killed during the process.
 
 ###### Examples <a name="mutation-analysis-examples"></a>
 
-1.  Perform mutation analysis with the default configuration and the
-    `ArtistSimilarity` schema:
+1.  Type the following command in your terminal to perform mutation analysis
+    with the default configuration, and the `ArtistSimilarity` schema:
 
     `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity mutation`
 
-    Which produces the following data in the `results/newmutationanalysis.dat` file:
+    This command produces the following data in the `results/newmutationanalysis.dat` file:
 
     ```
     dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
     SQLite,parsedcasestudy.ArtistSimilarity,CondAICC,avsDefaults,0,NA,100.0,22,9,AllOperatorsWithRemovers,5,9,original,false,259,67,5,31,371
     ```
 
-2.  Perform mutation analysis with a random seed of `1000`, the `ClauseAICC`
-    coverage criterion, the `random` data generator and the `ArtistSimilarity`
-    schema:
+2.  Type the following command in your terminal to perform mutation analysis
+    with a random seed of `1000`, the `ClauseAICC` coverage criterion, the
+    `random` data generator, and the `ArtistSimilarity` schema:
 
     `java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --criterion ClauseAICC --generator random mutation --seed 1000`
 
-    Which produces the following data in the `results/newmutationanalysis.dat` file:
+    This command produces the following data in the `results/newmutationanalysis.dat` file:
 
     ```
     dbms,casestudy,criterion,datagenerator,randomseed,testsuitefile,coverage,evaluations,tests,mutationpipeline,scorenumerator,scoredenominator,technique,transactions,testgenerationtime,mutantgenerationtime,originalresultstime,mutationanalysistime,timetaken
