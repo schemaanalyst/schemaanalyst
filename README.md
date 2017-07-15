@@ -162,15 +162,15 @@ your own local version by copying the file and adding the suffix (e.g.,
 ###### Databases <a name="databases"></a>
 
 HSQLDB and SQLite require no additional configuration for use with
-SchemaAnalyst.  If using PostgreSQL, then note that the `database.properties`
-file is preconfigured to connect to a PostgreSQL database using the default
-credentials. In addition, you must give this user full privileges over the
-`postgres` database.
+SchemaAnalyst. If you are using PostgreSQL, then please note that the
+`database.properties` file is preconfigured to connect to a PostgreSQL database
+using the default credentials. In addition, you must give this user full
+privileges over the `postgres` database.
 
 ### Compiling <a name="compiling"></a>
 
-The SchemaAnalyst tool is built using [Gradle](http://gradle.org/).  Please
-follow these steps to compile the system using a provided Gradle wrapper:
+The SchemaAnalyst tool is built using [Gradle](http://gradle.org/). Please
+follow these steps to compile the system using the provided Gradle wrapper:
 
 1. Open a terminal and navigate to the default `schemaanalyst` directory.
 
@@ -191,9 +191,9 @@ provided test suite by typing the following command:
 A `BUILD SUCCESSFUL` message should appear, indicating that testing has
 completed with no failures or errors.
 
-*__Note__: This assumes that all three DBMS (HyperSQL, SQLite, and Postgres)
-are accessible.  If they are not, then any tests related to the unavailable
-databases may fail by default.  Please refer to the
+*__Note__: This assumes that all three DBMS (i.e., HyperSQL, SQLite, and
+Postgres) are accessible. If they are not, then any tests related to the
+unavailable databases may fail by default.  Please refer to the
 [Dependencies](#dependencies) section for links to download and install these
 DBMS.*
 
