@@ -302,13 +302,13 @@ Usage: <main class> [options] [command] [command options]
 The following options can precede the `generation` and `mutation` commands for
 additional functionality (note that the `--schema` option is required):
 
-| Parameter | Required | Description |
-|:---------:|:--------:|:-----------:|
-| --criterion |   | The coverage criterion to use to generate data.|
-| --dbms |   | The database management system to use (SQLite, HyperSQL, Postgres).|
-| --generator |  | The data generator to use to produce SQL INSERT statements.|
-| --help |  | Show the help menu.|
-| --schema | X | The schema chosen for analysis.|
+| Parameter   | Required   | Description                                                        |
+| :---------: | :--------: | :-----------:                                                      |
+| --criterion |            | The coverage criterion to use to generate data                     |
+| --dbms      |            | The database management system to use (SQLite, HyperSQL, Postgres) |
+| --generator |            | The data generator to use to produce SQL INSERT statements         |
+| --help      |            | Show the help menu                                                 |
+| --schema    | X          | The schema chosen for analysis                                     |
 
 *__Note:__ If you attempt to execute any of the `Runner` classes of
 SchemaAnalyst without the necessary parameters, or if you type the `--help`
@@ -324,7 +324,7 @@ purpose.*
 
 SchemaAnalyst will create a series of `INSERT` statements to test the integrity
 constraints that are altered via mutation, as described in the
-[Overview](#overview) section.  This data is typically hidden from the user
+[Overview](#overview) section. This data is typically hidden from the user
 during the analysis, but if you wish to see what data the system is generating
 for this process, then you can use the following syntax:
 
