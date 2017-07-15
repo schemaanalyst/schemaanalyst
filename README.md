@@ -542,8 +542,7 @@ Testing, Verification and Validation. <a name="one"></a>
 Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
 analysis of relational database structure using mutant schemata and
 parallelisation," in Proceedings of the 8th International Workshop on Mutation
-Analysis. Just, Rene, Gregory M. Kapfhammer, and Franz Schweiggert. <a
-name="two"></a>
+Analysis. <a name="two"></a>
 
 [(QSIC 2014)
 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Wright2014/)Wright,
