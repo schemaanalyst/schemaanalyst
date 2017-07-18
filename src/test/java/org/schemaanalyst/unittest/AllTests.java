@@ -13,6 +13,8 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.data.generation.directedrandom.TestMatchPredicateFixer.class,
 	org.schemaanalyst.unittest.data.generation.directedrandom.TestNullPredicateFixer.class,
 	org.schemaanalyst.unittest.data.generation.search.TestAlternatingValueSearch.class,
+	org.schemaanalyst.unittest.data.generation.search.TestHyperAlternatingValueSearch.class,
+	org.schemaanalyst.unittest.data.generation.search.TestSwitcherAVS.class,
 	org.schemaanalyst.unittest.data.generation.search.TestSearchEvaluation.class,
 	org.schemaanalyst.unittest.data.generation.search.objective.TestDistanceObjectiveValue.class,
 	org.schemaanalyst.unittest.data.generation.search.objective.TestObjectiveValue.class,

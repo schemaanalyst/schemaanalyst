@@ -51,7 +51,7 @@ coverages = ["ClauseAICC+AUCC+ANCC"]
 # avmlm
 # selector
 # random
-generators = ["avs", "havs", "savs"]
+generators = ["directedRandom"]
 # Number of runs you want
 end_seed = 10
 

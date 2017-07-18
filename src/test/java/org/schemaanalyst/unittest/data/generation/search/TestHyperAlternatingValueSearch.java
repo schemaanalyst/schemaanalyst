@@ -1,24 +1,20 @@
 package org.schemaanalyst.unittest.data.generation.search;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
-import org.schemaanalyst.data.generation.search.HyperAlternatingValueSearch;
-import org.schemaanalyst.data.generation.search.SwitcherAVS;
+import org.schemaanalyst.data.generation.search.HyperAVS;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
-import org.schemaanalyst.unittest.data.generation.search.TestSwitcherAVS.ImproveUntilAlternatingValueSearch;
-import org.schemaanalyst.unittest.data.generation.search.TestSwitcherAVS.MockObjectiveFunction;
-import org.schemaanalyst.unittest.data.generation.search.TestSwitcherAVS.NoImprovementAlternatingValueSearch;
 import org.schemaanalyst.unittest.testutil.mock.MockDatabase;
 import org.schemaanalyst.unittest.testutil.mock.TwoColumnMockDatabase;
 
-public class TestHyperAlterntingValueSearch {
+public class TestHyperAlternatingValueSearch {
 
 	   class MockObjectiveFunction extends ObjectiveFunction<Data> {
 
@@ -28,7 +24,7 @@ public class TestHyperAlterntingValueSearch {
 	        }
 	    }
 
-	    class NoImprovementAlternatingValueSearch extends HyperAlternatingValueSearch {
+	    class NoImprovementAlternatingValueSearch extends HyperAVS {
 
 	        public NoImprovementAlternatingValueSearch() {
 	        	super(null, new DefaultCellInitializer(), null, null);
@@ -41,7 +37,7 @@ public class TestHyperAlterntingValueSearch {
 	        }
 	    }
 
-	    class ImproveUntilAlternatingValueSearch extends HyperAlternatingValueSearch {
+	    class ImproveUntilAlternatingValueSearch extends HyperAVS {
 
 	        int count = 0;
 	        int improveUntil;
@@ -63,7 +59,7 @@ public class TestHyperAlterntingValueSearch {
 	        MockDatabase database = new TwoColumnMockDatabase();
 	        Data data = database.createData(1);
 
-	        HyperAlternatingValueSearch havs = new NoImprovementAlternatingValueSearch();
+	        HyperAVS havs = new NoImprovementAlternatingValueSearch();
 	        TerminationCriterion terminationCriterion = new CounterTerminationCriterion(havs.getEvaluationsCounter(), ">=", maxEvals);
 	        havs.setTerminationCriterion(terminationCriterion);
 	        havs.setObjectiveFunction(new MockObjectiveFunction());
@@ -90,7 +86,7 @@ public class TestHyperAlterntingValueSearch {
 	        MockDatabase database = new TwoColumnMockDatabase();
 	        Data data = database.createData(1);
 
-	        HyperAlternatingValueSearch havs = new ImproveUntilAlternatingValueSearch(improveUntil);
+	        HyperAVS havs = new ImproveUntilAlternatingValueSearch(improveUntil);
 	        TerminationCriterion terminationCriterion = new CounterTerminationCriterion(havs.getRestartsCounter(), ">", 0);
 	        havs.setTerminationCriterion(terminationCriterion);
 	        havs.setObjectiveFunction(new MockObjectiveFunction());
