@@ -40,7 +40,6 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
         int evaluations = 1;
         while (!success && evaluations < maxEvaluations) {
             attemptFix(data);
-            System.out.println("=================================");
             evaluations ++;
             success = predicateChecker.check();
         }

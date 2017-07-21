@@ -30,7 +30,6 @@ public class ExpressionPredicateFixer extends PredicateFixer {
         }
     	*/
     	if (expressionPredicateChecker.getNonComplyingCells().size() > 0) {
-            System.out.println("ExpressionPredicateFixer");
             //search.search(expressionPredicateChecker.getNonComplyingData(), expressionPredicateChecker, expressionPredicateChecker.getNonComplyingCells());
             search.search(expressionPredicateChecker.getNonComplyingCells(), expressionPredicateChecker);
     	}

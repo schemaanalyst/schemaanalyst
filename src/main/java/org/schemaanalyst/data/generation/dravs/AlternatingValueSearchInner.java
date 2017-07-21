@@ -92,9 +92,11 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
 
 
         if (!checker.check() && terminationCriterion.satisfied()) {
-        	System.err.println("TEST");
+        	//System.err.println("TEST");
             restartInitialiser.initialize(cells);
         }
+        
+        evaluate();
 
         // main loop
         while (!terminationCriterion.satisfied()) {

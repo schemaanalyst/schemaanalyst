@@ -36,8 +36,6 @@ public class MatchPredicateFixer extends PredicateFixer {
     public void attemptFix() {
         attemptFix(matchPredicateChecker.getNonMatchingCells(), true);
         attemptFix(matchPredicateChecker.getMatchingCells(), false);
-        System.out.println("MatchPredicateFixer");
-
     }
 
     private void attemptFix(List<MatchRecord> matchRecords, boolean attemptMatch) {

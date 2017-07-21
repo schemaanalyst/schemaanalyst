@@ -21,7 +21,5 @@ public class NullPredicateFixer extends PredicateFixer {
         for (Cell cell : nullPredicateChecker.getNonComplyingCells()) {
             cell.setNull(setToNull);
         }
-        
-        System.out.println("NullPredicateFixer");
     }
 }
