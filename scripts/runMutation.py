@@ -51,9 +51,9 @@ coverages = ["ClauseAICC+AUCC+ANCC"]
 # avmlm
 # selector
 # random
-generators = ["directedRandom"]
+generators = ["savs", "avs", "directedRandom"]
 # Number of runs you want
-end_seed = 10
+end_seed = 6
 
 # Change DBMS in config while running
 def change_dbms_config(db):

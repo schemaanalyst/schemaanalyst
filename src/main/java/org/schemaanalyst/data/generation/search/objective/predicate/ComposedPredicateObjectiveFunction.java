@@ -92,5 +92,15 @@ public abstract class ComposedPredicateObjectiveFunction extends ObjectiveFuncti
 
         return objVal;
     }
+    
+    @Override
+    public Data getState() {
+    	return this.state;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return this.predicate;
+    }
 
 }

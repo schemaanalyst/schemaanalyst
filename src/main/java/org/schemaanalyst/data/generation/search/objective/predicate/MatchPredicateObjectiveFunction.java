@@ -9,6 +9,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.Iterator;
 import java.util.List;
@@ -19,8 +20,8 @@ import java.util.ListIterator;
  */
 public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
-    private MatchPredicate matchPredicate;
-    private Data state;
+    public MatchPredicate matchPredicate;
+    public Data state;
     private Table table, referenceTable;
     private boolean forAll;
 
@@ -147,5 +148,15 @@ public class MatchPredicateObjectiveFunction extends ObjectiveFunction<Data> {
 
             objVal.add(compareObjVal);
         }
+    }
+    
+    @Override
+    public Data getState() {
+    	return this.state;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return this.matchPredicate;
     }
 }

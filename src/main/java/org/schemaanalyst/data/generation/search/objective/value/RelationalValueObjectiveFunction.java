@@ -4,6 +4,7 @@ import org.schemaanalyst.data.*;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.util.tuple.Pair;
 
 public abstract class RelationalValueObjectiveFunction<T> extends ObjectiveFunction<Pair<T>> {
@@ -114,5 +115,15 @@ public abstract class RelationalValueObjectiveFunction<T> extends ObjectiveFunct
         }      
 
         return (new RelationalObjectiveFunctionDispatcher()).dispatch(lhs, op, rhs, allowNull);
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
     }
 }

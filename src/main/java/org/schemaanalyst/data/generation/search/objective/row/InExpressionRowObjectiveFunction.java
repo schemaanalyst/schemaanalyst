@@ -1,5 +1,6 @@
 package org.schemaanalyst.data.generation.search.objective.row;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.*;
@@ -8,6 +9,7 @@ import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
 import org.schemaanalyst.sqlrepresentation.expression.InExpression;
 import org.schemaanalyst.sqlrepresentation.expression.ListExpression;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,5 +112,15 @@ public class InExpressionRowObjectiveFunction extends ObjectiveFunction<Row> {
                     ? ObjectiveValue.worstObjectiveValue(description)
                     : ObjectiveValue.optimalObjectiveValue(description);
         }
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
     }
 }

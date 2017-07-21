@@ -1,5 +1,6 @@
 package org.schemaanalyst.data.generation.search.objective.row;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
@@ -7,6 +8,7 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.value.RelationalValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.RelationalExpression;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 public class RelationalExpressionRowObjectiveFunction extends ObjectiveFunction<Row> {
 
@@ -34,5 +36,15 @@ public class RelationalExpressionRowObjectiveFunction extends ObjectiveFunction<
         Value lhsValue = lhsEvaluator.evaluate(row);
         Value rhsValue = rhsEvaluator.evaluate(row);         
         return RelationalValueObjectiveFunction.compute(lhsValue, op, rhsValue, allowNull);
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
     }
 }

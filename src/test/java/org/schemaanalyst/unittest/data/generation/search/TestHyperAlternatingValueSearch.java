@@ -11,6 +11,7 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.unittest.testutil.mock.MockDatabase;
 import org.schemaanalyst.unittest.testutil.mock.TwoColumnMockDatabase;
 
@@ -21,6 +22,16 @@ public class TestHyperAlternatingValueSearch {
 	        @Override
 	        public ObjectiveValue evaluate(Data data) {
 	            return ObjectiveValue.worstObjectiveValue();
+	        }
+	        
+	        @Override
+	        public Data getState() {
+	        	return null;
+	        }
+	        
+	        @Override
+	        public Predicate getpredicate() {
+	        	return null;
 	        }
 	    }
 

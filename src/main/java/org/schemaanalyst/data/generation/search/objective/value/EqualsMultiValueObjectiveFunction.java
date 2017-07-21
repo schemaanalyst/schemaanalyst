@@ -1,8 +1,10 @@
 package org.schemaanalyst.data.generation.search.objective.value;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.*;
 import org.schemaanalyst.logic.RelationalOperator;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.util.tuple.Pair;
 
 import java.util.Iterator;
@@ -60,5 +62,14 @@ public class EqualsMultiValueObjectiveFunction extends ObjectiveFunction<Pair<Li
         return objFun.evaluate(new Pair<>(lhs, rhs));        
     }
     
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
+    }
    
 }

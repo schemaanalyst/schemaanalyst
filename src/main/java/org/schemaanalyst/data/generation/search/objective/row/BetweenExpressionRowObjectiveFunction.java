@@ -1,11 +1,13 @@
 package org.schemaanalyst.data.generation.search.objective.row;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.*;
 import org.schemaanalyst.data.generation.search.objective.value.RelationalValueObjectiveFunction;
 import org.schemaanalyst.logic.RelationalOperator;
 import org.schemaanalyst.sqlrepresentation.expression.BetweenExpression;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 /**
  *  Evaluates a BetweenExpression by considering:  
@@ -100,5 +102,15 @@ public class BetweenExpressionRowObjectiveFunction extends ObjectiveFunction<Row
         objVal.add(RelationalValueObjectiveFunction.compute(subjectValue, rhsOp, rhsValue, allowNull));                
 
         return objVal;        
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
     }
 }

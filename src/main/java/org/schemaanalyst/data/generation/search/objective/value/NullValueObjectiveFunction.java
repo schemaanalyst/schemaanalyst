@@ -1,8 +1,10 @@
 package org.schemaanalyst.data.generation.search.objective.value;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 public class NullValueObjectiveFunction extends ObjectiveFunction<Value> {
 
@@ -25,5 +27,15 @@ public class NullValueObjectiveFunction extends ObjectiveFunction<Value> {
 
     public static ObjectiveValue compute(Value value, boolean allowNull) {
         return (new NullValueObjectiveFunction(allowNull)).evaluate(value);
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
     }
 }

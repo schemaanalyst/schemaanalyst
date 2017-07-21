@@ -7,6 +7,7 @@ import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.SumOfMultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.row.ExpressionRowObjectiveFunctionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.List;
 
@@ -42,5 +43,15 @@ public class ExpressionPredicateObjectiveFunction extends ObjectiveFunction<Data
         }
 
         return ObjectiveValue.worstObjectiveValue(description);
+    }
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return this.expressionPredicate;
     }
 }

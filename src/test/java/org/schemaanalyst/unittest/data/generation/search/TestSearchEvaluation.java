@@ -1,9 +1,11 @@
 package org.schemaanalyst.unittest.data.generation.search;
 
 import org.junit.Test;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.util.Duplicator;
 
 import java.math.BigDecimal;
@@ -19,6 +21,16 @@ public class TestSearchEvaluation {
             ObjectiveValue objVal = new ObjectiveValue();
             objVal.setValue(value);
             return objVal;
+        }
+        
+        @Override
+        public Data getState() {
+        	return null;
+        }
+        
+        @Override
+        public Predicate getpredicate() {
+        	return null;
         }
     }
 

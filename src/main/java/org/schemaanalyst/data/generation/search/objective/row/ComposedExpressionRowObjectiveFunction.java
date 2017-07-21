@@ -1,11 +1,13 @@
 package org.schemaanalyst.data.generation.search.objective.row;
 
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.generation.search.objective.MultiObjectiveValue;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
 import org.schemaanalyst.sqlrepresentation.expression.CompoundExpression;
 import org.schemaanalyst.sqlrepresentation.expression.Expression;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,4 +42,14 @@ public abstract class ComposedExpressionRowObjectiveFunction extends ObjectiveFu
     }
 
     protected abstract MultiObjectiveValue instantiateMultiObjectiveValue();
+    
+    @Override
+    public Data getState() {
+    	return null;
+    }
+    
+    @Override
+    public Predicate getpredicate() {
+    	return null;
+    }
 }

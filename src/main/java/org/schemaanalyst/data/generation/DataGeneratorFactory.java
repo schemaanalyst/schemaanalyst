@@ -9,11 +9,16 @@ import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitialize
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
 import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
+import org.schemaanalyst.data.generation.dravs.AlternatingValueSearchInner;
+import org.schemaanalyst.data.generation.dravs.DirectedRandomAVMDataGenerator;
+import org.schemaanalyst.data.generation.dravs.OptimumTerminationCriterionMini;
+import org.schemaanalyst.data.generation.dravs.SearchMini;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.HyperAVS;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
+import org.schemaanalyst.data.generation.search.SwitchAVS;
 import org.schemaanalyst.data.generation.search.SwitchAlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.SwitcherAVS;
 import org.schemaanalyst.data.generation.search.HyperAlternatingValueSearch;
@@ -212,7 +217,7 @@ public class DataGeneratorFactory {
             CellInitializer startInitializer,
             CellInitializer restartInitializer) {
 
-        Search<Data> search = new SwitcherAVS(
+        Search<Data> search = new SwitchAVS(
                 random,
                 startInitializer,
                 restartInitializer, randomCellValueGenerator);
@@ -238,5 +243,30 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 randomCellInitializer,
                 randomCellInitializer);
+    }
+    
+    public static DirectedRandomAVMDataGenerator dravmGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+        
+        // AVM init
+        SearchMini<Data> search = new AlternatingValueSearchInner(
+        		random,
+        		randomCellInitializer,
+        		randomCellInitializer);
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(search.getEvaluationsCounter(), 1000),
+                new OptimumTerminationCriterionMini<>(search));
+
+        search.setTerminationCriterion(terminationCriterion);
+
+        return new DirectedRandomAVMDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer,
+                search);
     }
 }
