@@ -18,7 +18,7 @@ public class ExpressionPredicateChecker extends PredicateChecker {
     private boolean allowNull;
     private Data data;
     private List<Cell> nonComplyingCells;
-    private Data nonComplyingData = new Data();
+    //private Data nonComplyingData = new Data();
 
     public ExpressionPredicateChecker(ExpressionPredicate expressionPredicate, boolean allowNull, Data data) {
         this.expressionPredicate = expressionPredicate;
@@ -38,16 +38,16 @@ public class ExpressionPredicateChecker extends PredicateChecker {
     public Data getData() {
     	return data;
     }
-    
+    /*
     public Data getNonComplyingData() {
     	return nonComplyingData;
     }
-
+	*/
     @Override
     public boolean check() {
 
         nonComplyingCells = new ArrayList<>();
-        nonComplyingData = new Data();
+        //nonComplyingData = new Data();
 
         List<Row> rows = data.getRows(expressionPredicate.getTable());
         if (rows.size() > 0) {
@@ -61,7 +61,7 @@ public class ExpressionPredicateChecker extends PredicateChecker {
 
                 if (!expressionChecker.check()) {
                     nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
-                    nonComplyingData.appendData(expressionChecker.getNonComplyingData());
+                    //nonComplyingData.appendData(expressionChecker.getNonComplyingData());
                 }
             }
 

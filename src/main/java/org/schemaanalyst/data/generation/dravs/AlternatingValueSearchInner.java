@@ -40,43 +40,6 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
 		this.mainData = mainData;
 	}
 
-    @Override
-    public void search(Data data, PredicateChecker checker, List<Cell> cells) {
-        // set up
-        this.subsetData = data;
-        //cells = data.getCells();
-    	this.cells = cells;
-
-        // start
-        // startInitialiser.initialize(data);
-        lastObjVal = null;
-    	evaluate();
-
-
-        if (!checker.check() && terminationCriterion.satisfied()) {
-        	System.err.println("TEST");
-        }
-
-        // main loop
-        while (!terminationCriterion.satisfied()) {
-
-            alternateThroughValues();
-            
-            if (checker.check()) {
-            	break;
-            }
-
-            if (!terminationCriterion.satisfied()) {
-                restartsCounter.increment();
-            }
-
-            if (!terminationCriterion.satisfied()) {
-                restartInitialiser.initialize(subsetData);
-                lastObjVal = null;
-                evaluate();
-            }
-        }
-    }
     
     @Override
     public void search(List<Cell> cells, PredicateChecker checker) {
@@ -147,7 +110,44 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
                 evaluate();
             }
         }
-        //this.cells.clear();
+    }
+    /*
+    @Override
+    public void search(Data data, PredicateChecker checker, List<Cell> cells) {
+        // set up
+        this.subsetData = data;
+        //cells = data.getCells();
+    	this.cells = cells;
+
+        // start
+        // startInitialiser.initialize(data);
+        lastObjVal = null;
+    	evaluate();
+
+
+        if (!checker.check() && terminationCriterion.satisfied()) {
+        	System.err.println("TEST");
+        }
+
+        // main loop
+        while (!terminationCriterion.satisfied()) {
+
+            alternateThroughValues();
+            
+            if (checker.check()) {
+            	break;
+            }
+
+            if (!terminationCriterion.satisfied()) {
+                restartsCounter.increment();
+            }
+
+            if (!terminationCriterion.satisfied()) {
+                restartInitialiser.initialize(subsetData);
+                lastObjVal = null;
+                evaluate();
+            }
+        }
     }
     
     @Override
@@ -186,7 +186,7 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
             }
         }
     }
-
+	*/
     protected boolean evaluate() {
         ObjectiveValue nextObjVal = evaluate(mainData);
 
