@@ -66,6 +66,16 @@ public abstract class SearchMini<T> {
         bestCandidateSolution = null;
         bestObjVal = null;
     }
+    
+    /**
+     * Initializes the generation (by resetting the counters).
+     */
+    public void initializeInner() {
+       // evaluationsCounter.reset();
+        restartsCounter.reset();
+        bestCandidateSolution = null;
+        bestObjVal = null;
+    }
 
     /**
      * Performs the generation.

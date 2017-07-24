@@ -6,6 +6,7 @@ import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.search.Search;
+import org.schemaanalyst.data.generation.search.objective.predicate.MatchPredicateObjectiveFunction;
 import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.MatchPredicateChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.MatchRecord;
@@ -98,8 +99,9 @@ public class MatchPredicateFixer extends PredicateFixer {
     private void mismatchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
         //cellValueGenerator.generateCellValue(modifyAlternativeCell ? alternativeCell : originalCell);
     	//search.search(null, matchPredicateChecker, modifyAlternativeCell ? alternativeCell : originalCell);
-        search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(matchPredicateChecker.getPredicate(), state));
-        search.initialize();
+        //search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(matchPredicateChecker.getPredicate(), state));
+    	search.setObjectiveFunction(new MatchPredicateObjectiveFunction(matchPredicateChecker.getPredicate(), state));
+        search.initializeInner();
     	search.search(modifyAlternativeCell ? alternativeCell : originalCell, matchPredicateChecker);
     }
 }

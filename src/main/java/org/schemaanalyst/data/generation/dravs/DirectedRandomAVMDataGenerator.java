@@ -37,17 +37,20 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
         // Init RAGTAG+AVM
     	initialize(data, state, predicate);
     	search.setMainData(data);
-
+    	search.initialize();
         boolean success = predicateChecker.check();
-        int evaluations = 1;
-        while (!success && evaluations < maxEvaluations) {
+        //int evaluations = 1;
+        while (!success && search.getNumEvaluations() < maxEvaluations) {
             attemptFix(data);
             //evaluations++;
-            evaluations = evaluations + search.getNumEvaluations();
-            evaluations++;
+            //evaluations = evaluations + search.getNumEvaluations();
+            //evaluations++;
+            search.getEvaluationsCounter().increment();
             success = predicateChecker.check();
         }
 
+        int evaluations = search.getNumEvaluations();
+        
         return new DataGenerationReport(success, evaluations);
     }
 
