@@ -19,33 +19,34 @@ public class PredicateFixerFactory {
                                              final RandomCellValueGenerator randomCellValueGenerator,
                                              final SearchMini search) {
         PredicateChecker predicateChecker = PredicateCheckerFactory.instantiate(predicate, allowNull, data, state);
-        return instantiate(predicateChecker, random, randomCellValueGenerator, search);
+        return instantiate(predicateChecker, random, randomCellValueGenerator, search, state);
     }
 
 
     public static PredicateFixer instantiate(final PredicateChecker predicateChecker,
                                              final Random random,
                                              final RandomCellValueGenerator randomCellValueGenerator,
-                                             final SearchMini search) {
+                                             final SearchMini search,
+                                             final Data state) {
         return new PredicateVisitor() {
             PredicateFixer predicateFixer;
 
             @Override
             public void visit(AndPredicate predicate) {
                 predicateFixer = new AndPredicateFixer(
-                        (AndPredicateChecker) predicateChecker, random, randomCellValueGenerator, search);
+                        (AndPredicateChecker) predicateChecker, random, randomCellValueGenerator, search, state);
             }
 
             @Override
             public void visit(ExpressionPredicate predicate) {
                 predicateFixer = new ExpressionPredicateFixer(
-                        (ExpressionPredicateChecker) predicateChecker, randomCellValueGenerator, search);
+                        (ExpressionPredicateChecker) predicateChecker, randomCellValueGenerator, search, state);
             }
 
             @Override
             public void visit(MatchPredicate predicate) {
                 predicateFixer = new MatchPredicateFixer(
-                        (MatchPredicateChecker) predicateChecker, random, randomCellValueGenerator, search);
+                        (MatchPredicateChecker) predicateChecker, random, randomCellValueGenerator, search, state);
             }
 
             @Override
@@ -57,7 +58,7 @@ public class PredicateFixerFactory {
             @Override
             public void visit(OrPredicate predicate) {
                 predicateFixer = new OrPredicateFixer(
-                        (OrPredicateChecker) predicateChecker, random, randomCellValueGenerator, search);
+                        (OrPredicateChecker) predicateChecker, random, randomCellValueGenerator, search, state);
             }
 
             PredicateFixer instantiate() {

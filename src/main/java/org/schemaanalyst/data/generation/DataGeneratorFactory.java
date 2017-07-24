@@ -270,4 +270,30 @@ public class DataGeneratorFactory {
                 randomCellInitializer,
                 search);
     }
+    
+    public static DirectedRandomAVMDataGenerator dravmDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    	// Set DR
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+        
+        // AVM init
+        SearchMini<Data> search = new AlternatingValueSearchInner(
+        		random,
+        		new DefaultCellInitializer(),
+        		randomCellInitializer);
+        // Termination after 1000 eval
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(search.getEvaluationsCounter(), 1000),
+                new OptimumTerminationCriterionMini<>(search));
+
+        search.setTerminationCriterion(terminationCriterion);
+
+        return new DirectedRandomAVMDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                new DefaultCellInitializer(),
+                search);
+    }
 }

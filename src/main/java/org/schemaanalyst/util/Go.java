@@ -135,6 +135,7 @@ public class Go {
             int i = 1;
             for (TestRequirement testRequirement : report.getFailedTestRequirements()) {
                 System.out.println(i + ") " + testRequirement);
+                System.out.println((report.getDataGenerationResult(testRequirement).getState()));
                 System.out.println((report.getDataGenerationResult(testRequirement).getData()));
                 i ++;
             }

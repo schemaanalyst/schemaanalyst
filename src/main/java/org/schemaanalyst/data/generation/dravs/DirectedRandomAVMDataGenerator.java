@@ -21,6 +21,7 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
     private PredicateFixer predicateFixer;
     private SearchMini<Data> search;
 
+
     public DirectedRandomAVMDataGenerator(Random random,
                                        int maxEvaluations,
                                        RandomCellValueGenerator cellValueGenerator,
@@ -36,8 +37,7 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
         // Init RAGTAG+AVM
     	initialize(data, state, predicate);
     	search.setMainData(data);
-        search.initialize();
-        
+
         boolean success = predicateChecker.check();
         int evaluations = 1;
         while (!success && evaluations < maxEvaluations) {
@@ -55,12 +55,12 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
     protected void initialize(Data data, Data state, Predicate predicate) {
         super.initialize(data, state, predicate);
     	// Init AVM Objective Func
-        search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state));
+        //search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state));
         predicateChecker = PredicateCheckerFactory.instantiate(
                 predicate, true, data, state
         );
         predicateFixer = PredicateFixerFactory.instantiate(
-                predicateChecker, random, randomCellValueGenerator, search);
+                predicateChecker, random, randomCellValueGenerator, search, state);
     }
 
     @Override

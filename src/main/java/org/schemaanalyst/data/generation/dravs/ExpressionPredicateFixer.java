@@ -1,8 +1,10 @@
 package org.schemaanalyst.data.generation.dravs;
 
 import org.schemaanalyst.data.Cell;
+import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.search.Search;
+import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionPredicateChecker;
 
 /**
@@ -12,16 +14,21 @@ public class ExpressionPredicateFixer extends PredicateFixer {
 
     private ExpressionPredicateChecker expressionPredicateChecker;
     private RandomCellValueGenerator cellValueGenerator;
-    private SearchMini search;
+    private SearchMini<Data> search;
+    private Data state;
 
-    public ExpressionPredicateFixer(ExpressionPredicateChecker expressionPredicateChecker, RandomCellValueGenerator cellValueGenerator, SearchMini search) {
+    public ExpressionPredicateFixer(ExpressionPredicateChecker expressionPredicateChecker, RandomCellValueGenerator cellValueGenerator, SearchMini search, Data state) {
         this.expressionPredicateChecker = expressionPredicateChecker;
         this.cellValueGenerator = cellValueGenerator;
         this.search = search;
+        this.state = state;
     }
 
     @Override
     public void attemptFix() {
+        search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(expressionPredicateChecker.getPredicate(), state));
+        search.initialize();
+
     	/*
         for (Cell cell : expressionPredicateChecker.getNonComplyingCells()) {
             //cellValueGenerator.generateCellValue(cell);
