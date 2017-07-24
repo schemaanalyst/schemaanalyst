@@ -36,6 +36,8 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
         // Init RAGTAG+AVM
     	initialize(data, state, predicate);
     	search.setMainData(data);
+        search.initialize();
+        
         boolean success = predicateChecker.check();
         int evaluations = 1;
         while (!success && evaluations < maxEvaluations) {
@@ -52,7 +54,7 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
     @Override
     protected void initialize(Data data, Data state, Predicate predicate) {
         super.initialize(data, state, predicate);
-    	// Init AVM
+    	// Init AVM Objective Func
         search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state));
         predicateChecker = PredicateCheckerFactory.instantiate(
                 predicate, true, data, state

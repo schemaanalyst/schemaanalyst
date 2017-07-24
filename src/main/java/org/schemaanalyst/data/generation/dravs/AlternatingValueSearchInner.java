@@ -89,14 +89,7 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
         // startInitialiser.initialize(data);
         lastObjVal = null;
     	evaluate();
-
-
-        if (!checker.check() && terminationCriterion.satisfied()) {
-        	//System.err.println("TEST");
-            restartInitialiser.initialize(cells);
-        }
-        
-        evaluate();
+    	
 
         // main loop
         while (!terminationCriterion.satisfied()) {
@@ -132,7 +125,8 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
         // startInitialiser.initialize(data);
         lastObjVal = null;
         evaluate();
-
+        
+        
         // main loop
         while (!terminationCriterion.satisfied()) {
 
@@ -197,6 +191,7 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
         ObjectiveValue nextObjVal = evaluate(mainData);
 
         boolean improvement = (lastObjVal == null || nextObjVal.betterThan(lastObjVal));
+                
 
         if (improvement) {
             lastObjVal = nextObjVal;

@@ -246,6 +246,7 @@ public class DataGeneratorFactory {
     }
     
     public static DirectedRandomAVMDataGenerator dravmGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    	// Set DR
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
@@ -255,7 +256,7 @@ public class DataGeneratorFactory {
         		random,
         		randomCellInitializer,
         		randomCellInitializer);
-
+        // Termination after 1000 eval
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(), 1000),
                 new OptimumTerminationCriterionMini<>(search));
