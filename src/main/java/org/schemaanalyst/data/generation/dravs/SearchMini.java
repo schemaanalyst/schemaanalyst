@@ -148,11 +148,11 @@ public abstract class SearchMini<T> {
     public int getNumRestarts() {
         return restartsCounter.getValue();
     }
-    /*
+
 	public void setMainData(Data data) {
 		
 	}
-	
+    /*
 	public void search(Data data, PredicateChecker checker) {
 		// TODO Auto-generated method stub
 		
