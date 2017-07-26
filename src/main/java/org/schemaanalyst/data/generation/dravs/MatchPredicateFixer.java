@@ -1,19 +1,16 @@
 package org.schemaanalyst.data.generation.dravs;
 
+import java.util.List;
+import java.util.ListIterator;
+
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.data.Value;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
-import org.schemaanalyst.data.generation.search.Search;
-import org.schemaanalyst.data.generation.search.objective.predicate.MatchPredicateObjectiveFunction;
-import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.MatchPredicateChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.MatchRecord;
 import org.schemaanalyst.util.random.Random;
-
-import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by phil on 27/02/2014.
@@ -96,12 +93,11 @@ public class MatchPredicateFixer extends PredicateFixer {
 
 	private void mismatchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
 		cellValueGenerator.generateCellValue(modifyAlternativeCell ? alternativeCell : originalCell);
-		// search.search(null, matchPredicateChecker, modifyAlternativeCell ?
-		// alternativeCell : originalCell);
-		// search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(matchPredicateChecker.getPredicate(),
+		// search.setObjectiveFunction(new
+		// MatchPredicateObjectiveFunction(matchPredicateChecker.getPredicate(),
 		// state));
-		// search.setObjectiveFunction(new MatchPredicateObjectiveFunction(matchPredicateChecker.getPredicate(), state));
 		// search.initializeInner();
-		// search.search(modifyAlternativeCell ? alternativeCell : originalCell, matchPredicateChecker);
+		// search.search(modifyAlternativeCell ? alternativeCell : originalCell,
+		// matchPredicateChecker);
 	}
 }

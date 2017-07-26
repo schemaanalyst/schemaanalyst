@@ -14,14 +14,12 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Expr
 public class ExpressionPredicateFixer extends PredicateFixer {
 
 	private ExpressionPredicateChecker expressionPredicateChecker;
-	private RandomCellValueGenerator cellValueGenerator;
 	private SearchMini<Data> search;
 	private Data state;
 
 	public ExpressionPredicateFixer(ExpressionPredicateChecker expressionPredicateChecker,
 			RandomCellValueGenerator cellValueGenerator, SearchMini search, Data state) {
 		this.expressionPredicateChecker = expressionPredicateChecker;
-		this.cellValueGenerator = cellValueGenerator;
 		this.search = search;
 		this.state = state;
 	}
@@ -33,31 +31,21 @@ public class ExpressionPredicateFixer extends PredicateFixer {
 		if (eval > evaluations) {
 			evaluations = eval;
 		}
-		
-		// Set up termination
-        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(search.getEvaluationsCounter(), evaluations),
-                new OptimumTerminationCriterionMini<>(search));
 
-        search.setTerminationCriterion(terminationCriterion);
-		
+		// Set up termination
+		TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+				new CounterTerminationCriterion(search.getEvaluationsCounter(), evaluations),
+				new OptimumTerminationCriterionMini<>(search));
+
+		search.setTerminationCriterion(terminationCriterion);
+
+		// Set objective Function
 		search.setObjectiveFunction(
 				new ExpressionPredicateObjectiveFunction(expressionPredicateChecker.getPredicate()));
 		search.initialize();
-
-		/*
-		 * for (Cell cell : expressionPredicateChecker.getNonComplyingCells()) {
-		 * //cellValueGenerator.generateCellValue(cell);
-		 * //System.out.println("ExpressionPredicateFixer"); search.search(cell,
-		 * expressionPredicateChecker); }
-		 */
+		// AVMing if there are cells
 		if (expressionPredicateChecker.getNonComplyingCells().size() > 0) {
-			// search.search(expressionPredicateChecker.getNonComplyingData(),
-			// expressionPredicateChecker,
-			// expressionPredicateChecker.getNonComplyingCells());
 			search.search(expressionPredicateChecker.getNonComplyingCells(), expressionPredicateChecker);
 		}
-		// System.out.println("ExpressionPredicateFixer");
-
 	}
 }

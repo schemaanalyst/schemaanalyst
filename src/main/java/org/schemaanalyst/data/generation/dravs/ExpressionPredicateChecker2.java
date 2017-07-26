@@ -1,5 +1,8 @@
 package org.schemaanalyst.data.generation.dravs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
@@ -7,83 +10,77 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPr
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Created by phil on 27/02/2014. edited by abdullah
  */
 public class ExpressionPredicateChecker2 extends PredicateChecker {
 
-    private ExpressionPredicate expressionPredicate;
-    private boolean allowNull;
-    private Data data;
-    private List<Cell> nonComplyingCells;
-    private Data nonComplyingData = new Data();
+	private ExpressionPredicate expressionPredicate;
+	private boolean allowNull;
+	private Data data;
+	private List<Cell> nonComplyingCells;
+	private Data nonComplyingData = new Data();
 
-    public ExpressionPredicateChecker2(ExpressionPredicate expressionPredicate, boolean allowNull, Data data) {
-        this.expressionPredicate = expressionPredicate;
-        this.allowNull = allowNull;
-        this.data = data;
-    }
+	public ExpressionPredicateChecker2(ExpressionPredicate expressionPredicate, boolean allowNull, Data data) {
+		this.expressionPredicate = expressionPredicate;
+		this.allowNull = allowNull;
+		this.data = data;
+	}
 
-    @Override
-    public ExpressionPredicate getPredicate() {
-        return expressionPredicate;
-    }
+	@Override
+	public ExpressionPredicate getPredicate() {
+		return expressionPredicate;
+	}
 
-    public List<Cell> getNonComplyingCells() {
-        return nonComplyingCells;
-    }
-    
-    public Data getData() {
-    	return data;
-    }
-    
-    public Data getNonComplyingData() {
-    	return nonComplyingData;
-    }
+	public List<Cell> getNonComplyingCells() {
+		return nonComplyingCells;
+	}
 
-    @Override
-    public boolean check() {
+	public Data getData() {
+		return data;
+	}
 
-        nonComplyingCells = new ArrayList<>();
-        nonComplyingData = new Data();
+	public Data getNonComplyingData() {
+		return nonComplyingData;
+	}
 
-        List<Row> rows = data.getRows(expressionPredicate.getTable());
-        if (rows.size() > 0) {
+	@Override
+	public boolean check() {
 
-            for (Row row : rows) {
-                ExpressionChecker expressionChecker = new ExpressionChecker(
-                        expressionPredicate.getExpression(),
-                        expressionPredicate.getTruthValue(),
-                        allowNull,
-                        row);
+		nonComplyingCells = new ArrayList<>();
+		nonComplyingData = new Data();
 
-                if (!expressionChecker.check()) {
-                    nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
-                    //nonComplyingData.appendData(expressionChecker.getNonComplyingData());
-                }
-            }
+		List<Row> rows = data.getRows(expressionPredicate.getTable());
+		if (rows.size() > 0) {
 
-            return (nonComplyingCells.size() == 0);
-        }
-        return false;
-    }
+			for (Row row : rows) {
+				ExpressionChecker expressionChecker = new ExpressionChecker(expressionPredicate.getExpression(),
+						expressionPredicate.getTruthValue(), allowNull, row);
 
-    @Override
-    public String getInfo() {
-        boolean check = check();
-        String info = "Expression clause: " + expressionPredicate + "\n";
-        info += "\t* Success: " + check + "\n";
+				if (!expressionChecker.check()) {
+					nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
+					// nonComplyingData.appendData(expressionChecker.getNonComplyingData());
+				}
+			}
 
-        if (!check) {
-            info += "\t* Non-complying cells:\n";
-            for (Cell cell : nonComplyingCells) {
-                info += "\t\t* " + cell + "\n";
-            }
+			return (nonComplyingCells.size() == 0);
+		}
+		return false;
+	}
 
-        }
-        return info;
-    }
+	@Override
+	public String getInfo() {
+		boolean check = check();
+		String info = "Expression clause: " + expressionPredicate + "\n";
+		info += "\t* Success: " + check + "\n";
+
+		if (!check) {
+			info += "\t* Non-complying cells:\n";
+			for (Cell cell : nonComplyingCells) {
+				info += "\t\t* " + cell + "\n";
+			}
+
+		}
+		return info;
+	}
 }

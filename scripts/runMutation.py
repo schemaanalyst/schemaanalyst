@@ -36,7 +36,7 @@ engines = ["SQLite"]
 "ProductSalesRepaired","RiskIt","Skype","SongTrackMetadata","SRAMetadb","StackOverflow","StudentResidence","Test","TweetComplete","UnixUsage",
 "Usda","WordNet","World" ]
 """
-databases = ["BookTown", "BrowserCookies", "Flights", "CustomerOrder", "Employee", "Examination", "NistWeather", "NistXTS748", "NistXTS749", "Person", "Products", "StudentResidence"]
+databases = ["ArtistSimilarity", "ArtistTerm", "BookTown", "BrowserCookies", "Flights", "CustomerOrder", "Employee", "Examination", "NistWeather", "NistXTS748", "NistXTS749", "Person", "Products", "StudentResidence"]
 # Coverage you want to run:
 # "APC", "ICC", "AICC", "CondAICC", "ClauseAICC", "UCC", "AUCC", "NCC", "ANCC"
 # The best is = ClauseAICC+AUCC+ANCC
@@ -51,9 +51,9 @@ coverages = ["ClauseAICC+AUCC+ANCC"]
 # avmlm
 # selector
 # random
-generators = ["directedRandomDefaults"]
+generators = ["dravm", "directedRandom", "avs"]
 # Number of runs you want
-end_seed = 4
+end_seed = 6
 
 # Change DBMS in config while running
 def change_dbms_config(db):
@@ -155,7 +155,7 @@ def alive_mutant_r(scripts_path, resutls_path, data, gen, cov, eng, seed):
 
 # Run experiment
 for eng in engines:
-  change_dbms_config(eng)
+  # change_dbms_config(eng)
   for data in databases:
     for gen in generators:
       for cov in coverages:

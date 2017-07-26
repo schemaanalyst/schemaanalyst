@@ -2,7 +2,6 @@ package org.schemaanalyst.data.generation.dravs;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
-import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.AndPredicateChecker;
 import org.schemaanalyst.util.random.Random;
 
@@ -11,18 +10,15 @@ import org.schemaanalyst.util.random.Random;
  */
 public class AndPredicateFixer extends ComposedPredicateFixer {
 
-    public AndPredicateFixer(AndPredicateChecker andPredicateChecker,
-                             Random random,
-                             RandomCellValueGenerator cellValueGenerator,
-                             SearchMini search,
-                             Data state) {
-        super(andPredicateChecker, random, cellValueGenerator, search, state);
-    }
+	public AndPredicateFixer(AndPredicateChecker andPredicateChecker, Random random,
+			RandomCellValueGenerator cellValueGenerator, SearchMini search, Data state) {
+		super(andPredicateChecker, random, cellValueGenerator, search, state);
+	}
 
-    @Override
-    public void attemptFix(int eval) {
-        for (PredicateFixer predicateFixer : predicateFixers) {
-            predicateFixer.attemptFix(eval);
-        }
-    }
+	@Override
+	public void attemptFix(int eval) {
+		for (PredicateFixer predicateFixer : predicateFixers) {
+			predicateFixer.attemptFix(eval);
+		}
+	}
 }

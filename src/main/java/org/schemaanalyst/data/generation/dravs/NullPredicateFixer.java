@@ -8,18 +8,18 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Null
  */
 public class NullPredicateFixer extends PredicateFixer {
 
-    private NullPredicateChecker nullPredicateChecker;
+	private NullPredicateChecker nullPredicateChecker;
 
-    public NullPredicateFixer(NullPredicateChecker nullPredicateChecker) {
-        this.nullPredicateChecker = nullPredicateChecker;
-    }
+	public NullPredicateFixer(NullPredicateChecker nullPredicateChecker) {
+		this.nullPredicateChecker = nullPredicateChecker;
+	}
 
-    @Override
-    public void attemptFix(int eval) {
-        boolean setToNull = nullPredicateChecker.getPredicate().getTruthValue();
+	@Override
+	public void attemptFix(int eval) {
+		boolean setToNull = nullPredicateChecker.getPredicate().getTruthValue();
 
-        for (Cell cell : nullPredicateChecker.getNonComplyingCells()) {
-            cell.setNull(setToNull);
-        }
-    }
+		for (Cell cell : nullPredicateChecker.getNonComplyingCells()) {
+			cell.setNull(setToNull);
+		}
+	}
 }

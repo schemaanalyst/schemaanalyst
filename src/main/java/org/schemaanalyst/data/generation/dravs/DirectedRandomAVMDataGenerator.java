@@ -5,8 +5,6 @@ import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
-import org.schemaanalyst.data.generation.search.Search;
-import org.schemaanalyst.data.generation.search.objective.predicate.PredicateObjectiveFunctionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.Predicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
 import org.schemaanalyst.util.random.Random;
@@ -38,13 +36,12 @@ public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
 		int evaluations = 1;
 		while (!success && evaluations < maxEvaluations) {
 			attemptFix(data, evaluations);
-			//evaluations++;
+			// evaluations++;
 			evaluations = evaluations + search.getNumEvaluations();
 			evaluations++;
-			//search.getEvaluationsCounter().increment();
+			// search.getEvaluationsCounter().increment();
 			success = predicateChecker.check();
 		}
-
 
 		return new DataGenerationReport(success, evaluations);
 	}
