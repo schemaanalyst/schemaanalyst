@@ -20,9 +20,9 @@ public class AndPredicateFixer extends ComposedPredicateFixer {
     }
 
     @Override
-    public void attemptFix() {
+    public void attemptFix(int eval) {
         for (PredicateFixer predicateFixer : predicateFixers) {
-            predicateFixer.attemptFix();
+            predicateFixer.attemptFix(eval);
         }
     }
 }

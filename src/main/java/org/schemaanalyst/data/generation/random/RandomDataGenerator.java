@@ -55,4 +55,9 @@ public class RandomDataGenerator extends DataGenerator {
             randomCellValueGenerator.generateCellValue(cell);
         }
     }
+
+	protected void attemptFix(Data data, int eval) {
+		// TODO Auto-generated method stub
+		
+	}
 }

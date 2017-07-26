@@ -257,12 +257,13 @@ public class DataGeneratorFactory {
         		randomCellInitializer,
         		randomCellInitializer);
         // Termination after 1000 eval
+        /*
         TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
                 new CounterTerminationCriterion(search.getEvaluationsCounter(), 1000),
                 new OptimumTerminationCriterionMini<>(search));
 
         search.setTerminationCriterion(terminationCriterion);
-
+		*/
         return new DirectedRandomAVMDataGenerator(
                 random,
                 maxEvaluations,

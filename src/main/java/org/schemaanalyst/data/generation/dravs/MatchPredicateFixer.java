@@ -20,88 +20,88 @@ import java.util.ListIterator;
  */
 public class MatchPredicateFixer extends PredicateFixer {
 
-    private MatchPredicateChecker matchPredicateChecker;
-    private Random random;
-    private RandomCellValueGenerator cellValueGenerator;
-    private SearchMini search;
-    private Data state;
+	private MatchPredicateChecker matchPredicateChecker;
+	private Random random;
+	private RandomCellValueGenerator cellValueGenerator;
+	private SearchMini<Data> search;
+	private Data state;
 
+	public MatchPredicateFixer(MatchPredicateChecker matchPredicateChecker, Random random,
+			RandomCellValueGenerator cellValueGenerator, SearchMini search, Data state) {
+		this.matchPredicateChecker = matchPredicateChecker;
+		this.random = random;
+		this.cellValueGenerator = cellValueGenerator;
+		this.search = search;
+		this.state = state;
+	}
 
-    public MatchPredicateFixer(MatchPredicateChecker matchPredicateChecker,
-                               Random random,
-                               RandomCellValueGenerator cellValueGenerator,
-                               SearchMini search,
-                               Data state) {
-        this.matchPredicateChecker = matchPredicateChecker;
-        this.random = random;
-        this.cellValueGenerator = cellValueGenerator;
-        this.search = search;
-        this.state = state;
-    }
+	@Override
+	public void attemptFix(int eval) {
+		attemptFix(matchPredicateChecker.getNonMatchingCells(), true);
+		attemptFix(matchPredicateChecker.getMatchingCells(), false);
+	}
 
-    @Override
-    public void attemptFix() {
-        attemptFix(matchPredicateChecker.getNonMatchingCells(), true);
-        attemptFix(matchPredicateChecker.getMatchingCells(), false);
-    }
+	private void attemptFix(List<MatchRecord> matchRecords, boolean attemptMatch) {
 
-    private void attemptFix(List<MatchRecord> matchRecords, boolean attemptMatch) {
+		for (MatchRecord matchRecord : matchRecords) {
 
-        for (MatchRecord matchRecord : matchRecords) {
+			Row originalRow = matchRecord.getOriginalRow();
 
-            Row originalRow = matchRecord.getOriginalRow();
+			int randomRowIndex = random.nextInt(matchRecord.getNumComparisonRows());
+			Row alternativeRow = matchRecord.getComparisonRow(randomRowIndex);
 
-            int randomRowIndex = random.nextInt(matchRecord.getNumComparisonRows());
-            Row alternativeRow = matchRecord.getComparisonRow(randomRowIndex);
+			boolean modifyAlternativeCell = matchRecord.isModifiableRow(randomRowIndex) && random.nextBoolean();
 
-            boolean modifyAlternativeCell = matchRecord.isModifiableRow(randomRowIndex) && random.nextBoolean();
+			boolean isOr = matchPredicateChecker.getPredicate().getMode().isOr();
+			if (isOr) {
+				// if it's an OR MatchPredicate, we only need to fix one pair of
+				// cells
+				int randomCellIndex = random.nextInt(originalRow.getNumCells());
+				Cell originalCell = originalRow.getCell(randomCellIndex);
+				Cell alternativeCell = alternativeRow.getCell(randomCellIndex);
+				fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
+			} else {
+				ListIterator<Cell> originalRowIterator = originalRow.getCells().listIterator();
+				ListIterator<Cell> alternativeRowIterator = alternativeRow.getCells().listIterator();
 
-            boolean isOr = matchPredicateChecker.getPredicate().getMode().isOr();
-            if (isOr) {
-                // if it's an OR MatchPredicate, we only need to fix one pair of cells
-                int randomCellIndex = random.nextInt(originalRow.getNumCells());
-                Cell originalCell = originalRow.getCell(randomCellIndex);
-                Cell alternativeCell = alternativeRow.getCell(randomCellIndex);
-                fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
-            } else {
-                ListIterator<Cell> originalRowIterator = originalRow.getCells().listIterator();
-                ListIterator<Cell> alternativeRowIterator = alternativeRow.getCells().listIterator();
+				while (originalRowIterator.hasNext()) {
+					Cell originalCell = originalRowIterator.next();
+					Cell alternativeCell = alternativeRowIterator.next();
+					fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
+				}
+			}
+		}
+	}
 
-                while (originalRowIterator.hasNext()) {
-                    Cell originalCell = originalRowIterator.next();
-                    Cell alternativeCell = alternativeRowIterator.next();
-                    fixCells(originalCell, alternativeCell, modifyAlternativeCell, attemptMatch);
-                }
-            }
-        }
-    }
+	private void fixCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell,
+			boolean attemptMatch) {
+		if (attemptMatch) {
+			matchCells(originalCell, alternativeCell, modifyAlternativeCell);
+		} else {
+			mismatchCells(originalCell, alternativeCell, modifyAlternativeCell);
+		}
+	}
 
-    private void fixCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell, boolean attemptMatch) {
-        if (attemptMatch) {
-            matchCells(originalCell, alternativeCell, modifyAlternativeCell);
-        } else {
-            mismatchCells(originalCell, alternativeCell, modifyAlternativeCell);
-        }
-    }
+	private void matchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
+		Cell targetCell = modifyAlternativeCell ? alternativeCell : originalCell;
+		Cell sourceCell = modifyAlternativeCell ? originalCell : alternativeCell;
 
-    private void matchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
-        Cell targetCell = modifyAlternativeCell ? alternativeCell : originalCell;
-        Cell sourceCell = modifyAlternativeCell ? originalCell : alternativeCell;
+		Value value = sourceCell.getValue();
+		if (value == null) {
+			targetCell.setNull(true);
+		} else {
+			targetCell.setValue(value.duplicate());
+		}
+	}
 
-        Value value = sourceCell.getValue();
-        if (value == null) {
-            targetCell.setNull(true);
-        } else {
-            targetCell.setValue(value.duplicate());
-        }
-    }
-
-    private void mismatchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
-        //cellValueGenerator.generateCellValue(modifyAlternativeCell ? alternativeCell : originalCell);
-    	//search.search(null, matchPredicateChecker, modifyAlternativeCell ? alternativeCell : originalCell);
-        //search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(matchPredicateChecker.getPredicate(), state));
-    	search.setObjectiveFunction(new MatchPredicateObjectiveFunction(matchPredicateChecker.getPredicate(), state));
-        search.initializeInner();
-    	search.search(modifyAlternativeCell ? alternativeCell : originalCell, matchPredicateChecker);
-    }
+	private void mismatchCells(Cell originalCell, Cell alternativeCell, boolean modifyAlternativeCell) {
+		cellValueGenerator.generateCellValue(modifyAlternativeCell ? alternativeCell : originalCell);
+		// search.search(null, matchPredicateChecker, modifyAlternativeCell ?
+		// alternativeCell : originalCell);
+		// search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(matchPredicateChecker.getPredicate(),
+		// state));
+		// search.setObjectiveFunction(new MatchPredicateObjectiveFunction(matchPredicateChecker.getPredicate(), state));
+		// search.initializeInner();
+		// search.search(modifyAlternativeCell ? alternativeCell : originalCell, matchPredicateChecker);
+	}
 }

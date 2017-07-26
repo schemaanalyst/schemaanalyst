@@ -1,17 +1,26 @@
 package org.schemaanalyst.data.generation.dravs;
 
-import org.schemaanalyst.data.*;
-import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
-import org.schemaanalyst.data.generation.search.Search;
-import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
-import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
-import org.schemaanalyst.util.random.Random;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.schemaanalyst.data.BooleanValue;
+import org.schemaanalyst.data.Cell;
+import org.schemaanalyst.data.CompoundValue;
+import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.DateTimeValue;
+import org.schemaanalyst.data.DateValue;
+import org.schemaanalyst.data.NumericValue;
+import org.schemaanalyst.data.StringValue;
+import org.schemaanalyst.data.TimeValue;
+import org.schemaanalyst.data.TimestampValue;
+import org.schemaanalyst.data.Value;
+import org.schemaanalyst.data.ValueVisitor;
+import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
+import org.schemaanalyst.data.generation.search.objective.ObjectiveValue;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
+import org.schemaanalyst.util.random.Random;
 
 public class AlternatingValueSearchInner extends SearchMini<Data> {
 
@@ -42,10 +51,13 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
 
     
     @Override
+    //public void search(Data data ,List<Cell> cells, PredicateChecker checker) {
     public void search(List<Cell> cells, PredicateChecker checker) {
         // set up
         //this.subsetData = data;
         //cells = data.getCells();
+    	//setMainData(data);
+    	//mainData
     	this.cells = cells;
 
         // start

@@ -5,6 +5,6 @@ package org.schemaanalyst.data.generation.dravs;
  */
 public abstract class PredicateFixer {
 
-    public abstract void attemptFix();
+    public abstract void attemptFix(int eval);
 
 }

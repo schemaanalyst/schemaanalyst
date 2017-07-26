@@ -16,58 +16,52 @@ import org.schemaanalyst.util.random.Random;
  */
 public class DirectedRandomAVMDataGenerator extends RandomDataGenerator {
 
-    private Random random;
-    private PredicateChecker predicateChecker;
-    private PredicateFixer predicateFixer;
-    private SearchMini<Data> search;
+	private Random random;
+	private PredicateChecker predicateChecker;
+	private PredicateFixer predicateFixer;
+	private SearchMini<Data> search;
+
+	public DirectedRandomAVMDataGenerator(Random random, int maxEvaluations,
+			RandomCellValueGenerator cellValueGenerator, CellInitializer cellInitializer, SearchMini search) {
+		super(maxEvaluations, cellValueGenerator, cellInitializer);
+		this.random = random;
+		this.search = search;
+	}
+
+	@Override
+	public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
+		// Init RAGTAG+AVM
+		initialize(data, state, predicate);
+		search.setMainData(data);
+		search.initialize();
+		boolean success = predicateChecker.check();
+		int evaluations = 1;
+		while (!success && evaluations < maxEvaluations) {
+			attemptFix(data, evaluations);
+			//evaluations++;
+			evaluations = evaluations + search.getNumEvaluations();
+			evaluations++;
+			//search.getEvaluationsCounter().increment();
+			success = predicateChecker.check();
+		}
 
 
-    public DirectedRandomAVMDataGenerator(Random random,
-                                       int maxEvaluations,
-                                       RandomCellValueGenerator cellValueGenerator,
-                                       CellInitializer cellInitializer,
-                                       SearchMini search) {
-        super(maxEvaluations, cellValueGenerator, cellInitializer);
-        this.random = random;
-        this.search = search;
-    }
+		return new DataGenerationReport(success, evaluations);
+	}
 
-    @Override
-    public DataGenerationReport generateData(Data data, Data state, Predicate predicate) {
-        // Init RAGTAG+AVM
-    	initialize(data, state, predicate);
-    	search.setMainData(data);
-    	search.initialize();
-        boolean success = predicateChecker.check();
-        //int evaluations = 1;
-        while (!success && search.getNumEvaluations() < maxEvaluations) {
-            attemptFix(data);
-            //evaluations++;
-            //evaluations = evaluations + search.getNumEvaluations();
-            //evaluations++;
-            search.getEvaluationsCounter().increment();
-            success = predicateChecker.check();
-        }
+	@Override
+	protected void initialize(Data data, Data state, Predicate predicate) {
+		super.initialize(data, state, predicate);
+		// Init AVM Objective Func
+		// search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate,
+		// state));
+		predicateChecker = PredicateCheckerFactory.instantiate(predicate, true, data, state);
+		predicateFixer = PredicateFixerFactory.instantiate(predicateChecker, random, randomCellValueGenerator, search,
+				state);
+	}
 
-        int evaluations = search.getNumEvaluations();
-        
-        return new DataGenerationReport(success, evaluations);
-    }
-
-    @Override
-    protected void initialize(Data data, Data state, Predicate predicate) {
-        super.initialize(data, state, predicate);
-    	// Init AVM Objective Func
-        //search.setObjectiveFunction(PredicateObjectiveFunctionFactory.createObjectiveFunction(predicate, state));
-        predicateChecker = PredicateCheckerFactory.instantiate(
-                predicate, true, data, state
-        );
-        predicateFixer = PredicateFixerFactory.instantiate(
-                predicateChecker, random, randomCellValueGenerator, search, state);
-    }
-
-    @Override
-    protected void attemptFix(Data data) {
-        predicateFixer.attemptFix();
-    }
+	@Override
+	protected void attemptFix(Data data, int eval) {
+		predicateFixer.attemptFix(eval);
+	}
 }

@@ -15,7 +15,7 @@ public class NullPredicateFixer extends PredicateFixer {
     }
 
     @Override
-    public void attemptFix() {
+    public void attemptFix(int eval) {
         boolean setToNull = nullPredicateChecker.getPredicate().getTruthValue();
 
         for (Cell cell : nullPredicateChecker.getNonComplyingCells()) {

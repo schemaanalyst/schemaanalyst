@@ -36,7 +36,7 @@ engines = ["SQLite"]
 "ProductSalesRepaired","RiskIt","Skype","SongTrackMetadata","SRAMetadb","StackOverflow","StudentResidence","Test","TweetComplete","UnixUsage",
 "Usda","WordNet","World" ]
 """
-databases = ["ArtistSimilarity", "ArtistTerm", "BankAccount", "Cloc", "StackOverflow"]
+databases = ["BookTown", "BrowserCookies", "Flights", "CustomerOrder", "Employee", "Examination", "NistWeather", "NistXTS748", "NistXTS749", "Person", "Products", "StudentResidence"]
 # Coverage you want to run:
 # "APC", "ICC", "AICC", "CondAICC", "ClauseAICC", "UCC", "AUCC", "NCC", "ANCC"
 # The best is = ClauseAICC+AUCC+ANCC
@@ -51,9 +51,9 @@ coverages = ["ClauseAICC+AUCC+ANCC"]
 # avmlm
 # selector
 # random
-generators = ["savs", "avs", "directedRandom"]
+generators = ["directedRandomDefaults"]
 # Number of runs you want
-end_seed = 6
+end_seed = 4
 
 # Change DBMS in config while running
 def change_dbms_config(db):

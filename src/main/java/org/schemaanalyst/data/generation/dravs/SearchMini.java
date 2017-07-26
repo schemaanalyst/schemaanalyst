@@ -168,11 +168,6 @@ public abstract class SearchMini<T> {
 		
 	}
 
-	public void search(Data data, PredicateChecker checker, List<Cell> cells) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public void search(Data data, PredicateChecker checker, Cell cell) {
 		// TODO Auto-generated method stub
 		
@@ -184,6 +179,11 @@ public abstract class SearchMini<T> {
 	}
 
 	public void search(List<Cell> cells, PredicateChecker checker) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void search(Data data, List<Cell> cells, PredicateChecker checker) {
 		// TODO Auto-generated method stub
 		
 	}

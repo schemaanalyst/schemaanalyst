@@ -9,6 +9,7 @@ import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.expression.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Checker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.CheckerException;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionEvaluator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.RelationalChecker;
 
@@ -18,7 +19,7 @@ import java.util.List;
 /**
  * Created by phil on 27/02/2014. Edited by abdullah
  */
-public class ExpressionChecker extends Checker {
+public class ExpressionChecker2 extends Checker {
 
     private Expression expression;
     private boolean satisfy, allowNull;
@@ -27,7 +28,7 @@ public class ExpressionChecker extends Checker {
     private List<Cell> nonComplyingCells;
     private Data nonComplyingData = new Data();
 
-    public ExpressionChecker(Expression expression, boolean satisfy, boolean allowNull, Row row) {
+    public ExpressionChecker2(Expression expression, boolean satisfy, boolean allowNull, Row row) {
         this.expression = expression;
         this.satisfy = satisfy;
         this.allowNull = allowNull;

@@ -23,9 +23,9 @@ public class OrPredicateFixer extends ComposedPredicateFixer {
     }
 
     @Override
-    public void attemptFix() {
+    public void attemptFix(int eval) {
         int randomFixerIndex = random.nextInt(predicateFixers.size());
         PredicateFixer predicateFixer = predicateFixers.get(randomFixerIndex);
-        predicateFixer.attemptFix();
+        predicateFixer.attemptFix(eval);
     }
 }

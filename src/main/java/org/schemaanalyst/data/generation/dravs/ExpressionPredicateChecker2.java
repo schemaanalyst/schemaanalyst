@@ -4,6 +4,7 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPredicate;
+import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
 
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class ExpressionPredicateChecker2 extends PredicateChecker {
     public boolean check() {
 
         nonComplyingCells = new ArrayList<>();
+        nonComplyingData = new Data();
 
         List<Row> rows = data.getRows(expressionPredicate.getTable());
         if (rows.size() > 0) {
@@ -60,7 +62,7 @@ public class ExpressionPredicateChecker2 extends PredicateChecker {
 
                 if (!expressionChecker.check()) {
                     nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
-                    nonComplyingData.appendData(expressionChecker.getNonComplyingData());
+                    //nonComplyingData.appendData(expressionChecker.getNonComplyingData());
                 }
             }
 
