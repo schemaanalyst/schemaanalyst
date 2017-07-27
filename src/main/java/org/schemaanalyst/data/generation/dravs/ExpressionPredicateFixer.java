@@ -26,25 +26,25 @@ public class ExpressionPredicateFixer extends PredicateFixer {
 
 	@Override
 	public void attemptFix(int eval) {
-		int evaluations = 1000;
-
-		if (eval > evaluations) {
-			evaluations = eval;
-		}
-
-		// Set up termination
-		TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-				new CounterTerminationCriterion(search.getEvaluationsCounter(), evaluations),
-				new OptimumTerminationCriterionMini<>(search));
-
-		search.setTerminationCriterion(terminationCriterion);
-
-		// Set objective Function
-		search.setObjectiveFunction(
-				new ExpressionPredicateObjectiveFunction(expressionPredicateChecker.getPredicate()));
-		search.initialize();
 		// AVMing if there are cells
 		if (expressionPredicateChecker.getNonComplyingCells().size() > 0) {
+			int evaluations = 1000;
+
+			if (eval > evaluations) {
+				evaluations = eval;
+			}
+
+			// Set up termination
+			TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+					new CounterTerminationCriterion(search.getEvaluationsCounter(), evaluations),
+					new OptimumTerminationCriterionMini<>(search));
+
+			search.setTerminationCriterion(terminationCriterion);
+
+			// Set objective Function
+			search.setObjectiveFunction(
+					new ExpressionPredicateObjectiveFunction(expressionPredicateChecker.getPredicate()));
+			search.initialize();
 			search.search(expressionPredicateChecker.getNonComplyingCells(), expressionPredicateChecker);
 		}
 	}

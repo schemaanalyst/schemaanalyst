@@ -60,11 +60,9 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
 		while (!terminationCriterion.satisfied()) {
 
 			alternateThroughValues();
-
-			if (checker.check()) {
-				break;
-			}
-
+			/*
+			 * if (checker.check()) { break; }
+			 */
 			if (!terminationCriterion.satisfied()) {
 				restartsCounter.increment();
 			}
@@ -196,6 +194,7 @@ public class AlternatingValueSearchInner extends SearchMini<Data> {
 	protected boolean valueSearch(Cell cell) {
 		// boolean improvement = invertNullMove(cell);
 		boolean improvement = false;
+
 		if (!cell.isNull()) {
 			if (valueSearch(cell.getValue())) {
 				improvement = true;
