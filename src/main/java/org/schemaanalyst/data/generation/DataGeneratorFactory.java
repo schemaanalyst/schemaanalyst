@@ -3,6 +3,7 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.altarkiz.AltarkizDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
@@ -296,5 +297,21 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 new DefaultCellInitializer(),
                 search);
+    }
+
+    public static AltarkizDataGenerator altarkizDataGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        AlternatingValueSearch avs = new AlternatingValueSearch(
+                random, new DefaultCellInitializer(), new RandomCellInitializer(randomCellValueGenerator));
+
+        return new AltarkizDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer,
+                avs);
     }
 }
