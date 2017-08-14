@@ -3,6 +3,7 @@ package org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.Row;
+import org.schemaanalyst.sqlrepresentation.Table;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.ExpressionPredicate;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ExpressionPredicateChecker extends PredicateChecker {
     private boolean allowNull;
     private Data data;
     private List<Cell> nonComplyingCells;
+    private Data nonComplyingData;
 
     public ExpressionPredicateChecker(ExpressionPredicate expressionPredicate, boolean allowNull, Data data) {
         this.expressionPredicate = expressionPredicate;
@@ -33,12 +35,18 @@ public class ExpressionPredicateChecker extends PredicateChecker {
         return nonComplyingCells;
     }
 
+    public Data getNonComplyingData() {
+        return nonComplyingData;
+    }
+
     @Override
     public boolean check() {
-
         nonComplyingCells = new ArrayList<>();
+        nonComplyingData = new Data();
 
-        List<Row> rows = data.getRows(expressionPredicate.getTable());
+        Table table = expressionPredicate.getTable();
+
+        List<Row> rows = data.getRows(table);
         if (rows.size() > 0) {
 
             for (Row row : rows) {
@@ -49,7 +57,9 @@ public class ExpressionPredicateChecker extends PredicateChecker {
                         row);
 
                 if (!expressionChecker.check()) {
-                    nonComplyingCells.addAll(expressionChecker.getNonComplyingCells());
+                    List<Cell> nonComplyingCellsForRow = expressionChecker.getNonComplyingCells();
+                    nonComplyingCells.addAll(nonComplyingCellsForRow);
+                    data.addRow(table, new Row(nonComplyingCellsForRow));
                 }
             }
 

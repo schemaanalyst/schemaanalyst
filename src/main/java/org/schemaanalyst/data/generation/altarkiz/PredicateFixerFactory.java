@@ -1,7 +1,8 @@
-package org.schemaanalyst.data.generation.directedrandom;
+package org.schemaanalyst.data.generation.altarkiz;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.*;
 import org.schemaanalyst.util.random.Random;
@@ -11,32 +12,28 @@ import org.schemaanalyst.util.random.Random;
  */
 public class PredicateFixerFactory {
 
-    public static PredicateFixer instantiate(final Predicate predicate,
-                                             final boolean allowNull,
-                                             final Data data,
-                                             final Data state,
-                                             final Random random,
-                                             final RandomCellValueGenerator randomCellValueGenerator) {
-        PredicateChecker predicateChecker = PredicateCheckerFactory.instantiate(predicate, allowNull, data, state);
-        return instantiate(predicateChecker, random, randomCellValueGenerator);
-    }
-
     public static PredicateFixer instantiate(final PredicateChecker predicateChecker,
                                              final Random random,
-                                             final RandomCellValueGenerator randomCellValueGenerator) {
+                                             final RandomCellValueGenerator randomCellValueGenerator,
+                                             final AlternatingValueSearch avs) {
         return new PredicateVisitor() {
             PredicateFixer predicateFixer;
 
             @Override
             public void visit(AndPredicate predicate) {
                 predicateFixer = new AndPredicateFixer(
-                        (AndPredicateChecker) predicateChecker, random, randomCellValueGenerator);
+                        (AndPredicateChecker) predicateChecker, random, randomCellValueGenerator, avs);
             }
 
             @Override
             public void visit(ExpressionPredicate predicate) {
-                predicateFixer = new ExpressionPredicateFixer(
-                        (ExpressionPredicateChecker) predicateChecker, randomCellValueGenerator);
+                if (avs == null) {
+                    predicateFixer = new RandomExpressionPredicateFixer(
+                            (ExpressionPredicateChecker) predicateChecker, randomCellValueGenerator);
+                } else {
+                    predicateFixer = new AVSExpressionPredicateFixer(
+                            (ExpressionPredicateChecker) predicateChecker, avs);
+                }
             }
 
             @Override
@@ -54,7 +51,7 @@ public class PredicateFixerFactory {
             @Override
             public void visit(OrPredicate predicate) {
                 predicateFixer = new OrPredicateFixer(
-                        (OrPredicateChecker) predicateChecker, random, randomCellValueGenerator);
+                        (OrPredicateChecker) predicateChecker, random, randomCellValueGenerator, avs);
             }
 
             PredicateFixer instantiate() {
