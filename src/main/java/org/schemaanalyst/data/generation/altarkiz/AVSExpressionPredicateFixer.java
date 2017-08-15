@@ -28,21 +28,8 @@ public class AVSExpressionPredicateFixer extends PredicateFixer {
     public void attemptFix() {
         if (expressionPredicateChecker.getNonComplyingCells().size() > 0) {
             Data data = expressionPredicateChecker.getNonComplyingData();
-
-            System.out.println(expressionPredicateChecker.getPredicate());
-
-            // TODO cap maxEvaluations if less than that amount available
-            int maxEvaluations = 1000;
-
-            TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                    new CounterTerminationCriterion(avs.getEvaluationsCounter(), maxEvaluations),
-                    new OptimumTerminationCriterion<>(avs));
-
-            avs.setTerminationCriterion(terminationCriterion);
-
             avs.setObjectiveFunction(
                     new ExpressionPredicateObjectiveFunction(expressionPredicateChecker.getPredicate()));
-
             avs.initialize();
             avs.search(data);
         }

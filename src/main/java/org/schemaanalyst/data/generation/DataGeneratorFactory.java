@@ -301,11 +301,19 @@ public class DataGeneratorFactory {
 
     public static AltarkizDataGenerator altarkizGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
+
+        DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
         AlternatingValueSearch avs = new AlternatingValueSearch(
-                random, new DefaultCellInitializer(), new RandomCellInitializer(randomCellValueGenerator), false);
+                random, defaultCellInitializer, randomCellInitializer, false);
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(avs.getEvaluationsCounter(), maxEvaluations),
+                new OptimumTerminationCriterion<>(avs));
+
+        avs.setTerminationCriterion(terminationCriterion);
 
         return new AltarkizDataGenerator(
                 random,
