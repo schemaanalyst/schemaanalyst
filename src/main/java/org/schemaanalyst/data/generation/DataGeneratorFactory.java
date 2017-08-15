@@ -299,7 +299,7 @@ public class DataGeneratorFactory {
                 search);
     }
 
-    public static AltarkizDataGenerator altarkizDataGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static AltarkizDataGenerator altarkizGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
