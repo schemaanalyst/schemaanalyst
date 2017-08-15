@@ -299,7 +299,20 @@ public class DataGeneratorFactory {
                 search);
     }
 
-    public static AltarkizDataGenerator altarkizGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static AltarkizDataGenerator altarkizRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new AltarkizDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+
+    public static AltarkizDataGenerator altarkizAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
 
         DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();

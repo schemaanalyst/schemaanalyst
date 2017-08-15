@@ -24,6 +24,13 @@ public class AltarkizDataGenerator extends RandomDataGenerator {
     public AltarkizDataGenerator(Random random,
                                  int maxEvaluations,
                                  RandomCellValueGenerator cellValueGenerator,
+                                 CellInitializer cellInitializer) {
+        this(random, maxEvaluations, cellValueGenerator, cellInitializer, null);
+    }
+
+    public AltarkizDataGenerator(Random random,
+                                 int maxEvaluations,
+                                 RandomCellValueGenerator cellValueGenerator,
                                  CellInitializer cellInitializer,
                                  AlternatingValueSearch avs) {
         super(maxEvaluations, cellValueGenerator, cellInitializer);
