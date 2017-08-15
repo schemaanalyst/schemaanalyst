@@ -59,7 +59,7 @@ public class ExpressionPredicateChecker extends PredicateChecker {
                 if (!expressionChecker.check()) {
                     List<Cell> nonComplyingCellsForRow = expressionChecker.getNonComplyingCells();
                     nonComplyingCells.addAll(nonComplyingCellsForRow);
-                    data.addRow(table, new Row(nonComplyingCellsForRow));
+                    nonComplyingData.addRow(table, new Row(nonComplyingCellsForRow));
                 }
             }
 
