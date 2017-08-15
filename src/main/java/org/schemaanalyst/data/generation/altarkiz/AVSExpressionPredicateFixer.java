@@ -29,6 +29,8 @@ public class AVSExpressionPredicateFixer extends PredicateFixer {
         if (expressionPredicateChecker.getNonComplyingCells().size() > 0) {
             Data data = expressionPredicateChecker.getNonComplyingData();
 
+            System.out.println(expressionPredicateChecker.getPredicate());
+
             // TODO cap maxEvaluations if less than that amount available
             int maxEvaluations = 1000;
 
@@ -42,7 +44,6 @@ public class AVSExpressionPredicateFixer extends PredicateFixer {
                     new ExpressionPredicateObjectiveFunction(expressionPredicateChecker.getPredicate()));
 
             avs.initialize();
-
             avs.search(data);
         }
     }

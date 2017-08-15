@@ -305,7 +305,7 @@ public class DataGeneratorFactory {
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
         AlternatingValueSearch avs = new AlternatingValueSearch(
-                random, new DefaultCellInitializer(), new RandomCellInitializer(randomCellValueGenerator));
+                random, new DefaultCellInitializer(), new RandomCellInitializer(randomCellValueGenerator), false);
 
         return new AltarkizDataGenerator(
                 random,
