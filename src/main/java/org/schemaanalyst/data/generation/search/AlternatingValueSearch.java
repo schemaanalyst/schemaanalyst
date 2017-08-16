@@ -104,7 +104,7 @@ public class AlternatingValueSearch extends Search<Data> {
     protected boolean valueSearch(Cell cell) {
         boolean improvement = false;
 
-        if (makeNullMoves) {
+        if (makeNullMoves || (!makeNullMoves && cell.isNull())) {
             improvement = invertNullMove(cell);
         }
 
@@ -112,11 +112,6 @@ public class AlternatingValueSearch extends Search<Data> {
             if (valueSearch(cell.getValue())) {
                 improvement = true;
             }
-        }
-
-        // this should never happen, but in case it does, this may save time tracking down the problem...
-        if (!makeNullMoves && cell.isNull()) {
-            throw new SearchException("Cell is null but cannot make NULL moves!");
         }
 
         return improvement;
