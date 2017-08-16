@@ -1,4 +1,4 @@
-package org.schemaanalyst.unittest.data.generation.directedrandom;
+package org.schemaanalyst.unittest.data.generation.concentro;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
