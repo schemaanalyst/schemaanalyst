@@ -19,14 +19,24 @@ public class AlternatingValueSearch extends Search<Data> {
     protected Data data; // protected so that test class can access
     protected List<Cell> cells;
     protected ObjectiveValue lastObjVal;
+    protected boolean makeNullMoves;
 
     public AlternatingValueSearch(Random random,
                                   CellInitializer startInitializer,
                                   CellInitializer restartInitializer) {
+        this(random, startInitializer, restartInitializer, true);
+    }
+
+
+    public AlternatingValueSearch(Random random,
+                                  CellInitializer startInitializer,
+                                  CellInitializer restartInitializer,
+                                  boolean makeNullMoves) {
         super(new Data.Duplicator());
         this.random = random;
         this.startInitialiser = startInitializer;
         this.restartInitialiser = restartInitializer;
+        this.makeNullMoves = makeNullMoves;
     }
 
     @Override
@@ -92,7 +102,11 @@ public class AlternatingValueSearch extends Search<Data> {
     }
 
     protected boolean valueSearch(Cell cell) {
-        boolean improvement = invertNullMove(cell);
+        boolean improvement = false;
+
+        if (makeNullMoves || (!makeNullMoves && cell.isNull())) {
+            improvement = invertNullMove(cell);
+        }
 
         if (!cell.isNull()) {
             if (valueSearch(cell.getValue())) {

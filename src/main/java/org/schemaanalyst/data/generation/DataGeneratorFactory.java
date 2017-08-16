@@ -3,6 +3,7 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.concentro.ConcentroDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
@@ -238,5 +239,42 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 randomCellInitializer,
                 randomCellInitializer);
+    }
+
+    public static ConcentroDataGenerator concentroRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new ConcentroDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+
+    public static ConcentroDataGenerator concentroAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+
+        DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        AlternatingValueSearch avs = new AlternatingValueSearch(
+                random, defaultCellInitializer, randomCellInitializer, false);
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(avs.getEvaluationsCounter(), maxEvaluations),
+                new OptimumTerminationCriterion<>(avs));
+
+        avs.setTerminationCriterion(terminationCriterion);
+
+        return new ConcentroDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer,
+                avs);
     }
 }

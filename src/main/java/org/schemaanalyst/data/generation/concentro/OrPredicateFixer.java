@@ -1,6 +1,7 @@
-package org.schemaanalyst.data.generation.directedrandom;
+package org.schemaanalyst.data.generation.concentro;
 
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.OrPredicateChecker;
 import org.schemaanalyst.util.random.Random;
 
@@ -13,8 +14,9 @@ public class OrPredicateFixer extends ComposedPredicateFixer {
 
     public OrPredicateFixer(OrPredicateChecker orPredicateChecker,
                             Random random,
-                            RandomCellValueGenerator cellValueGenerator) {
-        super(orPredicateChecker, random, cellValueGenerator);
+                            RandomCellValueGenerator cellValueGenerator,
+                            AlternatingValueSearch avs) {
+        super(orPredicateChecker, random, cellValueGenerator, avs);
         this.random = random;
     }
 

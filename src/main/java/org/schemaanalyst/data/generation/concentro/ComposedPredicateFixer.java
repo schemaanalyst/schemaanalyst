@@ -1,6 +1,7 @@
-package org.schemaanalyst.data.generation.directedrandom;
+package org.schemaanalyst.data.generation.concentro;
 
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ComposedPredicateChecker;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.PredicateChecker;
 import org.schemaanalyst.util.random.Random;
@@ -17,10 +18,11 @@ public abstract class ComposedPredicateFixer extends PredicateFixer {
 
     public ComposedPredicateFixer(ComposedPredicateChecker composedPredicateChecker,
                                   Random random,
-                                  RandomCellValueGenerator cellValueGenerator) {
+                                  RandomCellValueGenerator cellValueGenerator,
+                                  AlternatingValueSearch avs) {
         predicateFixers = new ArrayList<>();
         for (PredicateChecker predicateChecker : composedPredicateChecker.getPredicateCheckers()) {
-            predicateFixers.add(PredicateFixerFactory.instantiate(predicateChecker, random, cellValueGenerator));
+            predicateFixers.add(PredicateFixerFactory.instantiate(predicateChecker, random, cellValueGenerator, avs));
         }
     }
 }
