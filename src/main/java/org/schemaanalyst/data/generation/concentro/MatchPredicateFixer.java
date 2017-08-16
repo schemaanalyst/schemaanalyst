@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.altarkiz;
+package org.schemaanalyst.data.generation.concentro;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;

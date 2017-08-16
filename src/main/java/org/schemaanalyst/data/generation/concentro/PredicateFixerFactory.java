@@ -1,6 +1,5 @@
-package org.schemaanalyst.data.generation.altarkiz;
+package org.schemaanalyst.data.generation.concentro;
 
-import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;

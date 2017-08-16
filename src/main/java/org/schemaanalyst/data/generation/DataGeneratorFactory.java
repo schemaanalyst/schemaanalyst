@@ -3,7 +3,7 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
-import org.schemaanalyst.data.generation.altarkiz.AltarkizDataGenerator;
+import org.schemaanalyst.data.generation.concentro.ConcentroDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
@@ -20,9 +20,6 @@ import org.schemaanalyst.data.generation.search.HyperAVS;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
 import org.schemaanalyst.data.generation.search.SwitchAVS;
-import org.schemaanalyst.data.generation.search.SwitchAlternatingValueSearch;
-import org.schemaanalyst.data.generation.search.SwitcherAVS;
-import org.schemaanalyst.data.generation.search.HyperAlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
@@ -299,20 +296,20 @@ public class DataGeneratorFactory {
                 search);
     }
 
-    public static AltarkizDataGenerator altarkizRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static ConcentroDataGenerator concentroRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
 
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
-        return new AltarkizDataGenerator(
+        return new ConcentroDataGenerator(
                 random,
                 maxEvaluations,
                 randomCellValueGenerator,
                 randomCellInitializer);
     }
 
-    public static AltarkizDataGenerator altarkizAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static ConcentroDataGenerator concentroAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
 
         DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();
@@ -328,7 +325,7 @@ public class DataGeneratorFactory {
 
         avs.setTerminationCriterion(terminationCriterion);
 
-        return new AltarkizDataGenerator(
+        return new ConcentroDataGenerator(
                 random,
                 maxEvaluations,
                 randomCellValueGenerator,

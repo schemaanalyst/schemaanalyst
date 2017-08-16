@@ -1,13 +1,9 @@
-package org.schemaanalyst.data.generation.altarkiz;
+package org.schemaanalyst.data.generation.concentro;
 
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.objective.predicate.ExpressionPredicateObjectiveFunction;
-import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
-import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
-import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
-import org.schemaanalyst.data.generation.search.termination.TerminationCriterion;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionPredicateChecker;
 
 

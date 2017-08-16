@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.altarkiz;
+package org.schemaanalyst.data.generation.concentro;
 
 /**
  * Created by phil on 27/02/2014.

@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.altarkiz;
+package org.schemaanalyst.data.generation.concentro;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerationReport;
@@ -14,25 +14,25 @@ import org.schemaanalyst.util.random.Random;
 /**
  * Created by phil on 26/02/2014.
  */
-public class AltarkizDataGenerator extends RandomDataGenerator {
+public class ConcentroDataGenerator extends RandomDataGenerator {
 
     private Random random;
     private AlternatingValueSearch avs;
     private PredicateChecker predicateChecker;
     private PredicateFixer predicateFixer;
 
-    public AltarkizDataGenerator(Random random,
-                                 int maxEvaluations,
-                                 RandomCellValueGenerator cellValueGenerator,
-                                 CellInitializer cellInitializer) {
+    public ConcentroDataGenerator(Random random,
+                                  int maxEvaluations,
+                                  RandomCellValueGenerator cellValueGenerator,
+                                  CellInitializer cellInitializer) {
         this(random, maxEvaluations, cellValueGenerator, cellInitializer, null);
     }
 
-    public AltarkizDataGenerator(Random random,
-                                 int maxEvaluations,
-                                 RandomCellValueGenerator cellValueGenerator,
-                                 CellInitializer cellInitializer,
-                                 AlternatingValueSearch avs) {
+    public ConcentroDataGenerator(Random random,
+                                  int maxEvaluations,
+                                  RandomCellValueGenerator cellValueGenerator,
+                                  CellInitializer cellInitializer,
+                                  AlternatingValueSearch avs) {
         super(maxEvaluations, cellValueGenerator, cellInitializer);
         this.random = random;
         this.avs = avs;
