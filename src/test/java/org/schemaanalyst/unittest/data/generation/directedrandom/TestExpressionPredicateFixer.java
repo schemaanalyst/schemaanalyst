@@ -3,7 +3,7 @@ package org.schemaanalyst.unittest.data.generation.directedrandom;
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.generation.directedrandom.ExpressionPredicateFixer;
+import org.schemaanalyst.data.generation.concentro.RandomExpressionPredicateFixer;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionPredicateChecker;
 import org.schemaanalyst.unittest.testutil.mock.MockCell;
 import org.schemaanalyst.unittest.testutil.mock.MockCellValueGenerator;
@@ -40,7 +40,7 @@ public class TestExpressionPredicateFixer {
 
         MockCellValueGenerator cellValueGenerator = new MockCellValueGenerator(Arrays.asList(500, 1000));
 
-        ExpressionPredicateFixer fixer = new ExpressionPredicateFixer(
+        RandomExpressionPredicateFixer fixer = new RandomExpressionPredicateFixer(
                 new MockExpressionPredicateChecker(Arrays.asList(cell1, cell2)),
                 cellValueGenerator);
 

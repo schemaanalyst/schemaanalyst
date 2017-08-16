@@ -9,15 +9,10 @@ import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializ
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
-import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
-import org.schemaanalyst.data.generation.search.HyperAVS;
 import org.schemaanalyst.data.generation.search.Search;
 import org.schemaanalyst.data.generation.search.SearchBasedDataGenerator;
-import org.schemaanalyst.data.generation.search.SwitchAlternatingValueSearch;
-import org.schemaanalyst.data.generation.search.SwitcherAVS;
-import org.schemaanalyst.data.generation.search.HyperAlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.termination.CombinedTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.CounterTerminationCriterion;
 import org.schemaanalyst.data.generation.search.termination.OptimumTerminationCriterion;
@@ -126,29 +121,6 @@ public class DataGeneratorFactory {
                 randomCellInitializer);
     }
 
-    public static DirectedRandomDataGenerator directedRandomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-
-        return new DirectedRandomDataGenerator(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                new DefaultCellInitializer());
-    }
-
-    public static DirectedRandomDataGenerator directedRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
-
-        return new DirectedRandomDataGenerator(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                randomCellInitializer);
-    }
-
     public static RandomDataGenerator randomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
@@ -171,75 +143,7 @@ public class DataGeneratorFactory {
     }
 
 
-    public static SearchBasedDataGenerator makeHyperSearch(
-            Random random,
-            int maxEvaluations,
-            RandomCellValueGenerator randomCellValueGenerator,
-            CellInitializer startInitializer,
-            CellInitializer restartInitializer) {
-
-        Search<Data> search = new HyperAVS(
-                random,
-                startInitializer,
-                restartInitializer, randomCellValueGenerator);
-
-        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
-                new OptimumTerminationCriterion<>(search));
-
-        search.setTerminationCriterion(terminationCriterion);
-
-        return new SearchBasedDataGenerator(search);
-    }
-
-    public static SearchBasedDataGenerator havsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
-
-
-        return makeHyperSearch(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                randomCellInitializer,
-                randomCellInitializer);
-    }
     
-    public static SearchBasedDataGenerator makeSwtichSearch(
-            Random random,
-            int maxEvaluations,
-            RandomCellValueGenerator randomCellValueGenerator,
-            CellInitializer startInitializer,
-            CellInitializer restartInitializer) {
-
-        Search<Data> search = new SwitcherAVS(
-                random,
-                startInitializer,
-                restartInitializer, randomCellValueGenerator);
-
-        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
-                new CounterTerminationCriterion(search.getEvaluationsCounter(), maxEvaluations),
-                new OptimumTerminationCriterion<>(search));
-
-        search.setTerminationCriterion(terminationCriterion);
-
-        return new SearchBasedDataGenerator(search);
-    }
-
-    public static SearchBasedDataGenerator savsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
-
-
-        return makeSwtichSearch(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                randomCellInitializer,
-                randomCellInitializer);
-    }
 
     public static ConcentroDataGenerator concentroRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
