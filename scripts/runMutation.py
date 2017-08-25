@@ -36,7 +36,14 @@ engines = ["SQLite"]
 "ProductSalesRepaired","RiskIt","Skype","SongTrackMetadata","SRAMetadb","StackOverflow","StudentResidence","Test","TweetComplete","UnixUsage",
 "Usda","WordNet","World" ]
 """
-databases = ["ArtistSimilarity", "ArtistTerm", "BookTown", "BrowserCookies", "Flights", "CustomerOrder", "Employee", "Examination", "NistWeather", "NistXTS748", "NistXTS749", "Person", "Products", "StudentResidence"]
+#databases = ["ArtistSimilarity", "ArtistTerm", "BookTown", "BrowserCookies", "Flights", "CustomerOrder", "Employee", "Examination", "NistWeather", "NistXTS748", "NistXTS749", "Person", "Products", "StudentResidence"]
+"""
+databases = [ "ArtistSimilarity", "ArtistTerm", "BankAccount","BookTown","BrowserCookies","ChromeDB","Cloc", "CoffeeOrders","CustomerOrder","DellStore","Employee","Examination","Flav_R03_1Repaired",
+"Flights","FrenchTowns", "Inventory","Iso3166","IsoFlav_R2Repaired","JWhoisServer",
+"MozillaExtensions","MozillaPermissions","NistDML181","NistDML182","NistDML183", "NistWeather","NistXTS748","NistXTS749", "Person","Products", "RiskIt","StackOverflow","StudentResidence", "UnixUsage",
+"Usda","WordNet"]
+"""
+databases = ["BookTown"]
 # Coverage you want to run:
 # "APC", "ICC", "AICC", "CondAICC", "ClauseAICC", "UCC", "AUCC", "NCC", "ANCC"
 # The best is = ClauseAICC+AUCC+ANCC
@@ -51,9 +58,10 @@ coverages = ["ClauseAICC+AUCC+ANCC"]
 # avmlm
 # selector
 # random
-generators = ["dravm", "directedRandom", "avs"]
+#generators = ["directedRandom", "altarkizRandom", "dravm", "altarkizAVS"]
+generators = ["concentroAVS"]
 # Number of runs you want
-end_seed = 6
+end_seed = 4
 
 # Change DBMS in config while running
 def change_dbms_config(db):
@@ -176,7 +184,7 @@ for eng in engines:
             print(run_java_command)
 
             # Run R alive script
-            alive_mutant_r(path_to_scripts, path_to_results, data, gen, cov, eng, str(seed))
+            #alive_mutant_r(path_to_scripts, path_to_results, data, gen, cov, eng, str(seed))
 
           except subprocess.CalledProcessError as e:
             info = "parsedcasestudy." + data + "  dbms " + eng + " criterion " + cov + " generator " + gen + " seed " + str(seed)

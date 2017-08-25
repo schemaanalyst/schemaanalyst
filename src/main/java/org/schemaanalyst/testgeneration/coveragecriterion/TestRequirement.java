@@ -19,6 +19,9 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
     private Predicate predicate;
     private Boolean result;
     private boolean requiresComparisonRow;
+    // Added by Abdullah
+    private long testCaseGenerationTime;
+
 
     public TestRequirement(TestRequirementDescriptor descriptor,
                            Predicate predicate,
@@ -29,6 +32,8 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
         this.predicate = predicate;
         this.result = result;
         this.requiresComparisonRow = requiresComparisonRow;
+        // Added by Abdullah
+        this.testCaseGenerationTime = 0L;
     }
 
     public void addDescriptor(TestRequirementDescriptor descriptor) {
@@ -129,4 +134,19 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
 
         return descriptors.get(0).compareTo(other.descriptors.get(0));
     }
+
+    // Added by Abdullah
+	public long getTestCaseGenerationTime() {
+		return testCaseGenerationTime;
+	}
+
+    // Added by Abdullah
+	public void setTestCaseGenerationTime(long testCaseGenerationTime) {
+		this.testCaseGenerationTime = testCaseGenerationTime;
+	}
+	
+    // Added by Abdullah
+	public void addTestCaseGenerationTime(long testCaseGenerationTime) {
+		this.testCaseGenerationTime += testCaseGenerationTime;
+	}
 }

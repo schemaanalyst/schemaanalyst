@@ -56,6 +56,17 @@ public class TestSuiteGenerationReport {
         }
         return failed;
     }
+    
+    // Added by Abdullah
+    public long getFailedTestRequirementsGenerationTimingTotal() {
+    	long totaltime = 0l;
+        List<TestRequirement> failed = getFailedTestRequirements();
+        for (TestRequirement tr : failed) {
+        	totaltime += tr.getTestCaseGenerationTime();
+        }
+        
+        return totaltime;
+    }
 
     public int getNumTestRequirementsCovered() {
         int total = 0;

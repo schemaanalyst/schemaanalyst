@@ -213,6 +213,8 @@ public class MutationAnalysis extends Runner {
         result.addValue("originalresultstime", originalResultsTime.getTime());
         result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
+        // Added by Abdullah
+        result.addValue("failedtestsgenerationtime", generationReport.getFailedTestRequirementsGenerationTimingTotal());
 
         new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
 

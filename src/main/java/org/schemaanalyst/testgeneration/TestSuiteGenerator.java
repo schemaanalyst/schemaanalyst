@@ -1,5 +1,6 @@
 package org.schemaanalyst.testgeneration;
 
+import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
@@ -143,7 +144,14 @@ public class TestSuiteGenerator {
                 predicate = predicate.reduce();
                 LOGGER.fine("--- Reduced predicate is " + predicate);
 
+                // Timing
+                // Added by Abdullah
+                StopWatch testGenerationTime = new StopWatch();
+                testGenerationTime.start();
                 DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
+                testGenerationTime.stop();
+                // Added by Abdullah
+            	testRequirement.addTestCaseGenerationTime(testGenerationTime.getTime());
                 if (dataGenerationReport.isSuccess()) {
                     TestCase testCase = new TestCase(testRequirement, data, state);
                     testSuite.addTestCase(testCase);
