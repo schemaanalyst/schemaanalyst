@@ -78,12 +78,6 @@ public class TestSuiteGenerator {
 
 		testSuite = new TestSuite();
 		testSuiteGenerationReport = new TestSuiteGenerationReport();
-		// Selctor
-		if (datagen.toLowerCase().contains("selector")) {
-
-			mapper.connectDB(schema);
-			mapper.mapData();
-		}
 		// Language Model
 		try {
 			lm = new LangModel("ukwac_char_lm");
@@ -138,38 +132,10 @@ public class TestSuiteGenerator {
 			Data state = new Data();
 			Data data = new Data();
 
-			/*
-			 * if (dataGenerator instanceof SelectorDataGenerator) {
-			 * //state.appendData(mapper.returnPerfectState(table));
-			 * state.appendData(mapper.returnPerfectState(table)); }
-			 */
 			// add referenced tables to the state
 			boolean haveLinkedData = addInitialTableDataToState(state, table);
-			/*
-			 * if (dataGenerator instanceof SelectorDataGenerator) {
-			 * //state.appendData(mapper.returnPerfectState(table));
-			 * mapper.returnPerfectoState(table); if
-			 * (schema.getConnectedTables(table).size() > 0) { state =
-			 * mapper.returnState(table).duplicate(); } data =
-			 * mapper.returnData(table).duplicate();
-			 * 
-			 * }
-			 */
 			if (haveLinkedData) {
-				boolean a = !(dataGenerator instanceof SelectorDataGenerator);
-				boolean b = !datagen.toLowerCase().contains("selector");
-				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
-				// (!datagen.toLowerCase().contains("selector"))) {
-				if (!datagen.toLowerCase().contains("selector")) {
-					data.addRow(table, valueFactory);
-				} else {
-					mapper.returnPerfectoState(table);
-					if (mapper.returnData(table).getNumRows() == 0)
-						data.addRow(table, valueFactory);
-					else
-						data = mapper.returnData(table).duplicate();
-				}
-
+				data.addRow(table, valueFactory);
 				// generate the row
 				DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
 
@@ -181,13 +147,6 @@ public class TestSuiteGenerator {
 					initialTableData.put(table, data);
 				} else {
 					LOGGER.fine("--- Failed");
-					System.err.println("Generating Initial Data --- Failed");
-					System.err.println("PREDICATE");
-					System.err.println(predicate);
-					System.err.println("STATE");
-					System.err.println(state);
-					System.err.println("DATA");
-					System.err.println(data);
 				}
 
 				testSuiteGenerationReport.addInitialTableDataResult(table,
@@ -215,29 +174,9 @@ public class TestSuiteGenerator {
 
 			Data state = new Data();
 			Data data = new Data();
-			/*
-			 * if (dataGenerator instanceof SelectorDataGenerator) {
-			 * //state.appendData(mapper.returnPerfectState(table));
-			 * mapper.returnPerfectoState(table); if
-			 * (schema.getConnectedTables(table).size() > 0) { state =
-			 * mapper.returnState(table).duplicate(); } data =
-			 * mapper.returnData(table).duplicate();
-			 * 
-			 * }
-			 */
 			predicate = addAdditionalRows(state, data, predicate, table, testRequirement.getRequiresComparisonRow());
 			if (predicate != null) {
-				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
-				// !datagen.toLowerCase().contains("selector")) {
-				if (!datagen.toLowerCase().contains("selector")) {
-					data.addRow(table, valueFactory);
-				} else {
-					// mapper.returnPerfectoState(table);
-					if (mapper.returnData(table).getNumRows() == 0)
-						data.addRow(table, valueFactory);
-					else
-						data.appendData(mapper.returnData(table).duplicate());
-				}
+				data.addRow(table, valueFactory);
 				LOGGER.fine("--- Pre-reduced predicate is " + predicate);
 				predicate = predicate.reduce();
 				LOGGER.fine("--- Reduced predicate is " + predicate);
@@ -254,16 +193,6 @@ public class TestSuiteGenerator {
 					LOGGER.fine("--- Data is \n" + data);
 				} else {
 					LOGGER.fine("--- FAILED");
-					System.err.println("Generating Data --- Failed");
-					System.err.println("TestRequirementDescriptor");
-					for (TestRequirementDescriptor testRequirementDescriptor : testRequirement.getDescriptors()) {
-						System.err.println(testRequirementDescriptor.toString());
-					}
-					System.err.println("Result is: " + testRequirement.getResult());
-					System.err.println("STATE");
-					System.err.println(state);
-					System.err.println("DATA");
-					System.err.println(data);
 				}
 
 				testSuiteGenerationReport.addTestRequirementResult(testRequirement,
@@ -289,111 +218,76 @@ public class TestSuiteGenerator {
 			boolean requiresComparisonRow) {
 		LOGGER.fine("--- adding additional rows");
 
-		boolean haveLinkedData = addInitialTableDataToState(state, table);
-		if (!haveLinkedData) {
-			return null;
-		}
+        boolean haveLinkedData = addInitialTableDataToState(state, table);
+        if (!haveLinkedData) {
+            return null;
+        }
 
-		if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate))
-										// {
-			Data comparisonRow;
-			// if ((dataGenerator instanceof SelectorDataGenerator ||
-			// datagen.toLowerCase().contains("selector"))) {
-			if (datagen.toLowerCase().contains("selector")) {
-				if (mapper.returnData(table).getNumRows() == 0)
-					comparisonRow = initialTableData.get(table);
-				else
-					comparisonRow = mapper.returnData(table).duplicate();
-			} else {
-				comparisonRow = initialTableData.get(table);
-			}
-			if (comparisonRow == null) {
-				LOGGER.fine("--- could not add comparison row, data generation FAILED");
-				return null;
-			}
+        if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
+            Data comparisonRow = initialTableData.get(table);
+            if (comparisonRow == null) {
+                LOGGER.fine("--- could not add comparison row, data generation FAILED");
+                return null;
+            }
 
-			LOGGER.fine("--- added comparison row");
-			state.appendData(comparisonRow);
+            LOGGER.fine("--- added comparison row");
+            state.appendData(comparisonRow);
 
-			predicate = addLinkedTableRowsToData(data, predicate, table);
-		}
-		return predicate;
+            predicate = addLinkedTableRowsToData(data, predicate, table);
+        }
+        return predicate;
 	}
 
 	protected boolean addInitialTableDataToState(Data state, Table table) {
 		LOGGER.fine("--- adding initial data to state for linked tables");
 
-		// add rows for tables linked via foreign keys to the state
-		List<Table> linkedTables = schema.getConnectedTables(table);
-		for (Table linkedTable : linkedTables) {
+        // add rows for tables linked via foreign keys to the state
+        List<Table> linkedTables = schema.getConnectedTables(table);
+        for (Table linkedTable : linkedTables) {
 
-			// a row should always have been previously-generated
-			// for a linked table
-			if (!linkedTable.equals(table)) {
-				Data initialData = null;
-				// if (!(dataGenerator instanceof SelectorDataGenerator) ||
-				// !datagen.toLowerCase().contains("selector")) {
-				if (!datagen.toLowerCase().contains("selector")) {
-					initialData = initialTableData.get(linkedTable);
-				} else {
-					mapper.returnPerfectoState(table);
-					if (mapper.returnStatedTable(table).getNumRows() == 0)
-						initialData = initialTableData.get(linkedTable);
-					else
-						initialData = mapper.returnStatedTable(linkedTable).duplicate();
-					// initialData = mapper.returnState(linkedTable);
-					// System.out.println(initialData);
-				}
-				// cannot generate data in this instance
-				if (initialData == null) {
-					return false;
-				}
-				state.appendData(initialData);
-			}
-		}
-		return true;
+            // a row should always have been previously-generated
+            // for a linked table
+            if (!linkedTable.equals(table)) {
+                Data initialData = initialTableData.get(linkedTable);
+
+                // cannot generate data in this instance
+                if (initialData == null) {
+                    return false;
+                }
+                state.appendData(initialData);
+            }
+        }
+        return true;
 	}
 
 	protected Predicate addLinkedTableRowsToData(Data data, Predicate predicate, Table table) {
 
 		for (ForeignKeyConstraint foreignKeyConstraint : schema.getForeignKeyConstraints(table)) {
 
-			Table refTable = foreignKeyConstraint.getReferenceTable();
-			if (!refTable.equals(table)) {
+            Table refTable = foreignKeyConstraint.getReferenceTable();
+            if (!refTable.equals(table)) {
 
-				boolean refColsUnique = areRefColsUnique(predicate, foreignKeyConstraint);
+                boolean refColsUnique = areRefColsUnique(predicate, foreignKeyConstraint);
 
-				if (refColsUnique) {
-					LOGGER.fine("--- foreign key columns are unique in " + table);
+                if (refColsUnique) {
+                    LOGGER.fine("--- foreign key columns are unique in " + table);
 
-					// append the predicate with the acceptance predicate of the
-					// original
-					AndPredicate newPredicate = new AndPredicate();
-					newPredicate.addPredicate(predicate);
-					newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
-					predicate = newPredicate;
+                    // append the predicate with the acceptance predicate of the original
+                    AndPredicate newPredicate = new AndPredicate();
+                    newPredicate.addPredicate(predicate);
+                    newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
+                    predicate = newPredicate;
 
-					LOGGER.fine("--- new predicate is " + predicate);
+                    LOGGER.fine("--- new predicate is " + predicate);
 
-					LOGGER.fine("--- adding foreign key row for " + refTable);
-					predicate = addLinkedTableRowsToData(data, predicate, refTable);
-					// data.addRow(refTable, valueFactory);
-					// if (!(dataGenerator instanceof SelectorDataGenerator) ||
-					// !datagen.toLowerCase().contains("selector")) {
-					if (!datagen.toLowerCase().contains("selector")) {
-						data.addRow(refTable, valueFactory);
-					} else {
-						// mapper.returnPerfectoState(table);
-						if (mapper.returnData(table).getNumRows() == 0)
-							data.addRow(refTable, valueFactory);
-						else
-							data.appendData(mapper.returnData(refTable).duplicate());
-					}
-				}
-			}
-		}
+                    LOGGER.fine("--- adding foreign key row for " + refTable);
+                    predicate = addLinkedTableRowsToData(data, predicate, refTable);
+                    data.addRow(refTable, valueFactory);
+                }
+            }
+        }
 
-		return predicate;
+        return predicate;
 	}
 
 	protected boolean areRefColsUnique(Predicate predicate, ForeignKeyConstraint foreignKeyConstraint) {
