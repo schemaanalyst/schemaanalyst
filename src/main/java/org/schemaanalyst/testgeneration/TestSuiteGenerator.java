@@ -48,7 +48,7 @@ public class TestSuiteGenerator {
 	// private Data selectorState;
 	private TestSuiteGenerationReport testSuiteGenerationReport;
 
-	private DataMapper mapper = new DataMapper();
+	// private DataMapper mapper = new DataMapper();
 	private LangModel lm;
 	private long seed;
 
@@ -160,7 +160,6 @@ public class TestSuiteGenerator {
 	}
 
 	protected void generateTestCases() {
-		int counter = 1;
 		for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
 
 			Predicate predicate = testRequirement.getPredicate();
@@ -200,7 +199,6 @@ public class TestSuiteGenerator {
 			} else {
 				testSuiteGenerationReport.addTestRequirementResult(testRequirement, null);
 			}
-			counter++;
 		}
 	}
 
@@ -344,9 +342,6 @@ public class TestSuiteGenerator {
 			}
 			List<StringValue> stringvalues = new ArrayList<>();
 
-			// final Set<StringValue> setToReturn = new
-			// HashSet<StringValue>();
-			// String key = randWord.generateRandomLMWork(lm);
 			for (Cell cell : tc.getState().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
@@ -367,14 +362,6 @@ public class TestSuiteGenerator {
 			for (Cell cell : tc.getState().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
-						// stringvalues.add((StringValue)
-						// cell.getValue());
-						/*
-						 * if (!set1.add((StringValue) cell.getValue())) {
-						 * cell.setValue(new
-						 * StringValue(randWord.generateRandomLMWork(lm,2))); }
-						 * else { cell.setValue(new StringValue(key)); }
-						 */
 						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
 						if (!hAdded) {
 							StringValue g = hmap.get(cell.getValue());
@@ -388,7 +375,6 @@ public class TestSuiteGenerator {
 			for (Cell cell : tc.getData().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
-						// set1.add((StringValue) cell.getValue());
 						boolean added = set1.add((StringValue) cell.getValue());
 						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
 						if (added && !hAdded) {
@@ -406,14 +392,6 @@ public class TestSuiteGenerator {
 			for (Cell cell : tc.getData().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
-						// stringvalues.add((StringValue)
-						// cell.getValue());
-						/*
-						 * if (!set1.add((StringValue) cell.getValue())) {
-						 * cell.setValue(new
-						 * StringValue(randWord.generateRandomLMWork(lm,2))); }
-						 * else { cell.setValue(new StringValue(key)); }
-						 */
 
 						StringValue g = hmap.get(cell.getValue());
 						cell.setValue(g);
@@ -421,9 +399,6 @@ public class TestSuiteGenerator {
 					}
 				}
 			}
-			// System.out.println(data.getCells());
-			// System.out.println(state.getCells());
-			// System.out.println(stringvalues);
 			testCaseCounter++;
 		}
 	}

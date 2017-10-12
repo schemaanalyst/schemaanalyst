@@ -242,4 +242,27 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 randomCellInitializer);
     }
+    
+    public static RandomDataGenerator randomlangmodelGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new RandomDataGenerator(
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static SearchBasedDataGenerator avslangmodelGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+	        Random random = makeRandomNumberGenerator(randomSeed);
+	        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+	        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+	
+	        return makeAlternatingValueSearch(
+	                random,
+	                maxEvaluations,
+	                randomCellInitializer,
+	                randomCellInitializer);
+    }
 }

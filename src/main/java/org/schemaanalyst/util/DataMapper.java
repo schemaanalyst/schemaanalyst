@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -29,10 +28,12 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.datatype.RealDataType;
+import org.schemaanalyst.util.tuple.Pair;
+
 import com.google.common.base.Joiner;
-import org.schemaanalyst.sqlrepresentation.constraint.*;
-import org.schemaanalyst.util.tuple.*;
+
 public class DataMapper {
 	private Connection c = null;
 	private Schema schema;
@@ -50,31 +51,14 @@ public class DataMapper {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
 		}
-		
-		/*
-		try {
-			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/schemaanalyst", "postgres", "123456");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.err.println(e.getClass().getName() + ": " + e.getMessage());
-			System.exit(0);
-		}
-		*/
-		//System.out.println("Opened database successfully");
 	}
 
 	@SuppressWarnings("deprecation")
 	public void mapData() {
 		Statement stmt = null;
 		try {
-
 			tables = schema.getTablesInReverseOrder();
-			/*
-			List<Table> conTables = schema.getConnectedTables(tables.get(1));
-			System.out.println(schema.getConstraints(tables.get(1)));
-			System.out.println(conTables);
-			*/
+
 			boolean connectedTable = false;
 
 			
@@ -91,11 +75,8 @@ public class DataMapper {
 					connectedTable = true;
 				}
 
-				//System.out.println(fk_cells);
 				if (connectedTable) {
 					String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" ORDER BY RANDOM() LIMIT 1;";
-					//System.out.println(aStm);
-					//System.out.println("===============================================================================================");
 					fk_cells.add(aStm);
 				} else {
 					// Get former tables info
@@ -105,55 +86,37 @@ public class DataMapper {
 						Table tbl = schema.getTable(t.getName());
 						// get Foreign Keys for this table
 						List<ForeignKeyConstraint> forKeys = schema.getForeignKeyConstraints(tbl);
-						//System.out.println(forKeys.size());
 						// for each foreign key make a statement.
 						if (forKeys.size() > 0) {
 							for (ForeignKeyConstraint f : forKeys) {
 								// Get it if it matches the table
-								//System.out.println("Table == " + tbl);
-								//System.out.println("FK Table == " + f.getTable());
-	
 								if (tbl.equals(f.getTable()) && table.equals(f.getReferenceTable())) {
-									//System.out.println("HERE");
 	
 									for (Pair<Column> c : f.getColumnPairs()) {
-										//System.out.println(tbl);
-										//System.out.println(c.getFirst());
-										//System.out.println(c.getSecond());
 
 										for (Cell cl : data.getCells(tbl, c.getFirst())) {
-											//System.out.println("Column = " + c + " AND cell = " + cl);
-											//System.out.println("Table to be selected from => " + table.toString());
-											//System.out.println(table);
 											String condition = c.getSecond().getName() + " = " + cl.getValue(); 
 											if (cl.getValue() instanceof StringValue) {
 												StringValue newVal = (StringValue)cl.getValue();
-												//System.out.println(newVal.getRealString());
 												condition = c.getSecond().getName() + " = '" + newVal.get() + "'"; 
 											}
 											String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" WHERE " + condition + " LIMIT 1;";
 											fk_cells.add(aStm);
-											//System.out.println(aStm);
 										}
 									}
 								}
 							}
 						} else {
 							String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" ORDER BY RANDOM() LIMIT 1;";
-							//System.out.println(aStm);
-							//System.out.println("===============================================================================================");
 							fk_cells.add(aStm);
 						}
 						
 					}
 					} else {
 						String aStm = "SELECT "+ columns +" FROM "+ table.toString() +" ORDER BY RANDOM() LIMIT 1;";
-						//System.out.println(aStm);
-						//System.out.println("===============================================================================================");
 						fk_cells.add(aStm);
 					}
 				}
-				//System.out.println("=====================================" + table +"=========================================================");
 
 				// Mapper
 				for (String stm : fk_cells) {
@@ -174,7 +137,6 @@ public class DataMapper {
 								stringvalue.setCharacterRange(32, 126);
 								stringvalue.set(rs.getString(column_name.toString()));
 								value = stringvalue;
-								//value = new StringValue(rs.getString(column_name.toString()));
 							} else if(cell_val instanceof Integer)
 								value = new NumericValue(rs.getInt(column_name.toString()));
 							else if(cell_val instanceof Double && column_name.getDataType() instanceof RealDataType)
@@ -204,23 +166,14 @@ public class DataMapper {
 								cell.setValue(value);
 								cells.add(cell);
 							}
-							//System.out.println(" Value " + value.toString());
 						}
 						Row nw_row = new Row(table, cells);
 						if(!this.checkDuplicate(table, nw_row)) 
 							data.addRow(table, nw_row);
-						//System.out.println();
 					}
 				}
-				//System.out.println("=========================================================================================================");
 				connectedTable = false;
 			}
-			//this.checkDuplicates();
-			//System.out.println(data.toString());
-			//System.out.println("111111111111111111111111111111111111111111111111111111111111111111111111111111");
-			//System.out.println("===================================New Data==============================================");
-			//System.out.println(data);
-			//System.out.println("=========================================================================================");
 		} catch (Exception e) {
 			System.err.println(e.getClass().getName() + ": " + e.getMessage());
 			System.exit(0);
@@ -242,24 +195,10 @@ public class DataMapper {
 				for (Cell c : r.getCells()) {
 					comparableValues.add(c.getValue());
 				}
-				//System.out.println("------------------------ Want to insert Row -------------------------");
-				//System.out.println(startingValues);
-				//System.out.println("------------------------ Already inserted Row -----------------------");
-				//System.out.println(comparableValues);
-
 				
 				if (startingValues.equals(comparableValues)) {
-					//System.out.println(startingValues);
-					//System.out.println(comparableValues);
-					//System.out.println("True");
-					//System.out.println("+++++++++++++++++++++++++++++++++++");
-					//System.out.println("Remove");
-					//System.out.println("+++++++++++++++++++++++++++++++++++");
 					itIsAduplicate = true;
 				}
-
-				
-				//System.out.println("---------------------------------------------------------------------");
 			}
 		}
 		
@@ -278,174 +217,10 @@ public class DataMapper {
 			List<Row> newList = new ArrayList<Row>(s);
 			newData.addRows(table, newList);
 		}
-		
-		/*
-		for (Table table : data.getTables()) {
-			for (Row row : data.getRows(table)) {
-				boolean itIsAduplicate = false;
-				if (data.getNumRows(table) > 1) {
-					int counter = 0;
-					for (Row r : data.getRows(table)) {
-						List<Value> startingValues = new ArrayList<Value>();
-						
-						for (Cell c : row.getCells()) {
-							startingValues.add(c.getValue());
-						}
-						
-						List<Value> comparableValues = new ArrayList<Value>();
 
-						for (Cell c : r.getCells()) {
-							comparableValues.add(c.getValue());
-						}
-						
-						if (startingValues.equals(comparableValues)) {
-							//System.out.println(startingValues);
-							//System.out.println(comparableValues);
-							//System.out.println("True");
-							counter++;
-						} else {
-							counter--;
-						}
-						
-						if (counter < 2) {
-							newData.addRow(table, row);
-						}
-					}
-				}
-			}
-		}
-		*/
-		/*
-        System.out.println("===========================NEW DATA================================");
-		System.out.println(newData);
-        System.out.println("===================================================================");
-		*/
 		return newData;
 	}
 	
-	/*
-	public void checkDuplicates() {
-		for (Table table : data.getTables()) {
-			Row startingRow = data.getRows(table).get(0);
-			List<Integer> listOfIndexes = new ArrayList<Integer>();
-			for (int i = 1; i < data.getRows(table).size(); i++) {
-				Row comparableRow = data.getRows(table).get(i);
-				System.out.println("=============");
-							
-				
-				List<Value> startingValues = new ArrayList<Value>();
-				
-				for (Cell c : startingRow.getCells()) {
-					startingValues.add(c.getValue());
-				}
-				
-				List<Value> comparableValues = new ArrayList<Value>();
-
-				for (Cell c : comparableRow.getCells()) {
-					comparableValues.add(c.getValue());
-				}
-				
-				System.out.println(startingValues);
-				System.out.println(comparableValues);
-
-				if (startingValues.equals(comparableValues)) {
-					System.out.println(startingRow);
-					System.out.println(comparableRow);
-					startingRow = comparableRow;
-					listOfIndexes.add(i - 1);
-					System.out.println("True");
-				} else {
-					System.out.println(startingRow);
-					System.out.println(comparableRow);
-					//startingRow = comparableRow;
-					System.out.println("False");
-				}
-				startingValues.clear();
-				comparableValues.clear();
-				
-				System.out.println("=============");
-			}
-			
-			for (int index : listOfIndexes) {
-				System.out.println("--------------------");
-				data.removeARow(table, index);
-				System.out.println("--------------------");
-			}
-			
-			listOfIndexes.clear();
-		}
-		/*
-		boolean duplicated_row = false;
-		System.out.println("=============");
-		System.out.println(nw_row);
-		List<Boolean> duplicateBooleans = new ArrayList<Boolean>();
-		List<Boolean> trueValues = new ArrayList<Boolean>(); 
-
-		if (data.getNumRows(table) > 0) {
-			//Row old = data.getRows(table).get(0);
-			for (int i = 0; i < data.getNumRows(table); i++) {
-				//System.out.println("Index on i = " + i);
-				//System.out.println("Table is = " + table);
-				for (int j = 0; j < data.getRows(table).get(i).getCells().size(); j++) {
-					Cell old_row_value = data.getRows(table).get(i).getCells().get(j);
-					Cell new_row_value = nw_row.getCells().get(j);
-					//System.out.println("Say WHAT ?");
-					//System.out.println(old_row_value + " " + old_row_value.isNull()  + " " + old_row_value.getValue());
-					//System.out.println(new_row_value + " " + new_row_value.isNull()  + " " + new_row_value.getValue());
-					
-					boolean bothIsNull = (old_row_value.isNull() && new_row_value.isNull());
-					boolean sameValues = old_row_value.getValue() == new_row_value.getValue();
-					// (old_row_value.isNull() == false && new_row_value.isNull() == false) || !(!old_row_value.isNull() && new_row_value.isNull()) || !(old_row_value.isNull() && !new_row_value.isNull()) || old_row_value.getValue().equals(new_row_value.getValue())
-					if (bothIsNull) {
-						//System.out.println("Say WHAT twice ?");
-						duplicated_row = true;
-						duplicateBooleans.add(duplicated_row);
-						//System.out.println("This is a duplicate");
-						//System.out.println("Duplicated Index on i = " + i + " And colmun index is = " + j);
-					} else if (sameValues) {
-						duplicated_row = true;
-						duplicateBooleans.add(duplicated_row);
-						//System.out.println("This is a duplicate");
-					} else if (old_row_value.getValue() == null && new_row_value.getValue() != null) {
-						duplicated_row = false;
-						duplicateBooleans.add(duplicated_row);
-						//System.out.println("This is a duplicate");
-					} else if (old_row_value.getValue() != null && new_row_value.getValue() == null) {
-						duplicated_row = true;
-						duplicateBooleans.add(duplicated_row);
-						//System.out.println("This is a duplicate");
-					} else if (old_row_value.getValue().equals(new_row_value.getValue())) {
-						duplicated_row = true;
-						duplicateBooleans.add(duplicated_row);
-						//System.out.println("This is a duplicate");
-					} else {
-						//System.out.println("Say WHAT three times ?");
-						//System.out.println("NOT Duplicated Index on i = " + i + " And colmun index is = " + j);
-						duplicated_row = false;
-						duplicateBooleans.add(duplicated_row);
-					}
-					
-					trueValues.add(true);
-				}
-			}
-		}
-		/*
-		if (equalLists(duplicateBooleans, trueValues)) {
-			System.out.println(trueValues);
-			System.out.println(duplicateBooleans);
-
-			System.out.println("Say WHAT twice ?");
-			duplicated_row = true;
-		} else {
-			duplicated_row = false;
-		}
-		
-		System.out.println("Dupiclicate row => " + duplicated_row);
-		System.out.println("=============");
-		 
-		
-	}
-	*/
 	public  boolean equalLists(List<Boolean> a, List<Boolean> b){     
 	    // Check for sizes and nulls
 	    if (a == null && b == null) return false;
@@ -471,10 +246,6 @@ public class DataMapper {
 	    		numberOfBTrue++;
 	    	else
 	    		numberOfBFalse++;
-	    System.out.println(a);
-	    System.out.println(b);
-	    System.out.println("OMG == " + numberOfATrue + " b == " + numberOfBTrue);
-	    System.out.println("OMG == " + numberOfAFalse + " b == " + numberOfBFalse);
 
 	    return numberOfATrue == numberOfBTrue && numberOfAFalse == numberOfBFalse;
 	}
@@ -517,8 +288,6 @@ public class DataMapper {
 	}
 	
 	public List<Row> getTableColumnData(Table table, Column column) {
-		//System.out.println(table);
-		//System.out.println(column);
 		return data.getRows(table, column);
 	}
 	
@@ -527,7 +296,6 @@ public class DataMapper {
 		for (Table tbl : data.getTables())
 			if (tbl.toString().equals(table))
 				tab = tbl;
-		//System.out.println(tab);
 		return tab;
 	}
 	
@@ -536,7 +304,6 @@ public class DataMapper {
 		for (Table tbl : data.getTables())
 			if (tbl.equals(table) && tbl.hasColumn(col))
 				column = tbl.getColumn(col);
-		//System.out.println(column);
 		return column;
 	}
 	
@@ -553,7 +320,6 @@ public class DataMapper {
 		Statement stmt = null;
 		List<Table> tbls = schema.getConnectedTables(table);
 		tbls.add(table);
-		//System.out.println(tbls.size());
 		try {
 			boolean connectedTable = false;
 			for (Table tbl : tbls) {
@@ -561,7 +327,6 @@ public class DataMapper {
 				String columns = Joiner.on(",").join(schema_columns);
 				
 				List<String> lstOfSelectStms = this.getSelectStatements(thisData, tbl, connectedTable, columns);
-				//System.out.println(lstOfSelectStms);
 				// Mapper
 				for (String stm : lstOfSelectStms) {
 					c.setAutoCommit(false);
@@ -676,64 +441,36 @@ public class DataMapper {
 	}
 	
 	public Data returnPerfectState(Table table) {
-		Data newData = new Data();
-		//this.mapData();
-		
-		List<Table> tbls = schema.getConnectedTables(table);
-		//tbls.add(table);
-		
+		Data newData = new Data();		
+		List<Table> tbls = schema.getConnectedTables(table);		
 		
 		Random randomGenerator = new Random();
 		int index = randomGenerator.nextInt(data.getRows(table).size());
 		
 		Row firstRow = data.getRows(table).get(index);
-//		System.err.println("TABLE = " + table);
-//		System.err.println("CONNECTED TABLES = " + tbls);
-//		System.err.println("Random ROW = " + firstRow);
-//		System.err.println("FKs = " + schema.getForeignKeyConstraints(table));
+
 		for (ForeignKeyConstraint fk : schema.getForeignKeyConstraints(table)) {
 			for (Pair<Column> pair_c : fk.getColumnPairs()) {
 				for (Table tbl : tbls) {
 					if (tbl.hasColumn(pair_c.getFirst())) {
-						//System.out.println("Referenced Table = " + tbl + "; Column Ref = " + tbl.getColumn(pair_c.getSecond().toString()));
 						Column refColunm = tbl.getColumn(pair_c.getSecond().toString());
-						//System.out.println(firstRow.getCell(pair_c.getSecond()));
 						for (Row row : data.getRows(tbl)) {
 							if (row.getCell(refColunm).getValue().equals(firstRow.getCell(pair_c.getSecond()).getValue())) {
 								newData.addRow(tbl, row);
-								//System.err.println(row);
 							}
 						}
 					}
 				}
-				//System.out.println(firstRow.getCell(pair_c.getFirst()));
-				//System.out.println(pair_c.getFirst());
-				//System.out.println(pair_c.getSecond());
-
 			}
 		}
 		newData.addRow(table, firstRow);
-		/*
-		for (Table tbl : tbls) {
-			newData.addRows(tbl, data.getRows(tbl));
-		}
-		
-		System.out.println("===================================New Data==============================================");
-		System.out.println(newData);
-		System.out.println("=========================================================================================");
-		*/
 		return newData;
 		
 	}
 	
 	public Data returnStatedTable(Table table) {
 		Data dataA = new Data();
-		//Random randomGenerator = new Random();
-				
-		//int index = randomGenerator.nextInt(data.getRows(table).size());
-		//Row firstRow = data.getRows(table).get(index);
 		dataA.addRows(table, newData.getRows(table));
-		//newData.addRows(table, data.getRows(table));
 
 		return dataA;
 	}
@@ -746,7 +483,6 @@ public class DataMapper {
 		int index = randomGenerator.nextInt(data.getRows(table).size());
 		Row firstRow = data.getRows(table).get(index);
 		newData.addRow(table, firstRow);
-		//newData.addRows(table, data.getRows(table));
 
 		return newData;
 		
