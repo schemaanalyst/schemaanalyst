@@ -20,7 +20,9 @@ public class JCommanderParams {
 
   @Parameter(names = {"--dbms","-d","--database"}, description = "Database Management System")
   protected String dbms = "SQLite";
-
+  
+  @Parameter(names = {"--seed","-seed","--randomseed"}, description = "Random Seed")
+  protected long seed = -0L;
   /* @Parameter(names = {"--help","-h"}, description = "Print the help menu") */
   /* protected boolean help = false; */
 

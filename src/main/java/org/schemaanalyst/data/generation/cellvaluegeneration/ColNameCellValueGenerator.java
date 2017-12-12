@@ -16,6 +16,8 @@ import org.schemaanalyst.data.ValueVisitor;
 import org.schemaanalyst.util.random.Random;
 
 public class ColNameCellValueGenerator extends RandomCellValueGenerator {
+	
+	private int columnCounter = 0;
 
 	public ColNameCellValueGenerator(Random random, ValueInitializationProfile profile, double nullProbability,
 			ValueLibrary valueLibrary, double useLibraryProbability) {
@@ -43,17 +45,20 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
         }
         
         String colName = cell.getColumn().getName();
-        generateReadableValue(cell, colName);
+        generateReadableValue(cell, colName, this.columnCounter);
+        this.columnCounter++;
     }
 	
-	private void generateReadableValue(Cell cell, String colName) {
+	private void generateReadableValue(Cell cell, String colName, int columnCounter) {
 
         new ValueVisitor() {
         	
         	String colName = null;
+        	int columnCounter;
 
-            void generateRandomValue(Cell cell, String colName) {
+            void generateRandomValue(Cell cell, String colName, int columnCounter) {
             	this.colName = colName;
+            	this.columnCounter = columnCounter;
                 cell.getValue().accept(this);
             }
 
@@ -69,7 +74,6 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
 
                 // ensure the new value has the same scale as the old value
                 newValue = newValue.setScale(value.scale(), BigDecimal.ROUND_FLOOR);
-
                 numericValue.set(newValue);
             }
 
@@ -97,7 +101,10 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
 
             @Override
             public void visit(NumericValue value) {
-                randomize(value, profile.getNumericMin(), profile.getNumericMax());
+            	BigDecimal newValue = new BigDecimal(this.columnCounter);
+            	value.set(newValue);
+
+                //randomize(value, profile.getNumericMin(), profile.getNumericMax());
             }
 
             @Override
@@ -106,7 +113,7 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
 
                 if (profile.getStringLengthMax() > 0) {
                 	if (!colName.isEmpty() || colName.equals(null)) {
-                		value.set(colName);
+                		value.set(colName + "_" + this.columnCounter);
                 	} else {
 	                    int numCharsToGenerate = random.nextInt(profile.getStringLengthMax());
 	
@@ -133,6 +140,6 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
             public void visit(TimestampValue value) {
                 randomize(value, profile.getTimestampMin(), profile.getTimestampMax());
             }
-        }.generateRandomValue(cell, colName);
+        }.generateRandomValue(cell, colName, columnCounter);
     }
 }

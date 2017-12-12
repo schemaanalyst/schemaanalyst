@@ -6,7 +6,7 @@ import java.util.List;
 public class StringValue extends Value implements CompoundValue {
 
     private static final long serialVersionUID = -2565741196272855452L;
-    public static final int UPPER_A_CHAR = 65;
+    public static final int UPPER_A_CHAR = 20;
     public static final int LOWER_A_CHAR = 97;
     public static final int LOWER_Z_CHAR = 122;
     public static final int NO_MAX_LENGTH = -1;
@@ -186,7 +186,12 @@ public class StringValue extends Value implements CompoundValue {
 
     @Override
     public String toString() {
-        return "'" + get() + "'";
+        //return "'" + get() + "'";
+        // Added by abdullah to remove qoutes
+        String val = get();
+        val = val.replaceAll("\"", "");
+        val = val.replaceAll("\'", "");
+        return "'" + val + "'";
     	// Added and changed by Abdullah for qoutation issues
     	//String s = get().replaceAll("\"", "\'");;
         //return "\"" + s + "\"";

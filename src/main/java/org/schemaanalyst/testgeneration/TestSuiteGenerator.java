@@ -10,6 +10,7 @@ import org.schemaanalyst.data.generation.selector.SelectorDataGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
@@ -337,23 +338,47 @@ public class TestSuiteGenerator {
 		int counter = 0;
 		int testCaseCounter = 0;
 		for (TestCase tc : testSuite.getTestCases()) {
-			if (testCaseCounter == 9) {
-				System.out.println("There");
+			if (testCaseCounter == 16) {
+				//System.out.println("There");
 			}
 			List<StringValue> stringvalues = new ArrayList<>();
+			
+			List<CheckConstraint> checks = schema.getCheckConstraints();
+						
 
 			for (Cell cell : tc.getState().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
 						boolean added = set1.add((StringValue) cell.getValue());
 						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
-						if (added && !hAdded) {
-							if (hAdded)
-								hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
-							else
-								hmap.put((StringValue) cell.getValue(),
-										new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
-							counter++;
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						
+						if (!inCheck) {
+							if (added && !hAdded) {
+								if (hAdded)
+									hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+								else {
+									StringValue newString = new StringValue(randWord.generateRandomLMWork(lm, counter+1));
+									StringValue oldString = (StringValue) cell.getValue();
+									if (oldString.getMaxLength() != -1) {
+										if (newString.get().length() > oldString.getMaxLength()) {
+											int end1 = newString.get().length() - oldString.getMaxLength();
+											int end = newString.get().length() - end1;
+											newString.set(newString.get().substring(0, end));
+										}
+									}
+	
+									hmap.put(oldString, newString);
+									
+									//hmap.put((StringValue) cell.getValue(),
+									//		new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
+								}
+								counter++;
+							}
 						}
 					}
 				}
@@ -377,13 +402,33 @@ public class TestSuiteGenerator {
 					if (!cell.isNull() && cell.getValue() != null) {
 						boolean added = set1.add((StringValue) cell.getValue());
 						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
-						if (added && !hAdded) {
-							if (hAdded)
-								hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
-							else
-								hmap.put((StringValue) cell.getValue(),
-										new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
-							counter++;
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						
+						if (!inCheck) {
+							if (added && !hAdded) {
+								if (hAdded)
+									hmap.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+								else {
+									StringValue newString = new StringValue(randWord.generateRandomLMWork(lm, counter+1));
+									StringValue oldString = (StringValue) cell.getValue();
+									if (oldString.getMaxLength() != -1) {
+										if (newString.get().length() > oldString.getMaxLength()) {
+											int end1 = newString.get().length() - oldString.getMaxLength();
+											int end = newString.get().length() - end1;
+											newString.set(newString.get().substring(0, end));
+										}
+									}
+									hmap.put(oldString, newString);
+									
+									//hmap.put((StringValue) cell.getValue(),
+									//		new StringValue(randWord.generateRandomLMWork(lm, counter+1)));
+								}
+								counter++;
+							}
 						}
 					}
 				}

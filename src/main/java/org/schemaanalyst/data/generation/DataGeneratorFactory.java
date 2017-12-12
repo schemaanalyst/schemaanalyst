@@ -216,6 +216,18 @@ public class DataGeneratorFactory {
                 randomCellInitializer);
     }
     
+    public static SearchBasedDataGenerator avsReadGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ReadableCellValueGenerator randomCellValueGenerator = makeReadableCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
+                randomCellInitializer);
+    }
+    
     public static RandomDataGenerator randomColGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         ColNameCellValueGenerator randomCellValueGenerator = makeColNameCellValueGenerator(random, schema);
@@ -226,7 +238,19 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 randomCellInitializer);
     }
+    
+    public static SearchBasedDataGenerator avsColGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ColNameCellValueGenerator randomCellValueGenerator = makeColNameCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
+                randomCellInitializer);
+    }
+    
     public static RandomDataGenerator selectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         
@@ -240,6 +264,23 @@ public class DataGeneratorFactory {
         return new RandomDataGenerator(
                 maxEvaluations,
                 randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static SearchBasedDataGenerator avsSelectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        
+        DataMapper mapper = new DataMapper();
+        mapper.connectDB(schema);
+    	  mapper.mapData();
+        
+        RandomCellValueGenerator randomCellValueGenerator = makeSelectorCellValueGenerator(random, schema, mapper.getData());
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
                 randomCellInitializer);
     }
     
@@ -264,5 +305,46 @@ public class DataGeneratorFactory {
 	                maxEvaluations,
 	                randomCellInitializer,
 	                randomCellInitializer);
+    }
+    
+    public static DirectedRandomDataGenerator directedRandomColGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ColNameCellValueGenerator randomCellValueGenerator = makeColNameCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DirectedRandomDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static DirectedRandomDataGenerator directedRandomSelectorGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        
+        DataMapper mapper = new DataMapper();
+        mapper.connectDB(schema);
+    	mapper.mapData();
+        
+        RandomCellValueGenerator randomCellValueGenerator = makeSelectorCellValueGenerator(random, schema, mapper.getData());
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DirectedRandomDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static DirectedRandomDataGenerator directedRandomReadGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ReadableCellValueGenerator randomCellValueGenerator = makeReadableCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DirectedRandomDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
     }
 }
