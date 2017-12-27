@@ -320,9 +320,9 @@ purpose.*
 
 #### Test Data Generators
 
-There are multiple implemented test data generators avalible for you to use:
+There are multiple implemented test data generators available for you to use:
 
- 1. `avsDefaults` - AVM implemenetation using default values
+ 1. `avsDefaults` - AVM implementation using default values
  2. `avs` - AVM implementation using random values
  3. `random` - Random data generator technique.
 
