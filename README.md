@@ -325,6 +325,8 @@ There are multiple implemented test data generators available for you to use:
  1. `avsDefaults` - AVM implementation using default values
  2. `avs` - AVM implementation using random values
  3. `random` - Random data generator technique.
+ 4. `dominoRandom` - The original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
+ 5. `dominoAVS` - The hybrid technique DOMINO and AVM.
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
