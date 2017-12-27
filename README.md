@@ -1,6 +1,6 @@
 # SchemaAnalyst
 
-<img src="https://github.com/schemaanalyst/schemaanalyst/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
+<img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
 
 ## Quick Start
 
@@ -317,6 +317,14 @@ detailing which of these are required. Where parameters are not required, the
 defaults values should usually be sensible. While there are other parameters
 available for this class, it is generally not necessary to understand their
 purpose.*
+
+#### Test Data Generators
+
+There are multiple implemented test data generators avalible for you to use:
+
+ 1. `avsDefaults` - AVM implemenetation using default values
+ 2. `avs` - AVM implementation using random values
+ 3. `random` - Random data generator technique.
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
