@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.concentro;
+package org.schemaanalyst.data.generation.domino;
 
 
 import org.schemaanalyst.data.Data;
@@ -9,6 +9,7 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Expr
 
 /**
  * Created by phil on 27/02/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
 public class AVSExpressionPredicateFixer extends PredicateFixer {
 

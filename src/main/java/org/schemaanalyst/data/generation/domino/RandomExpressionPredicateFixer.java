@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.concentro;
+package org.schemaanalyst.data.generation.domino;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
@@ -6,7 +6,9 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Expr
 
 /**
  * Created by phil on 27/02/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
+ 
 public class RandomExpressionPredicateFixer extends PredicateFixer {
 
     private ExpressionPredicateChecker expressionPredicateChecker;

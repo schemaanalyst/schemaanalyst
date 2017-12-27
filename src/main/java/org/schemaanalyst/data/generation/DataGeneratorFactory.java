@@ -3,7 +3,7 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
-import org.schemaanalyst.data.generation.concentro.ConcentroDataGenerator;
+import org.schemaanalyst.data.generation.domino.DominoDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
@@ -26,6 +26,7 @@ import java.lang.reflect.Method;
 
 /**
  * Created by phil on 14/03/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
 public class DataGeneratorFactory {
 
@@ -145,20 +146,20 @@ public class DataGeneratorFactory {
 
     
 
-    public static ConcentroDataGenerator concentroRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static DominoDataGenerator dominoRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
 
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
         RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
 
-        return new ConcentroDataGenerator(
+        return new DominoDataGenerator(
                 random,
                 maxEvaluations,
                 randomCellValueGenerator,
                 randomCellInitializer);
     }
 
-    public static ConcentroDataGenerator concentroAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+    public static DominoDataGenerator dominoAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
 
         DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();
@@ -174,7 +175,7 @@ public class DataGeneratorFactory {
 
         avs.setTerminationCriterion(terminationCriterion);
 
-        return new ConcentroDataGenerator(
+        return new DominoDataGenerator(
                 random,
                 maxEvaluations,
                 randomCellValueGenerator,

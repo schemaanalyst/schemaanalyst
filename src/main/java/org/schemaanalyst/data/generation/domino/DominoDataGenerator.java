@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.concentro;
+package org.schemaanalyst.data.generation.domino;
 
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerationReport;
@@ -13,22 +13,23 @@ import org.schemaanalyst.util.random.Random;
 
 /**
  * Created by phil on 26/02/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
-public class ConcentroDataGenerator extends RandomDataGenerator {
+public class DominoDataGenerator extends RandomDataGenerator {
 
     private Random random;
     private AlternatingValueSearch avs;
     private PredicateChecker predicateChecker;
     private PredicateFixer predicateFixer;
 
-    public ConcentroDataGenerator(Random random,
+    public DominoDataGenerator(Random random,
                                   int maxEvaluations,
                                   RandomCellValueGenerator cellValueGenerator,
                                   CellInitializer cellInitializer) {
         this(random, maxEvaluations, cellValueGenerator, cellInitializer, null);
     }
 
-    public ConcentroDataGenerator(Random random,
+    public DominoDataGenerator(Random random,
                                   int maxEvaluations,
                                   RandomCellValueGenerator cellValueGenerator,
                                   CellInitializer cellInitializer,

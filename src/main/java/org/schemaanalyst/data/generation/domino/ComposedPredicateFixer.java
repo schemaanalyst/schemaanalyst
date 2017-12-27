@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.concentro;
+package org.schemaanalyst.data.generation.domino;
 
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
@@ -11,6 +11,7 @@ import java.util.List;
 
 /**
  * Created by phil on 13/10/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
 public abstract class ComposedPredicateFixer extends PredicateFixer {
 
