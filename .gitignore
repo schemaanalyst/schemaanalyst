@@ -9,6 +9,7 @@ gradle
 .project
 .settings
 /config/*.local
+/config/database.properties
 /docs/
 /report/
 /database/
