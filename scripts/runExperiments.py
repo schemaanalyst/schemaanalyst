@@ -12,7 +12,7 @@ import csv
 
 ############## START: Set-up experiment (Configs) ##################### 
 # DB Engines:  SQLite, Postgres, HyperSQL
-engines = ["SQLite"]
+engines = ["SQLite", "HyperSQL"]
 
 
 # databases are the case studies :
@@ -100,7 +100,7 @@ def mutanttiming_combine(results_path, dir, pattern):
   try:
     interesting_files = glob.iglob(os.path.join(dir, pattern)) 
     header_saved = False
-    with open(results_path + 'output.dat', 'wb') as fout:
+    with open(results_path + 'mutanttiming.dat', 'wb') as fout:
       for filename in interesting_files:
         title, ext = os.path.splitext(os.path.basename(filename))
         if title.startswith('mutant-results') and ext == '.dat':
@@ -131,6 +131,7 @@ def alive_mutant_r(scripts_path, resutls_path, data, gen, cov, eng, seed):
       cmd = command + path2script + target_file
       run_r_command = subprocess.check_output(cmd, shell=True)
       print(run_r_command)
+
       # Add generator and Critira at the end of the columns of the file
       with open(resutls_path + 'mutanttiming.dat', 'r') as csvinput:
         with open(resutls_path + 'mutanttiming-output.dat', 'w') as csvoutput:
@@ -139,24 +140,29 @@ def alive_mutant_r(scripts_path, resutls_path, data, gen, cov, eng, seed):
 
           all = []
           row = next(reader)
+          #print row
+
           row.append('generator')
           row.append('criterion')
-          #row.append('randomseed')
+          row.append('randomseed')
           all.append(row)
 
+          #print row
           for row in reader:
               row.append(gen)
               row.append(cov)
-              #row.append(seed)
+              row.append(seed)
               all.append(row)
+
+          #print all
 
           writer.writerows(all)
 
       # if "+" in cov:
       #    cov = cov.replace("+", "-")
       # reading mutanttiming
-      shutil.copy2(resutls_path + 'mutanttiming-alive.dat', resutls_path + 'alive_mutant/mutant-alive-' + data + '-' + gen + '-' + cov + '-' + eng + '.dat')
-      shutil.copy2(resutls_path + 'mutanttiming-output.dat', resutls_path + 'alive_mutant/mutant-results-' + data + '-' + gen + '-' + cov + '-' + eng + '.dat')
+      shutil.copy2(resutls_path + 'mutanttiming-alive.dat', resutls_path + 'alive_mutant/mutant-alive-' + data + '-' + gen + '-' + cov + '-' + seed + '-' + eng + '.dat')
+      shutil.copy2(resutls_path + 'mutanttiming-output.dat', resutls_path + 'alive_mutant/mutant-results-' + data + '-' + gen + '-' + cov + '-' + seed + '-' + eng + '.dat')
       # remove files
       subprocess.check_output("rm " + resutls_path + "mutanttiming.dat", shell=True)
       subprocess.check_output("rm " + resutls_path + "mutanttiming-alive.dat", shell=True)
@@ -168,14 +174,14 @@ def alive_mutant_r(scripts_path, resutls_path, data, gen, cov, eng, seed):
 
 # Run experiment
 for eng in engines:
-  change_dbms_config(eng)
+  if len(engines) > 1:
+    change_dbms_config(eng)
   for data in databases:
     for gen in generators:
       for cov in coverages:
         # Set-up random seed
         for seed in range(1, end_seed):
           try:
-            # print CMD
             # Mutation Command
             cmdStringMutation = "java org.schemaanalyst.util.Go -s parsedcasestudy." + data + " --dbms " + eng + " --criterion " + cov + " --generator " + gen + " mutation --pipeline AllOperatorsNoFKANormalisedWithClassifiers --technique=mutantTiming --seed " + str(seed)
             
@@ -213,6 +219,7 @@ dynamicDir = cwd + '/results/alive_mutant'
 dir = r'' + dynamicDir
 pattern = r'*.dat'
 print dir
+
 # Runing Alive Mutants scripts
 alive_mutants_script(dir, pattern)
 
