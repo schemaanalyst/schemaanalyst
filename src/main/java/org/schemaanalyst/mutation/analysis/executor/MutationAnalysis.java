@@ -214,7 +214,9 @@ public class MutationAnalysis extends Runner {
         result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
 
-        new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
+        //new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
+        // Changed by Abdullah from newmutationanalysis.dat --> mutationanalysis.dat
+        new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "mutationanalysis.dat").write(result);
 
         if (printLive) {
             for (Mutant<Schema> mutant : analysisResult.getLive()) {
