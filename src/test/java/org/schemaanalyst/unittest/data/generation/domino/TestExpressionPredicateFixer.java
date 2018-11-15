@@ -1,9 +1,9 @@
-package org.schemaanalyst.unittest.data.generation.concentro;
+package org.schemaanalyst.unittest.data.generation.domino;
 
 import org.junit.Test;
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.NumericValue;
-import org.schemaanalyst.data.generation.concentro.RandomExpressionPredicateFixer;
+import org.schemaanalyst.data.generation.domino.RandomExpressionPredicateFixer;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.ExpressionPredicateChecker;
 import org.schemaanalyst.unittest.testutil.mock.MockCell;
 import org.schemaanalyst.unittest.testutil.mock.MockCellValueGenerator;

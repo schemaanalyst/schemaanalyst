@@ -1,4 +1,4 @@
-package org.schemaanalyst.unittest.data.generation.concentro;
+package org.schemaanalyst.unittest.data.generation.domino;
 
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
@@ -8,7 +8,7 @@ import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.NumericValue;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
-import org.schemaanalyst.data.generation.concentro.MatchPredicateFixer;
+import org.schemaanalyst.data.generation.domino.MatchPredicateFixer;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.MatchPredicate;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.MatchPredicateChecker;
 import org.schemaanalyst.unittest.testutil.mock.MockCellValueGenerator;
