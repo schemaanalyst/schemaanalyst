@@ -1,3 +1,4 @@
+<!-- New Branch -->
 # SchemaAnalyst
 
 <img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
@@ -588,4 +589,3 @@ Conference on Software Maintenance and Evolution, 2016. <a name="six"></a>
 ## License
 
 [GNU General Public License v3.0](./LICENSE.txt)
-
