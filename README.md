@@ -1,4 +1,3 @@
-<!-- New Branch -->
 # SchemaAnalyst
 
 <img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
