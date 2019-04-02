@@ -542,26 +542,19 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
-[(ICST 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
-Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
-relational schema integrity constraints across multiple database management
-systems," in Proceedings of the 6th International Conference on Software
-Testing, Verification and Validation. <a name="one"></a>
+[(ICSME 2016)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
+Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
+Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
+for Relational Database Schemas" in Proceedings of the 32nd International
+Conference on Software Maintenance and Evolution, 2016. <a name="six"></a>
 
-[(Mutation 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Wright2013/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
-analysis of relational database structure using mutant schemata and
-parallelisation," in Proceedings of the 8th International Workshop on Mutation
-Analysis. <a name="two"></a>
-
-[(QSIC 2014)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Wright2014/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
-equivalent, redundant, and quasi mutants on database schema mutation analysis,"
-in Proceedings of the 14th International Conference on Quality Software. <a
-name="three"></a>
+[(TOSEM 2015)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)McMinn,
+Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
+Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
+in Transactions on Software Engineering and Methodology, 25(1). <a
+name="five"></a>
 
 [(SEKE 2015)
 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kinneer2015/)Kinneer,
@@ -571,21 +564,27 @@ for relational database schemas," in Proceedings of the 27th International
 Conference on Software Engineering and Knowledge Engineering. <a
 name="four"></a>
 
-[(TOSEM 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)McMinn,
-Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
-Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
-in Transactions on Software Engineering and Methodology, 25(1). <a
-name="five"></a>
+[(QSIC 2014)
+](https://www.gregorykapfhammer.com/research/papers/Wright2014/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
+equivalent, redundant, and quasi mutants on database schema mutation analysis,"
+in Proceedings of the 14th International Conference on Quality Software. <a
+name="three"></a>
 
-[(ICSME 2016)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
-Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
-Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
-for Relational Database Schemas" in Proceedings of the 32nd International
-Conference on Software Maintenance and Evolution, 2016. <a name="six"></a>
+[(Mutation 2013)
+](https://www.gregorykapfhammer.com/research/papers/Wright2013/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
+analysis of relational database structure using mutant schemata and
+parallelisation," in Proceedings of the 8th International Workshop on Mutation
+Analysis. <a name="two"></a>
+
+[(ICST 2013)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
+Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
+relational schema integrity constraints across multiple database management
+systems," in Proceedings of the 6th International Conference on Software
+Testing, Verification and Validation. <a name="one"></a>
 
 ## License
 
 [GNU General Public License v3.0](./LICENSE.txt)
-
