@@ -3,10 +3,6 @@
 package org.schemaanalyst.mutation.quasimutant;
 
 import org.schemaanalyst.sqlrepresentation.Column;
-import org.schemaanalyst.sqlrepresentation.datatype.*;
-
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
 /**

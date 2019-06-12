@@ -6,7 +6,6 @@ import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSVisitor;
 import org.schemaanalyst.dbms.DatabaseInteractor;
-import org.schemaanalyst.dbms.hypersql.HyperSQLSQLWriter;
 
 /**
  * <p>

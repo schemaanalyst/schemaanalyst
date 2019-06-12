@@ -1,35 +1,15 @@
 package org.schemaanalyst.util;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.schemaanalyst.configuration.DatabaseConfiguration;
-import org.schemaanalyst.configuration.LocationsConfiguration;
-import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
 import org.schemaanalyst.dbms.DBMSFactory;
 import org.schemaanalyst.mutation.analysis.executor.MutationAnalysis;
-import org.schemaanalyst.mutation.analysis.executor.testcase.VirtualTestCaseExecutor;
 import org.schemaanalyst.sqlrepresentation.Schema;
-import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.StateGenerator;
 import org.schemaanalyst.testgeneration.TestCase;
-import org.schemaanalyst.testgeneration.TestCaseExecutor;
 import org.schemaanalyst.testgeneration.TestSuite;
-import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
-import org.schemaanalyst.testgeneration.TestSuiteGenerator;
-import org.schemaanalyst.testgeneration.TestSuiteJavaWriter;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
-import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 
@@ -48,7 +28,7 @@ public class ConstraintPrinter {
 		cmd.addCommand("generation", gc);
 		cmd.addCommand("mutation", mc);
 		cmd.parse(args);
-		
+
 		String command = cmd.getParsedCommand();
 
 		// set arguments
@@ -94,7 +74,7 @@ public class ConstraintPrinter {
 			DBMS dbmsObject = DBMSFactory.instantiate(dbms);
 			TestRequirements testRequirements = CoverageCriterionFactory
 					.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-			
+
 			// Generator initializing
 			DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -0L, 100000,
 					schemaObject);
@@ -106,9 +86,9 @@ public class ConstraintPrinter {
 			// generate the test suite
 			StateGenerator testSuiteGenerator = new StateGenerator(schemaObject, testRequirements,
 					dbmsObject.getValueFactory(), dataGeneratorObject);
-			//TestSuite testSuite = testSuiteGenerator.generate();
+			// TestSuite testSuite = testSuiteGenerator.generate();
 			TestSuite testSuite = testSuiteGenerator.generateStateData();
-			
+
 			int counter = 0;
 			for (TestCase tc : testSuite.getTestCases()) {
 				System.out.println("Test Case Number:" + counter);
@@ -120,13 +100,13 @@ public class ConstraintPrinter {
 				System.out.println("Generated State Data: " + tc.getState());
 				System.out.println("===========================================================");
 				System.out.println();
-				
+
 				counter++;
 			}
-			
-			
-			//String javaCode = new TestSuiteJavaWriter(schemaObject, dbmsObject, testSuite, true)
-			//		.writeTestSuite(packagename, classname);
+
+			// String javaCode = new TestSuiteJavaWriter(schemaObject, dbmsObject,
+			// testSuite, true)
+			// .writeTestSuite(packagename, classname);
 
 		} else {
 			cmd.usage();

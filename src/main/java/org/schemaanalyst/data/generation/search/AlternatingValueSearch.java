@@ -8,7 +8,6 @@ import org.schemaanalyst.util.random.Random;
 import java.math.BigDecimal;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class AlternatingValueSearch extends Search<Data> {
 

@@ -15,7 +15,6 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.*;
-import org.schemaanalyst.util.runner.*;
 import org.schemaanalyst.mutation.analysis.executor.MutationAnalysis;
 
 import java.io.*;
