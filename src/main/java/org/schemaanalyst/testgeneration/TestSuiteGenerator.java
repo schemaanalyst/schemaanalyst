@@ -29,13 +29,13 @@ public class TestSuiteGenerator {
 
     private final static Logger LOGGER = Logger.getLogger(TestSuiteGenerator.class.getName());
 
-    private Schema schema;
-    private TestRequirements testRequirements;
-    private ValueFactory valueFactory;
-    private DataGenerator dataGenerator;
-    private HashMap<Table, Data> initialTableData;
-    private TestSuite testSuite;
-    private TestSuiteGenerationReport testSuiteGenerationReport;
+    protected Schema schema;
+    protected TestRequirements testRequirements;
+    protected ValueFactory valueFactory;
+    protected DataGenerator dataGenerator;
+    protected HashMap<Table, Data> initialTableData;
+    protected TestSuite testSuite;
+    protected TestSuiteGenerationReport testSuiteGenerationReport;
 
     public TestSuiteGenerator(Schema schema,
                               TestRequirements testRequirements,
