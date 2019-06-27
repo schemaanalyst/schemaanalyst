@@ -388,10 +388,17 @@ public class TestSuiteGenerator {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
 						boolean hAdded = hmap.containsValue((StringValue) cell.getValue());
-						if (!hAdded) {
-							StringValue g = hmap.get(cell.getValue());
-							cell.setValue(g);
-							stringvalues.add((StringValue) cell.getValue());
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						if (!inCheck) {
+							if (!hAdded) {
+								StringValue g = hmap.get(cell.getValue());
+								cell.setValue(g);
+								stringvalues.add((StringValue) cell.getValue());
+							}
 						}
 					}
 				}
@@ -437,10 +444,16 @@ public class TestSuiteGenerator {
 			for (Cell cell : tc.getData().getCells()) {
 				if (cell.getValueInstance() instanceof StringValue) {
 					if (!cell.isNull() && cell.getValue() != null) {
-
-						StringValue g = hmap.get(cell.getValue());
-						cell.setValue(g);
-						stringvalues.add((StringValue) cell.getValue());
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						if (!inCheck) {
+							StringValue g = hmap.get(cell.getValue());
+							cell.setValue(g);
+							stringvalues.add((StringValue) cell.getValue());
+						}
 					}
 				}
 			}
