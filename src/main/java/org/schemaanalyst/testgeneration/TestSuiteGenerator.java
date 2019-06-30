@@ -1,23 +1,33 @@
 package org.schemaanalyst.testgeneration;
 
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
+import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
+import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
+import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
+import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
+import org.schemaanalyst.testgeneration.languagemodel.LMValueGenerator;
+import org.schemaanalyst.testgeneration.languagemodel.LangModel;
+import org.schemaanalyst.testgeneration.languagemodel.RandomValue;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -36,6 +46,11 @@ public class TestSuiteGenerator {
     private HashMap<Table, Data> initialTableData;
     private TestSuite testSuite;
     private TestSuiteGenerationReport testSuiteGenerationReport;
+    
+    // For the Language Model
+    private LangModel lm;
+    private long seed;
+	private String datagen = "";
 
     public TestSuiteGenerator(Schema schema,
                               TestRequirements testRequirements,
@@ -48,6 +63,18 @@ public class TestSuiteGenerator {
 
         initialTableData = new HashMap<>();
     }
+    
+    // Another Constructor to initilize the LM and AVM
+    public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
+			DataGenerator dataGenerator, String datagen, long seed) {
+		this.schema = schema;
+		this.testRequirements = testRequirements;
+		this.valueFactory = valueFactory;
+		this.dataGenerator = dataGenerator;
+		this.datagen = datagen;
+		this.seed = seed;
+		initialTableData = new HashMap<>();
+    }
 
     public TestSuite generate() {
         LOGGER.fine("Generating test suite for " + schema);
@@ -56,6 +83,19 @@ public class TestSuiteGenerator {
         testSuiteGenerationReport = new TestSuiteGenerationReport();
         generateInitialTableData();
         generateTestCases();
+		// Language Model
+		try {
+			lm = new LangModel("ukwac_char_lm");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        // Check if we are using the LM or not
+		if (datagen.toLowerCase().contains("langmodel")) {
+			this.convertingLMValuesToTestSuite();
+		}
+		// Calculate The test suite readability using a Language Model
+		this.calculateReadabilityOfTestSuite();
         return testSuite;
     }
 
@@ -277,4 +317,135 @@ public class TestSuiteGenerator {
 
         return true;
     }
+    
+    
+    // ========= Language Model Methods =========
+	protected double langModelScore(String string) {
+		try {
+			return lm.score(string, false);
+		} catch (Exception e) {
+			System.err.println("Error: " + e.getMessage());
+			return 0;
+		}
+	}
+    
+    private void convertingLMValuesToTestSuite() {
+    	final Set<StringValue> set1 = new HashSet<StringValue>();
+		LMValueGenerator randWords = new LMValueGenerator(this.seed);
+		List<RandomValue> generateListOfString = randWords.generateListOfString(lm);
+		for (RandomValue v : generateListOfString) {
+			System.out.println(v.toString());
+		}
+		HashMap<StringValue, StringValue> stringMaps = new HashMap<StringValue, StringValue>();
+		List<CheckConstraint> checks = schema.getCheckConstraints();
+		
+		for (TestCase tc : testSuite.getTestCases()) {
+			List<Cell> allCells = new ArrayList<Cell>();
+			allCells.addAll(tc.getState().getCells());
+			allCells.addAll(tc.getData().getCells());
+			//for(Cell cell : tc.getState().getCells()) {
+			for(Cell cell : allCells) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						//boolean isItInTheMap = stringMaps.containsValue((StringValue) cell.getValue());
+						boolean isItInTheMap = stringMaps.containsKey((StringValue) cell.getValue());
+						boolean added = set1.add((StringValue) cell.getValue());
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						
+						if (!inCheck) {
+							if (!added && isItInTheMap) {
+								//stringMaps.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+								StringValue newString = stringMaps.get((StringValue) cell.getValue());
+								cell.setValue(newString);
+							} else {
+								StringValue newString = new StringValue(generateListOfString.get(generateListOfString.size() - 1).getValue());
+								StringValue oldString = (StringValue) cell.getValue();
+								if (oldString.getMaxLength() != -1) {
+									if (newString.get().length() > oldString.getMaxLength()) {
+										int end1 = newString.get().length() - oldString.getMaxLength();
+										int end = newString.get().length() - end1;
+										newString.set(newString.get().substring(0, end));
+									}
+								}
+								stringMaps.put(oldString, newString);
+								cell.setValue(newString);
+								generateListOfString.remove(generateListOfString.size() - 1);
+							}
+						}
+					}
+				}
+			}
+			
+			/*
+			for(Cell cell : tc.getData().getCells()) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && cell.getValue() != null) {
+						//boolean isItInTheMap = stringMaps.containsValue((StringValue) cell.getValue());
+						boolean isItInTheMap = stringMaps.containsKey((StringValue) cell.getValue());
+						boolean inCheck = false;
+						for (CheckConstraint c : checks) {
+							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
+								inCheck = true;
+						}
+						
+						if (!inCheck) {
+							if (isItInTheMap) {
+								//stringMaps.put((StringValue) cell.getValue(), (StringValue) cell.getValue());
+								StringValue newString = stringMaps.get((StringValue) cell.getValue());
+								cell.setValue(newString);
+							} else {
+								StringValue newString = new StringValue(generateListOfString.get(generateListOfString.size() - 1).getValue());
+								StringValue oldString = (StringValue) cell.getValue();
+								if (oldString.getMaxLength() != -1) {
+									if (newString.get().length() > oldString.getMaxLength()) {
+										int end1 = newString.get().length() - oldString.getMaxLength();
+										int end = newString.get().length() - end1;
+										newString.set(newString.get().substring(0, end));
+									}
+								}
+								stringMaps.put(oldString, newString);
+								cell.setValue(newString);
+								generateListOfString.remove(generateListOfString.size() - 1);
+							}
+						}
+					}
+				}
+			}
+			*/
+		}
+    }
+    
+    private void calculateReadabilityOfTestSuite() {
+		for (TestCase tc : testSuite.getTestCases()) {
+			// Scoring Readable strings and VarChars
+			double readableScore = 0;
+			//double readableData = 0;
+			List<Cell> allCells = new ArrayList<Cell>();
+			allCells.addAll(tc.getData().getCells());
+			allCells.addAll(tc.getState().getCells());
+			for (Cell cell : allCells) {
+				if (cell.getValueInstance() instanceof StringValue) {
+					if (!cell.isNull() && !cell.getValue().toString().equals("''")) {
+						String value = cell.getValue().toString();
+						readableScore += this.langModelScore(value.replaceAll("\'", ""));
+						//int l = cell.getValue().toString().length();
+						testSuite.addlengthOfStrings(cell.getValue().toString().length());
+					}
+
+					if (cell.getValue().toString().equals("''")) {
+						testSuite.addnumberOfEmptyStrings(1);
+					}
+				}
+			}
+			// Adding the total score of T-suffiecnt and test data
+			// together
+			testSuite.addReadableScore(readableScore);
+
+		}
+    }
+    
 }

@@ -62,6 +62,15 @@ public class TestCaseExecutor {
         dropTablesIfExist(); // tables may still be hanging around in the case of a previous crash
         createTables();
         for (TestCase testCase : testSuite.getTestCases()) {
+        	/*
+        	 * Commented Out --- Only for debugging
+            System.out.println("============== TC ===================");
+            System.out.println("Test Case Req = " + testCase.getTestRequirement());
+            System.out.println("State Data = ");
+            System.out.println(testCase.getState());
+            System.out.println("Test Data = ");
+            System.out.println(testCase.getData());
+            */
             execute(testCase);
         }
         dropTablesIfExist();
