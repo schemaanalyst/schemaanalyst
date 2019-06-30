@@ -15,6 +15,8 @@ import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.sqlrepresentation.*;
 import org.schemaanalyst.testgeneration.*;
 import org.schemaanalyst.testgeneration.coveragecriterion.*;
+import org.schemaanalyst.util.csv.CSVFileWriter;
+import org.schemaanalyst.util.csv.CSVResult;
 import org.schemaanalyst.util.runner.*;
 import org.schemaanalyst.mutation.analysis.executor.MutationAnalysis;
 
@@ -23,7 +25,7 @@ import java.util.*;
 
 public class Go {
 
-    public static void main(String[] args){
+	public static void main(String[] args) {
 
         JCommanderParams jcp = new JCommanderParams();
         JCommander cmd = new JCommander(jcp);
@@ -90,7 +92,7 @@ public class Go {
         Schema schemaObject = instantiateSchema(schema);
         DBMS dbmsObject = DBMSFactory.instantiate(dbms);
         TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schemaObject, dbmsObject).generateRequirements();
-        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, -0L, 100000, schemaObject);
+        DataGenerator dataGeneratorObject = DataGeneratorFactory.instantiate(datagenerator, gc.seed, 100000, schemaObject);
 
         // filter and reduce test requirements
         testRequirements.filterInfeasible();
@@ -101,7 +103,9 @@ public class Go {
                 schemaObject,
                 testRequirements,
                 dbmsObject.getValueFactory(),
-                dataGeneratorObject);
+                dataGeneratorObject,
+                datagenerator,
+                gc.seed);
         TestSuite testSuite = testSuiteGenerator.generate();
 
         // if desired, write the INSERTs to a file for inspection
@@ -119,7 +123,24 @@ public class Go {
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
-
+        System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
+        System.out.println("Averge Length of Strings: " + testSuite.getlengthOfStringsAverage());
+        System.out.println("Number of Empty: " + testSuite.getnumberOfEmptyStrings());
+        // CSV For readable test suites
+        CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+        
+        CSVResult mResult = new CSVResult();
+        mResult.addValue("schema", schemaObject.toString());
+        mResult.addValue("dbms", dbms);
+        mResult.addValue("criterion", criterion);
+        mResult.addValue("datagenerator", datagenerator);
+        mResult.addValue("readableScore", testSuite.getReadableScore());
+        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
+        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
+        mResult.addValue("coverage", report.coverage());
+        writer.write(mResult);
+        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "readable.dat");
+        
         // failed initial table data generation attempts
         if (report.getInitialTableDataGenerationAttemptsFailed() > 0) {
             System.out.println("Initial table data generation attempts that failed:");
@@ -205,7 +226,8 @@ public class Go {
 
     }
 
-    private static Schema instantiateSchema(String schema) {
+    @SuppressWarnings("deprecation")
+	private static Schema instantiateSchema(String schema) {
         try {
             return (Schema) Class.forName(schema).newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {

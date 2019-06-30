@@ -27,5 +27,7 @@ public class JCommanderParams {
   @Parameter(names = {"--help", "-h"}, help = true, description = "Prints this help menu")
   protected boolean help;
 
+  @Parameter(names = {"--seed","-seed","--randomseed"}, description = "Random Seed")
+  protected long seed = -0L;
 
 }
