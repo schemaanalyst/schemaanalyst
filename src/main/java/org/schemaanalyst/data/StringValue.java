@@ -186,6 +186,11 @@ public class StringValue extends Value implements CompoundValue {
 
     @Override
     public String toString() {
-        return "'" + get() + "'";
+    	//return "'" + get() + "'";
+        // Added by abdullah to remove qoutes
+        String val = get();
+        val = val.replaceAll("\"", "");
+        val = val.replaceAll("\'", "");
+        return "'" + val + "'";
     }
 }
