@@ -7,7 +7,9 @@ import org.schemaanalyst.data.generation.domino.DominoDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
+import org.schemaanalyst.data.generation.cellvaluegeneration.ColNameCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.ReadableCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
@@ -182,4 +184,59 @@ public class DataGeneratorFactory {
                 randomCellInitializer,
                 avs);
     }
+    
+    private static ColNameCellValueGenerator makeColNameCellValueGenerator(Random random, Schema schema) {
+        return new ColNameCellValueGenerator(
+                random,
+                ValueInitializationProfile.SMALL,
+                0.1,
+                makeValueLibrary(schema),
+                0.25);
+    }
+    
+    public static DominoDataGenerator dominoColNamerGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ColNameCellValueGenerator randomCellValueGenerator = makeColNameCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    private static ReadableCellValueGenerator makeReadableCellValueGenerator(Random random, Schema schema) {
+        return new ReadableCellValueGenerator(
+                random,
+                ValueInitializationProfile.SMALL,
+                0.1,
+                makeValueLibrary(schema),
+                0.25);
+    }
+    
+    public static DominoDataGenerator dominoReadGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ReadableCellValueGenerator randomCellValueGenerator = makeReadableCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static SearchBasedDataGenerator avslangmodelGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
+                randomCellInitializer);
+    }
+    
 }
