@@ -6,11 +6,13 @@ import java.util.List;
 public class StringValue extends Value implements CompoundValue {
 
     private static final long serialVersionUID = -2565741196272855452L;
-    public static final int UPPER_A_CHAR = 20;
+    public static final int UPPER_A_CHAR = 65;
     public static final int LOWER_A_CHAR = 97;
     public static final int LOWER_Z_CHAR = 122;
     public static final int NO_MAX_LENGTH = -1;
-
+	public static final int UPPER_CHAR = 20;
+	
+	protected int characterWithNumbersMin = UPPER_CHAR;
     protected int maxLength = NO_MAX_LENGTH;
     protected int characterDefault = LOWER_A_CHAR;
     protected int characterMin = UPPER_A_CHAR;
@@ -84,6 +86,20 @@ public class StringValue extends Value implements CompoundValue {
             characters.add(character);
         }
     }
+    
+    public void setWithNumber(String string) {
+        characters.clear();
+
+        int length = string.length();
+        if (maxLength != NO_MAX_LENGTH && maxLength < length) {
+            length = maxLength;
+        }
+
+        for (int i = 0; i < length; i++) {
+            NumericValue character = createCharacterWithNumbers(string.codePointAt(i));
+            characters.add(character);
+        }
+    }
 
     public void setCharacter(int index, NumericValue value) {
         characters.set(index, value);
@@ -115,6 +131,11 @@ public class StringValue extends Value implements CompoundValue {
 
     protected NumericValue createCharacter(int character) {
         NumericValue characterValue = new NumericValue(character, characterMin, characterMax);
+        return characterValue;
+    }
+    
+    protected NumericValue createCharacterWithNumbers(int character) {
+        NumericValue characterValue = new NumericValue(character, characterWithNumbersMin, characterMax);
         return characterValue;
     }
 
