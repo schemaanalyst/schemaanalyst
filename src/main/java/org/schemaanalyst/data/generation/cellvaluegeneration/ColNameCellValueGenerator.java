@@ -113,7 +113,7 @@ public class ColNameCellValueGenerator extends RandomCellValueGenerator {
 
                 if (profile.getStringLengthMax() > 0) {
                 	if (!colName.isEmpty() || colName.equals(null)) {
-                		value.set(colName + "_" + this.columnCounter);
+                		value.setWithNumber(colName + "_" + this.columnCounter);
                 	} else {
 	                    int numCharsToGenerate = random.nextInt(profile.getStringLengthMax());
 	
