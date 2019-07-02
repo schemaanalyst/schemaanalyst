@@ -6,7 +6,7 @@ import java.util.List;
 public class StringValue extends Value implements CompoundValue {
 
     private static final long serialVersionUID = -2565741196272855452L;
-    public static final int UPPER_A_CHAR = 65;
+    public static final int UPPER_A_CHAR = 20;
     public static final int LOWER_A_CHAR = 97;
     public static final int LOWER_Z_CHAR = 122;
     public static final int NO_MAX_LENGTH = -1;
