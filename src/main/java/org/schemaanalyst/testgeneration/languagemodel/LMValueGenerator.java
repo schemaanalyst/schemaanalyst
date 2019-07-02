@@ -37,7 +37,7 @@ public class LMValueGenerator {
 	public List<RandomValue> generateListOfString(LangModel lm) {
 		List<RandomValue> theList = new ArrayList<RandomValue>();
 
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			String rand = this.randomAlphabetic(5);
 			double randscore = langModelScore(rand, lm);
 			RandomValue newValue = new RandomValue(rand, randscore);
@@ -57,7 +57,7 @@ public class LMValueGenerator {
         //top = this.search(rand, lm);
 
 		double topscore = 0;
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 10000; i++) {
 			String rand = this.randomAlphabetic(5);
 			double randscore = langModelScore(rand, lm);
 			if (randscore > topscore) {
