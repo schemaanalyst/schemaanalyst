@@ -21,6 +21,12 @@ public class GenerationCommand {
   protected String testSuite = "TestSchema";
 
   // should default to Test + schema + .java
-  @Parameter(names = {"--seed"}, description = "Seed for generation")
-  protected Long seed = -0L;
+  @Parameter(names = {"--seed","-seed","--randomseed"}, description = "Random Seed")
+  protected long seed = -0L;
+  
+  @Parameter(names = {"--showReadability","--readability","--read"}, description = "Calculates Readability of Character/String Values using a Language Model")
+  protected boolean readability = false;
+  
+  @Parameter(names = {"--saveStats"}, description = "Save the stats info into a file results/generationOutput.dat Or results/readable.dat if any of these options selected --showReadability --readability --read")
+  protected boolean saveStats = false;
 }

@@ -49,6 +49,10 @@ public class Go {
         String datagenerator = jcp.generator;
 
         String dbms = jcp.dbms;
+        
+        boolean readabilityStats = jcp.readability;
+        
+        boolean saveStats = jcp.saveStats;
 
         String classname;
 
@@ -105,7 +109,8 @@ public class Go {
                 dbmsObject.getValueFactory(),
                 dataGeneratorObject,
                 datagenerator,
-                gc.seed);
+                gc.seed,
+                readabilityStats);
         TestSuite testSuite = testSuiteGenerator.generate();
 
         // if desired, write the INSERTs to a file for inspection
@@ -123,23 +128,38 @@ public class Go {
         System.out.println("Coverage: " + report.coverage() + "%");
         System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
         System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
-        System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
-        System.out.println("Averge Length of Strings: " + testSuite.getlengthOfStringsAverage());
-        System.out.println("Number of Empty: " + testSuite.getnumberOfEmptyStrings());
-        // CSV For readable test suites
-        CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+        if (readabilityStats || datagenerator.toLowerCase().contains("langmodel")) {
+        	System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
+        	System.out.println("Averge Length of Strings: " + testSuite.getlengthOfStringsAverage());
+        	System.out.println("Number of Empty: " + testSuite.getnumberOfEmptyStrings());
+        }
+        // Save stats into a DAT file
+        if (saveStats && !readabilityStats) {
+        	CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "generationOutput.dat");
+	        CSVResult mResult = new CSVResult();
+	        mResult.addValue("schema", schemaObject.toString());
+	        mResult.addValue("dbms", dbms);
+	        mResult.addValue("criterion", criterion);
+	        mResult.addValue("datagenerator", datagenerator);
+	        mResult.addValue("coverage", report.coverage());
+	        writer.write(mResult);
+	        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "generationOutput.dat");
+        }
         
-        CSVResult mResult = new CSVResult();
-        mResult.addValue("schema", schemaObject.toString());
-        mResult.addValue("dbms", dbms);
-        mResult.addValue("criterion", criterion);
-        mResult.addValue("datagenerator", datagenerator);
-        mResult.addValue("readableScore", testSuite.getReadableScore());
-        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
-        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
-        mResult.addValue("coverage", report.coverage());
-        writer.write(mResult);
-        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "readable.dat");
+        if (saveStats && readabilityStats) {
+        	CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+	        CSVResult mResult = new CSVResult();
+	        mResult.addValue("schema", schemaObject.toString());
+	        mResult.addValue("dbms", dbms);
+	        mResult.addValue("criterion", criterion);
+	        mResult.addValue("datagenerator", datagenerator);
+	        mResult.addValue("readableScore", testSuite.getReadableScore());
+	        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
+	        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
+	        mResult.addValue("coverage", report.coverage());
+	        writer.write(mResult);
+	        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "readable.dat");
+        }
         
         // failed initial table data generation attempts
         if (report.getInitialTableDataGenerationAttemptsFailed() > 0) {

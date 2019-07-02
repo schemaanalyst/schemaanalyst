@@ -52,6 +52,7 @@ public class TestSuiteGenerator {
 	private LangModel lm;
 	private long seed;
 	private String datagen = "";
+	private boolean readability;
 
 	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
 			DataGenerator dataGenerator) {
@@ -65,13 +66,14 @@ public class TestSuiteGenerator {
 
 	// Another Constructor to initilize the LM and AVM
 	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
-			DataGenerator dataGenerator, String datagen, long seed) {
+			DataGenerator dataGenerator, String datagen, long seed, boolean readability) {
 		this.schema = schema;
 		this.testRequirements = testRequirements;
 		this.valueFactory = valueFactory;
 		this.dataGenerator = dataGenerator;
 		this.datagen = datagen;
 		this.seed = seed;
+		this.readability = readability;
 		initialTableData = new HashMap<>();
 	}
 
@@ -83,11 +85,13 @@ public class TestSuiteGenerator {
 		generateInitialTableData();
 		generateTestCases();
 		// Language Model
-		try {
-			lm = new LangModel("ukwac_char_lm");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if (datagen.toLowerCase().contains("langmodel") || this.readability) {
+			try {
+				lm = new LangModel("ukwac_char_lm");
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		// Check if we are using the LM or not
 		if (datagen.toLowerCase().contains("langmodel")) {
@@ -95,7 +99,9 @@ public class TestSuiteGenerator {
 			// this.langModelTestSuite();
 		}
 		// Calculate The test suite readability using a Language Model
-		this.calculateReadabilityOfTestSuite();
+		if (datagen.toLowerCase().contains("langmodel") || this.readability) {
+			this.calculateReadabilityOfTestSuite();
+		}
 		return testSuite;
 	}
 
