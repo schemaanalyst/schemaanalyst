@@ -354,6 +354,9 @@ There are multiple implemented test data generators available for you to use:
  3. `random` - Random data generator technique.
  4. `dominoRandom` - The original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
  5. `dominoAVS` - The hybrid technique DOMINO and AVM.
+ 6. `dominoColNamer` - A DOMINO generator that generates string values using the column names with suffix numbering and sequential numbers.
+ 6. `dominoRead` - A DOMINO generator that generates readable string values from a library called [DataFactory](https://github.com/andygibson/datafactory).
+ 6. `avslangmodel` - A Random AVM generator that uses a Language Model to replace random and unreadable values to output a more readable test suite.
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
