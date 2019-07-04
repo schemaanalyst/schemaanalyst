@@ -205,6 +205,10 @@ command in your terminal window:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
+For gradle version 4.10.2 or above this CLASSPTH will work:
+
+`export CLASSPATH="build/classes/java/main:lib/*:build/lib/*:."`
+
 ### Convert Schema to Java <a name="sqlparser"></a>
 
 We have purchased a license of [General SQLParser](http://www.sqlparser.com/)
