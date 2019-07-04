@@ -205,7 +205,7 @@ command in your terminal window:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
-For gradle version 4.10.2 or above this CLASSPTH will work:
+For gradle version 4.10.2 or above this CLASSPATH will work:
 
 `export CLASSPATH="build/classes/java/main:lib/*:build/lib/*:."`
 
@@ -265,15 +265,38 @@ Usage: <main class> [options] [command] [command options]
     --help, -h
        Prints this help menu
        Default: false
+    --seed, -seed, --randomseed
+       Random Seed
+       Default: 0
+    --saveStats
+       Save the stats info into a file results/generationOutput.dat Or
+       results/readable.dat if any of these options selected --showReadability --readability --read
+       Default: false
   * --schema, -s
        Target Schema
        Default: <empty string>
+    --showReadability, --readability, --read
+       Calculates Readability of Character/String Values using a Language Model
+       Default: false
   Commands:
     generation      Generate test data with SchemaAnalyst
       Usage: generation [options]
         Options:
           --sql, --inserts
-             Target file for writing INSERT statements
+             Enable writing INSERT statements
+             Default: false
+          --seed, -seed, --randomseed
+             Random Seed
+             Default: 0
+          --saveStats
+             Save the stats info into a file results/generationOutput.dat Or
+             results/readable.dat if any of these options selected --showReadability --readability
+             --read
+             Default: false
+          --showReadability, --readability, --read
+             Calculates Readability of Character/String Values using a Language
+             Model
+             Default: false
           --testSuite, -t
              Target file for writing JUnit test suite
              Default: TestSchema
