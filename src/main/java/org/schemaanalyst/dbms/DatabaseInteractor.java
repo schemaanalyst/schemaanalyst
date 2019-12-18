@@ -260,6 +260,7 @@ public abstract class DatabaseInteractor {
                             returnCount = CREATE_TABLE_ERROR;
                         } else {
                             LOGGER.log(Level.FINE, "Statement failed: " + command, e);
+                            returnCount = START;
                         }
                         connection.rollback();
                         break;
