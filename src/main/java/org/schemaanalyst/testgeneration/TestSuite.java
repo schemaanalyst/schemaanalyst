@@ -12,7 +12,9 @@ public class TestSuite implements Serializable {
     private static final long serialVersionUID = -7221865547415541154L;
 
     public List<TestCase> testCases;
-
+    private int generatedInserts = 0;
+	private int reducedInsertsCount = 0;
+	
     public TestSuite() {
         testCases = new ArrayList<>();
     }
@@ -25,6 +27,41 @@ public class TestSuite implements Serializable {
         return new ArrayList<>(testCases);
     }
     
+
+    public void removeTestCase(int index) {
+	testCases.remove(index);
+    }
+
+    public void removeTestCase(TestCase tc) {
+    	testCases.remove(tc);
+    }
+
+	public int getGeneratedInserts() {
+		return generatedInserts;
+	}
+
+	public void addGeneratedInserts(int originalInsertsCount) {
+		this.generatedInserts = originalInsertsCount + this.generatedInserts;
+	}
+
+	public int getReducedInsertsCount() {
+		return reducedInsertsCount;
+	}
+
+	public void addReducedInsertsCount(int reducedInsertsCount) {
+		this.reducedInsertsCount = reducedInsertsCount + this.reducedInsertsCount;
+	}
+
+	public int countNumberOfInserts() {
+		int counter = 0;
+
+		for (TestCase tc : testCases) {
+			counter = counter + tc.getData().getNumRows() + tc.getState().getNumRows();
+		}
+
+		return counter;
+	}
+
     // ========= For Calculating Readability Using the Language Model
     private double readableScore = 0;
     private int numberOfEmptyStrings = 0;

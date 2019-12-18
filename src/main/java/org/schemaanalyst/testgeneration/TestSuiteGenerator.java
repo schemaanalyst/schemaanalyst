@@ -1,35 +1,24 @@
 package org.schemaanalyst.testgeneration;
 
-import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
-import org.schemaanalyst.data.StringValue;
 import org.schemaanalyst.data.ValueFactory;
 import org.schemaanalyst.data.generation.DataGenerationReport;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.sqlrepresentation.Column;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlrepresentation.Table;
-import org.schemaanalyst.sqlrepresentation.constraint.CheckConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.ForeignKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.PrimaryKeyConstraint;
 import org.schemaanalyst.sqlrepresentation.constraint.UniqueConstraint;
-import org.schemaanalyst.sqlrepresentation.datatype.CharDataType;
-import org.schemaanalyst.sqlrepresentation.datatype.TextDataType;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirementDescriptor;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.testgeneration.coveragecriterion.integrityconstraint.PredicateGenerator;
 import org.schemaanalyst.testgeneration.coveragecriterion.predicate.*;
-import org.schemaanalyst.testgeneration.languagemodel.LMValueGenerator;
-import org.schemaanalyst.testgeneration.languagemodel.LangModel;
-import org.schemaanalyst.testgeneration.languagemodel.RandomValue;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -47,12 +36,8 @@ public class TestSuiteGenerator {
 	private HashMap<Table, Data> initialTableData;
 	private TestSuite testSuite;
 	private TestSuiteGenerationReport testSuiteGenerationReport;
+	private boolean fullreduce = false;
 
-	// For the Language Model
-	private LangModel lm;
-	private long seed;
-	private String datagen = "";
-	private boolean readability;
 
 	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
 			DataGenerator dataGenerator) {
@@ -64,16 +49,14 @@ public class TestSuiteGenerator {
 		initialTableData = new HashMap<>();
 	}
 
-	// Another Constructor to initilize the LM and AVM
 	public TestSuiteGenerator(Schema schema, TestRequirements testRequirements, ValueFactory valueFactory,
-			DataGenerator dataGenerator, String datagen, long seed, boolean readability) {
+			DataGenerator dataGenerator, boolean fullreduce) {
 		this.schema = schema;
 		this.testRequirements = testRequirements;
 		this.valueFactory = valueFactory;
 		this.dataGenerator = dataGenerator;
-		this.datagen = datagen;
-		this.seed = seed;
-		this.readability = readability;
+		this.fullreduce = fullreduce;
+
 		initialTableData = new HashMap<>();
 	}
 
@@ -84,24 +67,6 @@ public class TestSuiteGenerator {
 		testSuiteGenerationReport = new TestSuiteGenerationReport();
 		generateInitialTableData();
 		generateTestCases();
-		// Language Model
-		if (datagen.toLowerCase().contains("langmodel") || this.readability) {
-			try {
-				lm = new LangModel("ukwac_char_lm");
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		// Check if we are using the LM or not
-		if (datagen.toLowerCase().contains("langmodel")) {
-			this.convertingLMValuesToTestSuite();
-			// this.langModelTestSuite();
-		}
-		// Calculate The test suite readability using a Language Model
-		if (datagen.toLowerCase().contains("langmodel") || this.readability) {
-			this.calculateReadabilityOfTestSuite();
-		}
 		return testSuite;
 	}
 
@@ -118,15 +83,18 @@ public class TestSuiteGenerator {
 			List<Column> notNullColumns = table.getColumns();
 
 			/*
-			 * // NOTE: selecting individual columns like this will cause AUCC test
-			 * requirements to fail.
+			 * // NOTE: selecting individual columns like this will cause AUCC
+			 * test requirements to fail.
 			 * 
-			 * List<Column> notNullColumns = new ArrayList<>(); PrimaryKeyConstraint
-			 * primaryKeyConstraint = schema.getPrimaryKeyConstraint(table); if
-			 * (primaryKeyConstraint != null) { // TODO: some check as to whether it's been
-			 * added already ... notNullColumns.addAll(primaryKeyConstraint.getColumns()); }
-			 * for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table))
-			 * { notNullColumns.addAll(uniqueConstraint.getColumns()); } for
+			 * List<Column> notNullColumns = new ArrayList<>();
+			 * PrimaryKeyConstraint primaryKeyConstraint =
+			 * schema.getPrimaryKeyConstraint(table); if (primaryKeyConstraint
+			 * != null) { // TODO: some check as to whether it's been added
+			 * already ...
+			 * notNullColumns.addAll(primaryKeyConstraint.getColumns()); } for
+			 * (UniqueConstraint uniqueConstraint :
+			 * schema.getUniqueConstraints(table)) {
+			 * notNullColumns.addAll(uniqueConstraint.getColumns()); } for
 			 * (ForeignKeyConstraint foreignKeyConstraint :
 			 * schema.getForeignKeyConstraints(table)) {
 			 * notNullColumns.addAll(foreignKeyConstraint.getColumns()); }
@@ -158,14 +126,16 @@ public class TestSuiteGenerator {
 				testSuiteGenerationReport.addInitialTableDataResult(table,
 						new DataGenerationResult(data, state, dataGenerationReport));
 			} else {
-				// there was no linked data generated to add to the state, so generated of this
-				// row failed by default
+				// there was no linked data generated to add to the state, so
+				// generated of this row failed by default
 				testSuiteGenerationReport.addInitialTableDataResult(table, null);
 			}
 		}
 	}
 
 	protected void generateTestCases() {
+		int noneRemovedInsertsCount = 0;
+		int reducedInsertsCount = 0;
 		for (TestRequirement testRequirement : testRequirements.getTestRequirements()) {
 
 			Predicate predicate = testRequirement.getPredicate();
@@ -190,9 +160,18 @@ public class TestSuiteGenerator {
 
 				DataGenerationReport dataGenerationReport = dataGenerator.generateData(data, state, predicate);
 				if (dataGenerationReport.isSuccess()) {
+					noneRemovedInsertsCount = noneRemovedInsertsCount + data.getNumRows() + state.getNumRows();
+					testSuite.addGeneratedInserts(noneRemovedInsertsCount);
+					if (fullreduce) {
+						ReduecTestCase reduction = new ReduecTestCase();
+						reduction.reduceData(data, state, schema);
+						reducedInsertsCount = reducedInsertsCount + data.getNumRows() + state.getNumRows();
+					}
 					TestCase testCase = new TestCase(testRequirement, data, state);
 					testSuite.addTestCase(testCase);
-
+					testSuite.addReducedInsertsCount(reducedInsertsCount);
+					noneRemovedInsertsCount = 0;
+					reducedInsertsCount = 0;
 					LOGGER.fine(
 							"--- SUCCESS, generated in " + dataGenerationReport.getNumEvaluations() + " evaluations");
 					LOGGER.fine("--- Data is \n" + data);
@@ -227,7 +206,8 @@ public class TestSuiteGenerator {
 			return null;
 		}
 
-		if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate)) {
+		if (requiresComparisonRow) { // if (getRequiresComparisonRow(predicate))
+										// {
 			Data comparisonRow = initialTableData.get(table);
 			if (comparisonRow == null) {
 				LOGGER.fine("--- could not add comparison row, data generation FAILED");
@@ -276,7 +256,8 @@ public class TestSuiteGenerator {
 				if (refColsUnique) {
 					LOGGER.fine("--- foreign key columns are unique in " + table);
 
-					// append the predicate with the acceptance predicate of the original
+					// append the predicate with the acceptance predicate of the
+					// original
 					AndPredicate newPredicate = new AndPredicate();
 					newPredicate.addPredicate(predicate);
 					newPredicate.addPredicate(PredicateGenerator.generatePredicate(schema.getConstraints(refTable)));
@@ -300,10 +281,12 @@ public class TestSuiteGenerator {
 
 		/*
 		 * if (schema.hasPrimaryKeyConstraint(table)) {
-		 * uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns()); }
+		 * uniqueColumns.addAll(schema.getPrimaryKeyConstraint(table).getColumns
+		 * ()); }
 		 * 
-		 * for (UniqueConstraint uniqueConstraint : schema.getUniqueConstraints(table))
-		 * { uniqueColumns.addAll(uniqueConstraint.getColumns()); }
+		 * for (UniqueConstraint uniqueConstraint :
+		 * schema.getUniqueConstraints(table)) {
+		 * uniqueColumns.addAll(uniqueConstraint.getColumns()); }
 		 */
 
 		predicate.accept(new PredicateAdaptor() {
@@ -323,99 +306,4 @@ public class TestSuiteGenerator {
 
 		return true;
 	}
-
-	// ========= Language Model Methods =========
-	protected double langModelScore(String string) {
-		try {
-			return lm.score(string, false);
-		} catch (Exception e) {
-			System.err.println("Error: " + e.getMessage());
-			return 0;
-		}
-	}
-
-	private void convertingLMValuesToTestSuite() {
-		LMValueGenerator randWords = new LMValueGenerator(this.seed);
-		List<RandomValue> generateListOfString = randWords.generateListOfString(lm);
-		HashMap<String, StringValue> stringMaps = new HashMap<>();
-		List<CheckConstraint> checks = schema.getCheckConstraints();
-
-		for (TestCase tc : testSuite.getTestCases()) {
-			List<Cell> allCells = new ArrayList<Cell>();
-			allCells.addAll(tc.getState().getCells());
-			allCells.addAll(tc.getData().getCells());
-			for (Cell cell : allCells) {
-				if (cell.getValueInstance() instanceof StringValue) {
-					if (!cell.isNull() && cell.getValue() != null) {
-						StringValue oldStringValue = (StringValue) cell.getValue();
-						boolean isItInTheMap = stringMaps.containsKey(oldStringValue.get());
-						boolean isItInTheMapAsAValue = stringMaps.containsValue(oldStringValue);
-						boolean inCheck = false;
-						for (CheckConstraint c : checks) {
-							if (c.getExpression().getColumnsInvolved().contains(cell.getColumn()))
-								inCheck = true;
-						}
-						if (!inCheck) {
-							StringValue newString = null;
-							// is it in the map as key
-							if (isItInTheMap) {
-								// yes
-								newString = stringMaps.get(oldStringValue.get());
-								cell.setValue(newString);
-							} else {
-								// No
-								// Is it as a value?
-								if (!isItInTheMapAsAValue) {
-									// yes
-									newString = new StringValue(
-											generateListOfString.get(generateListOfString.size() - 1).getValue());
-									StringValue oldString = (StringValue) cell.getValue();
-									if (oldString.getMaxLength() != -1) {
-										if (newString.get().length() > oldString.getMaxLength()) {
-											int end1 = newString.get().length() - oldString.getMaxLength();
-											int end = newString.get().length() - end1;
-											newString.set(newString.get().substring(0, end));
-										}
-									}
-									stringMaps.put(oldString.get(), newString);
-									cell.setValue(newString);
-									generateListOfString.remove(generateListOfString.size() - 1);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	private void calculateReadabilityOfTestSuite() {
-		for (TestCase tc : testSuite.getTestCases()) {
-			// Scoring Readable strings and VarChars
-			double readableScore = 0;
-			// double readableData = 0;
-			List<Cell> allCells = new ArrayList<Cell>();
-			allCells.addAll(tc.getData().getCells());
-			allCells.addAll(tc.getState().getCells());
-			for (Cell cell : allCells) {
-				if (cell.getValueInstance() instanceof StringValue) {
-					if (!cell.isNull() && !cell.getValue().toString().equals("''")) {
-						String value = cell.getValue().toString();
-						readableScore += this.langModelScore(value.replaceAll("\'", ""));
-						// int l = cell.getValue().toString().length();
-						testSuite.addlengthOfStrings(cell.getValue().toString().length());
-					}
-
-					if (cell.getValue().toString().equals("''")) {
-						testSuite.addnumberOfEmptyStrings(1);
-					}
-				}
-			}
-			// Adding the total score of T-suffiecnt and test data
-			// together
-			testSuite.addReadableScore(readableScore);
-
-		}
-	}
-
 }
