@@ -105,6 +105,14 @@ public class Data implements Serializable {
         }
         return tableRows;
     }
+    
+    /**
+     * A method that removes a spefic table
+     * @param table The table of the columns for which cell values are sought.
+     */
+    public void removeTable(Table table) {
+        data.remove(table);
+    }
 
     /**
      * Adds a list of rows to a given table.
