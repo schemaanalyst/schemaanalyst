@@ -48,7 +48,6 @@ public class DeletingTestCaseExecutor extends TestCaseExecutor {
             executeDeletesInTransaction();
             executeInsertsInTransaction(testCase.getState());
             if (expectedResult.wasSuccessful()) {
-                
                 executeInsertsInTransaction(testCase.getData());
             } else {
                 executeInserts(testCase.getData());

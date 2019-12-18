@@ -3,6 +3,7 @@ package org.schemaanalyst.mutation.analysis.executor;
 import org.apache.commons.lang3.time.StopWatch;
 import org.schemaanalyst.configuration.DatabaseConfiguration;
 import org.schemaanalyst.configuration.LocationsConfiguration;
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.generation.DataGenerator;
 import org.schemaanalyst.data.generation.DataGeneratorFactory;
 import org.schemaanalyst.dbms.DBMS;
@@ -19,12 +20,14 @@ import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteExecutor;
 import org.schemaanalyst.mutation.analysis.executor.testsuite.TestSuiteResult;
 import org.schemaanalyst.mutation.pipeline.MutationPipeline;
 import org.schemaanalyst.mutation.pipeline.MutationPipelineFactory;
+import org.schemaanalyst.reduction.ReductionFactory;
 import org.schemaanalyst.sqlrepresentation.Schema;
 import org.schemaanalyst.sqlwriter.SQLWriter;
 import org.schemaanalyst.testgeneration.TestCase;
 import org.schemaanalyst.testgeneration.TestSuite;
 import org.schemaanalyst.testgeneration.TestSuiteGenerationReport;
 import org.schemaanalyst.testgeneration.TestSuiteGenerator;
+import org.schemaanalyst.testgeneration.TestSuiteJavaWriter;
 import org.schemaanalyst.testgeneration.coveragecriterion.CoverageCriterionFactory;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirements;
 import org.schemaanalyst.util.csv.CSVFileWriter;
@@ -35,8 +38,10 @@ import org.schemaanalyst.util.runner.Runner;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.util.*;
@@ -70,6 +75,36 @@ public class MutationAnalysis extends Runner {
      */
     @Parameter("The data generator to use.")
     protected String dataGenerator = "avsDefaults";
+    /**
+     * Post generation test suite reduction. Options: none (default), eqltc (Equal Test Cases), eqltr (Equal Test Requirements).
+     */
+    @Parameter("Post generation test suite reduction. Options: none (default), eqltc (Equal Test Cases), eqltr (Equal Test Requirements).")
+    protected String reduce = "none";
+    /**
+     * Full reduce reduces test requirements, test case statements, equal test requirements and equal test cases. Default is deactivated
+     */
+    @Parameter("Post generation test suite reduction. Options: none (default), eqltc (Equal Test Cases), eqltr (Equal Test Requirements).")
+    protected boolean fullreduce = false;
+    
+    /**
+     * Reduction Technique
+     */
+    @Parameter("The reduction technique: simpleGreedy (default), additionalGreedy ,HGS, random, sticcer")
+    protected String reducewith = "additionalGreedy";
+    
+    
+    /**
+     * Save the generated test suite as Junit
+     */
+    @Parameter("Save the generated test suite as Junit")
+    protected boolean saveTestSuite = false;
+    
+    /**
+     * If added it will reduce the generated predicates generated for each test requirements
+     */
+    @Parameter("If added it will reduce the generated predicates generated for each test requirements. Default is false.")
+    protected boolean reducePredicates = false;
+
     /**
      * The maximum fitness evaluations when generating data.
      */
@@ -143,7 +178,27 @@ public class MutationAnalysis extends Runner {
      * The report produced when generating the test suite.
      */
     private TestSuiteGenerationReport generationReport;
-
+    
+    /**
+     * The number of covered requirements by the original test suite
+     */
+    private int numCoveredTestReqsPreReduction = 0;
+    
+    /**
+     * The number of covered requirements by the reduced test suite
+     */
+    private int numCoveredTestReqsPostReduction = 0;
+    
+    /**
+     * Number of merges
+     */
+    private int numOfMerges = 0;
+    
+    /**
+     * Original Test Suite
+     */
+    private TestSuite originalTestSuite;
+    
     private static final Logger LOGGER = Logger.getLogger(MutationAnalysis.class.getName());
 
     @Override
@@ -157,21 +212,27 @@ public class MutationAnalysis extends Runner {
         StopWatch mutantGenerationTime = new StopWatch();
         StopWatch originalResultsTime = new StopWatch();
         StopWatch mutationAnalysisTime = new StopWatch();
+        // set all reduction techniques to true if full reduction
+        if (fullreduce) {
+        	this.reduce = "fullreduce";
+        	//this.reducePredicates = true;
+        }
         totalTime.start();
-
         // Generate test suite and mutants, apply mutation analysis technique
         final TestSuite suite = Timing.timedTask(new Callable<TestSuite>() {
             @Override
             public TestSuite call() throws Exception {
-                return instantiateTestSuite();
+                return instantiateTestSuiteWithReduction(reduce, fullreduce, reducewith);
             }
         }, testGenerationTime);
+        
         final List<Mutant<Schema>> mutants = Timing.timedTask(new Callable<List<Mutant<Schema>>>() {
             @Override
             public List<Mutant<Schema>> call() throws Exception {
                 return generateMutants();
             }
         }, mutantGenerationTime);
+        
         final TestSuiteResult originalResults = Timing.timedTask(new Callable<TestSuiteResult>() {
             @Override
             public TestSuiteResult call() throws Exception {
@@ -190,6 +251,35 @@ public class MutationAnalysis extends Runner {
         // Stop timing
         totalTime.stop();
 
+        // Calculate number of Nulls
+        int nullCounterOriginalTestSuite = 0;
+        if (saveTestSuite) {
+			for (TestCase tc : originalTestSuite.getTestCases()) {
+				for (Cell c : tc.getState().getCells()) {
+					if (c.isNull())
+						nullCounterOriginalTestSuite++;
+				}
+				for (Cell c : tc.getData().getCells()) {
+					if (c.isNull())
+						nullCounterOriginalTestSuite++;
+				}
+			}
+        }
+
+        int nullCounterReducedTestSuite = 0;
+		if (fullreduce) {
+			for (TestCase tc : suite.getTestCases()) {
+				for (Cell c : tc.getState().getCells()) {
+					if (c.isNull())
+						nullCounterReducedTestSuite++;
+				}
+				for (Cell c : tc.getData().getCells()) {
+					if (c.isNull())
+						nullCounterReducedTestSuite++;
+				}
+			}
+		}
+        
         // Write results
         CSVResult result = new CSVResult();
         result.addValue("dbms", databaseConfiguration.getDbms());
@@ -201,6 +291,7 @@ public class MutationAnalysis extends Runner {
         result.addValue("coverage", inputTestSuite == null ? generationReport.coverage() : "NA");
         //TODO: Include the coverage according to the comparison coverage criterion
         result.addValue("evaluations", inputTestSuite == null ? generationReport.getNumDataEvaluations(false) : "NA");
+        result.addValue("numCoveredRequirments", this.numCoveredTestReqsPreReduction);
         result.addValue("tests", suite.getTestCases().size());
         //TODO: Include the number of insert statements
         result.addValue("mutationpipeline", mutationPipeline.replaceAll(",", "|"));
@@ -208,11 +299,37 @@ public class MutationAnalysis extends Runner {
         result.addValue("scoredenominator", mutants.size());
         result.addValue("technique", technique);
         result.addValue("transactions", useTransactions);
+        // Reduction values
+        result.addValue("fullreduce", fullreduce);
+        result.addValue("reducedwith", reducewith);
+        result.addValue("testSuiteReduction", reduce);
+        result.addValue("reducePredicates", reducePredicates);
+        result.addValue("originalinsertscount", suite.getGeneratedInserts());
+        result.addValue("reducedinsertscount", suite.getReducedInsertsCount());
+        result.addValue("finalinsertscounter", suite.countNumberOfInserts());
+        result.addValue("numCoveredReqReduced", this.numCoveredTestReqsPostReduction);
+        // Number of nulls
+        result.addValue("originalNumOfNulls", nullCounterOriginalTestSuite);
+        result.addValue("reducedNumOfNulls", nullCounterReducedTestSuite);
+        // Timings
         result.addValue("testgenerationtime", testGenerationTime.getTime());
         result.addValue("mutantgenerationtime", mutantGenerationTime.getTime());
         result.addValue("originalresultstime", originalResultsTime.getTime());
         result.addValue("mutationanalysistime", mutationAnalysisTime.getTime());
         result.addValue("timetaken", totalTime.getTime());
+        
+        if (reducewith.equals("sticcer")) {
+	       	CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "numberOfMerges.dat");
+	        CSVResult mResult = new CSVResult();
+	        mResult.addValue("schema", casestudy);
+	        mResult.addValue("dbms", dbms);
+	        mResult.addValue("criterion", criterion);
+	        mResult.addValue("datagenerator", dataGenerator);
+	        mResult.addValue("randomseed", randomseed);
+	        mResult.addValue("merges", numOfMerges);
+	        writer.write(mResult);
+	        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "numberOfMerges.dat");
+        }
 
         //new CSVFileWriter(locationsConfiguration.getResultsDir() + File.separator + "newmutationanalysis.dat").write(result);
         // Changed by Abdullah from newmutationanalysis.dat --> mutationanalysis.dat
@@ -235,7 +352,38 @@ public class MutationAnalysis extends Runner {
         if (outputMutantsDetailed_v2) {
             writeDetailedMutantReport_v2(analysisResult);
         }
+        
+        if (saveTestSuite) {
+        	verifyTestSuite(originalTestSuite);
+        	saveSuiteToJunit(originalTestSuite, true);
+			if (fullreduce) {
+				saveSuiteToJunit(suite, false);
+			}
+        }
+        
     }
+    
+    private void saveSuiteToJunit(TestSuite suite, boolean original) {
+    	String packagename = "generatedtest";
+    	String classname = "Test" + schema.getName() + randomseed;
+		classname = classname.replace(".", "");
+		String javaCode = new TestSuiteJavaWriter(schema, dbms, suite, true)
+				.writeTestSuite(packagename, classname);
+		String filePath = packagename + "/" + dbms.getName() + "/" + dataGenerator + "/" + classname + ".java";
+		if (!original)
+			filePath = packagename + "/" + dbms.getName() + "/" + dataGenerator + "/" + reducewith + "/" +  classname + ".java";
+		if (original)
+			filePath = packagename + "/" + dbms.getName() + "/" + dataGenerator + "/original/" +  classname + ".java";
+		File javaFile = new File(filePath);
+		// make the package directory if it does not exist
+		javaFile.getParentFile().mkdirs();
+		
+		try (PrintWriter fileOut = new PrintWriter(javaFile)) {
+			fileOut.println(javaCode);
+		} catch (FileNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
     /**
      * Instantiates the DBMS class, SQL writer and interactor.
@@ -255,7 +403,7 @@ public class MutationAnalysis extends Runner {
     }
 
     private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+        return TechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
     }
 
     /**
@@ -265,13 +413,28 @@ public class MutationAnalysis extends Runner {
      */
     private TestSuite instantiateTestSuite() {
         if (inputTestSuite == null) {
-            return generateTestSuite();
+            return generateTestSuite(null, null);
+        } else {
+            return loadTestSuite();
+        }
+    }
+    
+    /**
+     * Generates the test suite according to the algorithm and criterion.
+     * Also it include redcution
+     *
+     * @return The test suite
+     */
+    private TestSuite instantiateTestSuiteWithReduction(String reductionType, boolean fullreduce, String reducewith) {
+        if (inputTestSuite == null) {
+            TestSuite suite = generateTestSuite(reductionType, reducewith);
+            return suite;
         } else {
             return loadTestSuite();
         }
     }
 
-    private TestSuite generateTestSuite() {
+    private TestSuite generateTestSuite(String reductionType, String reducewith) {
         // Initialise from factories
         final DataGenerator dataGen = DataGeneratorFactory.instantiate(dataGenerator, randomseed, 100000, schema);
         final TestRequirements testRequirements = CoverageCriterionFactory.instantiateSchemaCriterion(criterion, schema, dbms).generateRequirements();
@@ -285,14 +448,37 @@ public class MutationAnalysis extends Runner {
                 schema,
                 testRequirements,
                 dbms.getValueFactory(),
-                dataGen
+                dataGen,
+                fullreduce
         );
 
         // Generate suite
-        final TestSuite testSuite = generator.generate();
+        TestSuite testSuite = generator.generate();
         generationReport = generator.getTestSuiteGenerationReport();
         //TODO: Include the coverage according to the comparison coverage criterion
-
+        
+        // Save original Test suite
+        if (saveTestSuite) {
+        	originalTestSuite = testSuite;
+        }
+        
+        // Number of covered requirments
+        this.numCoveredTestReqsPreReduction = generationReport.getNumTestRequirementsCovered();
+        
+        // Reductions
+        // Reduction of test suite        
+        if (fullreduce) {        	
+			int totalFulfilledRequirements = testRequirements.size() - generationReport.getNumTestRequirementsFailed();
+			
+			ReductionFactory reduce = new ReductionFactory();
+			
+			testSuite = reduce.reduceTestSuite(testSuite, testRequirements, schema, generationReport.getFailedTestRequirements(), 
+					totalFulfilledRequirements, randomseed, reducewith);	
+			
+			numOfMerges = reduce.numOfMerges;
+			this.numCoveredTestReqsPostReduction = reduce.numberOfSatisfiedRequirements;
+        }
+        
         // Ensure the test suite contains no warnings
         verifyTestSuite(testSuite);
 

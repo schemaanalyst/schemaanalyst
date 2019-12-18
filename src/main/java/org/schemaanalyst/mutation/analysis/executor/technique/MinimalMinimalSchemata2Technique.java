@@ -58,8 +58,8 @@ public class MinimalMinimalSchemata2Technique extends Technique {
     private Map<Integer, TestSuiteResult> resultMap;
     private Map<String, List<Integer>> changedTableMap;
 
-    public MinimalMinimalSchemata2Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public MinimalMinimalSchemata2Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
         this.sqlWriter = dbms.getSQLWriter();
     }
 
@@ -82,7 +82,7 @@ public class MinimalMinimalSchemata2Technique extends Technique {
         mutants = suitableMutants;
 
         // Analyse unsuitable mutants with Minimal technique
-        AnalysisResult removalResults = new MinimalSchemataTechnique(schema.duplicate(), unsuitableMutants, testSuite, dbms, databaseInteractor, useTransactions).analyse(originalResults);
+        AnalysisResult removalResults = new MinimalSchemataTechnique(schema.duplicate(), unsuitableMutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed).analyse(originalResults);
         for (Mutant<Schema> mutant : removalResults.getKilled()) {
             result.addKilled(mutant);
         }

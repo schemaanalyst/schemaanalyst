@@ -82,6 +82,7 @@ public class TestCaseExecutor {
         }
     }
 
+	/*
     public void executeInserts(Data data) {
         List<Table> stateTables = data.getTables();
         for (Table table : tables) {
@@ -97,7 +98,56 @@ public class TestCaseExecutor {
             }
         }
     }
-
+    */
+    
+    public void executeInserts(Data data) {
+        List<Table> stateTables = data.getTables();
+        int resultCounter = 0;
+        List<String> listOfStatements = new ArrayList<String>();
+        for (Table table : tables) {
+            if (stateTables.contains(table)) {
+                List<Row> rows = data.getRows(table);
+                for (Row row : rows) {
+                    String statement = sqlWriter.writeInsertStatement(row);
+                    Integer result = databaseInteractor.executeUpdate(statement);
+                    if (result != 1) {
+                        resultCounter++;
+                        listOfStatements.add(statement);
+                        //throw new InsertStatementException("Failed, result was: " + result, statement);
+                    }
+                }
+            }
+        }
+        if (resultCounter > 0) {
+        	throw new InsertStatementException("Failed, result was: " + resultCounter, listOfStatements.toString());
+        }
+    }
+    
+    public void executeInsertsInTransaction(Data data) {
+        List<Table> stateTables = data.getTables();
+        int resultCounter = 0;
+        for (Table table : tables) {
+            if (stateTables.contains(table)) {
+                List<Row> rows = data.getRows(table);
+                List<String> statements = new ArrayList<>();
+                for (Row row : rows) {
+                    String statement = sqlWriter.writeInsertStatement(row);
+                    statements.add(statement);
+                }
+                Integer result = databaseInteractor.executeUpdatesAsTransaction(statements);
+                if (result != 1) {
+                    resultCounter++;
+                    //throw new InsertStatementException("Failed, result was: " + result, "(Executed in transaction)");
+                }
+            }
+        }
+        if (resultCounter > 0) {
+        	throw new InsertStatementException("Failed, result was: " + resultCounter, "(Executed in transaction) with " + resultCounter + " Failures");
+        }
+    }
+    
+    
+    /*
     public void executeInsertsInTransaction(Data data) {
         List<Table> stateTables = data.getTables();
         for (Table table : tables) {
@@ -115,7 +165,7 @@ public class TestCaseExecutor {
             }
         }
     }
-
+	*/
     /**
      * Execute a {@link TestCase} with the {@link Schema} and {@link DBMS} given
      * in the constructor.

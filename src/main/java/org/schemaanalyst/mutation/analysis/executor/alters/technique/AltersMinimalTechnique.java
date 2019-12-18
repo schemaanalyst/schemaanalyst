@@ -25,8 +25,9 @@ import java.util.*;
  */
 public class AltersMinimalTechnique extends Technique {
 
-    public AltersMinimalTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, false);
+    public AltersMinimalTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, 
+    		String dataGenerator, String criterion, long randomseed) {
+    	super(schema, mutants, testSuite, dbms, databaseInteractor, false, dataGenerator, criterion, randomseed);
     }
 
     @Override
