@@ -62,6 +62,9 @@ public class Go {
 		boolean printTR = jcp.printTR;
 		
 		String reducewith = jcp.reducewith;
+		
+        boolean readabilityStats = jcp.readability;
+        boolean saveStats = jcp.saveStats;
 
 		String classname;
 
@@ -73,12 +76,12 @@ public class Go {
 		if (command != null && command.equals("mutation")) {
 
 			/* ArrayList<String> pargs = new ArrayList<String>(); */
+			// Removed: "--reducePredicates=" + mc.reducePredicates,
 
 			String[] pargs = new String[] { schema, "--criterion=" + criterion, "--dataGenerator=" + datagenerator,
 					"--maxevaluations=" + mc.maxEvaluations, "--randomseed=" + mc.seed,
 					"--mutationPipeline=" + mc.pipeline, "--technique=" + mc.technique,
 					"--useTransactions=" + mc.transactions, "--reduce=" + mc.reduce,
-					"--reducePredicates=" + mc.reducePredicates,
 					"--fullreduce=" + mc.fullreduce,
 					"--reducewith=" + mc.reducewith};
 
@@ -112,8 +115,20 @@ public class Go {
 			testRequirements.reduce();
 
 			// generate the test suite
-			TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(schemaObject, testRequirements,
-					dbmsObject.getValueFactory(), dataGeneratorObject, fullreduce || reduction.equals("reduceTC"));
+			//TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(schemaObject, testRequirements,
+			//		dbmsObject.getValueFactory(), dataGeneratorObject, fullreduce || reduction.equals("reduceTC"));
+			
+	        // generate the test suite
+	        TestSuiteGenerator testSuiteGenerator = new TestSuiteGenerator(
+	                schemaObject,
+	                testRequirements,
+	                dbmsObject.getValueFactory(),
+	                dataGeneratorObject,
+	                datagenerator,
+	                gc.seed,
+	                readabilityStats,
+	                fullreduce);
+			
 			TestSuite testSuite = testSuiteGenerator.generate();
 
 			// if desired, write the INSERTs to a file for inspection
@@ -125,13 +140,44 @@ public class Go {
 				
 			}
 
-			// print some stats
-			TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
-			System.out.println("Test requirements covered: " + report.getNumTestRequirementsCovered() + "/"
-					+ report.getNumTestRequirementsAttempted());
-			System.out.println("Coverage: " + report.coverage() + "%");
-			System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
-			System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
+	        // print some stats
+	        TestSuiteGenerationReport report = testSuiteGenerator.getTestSuiteGenerationReport();
+	        System.out.println("Test requirements covered: " + report.getNumTestRequirementsCovered() + "/" + report.getNumTestRequirementsAttempted());
+	        System.out.println("Coverage: " + report.coverage() + "%");
+	        System.out.println("Num Evaluations (test cases only): " + report.getNumDataEvaluations(true));
+	        System.out.println("Num Evaluations (all): " + report.getNumEvaluations(false));
+	        if (readabilityStats || datagenerator.toLowerCase().contains("langmodel")) {
+	        	System.out.println("Readable Score of TestSuite: " + testSuite.getReadableScore());
+	        	System.out.println("Averge Length of Strings: " + testSuite.getlengthOfStringsAverage());
+	        	System.out.println("Number of Empty: " + testSuite.getnumberOfEmptyStrings());
+	        }
+	        // Save stats into a DAT file
+	        if (saveStats && !readabilityStats) {
+	        	CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "generationOutput.dat");
+		        CSVResult mResult = new CSVResult();
+		        mResult.addValue("schema", schemaObject.toString());
+		        mResult.addValue("dbms", dbms);
+		        mResult.addValue("criterion", criterion);
+		        mResult.addValue("datagenerator", datagenerator);
+		        mResult.addValue("coverage", report.coverage());
+		        writer.write(mResult);
+		        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "generationOutput.dat");
+	        }
+	        
+	        if (saveStats && readabilityStats) {
+	        	CSVFileWriter writer = new CSVFileWriter("results" + File.separator + "readable.dat");
+		        CSVResult mResult = new CSVResult();
+		        mResult.addValue("schema", schemaObject.toString());
+		        mResult.addValue("dbms", dbms);
+		        mResult.addValue("criterion", criterion);
+		        mResult.addValue("datagenerator", datagenerator);
+		        mResult.addValue("readableScore", testSuite.getReadableScore());
+		        mResult.addValue("AverageStringLength", testSuite.getlengthOfStringsAverage());
+		        mResult.addValue("TotalEmptyStrings", testSuite.getnumberOfEmptyStrings());
+		        mResult.addValue("coverage", report.coverage());
+		        writer.write(mResult);
+		        System.out.println("All Results Printed in the following file: " + "results" + File.separator + "readable.dat");
+	        }
 
 			if (fullreduce || reduction.equals("reduceTC")) {
 				System.out.println("Original Number of INSERTs: " + testSuite.getGeneratedInserts());
@@ -157,6 +203,7 @@ public class Go {
 				System.out.println("==================================================================================");
 				System.out.println("Final Number of INSERTs After test suite reduction: " + testSuite.countNumberOfInserts());
 			}
+			
 			
 			int nullCounter = 0;
 			for (TestCase tc : testSuite.getTestCases()) {

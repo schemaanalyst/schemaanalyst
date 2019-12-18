@@ -24,15 +24,22 @@ public class JCommanderParams {
   @Parameter(names = {"--seed","-rs","--randomseed"}, description = "A long random seed")
   protected long randomseed = -0L;
   
-  @Parameter(names = {"--reduce"}, description = "Post generation test suite reduction. Options: none (default), eqltc (Equal Test Cases), eqltr (Equal Test Requirements), reduceTC (Reduce Test Cases INSERTS)")
-  protected String reduce = "none";
+  @Parameter(names = {"--showReadability","--readability","--read"}, description = "Calculates Readability of Character/String Values using a Language Model")
+  protected boolean readability = false;
   
-  @Parameter(names = {"--reduceP","-rp","--reducePredicates"}, description = "If added it will reduce the generated predicates generated for each test requirments")
-  protected boolean reducePredicates = false;
+  @Parameter(names = {"--saveStats"}, description = "Save the stats info into a file results/generationOutput.dat Or results/readable.dat if any of these options selected --showReadability --readability --read")
+  protected boolean saveStats = false;
   
-  @Parameter(names = {"--fullreduce","-fr"}, description = "Full reduce reduces test requirements, test case statements, equal test requirements and equal test cases. Default is deactivated")
+  // @Parameter(names = {"--reduce"}, description = "Post generation test suite reduction. Options: none (default), eqltc (Equal Test Cases), eqltr (Equal Test Requirements), reduceTC (Reduce Test Cases INSERTS)")
+  //@Parameter(names = {"--reduce"}, description = "Post generation test suite reduction. For Debugging only.")
+  public String reduce = "none";
+
+  //@Parameter(names = {"--reduceP","-rp","--reducePredicates"}, description = "If added it will reduce the generated predicates generated for each test requirments")
+  //public boolean reducePredicates = false;
+  
+  @Parameter(names = {"--fullreduce","-fr"}, description = "Full Test Suite Reduction with the option of --reducewith techniques. Default is deactivated")
   protected boolean fullreduce = false;
-  
+
   @Parameter(names = {"--reducewith","-r"}, description = "The reduction techniques: simpleGreedy, additionalGreedy (default), HGS, random, combo")
   protected String reducewith = "additionalGreedy";
   
