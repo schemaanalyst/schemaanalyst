@@ -265,9 +265,19 @@ Usage: <main class> [options] [command] [command options]
     --help, -h
        Prints this help menu
        Default: false
-    --seed, -seed, --randomseed
-       Random Seed
+    --printTR, -ptr, --printTestRequriments
+       Print Test Requriments
+       Default: false
+    --seed, -rs, --randomseed
+       A long random seed
        Default: 0
+    --fullreduce, -fr
+       Full Test Suite Reduction with the option of --reducewith techniques.
+       Default is deactivated
+       Default: false
+    --reducewith, -r
+       The reduction techniques: simpleGreedy, additionalGreedy (default), HGS, random, sticcer
+       Default: additionalGreedy
     --saveStats
        Save the stats info into a file results/generationOutput.dat Or
        results/readable.dat if any of these options selected --showReadability --readability --read
@@ -307,12 +317,20 @@ Usage: <main class> [options] [command] [command options]
     mutation      Perform mutation testing of SchemaAnalyst
       Usage: mutation [options]
         Options:
+          --fullreduce, -fr
+             Full Test Suite Reduction with the option of --reducewith
+             techniques. Default is deactivated
+             Default: false
           --maxEvaluations
              The maximum fitness evaluations for the search algorithm to use.
              Default: 100000
           --pipeline
              The mutation pipeline to use to generate mutants.
              Default: AllOperatorsWithRemovers
+          --reducewith, -r
+             The reduction techniques: simpleGreedy, additionalGreedy (default),
+             HGS, random, combo
+             Default: additionalGreedy
           --seed
              The random seed.
              Default: 0
@@ -355,8 +373,18 @@ There are multiple implemented test data generators available for you to use:
  4. `dominoRandom` - The original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
  5. `dominoAVS` - The hybrid technique DOMINO and AVM.
  6. `dominoColNamer` - A DOMINO generator that generates string values using the column names with suffix numbering and sequential numbers.
- 6. `dominoRead` - A DOMINO generator that generates readable string values from a library called [DataFactory](https://github.com/andygibson/datafactory).
- 6. `avslangmodel` - A Random AVM generator that uses a Language Model to replace random and unreadable values to output a more readable test suite.
+ 7. `dominoRead` - A DOMINO generator that generates readable string values from a library called [DataFactory](https://github.com/andygibson/datafactory).
+ 8. `avslangmodel` - A Random AVM generator that uses a Language Model to replace random and unreadable values to output a more readable test suite.
+
+#### Reduction Methods
+
+Multiple Test Suite Reduction (TSR) methods are implemented and available for you to use:
+
+ 3. `random` - a random test suite reduction technique
+ 1. `simpleGreedy` - a naive greedy test suite reduction technique
+ 2. `additionalGreedy,` - additional greedy test suite reduction technique (i.e., known as "greedy" the TSR literature)
+ 4. `HGS` - a greedy method based on set cardinality
+ 5. `sticcer` - a technique the reduces and merges test cases in the test suite
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
