@@ -89,7 +89,7 @@ public class MutationAnalysis extends Runner {
     /**
      * Reduction Technique
      */
-    @Parameter("The reduction technique: simpleGreedy (default), additionalGreedy ,HGS, random, sticcer")
+    @Parameter("The reduction technique: simpleGreedy, additionalGreedy (default), HGS, random, sticcer")
     protected String reducewith = "additionalGreedy";
     
     

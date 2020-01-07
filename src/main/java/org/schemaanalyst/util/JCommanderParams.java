@@ -40,7 +40,7 @@ public class JCommanderParams {
   @Parameter(names = {"--fullreduce","-fr"}, description = "Full Test Suite Reduction with the option of --reducewith techniques. Default is deactivated")
   protected boolean fullreduce = false;
 
-  @Parameter(names = {"--reducewith","-r"}, description = "The reduction techniques: simpleGreedy, additionalGreedy (default), HGS, random, combo")
+  @Parameter(names = {"--reducewith","-r"}, description = "The reduction techniques: simpleGreedy, additionalGreedy (default), HGS, random, sticcer")
   protected String reducewith = "additionalGreedy";
   
   @Parameter(names = {"--printTR","-ptr","--printTestRequriments"}, description = "Print Test Requriments")
