@@ -93,7 +93,8 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.util.collection.TestIdentifiableEntitySet.class,
 	org.schemaanalyst.unittest.util.collection.TestIdentifier.class,
 	org.schemaanalyst.unittest.util.runner.TestRunner.class,
-	org.schemaanalyst.unittest.util.sql.TestSQLRepairer.class
+	org.schemaanalyst.unittest.util.sql.TestSQLRepairer.class,
+	org.schemaanalyst.unittest.reduction.TestReductionTechniques.class
 })
 
 public class AllTests {}
