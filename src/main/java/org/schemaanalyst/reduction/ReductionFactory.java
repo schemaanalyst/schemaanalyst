@@ -110,6 +110,25 @@ public class ReductionFactory {
 			this.numOfMerges = reduction.numberOfMerges;
 			
 			System.out.println("Number of merges == " + reduction.numberOfMerges);
+		} else if (reductionTechnique.equals("sticcerD")) {
+			System.out.println("Reduced with STICCER-D");
+			// Reduced with STICCER
+			DiverseSticcerReduction reduction = new DiverseSticcerReduction(originalTestSuite, allTestRequirements, schema, failedTestRequirements);
+			reduction.removeEqualTestCases();
+			
+			if (!reduction.mergeTestCases()) {
+				reductionFailed = true;
+			}
+			
+			if (!reduction.checkCoverage(totalFulfilledRequirements)) {
+				unFulfilledReqs = true;
+			}
+			numberOfSatisfiedRequirements = reduction.numberOfSatisfiedRequirements;
+			reducedTestSuite = reduction.getReducedTestSuite();
+			
+			this.numOfMerges = reduction.numberOfMerges;
+			
+			System.out.println("Number of merges == " + reduction.numberOfMerges);
 		} else {
 			System.err.println("Incorrect Reduction Technique Entered -- you have the following options: simpleGreedy, additionalGreedy, HGS, random, sticcer");
 		}

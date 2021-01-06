@@ -1,5 +1,6 @@
 package org.schemaanalyst.testgeneration;
 
+import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.testgeneration.coveragecriterion.TestRequirement;
 
@@ -31,6 +32,14 @@ public class TestCase implements Serializable {
     
 	public void setData(Data newData) {
 		this.data = newData;
+	}
+	
+	public List<Cell> getAllValues() {
+		List<Cell> allCells = new ArrayList<Cell>();
+		allCells.addAll(this.getState().getCells());
+		allCells.addAll(this.data.getCells());
+		
+		return allCells;
 	}
 
     public Data getState() {
