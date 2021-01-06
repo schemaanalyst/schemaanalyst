@@ -1,4 +1,7 @@
 #!/bin/bash
+./gradlew compile
+export CLASSPATH="build/classes/java/main:lib/*:build/lib/*:."
+
 
 function output {
   echo "$1 ($(date))" >> log
@@ -40,6 +43,7 @@ schemasTest="ArtistSimilarity:ArtistTerm:BrowserCookies"
 testingSchemas="ArtistSimilarity:ArtistTerm:BankAccount:BrowserCookies:Cloc:CoffeeOrders:CustomerOrder:DellStore:Employee:Examination:Flights:FrenchTowns:Inventory"
 schemasRest="Iso3166:IsoFlav_R2Repaired:JWhoisServer:MozillaExtensions:MozillaPermissions:NistDML181:NistDML182:NistDML183:NistWeather:NistXTS748:NistXTS749:Person:Products:RiskIt:StackOverflow:StudentResidence:UnixUsage:Usda:WordNet:BookTown"
 schemasiTrust="iTrust"
+requiredSchemas="ArtistSimilarity:ArtistTerm:BankAccount:BrowserCookies:Cloc:CoffeeOrders:CustomerOrder:DellStore:Employee:Examination:Flights:FrenchTowns:Inventory:Iso3166:IsoFlav_R2Repaired:JWhoisServer:MozillaExtensions:MozillaPermissions:NistDML181:NistDML182:NistDML183:NistWeather:NistXTS748:NistXTS749:Person:Products:RiskIt:StackOverflow:StudentResidence:UnixUsage:Usda:WordNet:BookTown:iTrust"
 
 pipelineClassifiers="AllOperatorsNoFKANormalisedWithClassifiers"
 pipelineRemoversDBMS="AllOperatorsNoFKANormalisedWithRemoversDBMSRemovers"
@@ -73,36 +77,42 @@ output "Starting"
 ############################ This only for testing
 output "testingSchemas"
 output "DOMINO-RANDOM"
-output "30x dominoRandom testingSchemas Schemas SQLite"
-mutation 30 1 $schemasTest dominoRandom testingSchemas SQLite
+output "30x dominoRandom requiredSchemas SQLite fullreduce additionalGreedy"
+mutationfullreduce 30 1 $requiredSchemas dominoRandom requiredSchemas SQLite sticcerD
 
-output "30x dominoRandom testingSchemas SQLite fullreduce additionalGreedy"
-mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite additionalGreedy
+#output "30x dominoRandom testingSchemas Schemas SQLite"
+#mutation 30 1 $schemasTest dominoRandom testingSchemas SQLite
 
-output "30x dominoRandom testingSchemas SQLite fullreduce random"
-mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite random
+#output "30x dominoRandom testingSchemas SQLite fullreduce additionalGreedy"
+#mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite additionalGreedy
 
-output "30x dominoRandom testingSchemas SQLite fullreduce HGS"
-mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite HGS
+#output "30x dominoRandom testingSchemas SQLite fullreduce random"
+#mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite random
 
-output "30x dominoRandom testingSchemas SQLite fullreduce sticcer"
-mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite sticcer
+#output "30x dominoRandom testingSchemas SQLite fullreduce HGS"
+#mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite HGS
+
+#output "30x dominoRandom testingSchemas SQLite fullreduce sticcer"
+#mutationfullreduce 30 1 $schemasTest dominoRandom testingSchemas SQLite sticcer
 
 output "testingSchemas"
 output "AVM-D"
-output "30x avsDefaults testingSchemas Schemas SQLite"
-mutation 30 1 $schemasTest avsDefaults testingSchemas SQLite
+output "30x avsDefaults requiredSchemas SQLite fullreduce additionalGreedy"
+mutationfullreduce 30 1 $requiredSchemas avsDefaults requiredSchemas SQLite sticcerD
 
-output "30x avsDefaults testingSchemas SQLite fullreduce additionalGreedy"
-mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite additionalGreedy
+#output "30x avsDefaults testingSchemas Schemas SQLite"
+#mutation 30 1 $schemasTest avsDefaults testingSchemas SQLite
 
-output "30x avsDefaults testingSchemas SQLite fullreduce random"
-mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite random
+#output "30x avsDefaults testingSchemas SQLite fullreduce additionalGreedy"
+#mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite additionalGreedy
 
-output "30x avsDefaults testingSchemas SQLite fullreduce HGS"
-mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite HGS
+#output "30x avsDefaults testingSchemas SQLite fullreduce random"
+#mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite random
 
-output "30x avsDefaults testingSchemas SQLite fullreduce sticcer"
-mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite sticcer
+#output "30x avsDefaults testingSchemas SQLite fullreduce HGS"
+#mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite HGS
+
+#output "30x avsDefaults testingSchemas SQLite fullreduce sticcer"
+#mutationfullreduce 30 1 $schemasTest avsDefaults testingSchemas SQLite sticcer
 ############################ End for testing
 
