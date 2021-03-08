@@ -402,7 +402,7 @@ can be replaced by any number of the options described in the
 [Options](#options) section, and `<parameters>` can be replaced by any number
 of parameters described below.
 
-#### Parameters <a name="test-data-generation-parameters"></a>
+#### Parameters
 
 | Parameter            | Required   | Description                                                    |
 | :---------:          | :--------: | :-----------:                                                  |
@@ -410,7 +410,7 @@ of parameters described below.
 | `--testSuite`        |            | Target file for writing JUnit test suite                       |
 | `--testSuitePackage` |            | Target package for writing JUnit test suite                    |
 
-#### Output <a name="test-data-generation-output"></a>
+#### Output
 
 By default, the `generation` command creates a JUnit test suite in the
 `generatedtest` directory.  The name of the file can be changed with the
@@ -421,17 +421,19 @@ test the integrity constraints of the schema. These statements are also
 automatically displayed in the console window after execution. See the example
 below for the output from a specific schema.
 
-###### Example <a name="test-data-generation-example"></a>
+#### Example
 
 To generate test data for the ArtistSimilarity schema using the `Postgres`
 database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and
 save the output in the file `SampleOutput.sql`, type the following command in
 your terminal window:
 
-`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms Postgres --criterion UCC --generator avsDefaults generation --inserts SampleOutput`
+`java org.schemaanalyst.util.Go -s parsedcasestudy.ArtistSimilarity --dbms
+Postgres --criterion UCC --generator avsDefaults generation --inserts
+SampleOutput`
 
 This will produce a series of `INSERT` statements for each mutant of the
-schema.  Some abbreviated output from the previous command includes:
+schema.  Some abbreviated output from the previous command include:
 
 ```
 INSERT INTO "artists"(
@@ -454,9 +456,9 @@ INSERT INTO "artists"(
 ...
 ```
 
-### Mutation Analysis <a name="mutation-analysis"></a>
+### Mutation Analysis
 
-###### Syntax <a name="mutation-analysis-syntax"></a>
+#### Syntax
 
 To create data to exercise the integrity constraints of a schema using the data
 generation component of SchemaAnalyst and then perform mutation analysis using
@@ -469,17 +471,17 @@ can be replaced by any number of the options described in the
 [Options](#options) section, and `<parameters>` can be replaced by any number
 of parameters described below.
 
-###### Parameters <a name="mutation-analysis-parameters"></a>
+##### Parameters
 
-| Parameter        | Required   | Description                                                                                    |
-| :---------:      | :--------: | :-----------:                                                                                  |
-| --maxEvaluations |            | The maximum fitness evaluations for the search algorithm to use                                |
-| --pipeline       |            | The mutation pipeline to use to produce and, optionally, remove mutants                        |
-| --seed           |            | The seed used to produce random values for the data generator                                  |
-| --technique      |            | The mutation technique to use (e.g., original, fullSchemata, minimalSchemata, or mutantTiming) |
-| --transactions   |            | Whether to use SQL transactions to improve the performance of a technique, if possible         |
+| Parameter          | Required   | Description                                                                                    |
+| :---------:        | :--------: | :-----------:                                                                                  |
+| `--maxEvaluations` |            | The maximum fitness evaluations for the search algorithm to use                                |
+| `--pipeline`       |            | The mutation pipeline to use to produce and, optionally, remove mutants                        |
+| `--seed`           |            | The seed used to produce random values for the data generator                                  |
+| `--technique`      |            | The mutation technique to use (e.g., `original`, `fullSchemata`, `minimalSchemata`, or `mutantTiming`) |
+| `--transactions`   |            | Whether to use SQL transactions to improve the performance of a technique, if possible         |
 
-###### Output <a name="mutation-analysis-output"></a>
+##### Output
 
 Specifying the `technique` parameter to output the mutant timing results will
 create a CSV file located at `results/mutanttiming.csv`. This file is useful if
