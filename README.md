@@ -363,11 +363,15 @@ There are multiple implemented test data generators available for you to use:
 - `avsDefaults`: AVM implementation using default values
 - `avs`: AVM implementation using random values
 - `random`: Random data generator technique.
-- `dominoRandom`: Original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
+- `dominoRandom`: Original and random DOMINO (DOMain-specific approach to
+  INtegrity cOnstraint test data generator) technique.
 - `dominoAVS`: Hybrid technique that combines DOMINO and AVM.
-- `dominoColNamer`: DOMINO-based technique generates string values using the column names with suffix numbering and sequential numbers.
-- `dominoRead`: DOMINO-based technique that generates readable string values with [DataFactory](https://github.com/andygibson/datafactory).
-- `avslangmodel`: Random AVM-based technique that uses a language model to replace random and unreadable values to make a more readable test suite.
+- `dominoColNamer`: DOMINO-based technique generates string values using the
+  column names with suffix numbering and sequential numbers.
+- `dominoRead`: DOMINO-based technique that generates readable string values
+  with [DataFactory](https://github.com/andygibson/datafactory).
+- `avslangmodel`: Random AVM-based technique that uses a language model to
+  replace random and unreadable values to make a more readable test suite.
 
 #### Reduction Methods
 
