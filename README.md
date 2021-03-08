@@ -32,40 +32,39 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
 ## Table of Contents
 
-- [SchemaAnalyst](#schemaanalyst)
-  * [Quick Start](#quick-start)
-  * [Description](#description)
-  * [Table of Contents](#table-of-contents)
-  * [Overview](#overview)
-  * [Getting Started](#getting-started)
-    + [Downloading](#downloading)
-    + [Dependencies](#dependencies)
-    + [Configuring](#configuring)
-      - [Properties](#properties)
-      - [Databases](#databases)
-    + [Compiling](#compiling)
-    + [Testing](#testing)
-    + [Set the `CLASSPATH`](#set-the-classpath)
-    + [Convert a Schema to a Java Representation](#convert-a-schema-to-a-java-representation)
-  * [Tutorial](#tutorial)
-    + [Help Menu](#help-menu)
-    + [Options](#options)
-      - [Test Data Generators](#test-data-generators)
-      - [Reduction Methods](#reduction-methods)
-    + [Test Data Generation](#test-data-generation)
-      - [Command-Line for Test Data Generation](#command-line-for-test-data-generation)
-      - [Parameters for Test Data Generation](#parameters-for-test-data-generation)
-      - [Output from Test Data Generation](#output-from-test-data-generation)
-      - [Example of Test Data Generation](#example-of-test-data-generation)
-    + [Mutation Analysis](#mutation-analysis)
-      - [Command-Line for Mutation Analysis](#command-line-for-mutation-analysis)
-      - [Parameters for Mutation Analysis](#parameters-for-mutation-analysis)
-      - [Output from Mutation Analysis](#output-from-mutation-analysis)
-      - [Interpretation of Output](#interpretation-of-output)
-      - [Concrete Examples](#concrete-examples)
-  * [Building and Execution Environment](#building-and-execution-environment)
-  * [Publications](#publications)
-  * [License](#license)
+* [Quick Start](#quick-start)
+* [Description](#description)
+* [Table of Contents](#table-of-contents)
+* [Overview](#overview)
+* [Getting Started](#getting-started)
+  + [Downloading](#downloading)
+  + [Dependencies](#dependencies)
+  + [Configuring](#configuring)
+    - [Properties](#properties)
+    - [Databases](#databases)
+  + [Compiling](#compiling)
+  + [Testing](#testing)
+  + [Set the `CLASSPATH`](#set-the-classpath)
+  + [Convert a Schema to a Java Representation](#convert-a-schema-to-a-java-representation)
+* [Tutorial](#tutorial)
+  + [Help Menu](#help-menu)
+  + [Options](#options)
+    - [Test Data Generators](#test-data-generators)
+    - [Reduction Methods](#reduction-methods)
+  + [Test Data Generation](#test-data-generation)
+    - [Command-Line for Test Data Generation](#command-line-for-test-data-generation)
+    - [Parameters for Test Data Generation](#parameters-for-test-data-generation)
+    - [Output from Test Data Generation](#output-from-test-data-generation)
+    - [Example of Test Data Generation](#example-of-test-data-generation)
+  + [Mutation Analysis](#mutation-analysis)
+    - [Command-Line for Mutation Analysis](#command-line-for-mutation-analysis)
+    - [Parameters for Mutation Analysis](#parameters-for-mutation-analysis)
+    - [Output from Mutation Analysis](#output-from-mutation-analysis)
+    - [Interpretation of Output](#interpretation-of-output)
+    - [Concrete Examples](#concrete-examples)
+* [Building and Execution Environment](#building-and-execution-environment)
+* [Publications](#publications)
+* [License](#license)
 ## Overview
 
 A database schema acts as the cornerstone for any application that relies on a
@@ -385,9 +384,9 @@ Multiple Test Suite Reduction methods are available for you to use:
 - `simpleGreedy`: Naive greedy test suite reduction technique.
 - `additionalGreedy`: Additional greedy test suite reduction technique (known as
   "greedy" the literature)
-- `HGS: Greedy method based on the cardinality of coverage sets, originally
+- `HGS`: Greedy method based on the cardinality of test coverage sets, originally
   proposed by Harrold, Gupta, and Soffa.
-- `STICCER`: Technique the both reduces and merges test cases in the test suite
+- `STICCER`: Technique that both reduces and merges test cases in the test suite
 
 ### Test Data Generation
 
