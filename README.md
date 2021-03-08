@@ -491,7 +491,7 @@ attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
 
 | Column     | Description                                                           |
 | :------:   | :-----------:                                                         |
-| identifier | The unique identifier for the dbms, schema and operator configuration |
+| `identifier` | The unique identifier for the dbms, schema and operator configuration |
 | dbms       | The DBMS                                                              |
 | schema     | The schema                                                            |
 | operator   | The mutation operator used to generate the mutant                     |
