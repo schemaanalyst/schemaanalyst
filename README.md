@@ -225,15 +225,6 @@ directory after compiling the system.
 
 ## Tutorial <a name="tutorial"></a>
 
-### Asciinema Recording <a name="asciicinema"></a>
-
-Please watch this Asciinema recording that shows some of the key features of
-SchemaAnalyst, which are explained in more detail below.
-
-[![asciicast](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5.png)](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5)
-
----
-
 ### Help Menu <a name="help"></a>
 
 SchemaAnalyst uses a command-line interface with a variety of execution
