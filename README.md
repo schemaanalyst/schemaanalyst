@@ -377,15 +377,17 @@ Multiple test data generators available for you to use:
 
 Multiple Test Suite Reduction methods are available for you to use:
 
- 3. `random` - a random test suite reduction technique
- 1. `simpleGreedy` - a naive greedy test suite reduction technique
- 2. `additionalGreedy,` - additional greedy test suite reduction technique (i.e., known as "greedy" the TSR literature)
- 4. `HGS` - a greedy method based on set cardinality
- 5. `sticcer` - a technique the reduces and merges test cases in the test suite
+- `random`: Random test suite reduction technique.
+- `simpleGreedy`: Naive greedy test suite reduction technique.
+- `additionalGreedy`: Additional greedy test suite reduction technique (known as
+  "greedy" the literature)
+- `HGS: Greedy method based on the cardinality of coverage sets, originally
+  proposed by Harrold, Gupta, and Soffa.
+- `STICCER`: Technique the both reduces and merges test cases in the test suite
 
 ### Test Data Generation
 
-###### Syntax
+#### Syntax
 
 SchemaAnalyst will create a series of `INSERT` statements to test the integrity
 constraints that are altered via mutation, as described in the
@@ -400,15 +402,15 @@ can be replaced by any number of the options described in the
 [Options](#options) section, and `<parameters>` can be replaced by any number
 of parameters described below.
 
-###### Parameters <a name="test-data-generation-parameters"></a>
+#### Parameters <a name="test-data-generation-parameters"></a>
 
-| Parameter          | Required   | Description                                                    |
-| :---------:        | :--------: | :-----------:                                                  |
-| --inserts          |            | Target file for writing `INSERT` statements into a `.sql` file |
-| --testSuite        |            | Target file for writing JUnit test suite                       |
-| --testSuitePackage |            | Target package for writing JUnit test suite                    |
+| Parameter            | Required   | Description                                                    |
+| :---------:          | :--------: | :-----------:                                                  |
+| `--inserts`          |            | Target file for writing `INSERT` statements into a `.sql` file |
+| `--testSuite`        |            | Target file for writing JUnit test suite                       |
+| `--testSuitePackage` |            | Target package for writing JUnit test suite                    |
 
-###### Output <a name="test-data-generation-output"></a>
+#### Output <a name="test-data-generation-output"></a>
 
 By default, the `generation` command creates a JUnit test suite in the
 `generatedtest` directory.  The name of the file can be changed with the
