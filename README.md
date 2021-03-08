@@ -524,28 +524,28 @@ Executing this class produces a single results file in CSV format that contains
 one line per execution, located at `results/newmutationanalysis.dat`. This
 file contains the following columns that have the following description:
 
-| Column               | Description                                                                 |
-| :------:             | :-----------:                                                               |
-| dbms                 | The DBMS                                                                    |
-| casestudy            | The schema                                                                  |
-| criterion            | The integrity constraint coverage criterion                                 |
-| datagenerator        | The data generation algorithm                                               |
-| randomseed           | The value used to seed the pseudo-random number generator                   |
-| coverage             | The level of coverage the produced data achieves according to the criterion |
-| evaluations          | The number of fitness evaluations used by the search algorithm              |
-| tests                | The number of test cases in the produced test suite                         |
-| mutationpipeline     | The mutation pipeline used to generate mutants                              |
-| scorenumerator       | The number of mutants killed by the generated data                          |
-| scoredenominator     | The total number of mutants used for mutation analysis                      |
-| technique            | The mutation analysis technique                                             |
-| transactions         | Whether SQL transactions were applied, if possible                          |
-| testgenerationtime   | The time taken to generate test data in milliseconds                        |
-| mutantgenerationtime | The time taken to generate mutants in milliseconds                          |
-| originalresultstime  | The time taken to execute the test suite against the non-mutated schema     |
-| mutationanalysistime | The time taken to perform analysis of all of the mutant schemas             |
-| timetaken            | The total time taken by the entire process                                  |
+| Column                 | Description                                                                 |
+| :------:               | :-----------:                                                               |
+| `dbms`                 | The DBMS                                                                    |
+| `casestudy`            | The schema                                                                  |
+| `criterion`            | The integrity constraint coverage criterion                                 |
+| `datagenerator`        | The data generation algorithm                                               |
+| `randomseed`           | The value used to seed the pseudo-random number generator                   |
+| `coverage`             | The level of coverage the produced data achieves according to the criterion |
+| `evaluations`          | The number of fitness evaluations used by the search algorithm              |
+| `tests`                | The number of test cases in the produced test suite                         |
+| `mutationpipeline`     | The mutation pipeline used to generate mutants                              |
+| `scorenumerator`       | The number of mutants killed by the generated data                          |
+| `scoredenominator`     | The total number of mutants used for mutation analysis                      |
+| `technique`            | The mutation analysis technique                                             |
+| `transactions`         | Whether SQL transactions were applied, if possible                          |
+| `testgenerationtime`   | The time taken to generate test data in milliseconds                        |
+| `mutantgenerationtime `| The time taken to generate mutants in milliseconds                          |
+| `originalresultstime  `| The time taken to execute the test suite against the non-mutated schema     |
+| `mutationanalysistime` | The time taken to perform analysis of all of the mutant schemas             |
+| `timetaken`            | The total time taken by the entire process                                  |
 
-###### Interpretation <a name="mutation-analysis-interpretation"></a>
+##### Interpretation
 
 The output produced by mutation analysis contains a significant amount of
 information, some of which might not be needed for your purposes. If you are
@@ -556,12 +556,12 @@ the range [0, 1]. This score provides an estimate for how well the schema has
 performed when its integrity constraints were exercised, with higher scores
 indicating that the schema is more likely to permit valid data from entering a
 table and to reject any invalid data. Although there does not currently exist a
-standard for this metric, scores between 0.6 -- 0.7 (60% -- 70%) are generally
-considered good. If your schema's score falls below this level, consider
-viewing the [Mutation Analysis](#mutant-analysis) section to gain further insight
-into the types of mutants created and killed during the process.
+standard for this metric, scores between 0.6 and 0.7 (i.e., between 60% and 70%)
+are generally considered good. If your schema's score falls below this level,
+consider viewing the [Mutation Analysis](#mutant-analysis) section to gain
+further insight into the types of mutants created and killed during the process.
 
-###### Examples <a name="mutation-analysis-examples"></a>
+##### Examples
 
 1.  Type the following command in your terminal to perform mutation analysis
     with the default configuration, and the `ArtistSimilarity` schema:
@@ -588,7 +588,7 @@ into the types of mutants created and killed during the process.
     SQLite,parsedcasestudy.ArtistSimilarity,ClauseAICC,random,1000,NA,88.88888888888889,133786,8,AllOperatorsWithRemovers,5,9,original,false,8749,61,4,20,8844
     ```
 
-## Building and Execution Environment <a name="environment"></a>
+## Building and Execution Environment
 
 All of the previous instructions for building, installing, and using
 SchemaAnalyst have been tested on Mac OS X 10.11 and Ubuntu Linux 16.04. All of
@@ -600,7 +600,7 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
-[(TOSE 2019)
+[(TOSEM 2019)
 ](https://www.gregorykapfhammer.com/research/papers/McMinn2019/) McMinn, Phil,
 Chris J. Wright, Colton J. McCurdy, and Gregory M. Kapfhammer (2019). "Automatic
 detection and removal of ineffective mutants for the mutation analysis of
