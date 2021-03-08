@@ -489,16 +489,15 @@ you are interested in looking at individual mutants. It contains seven
 attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
 `time.` More details about these attributes are available in the following table:
 
-| Column     | Description                                                           |
-| :------:   | :-----------:                                                         |
+| Column       | Description                                                           |
+| :------:     | :-----------:                                                         |
 | `identifier` | The unique identifier for the dbms, schema and operator configuration |
-| dbms       | The DBMS                                                              |
-| schema     | The schema                                                            |
-| operator   | The mutation operator used to generate the mutant                     |
-| type       | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT)              |
-| killed     | The kill status of a mutant (i.e., true=killed, false=alive)          |
-| time       | The time, in ms, to generate the mutant                               |
-
+| `dbms`       | The DBMS                                                              |
+| `schema`     | The schema                                                            |
+| `operator`   | The mutation operator used to generate the mutant                     |
+| `type`       | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT)              |
+| `killed`     | The kill status of a mutant (i.e., `true` is "killed", `false` is "alive")          |
+| `time`       | The time, in milliseconds (ms), to generate the mutant                |
 
 To perform mutation analysis with `technique=mutantTiming` and the
 `ArtistSimilarity` schema you can type the following command in your terminal
@@ -523,7 +522,7 @@ mebiyeqtukr3ojgdtuyf,Postgres,ArtistSimilarity,UCColumnA,NORMAL,false,91
 
 Executing this class produces a single results file in CSV format that contains
 one line per execution, located at `results/newmutationanalysis.dat`. This
-file contains the following columns that have this description:
+file contains the following columns that have the following description:
 
 | Column               | Description                                                                 |
 | :------:             | :-----------:                                                               |
