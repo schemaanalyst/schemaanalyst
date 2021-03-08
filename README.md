@@ -600,12 +600,11 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
-[(TOSEM 2019)
-](https://www.gregorykapfhammer.com/research/papers/McMinn2019/) McMinn, Phil,
-Chris J. Wright, Colton J. McCurdy, and Gregory M. Kapfhammer (2019). "Automatic
-detection and removal of ineffective mutants for the mutation analysis of
-relational database schemas" in Transactions on Software Engineering, 2019. <a
-name="one"></a>
+[(TSE 2019) ](https://www.gregorykapfhammer.com/research/papers/McMinn2019/)
+McMinn, Phil, Chris J. Wright, Colton J. McCurdy, and Gregory M. Kapfhammer
+(2019). "Automatic detection and removal of ineffective mutants for the mutation
+analysis of relational database schemas" in Transactions on Software
+Engineering, 2019. <a name="one"></a>
 
 [(ICST 2018)
 ](https://www.gregorykapfhammer.com/research/papers/Alsharif2018/) Alsharif,
