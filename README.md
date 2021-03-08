@@ -30,7 +30,9 @@ schemas for which the competing tool covers less than 10% of the constraints
 data sets that are substantially smaller than the competing tool and in an
 amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
-## Table of Contents <a name="table-of-contents"></a>
+## Table of Contents
+
+
 
 + [Overview](#overview)
 + [Getting Started](#getting-started)
@@ -60,50 +62,50 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 + [Publications](#publications)
 + [License](#license)
 
-## Overview <a name="overview"></a>
+## Overview
 
 A database schema acts as the cornerstone for any application that relies on a
 relational database. It specifies the types of allowed data, as well as the
 organization and relationship between the data.  Any oversight at this
 fundamental level can easily propagate errors toward future development stages.
-Such oversights might include incomplete foreign or primary key declarations,
-or incorrect use or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity
+Such oversights might include incomplete foreign or primary key declarations, or
+incorrect use or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity
 constraints. Such seemingly small mistakes at this stage can prove costly to
 correct, thus we created SchemaAnalyst to allow for the early detection of such
 problems prior to integration of a schema with an application.  Ultimately,
-SchemaAnalyst meticulously tests the correctness of a schema &mdash; it ensures that
-valid data is permitted entry into a database and that erroneous data is
+SchemaAnalyst meticulously tests the correctness of a schema &mdash; it ensures
+that valid data is permitted entry into a database and that erroneous data is
 rejected.
 
-To do this, various "mutants" are created from a given schema using a defined
-set of mutation operators. These operators change the schema's integrity
-constraints in different ways. For instance, a mutant may be created by
-removing a column from a primary key, or from removing a `NOT_NULL` constraint
+To do this, various the tool creates "mutants" from a given schema using a
+defined set of mutation operators. These operators change the schema's integrity
+constraints in different ways. For instance, the tool may create a mutant by
+removing a column from a primary key or from removing a `NOT_NULL` constraint
 from a column, among many other possibilities. These schemas are then evaluated
 through a process known as mutation analysis. Using a search-based technique,
-test suites are created that execute `INSERT` statements into tables for both
+the tool creates test suites that execute `INSERT` statements on tables for both
 the original schema and the mutant schema [(ICST 2013)](#two). If the `INSERT`
 statement is accepted by the original schema but rejected by the mutant schema,
-then it shows that the inserted data adheres to the integrity constraints of
-the original schema, and the test suite is able to detect and respond
-appropriately to the change. This is said to "kill" the mutant. After all
-mutants have been analyzed in this fashion, a mutation score is generated as
-follows: <em>mutation score = number of killed mutants / number of
-mutants</em>. In general, the higher the mutation score the better the quality
-of the generated test suite [(ICST 2013)](#two).
+then it shows that the inserted data adheres to the integrity constraints of the
+original schema, and the test suite is able to detect and respond appropriately
+to the change. This is said to "kill" the mutant. After all mutants have been
+analyzed in this fashion, a mutation score is generated as follows: <em>mutation
+score = number of killed mutants / number of mutants</em>. In general, the
+higher the mutation score the better the quality of the generated test suite
+[(ICST 2013)](#two).
 
-## Getting Started <a name="getting-started"></a>
+## Getting Started
 
-### Downloading <a name="downloading"></a>
+### Downloading
 
 The source code is hosted in a [GitHub
 repository](https://github.com/schemaanalyst/schemaanalyst). To obtain
 SchemaAnalyst, simply clone this repository on your machine using the following
-command:
+command like `git clone git@github.com:schemaanalyst/schemaanalyst.git`. You may
+also use alternative approaches to clone the GitHub repository by using, for
+instance, a graphical interface to a Git client.
 
-`git clone git@github.com:schemaanalyst/schemaanalyst.git`
-
-### Dependencies <a name="dependencies"></a>
+### Dependencies
 
 To use SchemaAnalyst, Java 1.7 JDK (or higher) must be installed to run any of
 the Java programs.  See the table below for a full description of the required
@@ -127,9 +129,9 @@ your terminal window:
 sudo apt install sqlite3
 ```
 
-### Configuring <a name="configuring"></a>
+### Configuring
 
-###### Properties <a name="properties"></a>
+#### Properties
 
 SchemaAnalyst uses a number of _properties_ files to specify some configuration
 options. These are located in the `config/` directory. These names of these
@@ -159,7 +161,7 @@ suffix. If you need to change any of the properties, you should therefore create
 your own local version by copying the file and adding the suffix (e.g.,
 `database.properties` becomes `database.properties.local`).*
 
-###### Databases <a name="databases"></a>
+#### Databases
 
 HSQLDB and SQLite both require no additional configuration for use with
 SchemaAnalyst. If you are using PostgreSQL, then please note that the
@@ -167,7 +169,7 @@ SchemaAnalyst. If you are using PostgreSQL, then please note that the
 using the default credentials. In addition, you must give this user full
 privileges over the `postgres` database.
 
-### Compiling <a name="compiling"></a>
+### Compiling
 
 The SchemaAnalyst tool is built using [Gradle](http://gradle.org/). Please
 follow these steps to compile the system using the provided Gradle wrapper:
@@ -181,7 +183,7 @@ follow these steps to compile the system using the provided Gradle wrapper:
 *__Note__: The message `Some input files use unchecked or unsafe operations`
 may be ignored if it appears during compilation.*
 
-### Testing <a name="testing"></a>
+### Testing
 
 To confirm that the code has properly compiled, you should be able to run the
 provided test suite by typing the following command:
@@ -197,7 +199,7 @@ unavailable databases may fail by default.  Please refer to the
 [Dependencies](#dependencies) section for links to download and install these
 DBMS.*
 
-### Set CLASSPATH <a name="classpath"></a>
+### Set the `CLASSPATH`
 
 Before running any of the commands listed in the [Tutorial](#tutorial) section,
 you should set the CLASSPATH environment variable by typing the following
@@ -209,7 +211,7 @@ For gradle version 4.10.2 or above this CLASSPATH will work:
 
 `export CLASSPATH="build/classes/java/main:lib/*:build/lib/*:."`
 
-### Convert Schema to Java <a name="sqlparser"></a>
+### Convert a Schema to a Java Representation
 
 We have purchased a license of [General SQLParser](http://www.sqlparser.com/)
 to generate `Java` code interpreting SQL statements for the various supported
@@ -223,9 +225,9 @@ use with SchemaAnalyst. The original `.sql` files can be found in the
 files can be found in the `schemaanalyst/build/classes/main/parsedcasestudy/`
 directory after compiling the system.
 
-## Tutorial <a name="tutorial"></a>
+## Tutorial
 
-### Help Menu <a name="help"></a>
+### Help Menu
 
 SchemaAnalyst uses a command-line interface with a variety of execution
 options. Two primary commands are included: `generation` for [Test Data
@@ -333,7 +335,7 @@ Usage: <main class> [options] [command] [command options]
              Default: false
 ```
 
-### Options <a name="options"></a>
+### Options
 
 The following options can precede the `generation` and `mutation` commands for
 additional functionality (note that the `--schema` option is required):
@@ -358,14 +360,14 @@ purpose.*
 
 There are multiple implemented test data generators available for you to use:
 
- 1. `avsDefaults` - AVM implementation using default values
- 2. `avs` - AVM implementation using random values
- 3. `random` - Random data generator technique.
- 4. `dominoRandom` - The original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
- 5. `dominoAVS` - The hybrid technique DOMINO and AVM.
- 6. `dominoColNamer` - A DOMINO generator that generates string values using the column names with suffix numbering and sequential numbers.
- 7. `dominoRead` - A DOMINO generator that generates readable string values from a library called [DataFactory](https://github.com/andygibson/datafactory).
- 8. `avslangmodel` - A Random AVM generator that uses a Language Model to replace random and unreadable values to output a more readable test suite.
+- `avsDefaults`: AVM implementation using default values
+- `avs`: AVM implementation using random values
+- `random`: Random data generator technique.
+- `dominoRandom`: Original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
+- `dominoAVS`: Hybrid technique that combines DOMINO and AVM.
+- `dominoColNamer`: DOMINO-based technique generates string values using the column names with suffix numbering and sequential numbers.
+- `dominoRead`: DOMINO-based technique that generates readable string values with [DataFactory](https://github.com/andygibson/datafactory).
+- `avslangmodel`: Random AVM-based technique that uses a language model to replace random and unreadable values to make a more readable test suite.
 
 #### Reduction Methods
 
@@ -377,9 +379,9 @@ Multiple Test Suite Reduction (TSR) methods are implemented and available for yo
  4. `HGS` - a greedy method based on set cardinality
  5. `sticcer` - a technique the reduces and merges test cases in the test suite
 
-### Test Data Generation <a name="test-data-generation"></a>
+### Test Data Generation
 
-###### Syntax <a name="test-data-generation-syntax"></a>
+###### Syntax
 
 SchemaAnalyst will create a series of `INSERT` statements to test the integrity
 constraints that are altered via mutation, as described in the
