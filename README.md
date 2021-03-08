@@ -600,6 +600,25 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
+[(AST 2020)](https://www.gregorykapfhammer.com/research/papers/Alsharif2020a/)
+Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2020). "Hybrid
+methods for reducing database schema test suites: Experimental insights from
+computational and human studies" in Proceedings of the 1st International
+Conference on the Automation of Software Test, 2020. <a
+name="negativethree"></a>
+
+[(ICST 2020)](https://www.gregorykapfhammer.com/research/papers/Alsharif2020/)
+Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2020). "STICCER: Fast
+and effective database test suite reduction through merging of similar test
+cases" in Proceedings of the 13th International Conference on Software Testing,
+Verification and Validation, 2020. <a name="negativetwo"></a>
+
+[(ICSME 2019)](https://www.gregorykapfhammer.com/research/papers/Alsharif2019/)
+Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2019). "What factors
+make SQL test cases understandable for testers? A human study of automated test
+data generation techniques" in Proceedings of the 35th International Conference
+on Software Maintenance and Evolution, 2019. <a name="negativeone"></a>
+
 [(TSE 2019)](https://www.gregorykapfhammer.com/research/papers/McMinn2019/)
 McMinn, Phil, Chris J. Wright, Colton J. McCurdy, and Gregory M. Kapfhammer
 (2019). "Automatic detection and removal of ineffective mutants for the mutation
