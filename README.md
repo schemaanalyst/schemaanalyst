@@ -613,13 +613,13 @@ Conference on the Automation of Software Test, 2020. <a
 name="negativethree"></a>
 
 [(ICST 2020)](https://www.gregorykapfhammer.com/research/papers/Alsharif2020/)
-Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2020). "STICCER: Fast
+Alsharif, Abdullah, Gregory M. Kapfhammer, and Phil McMinn (2020). "STICCER: Fast
 and effective database test suite reduction through merging of similar test
 cases" in Proceedings of the 13th International Conference on Software Testing,
 Verification and Validation, 2020. <a name="negativetwo"></a>
 
 [(ICSME 2019)](https://www.gregorykapfhammer.com/research/papers/Alsharif2019/)
-Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2019). "What factors
+Alsharif, Abdullah, Gregory M. Kapfhammer, and Phil McMinn (2019). "What factors
 make SQL test cases understandable for testers? A human study of automated test
 data generation techniques" in Proceedings of the 35th International Conference
 on Software Maintenance and Evolution, 2019. <a name="negativeone"></a>
@@ -631,7 +631,7 @@ analysis of relational database schemas" in Transactions on Software
 Engineering, 2019. <a name="one"></a>
 
 [(ICST 2018)](https://www.gregorykapfhammer.com/research/papers/Alsharif2018/)
-Alsharif, Abdullah Gregory M. Kapfhammer, and Phil McMinn (2018). "DOMINO: Fast
+Alsharif, Abdullah, Gregory M. Kapfhammer, and Phil McMinn (2018). "DOMINO: Fast
 and effective test data generation for relational database schemas" in
 Proceedings of the 11th International Conference on Software Testing,
 Verification and Validation, 2018. <a name="two"></a>
@@ -663,11 +663,17 @@ studying the effectiveness of mutant reduction techniques" in Proceedings of the
 32nd International Conference on Software Maintenance and Evolution, 2016. <a
 name="six"></a>
 
-[(TOSEM 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/) McMinn,
-Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
-Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
-in Transactions on Software Engineering and Methodology, 25(1). <a
+[(AST 2016)](https://www.gregorykapfhammer.com/research/papers/McMinn2016a/)
+McMinn, Phil, Gregory M. Kapfhammer, and Chris J. Wright (2016). "Virtual
+mutation analysis of relational database schemas" in Proceedings of the 11th
+International Workshop on Automation of Software Test, 2016. <a
+name="sixone"></a>
+
+[(TOSEM
+2015)](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)
+McMinn, Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The
+Effectiveness of Test Coverage Criteria for Relational Database Schema Integrity
+Constraints," in Transactions on Software Engineering and Methodology, 25(1). <a
 name="seven"></a>
 
 [(SEKE 2015)
