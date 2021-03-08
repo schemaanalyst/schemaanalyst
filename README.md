@@ -1,6 +1,6 @@
 # SchemaAnalyst
 
-<img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
+<img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst: a test data generation and a mutation testing tool for relational database schemas">
 
 ## Quick Start
 
@@ -32,36 +32,40 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
 ## Table of Contents
 
-
-
-+ [Overview](#overview)
-+ [Getting Started](#getting-started)
-    - [Downloading](#downloading)
-    - [Dependencies](#dependencies)
-    - [Configuring](#configuring)
-    - [Compiling](#compiling)
-    - [Testing](#testing)
-    - [Set Classpath](#classpath)
-    - [Convert Schema to Java](#sqlparser)
-+ [Tutorial](#tutorial)
-    - [Asciicinema Recording](#asciicinema)
-    - [Help Menu](#help)
-    - [Options](#options)
-    - [Test Data Generation](#test-data-generation)
-        * [Syntax](#test-data-generation-syntax)
-        * [Parameters](#test-data-generation-parameters)
-        * [Output](#test-data-generation-output)
-        * [Example](#test-data-generation-example)
-    - [Mutation Analysis](#mutation-analysis)
-        * [Syntax](#mutation-analysis-syntax)
-        * [Parameters](#mutation-analysis-parameters)
-        * [Output](#mutation-analysis-output)
-        * [Interpretation](#mutation-analysis-interpretation)
-        * [Examples](#mutation-analysis-examples)
-+ [Building and Execution Environment](#environment)
-+ [Publications](#publications)
-+ [License](#license)
-
+- [SchemaAnalyst](#schemaanalyst)
+  * [Quick Start](#quick-start)
+  * [Description](#description)
+  * [Table of Contents](#table-of-contents)
+  * [Overview](#overview)
+  * [Getting Started](#getting-started)
+    + [Downloading](#downloading)
+    + [Dependencies](#dependencies)
+    + [Configuring](#configuring)
+      - [Properties](#properties)
+      - [Databases](#databases)
+    + [Compiling](#compiling)
+    + [Testing](#testing)
+    + [Set the `CLASSPATH`](#set-the-classpath)
+    + [Convert a Schema to a Java Representation](#convert-a-schema-to-a-java-representation)
+  * [Tutorial](#tutorial)
+    + [Help Menu](#help-menu)
+    + [Options](#options)
+      - [Test Data Generators](#test-data-generators)
+      - [Reduction Methods](#reduction-methods)
+    + [Test Data Generation](#test-data-generation)
+      - [Command-Line for Test Data Generation](#command-line-for-test-data-generation)
+      - [Parameters for Test Data Generation](#parameters-for-test-data-generation)
+      - [Output from Test Data Generation](#output-from-test-data-generation)
+      - [Example of Test Data Generation](#example-of-test-data-generation)
+    + [Mutation Analysis](#mutation-analysis)
+      - [Command-Line for Mutation Analysis](#command-line-for-mutation-analysis)
+      - [Parameters for Mutation Analysis](#parameters-for-mutation-analysis)
+      - [Output from Mutation Analysis](#output-from-mutation-analysis)
+      - [Interpretation of Output](#interpretation-of-output)
+      - [Concrete Examples](#concrete-examples)
+  * [Building and Execution Environment](#building-and-execution-environment)
+  * [Publications](#publications)
+  * [License](#license)
 ## Overview
 
 A database schema acts as the cornerstone for any application that relies on a
@@ -387,7 +391,7 @@ Multiple Test Suite Reduction methods are available for you to use:
 
 ### Test Data Generation
 
-#### Syntax
+#### Command-Line for Test Data Generation
 
 SchemaAnalyst will create a series of `INSERT` statements to test the integrity
 constraints that are altered via mutation, as described in the
@@ -402,7 +406,7 @@ can be replaced by any number of the options described in the
 [Options](#options) section, and `<parameters>` can be replaced by any number
 of parameters described below.
 
-#### Parameters
+#### Parameters for Test Data Generation
 
 | Parameter            | Required   | Description                                                    |
 | :---------:          | :--------: | :-----------:                                                  |
@@ -410,7 +414,7 @@ of parameters described below.
 | `--testSuite`        |            | Target file for writing JUnit test suite                       |
 | `--testSuitePackage` |            | Target package for writing JUnit test suite                    |
 
-#### Output
+#### Output from Test Data Generation
 
 By default, the `generation` command creates a JUnit test suite in the
 `generatedtest` directory.  The name of the file can be changed with the
@@ -421,7 +425,7 @@ test the integrity constraints of the schema. These statements are also
 automatically displayed in the console window after execution. See the example
 below for the output from a specific schema.
 
-#### Example
+#### Example of Test Data Generation
 
 To generate test data for the ArtistSimilarity schema using the `Postgres`
 database, the `UCC` coverage criterion, the `avsDefaults` dataGenerator, and
@@ -458,7 +462,7 @@ INSERT INTO "artists"(
 
 ### Mutation Analysis
 
-#### Syntax
+#### Command-Line for Mutation Analysis
 
 To create data to exercise the integrity constraints of a schema using the data
 generation component of SchemaAnalyst and then perform mutation analysis using
@@ -471,7 +475,7 @@ can be replaced by any number of the options described in the
 [Options](#options) section, and `<parameters>` can be replaced by any number
 of parameters described below.
 
-##### Parameters
+#### Parameters for Mutation Analysis
 
 | Parameter          | Required   | Description                                                                                    |
 | :---------:        | :--------: | :-----------:                                                                                  |
@@ -481,7 +485,7 @@ of parameters described below.
 | `--technique`      |            | The mutation technique to use (e.g., `original`, `fullSchemata`, `minimalSchemata`, or `mutantTiming`) |
 | `--transactions`   |            | Whether to use SQL transactions to improve the performance of a technique, if possible         |
 
-##### Output
+#### Output from Mutation Analysis
 
 Specifying the `technique` parameter to output the mutant timing results will
 create a CSV file located at `results/mutanttiming.csv`. This file is useful if
@@ -545,7 +549,7 @@ file contains the following columns that have the following description:
 | `mutationanalysistime` | The time taken to perform analysis of all of the mutant schemas             |
 | `timetaken`            | The total time taken by the entire process                                  |
 
-##### Interpretation
+#### Interpretation of Output
 
 The output produced by mutation analysis contains a significant amount of
 information, some of which might not be needed for your purposes. If you are
@@ -561,7 +565,7 @@ are generally considered good. If your schema's score falls below this level,
 consider viewing the [Mutation Analysis](#mutant-analysis) section to gain
 further insight into the types of mutants created and killed during the process.
 
-##### Examples
+#### Concrete Examples
 
 1.  Type the following command in your terminal to perform mutation analysis
     with the default configuration, and the `ArtistSimilarity` schema:
