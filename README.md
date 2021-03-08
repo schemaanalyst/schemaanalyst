@@ -2,6 +2,8 @@
 
 <img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst: a test data generation and a mutation testing tool for relational database schemas">
 
+![build](https://github.com/schemaanalyst/schemaanalyst/workflows/build/badge.svg)
+
 ## Quick Start
 
 Want to get started right away? Then, jump to [Getting
