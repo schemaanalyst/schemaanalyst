@@ -27,4 +27,4 @@ jobs:
       # the .mdlrc file stored in the repo's root
       # for further configuration details
       - name: Run mdl
-        uses: actionshub/markdownlint@master
+        uses: actionshub/markdownlint@main
