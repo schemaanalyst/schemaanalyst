@@ -358,7 +358,7 @@ purpose.*
 
 #### Test Data Generators
 
-There are multiple implemented test data generators available for you to use:
+Multiple test data generators available for you to use:
 
 - `avsDefaults`: AVM implementation using default values
 - `avs`: AVM implementation using random values
@@ -375,7 +375,7 @@ There are multiple implemented test data generators available for you to use:
 
 #### Reduction Methods
 
-Multiple Test Suite Reduction (TSR) methods are implemented and available for you to use:
+Multiple Test Suite Reduction methods are available for you to use:
 
  3. `random` - a random test suite reduction technique
  1. `simpleGreedy` - a naive greedy test suite reduction technique
