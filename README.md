@@ -42,7 +42,6 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
     - [Set Classpath](#classpath)
     - [Convert Schema to Java](#sqlparser)
 + [Tutorial](#tutorial)
-    - [Asciicinema Recording](#asciicinema)
     - [Help Menu](#help)
     - [Options](#options)
     - [Test Data Generation](#test-data-generation)
@@ -224,15 +223,6 @@ files can be found in the `schemaanalyst/build/classes/main/parsedcasestudy/`
 directory after compiling the system.
 
 ## Tutorial <a name="tutorial"></a>
-
-### Asciinema Recording <a name="asciicinema"></a>
-
-Please watch this Asciinema recording that shows some of the key features of
-SchemaAnalyst, which are explained in more detail below.
-
-[![asciicast](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5.png)](https://asciinema.org/a/cuh7p68xg3ra65sl5rp8wimj5)
-
----
 
 ### Help Menu <a name="help"></a>
 
