@@ -678,9 +678,6 @@ relational schema integrity constraints across multiple database management
 systems," in Proceedings of the 6th International Conference on Software
 Testing, Verification and Validation. <a name="eleven"></a>
 
-
-
-
 ## License
 
 [GNU General Public License v3.0](./LICENSE.txt)
