@@ -33,8 +33,8 @@ public class ChecksTechnique extends Technique {
     
     private static final String META_MUTANT_SELECTION_TABLE = "schemaanalyst_activemutant";
 
-    public ChecksTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public ChecksTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
     }
 
     @Override

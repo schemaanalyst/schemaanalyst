@@ -22,8 +22,9 @@ import java.util.*;
  */
 public class AltersTechnique extends Technique {
 
-        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-            super(schema, mutants, testSuite, dbms, databaseInteractor, false);
+        public AltersTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, 
+        		String dataGenerator, String criterion, long randomseed) {
+        	super(schema, mutants, testSuite, dbms, databaseInteractor, false, dataGenerator, criterion, randomseed);
         }
 
         @Override

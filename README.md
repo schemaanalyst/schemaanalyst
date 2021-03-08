@@ -1,6 +1,6 @@
 # SchemaAnalyst
 
-<img src="https://github.com/schemaanalyst/schemaanalyst/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
+<img src="https://github.com/schemaanalyst/logo/blob/master/schemaanalyst-logo-gh.png" height="250" alt="SchemaAnalyst - a mutation testing tool for relational database schemas">
 
 ## Quick Start
 
@@ -205,6 +205,10 @@ command in your terminal window:
 
 `export CLASSPATH="build/classes/main:lib/*:build/lib/*:."`
 
+For gradle version 4.10.2 or above this CLASSPATH will work:
+
+`export CLASSPATH="build/classes/java/main:lib/*:build/lib/*:."`
+
 ### Convert Schema to Java <a name="sqlparser"></a>
 
 We have purchased a license of [General SQLParser](http://www.sqlparser.com/)
@@ -261,15 +265,48 @@ Usage: <main class> [options] [command] [command options]
     --help, -h
        Prints this help menu
        Default: false
+    --printTR, -ptr, --printTestRequriments
+       Print Test Requriments
+       Default: false
+    --seed, -rs, --randomseed
+       A long random seed
+       Default: 0
+    --fullreduce, -fr
+       Full Test Suite Reduction with the option of --reducewith techniques.
+       Default is deactivated
+       Default: false
+    --reducewith, -r
+       The reduction techniques: simpleGreedy, additionalGreedy (default), HGS, random, sticcer
+       Default: additionalGreedy
+    --saveStats
+       Save the stats info into a file results/generationOutput.dat Or
+       results/readable.dat if any of these options selected --showReadability --readability --read
+       Default: false
   * --schema, -s
        Target Schema
        Default: <empty string>
+    --showReadability, --readability, --read
+       Calculates Readability of Character/String Values using a Language Model
+       Default: false
   Commands:
     generation      Generate test data with SchemaAnalyst
       Usage: generation [options]
         Options:
           --sql, --inserts
-             Target file for writing INSERT statements
+             Enable writing INSERT statements
+             Default: false
+          --seed, -seed, --randomseed
+             Random Seed
+             Default: 0
+          --saveStats
+             Save the stats info into a file results/generationOutput.dat Or
+             results/readable.dat if any of these options selected --showReadability --readability
+             --read
+             Default: false
+          --showReadability, --readability, --read
+             Calculates Readability of Character/String Values using a Language
+             Model
+             Default: false
           --testSuite, -t
              Target file for writing JUnit test suite
              Default: TestSchema
@@ -280,12 +317,20 @@ Usage: <main class> [options] [command] [command options]
     mutation      Perform mutation testing of SchemaAnalyst
       Usage: mutation [options]
         Options:
+          --fullreduce, -fr
+             Full Test Suite Reduction with the option of --reducewith
+             techniques. Default is deactivated
+             Default: false
           --maxEvaluations
              The maximum fitness evaluations for the search algorithm to use.
              Default: 100000
           --pipeline
              The mutation pipeline to use to generate mutants.
              Default: AllOperatorsWithRemovers
+          --reducewith, -r
+             The reduction techniques: simpleGreedy, additionalGreedy (default),
+             HGS, random, combo
+             Default: additionalGreedy
           --seed
              The random seed.
              Default: 0
@@ -317,6 +362,29 @@ detailing which of these are required. Where parameters are not required, the
 defaults values should usually be sensible. While there are other parameters
 available for this class, it is generally not necessary to understand their
 purpose.*
+
+#### Test Data Generators
+
+There are multiple implemented test data generators available for you to use:
+
+ 1. `avsDefaults` - AVM implementation using default values
+ 2. `avs` - AVM implementation using random values
+ 3. `random` - Random data generator technique.
+ 4. `dominoRandom` - The original and random DOMINO (DOMain-specific approach to INtegrity cOnstraint test data generator) technique.
+ 5. `dominoAVS` - The hybrid technique DOMINO and AVM.
+ 6. `dominoColNamer` - A DOMINO generator that generates string values using the column names with suffix numbering and sequential numbers.
+ 7. `dominoRead` - A DOMINO generator that generates readable string values from a library called [DataFactory](https://github.com/andygibson/datafactory).
+ 8. `avslangmodel` - A Random AVM generator that uses a Language Model to replace random and unreadable values to output a more readable test suite.
+
+#### Reduction Methods
+
+Multiple Test Suite Reduction (TSR) methods are implemented and available for you to use:
+
+ 3. `random` - a random test suite reduction technique
+ 1. `simpleGreedy` - a naive greedy test suite reduction technique
+ 2. `additionalGreedy,` - additional greedy test suite reduction technique (i.e., known as "greedy" the TSR literature)
+ 4. `HGS` - a greedy method based on set cardinality
+ 5. `sticcer` - a technique the reduces and merges test cases in the test suite
 
 ### Test Data Generation <a name="test-data-generation"></a>
 
@@ -532,26 +600,54 @@ support for the building, installation, and use of SchemaAnalyst on Windows.
 
 ## Publications
 
-[(ICST 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
-Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
-relational schema integrity constraints across multiple database management
-systems," in Proceedings of the 6th International Conference on Software
-Testing, Verification and Validation. <a name="one"></a>
+[(TOSE 2019)
+](https://www.gregorykapfhammer.com/research/papers/McMinn2019/) McMinn, Phil,
+Chris J. Wright, Colton J. McCurdy, and Gregory M. Kapfhammer (2019). "Automatic
+detection and removal of ineffective mutants for the mutation analysis of
+relational database schemas" in Transactions on Software Engineering, 2019. <a
+name="one"></a>
 
-[(Mutation 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Wright2013/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
-analysis of relational database structure using mutant schemata and
-parallelisation," in Proceedings of the 8th International Workshop on Mutation
-Analysis. <a name="two"></a>
 
-[(QSIC 2014)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Wright2014/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
-equivalent, redundant, and quasi mutants on database schema mutation analysis,"
-in Proceedings of the 14th International Conference on Quality Software. <a
-name="three"></a>
+[(ICST 2018)
+](https://www.gregorykapfhammer.com/research/papers/Alsharif2018/) Alsharif,
+Abdullah Gregory M. Kapfhammer, and Phil McMinn (2018). "DOMINO: Fast and
+effective test data generation for relational database schemas" in Proceedings
+of the 11th International Conference on Software Testing, Verification and
+Validation, 2018. <a name="two"></a>
+
+[(ICST 2018)
+](https://www.gregorykapfhammer.com/research/papers/Alsharif2018b/)Alsharif,
+Abdullah, Gregory M. Kapfhammer, Phil McMinn (2018). "Running Experiments and
+Performing Data Analysis Using SchemaAnalyst and DOMINO" in Proceedings of the
+11th International Conference on Software Testing, Verification and Validation,
+2018. <a name="three"></a>
+
+[(ICST 2018)
+](https://www.gregorykapfhammer.com/research/papers/Alsharif2018a/)Alsharif,
+Abdullah, Gregory M. Kapfhammer, Phil McMinn (2018). "Generating Database Schema
+Test Suites with DOMINO" in Proceedings of the 11th International Conference on
+Software Testing, Verification and Validation, 2018. <a name="four"></a>
+
+[(ICSME 2016)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
+Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
+Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
+for Relational Database Schemas" in Proceedings of the 32nd International
+Conference on Software Maintenance and Evolution, 2016. <a name="five"></a>
+
+[(ICSME 2016)
+](https://www.gregorykapfhammer.com/research/papers/McCurdy2016/)McCurdy J.
+Colton, Phil McMinn, Gregory M. Kapfhammer (2016). "mrstudyr: Retrospectively
+studying the effectiveness of mutant reduction techniques" in Proceedings of the
+32nd International Conference on Software Maintenance and Evolution, 2016. <a
+name="six"></a>
+
+[(TOSEM 2015)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)McMinn,
+Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
+Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
+in Transactions on Software Engineering and Methodology, 25(1). <a
+name="seven"></a>
 
 [(SEKE 2015)
 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kinneer2015/)Kinneer,
@@ -559,21 +655,31 @@ Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015).
 "Automatically evaluating the efficiency of search-based test data generation
 for relational database schemas," in Proceedings of the 27th International
 Conference on Software Engineering and Knowledge Engineering. <a
-name="four"></a>
+name="eight"></a>
 
-[(TOSEM 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)McMinn,
-Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
-Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
-in Transactions on Software Engineering and Methodology, 25(1). <a
-name="five"></a>
+[(QSIC 2014)
+](https://www.gregorykapfhammer.com/research/papers/Wright2014/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
+equivalent, redundant, and quasi mutants on database schema mutation analysis,"
+in Proceedings of the 14th International Conference on Quality Software. <a
+name="nine"></a>
 
-[(ICSME 2016)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
-Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
-Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
-for Relational Database Schemas" in Proceedings of the 32nd International
-Conference on Software Maintenance and Evolution, 2016. <a name="six"></a>
+[(Mutation 2013)
+](https://www.gregorykapfhammer.com/research/papers/Wright2013/)Wright,
+Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
+analysis of relational database structure using mutant schemata and
+parallelisation," in Proceedings of the 8th International Workshop on Mutation
+Analysis. <a name="ten"></a>
+
+[(ICST 2013)
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
+Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
+relational schema integrity constraints across multiple database management
+systems," in Proceedings of the 6th International Conference on Software
+Testing, Verification and Validation. <a name="eleven"></a>
+
+
+
 
 ## License
 

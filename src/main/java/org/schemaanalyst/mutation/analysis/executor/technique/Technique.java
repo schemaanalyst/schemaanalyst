@@ -23,14 +23,21 @@ public abstract class Technique {
     protected DBMS dbms;
     protected DatabaseInteractor databaseInteractor;
     protected boolean useTransactions;
+    protected String dataGenerator;
+    protected String criterion;
+    protected long randomseed;
 
-    public Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
+    public Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, 
+    		boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
         this.schema = schema;
         this.mutants = mutants;
         this.testSuite = testSuite;
         this.dbms = dbms;
         this.databaseInteractor = databaseInteractor;
         this.useTransactions = useTransactions;
+        this.dataGenerator = dataGenerator;
+        this.criterion = criterion;
+        this.randomseed = randomseed;
     }
     
     public abstract AnalysisResult analyse(TestSuiteResult originalResults);

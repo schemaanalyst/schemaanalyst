@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class RandomCellValueGenerator {
 
-    private Random random;
-    private ValueInitializationProfile profile;
-    private ValueLibrary valueLibrary;
-    private double nullProbability, useLibraryProbability;
+    protected Random random;
+    protected ValueInitializationProfile profile;
+    protected ValueLibrary valueLibrary;
+    protected double nullProbability, useLibraryProbability;
 
     public RandomCellValueGenerator(
             Random random,
@@ -51,7 +51,7 @@ public class RandomCellValueGenerator {
         generateRandomValue(cell);
     }
 
-    private boolean setToLibraryValue(Cell cell) {
+    protected boolean setToLibraryValue(Cell cell) {
 
         return new ValueVisitor() {
 

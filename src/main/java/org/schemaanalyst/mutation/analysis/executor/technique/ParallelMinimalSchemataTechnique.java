@@ -41,8 +41,8 @@ public class ParallelMinimalSchemataTechnique extends Technique {
     private Map<String, DatabaseInteractor> threadInteractors;
     ExecutorService executor;
 
-    public ParallelMinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public ParallelMinimalSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
         this.sqlWriter = dbms.getSQLWriter();
         threadInteractors = new HashMap<>();
     }

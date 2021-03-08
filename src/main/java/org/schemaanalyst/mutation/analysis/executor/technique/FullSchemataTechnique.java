@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class FullSchemataTechnique extends AbstractSchemataTechnique {
 
-    public FullSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public FullSchemataTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
     }
 
     @Override

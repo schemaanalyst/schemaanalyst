@@ -202,7 +202,7 @@ public class MutationAnalysisAlters extends Runner {
     }
 
     private Technique instantiateTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor) {
-        return AltersTechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor);
+        return AltersTechniqueFactory.instantiate(technique, schema, mutants, testSuite, dbms, databaseInteractor, dataGenerator, criterion, randomseed);
     }
 
     /**

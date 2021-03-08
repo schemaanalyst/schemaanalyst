@@ -129,4 +129,45 @@ public class TestRequirement implements Comparable<TestRequirement>, Serializabl
 
         return descriptors.get(0).compareTo(other.descriptors.get(0));
     }
+    
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		//result = prime * result + ((descriptors == null) ? 0 : descriptors.hashCode());
+		result = prime * result + ((predicate == null) ? 0 : predicate.hashCode());
+		result = prime * result + (requiresComparisonRow ? 1231 : 1237);
+		result = prime * result + ((this.result == null) ? 0 : this.result.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TestRequirement other = (TestRequirement) obj;
+		if (descriptors == null) {
+			if (other.descriptors != null)
+				return false;
+		} else if (!descriptors.equals(other.descriptors))
+			return false;
+		if (predicate == null) {
+			if (other.predicate != null)
+				return false;
+		} else if (!predicate.equals(other.predicate))
+			return false;
+		if (requiresComparisonRow != other.requiresComparisonRow)
+			return false;
+		if (result == null) {
+			if (other.result != null)
+				return false;
+		} else if (!result.equals(other.result))
+			return false;
+		return true;
+	}
+
 }

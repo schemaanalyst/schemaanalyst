@@ -3,12 +3,14 @@ package org.schemaanalyst.data.generation;
 import org.schemaanalyst.data.Data;
 import org.schemaanalyst.data.ValueLibrary;
 import org.schemaanalyst.data.ValueMiner;
+import org.schemaanalyst.data.generation.domino.DominoDataGenerator;
 import org.schemaanalyst.data.generation.cellinitialization.CellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.DefaultCellInitializer;
 import org.schemaanalyst.data.generation.cellinitialization.RandomCellInitializer;
+import org.schemaanalyst.data.generation.cellvaluegeneration.ColNameCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
+import org.schemaanalyst.data.generation.cellvaluegeneration.ReadableCellValueGenerator;
 import org.schemaanalyst.data.generation.cellvaluegeneration.ValueInitializationProfile;
-import org.schemaanalyst.data.generation.directedrandom.DirectedRandomDataGenerator;
 import org.schemaanalyst.data.generation.random.RandomDataGenerator;
 import org.schemaanalyst.data.generation.search.AlternatingValueSearch;
 import org.schemaanalyst.data.generation.search.Search;
@@ -26,6 +28,7 @@ import java.lang.reflect.Method;
 
 /**
  * Created by phil on 14/03/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
 public class DataGeneratorFactory {
 
@@ -121,29 +124,6 @@ public class DataGeneratorFactory {
                 randomCellInitializer);
     }
 
-    public static DirectedRandomDataGenerator directedRandomDefaultsGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-
-        return new DirectedRandomDataGenerator(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                new DefaultCellInitializer());
-    }
-
-    public static DirectedRandomDataGenerator directedRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
-        Random random = makeRandomNumberGenerator(randomSeed);
-        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
-        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
-
-        return new DirectedRandomDataGenerator(
-                random,
-                maxEvaluations,
-                randomCellValueGenerator,
-                randomCellInitializer);
-    }
-
     public static RandomDataGenerator randomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
         Random random = makeRandomNumberGenerator(randomSeed);
         RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
@@ -164,4 +144,99 @@ public class DataGeneratorFactory {
                 randomCellValueGenerator,
                 new DefaultCellInitializer());
     }
+
+
+    
+
+    public static DominoDataGenerator dominoRandomGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+
+    public static DominoDataGenerator dominoAVSGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+
+        DefaultCellInitializer defaultCellInitializer = new DefaultCellInitializer();
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        AlternatingValueSearch avs = new AlternatingValueSearch(
+                random, defaultCellInitializer, randomCellInitializer, false);
+
+        TerminationCriterion terminationCriterion = new CombinedTerminationCriterion(
+                new CounterTerminationCriterion(avs.getEvaluationsCounter(), maxEvaluations),
+                new OptimumTerminationCriterion<>(avs));
+
+        avs.setTerminationCriterion(terminationCriterion);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer,
+                avs);
+    }
+    
+    private static ColNameCellValueGenerator makeColNameCellValueGenerator(Random random, Schema schema) {
+        return new ColNameCellValueGenerator(
+                random,
+                ValueInitializationProfile.SMALL,
+                0.1,
+                makeValueLibrary(schema),
+                0.25);
+    }
+    
+    public static DominoDataGenerator dominoColNamerGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ColNameCellValueGenerator randomCellValueGenerator = makeColNameCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    private static ReadableCellValueGenerator makeReadableCellValueGenerator(Random random, Schema schema) {
+        return new ReadableCellValueGenerator(
+                random,
+                ValueInitializationProfile.SMALL,
+                0.1,
+                makeValueLibrary(schema),
+                0.25);
+    }
+    
+    public static DominoDataGenerator dominoReadGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        ReadableCellValueGenerator randomCellValueGenerator = makeReadableCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return new DominoDataGenerator(
+                random,
+                maxEvaluations,
+                randomCellValueGenerator,
+                randomCellInitializer);
+    }
+    
+    public static SearchBasedDataGenerator avslangmodelGenerator(long randomSeed, int maxEvaluations, Schema schema) {
+        Random random = makeRandomNumberGenerator(randomSeed);
+        RandomCellValueGenerator randomCellValueGenerator = makeRandomCellValueGenerator(random, schema);
+        RandomCellInitializer randomCellInitializer = new RandomCellInitializer(randomCellValueGenerator);
+
+        return makeAlternatingValueSearch(
+                random,
+                maxEvaluations,
+                randomCellInitializer,
+                randomCellInitializer);
+    }
+    
 }

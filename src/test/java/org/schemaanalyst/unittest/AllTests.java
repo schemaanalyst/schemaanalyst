@@ -9,9 +9,9 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.data.TestValueEquality.class,
 	org.schemaanalyst.unittest.data.generation.TestCellValueGenerator.class,
 	org.schemaanalyst.unittest.data.generation.TestExpressionConstantMiner.class,
-	org.schemaanalyst.unittest.data.generation.directedrandom.TestExpressionPredicateFixer.class,
-	org.schemaanalyst.unittest.data.generation.directedrandom.TestMatchPredicateFixer.class,
-	org.schemaanalyst.unittest.data.generation.directedrandom.TestNullPredicateFixer.class,
+	org.schemaanalyst.unittest.data.generation.domino.TestExpressionPredicateFixer.class,
+	org.schemaanalyst.unittest.data.generation.domino.TestMatchPredicateFixer.class,
+	org.schemaanalyst.unittest.data.generation.domino.TestNullPredicateFixer.class,
 	org.schemaanalyst.unittest.data.generation.search.TestAlternatingValueSearch.class,
 	org.schemaanalyst.unittest.data.generation.search.TestSearchEvaluation.class,
 	org.schemaanalyst.unittest.data.generation.search.objective.TestDistanceObjectiveValue.class,
@@ -93,7 +93,8 @@ import org.junit.runners.Suite;
 	org.schemaanalyst.unittest.util.collection.TestIdentifiableEntitySet.class,
 	org.schemaanalyst.unittest.util.collection.TestIdentifier.class,
 	org.schemaanalyst.unittest.util.runner.TestRunner.class,
-	org.schemaanalyst.unittest.util.sql.TestSQLRepairer.class
+	org.schemaanalyst.unittest.util.sql.TestSQLRepairer.class,
+	org.schemaanalyst.unittest.reduction.TestReductionTechniques.class
 })
 
 public class AllTests {}

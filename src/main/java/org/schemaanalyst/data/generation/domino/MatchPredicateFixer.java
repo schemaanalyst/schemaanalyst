@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.directedrandom;
+package org.schemaanalyst.data.generation.domino;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.Row;
@@ -13,7 +13,9 @@ import java.util.ListIterator;
 
 /**
  * Created by phil on 27/02/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
+ 
 public class MatchPredicateFixer extends PredicateFixer {
 
     private MatchPredicateChecker matchPredicateChecker;

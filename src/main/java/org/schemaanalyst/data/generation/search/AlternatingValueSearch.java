@@ -12,21 +12,31 @@ import java.util.logging.Logger;
 
 public class AlternatingValueSearch extends Search<Data> {
 
-    private static final int ACCELERATION_BASE = 2;
-    private Random random;
-    private CellInitializer startInitialiser;
-    private CellInitializer restartInitialiser;
+    protected static final int ACCELERATION_BASE = 2;
+    protected Random random;
+    protected CellInitializer startInitialiser;
+    protected CellInitializer restartInitialiser;
     protected Data data; // protected so that test class can access
-    private List<Cell> cells;
-    private ObjectiveValue lastObjVal;
+    protected List<Cell> cells;
+    protected ObjectiveValue lastObjVal;
+    protected boolean makeNullMoves;
 
     public AlternatingValueSearch(Random random,
                                   CellInitializer startInitializer,
                                   CellInitializer restartInitializer) {
+        this(random, startInitializer, restartInitializer, true);
+    }
+
+
+    public AlternatingValueSearch(Random random,
+                                  CellInitializer startInitializer,
+                                  CellInitializer restartInitializer,
+                                  boolean makeNullMoves) {
         super(new Data.Duplicator());
         this.random = random;
         this.startInitialiser = startInitializer;
         this.restartInitialiser = restartInitializer;
+        this.makeNullMoves = makeNullMoves;
     }
 
     @Override
@@ -92,7 +102,11 @@ public class AlternatingValueSearch extends Search<Data> {
     }
 
     protected boolean valueSearch(Cell cell) {
-        boolean improvement = invertNullMove(cell);
+        boolean improvement = false;
+
+        if (makeNullMoves || (!makeNullMoves && cell.isNull())) {
+            improvement = invertNullMove(cell);
+        }
 
         if (!cell.isNull()) {
             if (valueSearch(cell.getValue())) {

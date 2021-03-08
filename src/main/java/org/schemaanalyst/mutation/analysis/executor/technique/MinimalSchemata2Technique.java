@@ -37,8 +37,8 @@ public class MinimalSchemata2Technique extends Technique {
     private Map<Integer, TestSuiteResult> resultMap;
     private Map<String, List<Integer>> changedTableMap;
 
-    public MinimalSchemata2Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public MinimalSchemata2Technique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
         this.sqlWriter = dbms.getSQLWriter();
     }
 

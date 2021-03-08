@@ -45,8 +45,8 @@ public class MutantTimingTechnique extends OriginalTechnique {
      */
     private static final CSVFileWriter OUTPUT_WRITER = new CSVFileWriter(OUTPUT_FILE);
 
-    public MutantTimingTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions) {
-        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions);
+    public MutantTimingTechnique(Schema schema, List<Mutant<Schema>> mutants, TestSuite testSuite, DBMS dbms, DatabaseInteractor databaseInteractor, boolean useTransactions, String dataGenerator, String criterion, long randomseed) {
+        super(schema, mutants, testSuite, dbms, databaseInteractor, useTransactions, dataGenerator, criterion, randomseed);
     }
 
     @Override
@@ -100,6 +100,9 @@ public class MutantTimingTechnique extends OriginalTechnique {
         result.addValue("type", mutant.getMutantType());
         result.addValue("killed", killed);
         result.addValue("time", time);
+        result.addValue("generator", dataGenerator);
+        result.addValue("criterion", criterion);
+        result.addValue("randomseed", randomseed);
         OUTPUT_WRITER.write(result);
     }
 

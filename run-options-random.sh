@@ -10,7 +10,7 @@
 # 	-p PIPELINES
 #	-d DATAGENS
 
-CLASSPATH='lib/*:build/'
+CLASSPATH='build/classes/java/main:lib/*:build/lib/*:.'
 CLASS='org.schemaanalyst.mutation.analysis.executor.MutationAnalysis'
 VIRTCLASS='org.schemaanalyst.mutation.analysis.executor.MutationAnalysisVirtual'
 
@@ -51,7 +51,7 @@ for (( x=1; x<=$REPEATS; x++ )) do
 					for t in "${TECHNIQUE[@]}"; do			
 						for u in "${USETRANSACTION[@]}"; do
 							echo "$d,$x,$t,$s,$c,$u,$SEED"
-							java -cp $CLASSPATH $CLASS parsedcasestudy.$s --criterion=$c --technique=$t --useTransactions=$u --mutationPipeline=$p --randomseed=$SEED --dataGenerator=$d
+							java -cp $CLASSPATH $CLASS parsedcasestudy.$s --criterion=$c --technique=$t --useTransactions=$u --mutationPipeline=$p --randomseed=$SEED --dataGenerator=$d --saveTestSuite=true
 						done
 					done
 					if [ $VIRTUAL == "true" ] ; then

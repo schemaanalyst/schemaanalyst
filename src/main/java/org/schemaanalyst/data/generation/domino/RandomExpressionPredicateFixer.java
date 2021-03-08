@@ -1,4 +1,4 @@
-package org.schemaanalyst.data.generation.directedrandom;
+package org.schemaanalyst.data.generation.domino;
 
 import org.schemaanalyst.data.Cell;
 import org.schemaanalyst.data.generation.cellvaluegeneration.RandomCellValueGenerator;
@@ -6,13 +6,15 @@ import org.schemaanalyst.testgeneration.coveragecriterion.predicate.checker.Expr
 
 /**
  * Created by phil on 27/02/2014.
+ * Updated by Abdullah Summer/Fall 2017
  */
-public class ExpressionPredicateFixer extends PredicateFixer {
+ 
+public class RandomExpressionPredicateFixer extends PredicateFixer {
 
     private ExpressionPredicateChecker expressionPredicateChecker;
     private RandomCellValueGenerator cellValueGenerator;
 
-    public ExpressionPredicateFixer(ExpressionPredicateChecker expressionPredicateChecker, RandomCellValueGenerator cellValueGenerator) {
+    public RandomExpressionPredicateFixer(ExpressionPredicateChecker expressionPredicateChecker, RandomCellValueGenerator cellValueGenerator) {
         this.expressionPredicateChecker = expressionPredicateChecker;
         this.cellValueGenerator = cellValueGenerator;
     }

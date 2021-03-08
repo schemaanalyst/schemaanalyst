@@ -53,7 +53,7 @@ public class ICC extends IntegrityConstraintCriterion {
                             generateMsg(constraint) + " is " + truthValue
                     ),
                     PredicateGenerator.generateConditionPredicate(constraint, truthValue),
-                    null,
+                    truthValue,
                     doesRequirementRequiresComparisonRow(constraint)
                 )
         );
