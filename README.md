@@ -613,41 +613,41 @@ Proceedings of the 11th International Conference on Software Testing,
 Verification and Validation, 2018. <a name="two"></a>
 
 [(ICST 2018)
-](https://www.gregorykapfhammer.com/research/papers/Alsharif2018b/)Alsharif,
+](https://www.gregorykapfhammer.com/research/papers/Alsharif2018b/) Alsharif,
 Abdullah, Gregory M. Kapfhammer, Phil McMinn (2018). "Running Experiments and
 Performing Data Analysis Using SchemaAnalyst and DOMINO" in Proceedings of the
 11th International Conference on Software Testing, Verification and Validation,
 2018. <a name="three"></a>
 
 [(ICST 2018)
-](https://www.gregorykapfhammer.com/research/papers/Alsharif2018a/)Alsharif,
+](https://www.gregorykapfhammer.com/research/papers/Alsharif2018a/) Alsharif,
 Abdullah, Gregory M. Kapfhammer, Phil McMinn (2018). "Generating Database Schema
 Test Suites with DOMINO" in Proceedings of the 11th International Conference on
 Software Testing, Verification and Validation, 2018. <a name="four"></a>
 
 [(ICSME 2016)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/)McMinn,
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/) McMinn,
 Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
 Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
 for Relational Database Schemas" in Proceedings of the 32nd International
 Conference on Software Maintenance and Evolution, 2016. <a name="five"></a>
 
 [(ICSME 2016)
-](https://www.gregorykapfhammer.com/research/papers/McCurdy2016/)McCurdy J.
+](https://www.gregorykapfhammer.com/research/papers/McCurdy2016/) McCurdy J.
 Colton, Phil McMinn, Gregory M. Kapfhammer (2016). "mrstudyr: Retrospectively
 studying the effectiveness of mutant reduction techniques" in Proceedings of the
 32nd International Conference on Software Maintenance and Evolution, 2016. <a
 name="six"></a>
 
 [(TOSEM 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/)McMinn,
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2015/) McMinn,
 Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The Effectiveness of
 Test Coverage Criteria for Relational Database Schema Integrity Constraints,"
 in Transactions on Software Engineering and Methodology, 25(1). <a
 name="seven"></a>
 
 [(SEKE 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kinneer2015/)Kinneer,
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kinneer2015/) Kinneer,
 Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015).
 "Automatically evaluating the efficiency of search-based test data generation
 for relational database schemas," in Proceedings of the 27th International
@@ -655,25 +655,25 @@ Conference on Software Engineering and Knowledge Engineering. <a
 name="eight"></a>
 
 [(QSIC 2014)
-](https://www.gregorykapfhammer.com/research/papers/Wright2014/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of
-equivalent, redundant, and quasi mutants on database schema mutation analysis,"
-in Proceedings of the 14th International Conference on Quality Software. <a
+](https://www.gregorykapfhammer.com/research/papers/Wright2014/) Wright, Chris
+J., Gregory M. Kapfhammer, and Phil McMinn (2014). "The impact of equivalent,
+redundant, and quasi mutants on database schema mutation analysis," in
+Proceedings of the 14th International Conference on Quality Software. <a
 name="nine"></a>
 
 [(Mutation 2013)
-](https://www.gregorykapfhammer.com/research/papers/Wright2013/)Wright,
-Chris J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation
-analysis of relational database structure using mutant schemata and
-parallelisation," in Proceedings of the 8th International Workshop on Mutation
-Analysis. <a name="ten"></a>
+](https://www.gregorykapfhammer.com/research/papers/Wright2013/) Wright, Chris
+J., Gregory M. Kapfhammer, and Phil McMinn (2013). "Efficient mutation analysis
+of relational database structure using mutant schemata and parallelisation," in
+Proceedings of the 8th International Workshop on Mutation Analysis. <a
+name="ten"></a>
 
 [(ICST 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)Kapfhammer,
-Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based testing of
-relational schema integrity constraints across multiple database management
-systems," in Proceedings of the 6th International Conference on Software
-Testing, Verification and Validation. <a name="eleven"></a>
+](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)
+Kapfhammer, Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based
+testing of relational schema integrity constraints across multiple database
+management systems," in Proceedings of the 6th International Conference on
+Software Testing, Verification and Validation. <a name="eleven"></a>
 
 ## License
 
