@@ -669,7 +669,7 @@ Proceedings of the 8th International Workshop on Mutation Analysis. <a
 name="ten"></a>
 
 [(ICST 2013)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kapfhammer2013/)
+](https://www.gregorykapfhammer.com/research/papers/Kapfhammer2013/)
 Kapfhammer, Gregory M., Phil McMinn, and Chris J. Wright (2013). "Search-based
 testing of relational schema integrity constraints across multiple database
 management systems," in Proceedings of the 6th International Conference on
