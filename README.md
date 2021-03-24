@@ -560,7 +560,7 @@ dividing the numerator by the denominator you will generate a mutation score in
 the range [0, 1]. This score provides insight into how well the schema's test
 suite does at exercising the integrity constraints, with higher scores
 indicating that the test suite is better. Although there does not currently
-exist a objective standard for interpreting this metric, scores between 0.6 and
+exist an objective standard for interpreting this metric, scores between 0.6 and
 0.7 (i.e., between 60% and 70%) are generally considered good. If your schema's
 score falls below this level, consider viewing the [Mutation
 Analysis](#mutation-analysis) section to gain further insight into the types of
