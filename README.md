@@ -502,7 +502,7 @@ attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
 | `operator`   | The mutation operator used to generate the mutant                     |
 | `type`       | The type of mutant (i.e., `NORMAL`, `DUPLICATE`, `EQUIVALENT`)                      |
 | `killed`     | The kill status of a mutant (i.e., `true` is "killed", `false` is "alive")          |
-| `time`       | The time, in milliseconds (ms), to generate the mutant                |
+| `time`       | The time, in milliseconds, to generate the mutant                |
 
 To perform mutation analysis with `technique=mutantTiming` and the
 `ArtistSimilarity` schema you can type the following command in your terminal
