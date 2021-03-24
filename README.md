@@ -409,11 +409,11 @@ of parameters described below.
 
 #### Parameters for Test Data Generation
 
-| Parameter            | Required   | Description                                                    |
-| :---------:          | :--------: | :-----------:                                                  |
-| `--inserts`          |            | Target file for writing `INSERT` statements into a `.sql` file |
-| `--testSuite`        |            | Target file for writing JUnit test suite                       |
-| `--testSuitePackage` |            | Target package for writing JUnit test suite                    |
+| Parameter            | Required   | Description                                                        |
+| :---------:          | :--------: | :-----------:                                                      |
+| `--inserts`          |            | Target file for writing the `INSERT` statements into a `.sql` file |
+| `--testSuite`        |            | Target file for writing the JUnit test suite                       |
+| `--testSuitePackage` |            | Target package for writing the JUnit test suite                    |
 
 #### Output from Test Data Generation
 
