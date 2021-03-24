@@ -238,7 +238,7 @@ SchemaAnalyst uses a command-line interface with a variety of execution
 options. Two primary commands are included: `generation` for [Test Data
 Generation](#test-data-generation) and `mutation` for [Mutation
 Analysis](#mutation-analysis). Note that one of these two commands *must* be
-applied, and their syntax is discussed at a later point in this document.
+applied and their syntax is discussed at a later point in this document.
 
 You are also able to print the help menu at any time with the `--help`, or `-h`
 command of the `Go` class within the `java org.schemaanalyst.util` package by
@@ -385,7 +385,7 @@ Multiple Test Suite Reduction methods are available for you to use:
 - `random`: Random test suite reduction technique.
 - `simpleGreedy`: Naive greedy test suite reduction technique.
 - `additionalGreedy`: Additional greedy test suite reduction technique (known as
-  "greedy" the literature)
+  "greedy" in the literature)
 - `HGS`: Greedy method based on the cardinality of test coverage sets, originally
   proposed by Harrold, Gupta, and Soffa.
 - `STICCER`: Technique that both reduces and merges test cases in the test suite
