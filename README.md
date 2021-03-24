@@ -438,7 +438,7 @@ Postgres --criterion UCC --generator avsDefaults generation --inserts
 SampleOutput`
 
 This will produce a series of `INSERT` statements for each mutant of the
-schema.  Some abbreviated output from the previous command include:
+schema.  Some abbreviated output from the previous command includes:
 
 ```
 INSERT INTO "artists"(
