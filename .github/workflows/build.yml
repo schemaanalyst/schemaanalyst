@@ -1,0 +1,30 @@
+# Basic workflow that:
+# --> lints the markdown in the README file
+name: build
+
+# Controls when the action will run.
+# Triggers the workflow on push or pull request
+# events for all branches of the repository
+on: [push, pull_request]
+
+# A workflow run is made up of one or more jobs
+# that can run sequentially or in parallel
+jobs:
+  # The workflow contains a single job called "build"
+  build:
+    # The runner will run on the latest version of Ubuntu
+    runs-on: ubuntu-latest
+
+    # Define the steps run in the workflow
+    steps:
+      # Checkout out the code in the repository
+      # Checkout the submodule for the bibliography
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          submodules: 'true'
+      # Run the mdl linting tool, which references
+      # the .mdlrc file stored in the repo's root
+      # for further configuration details
+      - name: Run mdl
+        uses: actionshub/markdownlint@main
