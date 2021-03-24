@@ -312,7 +312,7 @@ Usage: <main class> [options] [command] [command options]
              Target package for writing JUnit test suite
              Default: generatedtest
 
-    mutation      Perform mutation testing of SchemaAnalyst
+    mutation      Perform mutation testing with SchemaAnalyst
       Usage: mutation [options]
         Options:
           --fullreduce, -fr
