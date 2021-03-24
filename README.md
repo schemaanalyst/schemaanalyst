@@ -72,7 +72,7 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 
 A database schema acts as the cornerstone for any application that relies on a
 relational database. It specifies the types of allowed data, as well as the
-organization and relationship between the data.  Any oversight at this
+organization and relationship between the data. Any oversight at this
 fundamental level can easily propagate errors toward future development stages.
 Such oversights might include incomplete foreign or primary key declarations, or
 incorrect use or omission of the `UNIQUE`, `NOT NULL`, and `CHECK` integrity
@@ -151,7 +151,7 @@ files are as follows:
   directories, and should not require any changes (but may be useful if adding
   to the Ant script, which automatically loads it).
 
-* `experiment.properties`: _The contents of this file can be ignored as it is no
+* `experiment.properties`: The contents of this file can be ignored as it is no
   longer used in the current version of SchemaAnalyst. Subsequent versions of
   SchemaAnalyst will likely not include this file and the code that reads it._
 
