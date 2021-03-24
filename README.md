@@ -148,8 +148,7 @@ files are as follows:
   specifies which database to use (i.e., SQLite, Postgres, or HyperSQL).
 
 * `locations.properties`: specifies the layout of the SchemaAnalyst
-  directories, and should not require any changes (but may be useful if adding
-  to the Ant script, which automatically loads it).
+  directories, and should not require any changes.
 
 * `experiment.properties`: The contents of this file can be ignored as it is no
   longer used in the current version of SchemaAnalyst. Subsequent versions of
