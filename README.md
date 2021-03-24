@@ -126,10 +126,10 @@ and optional dependencies.
 
 If you are getting started with SchemaAnalyst and relational databases, then it
 will likely be easiest if you use the SQLite database management system. In
-fact, SQLite is often installed by default by many Linux operating systems. If
-you are running the Ubuntu operating system and you discover that SQLite is not
-currently installed, then you can install it by running the following command in
-your terminal window:
+fact, SQLite is often installed by default by many versions of the Linux
+operating system. If you are running the Ubuntu operating system and you
+discover that SQLite is not currently installed, then you can install it by
+running the following command in your terminal window:
 
 ```
 sudo apt install sqlite3
