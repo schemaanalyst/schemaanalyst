@@ -67,6 +67,7 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
 * [Building and Execution Environment](#building-and-execution-environment)
 * [Publications](#publications)
 * [License](#license)
+
 ## Overview
 
 A database schema acts as the cornerstone for any application that relies on a
