@@ -182,8 +182,8 @@ follow these steps to compile the system using the provided Gradle wrapper:
 1. Open a terminal and navigate to the default `schemaanalyst/` directory.
 
 2. Type `./gradlew compile` to first download the Gradle dependencies then the
-   necessary `.jar` files in the `lib` directory and compile the system into
-   the `build` directory.
+   necessary `.jar` files in the `lib/` directory and compile the system into
+   the `build/` directory.
 
 *__Note__: The message `Some input files use unchecked or unsafe operations`
 may be ignored if it appears during compilation.*
@@ -418,7 +418,7 @@ of parameters described below.
 #### Output from Test Data Generation
 
 By default, the `generation` command creates a JUnit test suite in the
-`generatedtest` directory.  The name of the file can be changed with the
+`generatedtest/` directory.  The name of the file can be changed with the
 `--testSuite` parameter, while the package can be changed with the
 `--testSuitePackage` parameter. Alternatively, the `--inserts` parameter can
 be used to generate a `.sql` file with all of the `INSERT` statements used to
