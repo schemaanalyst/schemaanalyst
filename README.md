@@ -62,8 +62,8 @@ amount of execution time that is competitive or faster [(ICST 2013)](#two).
     - [Command-Line for Mutation Analysis](#command-line-for-mutation-analysis)
     - [Parameters for Mutation Analysis](#parameters-for-mutation-analysis)
     - [Output from Mutation Analysis](#output-from-mutation-analysis)
-    - [Interpretation of Output](#interpretation-of-output)
-    - [Concrete Examples](#concrete-examples)
+    - [Interpretation of Output from Mutation Analysis](#interpretation-of-output-from-mutation-analysis)
+    - [Concrete Examples of Performing Mutation Analysis](#concrete-examples-of-performing-mutation-analysis)
 * [Building and Execution Environment](#building-and-execution-environment)
 * [Publications](#publications)
 * [License](#license)
@@ -551,7 +551,7 @@ file contains the following columns that have the following description:
 | `mutationanalysistime` | The time taken to perform analysis of all of the mutant schemas             |
 | `timetaken`            | The total time taken by the entire process                                  |
 
-#### Interpretation of Output
+#### Interpretation of Output from Mutation Analysis
 
 The output produced by mutation analysis contains a significant amount of
 information, some of which might not be needed for your purposes. If you are
@@ -567,7 +567,7 @@ are generally considered good. If your schema's score falls below this level,
 consider viewing the [Mutation Analysis](#mutant-analysis) section to gain
 further insight into the types of mutants created and killed during the process.
 
-#### Concrete Examples
+#### Concrete Examples of Performing Mutation Analysis
 
 1.  Type the following command in your terminal to perform mutation analysis
     with the default configuration, and the `ArtistSimilarity` schema:
