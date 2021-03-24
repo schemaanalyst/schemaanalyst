@@ -106,10 +106,10 @@ higher the mutation score the better the quality of the generated test suite
 
 The source code is hosted in a [GitHub
 repository](https://github.com/schemaanalyst/schemaanalyst). To obtain
-SchemaAnalyst, simply clone this repository on your machine using the following
-command like `git clone git@github.com:schemaanalyst/schemaanalyst.git`. You may
-also use alternative approaches to clone the GitHub repository by using, for
-instance, a graphical interface to a Git client.
+SchemaAnalyst, simply clone this repository on your machine using a command like
+`git clone git@github.com:schemaanalyst/schemaanalyst.git`. You may also use
+alternative approaches to clone the GitHub repository by using, for instance, a
+graphical interface to a Git client or the GitHub CLI.
 
 ### Dependencies
 
