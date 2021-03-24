@@ -500,7 +500,7 @@ attributes: `identifier`, `dbms`, `schema`, `operator`, `type`, `killed`, and
 | `dbms`       | The DBMS                                                              |
 | `schema`     | The schema                                                            |
 | `operator`   | The mutation operator used to generate the mutant                     |
-| `type`       | The type of mutant (e.g., NORMAL, DUPLICATE, EQUIVALENT)              |
+| `type`       | The type of mutant (i.e., NORMAL, DUPLICATE, EQUIVALENT)              |
 | `killed`     | The kill status of a mutant (i.e., `true` is "killed", `false` is "alive")          |
 | `time`       | The time, in milliseconds (ms), to generate the mutant                |
 
@@ -557,14 +557,14 @@ information, some of which might not be needed for your purposes. If you are
 simply concerned with the correctness of your schema, focus on the
 `scorenumerator` and `scoredenominator` columns, as defined previously. By
 dividing the numerator by the denominator you will generate a mutation score in
-the range [0, 1]. This score provides an estimate for how well the schema has
-performed when its integrity constraints were exercised, with higher scores
-indicating that the schema is more likely to permit valid data from entering a
-table and to reject any invalid data. Although there does not currently exist a
-standard for this metric, scores between 0.6 and 0.7 (i.e., between 60% and 70%)
-are generally considered good. If your schema's score falls below this level,
-consider viewing the [Mutation Analysis](#mutant-analysis) section to gain
-further insight into the types of mutants created and killed during the process.
+the range [0, 1]. This score provides insight into how well the schema's test
+suite does at exercising the integrity constraints, with higher scores
+indicating that the test suite is better. Although there does not currently
+exist a objective standard for interpreting this metric, scores between 0.6 and
+0.7 (i.e., between 60% and 70%) are generally considered good. If your schema's
+score falls below this level, consider viewing the [Mutation
+Analysis](#mutation-analysis) section to gain further insight into the types of
+mutants created and killed during the process.
 
 #### Concrete Examples of Performing Mutation Analysis
 
