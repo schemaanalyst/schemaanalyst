@@ -653,8 +653,8 @@ Software Testing, Verification and Validation, 2018. <a name="four"></a>
 [(ICSME 2016)
 ](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/McMinn2016c/) McMinn,
 Phil, Chris J. Wright, Cody Kinneer, Colton J. McCurdy, Michael Camara, and
-Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based Test Data generation
-for Relational Database Schemas" in Proceedings of the 32nd International
+Gregory M. Kapfhammer (2015). "SchemaAnalyst: Search-based test data generation
+for relational database schemas" in Proceedings of the 32nd International
 Conference on Software Maintenance and Evolution, 2016. <a name="five"></a>
 
 [(ICSME 2016)
@@ -673,8 +673,8 @@ name="sixone"></a>
 [(TOSEM
 2015)](https://www.gregorykapfhammer.com/research/papers/McMinn2015/)
 McMinn, Phil, Chris J. Wright, and Gregory M. Kapfhammer (2015). "The
-Effectiveness of Test Coverage Criteria for Relational Database Schema Integrity
-Constraints," in Transactions on Software Engineering and Methodology, 25(1). <a
+effectiveness of test coverage criteria for relational database schema integrity
+constraints," in Transactions on Software Engineering and Methodology, 25(1). <a
 name="seven"></a>
 
 [(SEKE 2015)
