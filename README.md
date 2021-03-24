@@ -179,7 +179,7 @@ privileges over the `postgres` database.
 The SchemaAnalyst tool is built using [Gradle](http://gradle.org/). Please
 follow these steps to compile the system using the provided Gradle wrapper:
 
-1. Open a terminal and navigate to the default `schemaanalyst` directory.
+1. Open a terminal and navigate to the default `schemaanalyst/` directory.
 
 2. Type `./gradlew compile` to first download the Gradle dependencies then the
    necessary `.jar` files in the `lib` directory and compile the system into
