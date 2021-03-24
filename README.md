@@ -678,7 +678,7 @@ Constraints," in Transactions on Software Engineering and Methodology, 25(1). <a
 name="seven"></a>
 
 [(SEKE 2015)
-](http://www.cs.allegheny.edu/sites/gkapfham/research/papers/Kinneer2015/) Kinneer,
+](https://www.gregorykapfhammer.com/research/papers/Kinneer2015/) Kinneer,
 Cody, Gregory M. Kapfhammer, Chris J. Wright, and Phil McMinn (2015).
 "Automatically evaluating the efficiency of search-based test data generation
 for relational database schemas," in Proceedings of the 27th International
