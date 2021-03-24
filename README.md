@@ -345,13 +345,13 @@ Usage: <main class> [options] [command] [command options]
 The following options can precede the `generation` and `mutation` commands for
 additional functionality (note that the `--schema` option is required):
 
-| Parameter   | Required   | Description                                                        |
-| :---------: | :--------: | :-----------:                                                      |
-| --criterion |            | The coverage criterion to use to generate data                     |
-| --dbms      |            | The database management system to use (SQLite, HyperSQL, Postgres) |
-| --generator |            | The data generator to use to produce SQL `INSERT`` statements      |
-| --help      |            | Show the help menu                                                 |
-| --schema    | X          | The schema chosen for analysis                                     |
+| Parameter   | Required   | Description                                                              |
+| :---------: | :--------: | :-----------:                                                            |
+| --criterion |            | The coverage criterion to use to generate data                           |
+| --dbms      |            | The database management system to use (i.e., SQLite, HyperSQL, Postgres) |
+| --generator |            | The data generator to use to produce SQL `INSERT`` statements            |
+| --help      |            | Show the help menu                                                       |
+| --schema    | X          | The schema chosen for analysis                                           |
 
 *__Note:__ If you attempt to execute any of the `Runner` classes of
 SchemaAnalyst without the necessary parameters, or if you type the `--help`
@@ -483,7 +483,7 @@ of parameters described below.
 | `--maxEvaluations` |            | The maximum fitness evaluations for the search algorithm to use                                |
 | `--pipeline`       |            | The mutation pipeline to use to produce and, optionally, remove mutants                        |
 | `--seed`           |            | The seed used to produce random values for the data generator                                  |
-| `--technique`      |            | The mutation technique to use (e.g., `original`, `fullSchemata`, `minimalSchemata`, or `mutantTiming`) |
+| `--technique`      |            | The mutation technique to use (i.e., `original`, `fullSchemata`, `minimalSchemata`, or `mutantTiming`) |
 | `--transactions`   |            | Whether to use SQL transactions to improve the performance of a technique, if possible         |
 
 #### Output from Mutation Analysis
